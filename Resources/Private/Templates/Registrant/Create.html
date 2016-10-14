@@ -1,0 +1,11 @@
+
+<f:layout name="Default" />
+
+
+<f:section name="main">
+	<f:flashMessages />
+	<f:comment> Render the Confirmation for the Registration </f:comment>
+	<f:render partial="Registrant/Partial{settings.LayoutSingle}/Create"
+		arguments="{event: event, registrant: registrant, settings: settings}"/>
+
+</f:section>

@@ -1,0 +1,17 @@
+
+<f:layout name="Default" />
+
+<f:section name="main">
+<h1>NEW Reg</h1>
+
+<f:flashMessages />
+
+	<f:comment> Render the minimal Infos about the Event </f:comment>
+	<f:render partial="Event/Single/Partial{settings.LayoutSingle}/Minimal"
+			  arguments="{event: event, settings: settings}"/>
+
+	<f:comment> Render the Registration Form for the Event </f:comment>
+	<f:render partial="Registrant/Partial{settings.LayoutRegister}/Form"
+			  arguments="{event: event, settings: settings}"/>
+
+</f:section>

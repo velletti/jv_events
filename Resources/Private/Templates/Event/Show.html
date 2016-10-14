@@ -1,0 +1,11 @@
+
+<f:layout name="Default" />
+
+<f:section name="main">
+<f:flashMessages />
+
+  <f:render partial="Debug/CheckInstallation" arguments="{modulelist: 'FALSE' ,event:event, settings: settings}" />
+
+  <f:render partial="Event/Single/Partial{settings.LayoutSingle}/Base" arguments="{event:event, settings:settings}" />
+
+</f:section>

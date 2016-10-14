@@ -1,0 +1,96 @@
+<!-- DO NOT CHANGE the next LINE //-->
+<f:if condition="html">
+	<f:then>
+		<h2 style="font-size: 22px; font-family: '{emConf.fontFamily}'; line-height: 1.25; margin: 0 0 20px; padding: 0;">
+			Event ID: {event.uid} | <f:format.date format="d.m.Y">{event.startDate}</f:format.date>
+		</h2>
+
+		<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
+			{event.name}<br />
+			{event.location.name}<br />
+			{event.location.zip} {event.location.city}<br />
+
+		</p>
+
+		<h3 style="font-size: 22px; font-family: '{emConf.fontFamily}'; line-height: 1.25; margin: 0 0 20px; padding: 0;">
+			ID: E-{event.uid}-R-{registrant.uid} | <f:format.date format="d.m.Y">{registrant.created}</f:format.date>
+		</h3>
+
+		<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
+			{f:translate(key: 'tx_jvevents_domain_model_registrant.gender')}:
+			<f:if condition="{registrant.gender}==1">{f:translate(key: 'register_gender_male')}</f:if>
+			<f:if condition="{registrant.gender}==2">{f:translate(key: 'register_gender_female')}</f:if>
+			<br/>
+			{f:translate(key: 'tx_jvevents_domain_model_registrant.first_name')}: {registrant.firstname} <br/>
+			{f:translate(key: 'tx_jvevents_domain_model_registrant.last_name')}: {registrant.lastname} <br/>
+			{f:translate(key: 'tx_jvevents_domain_model_registrant.email')}: {registrant.email} <br/>
+			{f:translate(key: 'tx_jvevents_domain_model_registrant.phone')}: {registrant.phone} <br/>
+			{f:translate(key: 'tx_jvevents_domain_model_registrant.profession')}: {registrant.profession} <br/>
+			{f:translate(key: 'tx_jvevents_domain_model_registrant.contact_id')}: {registrant.contactId} <br/>
+		</p>
+		<h3 style="font-size: 22px; font-family: '{emConf.fontFamily}'; line-height: 1.25; margin: 0 0 20px; padding: 0;">
+			{f:translate(key: 'register_head_company_data' , default:'Company Data / Invoice Address')}
+		</h3>
+		<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
+			{f:translate(key: 'tx_jvevents_domain_model_registrant.company')}: {registrant.company} <br/>
+			{f:translate(key: 'tx_jvevents_domain_model_registrant.customer_id')}: {registrant.customerId} <br/>
+			{f:translate(key: 'tx_jvevents_domain_model_registrant.department')}: {registrant.department} <br/>
+			{f:translate(key: 'tx_jvevents_domain_model_registrant.street_and_nr')}: {registrant.streetAndNr} <br/>
+			{f:translate(key: 'tx_jvevents_domain_model_registrant.zip')}: {registrant.zip} <br/>
+			{f:translate(key: 'tx_jvevents_domain_model_registrant.city')}: {registrant.city} <br/>
+			{f:translate(key: 'tx_jvevents_domain_model_registrant.country')}: {registrant.country} <br/>
+		</p>
+
+
+		<table style="display: block; font-size: 100%; font-family: '{emConf.fontFamily}'; line-height: 1.65; width: 100% !important; border-collapse: collapse; margin: 0; padding: 0;">
+			<tr style="font-size: 100%; font-family: '{emConf.fontFamily}'; line-height: 1.65; margin: 0; padding: 0;">
+				<td align="center" style="font-size: 100%; font-family: '{emConf.fontFamily}'; line-height: 1.65; margin: 0; padding: 0;">
+					<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
+						<a href="#" class="button" style="font-size: 100%; font-family: '{emConf.fontFamily}'; line-height: 1.65; color: {emConf.FontColor2}; text-decoration: none; display: inline-block; font-weight: bold; border-radius: 4px; background: {emConf.BackGroundColor2}; margin: 0; padding: 0; border-color: {emConf.BackGroundColor2}; border-style: solid; border-width: 10px 20px 8px;">
+							View Event
+						</a>
+					</p>
+				</td>
+			</tr>
+		</table>
+		<p style="font-size: 12px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
+			Any Problems with event Modul? <a href="mailto:typo3@velletti.de" style="font-size: 100%; font-family: '{emConf.fontFamily}'; line-height: 1.65; color: {emConf.BackGroundColorBody2}; text-decoration: none; margin: 0; padding: 0;">Contact Jörg Velletti</a>.
+		</p>
+
+	</f:then>
+	<f:else>
+		New Registrierung for Event id: {event.uid} - <f:format.date format="d.m.Y">{event.startDate}</f:format.date>
+		{event.name}
+		{event.location.name}
+		{event.location.zip} {event.location.city}
+		*********************************
+		{f:translate(key: 'register_head_participant_data' , default:'Participants Data')}
+		ID: {registrant.uid} | <f:format.date format="d.m.Y">{registrant.created}</f:format.date>
+		*********************************
+		{f:translate(key: 'tx_jvevents_domain_model_registrant.gender')}: 		<f:if condition="{registrant.gender}==1">{f:translate(key: 'register_gender_male')}</f:if><f:if condition="{registrant.gender}==2">{f:translate(key: 'register_gender_female')}</f:if>
+
+		{f:translate(key: 'tx_jvevents_domain_model_registrant.first_name')}: {registrant.firstname}
+		{f:translate(key: 'tx_jvevents_domain_model_registrant.last_name')}: {registrant.lastname}
+		{f:translate(key: 'tx_jvevents_domain_model_registrant.email')}: {registrant.email}
+		{f:translate(key: 'tx_jvevents_domain_model_registrant.phone')}: {registrant.phone}
+		{f:translate(key: 'tx_jvevents_domain_model_registrant.profession')}: {registrant.profession}
+		{f:translate(key: 'tx_jvevents_domain_model_registrant.contact_id')}: {registrant.contactId}
+		*********************************
+		{f:translate(key: 'register_head_company_data' , default:'Company Data / Invoice Address')}
+		{f:translate(key: 'tx_jvevents_domain_model_registrant.company')}: {registrant.company}
+		{f:translate(key: 'tx_jvevents_domain_model_registrant.customer_id')}: {registrant.customerId}
+		{f:translate(key: 'tx_jvevents_domain_model_registrant.department')}: {registrant.department}
+		{f:translate(key: 'tx_jvevents_domain_model_registrant.street_and_nr')}: {registrant.streetAndNr}
+		{f:translate(key: 'tx_jvevents_domain_model_registrant.zip')}: {registrant.zip}
+		{f:translate(key: 'tx_jvevents_domain_model_registrant.city')}: {registrant.city}
+		{f:translate(key: 'tx_jvevents_domain_model_registrant.country')}: {registrant.country}
+
+		*********************************
+		{signature}
+
+	</f:else>
+</f:if>
+
+
+
+

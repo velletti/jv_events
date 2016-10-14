@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-10-11T13:05:45Z">
+		<header>
+			<generator>LFEditor</generator>
+		</header>
+		<body>
+		<trans-unit id="register_email_with_infos">
+			<source>You will soon get an email with all information about your registration!</source>
+		</trans-unit>
+		<trans-unit id="register_gender_female">
+			<source>Mrs.</source>
+		</trans-unit>
+		<trans-unit id="register_gender_male">
+			<source>Mr.</source>
+		</trans-unit>
+		<trans-unit id="register_head_company_data">
+			<source>Company Data / Invoice Address</source>
+		</trans-unit>
+		<trans-unit id="register_head_more_info">
+			<source>Additional Informations</source>
+		</trans-unit>
+		<trans-unit id="register_head_participant_data">
+			<source>Participants Data</source>
+		</trans-unit>
+		<trans-unit id="register_need_to_confirm">
+			<source>You will soon get an email with a Confirmation Link. please Confirm your registration!</source>
+		</trans-unit>
+		<trans-unit id="register_need_to_confirm_email">
+			<source>We will send this email to:</source>
+		</trans-unit>
+		<trans-unit id="register_please_select">
+			<source>Please Select</source>
+		</trans-unit>
+		<trans-unit id="register_send">
+			<source>Register</source>
+		</trans-unit>
+		<trans-unit id="register_send_error">
+			<source>You forgot to fill some of the required fields!</source>
+		</trans-unit>
+		<trans-unit id="register_mandatory_error">
+			<source>This is a required field!</source>
+		</trans-unit>
+		<trans-unit id="register_mandatory_error_honeypot">
+			<source>It looks as if you are a bot. Tapped by honey pot.</source>
+		</trans-unit>
+		<trans-unit id="register_mandatory_error_fingerprint">
+			<source>It looks as if you are a bot. Tapped by fingerprint. Please wait, before you try again.</source>
+		</trans-unit>
+		<trans-unit id="register_mandatory_error_too_fast">
+			<source>It looks as if you are a bot. Tapped by speed. Please wait, before you try again.</source>
+		</trans-unit>
+
+
+
+		<trans-unit id="register_mandatory_email_error">
+			<source>This E-Mail Address is not valid!</source>
+		</trans-unit>
+
+		<trans-unit id="register_was_not_stored">
+			<source>An ERROR occured during your registration! Please try again!</source>
+		</trans-unit>
+		<trans-unit id="register_was_stored">
+			<source>Your registration was stored!</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_category">
+			<source>Category</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_category.title">
+			<source>Title</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_category.type">
+			<source>Type</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event">
+			<source>Event</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.access">
+			<source>Access</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.all_day">
+			<source>All Day</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.available_seats">
+			<source>Available Seats</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.available_waiting_seats">
+			<source>Waiting list Seats</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.citrix_uid">
+			<source>Citrix Uid</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.description">
+			<source>Description</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.end_date">
+			<source>End Date</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.end_time">
+			<source>End Time</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.event_category">
+			<source>Event Category</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.event_type">
+			<source>Event Type</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.files">
+			<source>Files</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.freq_exception">
+			<source>Freq Exception</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.frequency">
+			<source>Frequency</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.images">
+			<source>Images</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.is_exception_for">
+			<source>Is Exception For</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.is_recurring">
+			<source>Is Recurring</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.location">
+			<source>Location</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.marketing_process_id">
+			<source>Marketing Process Id</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.name">
+			<source>Name</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.need_to_confirm">
+			<source>Need To Confirm</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.notify_organizer">
+			<source>Notify Organiser</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.notify_registrant">
+			<source>Notify Registrant</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.organizer">
+			<source>Organizer</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.registered_seats">
+			<source>Registered Seats</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.registrant">
+			<source>Registrant</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.registration_access">
+			<source>Registration Access</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.registration_until">
+			<source>Registration Until</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.sales_force_event_id">
+			<source>Sales Force Event Id</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.sales_force_record_type">
+			<source>Sales Force Record Type</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.sales_force_session_id">
+			<source>Sales Force Session Id</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.start_date">
+			<source>Start Date</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.start_time">
+			<source>Start Time</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.store_in_citrix">
+			<source>Store In Citrix</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.store_in_sales_force">
+			<source>Store In Sales Force</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.subject_organizer">
+			<source>Subject Organizer</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.subject_registrant">
+			<source>Subject Registrant</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.tags">
+			<source>Tags</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.teaser">
+			<source>Teaser</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.text_organizer">
+			<source>Text Organizer</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.text_registrant">
+			<source>Text Registrant</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.unconfirmed_seats">
+			<source>Unconfirmed Seats</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.with_registration">
+			<source>With Registration</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_location">
+			<source>Location</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_location.city">
+			<source>City</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_location.country">
+			<source>Country</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_location.description">
+			<source>Description</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_location.email">
+			<source>Email</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_location.lat">
+			<source>Lat</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_location.link">
+			<source>Link</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_location.lng">
+			<source>Lng</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_location.location_category">
+			<source>Location Category</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_location.name">
+			<source>Name</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_location.organizer">
+			<source>Organizer</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_location.phone">
+			<source>Phone</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_location.street_and_nr">
+			<source>Street And Nr</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_location.zip">
+			<source>Zip</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_organizer">
+			<source>Organizer</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_organizer.description">
+			<source>Description</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_organizer.email">
+			<source>Email</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_organizer.images">
+			<source>Images</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_organizer.name">
+			<source>Name</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_organizer.organizer_category">
+			<source>Organizer Category</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_organizer.phone">
+			<source>Phone</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_organizer.sales_force_user_id">
+			<source>Sales Force User Id</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant">
+			<source>Registrant</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.additional_info">
+			<source>Additional Info</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.city">
+			<source>City</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.company">
+			<source>Company</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.contact_id">
+			<source>Contact Id</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.country">
+			<source>Country</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.customer_id">
+			<source>Customer Id</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.department">
+			<source>Department</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.email">
+			<source>Email</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.first_name">
+			<source>First Name</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.gender">
+			<source>Gender</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.language">
+			<source>Language</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.last_name">
+			<source>Last Name</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.more1">
+			<source>More1</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.more2">
+			<source>More2</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.more3">
+			<source>More3</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.more4">
+			<source>More4</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.more5bool">
+			<source>More5bool</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.more6int">
+			<source>More6int</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.more7date">
+			<source>More7date</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.more8file">
+			<source>More8file</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.newsletter">
+			<source>Newsletter</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.password">
+			<source>Password</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.phone">
+			<source>Phone</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.fingerprint">
+			<source>Fingerprint</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.hotprice">
+			<source>Get the hottest price</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.privacy">
+			<source>Privacy</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.profession">
+			<source>Profession</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.recall">
+			<source>Recall</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.street_and_nr">
+			<source>Street And Nr</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.username">
+			<source>Username</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.zip">
+			<source>Zip</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_tag">
+			<source>Tag</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_tag.name">
+			<source>Name</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_event.filter.category">
+			<source>Filter by category</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_event.filter.city">
+			<source>Filter by city</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_event.filter.location">
+			<source>Filter by location</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_event.filter.month">
+			<source>Filter by month</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_event.filter.tag">
+			<source>Filter by Tag</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_event.list.no_events_found">
+			<source>No Events found</source>
+		</trans-unit>
+		</body>
+	</file>
+</xliff>

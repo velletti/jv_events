@@ -1,0 +1,95 @@
+
+plugin.tx_jvevents_events {
+	view {
+		templateRootPaths.0 = {$plugin.tx_jvevents_events.view.templateRootPath}
+		partialRootPaths.0 = {$plugin.tx_jvevents_events.view.partialRootPath}
+		layoutRootPaths.0 = {$plugin.tx_jvevents_events.view.layoutRootPath}
+	}
+	persistence {
+		storagePid = {$plugin.tx_jvevents_events.persistence.storagePid}
+	}
+	settings {
+		# change this setting to 1 after everything works
+		checkInstallation = {$plugin.tx_jvevents_events.settings.checkInstallation}
+		# set this setting in Case of Problems
+		debug = {$plugin.tx_jvevents_events.settings.debug}
+
+        link {
+            # Event Types that should open in a new Window
+            typesOpeningInNewWindow {
+                1 = 2
+            }
+            dateFormat = d.m.Y
+
+            If you use RealUrl, you can skip generation of URL Parameter Controller and Action
+            skipControllerAndAction = 0
+
+            detailPidDefault = 111
+            #  Overwrite default behavior
+            doNotuseCacheHash = 1
+            # overwrite the generation of a cHash if you do not want caching (f.e. if you use Registration Form and have Login users)
+            # you can add no_cache=1 .. not a good Solution but sometimes needed
+            addNoCache = 0
+        }
+		list {
+			layouts {
+				1Allplan = 1 - List with Filters
+				2Megra   = 2 - List with Filters and Link to first related File
+			}
+		}
+		single {
+			layouts {
+				1Allplan = Normal Event Information
+				2Megra   = Full Info Event
+			}
+		}
+		register {
+            layouts {
+                1Allplan = Normal Event Registration
+                2Megra   = Extended Event Registration
+            }
+
+			requiredFields {
+				1Allplan =	{$plugin.tx_jvevents_events.settings.register.requiredFields.1Allplan}
+				2Megra 	=	{$plugin.tx_jvevents_events.settings.register.requiredFields.2Megra}
+			}
+			label.privacy =	{$plugin.tx_jvevents_events.settings.register.label.privacy}
+			allowedCountrys =	{$plugin.tx_jvevents_events.settings.register.allowedCountrys}
+        }
+	}
+}
+
+
+
+ # Module configuration
+module.tx_jvevents_web_jveventseventmngt {
+	persistence {
+		storagePid = {$module.tx_jvevents_eventmngt.persistence.storagePid}
+	}
+	view {
+		templateRootPaths.0 = {$module.tx_jvevents_eventmngt.view.templateRootPath}
+		partialRootPaths.0 = {$module.tx_jvevents_eventmngt.view.partialRootPath}
+		layoutRootPaths.0 = {$module.tx_jvevents_eventmngt.view.layoutRootPath}
+	}
+}
+
+# needed Settings to convert Richttext to HTML we want ..
+lib.jveventsRTE < lib.parseFunc_RTE
+lib.jveventsRTE.dontConvBRtoParagraph = 1
+
+# Jquery must be loaded in your env. to use this javascript!
+# if you have your own javaScript add the following line  to your typoScript setup :
+# page.includeJSFooter.jvEvents >
+#
+page.includeJSFooter.jvEvents = EXT:jv_events/Resources/Public/Javascript/jv_events.js
+
+
+config.tx_extbase.persistence {
+    classes {
+        JVE\JvEvents\Domain\Model\StaticCountry {
+            mapping {
+                tableName = static_countries
+            }
+        }
+    }
+}

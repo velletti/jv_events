@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-09-20T15:02:26Z" product-name="jv_events">
+		<header/>
+		<body>
+			<trans-unit id="flexforms_additional.detailPid">
+				<source>Show Event Details Page ID</source>
+			</trans-unit>
+			<trans-unit id="flexforms_additional.registerPid">
+				<source>Show Registration Form Page ID</source>
+			</trans-unit>
+			<trans-unit id="flexforms_additional.layout">
+            	<source>Select layout Style for Frontend rendering</source>
+            </trans-unit>
+            <trans-unit id="flexforms.Function">
+				<source>Function</source>
+			</trans-unit>
+			<trans-unit id="flexforms.RegistrationView">
+            	<source>Registration</source>
+            </trans-unit>
+			<trans-unit id="flexforms.EventDetailView">
+            	<source>Event Details</source>
+            </trans-unit>
+			<trans-unit id="flexforms.EventListView">
+            	<source>Event List</source>
+            </trans-unit>
+			<trans-unit id="flexforms.ListView">
+            	<source>Data Settings</source>
+            </trans-unit>
+
+
+
+			<trans-unit id="flexforms.DataSettings">
+            	<source>Data Settings</source>
+            </trans-unit>
+
+			<trans-unit id="flexforms.DataSettings">
+            	<source>Data Settings</source>
+            </trans-unit>
+
+			<trans-unit id="flexforms.DataSettings">
+            	<source>Data Settings</source>
+            </trans-unit>
+
+
+			<trans-unit id="extmng.showRecurring">
+				<source>Use Recurring Events Model. May Slow down frontend List Views : THIS is Still under development</source>
+			</trans-unit>
+			<trans-unit id="extmng.showImporter">
+				<source>Show Importer From CAL : This is just a plan and actually doing nothing !</source>
+			</trans-unit>
+			<trans-unit id="extmng.enableSalesForce">
+				<source>Show Options to store Events and registrations to Salesforce (Needs a special settings and custom Object in SalesForce!)</source>
+			</trans-unit>
+			<trans-unit id="extmng.showIndividualMailTemplatesPerEvent">
+				<source>Show separate Fields with Subject and Mail text for each event to create individual Emails per Event : (This is just a plan and Actually doing nothing !)</source>
+			</trans-unit>
+			<trans-unit id="extmng.adminUserGroups">
+				<source>Leave Empty or Enter list of UIDs of Admin Groups ( actually unused) </source>
+			</trans-unit>
+
+
+
+            <trans-unit id="extmng.defaultNotifyOrganizer">
+				<source>Set Default notify Organizer = 1</source>
+			</trans-unit>
+            <trans-unit id="extmng.defaultNotifyRegistrant">
+				<source>Set Default notifiy Registrant = 1</source>
+			</trans-unit>
+			<trans-unit id="extmng.defaultNeedToConfirm">
+                <source>Set Default User needs To Confirm via Email = 1</source>
+            </trans-unit>
+            <trans-unit id="extmng.defaultAllDayEvent">
+                <source>set Default all Day Event = 1 (this hides the fields  start- and endtime)</source>
+            </trans-unit>
+            <trans-unit id="extmng.defaultRegistrationFormPid">
+                <source>set Default Show Registration Form on this PID</source>
+            </trans-unit>
+            <trans-unit id="extmng.defaultRegistrationPid">
+                <source>set Default Store Registations on this PID</source>
+            </trans-unit>
+
+            <trans-unit id="extmng.emailBackGroundColor">
+                <source>set Email background Color behind text</source>
+            </trans-unit>
+            <trans-unit id="extmng.emailFontColor">
+                <source>set Default text Color </source>
+            </trans-unit>
+            <trans-unit id="extmng.emailBackGroundColor2">
+                <source>set 2 Background Color (bottons and headline)</source>
+            </trans-unit>
+            <trans-unit id="extmng.BackGroundColorBody">
+                <source>set background Color around email </source>
+            </trans-unit>
+            <trans-unit id="extmng.emailFontColor2">
+                <source>set 2 Font  Color (bottons and headline)</source>
+            </trans-unit>
+            <trans-unit id="extmng.emailFontFamily">
+                <source>set Font Family for Emails Please do NO use ' or " !! </source>
+            </trans-unit>
+
+
+			<trans-unit id="extmng.enableCitrix">
+				<source>Show Options to store the Event registrants to Citrix (as GoTo Webinar Registrants)</source>
+			</trans-unit>
+			<trans-unit id="extmng.hasLoginUser">
+				<source>Show Options to restrict Access to an Event (only usefull if you have a frontend Login)</source>
+			</trans-unit>
+			<trans-unit id="plugin.filter.ShowFilter">
+				<source>Show Filter in List View</source>
+			</trans-unit>
+			<trans-unit id="plugin.filter.Categories">
+				<source>Show Only Events with these Categories</source>
+			</trans-unit>
+			<trans-unit id="plugin.filter.startDate">
+				<source>Show only Events when Startdate matches </source>
+			</trans-unit>
+
+			<trans-unit id="plugin.filter.startDate.NoRestriction">
+				<source>No restriction</source>
+			</trans-unit>
+			<trans-unit id="plugin.filter.startDate.Yesterday">
+				<source>Starts Yesterday or in the Future</source>
+			</trans-unit>
+			<trans-unit id="plugin.filter.startDate.Today">
+				<source>Starts Today or in the Future</source>
+			</trans-unit>
+			<trans-unit id="plugin.filter.startDate.Tomorrow">
+				<source>Starts Tomorrow or in the Future</source>
+			</trans-unit>
+			<trans-unit id="plugin.filter.maxDays">
+				<source>Show max Days Only if StartDate has Restrictions , enter 0 for no limitations) </source>
+			</trans-unit>
+			<trans-unit id="plugin.filter.maxEvents">
+				<source>Show max Events (enter 0 for no limitations) </source>
+			</trans-unit>
+
+			<trans-unit id="plugin.filter.maxEventsPerPage">
+				<source>Show max Events per Page (enter 0 for no limitations) </source>
+			</trans-unit>
+			<trans-unit id="plugin.filter.ShowAllCategories">
+           		<source>All Categories (If you select also this Option, the Event must have All of the following Category filters)</source>
+            </trans-unit>
+            <trans-unit id="plugin.filter.Tags">
+				<source>Show Only Events with these Tags</source>
+			</trans-unit>
+			<trans-unit id="plugin.filter.ShowAllTags">
+				<source>All Tags (If you select also this Option, the Event must have All of the following Tag filters)</source>
+			</trans-unit>
+
+			plugin.filter.startDate.
+		</body>
+	</file>
+</xliff>

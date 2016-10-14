@@ -1,0 +1,80 @@
+{namespace event=JVE\JvEvents\ViewHelpers}
+
+		<div class="well">
+			<f:render partial="Event/Single/Partial{settings.LayoutSingle}/Row"
+				arguments="{title: 'tx_jvevents_domain_model_event.name', translate: '1', isHeadline: 'H2' ,value: '{event.name}' }" />
+
+			<f:if condition="{event.allDay}">
+				<f:then>
+					{event.startDate -> f:format.date(format:"d.m.Y")} - {event.startTime -> f:format.date( format:"H:i")}
+				</f:then>
+				<f:else>
+					{event.startDate -> f:format.date(format:"d.m.Y")}
+				</f:else>
+
+			</f:if>
+
+			<f:render partial="Event/Single/Partial{settings.LayoutSingle}/Row"
+				arguments="{title: 'tx_jvevents_domain_model_location.name', translate: '1', value: '{event.location.name}' }"/>
+
+			<div class="row">
+				<div class="col-sm-4">
+
+				</div>
+				<div class="col-sm-8" >
+					<f:if condition="{event.location.streetAndNr}">
+						{event.location.streetAndNr}<br/>
+					</f:if>
+					<f:if condition="{event.location.city}">
+						{event.location.zip} {event.location.city}<br/>
+					</f:if>
+				</div>
+
+			</div>
+
+			<f:if condition="{event.EventCategory}">
+				<div class="row">
+					<div class="col-sm-4">
+						<f:translate key="tx_jvevents_domain_model_category.name" />
+					</div>
+					<div class="col-sm-8">
+						<f:for each="{event.EventCategory}" as="EventCategory" iteration="iteration">
+							<f:if condition="{iteration.index} > 0 ">, </f:if>
+							{EventCategory.title}
+						</f:for>
+					</div>
+				</div>
+			</f:if>
+
+			<div class="well" >
+				<f:format.html parseFuncTSPath="lib.jveventsRTE">
+					{event.description}
+				</f:format.html>
+				<hr />
+
+			</div>
+			<f:if condition="{event.files}">
+				<div class="row row-fluid">
+					<f:for each="{event.files}" as="file" >
+						<div class="col-sm-2">
+							{file.originalResource.size -> f:format.bytes()}
+						</div>
+						<div class="col-sm-10">
+							<a  defaultScheme="" href="{file.originalResource.publicUrl -> f:format.htmlspecialchars()}" target="_blank">
+								{f:if(condition:file.originalResource.title, then:file.originalResource.title, else:file.originalResource.name)}
+							</a>
+							<div class="visible-xs" >&nbsp;</div>
+						</div>
+
+					</f:for>
+				</div>
+			</f:if>
+
+		</div>
+		<f:if condition="{settings.debug} > 0">
+			<f:render partial="Event/Single/MicroFormat" arguments="{event: event, settings: settings}"/>
+		</f:if>
+
+		<script type="application/ld+json">
+				<f:render partial="Event/Single/MicroFormat" arguments="{event: event, settings: settings}"/>
+		</script>

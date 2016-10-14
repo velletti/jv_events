@@ -1,0 +1,145 @@
+
+<label for="eventType">
+	<f:translate key="tx_jvevents_domain_model_event.event_type" /> <span class="required">(required)</span>
+</label><br />
+	<f:form.textfield property="eventType" /><br />
+<label for="name">
+	<f:translate key="tx_jvevents_domain_model_event.name" /> <span class="required">(required)</span>
+</label><br />
+	<f:form.textfield property="name" /><br />
+<label for="teaser">
+	<f:translate key="tx_jvevents_domain_model_event.teaser" />
+</label><br />
+	<f:form.textfield property="teaser" /><br />
+<label for="description">
+	<f:translate key="tx_jvevents_domain_model_event.description" />
+</label><br />
+	<f:form.textarea property="description" cols="40" rows="15" /><br />
+<label for="images">
+	<f:translate key="tx_jvevents_domain_model_event.images" />
+</label><br />
+	<span>File upload is not implemented!</span><br  /><br />
+<label for="files">
+	<f:translate key="tx_jvevents_domain_model_event.files" />
+</label><br />
+	<span>File upload is not implemented!</span><br /><br />
+<label for="allDay">
+	<f:translate key="tx_jvevents_domain_model_event.all_day" />
+</label><br />
+	<f:form.checkbox property="allDay" value="1" /><br />
+<label for="startDate">
+	<f:translate key="tx_jvevents_domain_model_event.start_date" /> <span class="required">(required)</span>
+</label><br />
+	<f:form.textfield property="startDate"  value="{event.startDate->f:format.date()}" /><br />
+<label for="startTime">
+	<f:translate key="tx_jvevents_domain_model_event.start_time" />
+</label><br />
+	<f:form.textfield property="startTime"  value="{event.startTime->f:format.date()}" /><br />
+<label for="endDate">
+	<f:translate key="tx_jvevents_domain_model_event.end_date" /> <span class="required">(required)</span>
+</label><br />
+	<f:form.textfield property="endDate"  value="{event.endDate->f:format.date()}" /><br />
+<label for="endTime">
+	<f:translate key="tx_jvevents_domain_model_event.end_time" />
+</label><br />
+	<f:form.textfield property="endTime"  value="{event.endTime->f:format.date()}" /><br />
+<label for="access">
+	<f:translate key="tx_jvevents_domain_model_event.access" />
+</label><br />
+	<f:form.textarea property="access" cols="40" rows="15" /><br />
+<label for="withRegistration">
+	<f:translate key="tx_jvevents_domain_model_event.with_registration" />
+</label><br />
+	<f:form.checkbox property="withRegistration" value="1" /><br />
+<label for="registrationUntil">
+	<f:translate key="tx_jvevents_domain_model_event.registration_until" />
+</label><br />
+	<f:form.textfield property="registrationUntil"  value="{event.registrationUntil->f:format.date()}" /><br />
+<label for="registrationAccess">
+	<f:translate key="tx_jvevents_domain_model_event.registration_access" />
+</label><br />
+	<f:form.textarea property="registrationAccess" cols="40" rows="15" /><br />
+<label for="storeInCitrix">
+	<f:translate key="tx_jvevents_domain_model_event.store_in_citrix" />
+</label><br />
+	<f:form.checkbox property="storeInCitrix" value="1" /><br />
+<label for="citrixUid">
+	<f:translate key="tx_jvevents_domain_model_event.citrix_uid" />
+</label><br />
+	<f:form.textfield property="citrixUid" /><br />
+<label for="storeInSalesForce">
+	<f:translate key="tx_jvevents_domain_model_event.store_in_sales_force" />
+</label><br />
+	<f:form.checkbox property="storeInSalesForce" value="1" /><br />
+<label for="marketingProcessId">
+	<f:translate key="tx_jvevents_domain_model_event.marketing_process_id" />
+</label><br />
+	<f:form.textfield property="marketingProcessId" /><br />
+<label for="salesForceRecordType">
+	<f:translate key="tx_jvevents_domain_model_event.sales_force_record_type" />
+</label><br />
+	<f:form.textfield property="salesForceRecordType" /><br />
+<label for="salesForceEventId">
+	<f:translate key="tx_jvevents_domain_model_event.sales_force_event_id" />
+</label><br />
+	<f:form.textfield property="salesForceEventId" /><br />
+<label for="salesForceSessionId">
+	<f:translate key="tx_jvevents_domain_model_event.sales_force_session_id" />
+</label><br />
+	<f:form.textfield property="salesForceSessionId"  value="{event.salesForceSessionId->f:format.date()}" /><br />
+<label for="availableSeats">
+	<f:translate key="tx_jvevents_domain_model_event.available_seats" />
+</label><br />
+	<f:form.textfield property="availableSeats" /><br />
+<label for="registeredSeats">
+	<f:translate key="tx_jvevents_domain_model_event.registered_seats" />
+</label><br />
+	<f:form.textfield property="registeredSeats" /><br />
+<label for="unconfirmedSeats">
+	<f:translate key="tx_jvevents_domain_model_event.unconfirmed_seats" />
+</label><br />
+	<f:form.textfield property="unconfirmedSeats"  value="{event.unconfirmedSeats->f:format.date()}" /><br />
+<label for="notifyOrganiser">
+	<f:translate key="tx_jvevents_domain_model_event.notify_organizer" />
+</label><br />
+	<f:form.checkbox property="notifyOrganiser" value="1" /><br />
+<label for="notifyRegistrant">
+	<f:translate key="tx_jvevents_domain_model_event.notify_registrant" />
+</label><br />
+	<f:form.checkbox property="notifyRegistrant" value="1" /><br />
+<label for="subjectOrganizer">
+	<f:translate key="tx_jvevents_domain_model_event.subject_organizer" />
+</label><br />
+	<f:form.textfield property="subjectOrganizer" /><br />
+<label for="textOrganizer">
+	<f:translate key="tx_jvevents_domain_model_event.text_organizer" />
+</label><br />
+	<f:form.textarea property="textOrganizer" cols="40" rows="15" /><br />
+<label for="subjectRegistrant">
+	<f:translate key="tx_jvevents_domain_model_event.subject_registrant" />
+</label><br />
+	<f:form.textfield property="subjectRegistrant" /><br />
+<label for="textRegistrant">
+	<f:translate key="tx_jvevents_domain_model_event.text_registrant" />
+</label><br />
+	<f:form.textarea property="textRegistrant" cols="40" rows="15" /><br />
+<label for="needToConfirm">
+	<f:translate key="tx_jvevents_domain_model_event.need_to_confirm" />
+</label><br />
+	<f:form.checkbox property="needToConfirm" value="1" /><br />
+<label for="isRecurring">
+	<f:translate key="tx_jvevents_domain_model_event.is_recurring" />
+</label><br />
+	<f:form.checkbox property="isRecurring" value="1" /><br />
+<label for="frequency">
+	<f:translate key="tx_jvevents_domain_model_event.frequency" />
+</label><br />
+	<f:form.textfield property="frequency" /><br />
+<label for="freqException">
+	<f:translate key="tx_jvevents_domain_model_event.freq_exception" />
+</label><br />
+	<f:form.textfield property="freqException" /><br />
+<label for="isExceptionFor">
+	<f:translate key="tx_jvevents_domain_model_event.is_exception_for" />
+</label><br />
+	<f:form.textfield property="isExceptionFor" /><br />

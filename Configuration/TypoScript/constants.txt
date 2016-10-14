@@ -1,0 +1,55 @@
+
+plugin.tx_jvevents_events {
+	view {
+		# cat=plugin.tx_jvevents_events/file; type=string; label=Path to template root (FE)
+		templateRootPath = EXT:jv_events/Resources/Private/Templates/
+		# cat=plugin.tx_jvevents_events/file; type=string; label=Path to template partials (FE)
+		partialRootPath = EXT:jv_events/Resources/Private/Partials/
+		# cat=plugin.tx_jvevents_events/file; type=string; label=Path to template layouts (FE)
+		layoutRootPath = EXT:jv_events/Resources/Private/Layouts/
+	}
+	persistence {
+		# cat=plugin.tx_jvevents_events//a; type=string; label=Default storage PID
+		storagePid =
+	}
+	settings {
+		# change this setting to 1 after everything works
+		checkInstallation = 3
+
+		#IF FlexForm of List Plugin is empty, overwrite it with this value
+		detailPidDefault = 111
+
+		# set this setting in Case of Problems :
+		# 1 is normal debug output (see Templates and Partials),
+		# 2 shows  DB sql Query (do not use on LIVE!)
+		debug = 0
+		register {
+			label.privacy = I have read the privacy policy and accept the term of use
+			allowedCountrys = DE,AT,CH
+			requiredFields {
+
+				# you should have at lease firstName,lastName,privacy,hotprice and email if you send out emails
+				# Privacy is for legal issues, hotprice is to use the invisible "honeypot" field to avoid against bots
+				1Allplan = gender,firstName,lastName,phone,email,privacy,hotprice
+				2Megra = gender,firstName,lastName,city,phone,email,privacy,hotprice
+
+			}
+		}
+
+	}
+}
+
+module.tx_jvevents_eventmngt {
+	view {
+		# cat=module.tx_jvevents_eventmngt/file; type=string; label=Path to template root (BE)
+		templateRootPath = EXT:jv_events/Resources/Private/Backend/Templates/
+		# cat=module.tx_jvevents_eventmngt/file; type=string; label=Path to template partials (BE)
+		partialRootPath = EXT:jv_events/Resources/Private/Backend/Partials/
+		# cat=module.tx_jvevents_eventmngt/file; type=string; label=Path to template layouts (BE)
+		layoutRootPath = EXT:jv_events/Resources/Private/Backend/Layouts/
+	}
+	persistence {
+		# cat=module.tx_jvevents_eventmngt//a; type=string; label=Default storage PID
+		storagePid =
+	}
+}

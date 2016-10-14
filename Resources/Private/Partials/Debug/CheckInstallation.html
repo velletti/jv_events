@@ -1,0 +1,57 @@
+<f:if condition="{settings.checkInstallation} > 0">
+	<f:then>
+		<f:if condition="{settings.checkInstallation} > 1">
+			<div class="panel panel-info">
+				<div class="panel-heading">
+					Debug/Configuration Output
+				</div>
+
+				<div class="panel-body">
+					<div class="alert alert-info">
+						This is a helper information to check if everything is okay and setup correctly.<br>
+						to avoid this: add the following line to you typoscript template -> setup :<br>
+						plugin.tx_jvevents_events.settings.checkInstallation = 1<br>
+						<br>
+						1 = Only a check if this base typoscript is loaded.<br>
+						2 = (or Higher) check if there are errors in the configuration <br>
+						<br>
+						If you do not want ANY of this output, remove this code from your own Template ! see Docu -> template -> Partials -> Debug -> CheckInstallation
+						<br>or set plugin.tx_jvevents_events.settings.checkInstallation = 0<br>
+
+					</div>
+					<f:render partial="Debug/CheckInstallationRow" arguments="{title:'Debug', setting: '{settings.debug}' , help: 'if set to 2, the repository will throw an exception with all SQL Querys'}" />
+					<f:render partial="Debug/CheckInstallationRow" arguments="{title:'checkInstallation', setting: '{settings.checkInstallation}' , help: 'should be 1, but usefull to check if everything is set up correctly)'}" />
+
+
+					<f:if condition="{modulelist}">
+						<f:then>
+							<f:render partial="Debug/CheckInstallationRow" arguments="{title:'layout', setting: 'Partial{settings.LayoutList}' , help: 'Layout for List of Events should be set '}" />
+
+							<f:render partial="Debug/CheckInstallationRow" arguments="{title:'detailPid', setting: '{settings.detailPid}' , help: 'should be set to a extra page. on that page Add event Plugin in ShowEvent Mode )'}" />
+
+							<f:if condition="{settings.detailPid} < 1">
+								<f:render partial="Debug/CheckInstallationRow" arguments="{title:'WARNING', setting: '{settings.detailPid}' , help: 'detailPid is not set in FlexForm of the Plugin', class: 'alert alert-warning'}" />
+							</f:if>
+						</f:then>
+
+						<f:else>
+							<f:render partial="Debug/CheckInstallationRow" arguments="{title:'layout', setting: 'Partial{settings.LayoutSingle}' , help: 'Layout for Single Event should be set '}" />
+
+						</f:else>
+					</f:if>
+					<f:if condition="{settings.debug} > 0">
+						<f:debug inline="true">{settings}</f:debug>
+					</f:if>
+
+				</div>
+			</div>
+
+		</f:if>
+	</f:then>
+	<f:else>
+		<div class="alert alert-warning">
+			The TYPO Script Setting checkInstallation is not set.
+			Maybe you forgot to include the extensions TypoScript to your Template?
+		</div>
+	</f:else>
+</f:if>

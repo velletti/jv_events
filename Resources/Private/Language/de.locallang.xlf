@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-10-11T13:05:45Z">
+		<header>
+			<generator>LFEditor</generator>
+		</header>
+		<body>
+		<trans-unit id="register_email_with_infos" approved="yes">
+			<source>You will soon get an email with all information about your registration!</source>
+			<target>In Kürze erhalten Sie ein E-Mail mit allen Informationen über Ihre Registrierung! </target>
+		</trans-unit>
+		<trans-unit id="register_gender_female" approved="yes">
+			<source>Mrs.</source>
+			<target>Frau</target>
+		</trans-unit>
+		<trans-unit id="register_gender_male" approved="yes">
+			<source>Mr.</source>
+			<target>Herr</target>
+		</trans-unit>
+		<trans-unit id="register_head_company_data" approved="yes">
+			<source>Company Data / Invoice Address</source>
+			<target>Firma / Rechnungsadresse</target>
+		</trans-unit>
+		<trans-unit id="register_head_more_info" approved="yes">
+			<source>Additional Informations</source>
+			<target>Zusätzliche Anmerkungen</target>
+		</trans-unit>
+		<trans-unit id="register_head_participant_data" approved="yes">
+			<source>Participants Data</source>
+			<target>Teilnehmer Daten</target>
+		</trans-unit>
+		<trans-unit id="register_need_to_confirm" approved="yes">
+			<source>You will soon get an email with a Confirmation Link. please Confirm your registration!</source>
+			<target>In Kürze erhalten Sie ein E-Mail mit einem Bestätigungslink. Bitte bestätigen Sie Ihre Anmeldung!</target>
+		</trans-unit>
+		<trans-unit id="register_need_to_confirm_email" approved="yes">
+			<source>We will send this email to:</source>
+			<target>Wir senden diese E-Mail an: </target>
+		</trans-unit>
+		<trans-unit id="register_please_select" approved="yes">
+			<source>Please Select</source>
+			<target>Bitte wählen</target>
+		</trans-unit>
+		<trans-unit id="register_send" approved="yes">
+			<source>Register</source>
+			<target>Anmelden</target>
+		</trans-unit>
+		<trans-unit id="register_send_error" approved="yes">
+			<source>You forgot to fill some of the required fields!</source>
+			<target>Ein oder mehrere Pflichtfelder wurden nicht ausgefüllt!</target>
+		</trans-unit>
+		<trans-unit id="register_was_not_stored" approved="yes">
+			<source>An ERROR occured during your registration! Please try again!</source>
+			<target>Es trat ein Fehler beim speichern Ihrer Anmeldung auf! Bitte versuchen Sie es erneut!</target>
+		</trans-unit>
+		<trans-unit id="register_was_stored" approved="yes">
+			<source>Your registration was stored!</source>
+			<target>Ihre Anmeldung wurde erfolgreich gespeichert</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_category" approved="yes">
+			<source>Category</source>
+			<target>Kategorie</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_category.title" approved="yes">
+			<source>Title</source>
+			<target>Titel</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_category.type" approved="yes">
+			<source>Type</source>
+			<target>Typ</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event" approved="yes">
+			<source>Event</source>
+			<target>Veranstaltung</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.access" approved="yes">
+			<source>Access</source>
+			<target>Zugriffsrechte</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.all_day" approved="yes">
+			<source>All Day</source>
+			<target>Ganztages Event</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.available_seats" approved="yes">
+			<source>Available Seats</source>
+			<target>Verfügbare Plätze</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.available_waiting_seats" approved="yes">
+			<source>Waiting list Seats</source>
+			<target>Warteliste</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.description" approved="yes">
+			<source>Description</source>
+			<target>Langtext / Beschreibung</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.end_date" approved="yes">
+			<source>End Date</source>
+			<target>End Datum</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.end_time" approved="yes">
+			<source>End Time</source>
+			<target>Enduhrzeit</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.event_category" approved="yes">
+			<source>Event Category</source>
+			<target>Veranstaltungskategorie</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.event_type" approved="yes">
+			<source>Event Type</source>
+			<target>Event Typ</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.files" approved="yes">
+			<source>Files</source>
+			<target>Dateien</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.freq_exception" approved="yes">
+			<source>Freq Exception</source>
+			<target>Regelmäßige Veranstaltung</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.frequency" approved="yes">
+			<source>Frequency</source>
+			<target>Frequenz</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.images" approved="yes">
+			<source>Images</source>
+			<target>Bilder</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.start_date" approved="yes">
+			<source>Start Date</source>
+			<target>Startdatum</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.start_time" approved="yes">
+			<source>Start Time</source>
+			<target>Startzeit</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.teaser" approved="yes">
+			<source>Teaser</source>
+			<target>Zusammenfassung</target>
+		</trans-unit>
+		</body>
+	</file>
+</xliff>

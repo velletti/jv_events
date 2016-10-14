@@ -1,0 +1,38 @@
+
+
+
+		<f:if condition="{settings.regErrorMsg}">
+			<f:then>
+				<div class="panel panel-warning">
+					<div class="panel-heading">
+						{f:translate(key: 'register_was_not_stored' , default:'ERROR: Your registration was NOT stored')}
+					</div>
+					<div class="panel-body">
+						{settings.regErrorMsg}
+					</div>
+				</div>
+			</f:then>
+			<f:else>
+				<div class="panel panel-success">
+					<div class="panel-heading ">
+						{f:translate(key: 'register_was_stored' , default:'Your registration was stored')}
+					</div>
+					<div class="panel-body">
+
+						<f:if condition="{settings.success}">
+							<f:then>
+								Registation ID: {settings.pageId}-L-{settings.sys_language_uid}-E-{event.uid}-R-{registrant.uid}<br>
+								<br>
+								{f:translate(key: '{settings.successMsg}')}
+
+							</f:then>
+
+						</f:if>
+						<br />
+
+					</div>
+				</div>
+			</f:else>
+		</f:if>
+
+

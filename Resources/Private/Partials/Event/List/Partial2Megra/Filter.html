@@ -1,0 +1,25 @@
+<div class="jv_events_filter">
+    <f:form action="list" id="jv_events_filter" object="{eventsFilter}" class="row" enctype="multipart/form-data" method="get" noCacheHash="1" additionalParams="{tx_jv_events_event: {__widget_0: {currentPage: 0}}}">
+        <div class="form-group">
+            <div class="col-sm-2 col-xs-4">
+                <f:form.select property="months" class="form-control" id="jv_events_filter_months" options="{eventsFilter.months}" prependOptionLabel="{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_event.filter.month', default:'by month')}" prependOptionValue=""/>
+            </div>
+
+            <div class="col-sm-5 col-xs-8">
+                <f:form.select property="tags" class="form-control" id="jv_events_filter_tags" options="{eventsFilter.tags}" prependOptionLabel="{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_event.filter.tag', default:'by tag')}" prependOptionValue=""/>
+            </div>
+            <div class="col-xs-12 visible-xs">
+                <br/>
+            </div>
+            <div class="col-sm-2 col-xs-6">
+                <f:form.select property="citys" class="form-control" id="jv_events_filter_citys" options="{eventsFilter.citys}" prependOptionLabel="{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_event.filter.city' , default:'by City')}" prependOptionValue=""/>
+            </div>
+
+            <div class="col-sm-3 col-xs-6">
+                <f:form.select property="categories" class="form-control" id="jv_events_filter_categories" options="{eventsFilter.categories}" prependOptionLabel="{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_event.filter.category', default:'by Cat')}" prependOptionValue=""/>
+            </div>
+
+
+        </div>
+    </f:form>
+</div>

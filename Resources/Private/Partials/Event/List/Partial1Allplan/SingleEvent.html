@@ -1,0 +1,34 @@
+{namespace event=JVE\JvEvents\ViewHelpers}
+
+		<div class="row " data-eventUid="{event.uid}">
+			<div class="col-xs-2">
+				<f:link.action pageUid="{settings.detailPid}" action="show" arguments="{event : event}">
+					{event.startDate -> f:format.date(format:"d.m.Y")}
+					<f:if condition="{event.allDay}">
+						<f:then>
+						</f:then>
+						<f:else>
+							{event.startTime -> f:format.date( format:"H:i")}
+						</f:else>
+					</f:if>
+
+				</f:link.action>
+			</div>
+			<div class="col-xs-4">
+				<f:link.action  pageUid="{settings.detailPid}" action="show" arguments="{event : event}">
+					{event.name}
+				</f:link.action>
+			</div>
+			<div class="col-xs-3">
+				{event.location.city}
+			</div>
+			<div class="col-xs-3">
+				<f:if condition="{event.EventCategory}">
+					<f:for each="{event.EventCategory}" as="EventCategory" iteration="iteration">
+						<f:if condition="{iteration.index} > 0 ">, </f:if>
+						{EventCategory.title}
+					</f:for>
+				</f:if>
+			</div>
+		</div>
+

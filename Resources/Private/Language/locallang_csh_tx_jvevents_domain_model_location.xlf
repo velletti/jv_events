@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-09-20T15:02:26Z" product-name="jv_events">
+		<header/>
+		<body>
+			<trans-unit id="name.description">
+				<source>Name of the Location</source>
+			</trans-unit>
+			<trans-unit id="street_and_nr.description">
+				<source>Address and Number of the location</source>
+			</trans-unit>
+			<trans-unit id="zip.description">
+				<source>Zip / Postal Code</source>
+			</trans-unit>
+			<trans-unit id="city.description">
+				<source>Name of the City</source>
+			</trans-unit>
+			<trans-unit id="country.description">
+				<source>Country 3 Digits Iso Code</source>
+			</trans-unit>
+			<trans-unit id="lng.description">
+				<source>Longitude of this location use the Wizard to set this</source>
+			</trans-unit>
+			<trans-unit id="lat.description">
+				<source>Latitude of this location use the Wizard to set this</source>
+			</trans-unit>
+			<trans-unit id="link.description">
+				<source>URL should start with http:// </source>
+			</trans-unit>
+			<trans-unit id="email.description">
+				<source>valid Email Address. if set, organizer notifications will be sent to this email</source>
+			</trans-unit>
+			<trans-unit id="phone.description">
+				<source>phone Number for this location</source>
+			</trans-unit>
+			<trans-unit id="description.description">
+				<source>Details to this location</source>
+			</trans-unit>
+			<trans-unit id="organizer.description">
+				<source>Organizer Id of this Location</source>
+			</trans-unit>
+			<trans-unit id="location_category.description">
+				<source>Organizer Id of this Location</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

@@ -1,0 +1,18 @@
+		<div class="well">
+			<f:render partial="Event/Single/Partial{settings.LayoutSingle}/Row"
+				arguments="{title: 'tx_jvevents_domain_model_event.name', translate: '1', isHeadline: 'H2' ,value: '{event.name}' }" />
+
+			<f:if condition="{event.allDay}">
+				<f:then>
+					{event.startDate -> f:format.date(format:"d.m.Y")} - {event.startTime -> f:format.date( format:"H:i")}
+				</f:then>
+				<f:else>
+					{event.startDate -> f:format.date(format:"d.m.Y")}
+				</f:else>
+
+			</f:if>
+
+			<f:render partial="Event/Single/Partial{settings.LayoutSingle}/Row"
+				arguments="{title: 'tx_jvevents_domain_model_location.name', translate: '1', value: '{event.location.name}' }"/>
+
+		</div>
