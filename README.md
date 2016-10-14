@@ -9,3 +9,4 @@ See Documentation Folder and in the Future the Wiki pages
 
  https://git-scm.com/book/de/v1/Git-Tools-Submodule
 
+ ... Changed in Master Repository
