@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2016-09-20T15:02:26Z" product-name="jv_events">
-		<header/>
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-10-17T11:14:21Z">
+		<header>
+			<generator>LFEditor</generator>
+		</header>
 		<body>
-			<trans-unit id="title.description">
-				<source>title</source>
-			</trans-unit>
-			<trans-unit id="type.description">
-				<source>type</source>
-			</trans-unit>
+		<trans-unit id="title.description">
+			<source>title of Event</source>
+		</trans-unit>
+		<trans-unit id="type.description">
+			<source>type</source>
+		</trans-unit>
 		</body>
 	</file>
 </xliff>

@@ -1,95 +1,97 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2016-09-20T15:02:26Z" product-name="jv_events">
-		<header/>
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-10-17T12:23:42Z">
+		<header>
+			<generator>LFEditor</generator>
+		</header>
 		<body>
-			<trans-unit id="first_name.description">
-				<source>firstName</source>
-			</trans-unit>
-			<trans-unit id="last_name.description">
-				<source>lastName</source>
-			</trans-unit>
-			<trans-unit id="email.description">
-				<source>email</source>
-			</trans-unit>
-			<trans-unit id="gender.description">
-				<source>gender</source>
-			</trans-unit>
-			<trans-unit id="company.description">
-				<source>company</source>
-			</trans-unit>
-			<trans-unit id="department.description">
-				<source>department</source>
-			</trans-unit>
-			<trans-unit id="street_and_nr.description">
-				<source>streetAndNr</source>
-			</trans-unit>
-			<trans-unit id="zip.description">
-				<source>zip</source>
-			</trans-unit>
-			<trans-unit id="city.description">
-				<source>city</source>
-			</trans-unit>
-			<trans-unit id="country.description">
-				<source>country</source>
-			</trans-unit>
-			<trans-unit id="language.description">
-				<source>language</source>
-			</trans-unit>
-			<trans-unit id="phone.description">
-				<source>phone</source>
-			</trans-unit>
-			<trans-unit id="additional_info.description">
-				<source>additionalInfo</source>
-			</trans-unit>
-			<trans-unit id="privacy.description">
-				<source>privacy</source>
-			</trans-unit>
-			<trans-unit id="newsletter.description">
-				<source>newsletter</source>
-			</trans-unit>
-			<trans-unit id="customer_id.description">
-				<source>customerId</source>
-			</trans-unit>
-			<trans-unit id="profession.description">
-				<source>profession</source>
-			</trans-unit>
-			<trans-unit id="recall.description">
-				<source>recall</source>
-			</trans-unit>
-			<trans-unit id="contact_id.description">
-				<source>contactId</source>
-			</trans-unit>
-			<trans-unit id="username.description">
-				<source>username</source>
-			</trans-unit>
-			<trans-unit id="more1.description">
-				<source>more1</source>
-			</trans-unit>
-			<trans-unit id="more2.description">
-				<source>more2</source>
-			</trans-unit>
-			<trans-unit id="more3.description">
-				<source>more3</source>
-			</trans-unit>
-			<trans-unit id="more4.description">
-				<source>more4</source>
-			</trans-unit>
-			<trans-unit id="more5bool.description">
-				<source>more5bool</source>
-			</trans-unit>
-			<trans-unit id="more6int.description">
-				<source>more6int</source>
-			</trans-unit>
-			<trans-unit id="more7date.description">
-				<source>more7date</source>
-			</trans-unit>
-			<trans-unit id="more8file.description">
-				<source>more8file</source>
-			</trans-unit>
-			<trans-unit id="password.description">
-				<source>password</source>
-			</trans-unit>
+		<trans-unit id="additional_info.description">
+			<source>additionalInfo</source>
+		</trans-unit>
+		<trans-unit id="city.description">
+			<source>city</source>
+		</trans-unit>
+		<trans-unit id="company.description">
+			<source>company</source>
+		</trans-unit>
+		<trans-unit id="contact_id.description">
+			<source>contactId</source>
+		</trans-unit>
+		<trans-unit id="country.description">
+			<source>country</source>
+		</trans-unit>
+		<trans-unit id="customer_id.description">
+			<source>customerId</source>
+		</trans-unit>
+		<trans-unit id="department.description">
+			<source>department</source>
+		</trans-unit>
+		<trans-unit id="email.description">
+			<source>email</source>
+		</trans-unit>
+		<trans-unit id="first_name.description">
+			<source>firstName</source>
+		</trans-unit>
+		<trans-unit id="gender.description">
+			<source>gender</source>
+		</trans-unit>
+		<trans-unit id="language.description">
+			<source>language</source>
+		</trans-unit>
+		<trans-unit id="last_name.description">
+			<source>lastName</source>
+		</trans-unit>
+		<trans-unit id="more1.description">
+			<source>more1</source>
+		</trans-unit>
+		<trans-unit id="more2.description">
+			<source>more2</source>
+		</trans-unit>
+		<trans-unit id="more3.description">
+			<source>more3</source>
+		</trans-unit>
+		<trans-unit id="more4.description">
+			<source>more4</source>
+		</trans-unit>
+		<trans-unit id="more5bool.description">
+			<source>more5bool</source>
+		</trans-unit>
+		<trans-unit id="more6int.description">
+			<source>more6int</source>
+		</trans-unit>
+		<trans-unit id="more7date.description">
+			<source>more7date</source>
+		</trans-unit>
+		<trans-unit id="more8file.description">
+			<source>more8file</source>
+		</trans-unit>
+		<trans-unit id="newsletter.description">
+			<source>newsletter</source>
+		</trans-unit>
+		<trans-unit id="password.description">
+			<source>password</source>
+		</trans-unit>
+		<trans-unit id="phone.description">
+			<source>phone</source>
+		</trans-unit>
+		<trans-unit id="privacy.description">
+			<source>has accepted privacy policy</source>
+		</trans-unit>
+		<trans-unit id="profession.description">
+			<source>profession</source>
+		</trans-unit>
+		<trans-unit id="recall.description">
+			<source>Partizipant wants a recall</source>
+		</trans-unit>
+		<trans-unit id="street_and_nr.description">
+			<source>streetAndNr</source>
+		</trans-unit>
+		<trans-unit id="username.description">
+			<source>username</source>
+		</trans-unit>
+		<trans-unit id="zip.description">
+			<source>zip</source>
+		</trans-unit>
 		</body>
 	</file>
 </xliff>

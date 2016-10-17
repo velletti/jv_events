@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-10-17T12:11:32Z">
+		<header>
+			<generator>LFEditor</generator>
+		</header>
+		<body>
+		<trans-unit id="city.description" approved="yes">
+			<source>Name of the City</source>
+			<target>Ort / Stadt Ohne Stadtteil, wenn Sie die Option zum Filtern nach Städten / Orten nutzen!</target>
+		</trans-unit>
+		<trans-unit id="country.description" approved="yes">
+			<source>Select the Country from the list. (stores 3 Digits Iso Code)</source>
+			<target>Bitte wählen Sie ein Land aus der Liste. 8es wird der 3 zeichen ISo Code gespeichert )</target>
+		</trans-unit>
+		<trans-unit id="description.description" approved="yes">
+			<source>Details to this location</source>
+			<target>Detailbeschreibung für diesen Veranstaltungsort</target>
+		</trans-unit>
+		<trans-unit id="email.description" approved="yes">
+			<source>valid Email Address. </source>
+			<target>Gültige Email Adresse. Wird in den Kontaktdaten zur Adresse angezeigt </target>
+		</trans-unit>
+		<trans-unit id="lat.description" approved="yes">
+			<source>Latitude of this location for the MAP view. use the Wizard to set this</source>
+			<target>Latitude Wert für die Kalender Darstellung. Nutzen Sie den Assistenten und diesen Wert zu ermitteln.</target>
+		</trans-unit>
+		<trans-unit id="link.description" approved="yes">
+			<source>URL should start with http:// </source>
+			<target>URL: Sollte Bitte mit http:// beginnen.</target>
+		</trans-unit>
+		<trans-unit id="lng.description" approved="yes">
+			<source>Longitude of this location for the MAP view. use the Wizard to set this</source>
+			<target>Longitude Wert für die Kalender Darstellung. Nutzen Sie den Assistenten und diesen Wert zu ermitteln.</target>
+		</trans-unit>
+		<trans-unit id="location_category.description" approved="yes">
+			<source>Category of this Location</source>
+			<target>Kategorie dieses Veranstaltungsortes. Wenn Die Webseite die Option nutzt, nach Veranstaltungsorten zu suchen, nutzen Sie diese option</target>
+		</trans-unit>
+		<trans-unit id="name.description" approved="yes">
+			<source>Name of the Location. Keep it short, if you use Filtering by Eventlocation</source>
+			<target>Name des Veranstaltungsortes. Halten Sie dies Kurz, wenn Sie die Option zum Filtern nach Veranstaltungsort nutzen</target>
+		</trans-unit>
+		<trans-unit id="organizer.description" approved="yes">
+			<source>Detail description of this Organizer</source>
+			<target>Detailierte Langtext Beschreibung von diesemm Veranstaltungsort</target>
+		</trans-unit>
+		<trans-unit id="phone.description" approved="yes">
+			<source>phone Number for this location</source>
+			<target>Telefon Nummer für diese Veranstaltung. je nach gewählten Layout sichtbar oder nicht.</target>
+		</trans-unit>
+		<trans-unit id="street_and_nr.description" approved="yes" xml:space="preserve">
+			<source>Address and Number of the location. separate special infos like Backyard or third floor with / 
+
+Fe.: &quot;Leopoldstreet 123a / Backyard building / 3 Floor</source>
+			<target>Geben Sie die Strasse und die Hausnummer des Veranstaltungsortes ein. </target>
+		</trans-unit>
+		<trans-unit id="zip.description" approved="yes">
+			<source>Zip / Postal Code</source>
+			<target>Postleitzahl (Ohne Landeskennung)</target>
+		</trans-unit>
+		</body>
+	</file>
+</xliff>

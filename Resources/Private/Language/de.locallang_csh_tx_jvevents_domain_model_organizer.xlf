@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-10-17T12:18:12Z">
+		<header>
+			<generator>LFEditor</generator>
+		</header>
+		<body>
+		<trans-unit id="description.description" approved="yes">
+			<source>description</source>
+			<target>Detailbeschreibung</target>
+		</trans-unit>
+		<trans-unit id="email.description" approved="yes" xml:space="preserve">
+			<source>email  is used in lists, detail Views (depends on the selected Layout) but also as ReplyTo Address in Emails to the partipant</source>
+			<target>Email Addresse des Veranstalters. Wird verwendet in Auflistungen, Detailansichten (je nach gewähltem layout) aber auch als Antwortadresse in Emails an den Teilnehmer</target>
+		</trans-unit>
+		<trans-unit id="images.description" approved="yes">
+			<source>images to this organizer (depents on Layout if visible)</source>
+			<target>Bilder zum Veranstalter. (Abhängig vom Layout ob sichtabr)</target>
+		</trans-unit>
+		<trans-unit id="name.description" approved="yes">
+			<source>name or organizer. is used in lists, detail Views (depends on the selected Layout) but also as SenderName in Emails to the partipant</source>
+			<target>Name des Veranstalters. Wird verwendet in Auflistungen, Detailansichten (je nach gewähltem layout) aber auch als Absendername in Emails an den Teilnehmer</target>
+		</trans-unit>
+		<trans-unit id="organizer_category.description" approved="yes">
+			<source>organizerCategory</source>
+			<target>Veranstalter Kategorie</target>
+		</trans-unit>
+		<trans-unit id="phone.description" approved="yes">
+			<source>phone of the organizer. Please use International ISO Format: +49 (89) 123 456 78</source>
+			<target>Telefon Nummer des Veranstalters. Nutzen Sie das International ISO Format: +49 (89) 123 456 78</target>
+		</trans-unit>
+		<trans-unit id="sales_force_user_id.description" approved="yes">
+			<source>salesForceUserId : only this SalesForce user will have access to the events and registrations in Salesforce</source>
+			<target>Salesforce user ID: nur dieser SalesForce user hat Zugriff auf die Veranstaltungen und die angemeldeten Teilnehmerdaten</target>
+		</trans-unit>
+		</body>
+	</file>
+</xliff>

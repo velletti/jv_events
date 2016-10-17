@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-10-17T11:57:06Z">
+		<header>
+			<generator>LFEditor</generator>
+		</header>
+		<body>
+		<trans-unit id="access.description" approved="yes">
+			<source>this event is visible for the following usergroups / Access Rights</source>
+			<target>Diese Veranstaltung ist nur für die foglenden Usergruppen sichtbar (Access Rechte)</target>
+		</trans-unit>
+		<trans-unit id="all_day.description" approved="yes">
+			<source>allDay</source>
+			<target>Veranstaltung ohne Uhrzeit</target>
+		</trans-unit>
+		<trans-unit id="available_seats.description" approved="yes" xml:space="preserve">
+			<source>Available Seats:
+				 Set this to a value higher than 0 if you want registrations using Waiting list. Can be combined with Avaiable Seats </source>
+			<target>Verfügbare Plätze: Setzen Sie diese Option Größer als 0 wenn Sie die Anmeldefunktion nutzen wollen und die maximale Anzahl beschränkt ist.</target>
+		</trans-unit>
+		<trans-unit id="citrix_uid.description" approved="yes">
+			<source>Enter the citrixUid of your goTo Webinar event. (means You FIRST have to create the event in the citrix portal!)</source>
+			<target>Geben Sie die Citrix UID ein. (Dies bedeutet: das event muss zuerst in Citrix angelegt werden!)</target>
+		</trans-unit>
+		<trans-unit id="description.description" approved="yes" xml:space="preserve">
+			<source>description</source>
+			<target>Langbeschreibung  der Veranstaltung. Sichtbar in der Detailansicht</target>
+		</trans-unit>
+		<trans-unit id="end_date.description" approved="yes">
+			<source>endDate</source>
+			<target>Endtag</target>
+		</trans-unit>
+		<trans-unit id="end_time.description" approved="yes">
+			<source>endTime</source>
+			<target>Endzeit</target>
+		</trans-unit>
+		<trans-unit id="event_category.description" approved="yes">
+			<source>eventCategory</source>
+			<target>Veranstaltungskategorie</target>
+		</trans-unit>
+		<trans-unit id="event_type.description" approved="yes">
+			<source>eventType</source>
+			<target>Datenart der Veranstaltung. Schaltet unterschiedliche backend felder sichtbar</target>
+		</trans-unit>
+		<trans-unit id="files.description" approved="yes">
+			<source>Upload files, visible to all who may see the event. Depending on your layout if in List view or/and Detail view</source>
+			<target>Dateianhänge hochladen. Sichtbar für jeden, der das Event sehen darf. (je nach gewähltem Layout !)</target>
+		</trans-unit>
+		<trans-unit id="freq_exception.description" approved="yes">
+			<source>Fe. If Weekly, select if every thursday or only every second week.</source>
+			<target>FE. Falls dies ein wöchentliches Event ist, wählen sie den Wochentag oder ob dies Event nur jede 2. Woche stattfindet</target>
+		</trans-unit>
+		<trans-unit id="frequency.description" approved="yes">
+			<source>select Kind of Frequency: Daily, weekly, monthly, yearly</source>
+			<target>Wählen Sie die Frequenz: Däglich, wöchentlich, Monatlich, Jährlich</target>
+		</trans-unit>
+		<trans-unit id="images.description" approved="yes">
+			<source>Upload more Images. It is Depending on your Layout, what will happen : shown als SlideShow, only one etc.)</source>
+			<target>Weitere Bilder. Je nach Layout : Sichtbar als SlideShow, nur eines sichtbar oder als Vorschaubilder zum Anklicken.</target>
+		</trans-unit>
+		<trans-unit id="is_exception_for.description" approved="yes" xml:space="preserve">
+			<source>This event is an exception for an recurring event.</source>
+			<target>Diese Veranstaltung ist eine Ausnahme zu einem  regelmäßigen Termin. Sie müssen den Termin auswählen der dann in den Auflistungen nicht gezeigt wird. </target>
+		</trans-unit>
+		<trans-unit id="is_recurring.description" approved="yes">
+			<source>Use this checkbox, if this is a frequently event.</source>
+			<target>Diese Veranstaltung ist ein regelmäßiger Termin. Sie müssen weitere Optionen wählen. </target>
+		</trans-unit>
+		<trans-unit id="location.description" approved="yes">
+			<source>location</source>
+			<target>Veranstaltungsort</target>
+		</trans-unit>
+		<trans-unit id="marketing_process_id.description" approved="yes">
+			<source>If you want to start a marketingProcess (sending emails, reminder and so) after a registration, enter the ID of the configured salesforce marketing Process</source>
+			<target>Wenn Sie die Daten nach Salesforce speichern wollen und einen speziellen Marketing Prozess starten wollen, geben Sie die Id des SalesForce Marketingprozesses ein.</target>
+		</trans-unit>
+		<trans-unit id="name.description" approved="yes">
+			<source>name</source>
+			<target>Name der Veranstaltung. Sichtbar als Überschrift, in Auflistungen Emails und im backend</target>
+		</trans-unit>
+		<trans-unit id="need_to_confirm.description" approved="yes">
+			<source>If the user needs to confirm the registration, activate this option</source>
+			<target>Wenn Sie an den Teilnehmer eine Email mit einem Link zum Bestätigen schicken wollen, aktiveiren Sie diese Option. Erfordert ein Anmeldeformular mit der Email Adresse als Pflichtfeld</target>
+		</trans-unit>
+		<trans-unit id="notify_organizer.description" approved="yes" xml:space="preserve">
+			<source>Do you want to send an Email notification to the Organisers Email Adddress?</source>
+			<target>Wenn Sie den Veranstalter über eine neue Registrierung per Email informieren möchten, aktivieren Sie diese Option.  Gesendet wird an die beim Veranstalter hinterlegte Email Adresse</target>
+		</trans-unit>
+		<trans-unit id="notify_registrant.description" approved="yes" xml:space="preserve">
+			<source>Do you want to send an Email notification to the Registrants Email Adddress? </source>
+			<target>Wenn Sie den Teilnehmer über Seine Registrierung per Email informieren möchten, aktivieren Sie diese Option.  Gesendet wird an die bei der Registrierung hinterlegte Email Adresse.  Erfordert ein Anmeldeformular mit der Email Adresse als Pflichtfeld</target>
+		</trans-unit>
+		<trans-unit id="organizer.description" approved="yes">
+			<source>organizer</source>
+			<target>Veranstalter</target>
+		</trans-unit>
+		<trans-unit id="registered_seats.description" approved="yes">
+			<source>registered Seats: Automatically computed after registration. if this value is higher than the sum of available and Waiting List Seats, registration is not possible</source>
+			<target>Angemeldete Teilnehmer. Automatisch ermittlt nach einer Anmeldung. Ist die Zahl größer als die Anzahl der verfügbaren (inkl Warteliste und unbestätigter Anmeldungen) ist die Anmeldung nicht möglich</target>
+		</trans-unit>
+		<trans-unit id="registrant.description" approved="yes">
+			<source>registrant</source>
+			<target>Teilnehmer</target>
+		</trans-unit>
+		<trans-unit id="registrationPid.description" approved="yes">
+			<source>If you use the internal Registration modul, the registrated users are stored on the Page/Folder you specify here. It is a good idea to select a separate Sysfolder for each Event or each organizer to allow an Organizer easy access too only his registrations also in backend</source>
+			<target>Wenn Sie das interne Registrierungsmodul nutzen, werden die Veranstaltungen auf dieser Seiten ID gespeichert. Sinnvollerweise unterschiedliche Systemordner, wenn Sie im backend die zugriffsrechte für Veranstalter managen wollen</target>
+		</trans-unit>
+		<trans-unit id="registrationUrl.description" approved="yes">
+			<source>An external Website, PDF, Form or somethings else is used for the Registration. Enter the URL or f.e. select the PDF from the Filelist</source>
+			<target>Ein Link zu einer externen Webseite, einem externen Formular oder einer PDF Datei unter dem man sich anmelden kann. Geben sie die URL ein oder wählen sie eine PDF Datei aus.</target>
+		</trans-unit>
+		<trans-unit id="registration_access.description" approved="yes">
+			<source>Registration is only visible for this usergroups / access rights</source>
+			<target>Beschränken Sie den Zugriff auf die Anmeldung für bestimmte Benutzergruppen. </target>
+		</trans-unit>
+		<trans-unit id="registration_until.description" approved="yes">
+			<source>If you use any registration, you can enter the date, when you want to hide the Registration link</source>
+			<target>Egel welche Art von Registrierung Sie nutezn ( interne oder Externe): wenn Sie hier ein Datum eingeben, kann die Registrierungsmöglichkeit ausgeblendet werden, wenn das angegeben Datum überschritten ist.</target>
+		</trans-unit>
+		<trans-unit id="sales_force_event_id.description" approved="yes">
+			<source>This ID is automatically generated by salesForce and only visible to help you to find the event in salesforce</source>
+			<target>Dies ist eine automatisch von Salesforce generierte Event ID</target>
+		</trans-unit>
+		<trans-unit id="sales_force_record_type.description" approved="yes">
+			<source>salesForceRecordType This normaly should be empty. in special Cases this is usefull</source>
+			<target>Dies ist der Salesforce Record Typ normal leer. (kommt aus TYPO Script einstellungen, kann aber so überdefiniert werden.</target>
+		</trans-unit>
+		<trans-unit id="sales_force_session_id.description" approved="yes">
+			<source>This ID is automatically generated by salesForce and only visible to help you to find the event in salesforce</source>
+			<target>Dies ist eine automatisch von Salesforce generierte Event Session ID</target>
+		</trans-unit>
+		<trans-unit id="start_date.description" approved="yes">
+			<source>startDate</source>
+			<target>Starttag</target>
+		</trans-unit>
+		<trans-unit id="start_time.description" approved="yes">
+			<source>startTime</source>
+			<target>Startzeit</target>
+		</trans-unit>
+		<trans-unit id="store_in_citrix.description" approved="yes">
+			<source>storeInCitrix</source>
+			<target>Um Ihre Event Anmeldung in Citrix zu speichern, muss diese option aktiviert werden und eine Citrix Event ID hinterlegt sein. Ausserdem muss Citrix grundlegend in den Extension einstellungen konfiguriert worden sein.</target>
+		</trans-unit>
+		<trans-unit id="store_in_sales_force.description" approved="yes" xml:space="preserve">
+			<source>Store Events and registration In SalesForce CRM </source>
+			<target>Veranstlungsinfos und Anmeldungen in  SalesForce CRM (benötigt ein stelziellens Salesforce Object!)</target>
+		</trans-unit>
+		<trans-unit id="subject_organizer.description" approved="yes">
+			<source>subject of the Email to the Organizer. You can use PlaceHolders like ###EVENT_STARTDATE### ###EVENT_NAME### ###LOCATION_CITY### (see Docu)</source>
+			<target>Abweichender Betreff an den Veranstalter. Sie können Platzhalter verwenden wie ###EVENT_STARTDATE### ###EVENT_NAME### ###LOCATION_CITY### (siehe Doku)</target>
+		</trans-unit>
+		<trans-unit id="subject_registrant.description" approved="yes" xml:space="preserve">
+			<source>subject of the Email to the Registrant. You can use PlaceHolders like ###EVENT_STARTDATE###  ###EVENT_NAME### ###LOCATION_CITY### (see Docu)</source>
+			<target>Abweichender Betreff an den Teilnehmer. Sie können Platzhalter verwenden wie ###EVENT_STARTDATE### ###EVENT_NAME### ###LOCATION_CITY### (siehe Doku)</target>
+		</trans-unit>
+		<trans-unit id="tags.description" approved="yes">
+			<source>tags</source>
+			<target>Schlagworte</target>
+		</trans-unit>
+		<trans-unit id="teaser.description" approved="yes">
+			<source>teaser</source>
+			<target>Kurzbeschreibung der Veranstaltung. Sichtbar in Auflistungen und Emails max 255 Zeichen</target>
+		</trans-unit>
+		<trans-unit id="teaserImage.description" approved="yes">
+			<source>Upload one (small) Image. It is Depending on your Layout, what will happen : shown in List View or not)</source>
+			<target>Einzelnen kleine Bild. je nach gewähltem Layout wird dies in Auflistungen gezeigt oder auch nicht.</target>
+		</trans-unit>
+		<trans-unit id="text_organizer.description" approved="yes">
+			<source>Introtext of the Email to the Organizer. </source>
+			<target>Introtext für die Email an den Veranstalter. </target>
+		</trans-unit>
+		<trans-unit id="text_registrant.description" approved="yes">
+			<source>Introtext of the Email to the Registrant. </source>
+			<target>Introtext für die Email an den Teilnehmer. Hier können Sie Z.b. dem Teilnehmer zusätzliche Informationen zukommen lassen, die auf der Webseite nicht sichtbar sind. </target>
+		</trans-unit>
+		<trans-unit id="with_registration.description" approved="yes">
+			<source>If you activate this Option &quot;Registration&quot;, the internal Modul for registration with many oprions is used</source>
+			<target>Wenn Sie diese Option aktiveren, wird das interne Registrierungs Modul mit weiteren Optionen und Eingabefeldern aktiviert.</target>
+		</trans-unit>
+		</body>
+	</file>
+</xliff>

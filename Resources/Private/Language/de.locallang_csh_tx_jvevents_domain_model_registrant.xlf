@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-10-17T12:23:42Z">
+		<header>
+			<generator>LFEditor</generator>
+		</header>
+		<body>
+		<trans-unit id="additional_info.description" approved="yes">
+			<source>additionalInfo</source>
+			<target>Zusätzliche Info</target>
+		</trans-unit>
+		<trans-unit id="city.description" approved="yes">
+			<source>city</source>
+			<target>Ort</target>
+		</trans-unit>
+		<trans-unit id="company.description" approved="yes">
+			<source>company</source>
+			<target>Firma</target>
+		</trans-unit>
+		<trans-unit id="contact_id.description" approved="yes">
+			<source>contactId</source>
+			<target>Kontakt Id</target>
+		</trans-unit>
+		<trans-unit id="country.description" approved="yes">
+			<source>country</source>
+			<target>Land</target>
+		</trans-unit>
+		<trans-unit id="customer_id.description" approved="yes">
+			<source>customerId</source>
+			<target>Kundennummer</target>
+		</trans-unit>
+		<trans-unit id="department.description" approved="yes">
+			<source>department</source>
+			<target>Abteilung</target>
+		</trans-unit>
+		<trans-unit id="email.description" approved="yes">
+			<source>email</source>
+			<target>Email Adresse</target>
+		</trans-unit>
+		<trans-unit id="first_name.description" approved="yes">
+			<source>firstName</source>
+			<target>Vorname</target>
+		</trans-unit>
+		<trans-unit id="gender.description" approved="yes">
+			<source>gender</source>
+			<target>Anrede</target>
+		</trans-unit>
+		<trans-unit id="language.description" approved="yes">
+			<source>language</source>
+			<target>Sprache</target>
+		</trans-unit>
+		<trans-unit id="last_name.description" approved="yes">
+			<source>lastName</source>
+			<target>nachname</target>
+		</trans-unit>
+		<trans-unit id="more1.description" approved="yes">
+			<source>more1</source>
+			<target>Mehr 1</target>
+		</trans-unit>
+		<trans-unit id="more2.description" approved="yes">
+			<source>more2</source>
+			<target>Mehr 2</target>
+		</trans-unit>
+		<trans-unit id="more3.description" approved="yes">
+			<source>more3</source>
+			<target>Mehr 3</target>
+		</trans-unit>
+		<trans-unit id="more4.description" approved="yes">
+			<source>more4</source>
+			<target>Mehr 4</target>
+		</trans-unit>
+		<trans-unit id="more5bool.description" approved="yes">
+			<source>more5bool</source>
+			<target>Mehr 5 Bool</target>
+		</trans-unit>
+		<trans-unit id="more6int.description" approved="yes">
+			<source>more6int</source>
+			<target>Mehr 6 Int</target>
+		</trans-unit>
+		<trans-unit id="more7date.description" approved="yes">
+			<source>more7date</source>
+			<target>Mehr 7 Datum</target>
+		</trans-unit>
+		<trans-unit id="more8file.description" approved="yes">
+			<source>more8file</source>
+			<target>Mehr 8 Datei</target>
+		</trans-unit>
+		<trans-unit id="newsletter.description" approved="yes">
+			<source>newsletter</source>
+			<target>newsletter</target>
+		</trans-unit>
+		<trans-unit id="password.description" approved="yes">
+			<source>password</source>
+			<target>Passwort</target>
+		</trans-unit>
+		<trans-unit id="phone.description" approved="yes">
+			<source>phone</source>
+			<target>Telefon</target>
+		</trans-unit>
+		<trans-unit id="privacy.description" approved="yes">
+			<source>has accepted privacy policy</source>
+			<target>Datenschutz option akzeptiert</target>
+		</trans-unit>
+		<trans-unit id="profession.description" approved="yes">
+			<source>profession</source>
+			<target>Beruf</target>
+		</trans-unit>
+		<trans-unit id="recall.description" approved="yes">
+			<source>Partizipant wants a recall</source>
+			<target>Bitte um rückruf</target>
+		</trans-unit>
+		<trans-unit id="street_and_nr.description" approved="yes">
+			<source>streetAndNr</source>
+			<target>Adresse</target>
+		</trans-unit>
+		<trans-unit id="username.description" approved="yes">
+			<source>username</source>
+			<target>Benutzername</target>
+		</trans-unit>
+		<trans-unit id="zip.description" approved="yes">
+			<source>zip</source>
+			<target>PLZ</target>
+		</trans-unit>
+		</body>
+	</file>
+</xliff>

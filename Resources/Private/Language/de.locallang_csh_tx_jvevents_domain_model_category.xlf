@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-10-17T11:14:21Z">
+		<header>
+			<generator>LFEditor</generator>
+		</header>
+		<body>
+		<trans-unit id="title.description" approved="yes">
+			<source>title of Event</source>
+			<target>Titel der Kategorie </target>
+		</trans-unit>
+		<trans-unit id="type.description" approved="yes">
+			<source>type</source>
+			<target>Typ des Kategorie</target>
+		</trans-unit>
+		</body>
+	</file>
+</xliff>
