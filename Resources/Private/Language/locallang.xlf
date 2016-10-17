@@ -146,6 +146,9 @@
 		<trans-unit id="tx_jvevents_domain_model_event.registrant">
 			<source>Registrant</source>
 		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.registrant_email_header">
+			<source>Event Registration</source>
+		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.registration_access">
 			<source>Registration Access</source>
 		</trans-unit>
