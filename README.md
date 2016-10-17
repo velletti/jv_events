@@ -33,7 +33,8 @@ Settings -> Version Control -> add a new Repository
 C:/projects/vagrant/allplan/http/typo3conf/ext/jv_events
 
 Then you can IDE Controls for each repository separate
-IMPORTANT : Checkout a branch from jvevents 
+
+###IMPORTANT : Checkout a branch from jvevents 
  Actually there is only events-dev: (in the future it will be 'events-stable' or "events-someNewFeature" )
  
  git fetch
@@ -44,7 +45,10 @@ IMPORTANT : Checkout a branch from jvevents
  
  To keep Updated on your server you need to switch to the jv_events Folder and initiate a 
  git pull 
+ or in the outside repository:
  
+ git submodule update --recursive
+
   
  
 
