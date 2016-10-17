@@ -1,6 +1,6 @@
 
 <!-- DO NOT CHANGE the next LINE //-->
-<f:layout name="{layoutName}" />
+<f:layout name="{layoutName}" xmlns:f="http://www.w3.org/1999/html" />
 
 
 This is the Email Subject sent to the organizer do
@@ -28,7 +28,11 @@ https://github.com/derekpunsalan/responsive-email/blob/master/README.md
 						<!-- Message start -->
 						<table style="font-size: 100%; font-family: '{emConf.fontFamily}'; line-height: 1.65; width: 100% !important; border-collapse: collapse; margin: 0; padding: 0;">
 							<tr style="font-size: 100%; font-family: '{emConf.fontFamily}'; line-height: 1.65; margin: 0; padding: 0;">
-								<td align="center" style="font-size: 100%; font-family: '{emConf.fontFamily}'; line-height: 1.65; color: {emConf.FontColor2}; background: {emConf.BackGroundColor2}; margin: 0; padding: 40px 0;" bgcolor="{emConf.BackGroundColor2}">
+								<td align="center" style="font-size: 100%; font-family: '{emConf.fontFamily}'; line-height: 1.65; color: {emConf.FontColor2}; background: {emConf.BackGroundColor2}; margin: 0; padding: 0 0 10px;" bgcolor="{emConf.BackGroundColor2}">
+									<f:if condition="{settings.EmConfiguration.imgUrl}">
+										<img src="{settings.servername}{settings.EmConfiguration.imgUrl}" style="width: 100%; height:auto; margin-bottom:10px;" />
+									</f:if>
+
 									<h1 style="font-size: 32px; font-family: '{emConf.fontFamily}'; line-height: 1.25; max-width: 90%; text-transform: uppercase; margin: 0 auto; padding: 0;">
 										{f:translate(key: 'tx_jvevents_domain_model_event.registrant_email_header')}
 									</h1>

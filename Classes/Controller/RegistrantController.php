@@ -164,7 +164,7 @@ class RegistrantController extends BaseController
 					if( strlen( $name ) < 3 ) {
 						$name = "RegistrantId: " . $registrant->getUid() ;
 					} else {
-						$name  = urlencode( $name) ;
+						$name  = '=?utf-8?B?'. base64_encode( $name) .'?=' ;
 					}
 					$this->sendEmail($event, $registrant, "Organizer" ,
 						array( $registrant->getEmail() => $name ));
@@ -176,7 +176,7 @@ class RegistrantController extends BaseController
 					if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($event->getOrganizer()->getEmail())) {
 
 						$this->sendEmail($event, $registrant, "Organizer" ,
-							array( $event->getOrganizer()->getEmail() => $event->getOrganizer()->getName() ));
+							array( $event->getOrganizer()->getEmail() => '=?utf-8?B?'. base64_encode( $event->getOrganizer()->getName() ) .'?=' ));
 					}
 				}
 			}
