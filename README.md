@@ -34,8 +34,13 @@ C:/projects/vagrant/allplan/http/typo3conf/ext/jv_events
 
 Then you can IDE Controls for each repository separate
 IMPORTANT : Checkout a branch from jvevents 
- Actually there is only events-dev
+ Actually there is only events-dev: (in the future it will be 'events-stable' or "events-someNewFeature" )
  
- if you want to push changes, you need to get write Access to the events repository or create your own fork 
+ git fetch
+ git checkout events-dev
+ 
+ if you want to push changes, you need to get write Access to the events repository or you need to create your own fork
+ and then Create Pull requests  that your changes get merged
+  
  
 
