@@ -41,6 +41,10 @@ IMPORTANT : Checkout a branch from jvevents
  
  if you want to push changes, you need to get write Access to the events repository or you need to create your own fork
  and then Create Pull requests  that your changes get merged
+ 
+ To keep Updated on your server you need to switch to the jv_events Folder and initiate a 
+ git pull 
+ 
   
  
 
