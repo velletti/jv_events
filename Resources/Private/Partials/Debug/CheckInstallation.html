@@ -22,6 +22,31 @@
 					<f:render partial="Debug/CheckInstallationRow" arguments="{title:'Debug', setting: '{settings.debug}' , help: 'if set to 2, the repository will throw an exception with all SQL Querys'}" />
 					<f:render partial="Debug/CheckInstallationRow" arguments="{title:'checkInstallation', setting: '{settings.checkInstallation}' , help: 'should be 1, but usefull to check if everything is set up correctly)'}" />
 
+					<f:if condition="{settings.register.privacyPid} < 1">
+						<f:render partial="Debug/CheckInstallationRow" arguments="{title:'PrivacyPolicy', setting: '{settings.register.privacyPid}' , help: 'If You use Registration Form, you should set settings.register.privacyPid '}" />
+					</f:if>
+					<f:if condition="{settings.register.termsOfUsePid} < 1">
+						<f:render partial="Debug/CheckInstallationRow" arguments="{title:'termsOfUsePid', setting: '{settings.register.termsOfUsePid}' , help: 'If You use Registration Form, you should set settings.register.termsOfUsePid '}" />
+					</f:if>
+					<f:if condition="{settings.register.senderEmail}">
+						<f:then>
+							<f:render partial="Debug/CheckInstallationRow" arguments="{title:'senderEmail', setting: '{settings.register.senderEmail}' , help: 'can be changed in TYPOscript settings.register.senderEmail '}" />
+						</f:then>
+						<f:else>
+
+							<f:render partial="Debug/CheckInstallationRow" arguments="{title:'senderEmail', setting: '{settings.register.senderEmail}' , help: 'If You use Registration Form, you should set settings.register.senderEmail '}" />
+						</f:else>
+					</f:if>
+					<f:if condition="{settings.register.senderName}">
+						<f:then>
+
+							<f:render partial="Debug/CheckInstallationRow" arguments="{title:'senderName', setting: '{settings.register.senderName}' , help: 'can be changed in TYPOscript  settings.register.senderName '}" />
+						</f:then>
+						<f:else>
+
+							<f:render partial="Debug/CheckInstallationRow" arguments="{title:'senderName', setting: '{settings.register.senderName}' , help: 'If You use Registration Form, you should set settings.register.senderName '}" />
+						</f:else>
+					</f:if>
 
 					<f:if condition="{modulelist}">
 						<f:then>
@@ -39,6 +64,7 @@
 
 						</f:else>
 					</f:if>
+
 					<f:if condition="{settings.debug} > 0">
 						<f:debug inline="true">{settings}</f:debug>
 					</f:if>

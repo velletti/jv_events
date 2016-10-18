@@ -18,6 +18,8 @@ AdminUserGroups =
 # cat=General/enable/5; type=integer; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.minFormSec;description=Minimum Seconds between rendering a Form and Submitting a Form to avoid bots
 minFormSeconds = 10
 
+# cat=General/enable/4; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.useGeolocation;description=Activate option to ask the use about his GEO coordinates. only usefull if you have a map included
+useGeoLocation = 0
 
 # Default Values
 ###########################

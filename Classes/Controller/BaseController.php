@@ -217,9 +217,13 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      */
 
     public function sendEmail(\JVE\JvEvents\Domain\Model\Event $event = NULL, \JVE\JvEvents\Domain\Model\Registrant $registrant = NULL , $partialName , $recipient ) {
-
-    	// ToDo read Senders Email and  name from TypoScript
-		$sender = array("info@allplan.com" =>  "Allplan Systems Gmbh" ) ;
+		if (! \TYPO3\CMS\Core\Utility\GeneralUtility::validEmail( $this->settings['register']['senderEmail']  ) ) {
+			throw new \Exception('plugin.jv_events.settings.register.senderEmail is not a valid Email Address. Is needed as Sender E-mail');
+		}
+		$sender = array( $this->settings['register']['senderEmail']
+					=>
+						'=?utf-8?B?'. base64_encode( $this->settings['register']['sendername'] ) .'?='
+					 ) ;
 
 		/** @var \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
     	$renderer = $this->getEmailRenderer($templatePath = '' , '/Registrant/Email/' . $this->settings['LayoutRegister']   ) ;

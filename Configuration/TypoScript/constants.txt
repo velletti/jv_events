@@ -24,7 +24,12 @@ plugin.tx_jvevents_events {
 		# 2 shows  DB sql Query (do not use on LIVE!)
 		debug = 0
 		register {
-			label.privacy = I have read the privacy policy and accept the term of use
+			senderName = typoscript constant
+			senderEmail = test@example.org
+
+			termsOfUsePid = 0
+			privacyPid = 0
+
 			allowedCountrys = DE,AT,CH
 			requiredFields {
 

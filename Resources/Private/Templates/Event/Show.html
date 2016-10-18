@@ -5,7 +5,7 @@
 <f:flashMessages />
 
   <f:render partial="Debug/CheckInstallation" arguments="{modulelist: 'FALSE' ,event:event, settings: settings}" />
-
-  <f:render partial="Event/Single/Partial{settings.LayoutSingle}/Base" arguments="{event:event, settings:settings}" />
-
+  <div class="jv_vents_{settings.LayoutSingle}"	>
+    <f:render partial="Event/Single/Partial{settings.LayoutSingle}/Base" arguments="{event:event, settings:settings}" />
+  </div>
 </f:section>

@@ -4,8 +4,11 @@
 
 <f:section name="main">
 	<f:flashMessages />
+	<f:render partial="Debug/CheckInstallation" arguments="{modulelist: 'FALSE' , event: event, settings: settings}" />
+
 	<f:comment> Render the Confirmation for the Registration </f:comment>
+	<div class="jv_vents_{settings.LayoutSingle}"	>
 	<f:render partial="Registrant/Partial{settings.LayoutSingle}/Create"
 		arguments="{event: event, registrant: registrant, settings: settings}"/>
-
+	</div>
 </f:section>

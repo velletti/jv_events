@@ -1,10 +1,34 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-10-17T10:53:12Z">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-10-18T07:35:33Z">
 		<header>
 			<generator>LFEditor</generator>
 		</header>
 		<body>
+		<trans-unit id="register.accept_privacy" approved="yes">
+			<source>I have read and accept the </source>
+			<target>I habe die </target>
+		</trans-unit>
+		<trans-unit id="register.accept_privacy.and" approved="yes">
+			<source>and</source>
+			<target>und</target>
+		</trans-unit>
+		<trans-unit id="register.accept_privacy_end" approved="yes">
+			<source>.</source>
+			<target>gelesen und akzeptiert.</target>
+		</trans-unit>
+		<trans-unit id="register.accept_privacy_intro" approved="yes">
+			<source>I have read and accept the </source>
+			<target>Ich habe die </target>
+		</trans-unit>
+		<trans-unit id="register.privacy" approved="yes">
+			<source>privacy policy</source>
+			<target>Datenschutzbestimmungen</target>
+		</trans-unit>
+		<trans-unit id="register.terms_of_use" approved="yes">
+			<source>Terms of use</source>
+			<target>Nutzungsbedingungen</target>
+		</trans-unit>
 		<trans-unit id="register_email_with_infos" approved="yes">
 			<source>You will soon get an email with all information about your registration!</source>
 			<target>In Kürze erhalten Sie ein E-Mail mit allen Informationen über Ihre Registrierung! </target>
@@ -193,12 +217,10 @@
 			<source>Registrant</source>
 			<target>Teilnehmer</target>
 		</trans-unit>
-
 		<trans-unit id="tx_jvevents_domain_model_event.registrant_email_header" approved="yes">
 			<source>Event Registration</source>
 			<target>Anmeldung zur Veranstaltung</target>
 		</trans-unit>
-
 		<trans-unit id="tx_jvevents_domain_model_event.registration_access" approved="yes">
 			<source>Registration Access</source>
 			<target>Anmeldung beschränken</target>

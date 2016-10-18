@@ -1,3 +1,4 @@
+
 <f:form action="create" class="jv-events-regform" name="registrant" object="{registrant}" enctype="multipart/form-data">
 	<f:render partial="FormErrors" section="Main" arguments="{for: 'registrant'}" />
 	<f:render partial="FieldError" section="Main" arguments="{for: 'event' ,field: 'uid'}" />
@@ -69,7 +70,9 @@
 		</div>
 		<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRow" arguments="{label: 'tx_jvevents_domain_model_registrant.additional_info', FieldName : 'additionalInfo' , settings: settings , cols: 'col-sm-12' , textarea: '1' , required: '{f:if(condition: \'{settings.register.required.additionalInfo}\' , then: \'TRUE\')}'}"/>
 
-		<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRowCheck" arguments="{label: '{settings.register.label.privacy}', FieldName : 'privacy' , settings: settings , cols: 'col-sm-12' , required: '{f:if(condition: \'{settings.register.required.privacy}\' , then: \'TRUE\')}'}"/>
+		<f:if condition="{settings.register.required.privacy}">
+			<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRowCheckPrivacy" arguments="{FieldName : 'privacy' , settings: settings , cols: 'col-sm-12'}"/>
+		</f:if>
 		<div class="clearfix text-right col-xs-12">
 			<span class="btn btn-primary" onclick="jv_events_submit()">
 				{f:translate(key: 'register_send' , default:'Register')}

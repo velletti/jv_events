@@ -62,6 +62,15 @@
 		<trans-unit id="extmng.showRecurring">
 			<source>Use Recurring Events Model. May Slow down frontend List Views : THIS is Still under development</source>
 		</trans-unit>
+
+		<trans-unit id="extmng.useGeolocation">
+			<source>Use Geo Location Feature for Google MAPs interaction </source>
+		</trans-unit>
+		<trans-unit id="extmng.minFormSec">
+			<source>Minimum time in seconds a use should use to fill the registraton form. If he needs less time, he traps into the Spam/BOT trap.</source>
+		</trans-unit>
+
+
 		<trans-unit id="flexforms.DataSettings">
 			<source>Data Settings</source>
 		</trans-unit>

@@ -1,10 +1,28 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2016-10-17T10:53:12Z">
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-10-18T07:35:33Z">
 		<header>
 			<generator>LFEditor</generator>
 		</header>
 		<body>
+		<trans-unit id="register.accept_privacy">
+			<source>I have read and accept the </source>
+		</trans-unit>
+		<trans-unit id="register.accept_privacy.and">
+			<source>and</source>
+		</trans-unit>
+		<trans-unit id="register.accept_privacy_end">
+			<source>.</source>
+		</trans-unit>
+		<trans-unit id="register.accept_privacy_intro">
+			<source>I have read and accept the </source>
+		</trans-unit>
+		<trans-unit id="register.privacy">
+			<source>privacy policy</source>
+		</trans-unit>
+		<trans-unit id="register.terms_of_use">
+			<source>Terms of use</source>
+		</trans-unit>
 		<trans-unit id="register_email_with_infos">
 			<source>You will soon get an email with all information about your registration!</source>
 		</trans-unit>

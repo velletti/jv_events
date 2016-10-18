@@ -28,8 +28,10 @@ function jv_events_init() {
 	jv_events_initOneFilter('tags') ;
 	jv_events_initOneFilter('organizers') ;
 	jv_events_initOneFilter('months') ;
-	if (navigator.geolocation) {
-//		navigator.geolocation.getCurrentPosition(jv_events_initPosition);
+	if( jQuery('#jv_events_geo').length > 0 ) {
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(jv_events_initPosition);
+		}
 	}
 
 	// jv_events_refreshList();
