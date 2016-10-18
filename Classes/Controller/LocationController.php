@@ -96,8 +96,8 @@ class LocationController extends BaseController
     public function createAction(\JVE\JvEvents\Domain\Model\Location $newLocation)
     {
         $this->addFlashMessage('The object was created. Please be aware that this action is publicly accessible unless you implement an access check. See http://wiki.typo3.org/T3Doc/Extension_Builder/Using_the_Extension_Builder#1._Model_the_domain', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
-        $this->locationRepository->add($newLocation);
-        $this->redirect('list');
+		//     $this->locationRepository->add($newLocation);
+		//    $this->redirect('list');
     }
     
     /**
@@ -121,8 +121,8 @@ class LocationController extends BaseController
     public function updateAction(\JVE\JvEvents\Domain\Model\Location $location)
     {
         $this->addFlashMessage('The object was updated. Please be aware that this action is publicly accessible unless you implement an access check. See http://wiki.typo3.org/T3Doc/Extension_Builder/Using_the_Extension_Builder#1._Model_the_domain', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
-        $this->locationRepository->update($location);
-        $this->redirect('list');
+		//    $this->locationRepository->update($location);
+		//   $this->redirect('list');
     }
     
     /**
@@ -134,8 +134,8 @@ class LocationController extends BaseController
     public function deleteAction(\JVE\JvEvents\Domain\Model\Location $location)
     {
         $this->addFlashMessage('The object was deleted. Please be aware that this action is publicly accessible unless you implement an access check. See http://wiki.typo3.org/T3Doc/Extension_Builder/Using_the_Extension_Builder#1._Model_the_domain', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
-        $this->locationRepository->remove($location);
-        $this->redirect('list');
+		//   $this->locationRepository->remove($location);
+		//   $this->redirect('list');
     }
 
 }

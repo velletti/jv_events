@@ -129,8 +129,16 @@
 			<source>Registered Seats</source>
 			<target>Vergebene Plätze</target>
 		</trans-unit>
-		<trans-unit id="tx_jvevents_domain_model_event.registrant" approved="yes">
+		<trans-unit id="tx_jvevents_domain_model_event.new_registrant" approved="yes">
 			<source>New Registration</source>
+			<target>Neue Anmeldung</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.your_registration" approved="yes">
+			<source>Your Registration</source>
+			<target>Ihre Anmeldung</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.registrant" approved="yes">
+			<source>Participant</source>
 			<target>Teilnehmer</target>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.registrationFormPid" approved="yes">

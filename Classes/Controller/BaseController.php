@@ -222,21 +222,22 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 		}
 		$sender = array( $this->settings['register']['senderEmail']
 					=>
-						'=?utf-8?B?'. base64_encode( $this->settings['register']['sendername'] ) .'?='
+						$this->settings['register']['sendername']
 					 ) ;
 
 		/** @var \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
     	$renderer = $this->getEmailRenderer($templatePath = '' , '/Registrant/Email/' . $this->settings['LayoutRegister']   ) ;
 
+		$renderer->assign('registrant', $registrant);
         $renderer->assign('event', $event);
-        $renderer->assign('registrant', $registrant);
+
         $renderer->assign('partial', "Registrant/Partial" . $this->settings['LayoutRegister'] . "/Emails/" . $partialName);
         $renderer->assign('settings', $this->settings);
 
 		$layoutPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName( "typo3conf/ext/jv_events/Resources/Private/Layouts/" ) ;
 		$renderer->setLayoutRootPaths( array( 0 => $layoutPath) ) ;
 
-		$renderer->assign('layoutName', 'EmailSubject');
+		$renderer->assign('layoutName', 'EmailSubject' . $partialName);
 
 		// read Colors and font settings from EmConfiguration as object
 		$renderer->assign('emConf', \JVE\JvEvents\Utility\EmConfiguration::getEmConf( TRUE ) );
@@ -244,6 +245,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 		// and do the rendering magic
         $subject =  '=?utf-8?B?'. base64_encode($renderer->render() ) .'?=' ;
 
+		$renderer->assign('registrant', $registrant);
 		$renderer->assign('layoutName', 'EmailPlain');
 		$plainMsg =  $renderer->render() ;
 

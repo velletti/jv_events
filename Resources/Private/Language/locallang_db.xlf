@@ -98,8 +98,14 @@
 		<trans-unit id="tx_jvevents_domain_model_event.registered_seats">
 			<source>Registered Seats</source>
 		</trans-unit>
-		<trans-unit id="tx_jvevents_domain_model_event.registrant">
+		<trans-unit id="tx_jvevents_domain_model_event.new_registrant">
 			<source>New Registration</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.your_registration">
+			<source>Your Registration</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.registrant">
+			<source>Participant</source>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.registrationFormPid">
 			<source>Show Registration Form of this Page</source>
