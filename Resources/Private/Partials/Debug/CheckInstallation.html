@@ -47,6 +47,9 @@
 							<f:render partial="Debug/CheckInstallationRow" arguments="{title:'senderName', setting: '{settings.register.senderName}' , help: 'If You use Registration Form, you should set settings.register.senderName '}" />
 						</f:else>
 					</f:if>
+					<f:render partial="Debug/CheckInstallationRow" arguments="{title:'googleApiKey', setting: '{settings.EmConfiguration.googleApiKey}' , help: 'If You are showing a Google Map, you should set Extension Manager -> Configuration -> advanced -> googleApiKey '}" />
+
+
 
 					<f:if condition="{modulelist}">
 						<f:then>

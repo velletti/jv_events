@@ -18,8 +18,9 @@ AdminUserGroups =
 # cat=General/enable/5; type=integer; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.minFormSec;description=Minimum Seconds between rendering a Form and Submitting a Form to avoid bots
 minFormSeconds = 10
 
-# cat=General/enable/4; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.useGeolocation;description=Activate option to ask the use about his GEO coordinates. only usefull if you have a map included
-useGeoLocation = 0
+
+
+
 
 # Default Values
 ###########################
@@ -78,3 +79,9 @@ showIndividualMailTemplatesPerEvent = 0
 
 # cat=advanced/dims/33; type=string; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.resetFieldlistAfterCopy
 resetFieldListAfterCopy = setUnconfirmedSeats:0;setRegisteredSeats:0;setSalesForceEventId:;setSalesForceSessionId:;
+
+# cat=advanced/enable/6; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.useGeolocation;description=Activate option to ask the use about his GEO coordinates. only usefull if you have a map included
+useGeoLocation = 0
+
+# cat=advanced/default/7; type=text; label=Google API key;description=If you want to show a map, you need to register on Google.com and get an api KEY
+googleApiKey =

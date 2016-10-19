@@ -20,17 +20,18 @@ return array(
 			'starttime' => 'starttime',
 			'endtime' => 'endtime',
 		),
-		'searchFields' => 'name,street_and_nr,zip,city,country,lng,lat,link,email,phone,description,organizer,location_category,',
+		'searchFields' => 'name,street_and_nr,zip,city,country,lat,lng,link,email,phone,description,organizer,location_category,',
 		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('jv_events') . 'Resources/Public/Icons/tx_jvevents_domain_model_location.gif'
 	),
 	'interface' => array(
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, street_and_nr, zip, city, country, lng, lat, link, email, phone, description, organizer, location_category',
+		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, street_and_nr, zip, city, country,lat, lng,  link, email, phone, description, organizer, location_category',
 	),
 	'types' => array(
-		'1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, name, street_and_nr, zip, city, country, lng, lat, link, email, phone, description;;;richtext:rte_transform[mode=ts_links], organizer, location_category, --div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime'),
+		'1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, name, street_and_nr, zip, city, country, --palette--;;geo, link, email, phone, description;;;richtext:rte_transform[mode=ts_links], organizer, location_category, --div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime'),
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),
+		'geo' => array('showitem' => 'lat,lng'),
 	),
 	'columns' => array(
 	
@@ -163,22 +164,38 @@ return array(
 				'eval' => 'trim'
 			),
 		),
-		'lng' => array(
-			'exclude' => 0,
-			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_location.lng',
-			'config' => array(
-				'type' => 'input',
-				'size' => 30,
-				'eval' => 'trim'
-			),
-		),
+
 		'lat' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_location.lat',
 			'config' => array(
 				'type' => 'input',
 				'size' => 30,
-				'eval' => 'trim'
+				'eval' => 'trim' ,
+
+			),
+		),
+		'lng' => array(
+			'exclude' => 0,
+			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_location.lng',
+			'config' => array(
+				'type' => 'input',
+				'size' => 30,
+				'eval' => 'trim' ,
+				'wizards' => array(
+					'geocoder' => array(
+						'type' => 'popup',
+						'title' => 'LLL:EXT:allplan_tt_address_extended/Resources/Private/Language/locallang.xlf:jv_events_model_location.geocoder.title',
+						'icon' => 'EXT:jv_events/Resources/Public/Icons/wizard_geocoder.png',
+						'module' => array(
+							'name' => 'wizard_geocoder',
+						),
+						'params' => array(
+							'mode' => 'point',
+						),
+						'JSopenParams' => 'height=600,width=800,status=0,menubar=0,scrollbars=yes',
+					)
+				),
 			),
 		),
 		'link' => array(

@@ -52,7 +52,8 @@ class EventController extends BaseController
 
 	public function initializeAction() {
 		if ($this->request->hasArgument('action')) {
-			if ($this->request->getArgument('show')) {
+
+			if ($this->request->getArgument('action') == "show") {
 				if (!$this->request->hasArgument('event')) {
 					throw new \Exception('Missing Event Id in URL');
 				}

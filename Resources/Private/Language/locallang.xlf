@@ -5,6 +5,9 @@
 			<generator>LFEditor</generator>
 		</header>
 		<body>
+		<trans-unit id="jv_events_model_location.geocoder.title">
+			<source>Google Geocoder (Please enter the address data first!)</source>
+		</trans-unit>
 		<trans-unit id="register.accept_privacy">
 			<source>I have read and accept the </source>
 		</trans-unit>
@@ -184,6 +187,9 @@
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.start_date">
 			<source>Start Date</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.date">
+			<source>Date</source>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.start_time">
 			<source>Start Time</source>

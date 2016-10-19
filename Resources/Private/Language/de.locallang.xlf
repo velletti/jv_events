@@ -245,6 +245,11 @@
 			<source>Start Date</source>
 			<target>Startdatum</target>
 		</trans-unit>
+
+		<trans-unit id="tx_jvevents_domain_model_event.date" approved="yes">
+			<source>Date</source>
+			<target>Datum</target>
+		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.start_time" approved="yes">
 			<source>Start Time</source>
 			<target>Startzeit</target>

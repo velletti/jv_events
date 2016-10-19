@@ -1,69 +1,87 @@
 {namespace event=JVE\JvEvents\ViewHelpers}
 
-	<div class="well">
-		<f:render partial="Event/Single/Partial{settings.LayoutSingle}/Row"
-				  arguments="{title: '', translate: '0', isHeadline: 'H2' ,value: '{event.name}' }" />
+<ul class="nav nav-tabs">
+	<li class="active"><a id="jv_events_event_nav" data-toggle="tab" href="#jv_events_event">Info</a></li>
+	<li ><a  id="jv_events_map_nav" data-toggle="tab" href="#jv_events_map">Map</a></li>
+	<li ><a  id="jv_events_contact_nav" data-toggle="tab" href="#jv_events_contact">Kontakt</a></li>
+	<f:if condition="{settings.debug} > 0">
+		<li ><a  id="jv_events_debug_nav" data-toggle="tab" href="#jv_events_debug">debug</a></li>
+	</f:if>
+</ul>
+<div class="tab-content clearfix " style="min-height:550px;">
+	<div class="tab-pane active " id="jv_events_event">
+		<div class="well">
+			<f:render partial="Event/Single/Partial{settings.LayoutSingle}/Row"
+				arguments="{title: '', translate: '0', isHeadline: 'H2' ,value: '{event.name}' }" />
 
-		<f:if condition="{event.allDay}">
-			<f:then>
-				{event.startDate -> f:format.date(format:"d.m.Y")} - {event.startTime -> f:format.date( format:"H:i")}
-			</f:then>
-			<f:else>
-				{event.startDate -> f:format.date(format:"d.m.Y")}
-			</f:else>
-
-		</f:if>
-
-
-		<f:render partial="Event/Single/Partial{settings.LayoutSingle}/Row"
-				  arguments="{title: 'tx_jvevents_domain_model_location.name', translate: '1', value: '{event.location.name}' }"/>
-
-		<div class="row">
-			<div class="col-sm-4">
-
-			</div>
-			<div class="col-sm-8" >
-				<f:if condition="{event.location.streetAndNr}">
-					{event.location.streetAndNr}<br/>
-				</f:if>
-				<f:if condition="{event.location.city}">
-					{event.location.zip} {event.location.city}<br/>
-				</f:if>
-			</div>
-
-		</div>
-
-		<f:if condition="{event.EventCategory}">
 			<div class="row">
 				<div class="col-sm-4">
-					<f:translate key="tx_jvevents_domain_model_category.name" />
+					<f:translate key="tx_jvevents_domain_model_event.date" />
 				</div>
 				<div class="col-sm-8">
-					<f:for each="{event.EventCategory}" as="EventCategory" iteration="iteration">
-						<f:if condition="{iteration.index} > 0 ">, </f:if>
-						{EventCategory.title}
-					</f:for>
+					<b>
+						<f:if condition="{event.allDay}">
+							<f:then>
+								{event.startDate -> f:format.date(format:"d.m.Y")} - {event.startTime -> f:format.date( format:"H:i")}
+							</f:then>
+							<f:else>
+								{event.startDate -> f:format.date(format:"d.m.Y")}
+							</f:else>
+						</f:if>
+					</b>
 				</div>
 			</div>
-		</f:if>
-	</div>
-	<f:if condition="{event.isRegistrationPossible}">
-		<div class="row">
-			<div class="col-xs-12 text-right">
-				<event:regLink event="{event}" settings="{settings}" uriOnly="0">
+
+			<f:render partial="Event/Single/Partial{settings.LayoutSingle}/Row"
+				arguments="{title: 'tx_jvevents_domain_model_location.name', translate: '1', value: '{event.location.name}' }"/>
+
+			<div class="row">
+				<div class="col-sm-4">
+
+				</div>
+				<div class="col-sm-8" >
+					<f:if condition="{event.location.streetAndNr}">
+						{event.location.streetAndNr}<br/>
+					</f:if>
+					<f:if condition="{event.location.city}">
+						{event.location.zip} {event.location.city}<br/>
+					</f:if>
+				</div>
+
+			</div>
+
+			<f:if condition="{event.EventCategory}">
+				<br/>
+				<div class="row">
+					<div class="col-sm-4">
+						<f:translate key="tx_jvevents_domain_model_category.name" />
+					</div>
+					<div class="col-sm-8">
+						<f:for each="{event.EventCategory}" as="EventCategory" iteration="iteration">
+							<f:if condition="{iteration.index} > 0 ">, </f:if>
+							{EventCategory.title}
+						</f:for>
+					</div>
+				</div>
+			</f:if>
+		</div>
+		<f:if condition="{event.isRegistrationPossible}">
+			<div class="row">
+				<div class="col-xs-12 text-right">
+					<event:regLink event="{event}" settings="{settings}" uriOnly="0">
 				<span class="btn btn-default">
 					Registrierung >>
 				</span>
-				</event:regLink>
+					</event:regLink>
+				</div>
+
 			</div>
 
+		</f:if>
+		<div class="row clearfix">
+			&nbsp;
 		</div>
-
-	</f:if>
-	<div class="row">
-		&nbsp;
-	</div>
-	<div class="well" >
+		<div class="well" >
 			<f:format.html parseFuncTSPath="lib.jveventsRTE">
 				{event.description}
 			</f:format.html>
@@ -88,9 +106,39 @@
 		</f:if>
 
 	</div>
-	<f:if condition="{settings.debug} > 0">
-		<f:render partial="Event/Single/MicroFormat" arguments="{event: event, settings: settings}"/>
-	</f:if>
+
+	<div class="tab-pane " id="jv_events_map" >
+		<f:render partial="GoogleMaps" arguments="{addresses: {0:event.location}, settings:settings}" />
+	</div>
+	<div class="tab-pane" id="jv_events_contact">
+
+		<div class="well">
+			<h2><f:translate key="tx_jvevents_domain_model_organizer" /></h2>
+
+			<f:render partial="Event/Single/Partial{settings.LayoutSingle}/Row"
+				arguments="{title: 'tx_jvevents_domain_model_organizer.name', translate: '1', value: '{event.organizer.name}' }"/>
+
+			<f:render partial="Event/Single/Partial{settings.LayoutSingle}/Row"
+				arguments="{title: 'tx_jvevents_domain_model_organizer.email', translate: '1', value: '{event.organizer.email}' }"/>
+
+			<f:render partial="Event/Single/Partial{settings.LayoutSingle}/Row"
+				arguments="{title: 'tx_jvevents_domain_model_organizer.phone', translate: '1', value: '{event.organizer.phone}' }"/>
+
+
+		</div>
+	</div>
+
+
+	<div class="tab-pane" id="jv_events_debug">
+		<f:if condition="{settings.debug} > 0">
+			<f:render partial="Event/Single/MicroFormat" arguments="{event: event, settings: settings}"/>
+		</f:if>
+	</div>
+
+</div>
+
+
+
 
 	<script type="application/ld+json">
 		<f:render partial="Event/Single/MicroFormat" arguments="{event: event, settings: settings}"/>

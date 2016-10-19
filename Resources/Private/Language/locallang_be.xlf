@@ -137,6 +137,50 @@
 		<trans-unit id="plugin.filter.startDate.Yesterday">
 			<source>Starts Yesterday or in the Future</source>
 		</trans-unit>
+
+
+			<trans-unit id="geocoding.error" xml:space="preserve">
+				<source>Error</source>
+			</trans-unit>
+			<trans-unit id="geocoding.error.referenceToParentWindow" xml:space="preserve">
+				<source>Reference to parent window not found!</source>
+			</trans-unit>
+			<trans-unit id="geocoding.error.geocodingNotSuccessful.part1" xml:space="preserve">
+				<source>Google Geocoding was not successful for the following reason:</source>
+			</trans-unit>
+			<trans-unit id="geocoding.error.geocodingNotSuccessful.part2" xml:space="preserve">
+				<source>(Maybe the address data is not complete? => address, city and country!)</source>
+			</trans-unit>
+
+
+			<trans-unit id="geocoding.page.title" xml:space="preserve">
+				<source>Google Geocoding</source>
+			</trans-unit>
+			<trans-unit id="geocoding.page.headline" xml:space="preserve">
+				<source>Google Geocoding</source>
+			</trans-unit>
+
+			<trans-unit id="geocoding.form.transferGeoData.label.latitude" xml:space="preserve">
+				<source>Latitude</source>
+			</trans-unit>
+			<trans-unit id="geocoding.form.transferGeoData.label.longitude" xml:space="preserve">
+				<source>Longitude</source>
+			</trans-unit>
+			<trans-unit id="geocoding.form.transferGeoData.label.submit" xml:space="preserve">
+				<source>Save</source>
+			</trans-unit>
+			<trans-unit id="geocoding.form.transferGeoData.label.cancel" xml:space="preserve">
+				<source>Cancel</source>
+			</trans-unit>
+			<trans-unit id="geocoding.form.geosearch.label.searchFor" xml:space="preserve">
+				<source>Search for</source>
+			</trans-unit>
+			<trans-unit id="geocoding.form.geosearch.label.find" xml:space="preserve">
+				<source>Find</source>
+			</trans-unit>
+
+
+
 		</body>
 	</file>
 </xliff>

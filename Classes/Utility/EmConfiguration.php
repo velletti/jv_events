@@ -54,4 +54,10 @@ class EmConfiguration
 		return $settings;
     }
 
+	public static function getGoogleApiKey() {
+		$configuration = self::getEmConf();
+		return $configuration['googleApiKey'];
+		// return $configuration['googleApiKey']['value'];
+	}
+
 }
