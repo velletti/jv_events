@@ -28,7 +28,7 @@ Eventmanagement
 		Send Email Notifications
 
 	:Keywords:
-		events,tango,list,eventregistration,salesforce,gotowebinar,citrix
+		events,tango,list,event registration,salesforce,gotowebinar,citrix,seminars,register
 
 	:Copyright:
 		2016

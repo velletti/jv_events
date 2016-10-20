@@ -6,11 +6,11 @@
 .. include:: ../Includes.txt
 
 
-.. _changelog:
+.. _known-problems:
 
-ChangeLog
-=========
+Known Problems
+==============
 
-Providing a change log chapter is optional. You can also refer
-users to the ChangeLog file inside the extension or to some repository's
-commit listing.
+See administration Section for requirements or visit 
+
+`bug tracker <https://github.com/velletti/jv_events/issues>`_?

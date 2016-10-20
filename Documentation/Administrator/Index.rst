@@ -22,13 +22,9 @@ Installation
 To install the extension, perform the following steps:
 
 #. Go to the Extension Manager
-#. Install the extension
+#. Install the extension and use the Configuration Options
 #. Load the static template
 #. Copy needed Templates/Partials to your own Template Folder and adapt them...
-
-
-Some Configuration
-  This option enables...
 
 
 
@@ -37,18 +33,18 @@ Some Configuration
 
    Extension Manager (caption of the image)
 
-   List of extensions within the Extension Manager also shorten with "EM" (legend of the image)
+.. figure:: ../Images/AdministratorManual/ExtensionManagerConfiguration.png
+   :alt: Extension Manager
+
+   Options in Extension Manager (caption of the image)
 
 
 .. _admin-configuration:
 
 Configuration
 -------------
-
-* Where and how the extension should be configured? TypoScript? PHP?
-
-* Are there other prerequisite to full fill beforehand?
-  For example, configure a setting in a special way somewhere.
+	I hope the Wording the EM -> Configure -> Options dialog is self explaining. 
+	if not, send me a message and i add this 
 
 
 .. _admin-faq:
@@ -56,17 +52,30 @@ Configuration
 FAQ
 ---
 
-Possible subsection: FAQ
+Requirements
+^^^^^^^^^^^^
 
-Subsection
-^^^^^^^^^^
+   #. The extension is made and tested with TYPO3 7.6 LTS.
+   Versions below are not tested and may not work.
+   TYPO3 8.x LTS compatibility will be added, when available
+
+   #. You need Bootstrap 3.3 installed or have to style all Templates on your Own.
+   Important: The extension does not automatically include the Bootstrap LIBS !!!)
+
+   #. You need jQuery 1.8 or higher installed if you want to use the Filter in List View 
+
+   #. With registration form you will need static_info_tables and their localisations
+
+MicroFormat
+^^^^^^^^^^^
 
 This Extension has a partial called "MicroFormat"
-See Tester
+See also 
 https://search.google.com/structured-data/testing-tool/u/0/?hl=de
 
-this is Called from Single Event View and List View and Create a JSON-LD Objekt like this
+This MicroFormat Partial in *"ld/json"* Format is called from Single Event View and List View and Create a JSON-LD Objekt like this
 
+´
  {
 	  "@context" : "http://schema.org",
 	  "@type" : "Event",
@@ -97,8 +106,5 @@ this is Called from Single Event View and List View and Create a JSON-LD Objekt 
 	    }
 	  }
 }
+´
 
-Sub-subsection
-""""""""""""""
-
-Deeper into the structure...
