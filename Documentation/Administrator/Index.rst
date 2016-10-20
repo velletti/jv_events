@@ -75,36 +75,39 @@ https://search.google.com/structured-data/testing-tool/u/0/?hl=de
 
 This MicroFormat Partial in *"ld/json"* Format is called from Single Event View and List View and Create a JSON-LD Objekt like this
 
-´
- {
-	  "@context" : "http://schema.org",
-	  "@type" : "Event",
-	  "name" : "Band in Berlin",
-      "image" : "http://www.example.com/image.jpg",
-	  "startDate" : "2016-04-20T20:00",
-      "endDate" : "2016-04-20T22:00",
-	  "url" : "http://www.example.com/events/band/2016-04-20-2000",
-      "performer" : "Name of Organizer",
-      "description" : "beschreibung",
-	  "offers" : {
-	    "@type": "AggregateOffer",
-	     "url" : "http://www.example.com/events/band/2016-04-20-2000/tickets",
-	    "lowPrice" : "100",
-	    "offerCount" : "1839"
-	  },
-	  "location" :
-	  {
-	    "@type" : "Place",
-	    "sameAs" : "http://www.veranstaltungsort-berlin.de/",
-	    "name" : "Veranstaltungsort",
-	    "address" :
+.. code-block:: javascript
+   :linenos:
+   :emphasize-lines: 2-4
+
+    {
+	    "@context" : "http://schema.org",
+	    "@type" : "Event",
+	    "name" : "Band in Berlin",
+        "image" : "http://www.example.com/image.jpg",
+	    "startDate" : "2016-04-20T20:00",
+        "endDate" : "2016-04-20T22:00",
+	    "url" : "http://www.example.com/events/band/2016-04-20-2000",
+        "performer" : "Name of Organizer",
+        "description" : "beschreibung",
+	     "offers" : {
+	        "@type": "AggregateOffer",
+	        "url" : "http://www.example.com/events/band/2016-04-20-2000/tickets",
+	        "lowPrice" : "100",
+	        "offerCount" : "1839"
+	    },
+	    "location" :
 	    {
-      "@type" : "PostalAddress",
-	      "streetAddress" : "Beispielstaße 1",
-	      "addressLocality" : "Berlin",
-	      "postalCode" : "10243"
-	    }
-	  }
-}
-´
+	        "@type" : "Place",
+	        "sameAs" : "http://www.veranstaltungsort-berlin.de/",
+	        "name" : "Veranstaltungsort",
+	        "address" :
+	            {
+                  "@type" : "PostalAddress",
+	              "streetAddress" : "Beispielstaße 1",
+	              "addressLocality" : "Berlin",
+	              "postalCode" : "10243"
+	            }
+	      }
+	}
+
 
