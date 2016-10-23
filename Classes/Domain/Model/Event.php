@@ -1100,7 +1100,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         $this->introtextRegistrant = $introtextRegistrant;
     }
 
-    
+
 
     /**
      * Returns the storeInCitrix
@@ -1598,6 +1598,9 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         // first Text if internal or external registration is set.
         if (! $this->withRegistration ) {
             if (! $this->registrationUrl ) {
+                echo "<br>Line: " . __LINE__ . " : " . " File: " . __FILE__ . '<br>$s1 : '
+                    . var_export($s1, true) . "<hr>";
+
                 return false ;
             }
         }
@@ -1605,24 +1608,38 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         $now = new \DateTime('now') ;
 
         if( $this->registrationUntil < $now ) {
+            echo "<br>Line: " . __LINE__ . " : " . " File: " . __FILE__ . '<br>$s1 : '
+                . var_export($s1, true) . "<hr>";
+
             return false ;
         }
         if( $this->startDate < $now ) {
+            echo "<br>Line: " . __LINE__ . " : " . " File: " . __FILE__ . '<br>$s1 : '
+                . var_export($s1, true) . "<hr>";
+
             return false ;
         }
 
 		if ( $this->withRegistration ) {
 			// Internal Registration Process : check $this->availableSeats  Seats against Registered
 			if (($this->registeredSeats + $this->unconfirmedSeats +1) > ($this->availableSeats + $this->availableWaitingSeats)  ) {
+                echo "<br>Line: " . __LINE__ . " : " . " File: " . __FILE__ . '<br>$s1 : '
+                    . var_export($s1, true) . "<hr>";
 
-				return FALSE;
+                return FALSE;
 			}
 			if (($this->unconfirmedSeats + 1) > ($this->availableSeats) ) {
-				return FALSE;
+                echo "<br>Line: " . __LINE__ . " : " . " File: " . __FILE__ . '<br>$s1 : '
+                    . var_export($s1, true) . "<hr>";
+
+                return FALSE;
 			}
 		} else {
 			if (! $this->registrationUrl ) {
-				return FALSE ;
+                echo "<br>Line: " . __LINE__ . " : " . " File: " . __FILE__ . '<br>$s1 : '
+                    . var_export($s1, true) . "<hr>";
+
+                return FALSE ;
 			}
 		}
         // access rights are NOT part of this check .. see mustLoginRights() and hasAccessRights() ..
