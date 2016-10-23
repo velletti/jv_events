@@ -206,12 +206,14 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         // and return the new Fluid instance
         return $renderer;
     }
+    
     /**
      * function sendEmail
      *
      * @param \JVE\JvEvents\Domain\Model\Event $event
      * @param \JVE\JvEvents\Domain\Model\Registrant $registrant
      * @param string $partialName possible Values: organizer, registrant, developer or admin
+     * @throws \Exception
      * @param array $recipient
      * @return void
      */
@@ -225,9 +227,26 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 						$this->settings['register']['sendername']
 					 ) ;
 
-		/** @var \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
+        $signature = false ;
+        if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('mailsignature')) {
+            /** @var \Velletti\Mailsignature\Service\SignatureService $signatureService */
+            $signatureService = $this->objectManager->get("Velletti\\Mailsignature\\Service\\SignatureService");
+            $signature = $signatureService->getSignature($GLOBALS['TSFE']->sys_language_uid) ;
+         }
+        if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('nem_signature')) {
+            if (! $signature) {
+                /** @var \tx_nemsignature $signatureService */
+                $signatureService = $this->objectManager->get("tx_nemsignature");
+                $signature = $signatureService->getSignature($GLOBALS['TSFE']->sys_language_uid) ;
+            }
+            
+        }
+
+
+        /** @var \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
     	$renderer = $this->getEmailRenderer($templatePath = '' , '/Registrant/Email/' . $this->settings['LayoutRegister']   ) ;
 
+        $renderer->assign('signature', $signature);
 		$renderer->assign('registrant', $registrant);
         $renderer->assign('event', $event);
 
