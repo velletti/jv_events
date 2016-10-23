@@ -11,6 +11,11 @@
 			{event.location.zip} {event.location.city}<br />
 
 		</p>
+		<f:if condition="{event.introtextRegistrant}">
+			<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
+				{event.introtextRegistrant}
+			</p>
+		</f:if>
 
 		<h3 style="font-size: 22px; font-family: '{emConf.fontFamily}'; line-height: 1.25; margin: 0 0 20px; padding: 0;">
 			ID: E-{event.uid}-R-{registrant.uid} | <f:format.date format="d.m.Y">{registrant.created}</f:format.date>
@@ -64,6 +69,9 @@
 		{event.location.name}
 		{event.location.zip} {event.location.city}
 		*********************************
+
+		{event.introtextRegistrant}
+
 		{f:translate(key: 'register_head_participant_data' , default:'Participants Data')}
 		ID: {registrant.uid} | <f:format.date format="d.m.Y">{registrant.created}</f:format.date>
 		*********************************

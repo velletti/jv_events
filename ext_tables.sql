@@ -45,6 +45,7 @@ CREATE TABLE tx_jvevents_domain_model_event (
 	subject_organizer varchar(255) DEFAULT '' NOT NULL,
 	text_organizer text NOT NULL,
 	subject_registrant varchar(255) DEFAULT '' NOT NULL,
+	introtext_registrant text NOT NULL,
 	text_registrant text NOT NULL,
 	need_to_confirm tinyint(1) unsigned DEFAULT '0' NOT NULL,
 	is_recurring tinyint(1) unsigned DEFAULT '0' NOT NULL,
