@@ -121,10 +121,10 @@
 
 			<f:render partial="Event/Single/Partial{settings.LayoutSingle}/Row"
 				arguments="{title: 'tx_jvevents_domain_model_organizer.email', translate: '1', value: '{event.organizer.email}' }"/>
-
-			<f:render partial="Event/Single/Partial{settings.LayoutSingle}/Row"
-				arguments="{title: 'tx_jvevents_domain_model_organizer.phone', translate: '1', value: '{event.organizer.phone}' }"/>
-
+			<f:if condition="{event.organizer.phone}">
+				<f:render partial="Event/Single/Partial{settings.LayoutSingle}/Row"
+					arguments="{title: 'tx_jvevents_domain_model_organizer.phone', translate: '1', value: '{event.organizer.phone}' }"/>
+			</f:if>
 
 		</div>
 	</div>
