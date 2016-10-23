@@ -218,6 +218,9 @@
 		<trans-unit id="tx_jvevents_domain_model_event.text_registrant">
 			<source>Text Registrant</source>
 		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.Introtext_registrant">
+            <source>Intro Text Registrant</source>
+        </trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.unconfirmed_seats">
 			<source>Unconfirmed Seats</source>
 		</trans-unit>

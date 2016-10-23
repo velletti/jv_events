@@ -133,8 +133,11 @@
 			<source>Introtext of the Email to the Organizer. </source>
 		</trans-unit>
 		<trans-unit id="text_registrant.description">
-			<source>Introtext of the Email to the Registrant. </source>
+			<source>Text of the Email to the Registrant. </source>
 		</trans-unit>
+		<trans-unit id="introtext_registrant.description">
+            <source>Introtext of the Email to the Registrant. </source>
+        </trans-unit>
 		<trans-unit id="unconfirmed_seats.description">
 			<source>unconfirmed Seats: if you use the option: User must confirm, this is the amount of users, that did not click the link</source>
 		</trans-unit>

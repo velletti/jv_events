@@ -171,6 +171,10 @@
 			<target>Introtext für die Email an den Veranstalter. </target>
 		</trans-unit>
 		<trans-unit id="text_registrant.description" approved="yes">
+        			<source>text of the Email to the Registrant. </source>
+        			<target>Text für die Email an den Teilnehmer. </target>
+        		</trans-unit>
+		<trans-unit id="introtext_registrant.description" approved="yes">
 			<source>Introtext of the Email to the Registrant. </source>
 			<target>Introtext für die Email an den Teilnehmer. Hier können Sie Z.b. dem Teilnehmer zusätzliche Informationen zukommen lassen, die auf der Webseite nicht sichtbar sind. </target>
 		</trans-unit>

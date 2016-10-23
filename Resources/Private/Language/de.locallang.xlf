@@ -286,6 +286,10 @@
 			<source>Text Registrant</source>
 			<target>Betreff E-Email Teilnehmer</target>
 		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.introtext_registrant" approved="yes">
+            <source>Intro Text Registrant</source>
+            <target>Intro Text in E-Email an Teilnehmer</target>
+        </trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.unconfirmed_seats" approved="yes">
 			<source>Unconfirmed Seats</source>
 			<target>Unbestätigte Teilnehmer</target>
