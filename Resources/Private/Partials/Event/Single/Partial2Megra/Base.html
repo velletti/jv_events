@@ -106,10 +106,11 @@
 		</f:if>
 
 	</div>
-
-	<div class="tab-pane " id="jv_events_map" >
-		<f:render partial="GoogleMaps" arguments="{addresses: {0:event.location}, settings:settings}" />
-	</div>
+	<f:if condition="{event.location.lng}">
+		<div class="tab-pane " id="jv_events_map" >
+			<f:render partial="GoogleMaps" arguments="{addresses: {0:event.location}, settings:settings}" />
+		</div>
+	</f:if>
 	<div class="tab-pane" id="jv_events_contact">
 
 		<div class="well">
