@@ -231,13 +231,13 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('mailsignature')) {
             /** @var \Velletti\Mailsignature\Service\SignatureService $signatureService */
             $signatureService = $this->objectManager->get("Velletti\\Mailsignature\\Service\\SignatureService");
-            $signature = $signatureService->getSignature($GLOBALS['TSFE']->sys_language_uid) ;
+            $signature = $signatureService->getSignature( ) ;
          }
         if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('nem_signature')) {
             if (! $signature) {
                 /** @var \tx_nemsignature $signatureService */
                 $signatureService = $this->objectManager->get("tx_nemsignature");
-                $signature = $signatureService->getSignature($GLOBALS['TSFE']->sys_language_uid) ;
+                $signature = $signatureService->getSignature( ) ;
             }
             
         }

@@ -55,21 +55,23 @@ https://github.com/derekpunsalan/responsive-email/blob/master/README.md
 						</table>
 					</td>
 				</tr>
-				<tr style="font-size: 100%; font-family: '{emConf.fontFamily}'; line-height: 1.65; margin: 0; padding: 0;">
-					<td class="container" style="font-size: 100%; font-family: '{emConf.fontFamily}'; line-height: 1.65; display: block !important; clear: both !important; max-width: 580px !important; margin: 0 auto; padding: 0;">
-		
-						<!-- Message start -->
-						<table style="font-size: 100%; font-family: '{emConf.fontFamily}'; line-height: 1.65; width: 100% !important; border-collapse: collapse; margin: 0; padding: 0;">
-							<tr style="font-size: 100%; font-family: '{emConf.fontFamily}'; line-height: 1.65; margin: 0; padding: 0;">
-								<td align="center" style="font-size: 100%; font-family: '{emConf.fontFamily}'; line-height: 1.65; background: {emConf.BackGroundColor} none; margin: 0; padding: 30px 35px;" bgcolor="{emConf.BackGroundColor}">
-									<p style="font-size: 12px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; color: #888; text-align: center; margin: 0; padding: 0;" align="center">
-										{signature}
-									</p>
-								</td>
-							</tr>
-						</table>
-					</td>
-				</tr>
+				<f:if condition="{signature}">
+					<tr style="font-size: 100%; font-family: '{emConf.fontFamily}'; line-height: 1.65; margin: 0; padding: 0;">
+						<td class="container" style="font-size: 100%; font-family: '{emConf.fontFamily}'; line-height: 1.65; display: block !important; clear: both !important; max-width: 580px !important; margin: 0 auto; padding: 0;">
+
+							<!-- Message start -->
+							<table style="font-size: 100%; font-family: '{emConf.fontFamily}'; line-height: 1.65; width: 100% !important; border-collapse: collapse; margin: 0; padding: 0;">
+								<tr style="font-size: 100%; font-family: '{emConf.fontFamily}'; line-height: 1.65; margin: 0; padding: 0;">
+									<td align="center" style="font-size: 100%; font-family: '{emConf.fontFamily}'; line-height: 1.65; background: {emConf.BackGroundColor} none; margin: 0; padding: 30px 35px;" bgcolor="{emConf.BackGroundColor}">
+										<p style="font-size: 12px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; color: #888; text-align: center; margin: 0; padding: 0;" align="center">
+											{signature.html}
+										</p>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</f:if>
 			</table>
 		</body>
 	</html>
