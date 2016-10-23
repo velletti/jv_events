@@ -1598,24 +1598,22 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         // first Text if internal or external registration is set.
         if (! $this->withRegistration ) {
             if (! $this->registrationUrl ) {
-                echo "<br>Line: " . __LINE__ . " : " . " File: " . __FILE__ . '<br>$s1 : '
-                    . var_export($s1, true) . "<hr>";
 
-                return false ;
+                //  echo "<br>Line: " . __LINE__ . " : " . " File: " . __FILE__ . '<br>! $this->withRegistration and $this->registrationUrl ! set <hr>' ;
+
+                  return false ;
             }
         }
         // Check Dates :
         $now = new \DateTime('now') ;
 
         if( $this->registrationUntil < $now ) {
-            echo "<br>Line: " . __LINE__ . " : " . " File: " . __FILE__ . '<br>$s1 : '
-                . var_export($s1, true) . "<hr>";
+            //  echo "<br>Line: " . __LINE__ . " : " . " File: " . __FILE__ . '<br>$this->registrationUntil < $now " . $this->registrationUntil . "<" . $now . "<hr>";
 
             return false ;
         }
         if( $this->startDate < $now ) {
-            echo "<br>Line: " . __LINE__ . " : " . " File: " . __FILE__ . '<br>$s1 : '
-                . var_export($s1, true) . "<hr>";
+            //  echo "<br>Line: " . __LINE__ . " : " . " File: " . __FILE__ . '<br>$this->startDate < $now " . $this->startDate . "<" . $now . "<hr>";
 
             return false ;
         }
@@ -1623,14 +1621,12 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 		if ( $this->withRegistration ) {
 			// Internal Registration Process : check $this->availableSeats  Seats against Registered
 			if (($this->registeredSeats + $this->unconfirmedSeats +1) > ($this->availableSeats + $this->availableWaitingSeats)  ) {
-                echo "<br>Line: " . __LINE__ . " : " . " File: " . __FILE__ . '<br>$s1 : '
-                    . var_export($s1, true) . "<hr>";
+                //  echo "<br>Line: " . __LINE__ . " : " . " File: " . __FILE__ . '<br>$this->registeredSeats + $this->unconfirmedSeats +1) > ($this->availableSeats + $this->availableWaitingSeat <hr>';
 
                 return FALSE;
 			}
-			if (($this->unconfirmedSeats + 1) > ($this->availableSeats) ) {
-                echo "<br>Line: " . __LINE__ . " : " . " File: " . __FILE__ . '<br>$s1 : '
-                    . var_export($s1, true) . "<hr>";
+			if (($this->unconfirmedSeats + 1) > ($this->availableSeats) && ( $this->availableSeats > 0 )) {
+              //  echo "<br>Line: " . __LINE__ . " : " . " File: " . __FILE__ . '<br>$this->unconfirmedSeats + 1) > ($this->availableSeats) && ( $this->availableSeats > 0  <hr>';
 
                 return FALSE;
 			}
