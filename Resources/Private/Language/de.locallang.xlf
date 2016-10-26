@@ -133,6 +133,30 @@
 			<source>Waiting list Seats</source>
 			<target>Warteliste</target>
 		</trans-unit>
+
+
+		<trans-unit id="register.you_are_on_waiting_list">
+            <source>Your registration was successfull added to the Waiting list. Please wait for the Confirmation by the Organizer</source>
+            <target>Ihre Registrierung wurde erfolgreich zur Warteliste hinzugefügt. Bitte warten Sie auf die Bestätigung durch den Veranstalter.</target>
+        </trans-unit>
+        <trans-unit id="register.you_are_registered>
+            <source>Your registration was stored successfull. </source>
+            <target>Ihre Registrierung wurde erfolgreich durchgeführt.</target>
+        </trans-unit>
+        <trans-unit id="register.you_need_to_confirm">
+            <source>Your Need to confirm your registration. Please click the following button.</source>
+            <target>Sie müssen Ihre Registrierung noch durch 'Klick' auf den nachfolgenden Button bestätigen.</target>
+        </trans-unit>
+        <trans-unit id="register.button.confirm">
+            <source>Confirm registration</source>
+            <target>Registrierung bestätigen</target>
+        </trans-unit>
+
+        <trans-unit id="register.url.confirm_intro_text">
+            <source>if the button does not work, copy the following URL into your browser:</source>
+            <target>Wenn der Button nicht funktioniert, kopieren Sie bitte die nachfolgende URL in die Adresszeile Ihres Browsers:</target>
+        </trans-unit>
+
 		<trans-unit id="tx_jvevents_domain_model_event.citrix_uid" approved="yes">
 			<source>Citrix Uid</source>
 			<target>Citrix Uid</target>
