@@ -104,6 +104,7 @@
 		<trans-unit id="tx_jvevents_domain_model_event.your_registration">
 			<source>Your Registration</source>
 		</trans-unit>
+
 		<trans-unit id="tx_jvevents_domain_model_event.registrant">
 			<source>Participant</source>
 		</trans-unit>

@@ -104,6 +104,26 @@
 		<trans-unit id="tx_jvevents_domain_model_event.available_waiting_seats">
 			<source>Waiting list Seats</source>
 		</trans-unit>
+
+		<trans-unit id="register.you_are_on_waiting_list">
+            <source>Your registration was successfull added to the Waiting list. Please wait for the COnfirmation by the Organizer</source>
+        </trans-unit>
+        <trans-unit id="register.you_are_registered>
+            <source>Your registration was stored successfull. </source>
+        </trans-unit>
+        <trans-unit id="register.you_need_to_confirm">
+            <source>Your Need to confirm your registration. Please click the following button.</source>
+        </trans-unit>
+        <trans-unit id="register.button.confirm">
+            <source>Confirm registration</source>
+        </trans-unit>
+
+        <trans-unit id="register.url.confirm_intro_text">
+            <source>if the button does not work, copy the following URL into your browser:</source>
+        </trans-unit>
+
+
+
 		<trans-unit id="tx_jvevents_domain_model_event.citrix_uid">
 			<source>Citrix Uid</source>
 		</trans-unit>
@@ -413,6 +433,7 @@
 		<trans-unit id="tx_jvevents_event.list.no_events_found">
 			<source>No Events found with this search values</source>
 		</trans-unit>
+
 		</body>
 	</file>
 </xliff>
