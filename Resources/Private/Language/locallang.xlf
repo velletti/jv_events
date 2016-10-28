@@ -117,6 +117,12 @@
         <trans-unit id="register.button.confirm">
             <source>Confirm registration</source>
         </trans-unit>
+        <trans-unit id="list.register.button.register">
+            <source>Register</source>
+        </trans-unit>
+        <trans-unit id="list.register.button.subscribe">
+            <source>Subscribe</source>
+        </trans-unit>
 
         <trans-unit id="register.url.confirm_intro_text">
             <source>if the button does not work, copy the following URL into your browser:</source>

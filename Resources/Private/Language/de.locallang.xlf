@@ -151,7 +151,14 @@
             <source>Confirm registration</source>
             <target>Registrierung bestätigen</target>
         </trans-unit>
-
+        <trans-unit id="list.register.button.register">
+            <source>Register</source>
+             <target>Registrieren</target>
+        </trans-unit>
+        <trans-unit id="list.register.button.subscribe">
+            <source>Subscribe</source>
+             <target>Anmelden</target>
+        </trans-unit>
         <trans-unit id="register.url.confirm_intro_text">
             <source>if the button does not work, copy the following URL into your browser:</source>
             <target>Wenn der Button nicht funktioniert, kopieren Sie bitte die nachfolgende URL in die Adresszeile Ihres Browsers:</target>
