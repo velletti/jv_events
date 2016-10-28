@@ -4,12 +4,12 @@
 
 	<div class="well well-sm well-primary ">
 			<div class="row row-fluid">
-				<div class="col-sm-2 col-xs-4">
+				<div class="col-sm-2 col-xs-12">
 					<f:link.action pageUid="{settings.detailPid}" action="show" arguments="{event : event}">
 						{event.startDate -> f:format.date(format:"d.m.Y")}
 					</f:link.action>
 				</div>
-				<div class="col-sm-8 col-xs-8">
+				<div class="col-sm-8 col-xs-12">
 					<h4>
 						<f:link.action  pageUid="{settings.detailPid}" action="show" arguments="{event : event}">
 							{event.name}
