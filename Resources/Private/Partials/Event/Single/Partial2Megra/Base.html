@@ -126,6 +126,19 @@
 					arguments="{title: 'tx_jvevents_domain_model_organizer.phone', translate: '1', value: '{event.organizer.phone}' }"/>
 			</f:if>
 
+			<f:if condition="{event.isRegistrationPossible}">
+				<div class="row">
+					<div class="col-xs-12 text-right">
+						<event:regLink event="{event}" settings="{settings}" uriOnly="0">
+						<span class="btn btn-primary">
+							{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:list.register.button.subscribe' , default:'Anmelden')}
+						</span>
+						</event:regLink>
+					</div>
+
+				</div>
+
+			</f:if>
 		</div>
 	</div>
 
