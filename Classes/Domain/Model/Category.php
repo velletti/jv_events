@@ -47,7 +47,14 @@ class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @var int
      */
     protected $type = 0;
-    
+
+    /**
+     * type
+     *
+     * @var int
+     */
+    protected $blockRegistration = 0;
+
     /**
      * Returns the title
      *
@@ -90,4 +97,21 @@ class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         $this->type = $type;
     }
 
+    /**
+     * @return int
+     */
+    public function getBlockRegistration()
+    {
+        return $this->blockRegistration;
+    }
+
+    /**
+     * @param int $blockRegistration
+     */
+    public function setBlockRegistration($blockRegistration)
+    {
+        $this->blockRegistration = $blockRegistration;
+    }
+
+    
 }

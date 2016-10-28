@@ -272,6 +272,7 @@ CREATE TABLE tx_jvevents_domain_model_category (
 
 	title varchar(255) DEFAULT '' NOT NULL,
 	type int(11) DEFAULT '0' NOT NULL,
+	block_registration tinyint(1) unsigned DEFAULT '0' NOT NULL,
 
 	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
 	crdate int(11) unsigned DEFAULT '0' NOT NULL,

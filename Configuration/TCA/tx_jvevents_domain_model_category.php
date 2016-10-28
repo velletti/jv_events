@@ -10,7 +10,7 @@ return array(
 		'sortby' => 'sorting',
 		'versioningWS' => 2,
 		'versioning_followPages' => TRUE,
-
+		'requestUpdate' => 'type',
 		'languageField' => 'sys_language_uid',
 		'transOrigPointerField' => 'l10n_parent',
 		'transOrigDiffSourceField' => 'l10n_diffsource',
@@ -23,10 +23,10 @@ return array(
 		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('jv_events') . 'Resources/Public/Icons/tx_jvevents_domain_model_category.gif'
 	),
 	'interface' => array(
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, title, type',
+		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, title, type, block_registration',
 	),
 	'types' => array(
-		'1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, title, type, '),
+		'1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, title, type, block_registration'),
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),
@@ -103,13 +103,22 @@ return array(
 				'items' => array(
 					array('Event Category', '0'),
 					array('Location Category', '1'),
-					array('organizer Category', '2'),
+					array('Organizer Category', '2'),
 
 				),
 				'size' => 1,
 				'maxitems' => 1,
 				'eval' => 'trim'
 			),
+		),
+		'block_registration' => array(
+			'exclude' => 0,
+			'displayCond' => 'FIELD:type:=:0' ,
+			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_category.block_registration',
+			'config' => array(
+				'type' => 'check',
+				'default' => 0
+			)
 		),
 		
 	),

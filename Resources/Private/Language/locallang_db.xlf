@@ -14,6 +14,9 @@
 		<trans-unit id="tx_jvevents_domain_model_category.type">
 			<source>Type</source>
 		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_category.block_registration">
+            <source>Allow register to all events in this Category</source>
+        </trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event">
 			<source>Event</source>
 		</trans-unit>
