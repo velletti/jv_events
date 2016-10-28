@@ -188,7 +188,7 @@ return array(
 						'title' => 'LLL:EXT:allplan_tt_address_extended/Resources/Private/Language/locallang.xlf:jv_events_model_location.geocoder.title',
 						'icon' => 'EXT:jv_events/Resources/Public/Icons/wizard_geocoder.png',
 						'module' => array(
-							'name' => 'wizard_geocoder',
+							'name' => 'jv_events_wizard_geocoder',
 						),
 						'params' => array(
 							'mode' => 'point',
