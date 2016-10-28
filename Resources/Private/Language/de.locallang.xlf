@@ -139,7 +139,7 @@
             <source>Your registration was successfull added to the Waiting list. Please wait for the Confirmation by the Organizer</source>
             <target>Ihre Registrierung wurde erfolgreich zur Warteliste hinzugefügt. Bitte warten Sie auf die Bestätigung durch den Veranstalter.</target>
         </trans-unit>
-        <trans-unit id="register.you_are_registered>
+        <trans-unit id="register.you_are_registered">
             <source>Your registration was stored successfull. </source>
             <target>Ihre Registrierung wurde erfolgreich durchgeführt.</target>
         </trans-unit>
