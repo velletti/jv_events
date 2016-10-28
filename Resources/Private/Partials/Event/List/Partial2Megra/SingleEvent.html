@@ -44,6 +44,7 @@
 				</div>
 
 				<div class="col-sm-3 col-xs-4">
+
 					<f:if condition="{event.isRegistrationPossible}">
 						<div class="row">
 							<div class="col-xs-12 text-right">
@@ -53,6 +54,7 @@
 								</span>
 								</event:regLink>
 							</div>
+							<br/>
 						</div>
 
 					</f:if>
@@ -61,6 +63,7 @@
 							<f:if condition="{iteration.index} > 0 ">, </f:if>
 							{EventCategory.title}
 						</f:for>
+
 					</f:if>
 
 				</div>
