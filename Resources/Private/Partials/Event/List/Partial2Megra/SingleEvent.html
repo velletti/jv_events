@@ -34,9 +34,7 @@
 				<div class="col-sm-5 col-xs-12">
 					<f:if condition="{event.Tags}">
 						<div class="small">
-							<f:for each="{event.Tags}" as="Tag" iteration="iteration">
-								<f:if condition="{iteration.index} > 0 ">, </f:if>
-								{Tag.name}
+							<f:for each="{event.Tags}" as="Tag" iteration="iteration"><f:if condition="{iteration.index} > 0 ">, </f:if>{Tag.name}
 							</f:for>
 						</div>
 					</f:if>
@@ -60,9 +58,7 @@
 
 				<div class="col-sm-3 col-xs-6">
 					<f:if condition="{event.EventCategory}">
-						<f:for each="{event.EventCategory}" as="EventCategory" iteration="iteration">
-							<f:if condition="{iteration.index} > 0 ">, </f:if>
-							{EventCategory.title}
+						<f:for each="{event.EventCategory}" as="EventCategory" iteration="iteration"><f:if condition="{iteration.index} > 0 ">, </f:if>{EventCategory.title}
 						</f:for>
 
 					</f:if>
