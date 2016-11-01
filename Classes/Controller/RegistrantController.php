@@ -78,6 +78,23 @@ class RegistrantController extends BaseController
 		$tokenBase  = "P" . $this->settings['pageId'] . "-L" .$this->settings['sys_language_uid'] . "-E" . $event->getUid();
 
 		$this->settings['formToken'] = md5($tokenBase);
+		$this->settings['filter']['startDate'] = time() ;
+		
+		// $this->settings['debug'] = 2 ;
+		$otherEvents = false ;
+		if ( $event->getEventCategory() ) {
+			$this->settings['filter']['skipEvent'] = $event->getUid() ;
+			foreach ($event->getEventCategory() as $cat ) {
+				if( $cat->getBlockRegistration() ) {
+					$this->settings['filter']['categories'] = $cat->getUid() ;
+					/** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $events */
+					$otherEvents = $this->eventRepository->findByFilter(false, false,  $this->settings );
+
+				}
+			}
+		}
+
+		$this->view->assign('otherEvents', $otherEvents);
 
 		$this->view->assign('settings', $this->settings);
 		$this->view->assign('event', $event);

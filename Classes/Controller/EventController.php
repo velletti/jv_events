@@ -88,7 +88,7 @@ class EventController extends BaseController
         $events = $this->eventRepository->findByFilter(false, false,  $this->settings );
 
 
-        $this->view->assign('events', $events);
+		$this->view->assign('events', $events);
         // read settings from Flexform .. if not set, take it from typoscript setup
         if( intval( $this->settings['detailPid'] ) < 1 ) {
             $this->settings['detailPid'] = intval( $this->settings['link']['detailPidDefault']) ;
@@ -108,7 +108,8 @@ class EventController extends BaseController
      */
     public function showAction(\JVE\JvEvents\Domain\Model\Event $event)
     {
-        $this->view->assign('event', $event);
+		
+		$this->view->assign('event', $event);
     }
     
     /**

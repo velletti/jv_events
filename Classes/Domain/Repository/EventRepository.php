@@ -59,7 +59,10 @@ class EventRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 
         $constraints = array();
 		$query->getQuerySettings()->setRespectStoragePage(false);
-
+		if( $settings['filter']['skipEvent'] > 0 ) {
+			$constraints[] = $query->logicalNot( $query->equals("uid" , $settings['filter']['skipEvent'])) ;
+			
+		}
 		if( $settings['storagePid'] > 0 ) {
 			$constraints = $this->getPidContraints($constraints,  $settings , $configuration , $query );
 		}
