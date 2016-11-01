@@ -555,23 +555,23 @@
 		</trans-unit>
 		<trans-unit id="tx_jvevents_event.filter.category" approved="yes">
 			<source>Filter by category</source>
-			<target>Nach Kategorie filtern</target>
+			<target>Kategorie filtern</target>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_event.filter.city" approved="yes">
 			<source>Filter by city</source>
-			<target>Nach Ort Filtern</target>
+			<target>Ort Filtern</target>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_event.filter.location" approved="yes">
 			<source>Filter by location</source>
-			<target>Nach Veranstungsort filtern</target>
+			<target>Veranstungsort filtern</target>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_event.filter.month" approved="yes">
 			<source>Filter by month</source>
-			<target>Nach Monat filtern</target>
+			<target>Monat filtern</target>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_event.filter.tag" approved="yes">
 			<source>Filter by Tag</source>
-			<target> nach Schlagwort filtern</target>
+			<target>Schlagwort filtern</target>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_event.list.no_events_found" approved="yes">
 			<source>No Events found with this search values</source>
