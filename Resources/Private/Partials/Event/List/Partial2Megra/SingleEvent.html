@@ -58,8 +58,7 @@
 
 				<div class="col-sm-3 col-xs-6">
 					<f:if condition="{event.EventCategory}">
-						<f:for each="{event.EventCategory}" as="EventCategory" iteration="iteration"><f:if condition="{iteration.index} > 0 ">, </f:if>{EventCategory.title}
-						</f:for>
+						<f:for each="{event.EventCategory}" as="EventCategory" iteration="iteration"><f:if condition="{iteration.index} > 0 ">, </f:if><f:format.trim>{EventCategory.title}</f:format.trim></f:for>
 
 					</f:if>
 
