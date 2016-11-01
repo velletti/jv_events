@@ -38,10 +38,7 @@
 						<f:translate key="tx_jvevents_domain_model_category.name" />
 					</div>
 					<div class="col-sm-8">
-						<f:for each="{event.EventCategory}" as="EventCategory" iteration="iteration">
-							<f:if condition="{iteration.index} > 0 ">, </f:if>
-							{EventCategory.title}
-						</f:for>
+						<f:for each="{event.EventCategory}" as="EventCategory" iteration="iteration"><f:if condition="{iteration.index} > 0 ">, </f:if>{EventCategory.title}</f:for>
 					</div>
 				</div>
 			</f:if>
