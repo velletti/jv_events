@@ -1612,7 +1612,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
             return false ;
         }
-        if( $this->startDate < $now ) {
+        if( $this->startDate < $now && $this->registrationUntil < 1 ) {
             //  echo "<br>Line: " . __LINE__ . " : " . " File: " . __FILE__ . '<br>$this->startDate < $now " . $this->startDate . "<" . $now . "<hr>";
 
             return false ;
