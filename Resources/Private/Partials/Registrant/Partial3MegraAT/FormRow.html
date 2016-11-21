@@ -1,0 +1,31 @@
+
+		<div class="{cols}">
+			<fieldset class="form-group" >
+				<label for="{FieldName}">
+					<f:if condition="{translate}">
+						<f:then>
+							<f:translate key="{label}" />
+						</f:then>
+						<f:else>
+							{label}
+						</f:else>
+					</f:if>
+
+
+					<f:if condition="{required}">
+						<span class="required">*</span>
+					</f:if>
+
+				</label>
+				<f:if condition="{textarea}">
+					<f:then>
+						<f:form.textarea rows="3" class="form-control jv-events-req-{required}" id="jv_events_{FieldName}" property="{FieldName}" />
+					</f:then>
+					<f:else>
+						<f:form.textfield class="form-control jv-events-req-{required}" id="jv_events_{FieldName}" property="{FieldName}" />
+					</f:else>
+				</f:if>
+
+				<f:render partial="FieldError" section="Main" arguments="{for: 'registrant', field: '{FieldName}'}" />
+			</fieldset>
+		</div>

@@ -1,0 +1,14 @@
+<div class="{cols}">
+	<div class="checkbox" >
+		<label for="{FieldName}">
+			<f:form.checkbox class="checkbox jv-events-req-{required}" id="jv_events_{FieldName}" property="{FieldName}" value="1" checked=""/>
+
+			{label}
+			<f:if condition="{required}">
+				<span class="required">*</span>
+			</f:if>
+		</label>
+
+			<f:render partial="FieldError" section="Main" arguments="{for: 'registrant', field: '{FieldName}'}" />
+	</div>
+</div>

@@ -1,0 +1,89 @@
+
+<!-- DO NOT CHANGE the next LINE //-->
+<f:layout name="{layoutName}" xmlns:f="http://www.w3.org/1999/html" />
+
+
+This is the Email Subject sent to the organizer do
+<!-- DO NOT CHANGE the next LINE //-->
+<f:section name="subjectOrganizer">
+{f:translate(key: 'LLL:EXT:jv_events/Resources/Private/Langauage/locallang_db.xlf/tx_jvevents_domain_model_event.new_registration' , default: 'New Registration')}: -> {registrant.email} ->  <f:format.date format="d.m.Y">{event.startDate}</f:format.date> ID: {event.uid} - {event.name}
+</f:section>
+
+
+<!-- DO NOT CHANGE the next LINE //-->
+<f:section name="subjectRegistrant">
+	{f:translate(key: 'LLL:EXT:jv_events/Resources/Private/Langauage/locallang_db.xlf/tx_jvevents_domain_model_event.your_registration' , default: 'Your Registration')}: <f:format.date format="d.m.Y">{event.startDate}</f:format.date> - {event.name}
+</f:section>
+
+Next part renders the Inner text of the email format HTML
+based on
+https://github.com/derekpunsalan/responsive-email/blob/master/README.md
+<!-- DO NOT CHANGE the next LINE //-->
+<f:section name="htmltext">
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/xhtml" style="font-size: 100%; font-family: '{emConf.fontFamily}'; line-height: 1.65; margin: 0; padding: 0;">
+		<head>
+			<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+			<meta name="viewport" content="width=device-width" />
+		</head>
+		<body style="font-size: 100%; font-family: '{emConf.fontFamily}'; line-height: 1.65; width: 100% !important; height: 100%; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; background: {emConf.BackGroundColorBody}; margin: 0; padding: 0;" bgcolor="{emConf.BackGroundColorBody}">
+			<table class="body-wrap" style="font-size: 100%; font-family: '{emConf.fontFamily}'; line-height: 1.65; width: 100% !important; height: 100%; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; background: {emConf.BackGroundColorBody}; margin: 0; padding: 0;" bgcolor="{emConf.BackGroundColorBody}">
+				<tr style="font-size: 100%; font-family: '{emConf.fontFamily}'; line-height: 1.65; margin: 0; padding: 0;">
+					<td style="font-size: 100%; font-family: '{emConf.fontFamily}'; line-height: 1.65; display: block !important; clear: both !important; max-width: 580px !important; margin: 0 auto; padding: 0;">
+
+						<!-- Message start -->
+						<table style="font-size: 100%; font-family: '{emConf.fontFamily}'; line-height: 1.65; width: 100% !important; border-collapse: collapse; margin: 0; padding: 0;">
+							<tr style="font-size: 100%; font-family: '{emConf.fontFamily}'; line-height: 1.65; margin: 0; padding: 0;">
+								<td align="center" style="font-size: 100%; font-family: '{emConf.fontFamily}'; line-height: 1.65; color: {emConf.FontColor2}; background: {emConf.BackGroundColor2}; margin: 0; padding: 0 0 10px;" bgcolor="{emConf.BackGroundColor2}">
+									<f:if condition="{settings.EmConfiguration.imgUrl}">
+										<img src="{settings.servername}{settings.EmConfiguration.imgUrl}" style="width: 100%; height:auto; max-height:120px; margin-bottom:10px;" />
+									</f:if>
+
+									<h1 style="font-size: 32px; font-family: '{emConf.fontFamily}'; line-height: 1.25; max-width: 90%; text-transform: uppercase; margin: 0 auto; padding: 0;">
+										{f:translate(key: 'tx_jvevents_domain_model_event.registrant_email_header')}
+									</h1>
+								</td>
+							</tr>
+							<tr style="font-size: 100%; font-family: '{emConf.fontFamily}'; line-height: 1.65; margin: 0; padding: 0;">
+								<td class="content" style="font-size: 100%; font-family: '{emConf.fontFamily}'; line-height: 1.65; background: {emConf.BackGroundColor}; margin: 0; padding: 30px 35px;" bgcolor="{emConf.BackGroundColor}">
+
+									<f:render partial="{partial}"
+										arguments="{html: TRUE, event: event, registrant: registrant, settings: settings, emConf: emConf, LayoutName: layoutName}"/>
+
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<f:if condition="{signature}">
+					<tr style="font-size: 100%; font-family: '{emConf.fontFamily}'; line-height: 1.65; margin: 0; padding: 0;">
+						<td class="container" style="font-size: 100%; font-family: '{emConf.fontFamily}'; line-height: 1.65; display: block !important; clear: both !important; max-width: 580px !important; margin: 0 auto; padding: 0;">
+
+							<!-- Message start -->
+							<table style="font-size: 100%; font-family: '{emConf.fontFamily}'; line-height: 1.65; width: 100% !important; border-collapse: collapse; margin: 0; padding: 0;">
+								<tr style="font-size: 100%; font-family: '{emConf.fontFamily}'; line-height: 1.65; margin: 0; padding: 0;">
+									<td align="center" style="font-size: 100%; font-family: '{emConf.fontFamily}'; line-height: 1.65; background: {emConf.BackGroundColor} none; margin: 0; padding: 30px 35px;" bgcolor="{emConf.BackGroundColor}">
+										<p style="font-size: 12px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; color: #888; text-align: center; margin: 0; padding: 0;" align="center">
+											<f:format.html parseFuncTSPath="lib.jveventsRTE">{signature.html}</f:format.html>
+										</p>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</f:if>
+			</table>
+		</body>
+	</html>
+</f:section>
+
+
+Next part renders the Inner text of the email format plainText
+<!-- DO NOT CHANGE the next LINE //-->
+<f:section name="plaintext">
+	<f:render partial="{partial}"
+		arguments="{event: event, registrant: registrant, settings: settings, emConf: emConf, LayoutName: layoutName}"/>
+</f:section>
+
+
+

@@ -38,6 +38,7 @@ plugin.tx_jvevents_events {
 				# Privacy is for legal issues, hotprice is to use the invisible "honeypot" field to avoid against bots
 				1Allplan = gender,firstName,lastName,phone,email,privacy,hotprice
 				2Megra = gender,company,streetAndNr,firstName,lastName,country,zip,city,phone,email,privacy,hotprice
+				3MegraAT = gender,company,streetAndNr,firstName,lastName,country,zip,city,phone,email,privacy,hotprice,more1
 
 			}
 		}

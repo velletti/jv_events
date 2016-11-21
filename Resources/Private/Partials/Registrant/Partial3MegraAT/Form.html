@@ -1,0 +1,99 @@
+
+<f:form action="create" class="jv-events-regform" name="registrant" object="{registrant}" enctype="multipart/form-data">
+	<f:render partial="FormErrors" section="Main" arguments="{for: 'registrant'}" />
+	<f:render partial="FieldError" section="Main" arguments="{for: 'event' ,field: 'uid'}" />
+
+	<f:form.hidden class="hidden" name="event" value="{event.uid}" />
+	<f:form.textfield class="hidden" property="layoutRegister" value="{settings.LayoutRegister}" />
+	<f:form.textfield class="hidden" property="event" value="{event.uid}" />
+
+
+
+
+
+	<div class="row-fluid clearfix">
+		<f:if condition="{otherEvents}">
+			<div class="well col-xs-12">
+			<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRowCheck" arguments="{translate: 'FALSE', label: 'Auch für diese Veranstaltungen anmelden (Blockanmeldung)', FieldName : 'blockRegister' , settings: settings , cols: 'col-sm-12'}"/>
+
+				<f:for each="{otherEvents}" as="otherEvent" iteration="iteration">
+					<f:if condition="{otherEvent.isRegistrationPossible}">
+						{otherEvent.startDate -> f:format.date(format:"d.m.Y")}: {otherEvent.name} ({otherEvent.location.city})<BR/>
+					</f:if>
+				</f:for>
+			</div>
+		</f:if>
+		<div id="jv_events_js_error" class="hidden">
+			<div class="alert alert-warning">
+				{f:translate(key: 'register_send_error' , default: 'Some required Fields are empty')}
+			</div>
+		</div>
+		<div class="col-xs-12">
+			<h3>{f:translate(key: 'register_head_participant_data' , default:'Participants Data')}</h3>
+
+		</div>
+
+		<div class="clearfix hidden">
+			<f:comment><!-- three spam and xss protection fields  //--></f:comment>
+			<f:form.textfield class="hidden" property="startReg" value="{settings.startReg}" />
+			<f:form.textfield class="hidden" name="formToken" value="{settings.formToken}" />
+			<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRow" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.hotprice', FieldName : 'hotprice' , settings: settings , cols: 'col-sm-12' , required: '{f:if(condition: \'{settings.register.required.hotPrice}\' , then: \'TRUE\')}'}"/>
+		</div>
+
+		<div class="clearfix">
+			<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRowGender" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.gender', FieldName : 'gender' , settings: settings , cols: 'col-sm-6' , required: '{f:if(condition: \'{settings.register.required.gender}\' , then: \'TRUE\')}'}"/>
+		</div>
+
+		<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRow" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.first_name', FieldName : 'firstName' , settings: settings , cols: 'col-sm-6' , required: '{f:if(condition: \'{settings.register.required.firstName}\' , then: \'TRUE\')}'}"/>
+		<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRow" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.last_name', FieldName : 'lastName' , settings: settings , cols: 'col-sm-6' , required: '{f:if(condition: \'{settings.register.required.lastName}\' , then: \'TRUE\')}'}"/>
+
+		<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRow" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.email', FieldName : 'email' , settings: settings , cols: 'col-sm-6' , required: '{f:if(condition: \'{settings.register.required.email}\' , then: \'TRUE\')}'}"/>
+		<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRow" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.phone', FieldName : 'phone' , settings: settings , cols: 'col-sm-6' , required: '{f:if(condition: \'{settings.register.required.phone}\' , then: \'TRUE\')}'}"/>
+
+		<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRow" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.profession', FieldName : 'profession' , settings: settings , cols: 'col-sm-6' , required: '{f:if(condition: \'{settings.register.required.profession}\' , then: \'TRUE\')}'}"/>
+		<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRow" arguments="{translate: FALSE,label: 'Megra Mitgliedsnummer', FieldName : 'contactId' , settings: settings , cols: 'col-sm-6' , required: '{f:if(condition: \'{settings.register.required.contactId}\' , then: \'TRUE\')}'}"/>
+
+		<div class="clearfix">
+			&nbsp;
+		</div>
+
+		<div class="col-xs-12">
+			<h3>{f:translate(key: 'register_head_company_data' , default:'Company Data / Invoice Address')}</h3>
+		</div>
+		<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRow" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.company', FieldName : 'company' , settings: settings , cols: 'col-sm-6' ,  required: '{f:if(condition: \'{settings.register.required.company}\' , then: \'TRUE\')}'}"/>
+		<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRow" arguments="{translate: 'FALSE',label: 'UST Uid', FieldName : 'more1' , settings: settings , cols: 'col-sm-6' ,  required: '{f:if(condition: \'{settings.register.required.more1}\' , then: \'TRUE\')}'}"/>
+
+		<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRow" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.department', FieldName : 'department' , settings: settings , cols: 'col-sm-6' , required: '{f:if(condition: \'{settings.register.required.department}\' , then: \'TRUE\')}'}"/>
+		<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRow" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.street_and_nr', FieldName : 'streetAndNr' , settings: settings , cols: 'col-sm-6' , required: '{f:if(condition: \'{settings.register.required.streetAndNr}\' , then: \'TRUE\')}'}"/>
+
+		<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRow" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.zip', FieldName : 'zip' , settings: settings , cols: 'col-sm-6' , required: '{f:if(condition: \'{settings.register.required.zip}\' , then: \'TRUE\')}'}"/>
+		<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRow" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.city', FieldName : 'city' , settings: settings , cols: 'col-sm-6' , required: '{f:if(condition: \'{settings.register.required.city}\' , then: \'TRUE\')}'}"/>
+
+		<div class="clearfix">
+			<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRowCountry" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.country', FieldName : 'country' , settings: settings , cols: 'col-sm-6' , required: '{f:if(condition: \'{settings.register.required.country}\' , then: \'TRUE\')}'}"/>
+		</div>
+
+		<div class="clearfix">
+			&nbsp;
+		</div>
+		<div class="col-xs-12">
+			<h3>{f:translate(key: 'register_head_more_info' , default:'Additional Infos')}</h3>
+		</div>
+		<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRow" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.additional_info', FieldName : 'additionalInfo' , settings: settings , cols: 'col-sm-12' , textarea: '1' , required: '{f:if(condition: \'{settings.register.required.additionalInfo}\' , then: \'TRUE\')}'}"/>
+
+		<f:if condition="{settings.register.required.privacy}">
+			<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRowCheckPrivacy" arguments="{FieldName : 'privacy' , settings: settings , cols: 'col-sm-12'}"/>
+		</f:if>
+		<div class="clearfix text-right col-xs-12">
+			<span class="btn btn-primary" onclick="jv_events_submit()">
+				{f:translate(key: 'register_send' , default:'Register')}
+			</span>
+
+		</div>
+
+
+
+
+
+	</div>
+</f:form>

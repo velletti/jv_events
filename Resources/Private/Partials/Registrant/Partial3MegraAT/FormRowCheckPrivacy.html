@@ -1,0 +1,20 @@
+<div class="{cols}">
+	<div class="checkbox" >
+		<label for="{FieldName}">
+			<f:form.checkbox class="checkbox jv-events-req-TRUE" id="jv_events_{FieldName}" property="{FieldName}" value="1" checked=""/>
+
+			{f:translate(key: 'register.accept_privacy_intro' , default:'I have read and accept the ')}
+
+			<f:link.page pageUid="{settings.register.termsOfUsePid}" target="_blank">
+				{f:translate(key: 'register.terms_of_use' , default:'terms of use')}
+			</f:link.page>
+			{f:translate(key: 'register.accept_privacy.and' , default:' and ')}
+			<f:link.page pageUid="{settings.register.privacyPid}" target="_blank">
+				{f:translate(key: 'register.privacy' , default:'privacy policy')}
+			</f:link.page>
+			{f:translate(key: 'register.accept_privacy_end' , default:'.')} <span class="required">*</span>
+		</label>
+
+		<f:render partial="FieldError" section="Main" arguments="{for: 'registrant', field: '{FieldName}'}" />
+	</div>
+</div>

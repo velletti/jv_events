@@ -50,11 +50,13 @@ plugin.tx_jvevents_events {
             layouts {
                 1Allplan = Normal Event Registration
                 2Megra   = Extended Event Registration
+                3MegraAT   = Extended Event Registration mit UST Uid
             }
 
 			requiredFields {
 				1Allplan =	{$plugin.tx_jvevents_events.settings.register.requiredFields.1Allplan}
 				2Megra 	=	{$plugin.tx_jvevents_events.settings.register.requiredFields.2Megra}
+				3MegraAT 	=	{$plugin.tx_jvevents_events.settings.register.requiredFields.3MegraAT}
 			}
 			allowedCountrys =	{$plugin.tx_jvevents_events.settings.register.allowedCountrys}
 			senderName = {$plugin.tx_jvevents_events.settings.register.senderName}
