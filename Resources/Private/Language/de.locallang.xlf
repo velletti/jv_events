@@ -31,7 +31,7 @@
 		</trans-unit>
 		<trans-unit id="register_email_with_infos" approved="yes">
 			<source>You will soon get an email with all information about your registration!</source>
-			<target>In Kürze erhalten Sie ein E-Mail mit allen Informationen über Ihre Registrierung! </target>
+			<target>In Kürze erhalten Sie ein E-Mail mit allen Informationen über Ihre Anmeldung! </target>
 		</trans-unit>
 		<trans-unit id="register_gender_female" approved="yes">
 			<source>Mrs.</source>

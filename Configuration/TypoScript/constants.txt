@@ -34,9 +34,10 @@ plugin.tx_jvevents_events {
 			requiredFields {
 
 				# you should have at lease firstName,lastName,privacy,hotprice and email if you send out emails
+				# All posssible Fields :  gender,firstName,lastName,profession,contactId,customerId,company,streetAndNr,country,zip,city,phone,email,privacy,hotprice,additionalInfo
 				# Privacy is for legal issues, hotprice is to use the invisible "honeypot" field to avoid against bots
 				1Allplan = gender,firstName,lastName,phone,email,privacy,hotprice
-				2Megra = gender,firstName,lastName,city,phone,email,privacy,hotprice
+				2Megra = gender,company,streetAndNr,firstName,lastName,country,zip,city,phone,email,privacy,hotprice
 
 			}
 		}

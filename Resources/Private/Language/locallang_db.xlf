@@ -50,6 +50,11 @@
 		<trans-unit id="tx_jvevents_domain_model_event.event_type">
 			<source>Event Type</source>
 		</trans-unit>
+        <trans-unit id="tx_jvevents_domain_model_event.new_registration">
+            <source>Your Registration</source>
+        </trans-unit>
+
+
 		<trans-unit id="tx_jvevents_domain_model_event.event_type.default">
 			<source>Normal Event</source>
 		</trans-unit>
