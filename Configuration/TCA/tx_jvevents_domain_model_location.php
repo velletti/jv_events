@@ -183,9 +183,9 @@ return array(
 				'size' => 30,
 				'eval' => 'trim' ,
 				'wizards' => array(
-					'geocoder' => array(
+					'jv_events_wizard_geocoder' => array(
 						'type' => 'popup',
-						'title' => 'LLL:EXT:allplan_tt_address_extended/Resources/Private/Language/locallang.xlf:jv_events_model_location.geocoder.title',
+						'title' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:jv_events_model_location.geocoder.title',
 						'icon' => 'EXT:jv_events/Resources/Public/Icons/wizard_geocoder.png',
 						'module' => array(
 							'name' => 'jv_events_wizard_geocoder',
