@@ -62,6 +62,13 @@ class Registrant extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 	protected $event = 0 ;
 
 	/**
+	 * event
+	 *
+	 * @var string
+	 */
+	protected $otherEvents = '' ;
+
+	/**
 	 * layoutRegister
 	 *
 	 * @var string
@@ -117,34 +124,70 @@ class Registrant extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @var string
      */
     protected $company = '';
-    
+
+	/**
+	 * company
+	 *
+	 * @var string
+	 */
+	protected $company2 = '';
+
     /**
      * department
      *
      * @var string
      */
     protected $department = '';
-    
-    /**
+
+	/**
+	 * department
+	 *
+	 * @var string
+	 */
+	protected $department2 = '';
+
+
+	/**
      * streetAndNr
      *
      * @var string
      */
     protected $streetAndNr = '';
-    
+
+	/**
+	 * streetAndNr
+	 *
+	 * @var string
+	 */
+	protected $streetAndNr2 = '';
+
     /**
      * zip
      *
      * @var string
      */
     protected $zip = '';
-    
+
+	/**
+	 * zip
+	 *
+	 * @var string
+	 */
+	protected $zip2 = '';
+
     /**
      * city
      *
      * @var string
      */
     protected $city = '';
+
+	/**
+	 * city
+	 *
+	 * @var string
+	 */
+	protected $city2 = '';
     
     /**
      * country
@@ -152,8 +195,16 @@ class Registrant extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @var string
      */
     protected $country = '';
-    
-    /**
+
+	/**
+	 * country
+	 *
+	 * @var string
+	 */
+	protected $country2 = '';
+
+
+	/**
      * language
      *
      * @var string
@@ -1112,5 +1163,119 @@ class Registrant extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 		$this->confirmed = $confirmed;
 	}
 
+	/**
+	 * @return string
+	 */
+	public function getOtherEvents()
+	{
+		return $this->otherEvents;
+	}
+
+	/**
+	 * @param string $otherEvents
+	 */
+	public function setOtherEvents($otherEvents)
+	{
+		$this->otherEvents = $otherEvents;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getCompany2()
+	{
+		return $this->company2;
+	}
+
+	/**
+	 * @param string $company2
+	 */
+	public function setCompany2($company2)
+	{
+		$this->company2 = $company2;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getDepartment2()
+	{
+		return $this->department2;
+	}
+
+	/**
+	 * @param string $department2
+	 */
+	public function setDepartment2($department2)
+	{
+		$this->department2 = $department2;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getStreetAndNr2()
+	{
+		return $this->streetAndNr2;
+	}
+
+	/**
+	 * @param string $streetAndNr2
+	 */
+	public function setStreetAndNr2($streetAndNr2)
+	{
+		$this->streetAndNr2 = $streetAndNr2;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getZip2()
+	{
+		return $this->zip2;
+	}
+
+	/**
+	 * @param string $zip2
+	 */
+	public function setZip2($zip2)
+	{
+		$this->zip2 = $zip2;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getCity2()
+	{
+		return $this->city2;
+	}
+
+	/**
+	 * @param string $city2
+	 */
+	public function setCity2($city2)
+	{
+		$this->city2 = $city2;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getCountry2()
+	{
+		return $this->country2;
+	}
+
+	/**
+	 * @param string $country2
+	 */
+	public function setCountry2($country2)
+	{
+		$this->country2 = $country2;
+	}
+
+
+	
 
 }

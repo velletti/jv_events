@@ -12,7 +12,13 @@
 			{event.location.zip} {event.location.city}<br />
 
 		</p>
-
+		<f:if condition="{otherEvents}">
+			<h3  style="font-size: 22px; font-family: '{emConf.fontFamily}'; line-height: 1.25; margin: 0 0 10px; padding: 0;">Blockanmeldung '{event.eventCategory.0.title}': Weitere Termine</h3>
+			<f:for each="{otherEvents}" as="otherEvent">
+				<f:format.date format="d.m.Y">{otherEvent.startDate}</f:format.date>: {otherEvent.name}<br />
+			</f:for>
+			<br />
+		</f:if>
 		<h3 style="font-size: 22px; font-family: '{emConf.fontFamily}'; line-height: 1.25; margin: 0 0 20px; padding: 0;">
 			{f:translate(key: 'register_head_participant_data' , default:'Participants Data')}<br/>
 			ID: {registrant.uid} | <f:format.date format="d.m.Y">{registrant.created}</f:format.date>
@@ -42,7 +48,19 @@
 			{f:translate(key: 'tx_jvevents_domain_model_registrant.city')}: {registrant.city} <br/>
 			{f:translate(key: 'tx_jvevents_domain_model_registrant.country')}: {registrant.country} <br/>
 		</p>
-
+		<f:if condition="{registrant.company2}">
+			<h3 style="font-size: 22px; font-family: '{emConf.fontFamily}'; line-height: 1.25; margin: 0 0 20px; padding: 0;">
+				Abweichende Rechnungsanschrift
+			</h3>
+			<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
+				{f:translate(key: 'tx_jvevents_domain_model_registrant.company')}: {registrant.company2} <br/>
+				{f:translate(key: 'tx_jvevents_domain_model_registrant.department')}: {registrant.department2} <br/>
+				{f:translate(key: 'tx_jvevents_domain_model_registrant.street_and_nr')}: {registrant.streetAndNr2} <br/>
+				{f:translate(key: 'tx_jvevents_domain_model_registrant.zip')}: {registrant.zip2} <br/>
+				{f:translate(key: 'tx_jvevents_domain_model_registrant.city')}: {registrant.city2} <br/>
+				{f:translate(key: 'tx_jvevents_domain_model_registrant.country')}: {registrant.country2} <br/>
+			</p>
+		</f:if>
 
 		<table style="display: block; font-size: 100%; font-family: '{emConf.fontFamily}'; line-height: 1.65; width: 100% !important; border-collapse: collapse; margin: 0; padding: 0;">
 			<tr style="font-size: 100%; font-family: '{emConf.fontFamily}'; line-height: 1.65; margin: 0; padding: 0;">
@@ -55,9 +73,7 @@
 				</td>
 			</tr>
 		</table>
-		<p style="font-size: 12px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
-			Any Problems with event Modul? <a href="mailto:typo3@velletti.de" style="font-size: 100%; font-family: '{emConf.fontFamily}'; line-height: 1.65; color: {emConf.BackGroundColorBody2}; text-decoration: none; margin: 0; padding: 0;">Contact Jörg Velletti</a>.
-		</p>
+
 
 	</f:then>
 	<f:else>
@@ -86,6 +102,16 @@
 		{f:translate(key: 'tx_jvevents_domain_model_registrant.zip')}: {registrant.zip}
 		{f:translate(key: 'tx_jvevents_domain_model_registrant.city')}: {registrant.city}
 		{f:translate(key: 'tx_jvevents_domain_model_registrant.country')}: {registrant.country}
+
+		<f:if condition="{registrant.company2}">
+			*********************************
+			{f:translate(key: 'tx_jvevents_domain_model_registrant.company')}: {registrant.company2} <br/>
+			{f:translate(key: 'tx_jvevents_domain_model_registrant.department')}: {registrant.department2} <br/>
+			{f:translate(key: 'tx_jvevents_domain_model_registrant.street_and_nr')}: {registrant.streetAndNr2} <br/>
+			{f:translate(key: 'tx_jvevents_domain_model_registrant.zip')}: {registrant.zip2} <br/>
+			{f:translate(key: 'tx_jvevents_domain_model_registrant.city')}: {registrant.city2} <br/>
+			{f:translate(key: 'tx_jvevents_domain_model_registrant.country')}: {registrant.country2} <br/>
+		</f:if>
 
 		*********************************
 		{signature.plain}

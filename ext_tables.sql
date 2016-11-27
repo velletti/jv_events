@@ -199,6 +199,7 @@ CREATE TABLE tx_jvevents_domain_model_registrant (
 	pid int(11) DEFAULT '0' NOT NULL,
 
 	event int(11) unsigned DEFAULT '0' NOT NULL,
+  other_events varchar(100) DEFAULT '' NOT NULL,
 
 	fingerprint varchar(64) DEFAULT '' NOT NULL,
 	first_name varchar(100) DEFAULT '' NOT NULL,
@@ -211,6 +212,14 @@ CREATE TABLE tx_jvevents_domain_model_registrant (
 	zip varchar(10) DEFAULT '' NOT NULL,
 	city varchar(100) DEFAULT '' NOT NULL,
 	country varchar(3) DEFAULT '' NOT NULL,
+
+	company2 varchar(100) DEFAULT '' NOT NULL,
+	department2 varchar(100) DEFAULT '' NOT NULL,
+	street_and_nr2 varchar(100) DEFAULT '' NOT NULL,
+	zip2 varchar(10) DEFAULT '' NOT NULL,
+	city2 varchar(100) DEFAULT '' NOT NULL,
+	country2 varchar(3) DEFAULT '' NOT NULL,
+
 	language varchar(3) DEFAULT '' NOT NULL,
 	phone varchar(100) DEFAULT '' NOT NULL,
 	additional_info text NOT NULL,

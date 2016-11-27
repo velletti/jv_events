@@ -9,16 +9,34 @@
 
 
 
-
-
 	<div class="row-fluid clearfix">
 		<f:if condition="{otherEvents}">
 			<div class="well col-xs-12">
-			<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRowCheck" arguments="{translate: 'FALSE', label: 'Auch für diese Veranstaltungen anmelden (Blockanmeldung)', FieldName : 'blockRegister' , settings: settings , cols: 'col-sm-12'}"/>
+			<h4>Auch für diese Veranstaltungen anmelden (Blockanmeldung '{event.eventCategory.0.title}'):</h4>
 
 				<f:for each="{otherEvents}" as="otherEvent" iteration="iteration">
 					<f:if condition="{otherEvent.isRegistrationPossible}">
-						{otherEvent.startDate -> f:format.date(format:"d.m.Y")}: {otherEvent.name} ({otherEvent.location.city})<BR/>
+						<f:then>
+
+							<div class="col-xs-1">
+								<f:form.checkbox class="checkbox" id="jv_events_other_events_{otherEvent.uid}" name="jv_events_other_events[{otherEvent.uid}]" value="{otherEvent.uid}" checked=""/>
+							</div>
+							<div class="col-xs-11">
+								<label for="jv_events_other_events_{otherEvent.uid}">
+									{otherEvent.startDate -> f:format.date(format:"d.m.Y")}: {otherEvent.name} ({otherEvent.location.name})
+								</label>
+							</div>
+
+						</f:then>
+						<f:else>
+							<div class="col-xs-1">
+								 &nbsp;
+							</div>
+							<div class="col-xs-11">
+							{otherEvent.startDate -> f:format.date(format:"d.m.Y")}: {otherEvent.name} : -Ausgebucht-!
+							</div>
+						</f:else>
+
 					</f:if>
 				</f:for>
 			</div>
@@ -58,7 +76,7 @@
 		</div>
 
 		<div class="col-xs-12">
-			<h3>{f:translate(key: 'register_head_company_data' , default:'Company Data / Invoice Address')}</h3>
+			<h3>Firmendaten</h3>
 		</div>
 		<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRow" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.company', FieldName : 'company' , settings: settings , cols: 'col-sm-12' ,  required: '{f:if(condition: \'{settings.register.required.company}\' , then: \'TRUE\')}'}"/>
 
@@ -70,6 +88,22 @@
 
 		<div class="clearfix">
 			<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRowCountry" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.country', FieldName : 'country' , settings: settings , cols: 'col-sm-6' , required: '{f:if(condition: \'{settings.register.required.country}\' , then: \'TRUE\')}'}"/>
+		</div>
+
+		<div class="col-xs-12">
+			<br />
+			<h3>Abweichende Rechnungsanschrift (falls nötig)</h3>
+		</div>
+		<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRow" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.company', FieldName : 'company2' , settings: settings , cols: 'col-sm-12' ,  required: '{f:if(condition: \'{settings.register.required.company2}\' , then: \'TRUE\')}'}"/>
+
+		<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRow" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.department', FieldName : 'department2' , settings: settings , cols: 'col-sm-6' , required: '{f:if(condition: \'{settings.register.required.department2}\' , then: \'TRUE\')}'}"/>
+		<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRow" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.street_and_nr', FieldName : 'streetAndNr2' , settings: settings , cols: 'col-sm-6' , required: '{f:if(condition: \'{settings.register.required.streetAndNr2}\' , then: \'TRUE\')}'}"/>
+
+		<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRow" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.zip', FieldName : 'zip2' , settings: settings , cols: 'col-sm-6' , required: '{f:if(condition: \'{settings.register.required.zip2}\' , then: \'TRUE\')}'}"/>
+		<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRow" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.city', FieldName : 'city2' , settings: settings , cols: 'col-sm-6' , required: '{f:if(condition: \'{settings.register.required.city2}\' , then: \'TRUE\')}'}"/>
+
+		<div class="clearfix">
+			<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRow" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.country', FieldName : 'country2' , settings: settings , cols: 'col-sm-6' , required: '{f:if(condition: \'{settings.register.required.country2}\' , then: \'TRUE\')}'}"/>
 		</div>
 
 		<div class="clearfix">

@@ -23,7 +23,9 @@
 							<f:then>
 								ID: {settings.pageId}-L-{settings.sys_language_uid}-E-{event.uid}-R-{registrant.uid}<br>
 								<br>
-								{f:translate(key: '{settings.successMsg}')}
+								<f:if condition="{settings.successMsg}">
+									{f:translate(key: '{settings.successMsg}')}
+								</f:if>
 
 							</f:then>
 

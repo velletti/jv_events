@@ -215,10 +215,11 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      * @param string $partialName possible Values: organizer, registrant, developer or admin
      * @throws \Exception
      * @param array $recipient
+     * @param array|bool $otherEvents Array with IDs of other Events or False
      * @return void
      */
 
-    public function sendEmail(\JVE\JvEvents\Domain\Model\Event $event = NULL, \JVE\JvEvents\Domain\Model\Registrant $registrant = NULL , $partialName , $recipient ) {
+    public function sendEmail(\JVE\JvEvents\Domain\Model\Event $event = NULL, \JVE\JvEvents\Domain\Model\Registrant $registrant = NULL , $partialName , $recipient , $otherEvents) {
 		if (! \TYPO3\CMS\Core\Utility\GeneralUtility::validEmail( $this->settings['register']['senderEmail']  ) ) {
 			throw new \Exception('plugin.jv_events.settings.register.senderEmail is not a valid Email Address. Is needed as Sender E-mail');
 		}
@@ -249,6 +250,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         $renderer->assign('signature', $signature);
 		$renderer->assign('registrant', $registrant);
         $renderer->assign('event', $event);
+        $renderer->assign('otherEvents', $otherEvents);
 
         $renderer->assign('partial', "Registrant/Partial" . $this->settings['LayoutRegister'] . "/Emails/" . $partialName);
         $renderer->assign('settings', $this->settings);
@@ -262,7 +264,8 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 		$renderer->assign('emConf', \JVE\JvEvents\Utility\EmConfiguration::getEmConf( TRUE ) );
 
 		// and do the rendering magic
-        $subject =  '=?utf-8?B?'. base64_encode($renderer->render() ) .'?=' ;
+        //$subject =  '=?utf-8?B?'. base64_encode($renderer->render() ) .'?=' ;
+         $subject =  $renderer->render()  ;
 
 		$renderer->assign('registrant', $registrant);
 		$renderer->assign('layoutName', 'EmailPlain');
@@ -271,8 +274,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 		$renderer->assign('layoutName', 'EmailHtml');
 		$emailBody =  $renderer->render() ;
 
-
-		/** @var $message \TYPO3\CMS\Core\Mail\MailMessage */
+   		/** @var $message \TYPO3\CMS\Core\Mail\MailMessage */
 		$message = $this->objectManager->get('TYPO3\\CMS\\Core\\Mail\\MailMessage');
 		$message->setTo($recipient)
 			->setFrom($sender)

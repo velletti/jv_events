@@ -111,11 +111,47 @@ class RegistrantController extends BaseController
      */
     public function createAction(\JVE\JvEvents\Domain\Model\Event $event, \JVE\JvEvents\Domain\Model\Registrant $registrant) {
 		$this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
+		$otherEvents = FALSE ;
+		if ( is_array( $_POST['tx_jvevents_events']['jv_events_other_events'])) {
+
+			$registrant->setOtherEvents( serialize($_POST['tx_jvevents_events']['jv_events_other_events']) );
+
+			foreach ($_POST['tx_jvevents_events']['jv_events_other_events'] as $key => $uid ) {
+				/** @var \JVE\JvEvents\Domain\Model\Event $otherEvent */
+				if( intval($uid) > 0 ) {
+					$otherEvent = $this->eventRepository->findByUid( intval($uid )) ;
+					if( is_object($otherEvent)) {
+						if($otherEvent->isIsRegistrationPossible() ) {
+							$otherEvents[] = $otherEvent ;
+						}
+					}
+				}
+
+			}
+		}
+		if( $registrant->getCompany2() == '' ) {
+			if( $registrant->getDepartment2() <> '' ) {
+				$registrant->setCompany2(" - ") ;
+			}
+			if( $registrant->getZip2() <> '' ) {
+				$registrant->setCompany2(" - ") ;
+			}
+			if( $registrant->getCity2() <> '' ) {
+				$registrant->setCompany2(" - ") ;
+			}
+			if( $registrant->getStreetAndNr2() <> '' ) {
+				$registrant->setCompany2(" - ") ;
+			}
+			if( $registrant->getCountry2() <> '' ) {
+				$registrant->setCompany2(" - ") ;
+			}
+		}
 
 		$this->settings['success'] = FALSE ;
 		$this->settings['successMsg'] = FALSE ;
 
 		$registrant->setEvent($event->getUid() );
+
 		if ($event->getRegistrationPid() > 0) {
 			$registrant->setPid($event->getRegistrationPid());
 		} else {
@@ -163,11 +199,22 @@ class RegistrantController extends BaseController
 			} else {
 				$event->setRegisteredSeats($event->getRegisteredSeats() + 1);
 			}
+			if( is_array($otherEvents)) {
+				foreach ($otherEvents as $key => $otherEvent) {
+					if ($otherEvent->getNeedToConfirm() == 1) {
+						$otherEvent->setUnconfirmedSeats($otherEvent->getUnconfirmedSeats() + 1);
+					} else {
+						$otherEvent->setRegisteredSeats($otherEvent->getRegisteredSeats() + 1);
+					}
+				}
+			}
+
 			$this->registrantRepository->add($registrant);
+
+			$this->eventRepository->update($event);
 
 			$this->persistenceManager->persistAll();
 
-			$this->eventRepository->update($event);
 		}
 
 		if( $registrant->getHidden() == 0  ) {
@@ -184,7 +231,7 @@ class RegistrantController extends BaseController
 						$name  = '=?utf-8?B?'. base64_encode( $name) .'?=' ;
 					}
 					$this->sendEmail($event, $registrant, "Registrant" ,
-						array( $registrant->getEmail() => $name ));
+						array( $registrant->getEmail() => $name ) , $otherEvents);
 				}
 			}
 			if( $event->getNotifyOrganizer() ) {
@@ -193,7 +240,7 @@ class RegistrantController extends BaseController
 					if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($event->getOrganizer()->getEmail())) {
 
 						$this->sendEmail($event, $registrant, "Organizer" ,
-							array( $event->getOrganizer()->getEmail() => '=?utf-8?B?'. base64_encode( $event->getOrganizer()->getName() ) .'?=' ));
+							array( $event->getOrganizer()->getEmail() => '=?utf-8?B?'. base64_encode( $event->getOrganizer()->getName() ) .'?=' ) , $otherEvents);
 					}
 				}
 			}
