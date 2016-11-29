@@ -18,7 +18,7 @@
 		</f:if>
 
 		<f:if condition="{otherEvents}">
-			<h3  style="font-size: 22px; font-family: '{emConf.fontFamily}'; line-height: 1.25; margin: 0 0 10px; padding: 0;">Blockanmeldung '{event.eventCategory.0.title}': Weitere Termine</h3>
+			<h3  style="font-size: 22px; font-family: '{emConf.fontFamily}'; line-height: 1.25; margin: 0 0 10px; padding: 0;">Blockbuchung '{event.eventCategory.0.title}': Weitere Termine</h3>
 			<f:for each="{otherEvents}" as="otherEvent">
 				<f:format.date format="d.m.Y">{otherEvent.startDate}</f:format.date>: {otherEvent.name}<br />
 			</f:for>
