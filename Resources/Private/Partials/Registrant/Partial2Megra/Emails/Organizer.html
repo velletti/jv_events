@@ -70,6 +70,11 @@
 		{event.name}
 		{event.location.name}
 		{event.location.zip} {event.location.city}
+
+		Weitere Termine:
+		<f:for each="{otherEvents}" as="otherEvent">
+			<f:format.date format="d.m.Y">{otherEvent.startDate}</f:format.date>: {otherEvent.name}
+		</f:for>
 		*********************************
 		{f:translate(key: 'register_head_participant_data' , default:'Participants Data')}
 		ID: {registrant.uid} | <f:format.date format="d.m.Y">{registrant.created}</f:format.date>

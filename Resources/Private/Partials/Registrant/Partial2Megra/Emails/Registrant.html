@@ -73,6 +73,11 @@
 		{event.name}
 		{event.location.name}
 		{event.location.zip} {event.location.city}
+
+		Weitere Termine:
+		<f:for each="{otherEvents}" as="otherEvent">
+			<f:format.date format="d.m.Y">{otherEvent.startDate}</f:format.date>: {otherEvent.name}
+		</f:for>
 		*********************************
 		<f:if condition="{event.introtextRegistrant}">
 			{event.introtextRegistrant}
