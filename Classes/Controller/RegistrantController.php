@@ -267,8 +267,6 @@ class RegistrantController extends BaseController
 			$this->persistenceManager->persistAll();
 
 		}
-		echo "<br>Line: " . __LINE__ . " : " . " File: " . __FILE__ . '<br>$registrant->getCompany2()  : '
-			. var_export($registrant->getCompany2() , true) . "<hr>";
 		
 		if( $registrant->getHidden() == 0  ) {
 			$this->settings['success'] = TRUE ;
