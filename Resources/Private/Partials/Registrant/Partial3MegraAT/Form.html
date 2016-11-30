@@ -17,7 +17,27 @@
 				<h4>Auch für diese Veranstaltungen anmelden (Blockbuchung {event.eventCategory.0.title}):</h4>
 				<f:for each="{otherEvents}" as="otherEvent" iteration="iteration">
 					<f:if condition="{otherEvent.isRegistrationPossible}">
-						{otherEvent.startDate -> f:format.date(format:"d.m.Y")}: {otherEvent.name} ({otherEvent.location.city})<BR/>
+						<f:then>
+
+							<div class="col-xs-1">
+								<f:form.checkbox class="checkbox" id="jv_events_other_events_{otherEvent.uid}" name="jv_events_other_events[{otherEvent.uid}]" value="{otherEvent.uid}" checked=""/>
+							</div>
+							<div class="col-xs-11">
+								<label for="jv_events_other_events_{otherEvent.uid}">
+									{otherEvent.startDate -> f:format.date(format:"d.m.Y")}: {otherEvent.name} ({otherEvent.location.name})
+								</label>
+							</div>
+
+						</f:then>
+						<f:else>
+							<div class="col-xs-1">
+								&nbsp;
+							</div>
+							<div class="col-xs-11">
+								{otherEvent.startDate -> f:format.date(format:"d.m.Y")}: {otherEvent.name} : -Ausgebucht-!
+							</div>
+						</f:else>
+
 					</f:if>
 				</f:for>
 			</div>
@@ -41,6 +61,8 @@
 
 		<div class="clearfix">
 			<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRowGender" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.gender', FieldName : 'gender' , settings: settings , cols: 'col-sm-6' , required: '{f:if(condition: \'{settings.register.required.gender}\' , then: \'TRUE\')}'}"/>
+			<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRow" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.title', FieldName : 'title' , settings: settings , cols: 'col-sm-6' , required: '{f:if(condition: \'{settings.register.required.title}\' , then: \'TRUE\')}'}"/>
+
 		</div>
 
 		<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRow" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.first_name', FieldName : 'firstName' , settings: settings , cols: 'col-sm-6' , required: '{f:if(condition: \'{settings.register.required.firstName}\' , then: \'TRUE\')}'}"/>

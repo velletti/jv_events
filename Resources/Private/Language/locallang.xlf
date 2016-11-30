@@ -352,6 +352,9 @@
 		<trans-unit id="tx_jvevents_domain_model_registrant.first_name">
 			<source>First Name</source>
 		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.title">
+            <source>Title</source>
+        </trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_registrant.gender">
 			<source>Gender</source>
 		</trans-unit>

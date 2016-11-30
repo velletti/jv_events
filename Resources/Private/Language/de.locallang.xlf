@@ -461,6 +461,10 @@
 			<source>First Name</source>
 			<target>Vorname</target>
 		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.title" approved="yes">
+            <source>Title</source>
+            <target>Titel</target>
+        </trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_registrant.gender" approved="yes">
 			<source>Gender</source>
 			<target>Anrede</target>

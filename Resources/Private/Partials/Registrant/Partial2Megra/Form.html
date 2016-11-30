@@ -60,6 +60,7 @@
 
 		<div class="clearfix">
 			<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRowGender" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.gender', FieldName : 'gender' , settings: settings , cols: 'col-sm-6' , required: '{f:if(condition: \'{settings.register.required.gender}\' , then: \'TRUE\')}'}"/>
+			<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRow" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.title', FieldName : 'title' , settings: settings , cols: 'col-sm-6' , required: '{f:if(condition: \'{settings.register.required.title}\' , then: \'TRUE\')}'}"/>
 		</div>
 
 		<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRow" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.first_name', FieldName : 'firstName' , settings: settings , cols: 'col-sm-6' , required: '{f:if(condition: \'{settings.register.required.firstName}\' , then: \'TRUE\')}'}"/>

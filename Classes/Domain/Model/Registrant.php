@@ -81,8 +81,16 @@ class Registrant extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @var string
      */
     protected $firstName = '';
-    
-    /**
+
+	/**
+	 * title
+	 *
+	 * @var string
+	 */
+	protected $title = '';
+
+
+	/**
      * lastName
      *
      * @var string
@@ -1273,6 +1281,22 @@ class Registrant extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 	public function setCountry2($country2)
 	{
 		$this->country2 = $country2;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getTitle()
+	{
+		return $this->title;
+	}
+
+	/**
+	 * @param string $title
+	 */
+	public function setTitle($title)
+	{
+		$this->title = $title;
 	}
 
 

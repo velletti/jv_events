@@ -202,6 +202,7 @@ CREATE TABLE tx_jvevents_domain_model_registrant (
   other_events varchar(100) DEFAULT '' NOT NULL,
 
 	fingerprint varchar(64) DEFAULT '' NOT NULL,
+	title varchar(100) DEFAULT '' NOT NULL,
 	first_name varchar(100) DEFAULT '' NOT NULL,
 	last_name varchar(100) DEFAULT '' NOT NULL,
 	email varchar(255) DEFAULT '' NOT NULL,
