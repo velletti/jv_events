@@ -2,7 +2,9 @@
 return array(
 	'ctrl' => array(
 		'title'	=> 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_registrant',
-		'label' => 'first_name',
+		'label' => 'crdate',
+		'label_alt' => 'last_name,first_name,email,confirmed',
+		'label_alt_force' => TRUE ,
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',
@@ -18,14 +20,14 @@ return array(
 			'disabled' => 'hidden',
 
 		),
-		'searchFields' => 'first_name,last_name,email,gender,company,department,street_and_nr,zip,city,country,language,phone,additional_info,privacy,newsletter,customer_id,profession,recall,contact_id,username,more1,more2,more3,more4,more5bool,more6int,more7date,more8file,password,',
+		'searchFields' => 'first_name,last_name,email,title,company,department,street_and_nr,zip,city,country,language,phone,additional_info,customer_id,profession,contact_id,username,more1,more2,more3,more4,more5bool,more6int,more7date,more8file,company2,department2,street_and_nr2,zip2,city2,country2',
 		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('jv_events') . 'Resources/Public/Icons/tx_jvevents_domain_model_registrant.gif'
 	),
 	'interface' => array(
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, confirmed, hidden, first_name, last_name, email, gender, company, department, street_and_nr, zip, city, country, language, phone, additional_info, privacy, newsletter, customer_id, profession, recall, contact_id, username, more1, more2, more3, more4, more5bool, more6int, more7date, more8file, password',
+		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, confirmed, hidden, gender, title,first_name, last_name, email, company, department, street_and_nr, zip, city, country, language, phone, additional_info, privacy, newsletter, customer_id, profession, recall, contact_id, username, more1, more2, more3, more4, more5bool, more6int, more7date, more8file, password, company2, department2, street_and_nr2, zip2, city2, country2',
 	),
 	'types' => array(
-		'1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, confirmed, first_name, last_name, email, gender, company, department, street_and_nr, zip, city, country, language, phone, additional_info, privacy, newsletter, customer_id, profession, recall, contact_id, username, more1, more2, more3, more4, more5bool, more6int, more7date, more8file, password, '),
+		'1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, confirmed,  privacy, newsletter,  recall,other_events , --div--;UserData, gender, title, first_name, last_name,username,  profession, email,phone,language,contact_id , --div--;CompanyData, company, department, street_and_nr, zip, city, country,  customer_id, --div--; MoreData, additional_info,  more1, more2, more3, more4, more5bool, more6int, more7date, more8file, password,--div--;InvoiceAddress,company2,department2,street_and_nr2,zip2,city2,country2 '),
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),
@@ -96,6 +98,15 @@ return array(
 			'config' => array(
 				'type' => 'input',
 				'size' => 32,
+				'eval' => 'trim'
+			),
+		),
+		'title' => array(
+			'exclude' => 0,
+			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_registrant.title',
+			'config' => array(
+				'type' => 'input',
+				'size' => 10,
 				'eval' => 'trim'
 			),
 		),
@@ -189,6 +200,62 @@ return array(
 				'eval' => 'trim'
 			),
 		),
+
+		'company2' => array(
+			'exclude' => 1,
+			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_registrant.company',
+			'config' => array(
+				'type' => 'input',
+				'size' => 30,
+				'eval' => 'trim'
+			),
+		),
+		'department2' => array(
+			'exclude' => 1,
+			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_registrant.department',
+			'config' => array(
+				'type' => 'input',
+				'size' => 30,
+				'eval' => 'trim'
+			),
+		),
+		'street_and_nr2' => array(
+			'exclude' => 1,
+			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_registrant.street_and_nr',
+			'config' => array(
+				'type' => 'input',
+				'size' => 30,
+				'eval' => 'trim'
+			),
+		),
+		'zip2' => array(
+			'exclude' => 1,
+			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_registrant.zip',
+			'config' => array(
+				'type' => 'input',
+				'size' => 30,
+				'eval' => 'trim'
+			),
+		),
+		'city2' => array(
+			'exclude' => 1,
+			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_registrant.city',
+			'config' => array(
+				'type' => 'input',
+				'size' => 30,
+				'eval' => 'trim'
+			),
+		),
+		'country2' => array(
+			'exclude' => 1,
+			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_registrant.country',
+			'config' => array(
+				'type' => 'input',
+				'size' => 30,
+				'eval' => 'trim'
+			),
+		),
+
 		'language' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_registrant.language',
@@ -248,6 +315,15 @@ return array(
 			'config' => array(
 				'type' => 'input',
 				'size' => 30,
+				'eval' => 'trim'
+			),
+		),
+		'other_events' => array(
+			'exclude' => 1,
+			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_registrant.other_events',
+			'config' => array(
+				'type' => 'input',
+				'size' => 255,
 				'eval' => 'trim'
 			),
 		),
@@ -406,4 +482,4 @@ return array(
 			),
 		),
 	),
-);## EXTENSION BUILDER DEFAULTS END TOKEN - Everything BEFORE this line is overwritten with the defaults of the extension builder
+);

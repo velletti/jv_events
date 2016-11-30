@@ -131,6 +131,7 @@ class RegistrantController extends BaseController
 
 			}
 		}
+
 		if( $registrant->getCompany2() == '' ) {
 			if( $registrant->getDepartment2() <> '' ) {
 				$registrant->setCompany2(" - ") ;
@@ -174,7 +175,8 @@ class RegistrantController extends BaseController
 		if( is_object( $existingRegistration ) ) {
 			$oldReg = $existingRegistration->getFirst() ;
 			if( is_object( $oldReg ) ) {
-				$this->settings['alreadyRegistered'] = TRUE ;
+				// solve it by setting .. : allow Double registrations ...
+				// $this->settings['alreadyRegistered'] = TRUE ;
 			}
 		}
 		// set Status 0 unconfirmed || 1 Confirmed by Partizipant || 2 Confirmed by Organizer
@@ -192,6 +194,8 @@ class RegistrantController extends BaseController
 				$registrant->setConfirmed(0);
 			}
 
+
+
 			if ($event->getNeedToConfirm() == 1) {
 				$registrant->setHidden(1);
 				$this->settings['success'] = TRUE ;
@@ -201,24 +205,71 @@ class RegistrantController extends BaseController
 			} else {
 				$event->setRegisteredSeats($event->getRegisteredSeats() + 1);
 			}
+			$registrant->setCrdate(time() ) ;
+			$this->registrantRepository->add($registrant);
+			$this->persistenceManager->persistAll();
 			if( is_array($otherEvents)) {
+
 				foreach ($otherEvents as $key => $otherEvent) {
+					/** @var \JVE\JvEvents\Domain\Model\Registrant $newregistrant */
+					$newregistrant = $this->objectManager->get( "JVE\\JvEvents\\Domain\\Model\\Registrant")  ;
+					$properties = $registrant->_getProperties() ;
+					unset($properties['uid']) ;
+
+					foreach ($properties as $key => $value ) {
+						$newregistrant->_setProperty( $key , $value ) ;
+					}
+
 					if ($otherEvent->getNeedToConfirm() == 1) {
 						$otherEvent->setUnconfirmedSeats($otherEvent->getUnconfirmedSeats() + 1);
+
 					} else {
 						$otherEvent->setRegisteredSeats($otherEvent->getRegisteredSeats() + 1);
 					}
+
+					if (intval($otherEvent->getAvailableSeats()) > (intval($otherEvent->getRegisteredSeats()) + intval($otherEvent->getUnconfirmedSeats()))) {
+						// there are enough free Seats so no confirmation by organizer is needed
+						$newregistrant->setConfirmed(1);
+					} else {
+						// 2 possible situations: registration is using waitingLists
+						$newregistrant->setConfirmed(0);
+					}
+
+					if ($otherEvent->getNeedToConfirm() == 1) {
+						$newregistrant->setHidden(1);
+						$this->settings['success'] = TRUE ;
+						$this->settings['successMsg'] = "register_need_to_confirm" ;
+						$otherEvent->setUnconfirmedSeats($otherEvent->getUnconfirmedSeats() + 1);
+						// TODo : send Email to partizipant with LINK
+					} else {
+						$event->setRegisteredSeats($otherEvent->getRegisteredSeats() + 1);
+					}
+
+					if ($otherEvent->getRegistrationPid() > 0) {
+						$newregistrant->setPid($otherEvent->getRegistrationPid());
+					} else {
+						$newregistrant->setPid( $GLOBALS['TSFE']->id );
+					}
+					$registrant->setEvent( $otherEvent->getUid() ) ;
+					$this->registrantRepository->add($newregistrant);
+
+					$this->eventRepository->update($otherEvent);
+					$this->persistenceManager->persistAll();
+
+					unset( $newregistrant) ;
 				}
 			}
 
-			$this->registrantRepository->add($registrant);
+
 
 			$this->eventRepository->update($event);
 
 			$this->persistenceManager->persistAll();
 
 		}
-
+		echo "<br>Line: " . __LINE__ . " : " . " File: " . __FILE__ . '<br>$registrant->getCompany2()  : '
+			. var_export($registrant->getCompany2() , true) . "<hr>";
+		
 		if( $registrant->getHidden() == 0  ) {
 			$this->settings['success'] = TRUE ;
 
