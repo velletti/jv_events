@@ -29,6 +29,7 @@
 			<f:if condition="{registrant.gender}==1">{f:translate(key: 'register_gender_male')}</f:if>
 			<f:if condition="{registrant.gender}==2">{f:translate(key: 'register_gender_female')}</f:if>
 			<br/>
+			{f:translate(key: 'tx_jvevents_domain_model_registrant.title')}: {registrant.title} <br/>
 			{f:translate(key: 'tx_jvevents_domain_model_registrant.first_name')}: {registrant.firstname} <br/>
 			{f:translate(key: 'tx_jvevents_domain_model_registrant.last_name')}: {registrant.lastname} <br/>
 			{f:translate(key: 'tx_jvevents_domain_model_registrant.email')}: {registrant.email} <br/>
@@ -87,6 +88,7 @@
 		*********************************
 		{f:translate(key: 'tx_jvevents_domain_model_registrant.gender')}: 		<f:if condition="{registrant.gender}==1">{f:translate(key: 'register_gender_male')}</f:if><f:if condition="{registrant.gender}==2">{f:translate(key: 'register_gender_female')}</f:if>
 
+		{f:translate(key: 'tx_jvevents_domain_model_registrant.title')}: {registrant.title}
 		{f:translate(key: 'tx_jvevents_domain_model_registrant.first_name')}: {registrant.firstname}
 		{f:translate(key: 'tx_jvevents_domain_model_registrant.last_name')}: {registrant.lastname}
 		{f:translate(key: 'tx_jvevents_domain_model_registrant.email')}: {registrant.email}
