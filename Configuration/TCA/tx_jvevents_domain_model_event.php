@@ -109,7 +109,7 @@ $returnArray = array(
 		),
 	
 		'hidden' => array(
-			'exclude' => 1,
+			'exclude' => 0,
 			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.hidden',
 			'config' => array(
 				'type' => 'check',
