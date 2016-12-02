@@ -6,13 +6,13 @@
 This is the Email Subject sent to the organizer do
 <!-- DO NOT CHANGE the next LINE //-->
 <f:section name="subjectOrganizer">
-{f:translate(key: 'LLL:EXT:jv_events/Resources/Private/Langauage/locallang_db.xlf/tx_jvevents_domain_model_event.new_registration' , default: 'New Registration')}: -> {registrant.email} ->  <f:format.date format="d.m.Y">{event.startDate}</f:format.date> ID: {event.uid} - {event.name}
+{f:translate(key: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf/tx_jvevents_domain_model_event.new_registration' , default: 'Neue Anmeldung')}: -> {registrant.email} ->  <f:format.date format="d.m.Y">{event.startDate}</f:format.date> ID: {event.uid} - {event.name}
 </f:section>
 
 
 <!-- DO NOT CHANGE the next LINE //-->
 <f:section name="subjectRegistrant">
-	{f:translate(key: 'LLL:EXT:jv_events/Resources/Private/Langauage/locallang_db.xlf/tx_jvevents_domain_model_event.your_registration' , default: 'Your Registration')}: <f:format.date format="d.m.Y">{event.startDate}</f:format.date> - {event.name}
+	{f:translate(key: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf/tx_jvevents_domain_model_event.your_registration' , default: 'Ihre Anmeldung')}: <f:format.date format="d.m.Y">{event.startDate}</f:format.date> - {event.name}
 </f:section>
 
 Next part renders the Inner text of the email format HTML

@@ -21,7 +21,7 @@
             <source>Allow register to all events in this Category</source>
             <target>Erlaube die Anmeldung für alle Veranstaltungen in der Kategorie</target>
         </trans-unit>
- <trans-unit id="tx_jvevents_domain_model_event.new_registration">
+        <trans-unit id="tx_jvevents_domain_model_event.new_registration">
             <source>Your Registration</source>
             <target>Ihre Anmeldung</target>
         </trans-unit>
