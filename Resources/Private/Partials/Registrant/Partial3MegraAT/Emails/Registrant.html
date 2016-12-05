@@ -2,7 +2,14 @@
 <f:if condition="html">
 	<f:then>
 		<h2 style="font-size: 22px; font-family: '{emConf.fontFamily}'; line-height: 1.25; margin: 0 0 20px; padding: 0;">
-			<f:format.date format="d.m.Y">{event.startDate}</f:format.date>: {event.name}<br />
+			<f:if condition="{event.allDay}">
+				<f:then>
+					{event.startDate -> f:format.date(format:"d.m.Y")} {event.name}<br />
+				</f:then>
+				<f:else>
+					{event.startDate -> f:format.date(format:"d.m.Y")} um {event.startTime -> f:format.date( format:"H:i")}<f:if condition="{event.endTime}"> - {event.endTime -> f:format.date( format:"H:i")}</f:if> - {event.name}<br />
+				</f:else>
+			</f:if>
 		</h2>
 
 		<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
@@ -13,9 +20,18 @@
 		</p>
 		<f:if condition="{otherEvents}">
 			<h3  style="font-size: 22px; font-family: '{emConf.fontFamily}'; line-height: 1.25; margin: 0 0 10px; padding: 0;">'{event.eventCategory.0.title}': Weitere gebuchte Termine</h3>
-			<f:for each="{otherEvents}" as="otherEvent">
-				<f:format.date format="d.m.Y">{otherEvent.startDate}</f:format.date>: {otherEvent.name}<br />
-			</f:for>
+			<p>
+				<f:for each="{otherEvents}" as="otherEvent">
+					<f:if condition="{event.allDay}">
+						<f:then>
+							{event.startDate -> f:format.date(format:"d.m.Y")} {event.name}<br />
+						</f:then>
+						<f:else>
+							{event.startDate -> f:format.date(format:"d.m.Y")} um {event.startTime -> f:format.date( format:"H:i")}<f:if condition="{event.endTime}"> - {event.endTime -> f:format.date( format:"H:i")}</f:if> - {event.name}<br />
+						</f:else>
+					</f:if>
+				</f:for>
+			</p>
 			<br />
 		</f:if>
 		<f:if condition="{event.introtextRegistrant}">

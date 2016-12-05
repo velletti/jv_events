@@ -6,10 +6,10 @@
 
 			<f:if condition="{event.allDay}">
 				<f:then>
-					{event.startDate -> f:format.date(format:"d.m.Y")} - {event.startTime -> f:format.date( format:"H:i")}
+					{event.startDate -> f:format.date(format:"d.m.Y")}
 				</f:then>
 				<f:else>
-					{event.startDate -> f:format.date(format:"d.m.Y")}
+					{event.startDate -> f:format.date(format:"d.m.Y")} um {event.startTime -> f:format.date( format:"H:i")}<f:if condition="{event.endTime}"> - {event.endTime -> f:format.date( format:"H:i")}</f:if>
 				</f:else>
 
 			</f:if>
