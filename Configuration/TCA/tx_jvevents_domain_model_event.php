@@ -50,7 +50,7 @@ $returnArray = array(
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),
-		'dates' => array('showitem' => 'all_day,--linebreak--,start_date,start_time,--linebreak--,end_date,end_time'),
+		'dates' => array('showitem' => 'all_day,--linebreak--,start_date,start_time,end_date,end_time'),
 		'infos' => array('showitem' => 'name, --linebreak--, teaser '),
 		'relations' => array('showitem' => 'organizer, --linebreak--, location, --linebreak--,event_category, --linebreak--,tags '),
 		'frequent' => array('showitem' => 'is_recurring, --linebreak--, frequency, freq_exception, --linebreak--, is_exception_for,  '),
