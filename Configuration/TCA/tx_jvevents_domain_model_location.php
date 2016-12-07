@@ -203,9 +203,30 @@ return array(
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_location.link',
 			'config' => array(
 				'type' => 'input',
-				'size' => 30,
-				'eval' => 'trim'
-			),
+				'eval' => 'trim',
+				'size' => '30',
+				'max' => '255',
+				'softref' => 'typolink,url',
+				'wizards' => array(
+					'_PADDING' => 2,
+					'link' => array(
+						'type' => 'popup',
+						'title' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_location.link',
+						'icon' => 'link_popup.gif',
+						'module' => array(
+							'name' => 'wizard_element_browser',
+							'urlParameters' => array(
+								'mode' => 'wizard',
+								'act' => 'url|page'
+							)
+						),
+						'params' => array(
+							'blindLinkOptions' => 'mail,file,spec,folder',
+						),
+						'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
+					),
+				)
+			)
 		),
 		'email' => array(
 			'exclude' => 0,
