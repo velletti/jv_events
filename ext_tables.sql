@@ -18,8 +18,7 @@ CREATE TABLE tx_jvevents_domain_model_event (
 	start_time int(11) DEFAULT '0' NOT NULL,
 	end_date int(11) DEFAULT '0' NOT NULL,
 	end_time int(11) DEFAULT '0' NOT NULL,
-	internalurl text,
-	externalurl text,
+	url text,
 	access text NOT NULL,
 
 	with_registration tinyint(1) unsigned DEFAULT '0' NOT NULL,

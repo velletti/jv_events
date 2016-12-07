@@ -28,7 +28,7 @@
 
 		<trans-unit id="tx_jvevents_domain_model_event" approved="yes">
 			<source>Event</source>
-			<target>Event</target>
+			<target>Veranstaltung</target>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.access" approved="yes">
 			<source>Access</source>
@@ -36,7 +36,7 @@
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.all_day" approved="yes">
 			<source>All Day</source>
-			<target>Event ohne Uhrzeit</target>
+			<target>Veranstaltung ohne Uhrzeit</target>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.available_seats" approved="yes">
 			<source>Available Seats</source>
@@ -64,23 +64,19 @@
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.event_category" approved="yes">
 			<source>Event Category</source>
-			<target>Event Kategorie</target>
+			<target>Veranstaltungskategorie</target>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.event_type" approved="yes">
 			<source>Event Type</source>
-			<target>Event Typ</target>
+			<target>Veranstaltungstyp</target>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.event_type.default" approved="yes">
-			<source>Normal Event</source>
-			<target>Normales Event</target>
+			<source>Regular Event</source>
+			<target>Normale Veranstaltung</target>
 		</trans-unit>
-		<trans-unit id="tx_jvevents_domain_model_event.event_type.externalLink" approved="yes">
-			<source>external Link shows Event Details</source>
-			<target>Externer Link zu Event Details</target>
-		</trans-unit>
-		<trans-unit id="tx_jvevents_domain_model_event.event_type.internalLink" approved="yes">
-			<source>internal Link shows Event Details</source>
-			<target>Interner Link zu Event Details</target>
+		<trans-unit id="tx_jvevents_domain_model_event.event_type.link" approved="yes">
+			<source>Link shows event details</source>
+			<target>Link zu Veranstaltungs-Details</target>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.files" approved="yes">
 			<source>Files</source>
@@ -104,7 +100,7 @@
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.is_recurring" approved="yes">
 			<source>Is Recurring</source>
-			<target>Regelmäßiges Event</target>
+			<target>Regelmäßige Veranstaltung</target>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.location" approved="yes">
 			<source>Location</source>
@@ -116,7 +112,7 @@
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.name" approved="yes">
 			<source>Name</source>
-			<target>Name des Events</target>
+			<target>Name der Veranstaltung</target>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.need_to_confirm" approved="yes">
 			<source>Need To Confirm</source>
@@ -215,7 +211,7 @@
 			<target>Kurztext</target>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.teaserImage" approved="yes">
-			<source>teaser Image</source>
+			<source>Teaser Image</source>
 			<target>Vorschaubild (klein)</target>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.test_registrant" approved="yes">

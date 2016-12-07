@@ -56,13 +56,10 @@
 
 
 		<trans-unit id="tx_jvevents_domain_model_event.event_type.default">
-			<source>Normal Event</source>
+			<source>Regular Event</source>
 		</trans-unit>
-		<trans-unit id="tx_jvevents_domain_model_event.event_type.externalLink">
-			<source>external Link shows Event Details</source>
-		</trans-unit>
-		<trans-unit id="tx_jvevents_domain_model_event.event_type.internalLink">
-			<source>internal Link shows Event Details</source>
+		<trans-unit id="tx_jvevents_domain_model_event.event_type.link">
+			<source>Link shows event details</source>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.files">
 			<source>Files</source>
@@ -165,7 +162,7 @@
 			<source>Teaser</source>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.teaserImage">
-			<source>teaser Image</source>
+			<source>Teaser Image</source>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.test_registrant">
 			<source>Test Registrant</source>

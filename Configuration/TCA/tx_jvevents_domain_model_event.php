@@ -27,18 +27,13 @@ $returnArray = array(
 		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('jv_events') . 'Resources/Public/Icons/tx_jvevents_domain_model_event.gif'
 	),
 	'interface' => array(
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, event_type, teaser, description, images, files, all_day, start_date, start_time, end_date, end_time, access, with_registration, registration_until, registration_access, store_in_citrix, citrix_uid, store_in_sales_force, marketing_process_id, sales_force_record_type, sales_force_event_id, sales_force_session_id, available_seats,available_waiting_seats, registered_seats, unconfirmed_seats, notify_organizer, notify_registrant, subject_organizer, text_organizer, subject_registrant,introtext_registrant, text_registrant, need_to_confirm, is_recurring, frequency, freq_exception, is_exception_for, organizer, location, registrant, event_category, tags, internalurl,externalurl,',
+		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, event_type, teaser, description, images, files, all_day, start_date, start_time, end_date, end_time, access, with_registration, registration_until, registration_access, store_in_citrix, citrix_uid, store_in_sales_force, marketing_process_id, sales_force_record_type, sales_force_event_id, sales_force_session_id, available_seats,available_waiting_seats, registered_seats, unconfirmed_seats, notify_organizer, notify_registrant, subject_organizer, text_organizer, subject_registrant,introtext_registrant, text_registrant, need_to_confirm, is_recurring, frequency, freq_exception, is_exception_for, organizer, location, registrant, event_category, tags, url,',
 	),
 	'types' => array(
-		'0' => array('showitem' => 'event_type,externalurl,--palette--;;dates,--palette--;;infos,
+		'0' => array('showitem' => 'event_type,url,--palette--;;dates,--palette--;;infos,
 		--div--;Advanced, --palette--;;language, --palette--;;frequent,
 		--div--;Relations, --palette--;;relations,
 		--div--;Files, teaserImage, files,
-		--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, --palette--;;access,'),
-		'1' => array('showitem' => 'event_type,internalurl,--palette--;;dates,--palette--;;infos,
-		--div--;Advanced, --palette--;;language, --palette--;;frequent,
-		--div--;Relations, --palette--;;relations,
-		--div--;Files, teaserImage,files,
 		--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, --palette--;;access,'),
 		'2' => array('showitem' => 'event_type,--palette--;;dates,--palette--;;infos,description;;;richtext:rte_transform[mode=ts_links],
 		--div--;Advanced, --palette--;;language, --palette--;;frequent,
@@ -155,8 +150,7 @@ $returnArray = array(
 				'type' => 'select',
 				'renderType' => 'selectSingle',
 				'items' => array(
-					array('LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.event_type.externalLink', 0),
-					array('LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.event_type.internalLink', 1),
+					array('LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.event_type.link', 0),
 					array('LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.event_type.default', 2),
 				),
 				'size' => 1,
@@ -175,9 +169,9 @@ $returnArray = array(
 				'eval' => 'trim,required'
 			),
 		),
-		'internalurl' => [
+		'url' => [
 			'exclude' => 0,
-			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.event_type.internalLink',
+			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.event_type.link',
 			'config' => [
 				'type' => 'input',
 				'size' => '30',
@@ -192,19 +186,12 @@ $returnArray = array(
 						'module' => [
 							'name' => 'wizard_link',
 						],
+						'params' => array(
+							'blindLinkOptions' => 'mail,spec,folder',
+						),
 						'JSopenParams' => 'height=600,width=800,status=0,menubar=0,scrollbars=1'
 					]
 				],
-				'softref' => 'typolink'
-			]
-		],
-		'externalurl' => [
-			'exclude' => 0,
-			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.event_type.externalLink',
-			'config' => [
-				'type' => 'input',
-				'size' => 50,
-				'eval' => 'required',
 				'softref' => 'typolink'
 			]
 		],
