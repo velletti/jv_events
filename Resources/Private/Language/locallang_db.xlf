@@ -59,7 +59,7 @@
 			<source>Regular Event</source>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.event_type.link">
-			<source>Link shows event details</source>
+			<source>Internal / external page shows event details</source>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.files">
 			<source>Files</source>

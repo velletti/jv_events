@@ -75,8 +75,8 @@
 			<target>Normale Veranstaltung</target>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.event_type.link" approved="yes">
-			<source>Link shows event details</source>
-			<target>Link zu Veranstaltungs-Details</target>
+			<source>Internal / external page shows event details</source>
+			<target>Interne / externe Seite beinhaltet die Veranstaltungs-Details</target>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.files" approved="yes">
 			<source>Files</source>
