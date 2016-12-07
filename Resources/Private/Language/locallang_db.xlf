@@ -201,13 +201,13 @@
 			<source>Email</source>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_location.lat">
-			<source>Lat</source>
+			<source>Latitude</source>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_location.link">
 			<source>Link</source>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_location.lng">
-			<source>Lng</source>
+			<source>Longitude</source>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_location.location_category">
 			<source>Location Category</source>

@@ -263,16 +263,16 @@
 			<target>Email</target>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_location.lat" approved="yes">
-			<source>Lat</source>
-			<target>Lat</target>
+			<source>Latitude</source>
+			<target>Latitude</target>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_location.link" approved="yes">
 			<source>Link</source>
 			<target>Link</target>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_location.lng" approved="yes">
-			<source>Lng</source>
-			<target>Lng</target>
+			<source>Longitude</source>
+			<target>Longitude</target>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_location.location_category" approved="yes">
 			<source>Location Category</source>
