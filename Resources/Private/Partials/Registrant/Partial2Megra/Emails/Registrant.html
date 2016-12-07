@@ -24,12 +24,12 @@
 			<h3  style="font-size: 22px; font-family: '{emConf.fontFamily}'; line-height: 1.25; margin: 0 0 10px; padding: 0;">'{event.eventCategory.0.title}': Weitere gebuchte Termine</h3>
 			<p>
 				<f:for each="{otherEvents}" as="otherEvent">
-					<f:if condition="{event.allDay}">
+					<f:if condition="{otherEvent.allDay}">
 						<f:then>
-							{event.startDate -> f:format.date(format:"d.m.Y")} {event.name}<br />
+							{otherEvent.startDate -> f:format.date(format:"d.m.Y")} {otherEvent.name}<br />
 						</f:then>
 						<f:else>
-							{event.startDate -> f:format.date(format:"d.m.Y")} um {event.startTime -> f:format.date( format:"H:i")}<f:if condition="{event.endTime}"> - {event.endTime -> f:format.date( format:"H:i")}</f:if> - {event.name}<br />
+							{otherEvent.startDate -> f:format.date(format:"d.m.Y")} um {otherEvent.startTime -> f:format.date( format:"H:i")}<f:if condition="{otherEvent.endTime}"> - {otherEvent.endTime -> f:format.date( format:"H:i")}</f:if> - {otherEvent.name}<br />
 						</f:else>
 					</f:if>
 				</f:for>
@@ -80,7 +80,9 @@
 				{f:translate(key: 'tx_jvevents_domain_model_registrant.country')}: {registrant.country2} <br/>
 			</p>
 		</f:if>
-
+		<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
+			{registrant.additionalInfo}
+		</p>
 
 
 	</f:then>
