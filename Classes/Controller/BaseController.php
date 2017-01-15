@@ -219,82 +219,93 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      * @return void
      */
 
-    public function sendEmail(\JVE\JvEvents\Domain\Model\Event $event = NULL, \JVE\JvEvents\Domain\Model\Registrant $registrant = NULL , $partialName , $recipient , $otherEvents) {
-		if (! \TYPO3\CMS\Core\Utility\GeneralUtility::validEmail( $this->settings['register']['senderEmail']  ) ) {
-			throw new \Exception('plugin.jv_events.settings.register.senderEmail is not a valid Email Address. Is needed as Sender E-mail');
-		}
-		$sender = array( $this->settings['register']['senderEmail']
-					=>
-						$this->settings['register']['sendername']
-					 ) ;
+    public function sendEmail(\JVE\JvEvents\Domain\Model\Event $event = NULL, \JVE\JvEvents\Domain\Model\Registrant $registrant = NULL , $partialName , $recipient , $otherEvents)
+    {
+        if (!\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($this->settings['register']['senderEmail'])) {
+            throw new \Exception('plugin.jv_events.settings.register.senderEmail is not a valid Email Address. Is needed as Sender E-mail');
+        }
+        $sender = array($this->settings['register']['senderEmail']
+        =>
+            $this->settings['register']['sendername']
+        );
 
-        $signature = false ;
+        $signature = false;
         if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('mailsignature')) {
             /** @var \Velletti\Mailsignature\Service\SignatureService $signatureService */
             $signatureService = $this->objectManager->get("Velletti\\Mailsignature\\Service\\SignatureService");
-            $signature = $signatureService->getSignature( ) ;
-         }
+            $signature = $signatureService->getSignature();
+        }
         if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('nem_signature')) {
-            if (! $signature) {
+            if (!$signature) {
                 /** @var \tx_nemsignature $signatureService */
                 $signatureService = $this->objectManager->get("tx_nemsignature");
-                $signature = $signatureService->getSignature( ) ;
+                $signature = $signatureService->getSignature();
             }
-            
+
         }
 
 
         /** @var \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
-    	$renderer = $this->getEmailRenderer($templatePath = '' , '/Registrant/Email/' . $this->settings['LayoutRegister']   ) ;
+        $renderer = $this->getEmailRenderer($templatePath = '', '/Registrant/Email/' . $this->settings['LayoutRegister']);
 
         $renderer->assign('signature', $signature);
-		$renderer->assign('registrant', $registrant);
+        $renderer->assign('registrant', $registrant);
         $renderer->assign('event', $event);
         $renderer->assign('otherEvents', $otherEvents);
 
         $renderer->assign('partial', "Registrant/Partial" . $this->settings['LayoutRegister'] . "/Emails/" . $partialName);
         $renderer->assign('settings', $this->settings);
 
-		$layoutPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName( "typo3conf/ext/jv_events/Resources/Private/Layouts/" ) ;
-		$renderer->setLayoutRootPaths( array( 0 => $layoutPath) ) ;
+        $layoutPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName("typo3conf/ext/jv_events/Resources/Private/Layouts/");
+        $renderer->setLayoutRootPaths(array(0 => $layoutPath));
 
-		$renderer->assign('layoutName', 'EmailSubject' . $partialName);
+        $renderer->assign('layoutName', 'EmailSubject' . $partialName);
 
-		// read Colors and font settings from EmConfiguration as object
-		$renderer->assign('emConf', \JVE\JvEvents\Utility\EmConfiguration::getEmConf( TRUE ) );
+        // read Colors and font settings from EmConfiguration as object
+        $renderer->assign('emConf', \JVE\JvEvents\Utility\EmConfiguration::getEmConf(TRUE));
 
-		// and do the rendering magic
-         $subject =  str_replace( "\r" , "" , $renderer->render() )  ;
-        $subject =  str_replace( "\n" , "" , $subject )  ;
-        $subject =  str_replace( "\t" , "" , $subject ) ;
+        // and do the rendering magic
+        $subject = str_replace("\r", "", $renderer->render());
+        $subject = str_replace("\n", "", $subject);
+        $subject = str_replace("\t", "", $subject);
 
-        $subject =  '=?utf-8?B?'. base64_encode( $subject  ) .'?=' ;
+        $subject = '=?utf-8?B?' . base64_encode($subject) . '?=';
 
 
         $renderer->assign('registrant', $registrant);
-		$renderer->assign('layoutName', 'EmailPlain');
-		$plainMsg =  $renderer->render() ;
+        $renderer->assign('layoutName', 'EmailPlain');
+        $plainMsg = $renderer->render();
 
-		$renderer->assign('layoutName', 'EmailHtml');
-		$emailBody =  $renderer->render() ;
+        $renderer->assign('layoutName', 'EmailHtml');
+        $emailBody = $renderer->render();
 
-   		/** @var $message \TYPO3\CMS\Core\Mail\MailMessage */
-		$message = $this->objectManager->get('TYPO3\\CMS\\Core\\Mail\\MailMessage');
-		$message->setTo($recipient)
-			->setFrom($sender)
-			->setSubject($subject);
+        /** @var $message \TYPO3\CMS\Core\Mail\MailMessage */
+        $message = $this->objectManager->get('TYPO3\\CMS\\Core\\Mail\\MailMessage');
+        $message->setTo($recipient)
+            ->setFrom($sender)
+            ->setSubject($subject);
 
-		// Possible attachments here
-		//foreach ($attachments as $attachment) {
-		//	$message->attach(\Swift_Attachment::fromPath($attachment));
-		//}
-		$message->setBody($emailBody, 'text/html');
-		$message->addPart($plainMsg, 'text/plain');
+        // Possible attachments here
+        //foreach ($attachments as $attachment) {
+        //	$message->attach(\Swift_Attachment::fromPath($attachment));
+        //}
+        $message->setBody($emailBody, 'text/html');
+        $message->addPart($plainMsg, 'text/plain');
 
 
-		$message->send();
-		return $message->isSent();
+        $message->send();
+        return $message->isSent();
 
 
     }
+
+    /**
+     * translate function
+     * @param string $label the locallang label to translate
+     * @return string the localized String
+     */
+    protected function translate($label, $arguments = NULL) {
+        return \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($label, 'JvEvents', $arguments);
+    }
+
 }

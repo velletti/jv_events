@@ -53,16 +53,124 @@ class RegistrantController extends BaseController
 	
     /**
      * action list
-     *
+     * @param \JVE\JvEvents\Domain\Model\Event $event
+     * @param string $hash
      * @return void
      */
-    public function listAction()
+    public function listAction(\JVE\JvEvents\Domain\Model\Event $event, $hash  )
     {
-        // toDo add restrictions to listing ... only for admins or the organizer himself ..  
-        $registrants = null ;
-        // $registrants = $this->registrantRepository->findAll();
+        // toDo add restrictions to listing ... only for admins or the organizer himself ..
+
+        $doExport = 0 ;
+        if( $this->request->hasArgument('export')) {
+            $doExport = $this->request->getArgument('export') ;
+        }
+
+        $registrants = array() ;
+
+        $checkString =  $_SERVER["SERVER_NAME"] . "-" . $event->getUid() . "-" . $event->getCrdate() ;
+        $checkHash = hash("sha256" , $checkString ) ;
+
+
+        if( $checkHash ==  $hash ) {
+            $registrants = $this->registrantRepository->findByFilter('', $event->getUid(), 0, $this->settings, 9999) ;
+
+            if( $doExport == 1 ) {
+                // csv Export
+                $d = "," ;
+                $eol = "\r\n" ;
+                $t = "'" ;
+                $csvdata = $this->getCsvHeader( $d , $eol ,  $t ) ;
+
+                foreach ($registrants as $registrant) {
+                    $csvdata .= $this->getCsvValues($registrant ,$d , $eol ,  $t) ;
+
+                }
+
+
+                $csvdata =  pack("CCC", 0xef, 0xbb, 0xbf) . $csvdata ;
+                header("content-type: application/csv-comma-delimited-table; Charset=utf-8");
+
+                header("content-length: ".strlen($csvdata));
+                header("content-disposition: attachment; filename=\"csv_export.csv\"");
+
+                print $csvdata;
+                die;
+                // $this->redirect("list" , null , array( "event" => $event->getUid() , "hash" => $hash )) ;
+
+
+                $this->addFlashMessage("Export done ") ;
+
+            }
+
+            $this->view->assign('registrants', $registrants);
+            $this->view->assign('hash', $hash);
+
+        } else {
+            $this->addFlashMessage("Error - wrong hash : " . $hash ) ;
+        }
+        $this->view->assign('error', $error);
+        $this->view->assign('event', $event);
         $this->view->assign('registrants', $registrants);
+
     }
+
+    private function getCsvHeader( $d , $eol , $t ) {
+        $return = $t . "Firstname" . $t . $d  . $t . "Lastname" . $t  ;
+        $return .= $d  . $t . "Gender" . $t . $d  . $t . "title" . $t  ;
+        $return .= $d  . $t . "confirmed" . $t . $d  . $t . "email" . $t  ;
+        $return .= $d  . $t . "company" . $t . $d  . $t . "department" . $t  ;
+        $return .= $d  . $t . "address" . $t  ;
+        $return .= $d  . $t . "zip" . $t . $d  . $t . "city" . $t  ;
+        $return .= $d  . $t . "Country" . $t . $d  . $t . "Language" . $t  ;
+
+        $return .= $d  . $t . "phone" . $t . $d  . $t . "profession" . $t  ;
+        $return .= $d  . $t . "customer_id" . $t . $d  . $t . "contact_id" . $t  ;
+
+        $return .= $d  . $t . "company2" . $t . $d  . $t . "department2" . $t  ;
+        $return .= $d  . $t . "address2" . $t  ;
+        $return .= $d  . $t . "zip2" . $t  . $d  . $t . "city2" . $t  ;
+        $return .= $d  . $t . "Country2" . $t ;
+
+        return $return . $eol ;
+    }
+
+    /**
+     * @param \JVE\JvEvents\Domain\Model\Registrant $registrant
+     * @param $d
+     * @param $eol
+     * @param $t
+     * @return string
+     */
+    private function getCsvValues( $registrant , $d , $eol , $t ) {
+        $return = $t . $registrant->getFirstname() . $t . $d  . $t . $registrant->getLastName() . $t  ;
+
+        $gender = $this->translate("register_gender_female" ) ;
+        if( $registrant->getGender() < 2 ) {
+            $gender = $this->translate("register_gender_male" ) ;
+        }
+
+
+        $return .= $d  . $t . $gender . $t . $d  . $t . $registrant->getTitle() . $t  ;
+        $return .= $d  . $t . $registrant->getConfirmed() . $t . $d  . $t . $registrant->getEmail() . $t  ;
+
+        $return .= $d  . $t . $registrant->getCompany() . $t . $d  . $t . $registrant->getDepartment() . $t  ;
+        $return .= $d  . $t . $registrant->getStreetAndNr() . $t   ;
+        $return .= $d  . $t . $registrant->getZip() . $t . $d  . $t . $registrant->getCity() . $t  ;
+        $return .= $d  . $t . $registrant->getCountry() . $t . $d  . $t . $registrant->getLanguage() . $t  ;
+
+        $return .= $d  . $t . $registrant->getPhone() . $t . $d  . $t . $registrant->getProfession() . $t  ;
+        $return .= $d  . $t . $registrant->getCustomerId() . $t . $d  . $t . $registrant->getContactId() . $t  ;
+
+
+        $return .= $d  . $t . $registrant->getCompany2() . $t . $d  . $t . $registrant->getDepartment2() . $t  ;
+        $return .= $d  . $t . $registrant->getStreetAndNr2() . $t   ;
+        $return .= $d  . $t . $registrant->getZip2() . $t . $d  . $t . $registrant->getCity2() . $t  ;
+        $return .= $d  . $t . $registrant->getCountry2() . $t  ;
+
+        return $return . $eol ;
+    }
+
     /**
      * action new
      *
@@ -153,6 +261,9 @@ class RegistrantController extends BaseController
 		$this->settings['success'] = FALSE ;
 		$this->settings['successMsg'] = FALSE ;
 
+        $checkString =  $_SERVER["SERVER_NAME"] . "-" . $event->getUid() . "-" . $event->getCrdate() ;
+        $this->settings['hash'] = hash("sha256" , $checkString ) ;
+
 		$registrant->setEvent($event->getUid() );
 
 		if ($event->getRegistrationPid() > 0) {
@@ -163,11 +274,13 @@ class RegistrantController extends BaseController
 
 		$registrant->setFingerprint( );
 
+
+
 		// test if user is already registered ..
 		$this->settings['alreadyRegistered'] = FALSE ;
 		// $this->settings['debug']  = 2 ;
 
-		$this->settings['debug']  = 1 ;
+		$this->settings['debug']  = 0 ;
 		/** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $existingRegistration */
 		$existingRegistration = $this->registrantRepository->findByFilter($registrant->getEmail() , $event->getUid() , 0 , $this->settings );
 

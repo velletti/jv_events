@@ -93,7 +93,15 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @var bool
      */
     protected $allDay = false;
-    
+
+    /**
+     * creation Date as timestring
+     *
+     * @var int
+     */
+    protected $crdate ;
+
+
     /**
      * Start Date of this event. Mandatory
      *
@@ -1684,6 +1692,24 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 		// ToDo : Check registration_access againstUsersGroups
 		return true ;
 	}
+
+    /**
+     * @return int
+     */
+    public function getCrdate()
+    {
+        return $this->crdate;
+    }
+
+    /**
+     * @param int $crdate
+     */
+    public function setCrdate($crdate)
+    {
+        $this->crdate = $crdate;
+    }
+
+
 
 
 

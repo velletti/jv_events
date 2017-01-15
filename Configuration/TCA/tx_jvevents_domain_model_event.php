@@ -92,7 +92,13 @@ $returnArray = array(
 				'type' => 'passthrough',
 			),
 		),
-		
+        'crdate' => Array (
+            'exclude' => 1,
+            'label' => 'Creation date',
+            'config' => Array (
+                'type' => 'none',
+            )
+        ),
 		
 		't3ver_label' => array(
 			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.versionLabel',
