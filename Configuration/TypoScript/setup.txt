@@ -79,6 +79,9 @@ module.tx_jvevents_web_jveventseventmngt {
 		partialRootPaths.0 = {$module.tx_jvevents_eventmngt.view.partialRootPath}
 		layoutRootPaths.0 = {$module.tx_jvevents_eventmngt.view.layoutRootPath}
 	}
+    settings < plugin.tx_jvevents_events.settings
+    settings.LayoutRegister = 2Megra
+
 }
 
 # needed Settings to convert Richttext to HTML we want ..

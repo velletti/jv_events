@@ -264,10 +264,14 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 		$renderer->assign('emConf', \JVE\JvEvents\Utility\EmConfiguration::getEmConf( TRUE ) );
 
 		// and do the rendering magic
-        //$subject =  '=?utf-8?B?'. base64_encode($renderer->render() ) .'?=' ;
-         $subject =  $renderer->render()  ;
+         $subject =  str_replace( "\r" , "" , $renderer->render() )  ;
+        $subject =  str_replace( "\n" , "" , $subject )  ;
+        $subject =  str_replace( "\t" , "" , $subject ) ;
 
-		$renderer->assign('registrant', $registrant);
+        $subject =  '=?utf-8?B?'. base64_encode( $subject  ) .'?=' ;
+
+
+        $renderer->assign('registrant', $registrant);
 		$renderer->assign('layoutName', 'EmailPlain');
 		$plainMsg =  $renderer->render() ;
 

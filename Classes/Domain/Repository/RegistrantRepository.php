@@ -63,7 +63,7 @@ class RegistrantRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 	 * @param uid $event
 	 * @return array
 	 */
-	public function findByFilter($email = '', $event = 0, $pid = 0 , $settings) {
+	public function findByFilter($email = '', $event = 0, $pid = 0 , $settings , $limit=1 ) {
 		$query = $this->createQuery();
 		$constraints = array();
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
@@ -84,7 +84,7 @@ class RegistrantRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 			$query->matching($query->logicalAnd($constraints));
 		}
 
-		$query->setLimit(1);
+		$query->setLimit($limit);
 		$result = $query->execute();
 		if ($settings['debug']  == 2 ) {
 			$GLOBALS['TYPO3_DB']->debugOutput = 2;

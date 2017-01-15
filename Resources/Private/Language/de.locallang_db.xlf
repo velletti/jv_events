@@ -227,9 +227,14 @@
 			<target>Text Teilnehmer Email</target>
 		</trans-unit>
         <trans-unit id="tx_jvevents_domain_model_event.introtext_registrant" approved="yes">
-            <source>Intro Text Registrant</source>
-            <target>Intro Text Teilnehmer Email</target>
+            <source>Intro Text Registrant - Waiting List</source>
+            <target>Intro Text Teilnehmer Email - auf Warteliste </target>
         </trans-unit>
+        <trans-unit id="tx_jvevents_domain_model_event.introtext_registrant_confirmed"  approved="yes">
+            <source>Intro Text Registrant - Registration Confirmed</source>
+            <target>Intro Text Teilnehmer Email - Anmeldung ist bestätigt.</target>
+        </trans-unit>
+
 		<trans-unit id="tx_jvevents_domain_model_event.unconfirmed_seats" approved="yes">
 			<source>Unconfirmed Seats</source>
 			<target>Unbestätigte Registrierungen</target>

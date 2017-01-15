@@ -174,7 +174,10 @@
 			<source>Text Registrant</source>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.introtext_registrant">
-            <source>Intro Text Registrant</source>
+            <source>Intro Text Registrant - Waiting List</source>
+        </trans-unit>
+        <trans-unit id="tx_jvevents_domain_model_event.introtext_registrant_confirmed">
+            <source>Intro Text Registrant - Registration Confirmed</source>
         </trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.unconfirmed_seats">
 			<source>Unconfirmed Seats</source>

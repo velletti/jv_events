@@ -54,7 +54,7 @@ $returnArray = array(
 		'access' =>  array('showitem' =>  'hidden;;1,--linebreak--,access' ),
 		'notification' =>  array('showitem' =>  'notify_organizer;;1,notify_registrant;;1,need_to_confirm;;1,--linebreak--' ),
 		'notifyOrg' =>  array('showitem' =>  'subject_organizer,--linebreak--,text_organizer' ),
-		'notifyReg' =>  array('showitem' =>  'subject_registrant,--linebreak--,introtext_registrant,--linebreak--,text_registrant' ),
+		'notifyReg' =>  array('showitem' =>  'subject_registrant,--linebreak--,introtext_registrant,--linebreak--,introtext_registrant_confirmed,--linebreak--,text_registrant' ),
 		'register' =>  array('showitem' =>  'with_registration;;1,registration_until, --linebreak--,registration_url, --linebreak--,registration_form_pid,registration_pid,--linebreak--,registration_access, --linebreak--,store_in_citrix, citrix_uid, --linebreak--,store_in_sales_force, --linebreak--,marketing_process_id, sales_force_record_type, sales_force_event_id, sales_force_session_id, --linebreak--,available_seats, available_waiting_seats, registered_seats, unconfirmed_seats' ),
 	),
 	'columns' => array(
@@ -746,6 +746,17 @@ $returnArray = array(
 				'eval' => 'trim'
 			)
 		),
+        'introtext_registrant_confirmed' => array(
+            'exclude' => 0,
+            'displayCond' => 'FIELD:notify_registrant:REQ:TRUE' ,
+            'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.introtext_registrant_confirmed',
+            'config' => array(
+                'type' => 'text',
+                'cols' => 40,
+                'rows' => 10,
+                'eval' => 'trim'
+            )
+        ),
 		'need_to_confirm' => array(
 			'exclude' => 0,
 			'displayCond' => 'FIELD:with_registration:REQ:TRUE' ,

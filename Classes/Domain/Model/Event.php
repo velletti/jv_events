@@ -325,6 +325,14 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @var string
      */
     protected $introtextRegistrant = '';
+
+    /**
+     * IntroText of the Email
+     *
+     *
+     * @var string
+     */
+    protected $introtextRegistrantConfirmed = '';
     
     /**
      * If the user needs to confirm the registration, activate this option
@@ -1099,6 +1107,24 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         $this->introtextRegistrant = $introtextRegistrant;
     }
+
+    /**
+     * @return string
+     */
+    public function getIntrotextRegistrantConfirmed()
+    {
+        return $this->introtextRegistrantConfirmed;
+    }
+
+    /**
+     * @param string $introtextRegistrantConfirmed
+     */
+    public function setIntrotextRegistrantConfirmed($introtextRegistrantConfirmed)
+    {
+        $this->introtextRegistrantConfirmed = $introtextRegistrantConfirmed;
+    }
+
+
 
 
 
