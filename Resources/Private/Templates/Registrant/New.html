@@ -7,6 +7,18 @@
 	<f:render partial="Event/Single/Partial{settings.LayoutSingle}/Minimal"
 			  arguments="{event: event, settings: settings}"/>
 
+	<f:be.security.ifAuthenticated>
+		<f:then>
+			<div class="text-right">
+				<div class="text-right">
+					<f:link.action action="list" class="btn btn-primary" noCache="1" noCacheHash="1" arguments="{event : event.uid, hash: hash, export: 1}"> CSV Export </f:link.action>
+					<br />
+					<br />
+				</div>
+			</div>
+		</f:then>
+	</f:be.security.ifAuthenticated>
+
 	<f:comment> Render the Registration Form for the Event </f:comment>
 	<f:render partial="Registrant/Partial{settings.LayoutRegister}/Form"
 			  arguments="{event: event, settings: settings, otherEvents: otherEvents}"/>
