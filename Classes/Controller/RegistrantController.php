@@ -203,7 +203,10 @@ class RegistrantController extends BaseController
 				}
 			}
 		}
+        $checkString =  $_SERVER["SERVER_NAME"] . "-" . $event->getUid() . "-" . $event->getCrdate() ;
+        $checkHash = hash("sha256" , $checkString ) ;
 
+		$this->view->assign('hash', $checkHash);
 		$this->view->assign('otherEvents', $otherEvents);
 
 		$this->view->assign('settings', $this->settings);

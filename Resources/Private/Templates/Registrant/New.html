@@ -7,7 +7,7 @@
 	<f:render partial="Event/Single/Partial{settings.LayoutSingle}/Minimal"
 			  arguments="{event: event, settings: settings}"/>
 
-	<f:be.security.ifAuthenticated>
+    <f:be.security.ifHasRole role="8">
 		<f:then>
 			<div class="text-right">
 				<div class="text-right">
@@ -17,7 +17,7 @@
 				</div>
 			</div>
 		</f:then>
-	</f:be.security.ifAuthenticated>
+	</f:be.security.ifHasRole>
 
 	<f:comment> Render the Registration Form for the Event </f:comment>
 	<f:render partial="Registrant/Partial{settings.LayoutRegister}/Form"
