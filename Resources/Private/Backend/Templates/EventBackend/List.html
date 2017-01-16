@@ -1,0 +1,96 @@
+<f:layout name="Default" />
+
+<f:section name="content">
+<f:flashMessages />
+
+<h2><f:count>{registrants}</f:count> Registrations</h2>
+
+	<f:be.widget.paginate objects="{registrants}" as="paginatedRegistrants" configuration="{itemsPerPage: 25, insertAbove: 1, maximumNumberOfLinks: 3}">
+		<div class="row bg-primary">
+			<div class="col-xs-1">
+
+			</div>
+			<div class="col-xs-4">
+				<b>Vor- Nachname</b>
+			</div>
+			<div class="col-xs-4">
+				<b>E-Mail</b>
+			</div>
+
+			<div class="col-xs-1">
+				O
+			</div>
+			<div class="col-xs-1">
+				C
+			</div>
+			<div class="col-xs-1">
+				BB
+			</div>
+		</div>
+		<f:for each="{paginatedRegistrants}" as="registrant" iteration="iterator">
+			<div class="row">
+				<div class="col-xs-1">
+
+					<button type="button" class="btn btn-info btn-sm"  data-toggle="collapse" data-target="#regInfo{registrant.uid}">
+						<f:be.buttons.icon icon="actions-document-info"/>
+					</button>
+
+
+				</div>
+				<div class="col-xs-4">
+					{registrant.firstName} {registrant.lastName}
+				</div>
+				<div class="col-xs-4">
+					{registrant.email}
+				</div>
+				<div class="col-xs-1">
+					<f:if condition="{registrant.hidden}">
+						X
+					</f:if>
+				</div>
+
+				<div class="col-xs-1">
+					<f:if condition="{registrant.hidden}">
+						<f:else>
+							<f:if condition="{registrant.confirmed}">
+								<f:then>
+									ok
+								</f:then>
+								<f:else>
+									<span class="btn btn-sm">
+										<f:be.buttons.icon uri="{f:uri.action(action:'confirm' , arguments: '{registrant: registrant}' )}" title="Send Email confirmation" icon="actions-document"/>
+									</span>
+								</f:else>
+							</f:if>
+						</f:else>
+
+					</f:if>
+
+				</div>
+				<div class="col-xs-1">
+					<f:if condition="{registrant.otherEvents}">
+BB
+					</f:if>
+				</div>
+
+			</div>
+
+			<div id="regInfo{registrant.uid}" class="collapse" role="dialog">
+				<div class="well">
+					<p>
+						Registriert am: <f:format.date format="d.m.Y">{registrant.created}</f:format.date><br>
+						Firma: {registrant.company}<br>
+						Ort: {registrant.zip} {registrant.city}<br>
+						Tel: {registrant.phone}<br>
+
+						<f:if condition="{registrant.otherEvents}">
+							Blockbucher
+						</f:if>
+					</p>
+				</div>
+			</div>
+
+		</f:for>
+	</f:be.widget.paginate>
+
+</f:section>
