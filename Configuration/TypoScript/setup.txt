@@ -24,7 +24,7 @@ plugin.tx_jvevents_events {
             }
             dateFormat = d.m.Y
 
-            If you use RealUrl, you can skip generation of URL Parameter Controller and Action
+            # If you use RealUrl, you can skip generation of URL Parameter Controller and Action
             skipControllerAndAction = 0
 
             detailPidDefault = 111
