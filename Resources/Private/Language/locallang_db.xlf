@@ -248,6 +248,12 @@
 		<trans-unit id="tx_jvevents_domain_model_organizer.phone">
 			<source>Phone</source>
 		</trans-unit>
+        <trans-unit id="tx_jvevents_domain_model_organizer.accessGroups">
+            <source>Groups with Frontend Organizer Access to Events of this organizer</source>
+        </trans-unit>
+        <trans-unit id="tx_jvevents_domain_model_organizer.accessUsers">
+            <source>Frontendusers with Organizer Access to Events of this organizer</source>
+        </trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_organizer.sales_force_user_id">
 			<source>Sales Force User Id</source>
 		</trans-unit>

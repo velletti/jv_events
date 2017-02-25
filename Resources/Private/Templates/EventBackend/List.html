@@ -1,0 +1,60 @@
+<f:layout name="Default" />
+
+<f:section name="main">
+<f:flashMessages />
+
+	<f:render partial="Debug/CheckInstallation" arguments="{modulelist: 'TRUE' , event:event, settings: settings}" />
+	<f:if condition="{settings.EmConfiguration.useGeoLocation}">
+		<div id="jv_events_geo" class="hidden" data-lng="" data-lat="">
+			GEO Position
+		</div>
+	</f:if>
+	<div class="jv_vents_{settings.LayoutList}"	>
+		<f:if condition="{settings.ShowFilter}">
+			<f:render partial="Event/List/Partial{settings.LayoutList}/Filter" arguments="{eventsFilter: eventsFilter, settings: settings}"/>
+		</f:if>
+		<f:if condition="{events}">
+			<f:then>
+				<f:render partial="Event/List/Partial{settings.LayoutList}/HeaderEvent" arguments="{event:event, settings: settings}" />
+				<f:for each="{events}" as="event">
+					<f:render partial="Event/List/Partial{settings.LayoutList}/SingleEvent" arguments="{event:event, settings: settings}" />
+				</f:for>
+
+				<f:if condition="{settings.debug} > 0 ">
+					<f:then>
+						[
+						<f:for each="{events}" as="event" iteration="index">
+
+							<f:render partial="Event/Single/MicroFormat" arguments="{event: event, settings: settings}"/>
+							<f:if condition="{index.isLast}">
+								<f:then></f:then>
+								<f:else>,</f:else>
+							</f:if>
+						</f:for>
+						]
+					</f:then>
+					<f:else>
+						<script type="application/ld+json">
+						[
+							<f:for each="{events}" as="event" iteration="index">
+								<f:render partial="Event/Single/MicroFormat" arguments="{event: event, settings: settings}"/>
+									<f:if condition="{index.isLast}">
+									<f:then></f:then>
+									<f:else>,</f:else>
+								</f:if>
+							</f:for>
+						]
+					</script>
+					</f:else>
+				</f:if>
+			</f:then>
+			<f:else>
+				<div class="alert alert-info">
+					<f:translate key="tx_jvevents_event.list.no_events_found"> No Events Found</f:translate>
+				</div>
+			</f:else>
+		</f:if>
+	</div>
+
+
+</f:section>

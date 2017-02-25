@@ -79,7 +79,23 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @var string
      */
     protected $description = '';
-    
+
+
+    /**
+     * this event was admin Functions visible for the following usergroups / Access Rights
+     *
+     * @var string
+     */
+    protected $accessGroups = '';
+
+    /**
+     * this event was admin Functions  visible for the following users / Access Rights
+     *
+     * @var string
+     */
+    protected $accessUsers = '';
+
+
     /**
      * organizerCategory
      *
@@ -277,5 +293,55 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         $this->organizerCategory = $organizerCategory;
     }
+
+    /**
+     * @return int
+     */
+    public function getPid()
+    {
+        return $this->pid;
+    }
+
+    /**
+     * @param int $pid
+     */
+    public function setPid($pid)
+    {
+        $this->pid = $pid;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAccessGroups()
+    {
+        return $this->accessGroups;
+    }
+
+    /**
+     * @param string $accessGroups
+     */
+    public function setAccessGroups($accessGroups)
+    {
+        $this->accessGroups = $accessGroups;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAccessUsers()
+    {
+        return $this->accessUsers;
+    }
+
+    /**
+     * @param string $accessUsers
+     */
+    public function setAccessUsers($accessUsers)
+    {
+        $this->accessUsers = $accessUsers;
+    }
+
+
 
 }
