@@ -125,7 +125,7 @@ class RegistrantController extends BaseController
 
     }
 
-    private function getCsvHeader( $d , $eol , $t , $d) {
+    private function getCsvHeader( $d , $eol , $t ) {
         $return = $t . "Firstname" . $t . $d  . $t . "Lastname" . $t  ;
         $return .= $d  . $t . "Gender" . $t . $d  . $t . "title" . $t  ;
         $return .= $d  . $t . "confirmed" . $t . $d  . $t . "email" . $t  ;
