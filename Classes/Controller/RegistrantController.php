@@ -126,8 +126,8 @@ class RegistrantController extends BaseController
     }
 
     private function getCsvHeader( $d , $eol , $t ) {
-        $return = $t . "confirmed" . $t . $d  . $t . "hidden" . $t  ;
-        $return .= $t . "Firstname" . $t . $d  . $t . "Lastname" . $t  ;
+        $return = $t . "hidden" . $t  ;
+        $return .= $d .  $t . "Firstname" . $t . $d  . $t . "Lastname" . $t  ;
         $return .= $d  . $t . "Gender" . $t . $d  . $t . "title" . $t  ;
         $return .= $d  . $t . "confirmed" . $t . $d  . $t . "email" . $t  ;
         $return .= $d  . $t . "company" . $t . $d  . $t . "department" . $t  ;
@@ -155,7 +155,7 @@ class RegistrantController extends BaseController
      * @return string
      */
     private function getCsvValues( $registrant , $d , $eol , $t ) {
-        $return = $t . $this->cleanString( $registrant->getConfirmed() , $t , $d) . $t . $d  . $t . $this->cleanString($registrant->getHidden(), $t , $d ) . $t  ;
+        $return = $t . $this->cleanString($registrant->getHidden(), $t , $d ) . $t  ;
         $return .= $d . $t . $this->cleanString( $registrant->getFirstname() , $t , $d) . $t . $d  . $t . $this->cleanString($registrant->getLastName(), $t , $d ) . $t  ;
 
         $gender = $this->translate("register_gender_female" ) ;
