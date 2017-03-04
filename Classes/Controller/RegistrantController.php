@@ -171,8 +171,12 @@ class RegistrantController extends BaseController
         $return .= $d  . $t . $this->cleanString($registrant->getStreetAndNr(), $t , $d) . $t   ;
         $return .= $d  . $t . $this->cleanString($registrant->getZip(), $t , $d) . $t . $d  . $t . $this->cleanString($registrant->getCity() , $t , $d). $t  ;
         $return .= $d  . $t . $this->cleanString($registrant->getCountry(), $t , $d) . $t . $d  . $t . $this->cleanString($registrant->getLanguage(), $t , $d) . $t  ;
-
-        $return .= $d  . $t . $this->cleanString($registrant->getPhone(), $t , $d) . $t . $d  . $t . $this->cleanString($registrant->getProfession() , $t , $d). $t  ;
+        $phone = " " . $registrant->getPhone() ;
+        if ( str_replace( " " , "" , trim($phone )) == trim($phone) ) {
+            $old = $phone ;
+            $phone = " " . substr( $old , 0 , 2) . " " . substr( $old , 2 , 2 ) . " " . substr( $old , 4 , 99 ) ;
+        }
+        $return .= $d  . $t . $this->cleanString($phone, $t , $d) . $t . $d  . $t . $this->cleanString($registrant->getProfession() , $t , $d). $t  ;
         $return .= $d  . $t . $this->cleanString($registrant->getCustomerId(), $t , $d) . $t . $d  . $t . $this->cleanString($registrant->getContactId(), $t , $d). $t  ;
 
 
