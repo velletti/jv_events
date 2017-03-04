@@ -84,7 +84,7 @@ class RegistrantController extends BaseController
             if( $doExport == 1 ) {
                 // csv Export
                // $d = "," ;
-                $d = "  " ;
+                $d = chr(9);
                 $eol = "\r\n" ;
                 // $t = "'" ;
                 $t = '"' ;
