@@ -86,7 +86,7 @@ class RegistrantController extends BaseController
                 $d = ";" ;
                 // $d = chr(9);
                 $eol = "\r\n" ;
-                 $t = "'" ;
+                 $t = "" ;
                 // $t = '"' ;
 
                 $csvdata = $this->getCsvHeader( $d , $eol ,  $t ) ;
@@ -125,7 +125,7 @@ class RegistrantController extends BaseController
 
     }
 
-    private function getCsvHeader( $d , $eol , $t ) {
+    private function getCsvHeader( $d , $eol , $t , $d) {
         $return = $t . "Firstname" . $t . $d  . $t . "Lastname" . $t  ;
         $return .= $d  . $t . "Gender" . $t . $d  . $t . "title" . $t  ;
         $return .= $d  . $t . "confirmed" . $t . $d  . $t . "email" . $t  ;
@@ -152,8 +152,8 @@ class RegistrantController extends BaseController
      * @param $t
      * @return string
      */
-    private function getCsvValues( $registrant , $d , $eol , $t ) {
-        $return = $t . $this->cleanString( $registrant->getFirstname() , $t ) . $t . $d  . $t . $this->cleanString($registrant->getLastName(), $t) . $t  ;
+    private function getCsvValues( $registrant , $d , $eol , $t , $d) {
+        $return = $t . $this->cleanString( $registrant->getFirstname() , $t , $d) . $t . $d  . $t . $this->cleanString($registrant->getLastName(), $t) . $t  ;
 
         $gender = $this->translate("register_gender_female" ) ;
         if( $registrant->getGender() < 2 ) {
@@ -161,32 +161,40 @@ class RegistrantController extends BaseController
         }
 
 
-        $return .= $d  . $t . $this->cleanString($gender , $t ). $t . $d  . $t . $this->cleanString($registrant->getTitle() , $t ) . $t  ;
-        $return .= $d  . $t . $this->cleanString($registrant->getConfirmed(), $t ) . $t . $d  . $t . $this->cleanString($registrant->getEmail() , $t ). $t  ;
+        $return .= $d  . $t . $this->cleanString($gender , $t , $d ). $t . $d  . $t . $this->cleanString($registrant->getTitle() , $t , $d) . $t  ;
+        $return .= $d  . $t . $this->cleanString($registrant->getConfirmed(), $t , $d) . $t . $d  . $t . $this->cleanString($registrant->getEmail() , $t , $d). $t  ;
 
-        $return .= $d  . $t . $this->cleanString($registrant->getCompany(), $t ) . $t . $d  . $t . $this->cleanString($registrant->getDepartment() , $t ). $t  ;
-        $return .= $d  . $t . $this->cleanString($registrant->getStreetAndNr(), $t ) . $t   ;
-        $return .= $d  . $t . $this->cleanString($registrant->getZip(), $t ) . $t . $d  . $t . $this->cleanString($registrant->getCity() , $t ). $t  ;
-        $return .= $d  . $t . $this->cleanString($registrant->getCountry(), $t ) . $t . $d  . $t . $this->cleanString($registrant->getLanguage(), $t ) . $t  ;
+        $return .= $d  . $t . $this->cleanString($registrant->getCompany(), $t , $d) . $t . $d  . $t . $this->cleanString($registrant->getDepartment() , $t , $d). $t  ;
+        $return .= $d  . $t . $this->cleanString($registrant->getStreetAndNr(), $t , $d) . $t   ;
+        $return .= $d  . $t . $this->cleanString($registrant->getZip(), $t , $d) . $t . $d  . $t . $this->cleanString($registrant->getCity() , $t , $d). $t  ;
+        $return .= $d  . $t . $this->cleanString($registrant->getCountry(), $t , $d) . $t . $d  . $t . $this->cleanString($registrant->getLanguage(), $t , $d) . $t  ;
 
-        $return .= $d  . $t . $this->cleanString($registrant->getPhone(), $t ) . $t . $d  . $t . $this->cleanString($registrant->getProfession() , $t ). $t  ;
-        $return .= $d  . $t . $this->cleanString($registrant->getCustomerId(), $t ) . $t . $d  . $t . $this->cleanString($registrant->getContactId(), $t ). $t  ;
+        $return .= $d  . $t . $this->cleanString($registrant->getPhone(), $t , $d) . $t . $d  . $t . $this->cleanString($registrant->getProfession() , $t , $d). $t  ;
+        $return .= $d  . $t . $this->cleanString($registrant->getCustomerId(), $t , $d) . $t . $d  . $t . $this->cleanString($registrant->getContactId(), $t , $d). $t  ;
 
 
-        $return .= $d  . $t . $this->cleanString($registrant->getCompany2(), $t ) . $t . $d  . $t . $this->cleanString($registrant->getDepartment2(), $t ) . $t  ;
-        $return .= $d  . $t . $this->cleanString($registrant->getStreetAndNr2(), $t ) . $t   ;
-        $return .= $d  . $t . $this->cleanString($registrant->getZip2(), $t ) . $t . $d  . $t . $this->cleanString($registrant->getCity2(), $t ) . $t  ;
-        $return .= $d  . $t . $this->cleanString($registrant->getCountry2(), $t ). $t  ;
+        $return .= $d  . $t . $this->cleanString($registrant->getCompany2(), $t , $d) . $t . $d  . $t . $this->cleanString($registrant->getDepartment2(), $t , $d) . $t  ;
+        $return .= $d  . $t . $this->cleanString($registrant->getStreetAndNr2(), $t , $d) . $t   ;
+        $return .= $d  . $t . $this->cleanString($registrant->getZip2(), $t , $d) . $t . $d  . $t . $this->cleanString($registrant->getCity2(), $t , $d) . $t  ;
+        $return .= $d  . $t . $this->cleanString($registrant->getCountry2(), $t , $d). $t  ;
 
         return $return . $eol ;
     }
-    private function cleanString($string , $delim) {
-        $delim = substr($delim , 1, 1) ;
+    private function cleanString($string , $delim , $split ) {
+        // $delim = substr($delim , 1, 1) ;
         if ( $delim == '"' ) {
             $replace = "'" ;
         } else {
             $replace = "`" ;
+            if ( $delim == '' ) {
+                if ( $split == ";") {
+                    $delim = ';' ;
+                    $replace = "," ;
+                }
+            }
+
         }
+
         return  str_replace($delim , $replace , $string ) ;
     }
     /**
