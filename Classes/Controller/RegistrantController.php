@@ -65,7 +65,13 @@ class RegistrantController extends BaseController
         if( $this->request->hasArgument('export')) {
             $doExport = $this->request->getArgument('export') ;
         }
-
+        $pid = 0 ;
+        if( $this->request->hasArgument('pid')) {
+            $pid = $this->request->getArgument('pid') ;
+        }
+        if ( $pid == 0 ) {
+            $pid = $event->getRegistrationPid() ;
+        }
         $registrants = array() ;
 
         $checkString =  $_SERVER["SERVER_NAME"] . "-" . $event->getUid() . "-" . $event->getCrdate() ;
@@ -73,13 +79,16 @@ class RegistrantController extends BaseController
 
 
         if( $checkHash ==  $hash ) {
-            $registrants = $this->registrantRepository->findByFilter('', $event->getUid(), 0, $this->settings, 9999) ;
+            $registrants = $this->registrantRepository->findByFilter('', $event->getUid(), $pid , $this->settings, 9999) ;
 
             if( $doExport == 1 ) {
                 // csv Export
-                $d = "," ;
+               // $d = "," ;
+                $d = "  " ;
                 $eol = "\r\n" ;
-                $t = "'" ;
+                // $t = "'" ;
+                $t = '"' ;
+
                 $csvdata = $this->getCsvHeader( $d , $eol ,  $t ) ;
 
                 foreach ($registrants as $registrant) {
@@ -89,7 +98,8 @@ class RegistrantController extends BaseController
 
 
                 $csvdata =  pack("CCC", 0xef, 0xbb, 0xbf) . $csvdata ;
-                header("content-type: application/csv-comma-delimited-table; Charset=utf-8");
+                //header("content-type: application/csv-comma-delimited-table; Charset=utf-8");
+                header("content-type: application/csv-tab-delimited-table; Charset=utf-8");
 
                 header("content-length: ".strlen($csvdata));
                 header("content-disposition: attachment; filename=\"csv_export.csv\"");
@@ -143,7 +153,7 @@ class RegistrantController extends BaseController
      * @return string
      */
     private function getCsvValues( $registrant , $d , $eol , $t ) {
-        $return = $t . $registrant->getFirstname() . $t . $d  . $t . $registrant->getLastName() . $t  ;
+        $return = $t . cleanString( $registrant->getFirstname() , $t ) . $t . $d  . $t . cleanString($registrant->getLastName(), $t) . $t  ;
 
         $gender = $this->translate("register_gender_female" ) ;
         if( $registrant->getGender() < 2 ) {
@@ -151,26 +161,34 @@ class RegistrantController extends BaseController
         }
 
 
-        $return .= $d  . $t . $gender . $t . $d  . $t . $registrant->getTitle() . $t  ;
-        $return .= $d  . $t . $registrant->getConfirmed() . $t . $d  . $t . $registrant->getEmail() . $t  ;
+        $return .= $d  . $t . cleanString($gender , $t ). $t . $d  . $t . cleanString($registrant->getTitle() , $t ) . $t  ;
+        $return .= $d  . $t . cleanString($registrant->getConfirmed(), $t ) . $t . $d  . $t . cleanString($registrant->getEmail() , $t ). $t  ;
 
-        $return .= $d  . $t . $registrant->getCompany() . $t . $d  . $t . $registrant->getDepartment() . $t  ;
-        $return .= $d  . $t . $registrant->getStreetAndNr() . $t   ;
-        $return .= $d  . $t . $registrant->getZip() . $t . $d  . $t . $registrant->getCity() . $t  ;
-        $return .= $d  . $t . $registrant->getCountry() . $t . $d  . $t . $registrant->getLanguage() . $t  ;
+        $return .= $d  . $t . cleanString($registrant->getCompany(), $t ) . $t . $d  . $t . cleanString($registrant->getDepartment() , $t ). $t  ;
+        $return .= $d  . $t . cleanString($registrant->getStreetAndNr(), $t ) . $t   ;
+        $return .= $d  . $t . cleanString($registrant->getZip(), $t ) . $t . $d  . $t . cleanString($registrant->getCity() , $t ). $t  ;
+        $return .= $d  . $t . cleanString($registrant->getCountry(), $t ) . $t . $d  . $t . cleanString($registrant->getLanguage(), $t ) . $t  ;
 
-        $return .= $d  . $t . $registrant->getPhone() . $t . $d  . $t . $registrant->getProfession() . $t  ;
-        $return .= $d  . $t . $registrant->getCustomerId() . $t . $d  . $t . $registrant->getContactId() . $t  ;
+        $return .= $d  . $t . cleanString($registrant->getPhone(), $t ) . $t . $d  . $t . cleanString($registrant->getProfession() , $t ). $t  ;
+        $return .= $d  . $t . cleanString($registrant->getCustomerId(), $t ) . $t . $d  . $t . cleanString($registrant->getContactId(), $t ). $t  ;
 
 
-        $return .= $d  . $t . $registrant->getCompany2() . $t . $d  . $t . $registrant->getDepartment2() . $t  ;
-        $return .= $d  . $t . $registrant->getStreetAndNr2() . $t   ;
-        $return .= $d  . $t . $registrant->getZip2() . $t . $d  . $t . $registrant->getCity2() . $t  ;
-        $return .= $d  . $t . $registrant->getCountry2() . $t  ;
+        $return .= $d  . $t . cleanString($registrant->getCompany2(), $t ) . $t . $d  . $t . cleanString($registrant->getDepartment2(), $t ) . $t  ;
+        $return .= $d  . $t . cleanString($registrant->getStreetAndNr2(), $t ) . $t   ;
+        $return .= $d  . $t . cleanString($registrant->getZip2(), $t ) . $t . $d  . $t . cleanString($registrant->getCity2(), $t ) . $t  ;
+        $return .= $d  . $t . cleanString($registrant->getCountry2(), $t ). $t  ;
 
         return $return . $eol ;
     }
-
+    private function cleanString($string , $delim) {
+        $delim = substr($delim , 1, 1) ;
+        if ( $delim == '"' ) {
+            $replace = "'" ;
+        } else {
+            $replace = "`" ;
+        }
+        return  str_replace($delim , $replace , $string ) ;
+    }
     /**
      * action new
      *
