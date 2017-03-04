@@ -83,11 +83,11 @@ class RegistrantController extends BaseController
 
             if( $doExport == 1 ) {
                 // csv Export
-               // $d = "," ;
-                $d = chr(9);
+                $d = "," ;
+                // $d = chr(9);
                 $eol = "\r\n" ;
-                // $t = "'" ;
-                $t = '"' ;
+                 $t = "'" ;
+                // $t = '"' ;
 
                 $csvdata = $this->getCsvHeader( $d , $eol ,  $t ) ;
 
