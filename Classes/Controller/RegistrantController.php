@@ -83,7 +83,7 @@ class RegistrantController extends BaseController
 
             if( $doExport == 1 ) {
                 // csv Export
-                $d = "," ;
+                $d = ";" ;
                 // $d = chr(9);
                 $eol = "\r\n" ;
                  $t = "'" ;
@@ -98,8 +98,8 @@ class RegistrantController extends BaseController
 
 
                 $csvdata =  pack("CCC", 0xef, 0xbb, 0xbf) . $csvdata ;
-                //header("content-type: application/csv-comma-delimited-table; Charset=utf-8");
-                header("content-type: application/csv-tab-delimited-table; Charset=utf-8");
+                header("content-type: application/csv-comma-delimited-table; Charset=utf-8");
+                // header("content-type: application/csv-tab-delimited-table; Charset=utf-8");
 
                 header("content-length: ".strlen($csvdata));
                 header("content-disposition: attachment; filename=\"csv_export.csv\"");
