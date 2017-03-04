@@ -287,21 +287,27 @@ class RegistrantController extends BaseController
 		$this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
 		$otherEvents = FALSE ;
 		if ( is_array( $_POST['tx_jvevents_events']['jv_events_other_events'])) {
+		    $temp = $_POST['tx_jvevents_events']['jv_events_other_events'] ;
 
 			$registrant->setOtherEvents( serialize($_POST['tx_jvevents_events']['jv_events_other_events']) );
 
-			foreach ($_POST['tx_jvevents_events']['jv_events_other_events'] as $key => $uid ) {
+			foreach ($temp  as $key => $uid ) {
 				/** @var \JVE\JvEvents\Domain\Model\Event $otherEvent */
 				if( intval($uid) > 0 ) {
-					$otherEvent = $this->eventRepository->findByUid( intval($uid )) ;
-					if( is_object($otherEvent)) {
-						if($otherEvent->isIsRegistrationPossible() ) {
-							$otherEvents[] = $otherEvent ;
+					$otherEvent = $this->eventRepository->findByUidAllpages( intval($uid )) ;
+					// var_dump($otherEvent[0]) ;
+					if( is_object($otherEvent[0])) {
+						if($otherEvent[0]->isIsRegistrationPossible() ) {
+							$otherEvents[] = $otherEvent[0] ;
 						}
 					}
-				}
+				} else {
+				    unset( $temp[$key]) ;
+                }
 
 			}
+
+            $registrant->setOtherEvents( serialize($temp ) );
 		}
 
 		if( $registrant->getCompany2() == '' ) {
@@ -427,13 +433,13 @@ class RegistrantController extends BaseController
 					} else {
 						$newregistrant->setPid( $GLOBALS['TSFE']->id );
 					}
-					$registrant->setEvent( $otherEvent->getUid() ) ;
+                    $newregistrant->setEvent( $otherEvent->getUid() ) ;
 					$this->registrantRepository->add($newregistrant);
 
 					$this->eventRepository->update($otherEvent);
 					$this->persistenceManager->persistAll();
 
-					unset( $newregistrant) ;
+					unset( $newregistrant ) ;
 				}
 			}
 

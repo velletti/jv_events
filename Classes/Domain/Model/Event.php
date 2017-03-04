@@ -1666,8 +1666,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 			}
 		} else {
 			if (! $this->registrationUrl ) {
-                echo "<br>Line: " . __LINE__ . " : " . " File: " . __FILE__ . '<br>$s1 : '
-                    . var_export($s1, true) . "<hr>";
+               // echo "<br>Line: " . __LINE__ . " : " . " File: " . __FILE__ . '<br>$s1 : ' . var_export($s1, true) . "<hr>";
 
                 return FALSE ;
 			}

@@ -72,13 +72,33 @@ class EventBackendController extends BaseController
      */
     public function listAction()
     {
+        $itemsPerPage = 20 ;
         $pageId = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
+         $email = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('email');
+        if( $this->request->hasArgument('event')) {
+            $eventID = $this->request->getArgument('event') ;
+            if( $eventID > 0 ) {
+                $itemsPerPage = 200 ;
+            }
 
+        }
         $this->settings['filter']['startDate']  = -9999 ;
         $this->settings['storagePid'] = $pageId ;
         /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $events */
-        $registrants = $this->registrantRepository->findByFilter(false, false, $pageId ,  $this->settings , 999 );
+        $registrants = $this->registrantRepository->findByFilter($email, $eventID, $pageId ,  $this->settings , 999 );
+        $eventIds = $this->registrantRepository->findEventsByFilter($email , $pageId , $this->settings  ) ;
+        if( count($eventIds) > 1 ) {
+            // $events[] = array( "0" => "-" ) ;
+            foreach ($eventIds as $key => $eventId ) {
+                $event = $this->eventRepository->findByUidAllpages($eventId) ;
+                $events[] = $event[0] ;
+            }
+        }
 
+
+        $this->view->assign('event', $eventID );
+        $this->view->assign('itemsPerPage', $itemsPerPage );
+        $this->view->assign('events', $events);
         $this->view->assign('registrants', $registrants);
         $this->view->assign('settings', $this->settings );
     }
@@ -103,15 +123,21 @@ class EventBackendController extends BaseController
     // public function confirmAction(\JVE\JvEvents\Domain\Model\Registrant $registrant )
     public function confirmAction()
     {
-
+        $eventID = 0 ;
+        if ( $this->request->hasArgument("eventID")) {
+            $eventID = $this->request->getArgument("eventID");
+        }
 		if ( $this->request->hasArgument("registrant")) {
 		    $regId = $this->request->getArgument("registrant") ;
+
 		    if( $regId > 0 ) {
 		        /** @var \JVE\JvEvents\Domain\Model\Registrant $registrant */
                 $registrant = $this->registrantRepository->findByUid($regId) ;
                 if( $registrant ) {
+
                     /** @var \JVE\JvEvents\Domain\Model\Event $event */
-                    $event = $this->eventRepository->findByUid($registrant->getEvent() ) ;
+                    $event = $this->eventRepository->findByUidAllpages($registrant->getEvent() ) ;
+
                     if( $event ) {
                         $registrant->setConfirmed("1") ;
                         $name = trim( $registrant->getFirstName() . " " . $registrant->getLastName())  ;
@@ -121,7 +147,7 @@ class EventBackendController extends BaseController
                             $name  = '=?utf-8?B?'. base64_encode( $name) .'?=' ;
                         }
 
-                        $this->sendEmail($event , $registrant ,"Registrant" , array( $registrant->getEmail() => $name ) )  ;
+                        $this->sendEmail($event[0] , $registrant ,"Registrant" , array( $registrant->getEmail() => $name ) )  ;
 
                         $this->registrantRepository->update($registrant) ;
                         $this->addFlashMessage($this->settings['register']['senderEmail'] . " -> Email send to " . $registrant->getEmail() . " - layout: " . $this->settings['LayoutRegister'] , '', \TYPO3\CMS\Core\Messaging\AbstractMessage::INFO);
@@ -130,7 +156,7 @@ class EventBackendController extends BaseController
             }
 
         }
-        $this->redirect('list') ;
+        $this->redirect('list' , NULL , NULL , array( 'event' => $eventID )) ;
 	}
     
     /**

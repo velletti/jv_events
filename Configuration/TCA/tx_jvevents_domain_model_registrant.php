@@ -77,7 +77,13 @@ return array(
 				'max' => 255,
 			)
 		),
-	
+        'crdate' => Array (
+            'exclude' => 1,
+            'label' => 'Creation date',
+            'config' => Array (
+                'type' => 'none',
+            )
+        ),
 		'hidden' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.hidden',
