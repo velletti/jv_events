@@ -126,7 +126,8 @@ class RegistrantController extends BaseController
     }
 
     private function getCsvHeader( $d , $eol , $t ) {
-        $return = $t . "Firstname" . $t . $d  . $t . "Lastname" . $t  ;
+        $return = $t . "confirmed" . $t . $d  . $t . "hidden" . $t  ;
+        $return .= $t . "Firstname" . $t . $d  . $t . "Lastname" . $t  ;
         $return .= $d  . $t . "Gender" . $t . $d  . $t . "title" . $t  ;
         $return .= $d  . $t . "confirmed" . $t . $d  . $t . "email" . $t  ;
         $return .= $d  . $t . "company" . $t . $d  . $t . "department" . $t  ;
@@ -141,6 +142,7 @@ class RegistrantController extends BaseController
         $return .= $d  . $t . "address2" . $t  ;
         $return .= $d  . $t . "zip2" . $t  . $d  . $t . "city2" . $t  ;
         $return .= $d  . $t . "Country2" . $t ;
+        $return .= $d  . $t . "Additional Info" . $t ;
 
         return $return . $eol ;
     }
@@ -153,7 +155,8 @@ class RegistrantController extends BaseController
      * @return string
      */
     private function getCsvValues( $registrant , $d , $eol , $t ) {
-        $return = $t . $this->cleanString( $registrant->getFirstname() , $t , $d) . $t . $d  . $t . $this->cleanString($registrant->getLastName(), $t , $d ) . $t  ;
+        $return = $t . $this->cleanString( $registrant->getConfirmed() , $t , $d) . $t . $d  . $t . $this->cleanString($registrant->getHidden(), $t , $d ) . $t  ;
+        $return .= $d . $t . $this->cleanString( $registrant->getFirstname() , $t , $d) . $t . $d  . $t . $this->cleanString($registrant->getLastName(), $t , $d ) . $t  ;
 
         $gender = $this->translate("register_gender_female" ) ;
         if( $registrant->getGender() < 2 ) {
@@ -177,6 +180,7 @@ class RegistrantController extends BaseController
         $return .= $d  . $t . $this->cleanString($registrant->getStreetAndNr2(), $t , $d) . $t   ;
         $return .= $d  . $t . $this->cleanString($registrant->getZip2(), $t , $d) . $t . $d  . $t . $this->cleanString($registrant->getCity2(), $t , $d) . $t  ;
         $return .= $d  . $t . $this->cleanString($registrant->getCountry2(), $t , $d). $t  ;
+        $return .= $d  . $t . $this->cleanString($registrant->getAdditionalInfo(), $t , $d). $t  ;
 
         return $return . $eol ;
     }
@@ -195,6 +199,8 @@ class RegistrantController extends BaseController
 
         }
 
+        $string =   str_replace("\n" , "   " , $string ) ;
+        $string =   str_replace("\r" , "   " , $string ) ;
         return  str_replace($delim , $replace , $string ) ;
     }
     /**
