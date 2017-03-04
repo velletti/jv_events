@@ -153,7 +153,7 @@ class RegistrantController extends BaseController
      * @return string
      */
     private function getCsvValues( $registrant , $d , $eol , $t ) {
-        $return = $t . $this->cleanString( $registrant->getFirstname() , $t , $d) . $t . $d  . $t . $this->cleanString($registrant->getLastName(), $t) . $t  ;
+        $return = $t . $this->cleanString( $registrant->getFirstname() , $t , $d) . $t . $d  . $t . $this->cleanString($registrant->getLastName(), $t , $d ) . $t  ;
 
         $gender = $this->translate("register_gender_female" ) ;
         if( $registrant->getGender() < 2 ) {
