@@ -18,27 +18,31 @@ $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist'][$pluginSi
 $configuration = \JVE\JvEvents\Utility\EmConfiguration::getEmConf();
 
 if ( $configuration['showImporter'] == 1 ) {
-	if (TYPO3_MODE === 'BE') {
+    // Todo add importer to modules
+    $EventModules = array('EventBackend' => 'list, show, new, create, edit, update, delete, register, confirm, search' ) ;
 
-		/**
-		 * Registers a Backend Module
-		 */
-		\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-			'JVE.' . $_EXTKEY,
-			'web',	 // Make module a submodule of 'web'
-			'eventmngt',	// Submodule key
-			'',						// Position
-			array(
-				'Event' => 'list, show, new, create, edit, update, delete, register, confirm, search','Organizer' => 'list, show, new, create, edit, update, delete','Location' => 'list, show, new, create, edit, update, delete','Registrant' => 'list, show','Tag' => 'list',
-			),
-			array(
-				'access' => 'user,group',
-				'icon'   => 'EXT:' . $_EXTKEY . '/ext_icon_importer.gif',
-				'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_eventmngt.xlf',
-			)
-		);
+} else {
+    $EventModules = array('EventBackend' => 'list, show, new, create, edit, update, delete, register, confirm, search' ) ;
+}
 
-	}
+if (TYPO3_MODE === 'BE') {
+
+    /**
+     * Registers a Backend Module
+     */
+    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+        'JVE.' . $_EXTKEY,
+        'web',	 // Make module a submodule of 'web'
+        'eventmngt',	// Submodule key
+        'after:List',						// Position
+        $EventModules ,
+        array(
+            'access' => 'user,group',
+            'icon'   => 'EXT:' . $_EXTKEY . '/ext_icon_importer.gif',
+            'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_eventmngt.xlf',
+        )
+    );
+
 }
 
 

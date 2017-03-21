@@ -1,5 +1,5 @@
 <?php
-return array(
+$returnArray = array(
 	'ctrl' => array(
 		'title'	=> 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_organizer',
 		'label' => 'name',
@@ -27,7 +27,7 @@ return array(
 		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, email, phone, sales_force_user_id, images, description, organizer_category',
 	),
 	'types' => array(
-		'1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, name, email, phone, sales_force_user_id, images, description;;;richtext:rte_transform[mode=ts_links], organizer_category, --div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime'),
+		'1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, name, email, phone, sales_force_user_id, images, description;;;richtext:rte_transform[mode=ts_links], organizer_category, --div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, access_users, access_groups, starttime, endtime'),
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),
@@ -226,8 +226,57 @@ return array(
 				)
 			),
 		),
+        'access_groups' => array(
+            'exclude' => 0,
+            'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_organizer.accessGroups',
+            'config' => array(
+                'type' => 'select',
+                'renderType' => 'selectMultipleSideBySide',
+                'size' => 5,
+                'maxitems' => 20,
+                'items' => array(
+                    array(
+                        'LLL:EXT:lang/locallang_general.xlf:LGL.hide_at_login',
+                        -1
+                    ),
+                    array(
+                        'LLL:EXT:lang/locallang_general.xlf:LGL.any_login',
+                        -2
+                    ),
+                    array(
+                        'LLL:EXT:lang/locallang_general.xlf:LGL.usergroups',
+                        '--div--'
+                    )
+                ),
+                'exclusiveKeys' => '-1,-2',
+                'foreign_table' => 'fe_groups',
+                'foreign_table_where' => 'ORDER BY fe_groups.title',
+                'enableMultiSelectFilterTextfield' => true
+            )
+        ),
+        'access_users' => array(
+            'exclude' => 0,
+            'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_organizer.accessUsers',
+            'config' => array(
+                'type' => 'group',
+                'internal_type' => 'db',
+                'allowed' => 'fe_users',
+                'foreign_table' => 'fe_users',
+                'size' => 8,
+                'multiple' => 1,
+                'minitems' => 0,
+                'maxitems' => 20,
+                'wizards' => array(
+                    '_VERTICAL' => 1,
+                    'suggest' => array(
+                        'type' => 'suggest'
+                    ),
+
+                ),
+            ),
+        ),
 		'organizer_category' => array(
-			'exclude' => 1,
+			'exclude' => 0,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_organizer.organizer_category',
 			'config' => array(
 				'type' => 'select',
@@ -270,4 +319,14 @@ return array(
 		),
 		
 	),
-);## EXTENSION BUILDER DEFAULTS END TOKEN - Everything BEFORE this line is overwritten with the defaults of the extension builder
+);
+
+
+
+$configuration = \JVE\JvEvents\Utility\EmConfiguration::getEmConf();
+
+if ( ! $configuration['hasLoginUser'] == 1 ) {
+    unset($returnArray['columns']['access'] ) ;
+    unset($returnArray['columns']['registration_access'] ) ;
+}
+return $returnArray ;

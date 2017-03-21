@@ -63,28 +63,29 @@ class RegistrantRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 	 * @param uid $event
 	 * @return array
 	 */
-	public function findByFilter($email = '', $event = 0, $pid = 0 , $settings) {
+	public function findByFilter($email = '', $eventID = 0, $pid = 0 , $settings , $limit=1 ) {
 		$query = $this->createQuery();
 		$constraints = array();
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		$query->getQuerySettings()->setRespectSysLanguage(FALSE);
 		$query->getQuerySettings()->setIgnoreEnableFields(TRUE) ;
 
-
+        // $constraints[] = $query->equals("cruser_id", 0);
 		if($email <> '' ) {
 			$constraints[] = $query->equals("email", $email);
 		}
-		if($event > 0 ) {
-			$constraints[] = $query->equals("event", $event);
+        if($pid > 0 ) {
+            $constraints[] = $query->equals("pid", $pid);
+        }
+		if($eventID > 0 ) {
+			$constraints[] = $query->equals("event", $eventID);
 		}
-		if($pid > 0 ) {
-			$constraints[] = $query->equals("pid", $pid);
-		}
+
 		if(count($constraints) > 0 ) {
 			$query->matching($query->logicalAnd($constraints));
 		}
 
-		$query->setLimit(1);
+		$query->setLimit($limit);
 		$result = $query->execute();
 		if ($settings['debug']  == 2 ) {
 			$GLOBALS['TYPO3_DB']->debugOutput = 2;
@@ -95,4 +96,25 @@ class RegistrantRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 		}
 		return $result;
 	}
+    /**
+     * @param string $email
+     * @param uid $event
+     * @return array
+     */
+    public function findEventsByFilter($email = '', $pid = 0 , $settings  ) {
+
+        $query = $this->createQuery();
+        // $query->getQuerySettings()->setReturnRawQueryResult(TRUE);
+        if ( $pid > 0 ) {
+            $additionalWhere = ' AND pid = ' . $pid  ;
+        }
+        $query->statement('SELECT event from tx_jvevents_domain_model_registrant where deleted = 0 ' . $additionalWhere . ' Group By event ');
+        $regevents = $query->execute(true) ;
+        // var_dump($regevents) ;
+        $result = array()  ;
+       foreach ( $regevents as $next ) {
+            $result[] = $next['event'] ;
+        }
+        return $result;
+    }
 }

@@ -45,6 +45,7 @@ CREATE TABLE tx_jvevents_domain_model_event (
 	text_organizer text NOT NULL,
 	subject_registrant varchar(255) DEFAULT '' NOT NULL,
 	introtext_registrant text NOT NULL,
+	introtext_registrant_confirmed text NOT NULL,
 	text_registrant text NOT NULL,
 	need_to_confirm tinyint(1) unsigned DEFAULT '0' NOT NULL,
 	is_recurring tinyint(1) unsigned DEFAULT '0' NOT NULL,
@@ -105,6 +106,8 @@ CREATE TABLE tx_jvevents_domain_model_organizer (
 	sales_force_user_id varchar(255) DEFAULT '' NOT NULL,
 	images int(11) unsigned NOT NULL default '0',
 	description text NOT NULL,
+	access_groups text NOT NULL,
+	access_users text NOT NULL,
 	organizer_category int(11) unsigned DEFAULT '0' NOT NULL,
 
 	tstamp int(11) unsigned DEFAULT '0' NOT NULL,

@@ -177,7 +177,10 @@
 			<source>Text Registrant</source>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.introtext_registrant">
-            <source>Intro Text Registrant</source>
+            <source>Intro Text Registrant - Waiting List</source>
+        </trans-unit>
+        <trans-unit id="tx_jvevents_domain_model_event.introtext_registrant_confirmed">
+            <source>Intro Text Registrant - Registration Confirmed</source>
         </trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.unconfirmed_seats">
 			<source>Unconfirmed Seats</source>
@@ -248,6 +251,12 @@
 		<trans-unit id="tx_jvevents_domain_model_organizer.phone">
 			<source>Phone</source>
 		</trans-unit>
+        <trans-unit id="tx_jvevents_domain_model_organizer.accessGroups">
+            <source>Groups with Frontend Organizer Access to Events of this organizer</source>
+        </trans-unit>
+        <trans-unit id="tx_jvevents_domain_model_organizer.accessUsers">
+            <source>Frontendusers with Organizer Access to Events of this organizer</source>
+        </trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_organizer.sales_force_user_id">
 			<source>Sales Force User Id</source>
 		</trans-unit>

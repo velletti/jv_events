@@ -37,10 +37,19 @@
 			<br />
 		</f:if>
 
-		<f:if condition="{event.introtextRegistrant}">
-			<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
-				<f:format.nl2br>{event.introtextRegistrant}</f:format.nl2br>
-			</p>
+		<f:if condition="{registrant.confirmed}==1">
+			<f:if condition="{event.introtextRegistrantConfirmed}">
+				<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
+					<f:format.nl2br>{event.introtextRegistrantConfirmed}</f:format.nl2br>
+				</p>
+			</f:if>
+		</f:if>
+		<f:if condition="{registrant.confirmed}==0">
+			<f:if condition="{event.introtextRegistrant}">
+				<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
+					<f:format.nl2br>{event.introtextRegistrant}</f:format.nl2br>
+				</p>
+			</f:if>
 		</f:if>
 
 
@@ -99,9 +108,17 @@
 			</f:for>
 		</f:if>
 		*********************************
-		<f:if condition="{event.introtextRegistrant}">
-			{event.introtextRegistrant}
-		    *********************************
+		<f:if condition="{registrant.confirmed}==1">
+			<f:if condition="{event.introtextRegistrantConfirmed}">
+		{event.introtextRegistrantConfirmed}
+		*********************************
+			</f:if>
+		</f:if>
+		<f:if condition="{registrant.confirmed}==0">
+			<f:if condition="{event.introtextRegistrant}">
+		{event.introtextRegistrant}
+		*********************************
+			</f:if>
 		</f:if>
 		{f:translate(key: 'register_head_participant_data' , default:'Participants Data')}
 		ID: {registrant.uid} | <f:format.date format="d.m.Y">{registrant.created}</f:format.date>

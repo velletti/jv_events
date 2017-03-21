@@ -21,7 +21,7 @@
 
 						<f:if condition="{settings.success}">
 							<f:then>
-								ID: {settings.pageId}-L-{settings.sys_language_uid}-E-{event.uid}-R-{registrant.uid}<br>
+								<div class="hidden">ID: {settings.pageId}-L-{settings.sys_language_uid}-E-{event.uid}-R-{registrant.uid}<br></div>
 								<br>
 								<f:if condition="{settings.successMsg}">
 									{f:translate(key: '{settings.successMsg}')}

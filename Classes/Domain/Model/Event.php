@@ -93,7 +93,15 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @var bool
      */
     protected $allDay = false;
-    
+
+    /**
+     * creation Date as timestring
+     *
+     * @var int
+     */
+    protected $crdate ;
+
+
     /**
      * Start Date of this event. Mandatory
      *
@@ -325,6 +333,14 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @var string
      */
     protected $introtextRegistrant = '';
+
+    /**
+     * IntroText of the Email
+     *
+     *
+     * @var string
+     */
+    protected $introtextRegistrantConfirmed = '';
     
     /**
      * If the user needs to confirm the registration, activate this option
@@ -1100,6 +1116,24 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         $this->introtextRegistrant = $introtextRegistrant;
     }
 
+    /**
+     * @return string
+     */
+    public function getIntrotextRegistrantConfirmed()
+    {
+        return $this->introtextRegistrantConfirmed;
+    }
+
+    /**
+     * @param string $introtextRegistrantConfirmed
+     */
+    public function setIntrotextRegistrantConfirmed($introtextRegistrantConfirmed)
+    {
+        $this->introtextRegistrantConfirmed = $introtextRegistrantConfirmed;
+    }
+
+
+
 
 
     /**
@@ -1632,8 +1666,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 			}
 		} else {
 			if (! $this->registrationUrl ) {
-                echo "<br>Line: " . __LINE__ . " : " . " File: " . __FILE__ . '<br>$s1 : '
-                    . var_export($s1, true) . "<hr>";
+               // echo "<br>Line: " . __LINE__ . " : " . " File: " . __FILE__ . '<br>$s1 : ' . var_export($s1, true) . "<hr>";
 
                 return FALSE ;
 			}
@@ -1658,6 +1691,24 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 		// ToDo : Check registration_access againstUsersGroups
 		return true ;
 	}
+
+    /**
+     * @return int
+     */
+    public function getCrdate()
+    {
+        return $this->crdate;
+    }
+
+    /**
+     * @param int $crdate
+     */
+    public function setCrdate($crdate)
+    {
+        $this->crdate = $crdate;
+    }
+
+
 
 
 

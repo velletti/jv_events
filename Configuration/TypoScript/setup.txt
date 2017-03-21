@@ -24,7 +24,7 @@ plugin.tx_jvevents_events {
             }
             dateFormat = d.m.Y
 
-            If you use RealUrl, you can skip generation of URL Parameter Controller and Action
+            # If you use RealUrl, you can skip generation of URL Parameter Controller and Action
             skipControllerAndAction = 0
 
             detailPidDefault = 111
@@ -79,6 +79,9 @@ module.tx_jvevents_web_jveventseventmngt {
 		partialRootPaths.0 = {$module.tx_jvevents_eventmngt.view.partialRootPath}
 		layoutRootPaths.0 = {$module.tx_jvevents_eventmngt.view.layoutRootPath}
 	}
+    settings < plugin.tx_jvevents_events.settings
+    settings.LayoutRegister = 2Megra
+
 }
 
 # needed Settings to convert Richttext to HTML we want ..
