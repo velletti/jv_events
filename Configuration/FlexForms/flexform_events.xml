@@ -59,7 +59,22 @@
 						<TCEforms>
 							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.ShowFilter</label>
 							<config>
-								<type>check</type>
+								<type>select</type>
+								<items type="array">
+									<numIndex index="0" type="array">
+										<numIndex index="0">LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.ShowFilter.NoFilter</numIndex>
+										<numIndex index="1">0</numIndex>
+									</numIndex>
+									<numIndex index="1" type="array">
+										<numIndex index="0">LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.ShowFilter.SelectFilter</numIndex>
+										<numIndex index="1">1</numIndex>
+									</numIndex>
+
+									<numIndex index="2" type="array">
+										<numIndex index="0">LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.ShowFilter.AdvancedFilter</numIndex>
+										<numIndex index="1">2</numIndex>
+									</numIndex>
+								</items>
 							</config>
 						</TCEforms>
 					</settings.ShowFilter>

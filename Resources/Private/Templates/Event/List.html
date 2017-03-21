@@ -9,10 +9,11 @@
 			GEO Position
 		</div>
 	</f:if>
-	<div class="jv_vents_{settings.LayoutList}"	>
-		<f:if condition="{settings.ShowFilter}">
-			<f:render partial="Event/List/Partial{settings.LayoutList}/Filter" arguments="{eventsFilter: eventsFilter, settings: settings}"/>
-		</f:if>
+	<f:if condition="{settings.ShowFilter}">
+		<f:render partial="Event/List/Partial{settings.LayoutList}/Filter" arguments="{eventsFilter: eventsFilter, settings: settings}"/>
+	</f:if>
+	<div class="jv_events_{settings.LayoutList}"	>
+
 		<f:if condition="{events}">
 			<f:then>
 				<f:render partial="Event/List/Partial{settings.LayoutList}/HeaderEvent" arguments="{event:event, settings: settings}" />

@@ -427,6 +427,9 @@
 		<trans-unit id="tx_jvevents_event.filter.category">
 			<source>Filter by category</source>
 		</trans-unit>
+        <trans-unit id="tx_jvevents_event.filter.organizer">
+            <source>Filter by organizer</source>
+        </trans-unit>
 		<trans-unit id="tx_jvevents_event.filter.city">
 			<source>Filter by city</source>
 		</trans-unit>

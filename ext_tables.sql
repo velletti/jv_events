@@ -280,6 +280,7 @@ CREATE TABLE tx_jvevents_domain_model_category (
 	pid int(11) DEFAULT '0' NOT NULL,
 
 	title varchar(255) DEFAULT '' NOT NULL,
+	description text NOT NULL,
 	type int(11) DEFAULT '0' NOT NULL,
 	block_registration tinyint(1) unsigned DEFAULT '0' NOT NULL,
 

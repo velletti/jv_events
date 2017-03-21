@@ -1,16 +1,11 @@
 {namespace event=JVE\JvEvents\ViewHelpers}
 
+<div class="jv-events-singleEvent" data-eventUid="{event.uid}" data-orgUid="{event.organizer.uid}" data-monthUid="{event.startDate -> f:format.date(format:"m.Y")}" data-cityuid="{event.location.city}" data-catuids="{f:if(condition: i.isFirst, then: '{cat.uid},', else: '{cat.uid},') -> f:for(each:'{event.EventCategory}', as: 'cat', iteration: 'i')}" data-taguids="{f:if(condition: i.isFirst, then: '{tag.uid},', else: '{tag.uid},') -> f:for(each:'{event.Tags}', as: 'tag', iteration: 'i')}">
+
 		<div class="row " data-eventUid="{event.uid}">
 			<div class="col-xs-2">
 				<f:link.action pageUid="{settings.detailPid}" action="show" arguments="{event : event}">
 					{event.startDate -> f:format.date(format:"d.m.Y")}
-					<f:if condition="{event.allDay}">
-						<f:then>
-						</f:then>
-						<f:else>
-							{event.startTime -> f:format.date( format:"H:i")}
-						</f:else>
-					</f:if>
 
 				</f:link.action>
 			</div>
@@ -18,6 +13,12 @@
 				<f:link.action  pageUid="{settings.detailPid}" action="show" arguments="{event : event}">
 					{event.name}
 				</f:link.action>
+				<f:if condition="{event.Tags}">
+					<div class="small">
+						<f:for each="{event.Tags}" as="Tag" iteration="iteration"><f:if condition="{iteration.index} > 0 ">, </f:if>{Tag.name}
+						</f:for>
+					</div>
+				</f:if>
 			</div>
 			<div class="col-xs-3">
 				{event.location.city}
@@ -31,4 +32,6 @@
 				</f:if>
 			</div>
 		</div>
+
+</div>
 

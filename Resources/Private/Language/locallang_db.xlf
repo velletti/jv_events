@@ -11,6 +11,9 @@
 		<trans-unit id="tx_jvevents_domain_model_category.title">
 			<source>Title</source>
 		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_category.description">
+            <source>Description</source>
+        </trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_category.type">
 			<source>Type</source>
 		</trans-unit>

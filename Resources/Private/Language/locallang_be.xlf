@@ -108,8 +108,19 @@
 			<source>All Tags (If you select also this Option, the Event must have All of the other selected Tag filters)</source>
 		</trans-unit>
 		<trans-unit id="plugin.filter.ShowFilter">
-			<source>Show Filter in List View</source>
+			<source>Show Filter in List View ?</source>
 		</trans-unit>
+		<trans-unit id="plugin.filter.ShowFilter.NoFilter">
+            <source>Do not Show a Filter </source>
+        </trans-unit>
+		<trans-unit id="plugin.filter.ShowFilter.SelectFilter">
+            <source>Filter with select Dropdowns</source>
+        </trans-unit>
+		<trans-unit id="plugin.filter.ShowFilter.AdvancedFilter">
+            <source>Use Advanced Filter with Multi Select</source>
+        </trans-unit>
+
+
 		<trans-unit id="plugin.filter.Tags">
 			<source>Show Only Events with these Tags</source>
 		</trans-unit>

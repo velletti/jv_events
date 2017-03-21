@@ -105,7 +105,9 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         $organizers = array() ;
         $citys = array() ;
         $tags = array() ;
+        $tags2 = array() ;
         $categories = array() ;
+        $categories2 = array() ;
         $months = array() ;
         /** @var \JVE\JvEvents\Domain\Model\Event $event */
         foreach ($eventsArray as $key => $event ) {
@@ -143,6 +145,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
                 foreach ($objArray as $obj ) {
                     if ( is_object($obj) ) {
                         $categories[$obj->getUid()] = $obj->getTitle() ;
+                        $categories2[$obj->getUid()] = array( "id" => $obj->getUid() , "title" => $obj->getTitle() , "description" => $obj->getDescription() );
                     }
                 }
             }
@@ -160,7 +163,8 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             "citys" => $citys ,  
             "tags" => $tags ,  
             "categories" => $categories ,  
-            "months" => $months ,  
+            "categories2" => $categories2 ,
+            "months" => $months ,
             
             ) ;
     }
