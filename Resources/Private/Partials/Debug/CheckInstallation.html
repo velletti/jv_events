@@ -16,7 +16,7 @@
 						2 = (or Higher) check if there are errors in the configuration <br>
 						<br>
 						If you do not want ANY of this output, remove this code from your own Template ! see Docu -> template -> Partials -> Debug -> CheckInstallation
-						<br>or set plugin.tx_jvevents_events.settings.checkInstallation = 0<br>
+						<br>or set plugin.tx_jvevents_events.settings.checkInstallation = -1<br>
 
 					</div>
 					<f:render partial="Debug/CheckInstallationRow" arguments="{title:'Debug', setting: '{settings.debug}' , help: 'if set to 2, the repository will throw an exception with all SQL Querys'}" />
@@ -78,9 +78,15 @@
 		</f:if>
 	</f:then>
 	<f:else>
-		<div class="alert alert-warning">
-			The TYPO Script Setting checkInstallation is not set.
-			Maybe you forgot to include the extensions TypoScript to your Template?
-		</div>
+		<f:if condition="{settings.checkInstallation} < 0">
+			<f:then>
+			</f:then>
+			<f:else>
+				<div class="alert alert-warning">
+					The TYPO Script Setting checkInstallation is not set. {settings.checkInstallation}
+					Maybe you forgot to include the extensions TypoScript to your Template?
+				</div>
+			</f:else>
+		</f:if>
 	</f:else>
 </f:if>
