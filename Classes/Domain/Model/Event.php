@@ -1630,7 +1630,19 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
 
         // first Text if internal or external registration is set.
-        if (! $this->withRegistration ) {
+        if ($this->withRegistration ) {
+            // Internal Registration Process : check $this->availableSeats  Seats against Registered
+            if (($this->registeredSeats + $this->unconfirmedSeats +1) > ($this->availableSeats + $this->availableWaitingSeats)  ) {
+                //  echo "<br>Line: " . __LINE__ . " : " . " File: " . __FILE__ . '<br>$this->registeredSeats + $this->unconfirmedSeats +1) > ($this->availableSeats + $this->availableWaitingSeat <hr>';
+
+                return FALSE;
+            }
+            if (($this->unconfirmedSeats + 1) > ($this->availableSeats) && ( $this->availableSeats > 0 )) {
+                //  echo "<br>Line: " . __LINE__ . " : " . " File: " . __FILE__ . '<br>$this->unconfirmedSeats + 1) > ($this->availableSeats) && ( $this->availableSeats > 0  <hr>';
+
+                return FALSE;
+            }
+        } else {
             if (! $this->registrationUrl ) {
 
                 //  echo "<br>Line: " . __LINE__ . " : " . " File: " . __FILE__ . '<br>! $this->withRegistration and $this->registrationUrl ! set <hr>' ;
@@ -1641,7 +1653,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         // Check Dates :
         $now = new \DateTime('now') ;
 
-        if( $this->registrationUntil < $now ) {
+        if( $this->registrationUntil < $now && $this->registrationUntil > 1 ) {
             //  echo "<br>Line: " . __LINE__ . " : " . " File: " . __FILE__ . '<br>$this->registrationUntil < $now " . $this->registrationUntil . "<" . $now . "<hr>";
 
             return false ;
@@ -1651,26 +1663,9 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
             return false ;
         }
-
-		if ( $this->withRegistration ) {
-			// Internal Registration Process : check $this->availableSeats  Seats against Registered
-			if (($this->registeredSeats + $this->unconfirmedSeats +1) > ($this->availableSeats + $this->availableWaitingSeats)  ) {
-                //  echo "<br>Line: " . __LINE__ . " : " . " File: " . __FILE__ . '<br>$this->registeredSeats + $this->unconfirmedSeats +1) > ($this->availableSeats + $this->availableWaitingSeat <hr>';
-
-                return FALSE;
-			}
-			if (($this->unconfirmedSeats + 1) > ($this->availableSeats) && ( $this->availableSeats > 0 )) {
-              //  echo "<br>Line: " . __LINE__ . " : " . " File: " . __FILE__ . '<br>$this->unconfirmedSeats + 1) > ($this->availableSeats) && ( $this->availableSeats > 0  <hr>';
-
-                return FALSE;
-			}
-		} else {
-			if (! $this->registrationUrl ) {
-               // echo "<br>Line: " . __LINE__ . " : " . " File: " . __FILE__ . '<br>$s1 : ' . var_export($s1, true) . "<hr>";
-
-                return FALSE ;
-			}
-		}
+        if ( ! $this->mustLoginRights()  ) {
+            return false ;
+        }
         // access rights are NOT part of this check .. see mustLoginRights() and hasAccessRights() ..
         return true ;
     }
