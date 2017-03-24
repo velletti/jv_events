@@ -9,7 +9,7 @@
 					{event.startDate -> f:format.date(format:"d.m.Y")}
 				</f:then>
 				<f:else>
-					{event.startDate -> f:format.date(format:"d.m.Y")} um {event.startTime -> f:format.date( format:"H:i")}<f:if condition="{event.endTime}"> - {event.endTime -> f:format.date( format:"H:i")}</f:if>
+					{event.startDate -> f:format.date(format:"d.m.Y")} um {event.startTime -> event:format.date( format:"H:i")}<f:if condition="{event.endTime}"> - {event.endTime -> event:format.date( format:"H:i")}</f:if>
 				</f:else>
 
 			</f:if>
@@ -41,6 +41,20 @@
 						<f:for each="{event.EventCategory}" as="EventCategory" iteration="iteration"><f:if condition="{iteration.index} > 0 ">, </f:if>{EventCategory.title}</f:for>
 					</div>
 				</div>
+			</f:if>
+
+			<f:if condition="{event.isRegistrationPossible}">
+				<div class="row">
+					<div class="col-xs-12 text-right">
+						<event:regLink event="{event}" settings="{settings}" uriOnly="0">
+						<span class="btn btn-primary">
+							{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:list.register.button.subscribe' , default:'Anmelden')}
+						</span>
+						</event:regLink>
+					</div>
+
+				</div>
+
 			</f:if>
 
 			<div class="well" >

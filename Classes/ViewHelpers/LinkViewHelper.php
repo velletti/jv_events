@@ -107,13 +107,17 @@ class LinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedVi
                 $this->tag->addAttribute('target', '_blank');
             }
         }
-        if ($this->hasArgument('section')) {
-            $url .= '#' . $this->arguments['section'];
-        }
+
         if ($uriOnly) {
             $configuration['forceAbsoluteUrl'] = 1 ;
         }
+        if ( intval( $GLOBALS['TSFE']->config['config']['sys_language_uid'] ) > 0 ) {
+            $configuration['additionalParams'] .= "&L=" . intval( $GLOBALS['TSFE']->config['config']['sys_language_uid'] ) ;
+        }
         $url = $this->cObj->typoLink_URL($configuration);
+        if ($this->hasArgument('section')) {
+            $url .= '#' . $this->arguments['section'];
+        }
         if ($uriOnly) {
             return $url;
         }

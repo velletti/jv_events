@@ -106,6 +106,9 @@ class RegLinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBase
             $configuration['forceAbsoluteUrl'] = 1 ;
         }
 
+        if ( intval( $GLOBALS['TSFE']->config['config']['sys_language_uid'] ) > 0 ) {
+            $configuration['additionalParams'] .= "&L=" . intval( $GLOBALS['TSFE']->config['config']['sys_language_uid'] ) ;
+        }
         $url = $this->cObj->typoLink_URL($configuration);
         
         if ($this->hasArgument('section')) {

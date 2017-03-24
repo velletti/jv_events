@@ -1,4 +1,6 @@
-		<div class="well">
+{namespace event=JVE\JvEvents\ViewHelpers}
+
+			<div class="well">
 			<f:render partial="Event/Single/Partial{settings.LayoutSingle}/Row"
 				arguments="{title: 'tx_jvevents_domain_model_event.name', translate: '1', isHeadline: 'H2' ,value: '{event.name}' }" />
 
@@ -7,7 +9,7 @@
 					{event.startDate -> f:format.date(format:"d.m.Y")}
 				</f:then>
 				<f:else>
-					{event.startDate -> f:format.date(format:"d.m.Y")} um {event.startTime -> f:format.date( format:"H:i")}<f:if condition="{event.endTime}"> - {event.endTime -> f:format.date( format:"H:i")}</f:if>
+					{event.startDate -> f:format.date(format:"d.m.Y")} um {event.startTime -> event:format.date( format:"H:i")}<f:if condition="{event.endTime}"> - {event.endTime -> event:format.date( format:"H:i")}</f:if>
 				</f:else>
 
 			</f:if>

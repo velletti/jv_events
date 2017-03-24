@@ -2,8 +2,21 @@
 
 <ul class="nav nav-tabs">
 	<li class="active"><a id="jv_events_event_nav" data-toggle="tab" href="#jv_events_event">Info</a></li>
-	<li ><a  id="jv_events_map_nav" data-toggle="tab" href="#jv_events_map">Map</a></li>
+	<f:if condition="{event.location.lng}">
+		<li ><a  id="jv_events_map_nav" data-toggle="tab" href="#jv_events_map">Map</a></li>
+	</f:if>
 	<li ><a  id="jv_events_contact_nav" data-toggle="tab" href="#jv_events_contact">Kontakt</a></li>
+
+	<f:if condition="{event.isRegistrationPossible}">
+		<li >
+			<event:regLink event="{event}" settings="{settings}" uriOnly="0">
+				{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:list.register.button.subscribe' , default:'Anmelden')}
+			</event:regLink>
+
+		</li>
+
+	</f:if>
+
 	<f:if condition="{settings.debug} > 0">
 		<li ><a  id="jv_events_debug_nav" data-toggle="tab" href="#jv_events_debug">debug</a></li>
 	</f:if>
@@ -126,19 +139,7 @@
 					arguments="{title: 'tx_jvevents_domain_model_organizer.phone', translate: '1', value: '{event.organizer.phone}' }"/>
 			</f:if>
 
-			<f:if condition="{event.isRegistrationPossible}">
-				<div class="row">
-					<div class="col-xs-12 text-right">
-						<event:regLink event="{event}" settings="{settings}" uriOnly="0">
-						<span class="btn btn-primary">
-							{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:list.register.button.subscribe' , default:'Anmelden')}
-						</span>
-						</event:regLink>
-					</div>
 
-				</div>
-
-			</f:if>
 		</div>
 	</div>
 

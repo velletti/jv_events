@@ -21,26 +21,7 @@ function jv_events_init() {
 
 	// http://nemetschek.local/index.php?id=116&tx_jvevents_events[eventsFilter][categories]=3&tx_jvevents_events[eventsFilter][citys]=4
 	// http://nemetschek.local/index.php?id=116&tx_jvevents_events[eventsFilter][categories]=3&tx_jvevents_events[eventsFilter][citys]=4&tx_jvevents_events[eventsFilter][tags]=3&tx_jvevents_events[eventsFilter][months]=03.2017
-
-        // Set the fieldsets to the same height
-	if($('.filter').length && ($('body').hasClass('lg'))){
-
-		$('.filter').each(function(){
-
-			var heightBiggestElement = 0;
-
-			$(this).find('fieldset').each(function(){
-				if($(this).height() > heightBiggestElement) {
-					heightBiggestElement = $(this).height();
-				}
-			});
-			$(this).find('fieldset').each(function(){
-				$(this).height(heightBiggestElement);
-			});
-
-		});
-
-	}
+    // https://allplan.local/index.php?id=110&L=1&no_cache=1&tx_jvevents_events[eventsFilter][categories]=4&tx_jvevents_events[eventsFilter][citys]=Ratingen
 
 
 
@@ -55,8 +36,32 @@ function jv_events_init() {
 			navigator.geolocation.getCurrentPosition(jv_events_initPosition);
 		}
 	}
+    jQuery('#filter-reset-events' ).click(function(i) {
+        jv_events_filter_reset() ;
+        return false ;
+    });
 
-	// jv_events_refreshList();
+    // Set the fieldsets to the same height
+    if($('.filter').length && ($('body').hasClass('lg'))){
+
+        $('.filter').each(function(){
+
+            var heightBiggestElement = 0;
+
+            $(this).find('fieldset').each(function(){
+                if($(this).height() > heightBiggestElement) {
+                    heightBiggestElement = $(this).height();
+                }
+            });
+            $(this).find('fieldset').each(function(){
+                $(this).height(heightBiggestElement);
+            });
+
+        });
+
+    }
+
+	jv_events_refreshList();
 }
 function jv_events_initPosition(position) {
 
@@ -88,7 +93,7 @@ function jv_events_initOneFilter(filterName) {
         });
         var filterVal = GetURLParameter('tx_jvevents_events[eventsFilter][' + filterName + ']') ;
         if ( filterVal ) {
-            jQuery('SELECT#jv_events_filter_' + filterName + ' CHECKBOX').each(function(i) {
+            jQuery('#jv_events_filter_' + filterName + ' input[type=checkbox]').each(function(i) {
                 if ("'" + jQuery(this).val() + "'" == "'" + filterVal +"'") {
                     jQuery(this).prop("checked", true);
                 }
@@ -125,14 +130,14 @@ function jv_events_refreshList(){
         }
 
     }) ;
-
+    var filterIsActive = false ;
 	jQuery('.tx-jv-events DIV.jv-events-singleEvent').each(function (i) {
 		jQuery(this).removeClass('hide') ;
 
 		if( fMonth && fMonth.val().length > 0 ) {
 			if( jQuery(this).data("monthuid")  != fMonth.val() ) {
 				jQuery(this).addClass('hide') ;
-			}
+            }
 		}
 		if( fTag && fTag.val() > 0 ) {
 			var fTags = jQuery(this).data("taguids") ;
@@ -216,9 +221,60 @@ function jv_events_refreshList(){
                 jQuery(this).addClass('hide') ;
             }
         }
+        if ( jQuery(this).hasClass('hide')) {
+            filterIsActive = true ;
+		}
 	});
+	if ( filterIsActive ) {
+		jQuery( "#filter-reset-events").removeClass('hide') ;
+		jQuery( "#filter-result-hint-events").removeClass('hide') ;
+	} else {
+        jQuery( "#filter-reset-events").addClass('hide') ;
+        jQuery( "#filter-result-hint-events").addClass('hide') ;
+	}
 }
 
+function jv_events_filter_reset() {
+    var fMonth= jQuery("SELECT#jv_events_filter_months") ;
+    if( fMonth) {
+    	jQuery( fMonth).val("") ;
+	}
+    var fTag= jQuery("SELECT#jv_events_filter_tags") ;
+    if( fTag) {
+        jQuery( fTag).val("") ;
+    }
+
+    var fCity= jQuery("SELECT#jv_events_filter_citys") ;
+    if( fCity) {
+        jQuery( fCity).val("") ;
+    }
+
+    var fCat= jQuery("SELECT#jv_events_filter_categories") ;
+    if( fCat) {
+        jQuery( fCat).val("") ;
+    }
+
+    var fOrg= jQuery("SELECT#jv_events_filter_organizers") ;
+    if( fOrg) {
+        jQuery( fOrg).val("") ;
+    }
+
+    var cCats= jQuery("#jv_events_filter_categories INPUT[type=checkbox]") ;
+    if( cCats) {
+        jQuery( cCats).each( function() {
+        	jQuery(this).prop("checked" , false ) ;
+		}) ;
+    }
+    var cTags= jQuery("#jv_events_filter_tags INPUT[type=checkbox]") ;
+    if( cTags) {
+        jQuery( cTags).each( function() {
+            jQuery(this).prop("checked" , false ) ;
+        }) ;
+    }
+    jQuery('.tx-jv-events DIV.jv-events-singleEvent').each(function (i) {
+        jQuery(this).removeClass('hide');
+    });
+}
 function jv_events_submit() {
 
 	var error = false ;
