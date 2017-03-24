@@ -162,7 +162,21 @@ class RegLinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBase
             $configuration['useCacheHash'] = 0 ;
             $configuration['noCache'] = 1 ;
         }
+
+        $categories = $event->getEventCategory() ;
+        $catTitles = "" ;
+        if ( $categories ) {
+            /** @var  \JVE\JvEvents\Domain\Model\Category $category */
+            foreach( $categories as $category ) {
+                if( is_object($category)) {
+                    $catTitles .= $category->getTitle() . " - ";
+                }
+            }
+
+        }
+
         $configuration['additionalParams'] .= '&tx_jvevents_events[event]=' . ($event->getUid() );
+        $configuration['additionalParams'] .= '&tx_jvevents_events[eventTitle]=' . urlencode( $catTitles . $event->getName() );
         $configuration['additionalParams'] .= '&tx_jvevents_events[controller]=Registrant' . '&tx_jvevents_events[action]=new';
 
         $configuration['additionalParams'] .= '&tx_jvevents_events[date]=' . $event->getStartDate()->format( $settings['link']['dateFormat']  );

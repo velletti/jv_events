@@ -96,7 +96,8 @@ $returnArray = array(
             'exclude' => 1,
             'label' => 'Creation date',
             'config' => Array (
-                'type' => 'none',
+                'type' => 'input',
+                'eval' => 'int',
             )
         ),
 		

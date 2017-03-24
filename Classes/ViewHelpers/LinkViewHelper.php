@@ -165,6 +165,18 @@ class LinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedVi
             $configuration['additionalParams'] .= '&tx_jvevents_events[controller]=Event' .
                 '&tx_jvevents_events[action]=show';
         }
+        $categories = $event->getEventCategory() ;
+        $catTitles = "" ;
+        if ( $categories ) {
+            /** @var  \JVE\JvEvents\Domain\Model\Category $category */
+            foreach( $categories as $category ) {
+                if( is_object($category)) {
+                    $catTitles .= $category->getTitle() . " - ";
+                }
+            }
+
+        }
+        $configuration['additionalParams'] .= '&tx_jvevents_events[eventTitle]=' . urlencode( $catTitles . $event->getName() );
         $configuration['additionalParams'] .= '&tx_jvevents_events[date]=' . $event->getStartDate()->format( $settings['link']['dateFormat']  );
         return $configuration;
     }

@@ -1,28 +1,38 @@
 
 <f:if condition="{settings.ShowFilter}==1">
     <f:form action="list" id="jv_events_filter" object="{eventsFilter}" class="row" enctype="multipart/form-data" method="get" noCacheHash="1" additionalParams="{tx_jv_events_event: {__widget_0: {currentPage: 0}}}">
-        <div class="form-group">
-            <div class="col-sm-2 col-xs-4">
-                <f:form.select property="months" class="form-control" id="jv_events_filter_months" options="{eventsFilter.months}" prependOptionLabel="{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_event.filter.month', default:'by month')}" prependOptionValue=""/>
+        <div class="form-group clearfix">
+            <f:if condition="{f:count(subject: eventsFilter.months)} > 1">
+                <div class="col-sm-2 col-xs-4">
+                    <f:form.select property="months" class="form-control" id="jv_events_filter_months" options="{eventsFilter.months}" prependOptionLabel="{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_event.filter.month', default:'by month')}" prependOptionValue=""/>
 
-            </div>
-            <div class="col-sm-2 col-xs-4">
-                <f:form.select property="tags" class="form-control" id="jv_events_filter_tags" options="{eventsFilter.tags}" prependOptionLabel="{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_event.filter.tag', default:'by tag')}" prependOptionValue=""/>
-            </div>
-
-            <div class="col-sm-2 col-xs-4">
-                <f:form.select property="citys" class="form-control" id="jv_events_filter_citys" options="{eventsFilter.citys}"  prependOptionLabel="{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_event.filter.city' , default:'by City')}" prependOptionValue=""/>
-            </div>
-            <div class="col-sm-2 col-xs-4">
-                <f:form.select property="organizers" class="form-control" id="jv_events_filter_organizers" options="{eventsFilter.organizers}"   prependOptionLabel="{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_event.filter.city' , default:'by City')}" prependOptionValue=""/>
-            </div>
-            <div class="col-sm-2 col-xs-4">
-                <f:form.select property="locations" class="form-control" id="jv_events_filter_locations" options="{eventsFilter.locations}"   prependOptionLabel="{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_event.filter.city' , default:'by City')}" prependOptionValue=""/>
-            </div>
-            <div class="col-sm-2 col-xs-4">
-                <f:form.select property="categories" class="form-control" id="jv_events_filter_categories" options="{eventsFilter.categories}" prependOptionLabel="{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_event.filter.category', default:'by Cat')}" prependOptionValue=""/>
-            </div>
-
+                </div>
+            </f:if>
+            <f:if condition="{f:count(subject: eventsFilter.tags)} > 1">
+                <div class="col-sm-2 col-xs-4">
+                    <f:form.select property="tags" class="form-control" id="jv_events_filter_tags" options="{eventsFilter.tags}" prependOptionLabel="{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_event.filter.tag', default:'by tag')}" prependOptionValue=""/>
+                </div>
+            </f:if>
+            <f:if condition="{f:count(subject: eventsFilter.citys)} > 1">
+                <div class="col-sm-2 col-xs-4">
+                    <f:form.select property="citys" class="form-control" id="jv_events_filter_citys" options="{eventsFilter.citys}"  prependOptionLabel="{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_event.filter.city' , default:'by City')}" prependOptionValue=""/>
+                </div>
+            </f:if>
+            <f:if condition="{f:count(subject: eventsFilter.organizers)} > 1">
+                <div class="col-sm-2 col-xs-4">
+                    <f:form.select property="organizers" class="form-control" id="jv_events_filter_organizers" options="{eventsFilter.organizers}"   prependOptionLabel="{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_event.filter.city' , default:'by City')}" prependOptionValue=""/>
+                </div>
+            </f:if>
+            <f:if condition="{f:count(subject: eventsFilter.locations)} > 1">
+                <div class="col-sm-2 col-xs-4">
+                    <f:form.select property="locations" class="form-control" id="jv_events_filter_locations" options="{eventsFilter.locations}"   prependOptionLabel="{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_event.filter.city' , default:'by City')}" prependOptionValue=""/>
+                </div>
+            </f:if>
+            <f:if condition="{f:count(subject: eventsFilter.categories)} > 1">
+                <div class="col-sm-2 col-xs-4">
+                    <f:form.select property="categories" class="form-control" id="jv_events_filter_categories" options="{eventsFilter.categories}" prependOptionLabel="{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_event.filter.category', default:'by Cat')}" prependOptionValue=""/>
+                </div>
+            </f:if>
         </div>
     </f:form>
 </f:if>
@@ -33,77 +43,84 @@
 
             <div class="hints clearfix">
                 <p class="left">Filtern Sie die Inhalte dieser Seite</p>
-                <p class="right hidden" id="filter-reset-events"><a href="#">Filter zurücksetzen</a></p>
+                <p class="right hide" id="filter-reset-events"><a href="#">Filter zurücksetzen</a></p>
             </div>
 
             <div class="fieldsets">
 
-                <fieldset>
-                    <legend>{f:translate(key: 'filter-label-event-by-tag', default:'Event mit Stichwort')}</legend>
+                <f:if condition="{f:count(subject: eventsFilter.tags)} > 1">
+                    <fieldset>
+                        <legend>{f:translate(key: 'filter-label-event-by-tag', default:'Event mit Stichwort')}</legend>
 
-                    <div class="checkbox" id="jv_events_filter_tags">
-                        <f:for each="{eventsFilter.tags}" as="tag" key="id">
-                            <label>
-                                <input type="checkbox" id="jv_events_filter_tag-{id}" value="{id}">{tag}
-                            </label>
-                        </f:for>
-                    </div>
-                </fieldset>
+                        <div class="checkbox" id="jv_events_filter_tags">
+                            <f:for each="{eventsFilter.tags}" as="tag" key="id">
+                                <label>
+                                    <input type="checkbox" id="jv_events_filter_tag-{id}" value="{id}">{tag}
+                                </label>
+                            </f:for>
+                        </div>
+                    </fieldset>
+                </f:if>
+                <f:if condition="{f:count(subject: eventsFilter.categories2)} > 1">
+                    <fieldset>
 
+                        <legend>{f:translate(key: 'filter-label-event-by-tag', default:'Art des Termins')}</legend>
 
-                <fieldset>
+                        <div class="checkbox"  id="jv_events_filter_categories">
 
-                    <legend>{f:translate(key: 'filter-label-event-by-tag', default:'Art des Termins')}</legend>
+                            <f:for each="{eventsFilter.categories2}" as="category">
+                                <label>
+                                    <input type="checkbox" id="jv_events_filter_cat-{category.id}" value="{category.id}">{category.title}
+                                    <f:if condition="{category.description}">
+                                        <a class="info" href="#" data-toggle="modal" data-target="#jv_events_cat_modal-{category.id}"><span>Info</span></a>
+                                    </f:if>
+                                </label>
 
-                    <div class="checkbox"  id="jv_events_filter_categories">
-
-                        <f:for each="{eventsFilter.categories2}" as="category">
-                            <label>
-                                <input type="checkbox" id="jv_events_filter_cat-{category.id}" value="{category.id}">{category.title}
                                 <f:if condition="{category.description}">
-                                    <a class="info" href="#" data-toggle="modal" data-target="#jv_events_cat_modal-{category.id}"><span>Info</span></a>
-                                </f:if>
-                            </label>
+                                    <div id="jv_events_cat_modal-{category.id}" class="modal fade" role="dialog">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                                                    <h4>{category.title}</h4>
+                                                </div>
 
-                            <f:if condition="{category.description}">
-                                <div id="jv_events_cat_modal-{category.id}" class="modal fade" role="dialog">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <a href="#" class="close" data-dismiss="modal">&times;</a>
-                                                <h4>{category.title}</h4>
-                                            </div>
-
-                                            <div class="modal-body">
-                                                <f:format.nl2br>{category.description}</f:format.nl2br>
+                                                <div class="modal-body">
+                                                    <f:format.nl2br>{category.description}</f:format.nl2br>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
-                            </f:if>
-                        </f:for>
+                                </f:if>
+                            </f:for>
 
-                    </div>
+                        </div>
 
 
-                </fieldset>
+                    </fieldset>
+                </f:if>
 
                 <fieldset>
                     <legend>More filter</legend>
-
-                    <div class="form-group">
-                        <label for="jv_events_filter_citys" class="hidden">Ort:</label>
-                        <f:form.select property="citys" class="form-control" id="jv_events_filter_citys" options="{eventsFilter.citys}" prependOptionLabel="{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_event.filter.city' , default:'by City')}" prependOptionValue="" />
-                    </div>
-                    <div class="form-group">
-                        <label for="jv_events_filter_months" class="hidden">Month:</label>
-                        <f:form.select property="months" class="form-control" id="jv_events_filter_months" options="{eventsFilter.months}" prependOptionLabel="{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_event.filter.month', default:'by month')}" prependOptionValue=""/>
-                    </div>
-                    <div class="form-group">
-                        <label for="jv_events_filter_organizers" class="hidden">Oranigzer:</label>
-                        <f:form.select property="organizers" class="form-control" id="jv_events_filter_organizers" options="{eventsFilter.organizers}"   prependOptionLabel="{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_event.filter.organizer' , default:'by Organizer')}" prependOptionValue=""/>
-                    </div>
+                        <f:if condition="{f:count(subject: eventsFilter.citys)} > 1">
+                        <div class="form-group">
+                            <label for="jv_events_filter_citys" class="hidden">Ort:</label>
+                            <f:form.select property="citys" class="form-control" id="jv_events_filter_citys" options="{eventsFilter.citys}" prependOptionLabel="{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_event.filter.city' , default:'by City')}" prependOptionValue="" />
+                        </div>
+                    </f:if>
+                    <f:if condition="{f:count(subject: eventsFilter.months)} > 1">
+                        <div class="form-group">
+                            <label for="jv_events_filter_months" class="hidden">Month:</label>
+                            <f:form.select property="months" class="form-control" id="jv_events_filter_months" options="{eventsFilter.months}" prependOptionLabel="{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_event.filter.month', default:'by month')}" prependOptionValue=""/>
+                        </div>
+                    </f:if>
+                    <f:if condition="{f:count(subject: eventsFilter.organizers)} > 1">
+                        <div class="form-group">
+                            <label for="jv_events_filter_organizers" class="hidden">Oranigzer:</label>
+                            <f:form.select property="organizers" class="form-control" id="jv_events_filter_organizers" options="{eventsFilter.organizers}"   prependOptionLabel="{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_event.filter.organizer' , default:'by Organizer')}" prependOptionValue=""/>
+                        </div>
+                    </f:if>
                 </fieldset>
 
 
@@ -111,7 +128,7 @@
 
         </form>
 
-        <p class="filter-result-hint text-center hidden" id="filter-result-hint-events">
+        <p class="filter-result-hint text-center hide" id="filter-result-hint-events">
             Die folgenden Inhalte wurden entsprechend Ihrer Auswahl angepasst
             <span class="arrow"></span>
         </p>
