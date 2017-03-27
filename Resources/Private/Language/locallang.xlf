@@ -445,6 +445,42 @@
 		<trans-unit id="tx_jvevents_event.list.no_events_found">
 			<source>No Events found with this search values</source>
 		</trans-unit>
+		<trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.01">
+			<source>Jan</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.02">
+			<source>Feb</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.03">
+			<source>Mar</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.04">
+			<source>Apr</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.05">
+			<source>May</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.06">
+			<source>Jun</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.07">
+			<source>Jul</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.08">
+			<source>Aug</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.09">
+			<source>Sep</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.10">
+			<source>Oct</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.11">
+			<source>Nov</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.12">
+			<source>Dec</source>
+		</trans-unit>
 
 		</body>
 	</file>

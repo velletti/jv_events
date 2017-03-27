@@ -581,6 +581,54 @@
 			<source>No Events found with this search values</source>
 			<target>Keine Veranstaltungen mit diesen Kriterien gefunden</target>
 		</trans-unit>
+		<trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.01" approved="yes">
+			<source>Jan</source>
+			<target>Jan</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.02" approved="yes">
+			<source>Feb</source>
+			<target>Feb</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.03" approved="yes">
+			<source>Mar</source>
+			<target>Mär</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.04" approved="yes">
+			<source>Apr</source>
+			<target>Apr</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.05" approved="yes">
+			<source>May</source>
+			<target>Mai</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.06" approved="yes">
+			<source>Jun</source>
+			<target>Jun</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.07" approved="yes">
+			<source>Jul</source>
+			<target>Jul</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.08" approved="yes">
+			<source>Aug</source>
+			<target>Aug</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.09" approved="yes">
+			<source>Sep</source>
+			<target>Sep</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.10" approved="yes">
+			<source>Oct</source>
+			<target>Okt</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.11" approved="yes">
+			<source>Nov</source>
+			<target>Nov</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.12" approved="yes">
+			<source>Dec</source>
+			<target>Dez</target>
+		</trans-unit>
 		</body>
 	</file>
 </xliff>

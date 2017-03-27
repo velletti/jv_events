@@ -39,6 +39,8 @@ plugin.tx_jvevents_events {
 				1Allplan = 1 - List with Filters
 				2Megra   = 2 - List with Filters and Link to first related File
 			}
+			# Addional class for your list wrapper
+			addionalClass =
 		}
 		single {
 			layouts {

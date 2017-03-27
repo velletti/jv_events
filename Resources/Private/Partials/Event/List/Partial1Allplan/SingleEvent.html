@@ -1,37 +1,43 @@
 {namespace event=JVE\JvEvents\ViewHelpers}
 
 <div class="jv-events-singleEvent" data-eventUid="{event.uid}" data-orgUid="{event.organizer.uid}" data-monthUid="{event.startDate -> f:format.date(format:"m.Y")}" data-cityuid="{event.location.city}" data-catuids="{f:if(condition: i.isFirst, then: '{cat.uid},', else: '{cat.uid},') -> f:for(each:'{event.EventCategory}', as: 'cat', iteration: 'i')}" data-taguids="{f:if(condition: i.isFirst, then: '{tag.uid},', else: '{tag.uid},') -> f:for(each:'{event.Tags}', as: 'tag', iteration: 'i')}">
-
-		<div class="row " data-eventUid="{event.uid}">
-			<div class="col-xs-2">
-				<f:link.action pageUid="{settings.detailPid}" action="show" arguments="{event : event}">
-					{event.startDate -> f:format.date(format:"d.m.Y")}
-
-				</f:link.action>
-			</div>
-			<div class="col-xs-4">
-				<f:link.action  pageUid="{settings.detailPid}" action="show" arguments="{event : event}">
-					{event.name}
-				</f:link.action>
-				<f:if condition="{event.Tags}">
-					<div class="small">
-						<f:for each="{event.Tags}" as="Tag" iteration="iteration"><f:if condition="{iteration.index} > 0 ">, </f:if>{Tag.name}
-						</f:for>
-					</div>
-				</f:if>
-			</div>
-			<div class="col-xs-3">
-				{event.location.city}
-			</div>
-			<div class="col-xs-3">
-				<f:if condition="{event.EventCategory}">
-					<f:for each="{event.EventCategory}" as="EventCategory" iteration="iteration">
-						<f:if condition="{iteration.index} > 0 ">, </f:if>
-						{EventCategory.title}
-					</f:for>
-				</f:if>
-			</div>
+	<div class="list-item clearfix" data-eventUid="{event.uid}">
+		<div class="date clearfix">
+			<span class="day">{f:format.date(date:event.startDate, format:'d')}</span>
+			<span class="month-year"><event:writeDateAbbreviation month="{f:format.date(date:event.startDate, format:'m')}"></event:writeDateAbbreviation></span>
+			<span class="year">{event.startDate -> f:format.date(format:"Y")}</span>
 		</div>
-
+		<div class="data">
+			<div class="clearfix">
+				<p class="title">
+					<strong>{event.name}</strong>
+				</p>
+				<p class="location">
+					{event.location.city}
+				</p>
+				<p class="category">
+					<f:if condition="{event.EventCategory}">
+						<f:for each="{event.EventCategory}" as="EventCategory" iteration="iteration"><f:if condition="{iteration.index} > 0 ">, </f:if>{EventCategory.title}</f:for>
+					</f:if>
+				</p>
+			</div>
+			<f:if condition="{event.Tags}">
+				<ul class="tags">
+				<f:for each="{event.Tags}" as="Tag" iteration="iteration">
+					<li>{Tag.name}</li>
+				</f:for>
+				</ul>
+			</f:if>
+		</div>
+		<div class="link">
+			<p>
+				<f:link.action  pageUid="{settings.detailPid}" action="show" arguments="{event : event}">
+					Zum Termin
+				</f:link.action>
+			</p>
+		</div>
+	</div>
 </div>
+
+
 
