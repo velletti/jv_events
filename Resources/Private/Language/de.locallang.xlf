@@ -45,6 +45,10 @@
 			<source>Company Data / Invoice Address</source>
 			<target>Firma / Rechnungsadresse</target>
 		</trans-unit>
+		<trans-unit id="register_head_different_billing_address" approved="yes">
+			<source>Billing address, if different</source>
+			<target>Abweichende Rechnungsadresse</target>
+		</trans-unit>
 		<trans-unit id="register_head_more_info" approved="yes">
 			<source>Additional Informations</source>
 			<target>Zusätzliche Anmerkungen</target>
@@ -155,6 +159,10 @@
             <source>Register</source>
              <target>Registrieren</target>
         </trans-unit>
+		<trans-unit id="list.register.button.registration" approved="yes">
+			<source>Registration</source>
+			<target>Registrierung</target>
+		</trans-unit>
         <trans-unit id="list.register.button.subscribe" approved="yes">
             <source>Subscribe</source>
              <target>Anmelden</target>

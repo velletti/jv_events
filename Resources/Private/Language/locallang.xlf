@@ -38,6 +38,9 @@
 		<trans-unit id="register_head_company_data">
 			<source>Company Data / Invoice Address</source>
 		</trans-unit>
+		<trans-unit id="register_head_different_billing_address">
+			<source>Billing address, if different</source>
+		</trans-unit>
 		<trans-unit id="register_head_more_info">
 			<source>Additional Informations</source>
 		</trans-unit>
@@ -120,6 +123,9 @@
         <trans-unit id="list.register.button.register">
             <source>Register</source>
         </trans-unit>
+		<trans-unit id="list.register.button.registration">
+			<source>Registration</source>
+		</trans-unit>
         <trans-unit id="list.register.button.subscribe">
             <source>Subscribe</source>
         </trans-unit>

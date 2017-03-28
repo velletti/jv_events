@@ -1,9 +1,8 @@
-
-
+<f:render partial="Event/Single/Partial{settings.LayoutSingle}/Minimal"	arguments="{event: event, settings: settings}"/>
 
 <f:if condition="{settings.regErrorMsg}">
 	<f:then>
-		<div class="panel panel-warning">
+		<div class="panel panel-danger">
 			<div class="panel-heading">
 				{f:translate(key: 'register_was_not_stored' , default:'ERROR: Your registration was NOT stored')}
 			</div>
@@ -18,23 +17,15 @@
 				{f:translate(key: 'register_was_stored' , default:'Your registration was stored')}
 			</div>
 			<div class="panel-body">
-
 				<f:if condition="{settings.success}">
 					<f:then>
 						<div class="hidden">ID: {settings.pageId}-L-{settings.sys_language_uid}-E-{event.uid}-R-{registrant.uid}<br></div>
-						<br>
 						<f:if condition="{settings.successMsg}">
 							{f:translate(key: '{settings.successMsg}')}
 						</f:if>
-
 					</f:then>
-
 				</f:if>
-				<br />
-
 			</div>
 		</div>
 	</f:else>
 </f:if>
-
-
