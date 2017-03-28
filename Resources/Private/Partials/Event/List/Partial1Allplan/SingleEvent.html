@@ -11,6 +11,10 @@
 			<div class="clearfix">
 				<p class="title">
 					<strong>{event.name}</strong>
+					<f:if condition="{event.teaser}">
+						<br>
+						{event.teaser}
+					</f:if>
 				</p>
 				<p class="location">
 					{event.location.city}
