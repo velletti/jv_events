@@ -271,9 +271,18 @@ function jv_events_filter_reset() {
             jQuery(this).prop("checked" , false ) ;
         }) ;
     }
+    if(jQuery('#filter-reset-events').length){
+		jQuery('#filter-reset-events').addClass('hide');
+	}
+	if(jQuery('#filter-result-hint-events').length){
+		jQuery('#filter-result-hint-events').addClass('hide');
+	}
+
+
     jQuery('.tx-jv-events DIV.jv-events-singleEvent').each(function (i) {
         jQuery(this).removeClass('hide');
     });
+
 }
 function jv_events_submit() {
 
