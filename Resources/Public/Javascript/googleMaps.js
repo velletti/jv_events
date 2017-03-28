@@ -69,6 +69,14 @@ function initMap() {
 	});
 
 
+	var navigationFn = {
+		goToSection: function(id) {
+			$('html, body').animate({
+				scrollTop: $("#" + id).offset().top
+			}, 10);
+		}
+	}
+
 }
 function updateMapTimer(map) {
 	clearInterval(refreshIntervalId);
@@ -77,10 +85,3 @@ function updateMapTimer(map) {
 	map.setCenter(center) ;
 }
 
-var navigationFn = {
-	goToSection: function(id) {
-		$('html, body').animate({
-			scrollTop: $("#" + id).offset().top
-		}, 10);
-	}
-}
