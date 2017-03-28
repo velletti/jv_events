@@ -285,6 +285,10 @@
 			<source>Start Time</source>
 			<target>Startzeit</target>
 		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.time" approved="yes">
+			<source>Time</source>
+			<target>Zeit</target>
+		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.store_in_citrix" approved="yes">
 			<source>Store Registration in Citrix</source>
 			<target>Anmeldung in Citrix speichern</target>

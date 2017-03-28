@@ -220,6 +220,9 @@
 		<trans-unit id="tx_jvevents_domain_model_event.start_time">
 			<source>Start Time</source>
 		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.time">
+			<source>Time</source>
+		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.store_in_citrix">
 			<source>Store Registration in Citrix</source>
 		</trans-unit>

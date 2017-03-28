@@ -40,13 +40,15 @@ plugin.tx_jvevents_events {
 				2Megra   = 2 - List with Filters and Link to first related File
 			}
 			# Addional class for your list wrapper
-			addionalClass =
+			additionalClass =
 		}
 		single {
 			layouts {
 				1Allplan = Normal Event Information
 				2Megra   = Full Info Event
 			}
+			# Addional class for your single wrapper
+			additionalClass =
 		}
 		register {
             layouts {
