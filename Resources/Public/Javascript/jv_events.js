@@ -200,12 +200,12 @@ function jv_events_refreshList(){
 
         if( cCatChecked ) {
             var sCats = jQuery(this).data("catuids") ;
-            console.log( " sCats : " + sCats ) ;
+            // console.log( " sCats : " + sCats ) ;
             if( sCats ) {
                 sCats = sCats.split(",") ;
                 var needTohide = true ;
                 jQuery( cCats ).each( function() {
-                	console.log( jQuery(this).prop("checked") ) ;
+					// console.log( jQuery(this).prop("checked") ) ;
                     if ( jQuery(this).prop("checked") ) {
                         if( sCats.indexOf( jQuery(this).val()  ) > -1 ) {
                             needTohide = false ;
@@ -333,4 +333,4 @@ function jv_events_submit() {
 }
 
 
-$.fn.getType = function(){ return this[0].tagName == "INPUT" ? this[0].type.toLowerCase() : this[0].tagName.toLowerCase(); }
+$.fn.getType = function(){ return this[0].tagName == "INPUT" ? this[0].type.toLowerCase() : this[0].tagName.toLowerCase(); };
