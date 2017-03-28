@@ -1,4 +1,16 @@
 {namespace event=JVE\JvEvents\ViewHelpers}
+
+<f:comment>
+
+	<!--
+
+	Template with different billing address
+
+	-->
+
+</f:comment>
+
+
 <f:form action="create" class="jv-events-regform" name="registrant" object="{registrant}" enctype="multipart/form-data">
 	<f:render partial="FormErrors" section="Main" arguments="{for: 'registrant'}" />
 	<f:render partial="FieldError" section="Main" arguments="{for: 'event' ,field: 'uid'}" />
@@ -40,7 +52,7 @@
 
 
 		<fieldset class="form-group">
-			<legend>Firmendaten</legend>
+			<legend>{f:translate(key: 'register_head_company_data')}</legend>
 
 			<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRow" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.company', FieldName : 'company' , settings: settings , cols: 'col-sm-12' ,  required: '{f:if(condition: \'{settings.register.required.company}\' , then: \'TRUE\')}'}"/>
 
@@ -58,7 +70,7 @@
 
 
 		<fieldset class="form-group">
-			<legend>Abweichende Rechnungsanschrift (falls nötig)</legend>
+			<legend>{f:translate(key: 'register_head_different_billing_address')}</legend>
 
 			<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRow" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.company', FieldName : 'company2' , settings: settings , cols: 'col-sm-12' ,  required: '{f:if(condition: \'{settings.register.required.company2}\' , then: \'TRUE\')}'}"/>
 
