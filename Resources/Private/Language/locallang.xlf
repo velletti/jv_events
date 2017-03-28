@@ -256,6 +256,20 @@
 		<trans-unit id="tx_jvevents_domain_model_event.with_registration">
 			<source>With Registration</source>
 		</trans-unit>
+
+		<trans-unit id="tx_jvevents_domain_model_event.details.linktext">
+			<source>To the event</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.details.tab.details">
+			<source>Details</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.details.tab.map">
+			<source>Map</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.details.tab.contact">
+			<source>Contact</source>
+		</trans-unit>
+
 		<trans-unit id="tx_jvevents_domain_model_location">
 			<source>Location</source>
 		</trans-unit>
@@ -444,6 +458,18 @@
 		</trans-unit>
 		<trans-unit id="tx_jvevents_event.filter.tag">
 			<source>Filter by Tag</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_event.filter.hint">
+			<source>Filter the content on this page</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_event.filter.reset">
+			<source>Reset filter</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_event.filter.resulthint">
+			<source>The following content was modified pursuant to your filter settings</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_event.filter.morefilters">
+			<source>More filters</source>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_event.list.no_events_found">
 			<source>No Events found with this search values</source>

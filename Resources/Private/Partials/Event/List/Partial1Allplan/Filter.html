@@ -1,4 +1,3 @@
-
 <f:if condition="{settings.ShowFilter}==1">
     <f:form action="list" id="jv_events_filter" object="{eventsFilter}" class="row" enctype="multipart/form-data" method="get" noCacheHash="1" additionalParams="{tx_jv_events_event: {__widget_0: {currentPage: 0}}}">
         <div class="form-group clearfix">
@@ -42,15 +41,15 @@
         <form class="clearfix" action="#">
 
             <div class="hints clearfix">
-                <p class="left">Filtern Sie die Inhalte dieser Seite</p>
-                <p class="right hide" id="filter-reset-events"><a href="#">Filter zurücksetzen</a></p>
+                <p class="left"><f:translate key="tx_jvevents_event.filter.hint" /></p>
+                <p class="right hide" id="filter-reset-events"><a href="#"><f:translate key="tx_jvevents_event.filter.reset" /></a></p>
             </div>
 
             <div class="fieldsets">
 
                 <f:if condition="{f:count(subject: eventsFilter.tags)} > 1">
                     <fieldset>
-                        <legend>{f:translate(key: 'filter-label-event-by-tag', default:'Event mit Stichwort')}</legend>
+                        <legend><f:translate key="tx_jvevents_domain_model_event.tags" /></legend>
 
                         <div class="checkbox" id="jv_events_filter_tags">
                             <f:for each="{eventsFilter.tags}" as="tag" key="id">
@@ -64,7 +63,7 @@
                 <f:if condition="{f:count(subject: eventsFilter.categories2)} > 1">
                     <fieldset>
 
-                        <legend>{f:translate(key: 'filter-label-event-by-tag', default:'Art des Termins')}</legend>
+                        <legend><f:translate key="tx_jvevents_domain_model_category" /></legend>
 
                         <div class="checkbox"  id="jv_events_filter_categories">
 
@@ -102,7 +101,7 @@
                 </f:if>
 
                 <fieldset>
-                    <legend>More filter</legend>
+                    <legend><f:translate key="tx_jvevents_event.filter.morefilters" /></legend>
                         <f:if condition="{f:count(subject: eventsFilter.citys)} > 1">
                         <div class="form-group">
                             <label for="jv_events_filter_citys" class="hidden">Ort:</label>
@@ -123,13 +122,12 @@
                     </f:if>
                 </fieldset>
 
-
             </div>
 
         </form>
 
         <p class="filter-result-hint text-center hide" id="filter-result-hint-events">
-            Die folgenden Inhalte wurden entsprechend Ihrer Auswahl angepasst
+            <f:translate key="tx_jvevents_event.filter.resulthint" />
             <span class="arrow"></span>
         </p>
 

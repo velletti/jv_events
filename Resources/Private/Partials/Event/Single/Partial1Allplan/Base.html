@@ -8,7 +8,6 @@
 
 <h1 data-eventUid="{event.uid}">{event.name}</h1>
 
-
 <div class="eventdata">
 
 	<div class="row">
@@ -91,13 +90,13 @@
 
 <ul class="nav nav-tabs">
 	<li class="active">
-		<a href="#jv_events_event" data-toggle="tab">Details</a>
+		<a href="#jv_events_event" data-toggle="tab"><f:translate key="tx_jvevents_domain_model_event.details.tab.details" /></a>
 	</li>
 	<li>
-		<a href="#jv_events_map" data-toggle="tab">Karte</a>
+		<a href="#jv_events_map" data-toggle="tab"><f:translate key="tx_jvevents_domain_model_event.details.tab.map" /></a>
 	</li>
 	<li>
-		<a href="#jv_events_contact" data-toggle="tab">Kontakt</a>
+		<a href="#jv_events_contact" data-toggle="tab"><f:translate key="tx_jvevents_domain_model_event.details.tab.contact" /></a>
 	</li>
 
 </ul>
@@ -105,7 +104,7 @@
 
 <f:comment>
 	<!-- =========================================================================================================================== -->
-	<!-- Common infos -->
+	<!-- Details -->
 	<!-- =========================================================================================================================== -->
 </f:comment>
 
@@ -113,7 +112,7 @@
 <div class="tab-content clearfix">
 	<div class="tab-pane active" id="jv_events_event">
 
-		<h2>Details</h2>
+		<h2><f:translate key="tx_jvevents_domain_model_event.details.tab.details" /></h2>
 
 		<div class="data clearfix">
 			<f:format.html parseFuncTSPath="lib.jveventsRTE">{event.description}</f:format.html>
@@ -141,12 +140,12 @@
 
 	<f:comment>
 		<!-- =========================================================================================================================== -->
-		<!-- Google maps -->
+		<!-- Map -->
 		<!-- =========================================================================================================================== -->
 	</f:comment>
 	<f:if condition="{event.location.lng}">
 		<div class="tab-pane " id="jv_events_map" >
-			<h2>Karte</h2>
+			<h2><f:translate key="tx_jvevents_domain_model_event.details.tab.map" /></h2>
 			<f:render partial="GoogleMapsAllplan" arguments="{addresses: {0:event.location}, settings:settings}" />
 		</div>
 	</f:if>
@@ -159,7 +158,7 @@
 	</f:comment>
 	<div class="tab-pane" id="jv_events_contact">
 
-		<h2>Kontakt</h2>
+		<h2><f:translate key="tx_jvevents_domain_model_event.details.tab.contact" /></h2>
 
 		<f:if condition="{event.organizer.name}">
 			<div class="row">
@@ -193,8 +192,6 @@
 </div>
 
 
-
-
 <script type="application/ld+json">
-		<f:render partial="Event/Single/MicroFormat" arguments="{event: event, settings: settings}"/>
-	</script>
+	<f:render partial="Event/Single/MicroFormat" arguments="{event: event, settings: settings}"/>
+</script>

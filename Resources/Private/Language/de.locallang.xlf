@@ -135,31 +135,31 @@
 		</trans-unit>
 
 
-		<trans-unit id="register.you_are_on_waiting_list">
+		<trans-unit id="register.you_are_on_waiting_list" approved="yes">
             <source>Your registration was successfull added to the Waiting list. Please wait for the Confirmation by the Organizer</source>
             <target>Ihre Registrierung wurde erfolgreich zur Warteliste hinzugefügt. Bitte warten Sie auf die Bestätigung durch den Veranstalter.</target>
         </trans-unit>
-        <trans-unit id="register.you_are_registered">
+        <trans-unit id="register.you_are_registered" approved="yes">
             <source>Your registration was stored successfull. </source>
             <target>Ihre Registrierung wurde erfolgreich durchgeführt.</target>
         </trans-unit>
-        <trans-unit id="register.you_need_to_confirm">
+        <trans-unit id="register.you_need_to_confirm" approved="yes">
             <source>Your Need to confirm your registration. Please click the following button.</source>
             <target>Sie müssen Ihre Registrierung noch durch 'Klick' auf den nachfolgenden Button bestätigen.</target>
         </trans-unit>
-        <trans-unit id="register.button.confirm">
+        <trans-unit id="register.button.confirm" approved="yes">
             <source>Confirm registration</source>
             <target>Registrierung bestätigen</target>
         </trans-unit>
-        <trans-unit id="list.register.button.register">
+        <trans-unit id="list.register.button.register" approved="yes">
             <source>Register</source>
              <target>Registrieren</target>
         </trans-unit>
-        <trans-unit id="list.register.button.subscribe">
+        <trans-unit id="list.register.button.subscribe" approved="yes">
             <source>Subscribe</source>
              <target>Anmelden</target>
         </trans-unit>
-        <trans-unit id="register.url.confirm_intro_text">
+        <trans-unit id="register.url.confirm_intro_text" approved="yes">
             <source>if the button does not work, copy the following URL into your browser:</source>
             <target>Wenn der Button nicht funktioniert, kopieren Sie bitte die nachfolgende URL in die Adresszeile Ihres Browsers:</target>
         </trans-unit>
@@ -210,7 +210,7 @@
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.is_recurring" approved="yes">
 			<source>Is Recurring</source>
-			<target>regelmäßiger Termin</target>
+			<target>Regelmäßiger Termin</target>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.location" approved="yes">
 			<source>Location</source>
@@ -332,6 +332,22 @@
 		<trans-unit id="tx_jvevents_domain_model_event.with_registration" approved="yes">
 			<source>With Registration</source>
 			<target>Mit Anmeldemöglichkeit</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.details.linktext" approved="yes">
+			<source>To the event</source>
+			<target>Zum Termin</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.details.tab.details" approved="yes">
+			<source>Details</source>
+			<target>Details</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.details.tab.map" approved="yes">
+			<source>Map</source>
+			<target>Karte</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.details.tab.contact" approved="yes">
+			<source>Contact</source>
+			<target>Kontakt</target>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_location" approved="yes">
 			<source>Location</source>
@@ -580,6 +596,22 @@
 		<trans-unit id="tx_jvevents_event.filter.tag" approved="yes">
 			<source>Filter by Tag</source>
 			<target>Schlagwort filtern</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_event.filter.hint" approved="yes">
+			<source>Filter the content on this page</source>
+			<target>Filtern Sie die Inhalte dieser Seite</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_event.filter.reset" approved="yes">
+			<source>Reset filter</source>
+			<target>Filter zurücksetzen</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_event.filter.resulthint" approved="yes">
+			<source>The following content was modified pursuant to your filter settings</source>
+			<target>Die folgenden Inhalte wurden entsprechend Ihrer Auswahl angepasst</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_event.filter.morefilters" approved="yes">
+			<source>More filters</source>
+			<target>Weitere Filter</target>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_event.list.no_events_found" approved="yes">
 			<source>No Events found with this search values</source>
