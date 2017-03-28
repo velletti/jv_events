@@ -7,19 +7,6 @@
 	<f:render partial="Event/Single/Partial{settings.LayoutSingle}/Minimal"
 			  arguments="{event: event, settings: settings}"/>
 
-    <f:be.security.ifAuthenticated>
-		<f:then>
-			<f:render partial="Registrant/RegistrationsLink"  arguments="{event: event, hash: hash, settings: settings}"/>
-		</f:then>
-		<f:else>
-			<f:if condition="{settings.fe_user.organizer.showTools}">
-				<f:then>
-					<f:render partial="Registrant/RegistrationsLink"  arguments="{event: event, hash: hash, settings: settings}"/>
-				</f:then>
-			</f:if>
-		</f:else>
-	</f:be.security.ifAuthenticated>
-
 	<f:comment> Render the Registration Form for the Event </f:comment>
 	<f:render partial="Registrant/Partial{settings.LayoutRegister}/Form"
 			  arguments="{event: event, settings: settings, otherEvents: otherEvents}"/>

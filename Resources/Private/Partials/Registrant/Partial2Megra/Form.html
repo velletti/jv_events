@@ -1,4 +1,18 @@
 {namespace event=JVE\JvEvents\ViewHelpers}
+
+<f:be.security.ifAuthenticated>
+	<f:then>
+		<f:render partial="Registrant/RegistrationsLink"  arguments="{event: event, hash: hash, settings: settings}"/>
+	</f:then>
+	<f:else>
+		<f:if condition="{settings.fe_user.organizer.showTools}">
+			<f:then>
+				<f:render partial="Registrant/RegistrationsLink"  arguments="{event: event, hash: hash, settings: settings}"/>
+			</f:then>
+		</f:if>
+	</f:else>
+</f:be.security.ifAuthenticated>
+
 <f:form action="create" class="jv-events-regform" name="registrant" object="{registrant}" enctype="multipart/form-data">
 	<f:render partial="FormErrors" section="Main" arguments="{for: 'registrant'}" />
 	<f:render partial="FieldError" section="Main" arguments="{for: 'event' ,field: 'uid'}" />
