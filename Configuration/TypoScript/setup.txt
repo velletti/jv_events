@@ -108,3 +108,35 @@ config.tx_extbase.persistence {
         }
     }
 }
+
+# ==========================================================================================================================================
+# Title and meta-description for event detail page
+# ==========================================================================================================================================
+/*
+[globalVar = GP:tx_jvevents_events|event > 0]
+
+	# We have to do this here with an userfunction, because, if config.sys_language_overlay = 0 => RECORDS (and CONTENT) does not work here
+	temp.eventTitle = USER
+	temp.eventTitle{
+		userFunc = JVE\JvEvents\UserFunc\PageProperties->getEventTitle
+	}
+
+	page.headerData.10 >
+	page.headerData.10 = COA
+	page.headerData.10.wrap = <title>{$allplan.translations.page.event.titlePrefix}:&nbsp;|&nbsp;-&nbsp;{$allplan.translations.page.titleSuffix}</title>
+	page.headerData.10.10 < temp.eventTitle
+
+
+	temp.eventDescription = USER
+	temp.eventDescription{
+		userFunc = JVE\JvEvents\UserFunc\PageProperties->getEventDescription
+		defaultDescription = Events
+	}
+
+	page.meta.description >
+	page.headerData.20.50 = COA
+	page.headerData.20.50.wrap = <meta name="description" content="|">
+	page.headerData.20.50.10 < temp.eventDescription
+
+[global]
+*/
