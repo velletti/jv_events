@@ -92,9 +92,11 @@
 	<li class="active">
 		<a href="#jv_events_event" data-toggle="tab"><f:translate key="tx_jvevents_domain_model_event.details.tab.details" /></a>
 	</li>
-	<li>
-		<a href="#jv_events_map" data-toggle="tab"><f:translate key="tx_jvevents_domain_model_event.details.tab.map" /></a>
-	</li>
+	<f:if condition="{event.location.lng}">
+		<li>
+			<a href="#jv_events_map" data-toggle="tab"><f:translate key="tx_jvevents_domain_model_event.details.tab.map" /></a>
+		</li>
+	</f:if>
 	<li>
 		<a href="#jv_events_contact" data-toggle="tab"><f:translate key="tx_jvevents_domain_model_event.details.tab.contact" /></a>
 	</li>
@@ -119,28 +121,84 @@
 		</div>
 
 		<f:if condition="{event.files}">
-			<h3><f:translate key="tx_jvevents_domain_model_event.files" /></h3>
-			<ul class="files">
-				<f:for each="{event.files}" as="file" >
-					<li>
-						<a class="downloadPdf" href="{file.originalResource.publicUrl -> f:format.htmlspecialchars()}" target="_blank">
-							{f:if(condition:file.originalResource.title, then:file.originalResource.title, else:file.originalResource.name)}
-						</a>
-						({file.originalResource.size -> f:format.bytes()})
-					</li>
-				</f:for>
-			</ul>
+
+			<f:then>
+
+				<h3><f:translate key="tx_jvevents_domain_model_event.files" /></h3>
+				<ul class="files">
+					<f:for each="{event.files}" as="file" >
+						<li>
+							<a class="downloadPdf" href="{file.originalResource.publicUrl -> f:format.htmlspecialchars()}" target="_blank">
+								{f:if(condition:file.originalResource.title, then:file.originalResource.title, else:file.originalResource.name)}
+							</a>
+							({file.originalResource.size -> f:format.bytes()})
+						</li>
+					</f:for>
+				</ul>
+
+			</f:then>
+
+			<f:else>
+				<event:l10nFalImg event="{event}" tableFieldName="files">
+					<f:for each="{l10nfalimg}" as="falfile" iteration="iteration">
+						<f:if condition="{iteration.isFirst}">
+							<h3><f:translate key="tx_jvevents_domain_model_event.files" /></h3>
+							<ul class="files">
+						</f:if>
+						<li>
+							<a class="downloadPdf" href="{falfile._path -> f:format.htmlspecialchars()}" target="_blank">
+								{f:if(condition:falfile._file.propertiesOfFileReference.title, then:falfile._file.propertiesOfFileReference.title, else:falfile._file.originalFile.name)}
+							</a>
+							({falfile._file.originalFile.properties.size -> f:format.bytes()})
+						</li>
+						<f:if condition="{iteration.isLast}">
+							</ul>
+						</f:if>
+					</f:for>
+				</event:l10nFalImg>
+			</f:else>
+
+
+
 		</f:if>
 
 		<f:if condition="{event.images}">
-			<h3><f:translate key="tx_jvevents_domain_model_event.images" /></h3>
-			<ul class="images clearfix">
-				<f:for each="{event.images}" as="image" >
-					<li>
-						<f:image src="{image.uid}" maxWidth="300" maxHeight="220" treatIdAsReference="true" alt=""/>
-					</li>
-				</f:for>
-			</ul>
+
+			<f:then>
+				<h3><f:translate key="tx_jvevents_domain_model_event.images" /></h3>
+				<ul class="images clearfix">
+					<f:for each="{event.images}" as="image" >
+						<li>
+							<f:image src="{image.uid}" maxWidth="300" maxHeight="220" alt="{image.alternative}" title="{image.title}" treatIdAsReference="true" />
+						</li>
+					</f:for>
+				</ul>
+			</f:then>
+
+			<f:else>
+				<event:l10nFalImg event="{event}" tableFieldName="images">
+					<f:for each="{l10nfalimg}" as="falimage" iteration="iteration">
+						<f:if condition="{iteration.isFirst}">
+							<h3><f:translate key="tx_jvevents_domain_model_event.images" /></h3>
+							<ul class="images clearfix">
+						</f:if>
+						<li>
+							<f:image
+								src="{falimage._file.publicUrl}"
+								title="{falimage._file.title}"
+								alt="{falimage._file.alternative}"
+								maxWidth="300"
+								maxHeight="220"
+								treatIdAsReference="1"
+							/>
+						</li>
+						<f:if condition="{iteration.isLast}">
+							</ul>
+						</f:if>
+					</f:for>
+				</event:l10nFalImg>
+			</f:else>
+
 		</f:if>
 
 	</div>
@@ -197,7 +255,26 @@
 			<div class="col-xs-12 col-sm-6 logo">
 
 				<f:if condition="{event.teaserImage}">
-					<f:image src="{event.teaserImage.uid}" maxWidth="300" maxHeight="220" treatIdAsReference="true" alt=""/>
+					<f:then>
+						<f:image src="{event.teaserImage.uid}" alt="{event.teaserImage.alternative}" title="{event.teaserImage.title}" maxWidth="300" maxHeight="220" treatIdAsReference="true" />
+					</f:then>
+					<f:else>
+						<event:l10nFalImg event="{event}" tableFieldName="teaser_image">
+							<f:for each="{l10nfalimg}" as="falimage" iteration="i">
+								<f:if condition="{i.index} == 0">
+									<f:image
+										src="{falimage._file.publicUrl}"
+										title="{falimage._file.title}"
+										alt="{falimage._file.alternative}"
+										maxWidth="300"
+										maxHeight="220"
+										treatIdAsReference="1"
+									/>
+								</f:if>
+							</f:for>
+						</event:l10nFalImg>
+					</f:else>
+
 				</f:if>
 
 			</div>
