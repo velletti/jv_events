@@ -1,7 +1,7 @@
 {namespace event=JVE\JvEvents\ViewHelpers}
 
-<div class="jv-events-singleEvent" data-eventUid="{event.uid}" data-orgUid="{event.organizer.uid}" data-monthUid="{event.startDate -> f:format.date(format:"m.Y")}" data-cityuid="{event.location.city}" data-catuids="{f:if(condition: i.isFirst, then: '{cat.uid},', else: '{cat.uid},') -> f:for(each:'{event.EventCategory}', as: 'cat', iteration: 'i')}" data-taguids="{f:if(condition: i.isFirst, then: '{tag.uid},', else: '{tag.uid},') -> f:for(each:'{event.Tags}', as: 'tag', iteration: 'i')}">
-	<div class="list-item clearfix" data-eventUid="{event.uid}">
+<div class="jv-events-singleEvent" data-eventUid="{event.uid}" data-eventPid="{event.pid}" data-orgUid="{event.organizer.uid}" data-monthUid="{event.startDate -> f:format.date(format:"m.Y")}" data-cityuid="{event.location.city}" data-catuids="{f:if(condition: i.isFirst, then: '{cat.uid},', else: '{cat.uid},') -> f:for(each:'{event.EventCategory}', as: 'cat', iteration: 'i')}" data-taguids="{f:if(condition: i.isFirst, then: '{tag.uid},', else: '{tag.uid},') -> f:for(each:'{event.Tags}', as: 'tag', iteration: 'i')}">
+	<div class="list-item clearfix">
 		<div class="date clearfix">
 			<span class="day">{f:format.date(date:event.startDate, format:'d')}</span>
 			<span class="month-year"><event:writeDateAbbreviation month="{f:format.date(date:event.startDate, format:'m')}"></event:writeDateAbbreviation></span>

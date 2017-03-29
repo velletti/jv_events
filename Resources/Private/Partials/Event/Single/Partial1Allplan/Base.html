@@ -6,7 +6,7 @@
 	<!-- =========================================================================================================================== -->
 </f:comment>
 
-<h1 data-eventUid="{event.uid}">{event.name}</h1>
+<h1 data-eventUid="{event.uid}" data-eventPid="{event.pid}">{event.name}</h1>
 
 <div class="eventdata">
 
@@ -119,20 +119,28 @@
 		</div>
 
 		<f:if condition="{event.files}">
-			<div class="row row-fluid">
+			<h3><f:translate key="tx_jvevents_domain_model_event.files" /></h3>
+			<ul class="files">
 				<f:for each="{event.files}" as="file" >
-
-					<div class="col-md-2">
-						{file.originalResource.size -> f:format.bytes()}
-					</div>
-					<div class="col-md-10">
-						<a href="{file.originalResource.publicUrl -> f:format.htmlspecialchars()}" target="_blank">
+					<li>
+						<a class="downloadPdf" href="{file.originalResource.publicUrl -> f:format.htmlspecialchars()}" target="_blank">
 							{f:if(condition:file.originalResource.title, then:file.originalResource.title, else:file.originalResource.name)}
 						</a>
-					</div>
-
+						({file.originalResource.size -> f:format.bytes()})
+					</li>
 				</f:for>
-			</div>
+			</ul>
+		</f:if>
+
+		<f:if condition="{event.images}">
+			<h3><f:translate key="tx_jvevents_domain_model_event.images" /></h3>
+			<ul class="images clearfix">
+				<f:for each="{event.images}" as="image" >
+					<li>
+						<f:image src="{image.uid}" maxWidth="300" maxHeight="220" treatIdAsReference="true" alt=""/>
+					</li>
+				</f:for>
+			</ul>
 		</f:if>
 
 	</div>
@@ -158,28 +166,42 @@
 	</f:comment>
 	<div class="tab-pane" id="jv_events_contact">
 
-		<h2><f:translate key="tx_jvevents_domain_model_event.details.tab.contact" /></h2>
 
-		<f:if condition="{event.organizer.name}">
-			<div class="row">
-				<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_organizer.name" />:</strong></div>
-				<div class="col-md-10">{event.organizer.name}</div>
-			</div>
-		</f:if>
+		<div class="row">
+			<div class="col-xs-12 col-sm-6">
 
-		<f:if condition="{event.organizer.email}">
-			<div class="row">
-				<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_organizer.email" />:</strong></div>
-				<div class="col-md-10">{event.organizer.email}</div>
-			</div>
-		</f:if>
+				<h2><f:translate key="tx_jvevents_domain_model_event.details.tab.contact" /></h2>
 
-		<f:if condition="{event.organizer.phone}">
-			<div class="row">
-				<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_organizer.phone" />:</strong></div>
-				<div class="col-md-10">{event.organizer.phone}</div>
+				<f:if condition="{event.organizer.name}">
+					<div class="row">
+						<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_organizer.name" />:</strong></div>
+						<div class="col-md-10">{event.organizer.name}</div>
+					</div>
+				</f:if>
+
+				<f:if condition="{event.organizer.email}">
+					<div class="row">
+						<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_organizer.email" />:</strong></div>
+						<div class="col-md-10">{event.organizer.email}</div>
+					</div>
+				</f:if>
+
+				<f:if condition="{event.organizer.phone}">
+					<div class="row">
+						<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_organizer.phone" />:</strong></div>
+						<div class="col-md-10">{event.organizer.phone}</div>
+					</div>
+				</f:if>
+
 			</div>
-		</f:if>
+			<div class="col-xs-12 col-sm-6 logo">
+
+				<f:if condition="{event.teaserImage}">
+					<f:image src="{event.teaserImage.uid}" maxWidth="300" maxHeight="220" treatIdAsReference="true" alt=""/>
+				</f:if>
+
+			</div>
+		</div>
 
 	</div>
 
