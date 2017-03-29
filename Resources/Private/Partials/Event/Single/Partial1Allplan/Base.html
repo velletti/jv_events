@@ -240,7 +240,7 @@
 				<f:if condition="{event.organizer.email}">
 					<div class="row">
 						<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_organizer.email" />:</strong></div>
-						<div class="col-md-10">{event.organizer.email}</div>
+						<div class="col-md-10"><f:link.email class="email" email="{event.organizer.email}" /></div>
 					</div>
 				</f:if>
 
