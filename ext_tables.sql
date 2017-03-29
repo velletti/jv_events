@@ -12,7 +12,7 @@ CREATE TABLE tx_jvevents_domain_model_event (
 	description text NOT NULL,
 	images int(11) unsigned NOT NULL default '0',
 	files int(11) unsigned NOT NULL default '0',
-	teaserImage int(11) unsigned NOT NULL default '0',
+	teaser_image int(11) unsigned NOT NULL default '0',
 	all_day tinyint(1) unsigned DEFAULT '0' NOT NULL,
 	start_date int(11) DEFAULT '0' NOT NULL,
 	start_time int(11) DEFAULT '0' NOT NULL,

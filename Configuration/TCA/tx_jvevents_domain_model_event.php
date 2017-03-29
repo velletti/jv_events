@@ -33,12 +33,12 @@ $returnArray = array(
 		'0' => array('showitem' => 'event_type,url,--palette--;;dates,--palette--;;infos,
 		--div--;Advanced, --palette--;;language, --palette--;;frequent,
 		--div--;Relations, --palette--;;relations,
-		--div--;Files, teaserImage, files,
+		--div--;Files, teaser_image, files,
 		--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, --palette--;;access,'),
 		'2' => array('showitem' => 'event_type,--palette--;;dates,--palette--;;infos,description;;;richtext:rte_transform[mode=ts_links],
 		--div--;Advanced, --palette--;;language, --palette--;;frequent,
 		--div--;Relations, --palette--;;relations,
-		--div--;Files, teaserImage,images, files,
+		--div--;Files, teaser_image,images, files,
 		--div--;Registration, --palette--;;register,
 		--div--;Notifications, --palette--;;notification, --palette--;Email;notifyOrg, --palette--;Email;notifyReg,
 		--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, --palette--;;access,'),
@@ -239,11 +239,11 @@ $returnArray = array(
 				)
 			),
 		),
-		'teaserImage' => array(
+		'teaser_image' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.teaserImage',
 			'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
-				'teaserImage',
+				'teaser_image',
 				array(
 					'appearance' => array(
 						'createNewRelationLinkTitle' => 'LLL:EXT:cms/locallang_ttc.xlf:images.addFileReference'
