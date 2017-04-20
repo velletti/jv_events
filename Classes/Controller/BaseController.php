@@ -220,7 +220,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      * @throws \Exception
      * @param array $recipient
      * @param array|bool $otherEvents Array with IDs of other Events or False
-     * @return void
+     * @return boolean
      */
 
     public function sendEmail(\JVE\JvEvents\Domain\Model\Event $event = NULL, \JVE\JvEvents\Domain\Model\Registrant $registrant = NULL , $partialName , $recipient , $otherEvents)

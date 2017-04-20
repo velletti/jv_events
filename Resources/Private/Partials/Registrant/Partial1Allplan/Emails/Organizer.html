@@ -1,9 +1,7 @@
-<!-- DO NOT CHANGE the next LINE //-->
-<f:if condition="html">
+<f:if condition="{html}">
 	<f:then>
 		<h2 style="font-size: 22px; font-family: '{emConf.fontFamily}'; line-height: 1.25; margin: 0 0 20px; padding: 0;">
 			Event ID: {event.uid} | <f:format.date format="d.m.Y">{event.startDate}</f:format.date>
-
 		</h2>
 
 		<f:link.action  absolute="true" action="list" class="btn btn-primary" arguments="{event : event.uid, hash: settings.hash, export: 1}"> CSV Export </f:link.action>
@@ -76,10 +74,12 @@
 		{event.location.name}
 		{event.location.zip} {event.location.city}
 
-		Weitere Termine:
-		<f:for each="{otherEvents}" as="otherEvent">
-			<f:format.date format="d.m.Y">{otherEvent.startDate}</f:format.date>: {otherEvent.name}
-		</f:for>
+		<f:if condition="{otherEvents}">
+			Weitere Termine:
+			<f:for each="{otherEvents}" as="otherEvent">
+				<f:format.date format="d.m.Y">{otherEvent.startDate}</f:format.date>: {otherEvent.name}
+			</f:for>
+		</f:if>
 		*********************************
 		{f:translate(key: 'register_head_participant_data' , default:'Participants Data')}
 		ID: {registrant.uid} | <f:format.date format="d.m.Y">{registrant.created}</f:format.date>
