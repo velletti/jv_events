@@ -565,7 +565,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Returns the images
      *
-     * @return \TYPO3\CMS\Extbase\Domain\Model\FileReference $images
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FileReference> $images
      */
     public function getImages()
     {
@@ -607,7 +607,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 	/**
 	 * Returns the files
 	 *
-	 * @return \TYPO3\CMS\Extbase\Domain\Model\FileReference $files
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FileReference> $files
 	 */
 	public function getFiles()
 	{
@@ -878,7 +878,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Returns the salesForceSessionId
      *
-     * @return \DateTime $salesForceSessionId
+     * @return String $salesForceSessionId
      */
     public function getSalesForceSessionId()
     {
@@ -1001,9 +1001,9 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @return bool
      */
-    public function isNotifyOrganiser()
+    public function isNotifyOrganizer()
     {
-        return $this->notifyOrganiser;
+        return $this->notifyOrganizer;
     }
     
     /**
@@ -1701,6 +1701,14 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function setCrdate($crdate)
     {
         $this->crdate = $crdate;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLanguageUid()
+    {
+        return $this->_languageUid;
     }
 
 

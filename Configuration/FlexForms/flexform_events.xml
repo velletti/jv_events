@@ -259,7 +259,30 @@
 							</config>
 						</TCEforms>
 					</settings.LayoutRegister>
+					<settings.RegisterHubSpotPortalId>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms_additional.externalPortalId</label>
 
+							<displayCond>FIELD:settings.LayoutRegister:=:3Hubspot</displayCond>
+							<config>
+								<type>input</type>
+
+								<size>30</size>
+							</config>
+						</TCEforms>
+					</settings.RegisterHubSpotPortalId>
+					<settings.RegisterHubSpotFormId>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms_additional.externalFormId</label>
+
+							<displayCond>FIELD:settings.LayoutRegister:=:3Hubspot</displayCond>
+							<config>
+								<type>input</type>
+
+								<size>60</size>
+							</config>
+						</TCEforms>
+					</settings.RegisterHubSpotFormId>
 				</el>
 
 			</ROOT>
