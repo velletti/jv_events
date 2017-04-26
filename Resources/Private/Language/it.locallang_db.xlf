@@ -208,7 +208,7 @@
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.teaser" approved="yes">
 			<source>Teaser</source>
-			<target>Presentazione</target>
+			<target>Sunto del contenuto</target>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.teaserImage" approved="yes">
 			<source>Teaser Image</source>

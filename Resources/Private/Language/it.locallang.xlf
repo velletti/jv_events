@@ -315,7 +315,7 @@
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.tags" approved="yes">
 			<source>Tags</source>
-			<target>Giorni</target>
+			<target>parola d'ordine</target>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.teaser" approved="yes">
 			<source>Teaser</source>
