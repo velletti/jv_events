@@ -3,6 +3,8 @@ return array(
 	'ctrl' => array(
 		'title'	=> 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_location',
 		'label' => 'name',
+        'label_alt' => 'city',
+        'label_alt_force' => 1,
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',

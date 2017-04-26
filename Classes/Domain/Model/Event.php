@@ -121,7 +121,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * End Date of this event. Mandatory
      *
      * @var \DateTime
-     * @validate NotEmpty
+
      */
     protected $endDate = null;
     

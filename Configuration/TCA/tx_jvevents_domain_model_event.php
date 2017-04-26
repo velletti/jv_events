@@ -5,7 +5,11 @@
 $returnArray = array(
 	'ctrl' => array(
 		'title'	=> 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event',
-		'label' => 'name',
+		'label' => 'start_date',
+
+        'label_alt' => 'name',
+        'label_alt_force' => 1,
+
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',
@@ -829,14 +833,7 @@ $returnArray = array(
 				'internal_type' => 'db',
 
 				'allowed' => 'tx_jvevents_domain_model_organizer',
-                'fieldControl' => array (
-                    'recordsOverview' => array(
-                        'renderType' => 'recordsOverview',
-                    ) ,
-                    'listModule' => [
-                        'disabled' => false,
-                    ],
-                ) ,
+
 				'size' => 1,
                 'show_thumbs' => '1',
 				'multiple' => 0,
@@ -847,7 +844,7 @@ $returnArray = array(
 					'suggest' => array(
 						'type' => 'suggest',
                         'default' => array(
-                            'additionalSearchFields' => 'name, city, zip',
+                            'additionalSearchFields' => 'name',
                         )
 					),
 					'edit' => array(
