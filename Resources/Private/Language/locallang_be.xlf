@@ -53,6 +53,9 @@
 		<trans-unit id="extmng.hasLoginUser">
 			<source>Show Options to restrict Access to an Event (only usefull if you have a frontend Login)</source>
 		</trans-unit>
+        <trans-unit id="extmng.hideEndEdate">
+            <source>Do not show the inputfield EndDate</source>
+        </trans-unit>
 		<trans-unit id="extmng.showImporter">
 			<source>Show Importer From CAL : This is just a plan and actually doing nothing !</source>
 		</trans-unit>

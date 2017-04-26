@@ -410,7 +410,7 @@ $returnArray = array(
 		),
 		'end_date' => array(
 			'exclude' => 0,
-			'displayCond' => 'FIELD:is_recurring:REQ:TRUE' ,
+
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.end_date',
 			'config' => array(
 				'type' => 'input',
@@ -836,11 +836,15 @@ $returnArray = array(
 				'wizards' => array(
 					'_VERTICAL' => 1,
 					'suggest' => array(
-						'type' => 'suggest'
+						'type' => 'suggest',
+                        'default' => array(
+                            'additionalSearchFields' => 'name, city, zip',
+                        )
 					),
 					'edit' => array(
 						'type' => 'popup',
 						'title' => 'Edit template',
+
 						'module' => array(
 							'name' => 'wizard_edit',
 						),
@@ -879,7 +883,10 @@ $returnArray = array(
 				'wizards' => array(
 					'_VERTICAL' => 1,
 					'suggest' => array(
-						'type' => 'suggest'
+						'type' => 'suggest',
+                        'default' => array(
+                            'additionalSearchFields' => 'name, city, zip',
+                        )
 					),
 					'edit' => array(
 						'type' => 'popup',
@@ -1067,7 +1074,10 @@ if ( ! $configuration['hasLoginUser'] == 1 ) {
 	unset($returnArray['columns']['registration_access'] ) ;
 }
 
-
+if ( $configuration['hideEndDate'] == 1 ) {
+    unset($returnArray['columns']['end_date'] ) ;
+    unset($returnArray['columns']['end_time'] ) ;
+}
 
 
 return $returnArray ;
