@@ -498,6 +498,7 @@ $returnArray = array(
 				'allowed' => 'pages',
 				'foreign_table' => 'pages',
 				'size' => 1,
+                'show_thumbs' => '1',
 				'multiple' => 0,
 				'minitems' => 0,
 				'maxitems' => 1,
@@ -520,6 +521,7 @@ $returnArray = array(
 				'allowed' => 'pages',
 				'foreign_table' => 'pages',
 				'size' => 1,
+                'show_thumbs' => '1',
 				'multiple' => 0,
 				'minitems' => 0,
 				'maxitems' => 1,
@@ -827,7 +829,16 @@ $returnArray = array(
 				'internal_type' => 'db',
 
 				'allowed' => 'tx_jvevents_domain_model_organizer',
+                'fieldControl' => array (
+                    'recordsOverview' => array(
+                        'renderType' => 'recordsOverview',
+                    ) ,
+                    'listModule' => [
+                        'disabled' => false,
+                    ],
+                ) ,
 				'size' => 1,
+                'show_thumbs' => '1',
 				'multiple' => 0,
 				'minitems' => 0,
 				'maxitems' => 1,
@@ -876,6 +887,7 @@ $returnArray = array(
 				'allowed' => 'tx_jvevents_domain_model_location',
 				'size' => 1,
 				'multiple' => 0,
+                'show_thumbs' => '1',
 				'minitems' => 0,
 				'maxitems' => 1,
 				'wizards' => array(
