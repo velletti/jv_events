@@ -1029,7 +1029,7 @@ $configuration = \JVE\JvEvents\Utility\EmConfiguration::getEmConf();
 if ( ! $configuration['notifyOrganizer'] == 1 ) {
 	$returnArray['columns']['notify_organizer']['config']['default'] = 1  ;
 }
-if ( ! $configuration['allDayEvent'] == 1 ) {
+if ( $configuration['allDayEvent'] == 1 ) {
 	$returnArray['columns']['all_day']['config']['default'] = 1  ;
 }
 if ( ! $configuration['notifyRegistrant'] == 1 ) {
@@ -1079,5 +1079,13 @@ if ( $configuration['hideEndDate'] == 1 ) {
     unset($returnArray['columns']['end_time'] ) ;
 }
 
+if ( $configuration['RegistrationFormPid'] > 0 ) {
+    $returnArray['columns']['registration_form_pid']['config']['default'] = $configuration['RegistrationFormPid'] ;
+    $returnArray['columns']['with_registration']['config']['default'] = 1 ;
+}
+
+if ( $configuration['Registrationid'] > 0 ) {
+    $returnArray['columns']['registration_pid']['config']['default'] = $configuration['RegistrationPid'] ;
+}
 
 return $returnArray ;

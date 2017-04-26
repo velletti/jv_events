@@ -18,7 +18,7 @@ AdminUserGroups =
 # cat=General/enable/5; type=integer; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.minFormSec;description=Minimum Seconds between rendering a Form and Submitting a Form to avoid bots
 minFormSeconds = 10
 
-# cat=General/enable/6; type=integer; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.hideEndDate;description=If you do not use Requring events and do not have Events more than 1 Day, ativate ths
+# cat=General/enable/6; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.hideEndEdate;description=If you do not use Requring events and do not have Events more than 1 Day, ativate ths
 hideEndDate = 1
 
 
@@ -39,10 +39,10 @@ allDayEvent = 1
 
 
 # cat=basic/default/15; type=int+; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.defaultRegistrationFormPid
-RegistrationFormPid = 0
+RegistrationFormPid = 1001
 
 # cat=basic/default/16; type=int+; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.defaultRegistrationPid
-RegistrationPid = 0
+RegistrationPid = 4853
 
 
 
