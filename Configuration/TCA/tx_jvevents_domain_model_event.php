@@ -415,9 +415,8 @@ $returnArray = array(
 			'config' => array(
 				'type' => 'input',
 				'size' => 7,
-				'eval' => 'date,required',
+				'eval' => 'date',
 				'checkbox' => 1,
-				'default' => time()
 			),
 		),
 		'end_time' => array(
@@ -429,7 +428,6 @@ $returnArray = array(
 				'size' => 4,
 				'eval' => 'time',
 				'checkbox' => 1,
-				'default' => time()
 			)
 		),
 		'access' => array(
