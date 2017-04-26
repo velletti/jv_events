@@ -15,7 +15,7 @@
 		</trans-unit>
 		<trans-unit id="register.accept_privacy_end" approved="yes">
 			<source>.</source>
-			<target>gelesen und akzeptiert.</target>
+			<target>.</target>
 		</trans-unit>
 		<trans-unit id="register.accept_privacy_intro" approved="yes">
 			<source>I have read and accept the </source>
