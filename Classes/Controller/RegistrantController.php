@@ -389,7 +389,21 @@ class RegistrantController extends BaseController
 				$event->setRegisteredSeats($event->getRegisteredSeats() + 1);
 			}
 			$registrant->setCrdate(time() ) ;
+
+			$this->signalSlotDispatcher->dispatch(
+                __CLASS__,
+                __FUNCTION__,
+                array(
+                    'registrant' => &$registrant,
+                    'event' => &$event,
+                    'settings' => $this->settings,
+                )
+            );
+
 			$this->registrantRepository->add($registrant);
+
+
+
 			$this->persistenceManager->persistAll();
 			if( is_array($otherEvents)) {
 

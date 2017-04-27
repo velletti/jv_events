@@ -37,3 +37,24 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['proc
  */
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']['jv_events'] =
 	'JVE\\JvEvents\\Hooks\\ProcessDatamap';
+
+
+if (TYPO3_MODE === 'FE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
+    /**
+     * Signal slot dispatcher
+     *
+     * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher
+     */
+    $signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+        \TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class
+    );
+    $signalSlotDispatcher->connect(
+        \JVE\JvEvents\Controller\RegistrantController::class,
+        'createAction',
+        \JVE\JvEvents\Signal\RegisterCitrixSignal::class,
+        'createAction'
+    );
+
+    // Feel Free to add your Own extension , and add your Own signal Slot to handle a registration
+    // if you need more slots, contact me .. typo3@velletti.de
+}

@@ -9,11 +9,13 @@ plugin.tx_jvevents_events {
 		layoutRootPath = EXT:jv_events/Resources/Private/Layouts/
 	}
 	persistence {
+		# you can overwrite this in the Plugin ...
 		# cat=plugin.tx_jvevents_events//a; type=string; label=Default storage PID
 		storagePid =
 	}
 	settings {
 		# change this setting to 1 after everything works
+		# if it is set to 0 , you will get the warning, no typoscript settngs found. Numbers bigger than 1 will show some debug output in the frontend..
 		checkInstallation = 3
 
 		#IF FlexForm of List Plugin is empty, overwrite it with this value
@@ -23,20 +25,34 @@ plugin.tx_jvevents_events {
 		# 1 is normal debug output (see Templates and Partials),
 		# 2 shows  DB sql Query (do not use on LIVE!)
 		debug = 0
+
 		register {
-			senderName = typoscript constant
+			senderName = see typoscript constants
 			senderEmail = test@example.org
 
+			# Please do not forget to set the page IDs of your terms af use / Data Protetion pages
 			termsOfUsePid = 0
 			privacyPid = 0
 
+			# do your own settings :-) thsi is just an example ...
 			allowedCountrys = DE,AT,CH
+
+			citrix{
+				# if you have a ready to use oAutho Code for Citrix rest api : (only valid one Year ! )
+				# orgID = 16DigitAUTH-Id
+				# orgAUTH = readyToUseAuthCode-forOneYear
+
+				# OR if you have a citrix account and wont to write date directly to citrix Will generate the oAuth Code
+				# username = your.citrix.username
+				# password = your.citrix.password
+			}
 			requiredFields {
 
 				# you should have at lease firstName,lastName,privacy,hotprice and email if you send out emails
 				# All posssible Fields :  gender,firstName,lastName,profession,contactId,customerId,company,streetAndNr,country,zip,city,phone,email,privacy,hotprice,additionalInfo
 				# Privacy is for legal issues, hotprice is to use the invisible "honeypot" field to avoid against bots
 				1Allplan = gender,firstName,lastName,phone,email,privacy,hotprice
+				2Allplan = gender,firstName,lastName,phone,email,privacy,hotprice
 				2Megra = gender,company,streetAndNr,firstName,lastName,country,zip,city,phone,email,privacy,hotprice
 				3MegraAT = gender,company,streetAndNr,firstName,lastName,country,zip,city,phone,email,privacy,hotprice,more1
 
@@ -56,6 +72,7 @@ module.tx_jvevents_eventmngt {
 		layoutRootPath = EXT:jv_events/Resources/Private/Backend/Layouts/
 	}
 	persistence {
+		# with this setting you can block to show all event registrations on page 0
 		# cat=module.tx_jvevents_eventmngt//a; type=string; label=Default storage PID
 		storagePid =
 	}
