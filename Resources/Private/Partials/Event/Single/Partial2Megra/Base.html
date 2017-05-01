@@ -28,6 +28,22 @@
 				arguments="{title: '', translate: '0', isHeadline: 'H2' ,value: '{event.name}' }" />
 
 			<div class="row">
+				<f:be.security.ifAuthenticated>
+					<f:then>
+						<div class="col-xs-12 text-right">
+							<f:render partial="Registrant/RegistrationsLink"  arguments="{event: event, hash: hash, settings: settings}"/>
+						</div>
+					</f:then>
+					<f:else>
+						<f:if condition="{settings.fe_user.organizer.showTools}">
+							<f:then>
+								<div class="col-xs-12 text-right">
+									<f:render partial="Registrant/RegistrationsLink"  arguments="{event: event, hash: hash, settings: settings}"/>
+								</div>
+							</f:then>
+						</f:if>
+					</f:else>
+				</f:be.security.ifAuthenticated>
 				<div class="col-sm-4">
 					<f:translate key="tx_jvevents_domain_model_event.date" />
 				</div>
