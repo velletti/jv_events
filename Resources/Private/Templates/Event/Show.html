@@ -7,7 +7,7 @@
   <f:render partial="Debug/CheckInstallation" arguments="{modulelist: 'FALSE' ,event:event, settings: settings}" />
   <div class="jv_events_{settings.LayoutSingle} {settings.single.additionalClass}">
 
-  <f:render partial="Event/Single/Partial{settings.LayoutSingle}/Base" arguments="{event:event, settings:settings}" />
+  <f:render partial="Event/Single/Partial{settings.LayoutSingle}/Base" arguments="{event:event, settings:settings , hash: hash}" />
 
   </div>
 

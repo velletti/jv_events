@@ -98,6 +98,7 @@ class EventController extends BaseController
 
         $this->view->assign('eventsFilter', $eventsFilter);
         $this->view->assign('settings', $this->settings );
+
     }
     
     /**
@@ -108,7 +109,10 @@ class EventController extends BaseController
      */
     public function showAction(\JVE\JvEvents\Domain\Model\Event $event)
     {
-		
+        $checkString =  $_SERVER["SERVER_NAME"] . "-" . $event->getUid() . "-" . $event->getCrdate() ;
+        $checkHash = hash("sha256" , $checkString ) ;
+
+        $this->view->assign('hash', $checkHash);
 		$this->view->assign('event', $event);
     }
     
