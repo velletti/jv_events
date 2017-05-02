@@ -9,6 +9,20 @@
 			<source>I have read and accept the </source>
 			<target>He leído y aceptado los </target>
 		</trans-unit>
+
+		<trans-unit id="register.overbooked">
+            <source>+++Overbooked+++</source>
+            <target>+++completo+++</target>
+        </trans-unit>
+        <trans-unit id="register.overbooked_headline">
+            <source>This event is fully booked</source>
+            <target>Este evento está completo.</target>
+        </trans-unit>
+        <trans-unit id="register.overbooked_text">
+           <source>Unfortunately, your registration to this event cannot be processed. Please contact the host to receive information about last minute tickets.</source>
+            <target>error.noSeatsAvailable.infotext">Desafortunadamente, no pudo realizarse su registro para este evento. Por favor, póngase en contacto con el organizador para obtener información acerca de entradas de última hora.</target>
+        </trans-unit>
+
 		<trans-unit id="register.accept_privacy.and" approved="yes">
 			<source>and</source>
 			<target>y</target>

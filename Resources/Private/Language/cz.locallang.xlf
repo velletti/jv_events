@@ -9,6 +9,21 @@
 			<source>I have read and accept the </source>
 			<target>Četl(a) jsem a akceptuji </target>
 		</trans-unit>
+
+		<trans-unit id="register.overbooked">
+            <source>+++Overbooked+++</source>
+            <target>+++obsazen+++</target>
+        </trans-unit>
+        <trans-unit id="register.overbooked_headline">
+            <source>This event is fully booked</source>
+            <target>Tento termín je již plně obsazen.</target>
+        </trans-unit>
+        <trans-unit id="register.overbooked_text">
+               <source>Unfortunately, your registration to this event cannot be processed. Please contact the host to receive information about last minute tickets.</source>
+            <target>Bohužel není možné provést Vaší registraci na tento termín. Kontaktujte prosím pořadatele, zda nejsou k dispozici ještě "last minute" místa.</target>
+        </trans-unit>
+
+
 		<trans-unit id="register.accept_privacy.and" approved="yes">
 			<source>and</source>
 			<target>a</target>

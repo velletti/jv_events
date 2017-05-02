@@ -288,6 +288,16 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $isRegistrationPossible = false ;
 
     /**
+     * This event is an exception for an recurring event.
+     *
+     * @var bool
+     */
+    protected $isNoFreeSeats = false ;
+
+
+
+
+    /**
 	 * registrationPid
 	 *
 	 * @var integer
@@ -1675,7 +1685,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @return boolean
      */
-    public function isNoFreeSeats()
+    public function isIsNoFreeSeats()
     {
 
         // only Check if is with internal registration and we have free seats

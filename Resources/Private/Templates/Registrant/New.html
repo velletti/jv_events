@@ -8,7 +8,20 @@
 			  arguments="{event: event, settings: settings}"/>
 
 	<f:comment> Render the Registration Form for the Event </f:comment>
-	<f:render partial="Registrant/Partial{settings.LayoutRegister}/Form"
-			  arguments="{event: event, settings: settings, otherEvents: otherEvents}"/>
+
+	<f:if condition="{event.isRegistrationPossible}">
+		<f:then>
+			<f:render partial="Registrant/Partial{settings.LayoutRegister}/Form"
+					  arguments="{event: event, settings: settings, otherEvents: otherEvents}"/>
+		</f:then>
+		<f:else>
+
+			<f:if condition="{event.isNoFreeSeats}">
+				<h4>{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:register.overbooked_headline' , default:'+++overbooked+++')}</h4>
+				<p>{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:register.overbooked_text' , default:'No free seats available')}</p>
+			</f:if>
+
+		</f:else>
+	</f:if>
 
 </f:section>
