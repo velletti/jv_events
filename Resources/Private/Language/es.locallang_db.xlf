@@ -1,0 +1,468 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" target-language="es" datatype="plaintext" original="messages" date="2016-10-17T11:58:34Z">
+		<header>
+			<generator>LFEditor</generator>
+		</header>
+		<body>
+		<trans-unit id="tx_jvevents_domain_model_category" approved="yes">
+			<source>Category</source>
+			<target>Categoría</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_category.title" approved="yes">
+			<source>Title</source>
+			<target>Título</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_category.type" approved="yes">
+			<source>Type</source>
+			<target>Tipo</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_category.block_registration">
+            <source>Allow register to all events in this Category</source>
+            <target>Permitir registro en todos los eventos de esta categoría</target>
+        </trans-unit>
+        <trans-unit id="tx_jvevents_domain_model_event.new_registration">
+            <source>Your Registration</source>
+            <target>Su registro</target>
+        </trans-unit>
+
+		<trans-unit id="tx_jvevents_domain_model_event" approved="yes">
+			<source>Event</source>
+			<target>Evento</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.access" approved="yes">
+			<source>Access</source>
+			<target>Acceso</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.all_day" approved="yes">
+			<source>All Day</source>
+			<target>Todo el día</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.available_seats" approved="yes">
+			<source>Available Seats</source>
+			<target>Plazas disponibles</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.available_waiting_seats" approved="yes">
+			<source>Waiting List Seats</source>
+			<target>Lista de espera</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.citrix_uid" approved="yes">
+			<source>Citrix Uid</source>
+			<target>Citrix Uid</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.description" approved="yes">
+			<source>Description</source>
+			<target>Descripción</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.end_date" approved="yes">
+			<source>End Date</source>
+			<target>Fecha fin</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.end_time" approved="yes">
+			<source>End Time</source>
+			<target>Hora finalización</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.event_category" approved="yes">
+			<source>Event Category</source>
+			<target>Categoría del evento</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.event_type" approved="yes">
+			<source>Event Type</source>
+			<target>Tipo de evento</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.event_type.default" approved="yes">
+			<source>Regular Event</source>
+			<target>Evento regular</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.event_type.link" approved="yes">
+			<source>Internal / external page shows event details</source>
+			<target>La página interna / externa contiene los detalles del evento</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.files" approved="yes">
+			<source>Files</source>
+			<target>Archivos</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.freq_exception" approved="yes">
+			<source>Freq Exception</source>
+			<target>Excepto para</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.frequency" approved="yes">
+			<source>Frequency</source>
+			<target>Frecuencia</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.images" approved="yes">
+			<source>More Images</source>
+			<target>Más imágenes</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.is_exception_for" approved="yes">
+			<source>Is Exception For</source>
+			<target>Excepto para</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.is_recurring" approved="yes">
+			<source>Is Recurring</source>
+			<target>Evento regular</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.location" approved="yes">
+			<source>Location</source>
+			<target>Localización</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.marketing_process_id" approved="yes">
+			<source>Marketing Process Id</source>
+			<target>Id Proceso de Marketing</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.name" approved="yes">
+			<source>Name</source>
+			<target>Título del evento</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.need_to_confirm" approved="yes">
+			<source>Need To Confirm</source>
+			<target>Es necesaria su confirmación</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.notify_organizer" approved="yes">
+			<source>Notify Organiser</source>
+			<target>Informar al organizador por e-mail</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.notify_registrant" approved="yes">
+			<source>Notify Registrant</source>
+			<target>Informar al participante por e-mail</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.organizer" approved="yes">
+			<source>Organizer</source>
+			<target>Organizador</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.registered_seats" approved="yes">
+			<source>Registered Seats</source>
+			<target>Participantes inscritos</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.new_registrant" approved="yes">
+			<source>New Registration</source>
+			<target>Nuevo registro</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.your_registration" approved="yes">
+			<source>Your Registration</source>
+			<target>Su registro</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.registrant" approved="yes">
+			<source>Participant</source>
+			<target>Participante</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.registrationFormPid" approved="yes">
+			<source>Show Registration Form of this Page</source>
+			<target>Mostrar formulario de registro en esta página</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.registrationPid" approved="yes">
+			<source>Store Registrations to this Page</source>
+			<target>Guardar registros en esta página</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.registrationUrl" approved="yes">
+			<source>External URL for the Registration</source>
+			<target>URL Externa para el registro</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.registration_until" approved="yes">
+			<source>Registration Until</source>
+			<target>Fecha límite registro</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.sales_force_event_id" approved="yes">
+			<source>Sales Force Event Id</source>
+			<target>Evento de SalesForce Id</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.sales_force_record_type" approved="yes">
+			<source>Sales Force Record Type</source>
+			<target>SalesForce Record Type</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.sales_force_session_id" approved="yes">
+			<source>Sales Force Session Id</source>
+			<target>Id Sesión de SalesForce</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.sotre_in_citrix" approved="yes">
+			<source>Store In Citrix</source>
+			<target>Guardar en Citrix</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.start_date" approved="yes">
+			<source>Start Date</source>
+			<target>Fecha de inicio</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.start_time" approved="yes">
+			<source>Start Time</source>
+			<target>Hora inicio</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.store_in_citrix" approved="yes">
+			<source>Store In Citrix</source>
+			<target>Guardar en Citrix</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.store_in_sales_force" approved="yes">
+			<source>Store In Sales Force</source>
+			<target>Guardar en SalesForce</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.subject_organizer" approved="yes">
+			<source>Subject Organizer</source>
+			<target>E-mail del organizador</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.subject_registrant" approved="yes">
+			<source>Subject Registrant</source>
+			<target>E-mail a participante</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.tags" approved="yes">
+			<source>Tags</source>
+			<target>Etiquetas</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.teaser" approved="yes">
+			<source>Teaser</source>
+			<target>Resumen</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.teaserImage" approved="yes">
+			<source>Teaser Image</source>
+			<target>Miniatura (imagen)</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.test_registrant" approved="yes">
+			<source>Test Registrant</source>
+			<target>Registro de prueba</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.text_organizer" approved="yes">
+			<source>Text Organizer</source>
+			<target>Comentario del organizador</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.text_registrant" approved="yes">
+			<source>Text Registrant</source>
+			<target>Comentario para el participante</target>
+		</trans-unit>
+        <trans-unit id="tx_jvevents_domain_model_event.introtext_registrant" approved="yes">
+            <source>Intro Text Registrant - Waiting List</source>
+            <target>Introducir comentario - En lista de espera </target>
+        </trans-unit>
+        <trans-unit id="tx_jvevents_domain_model_event.introtext_registrant_confirmed"  approved="yes">
+            <source>Intro Text Registrant - Registration Confirmed</source>
+            <target>Introducir comentario - Registro confirmado.</target>
+        </trans-unit>
+
+		<trans-unit id="tx_jvevents_domain_model_event.unconfirmed_seats" approved="yes">
+			<source>Unconfirmed Seats</source>
+			<target>Plazas sin confirmar</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.with_registration" approved="yes">
+			<source>With internal Registration</source>
+			<target>Registro interno</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_location" approved="yes">
+			<source>Location</source>
+			<target>Localización</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_location.city" approved="yes">
+			<source>City</source>
+			<target>Ciudad</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_location.country" approved="yes">
+			<source>Country</source>
+			<target>País</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_location.description" approved="yes">
+			<source>Description</source>
+			<target>Descripción</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_location.email" approved="yes">
+			<source>Email</source>
+			<target>E-mail</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_location.lat" approved="yes">
+			<source>Latitude</source>
+			<target>Latitud</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_location.link" approved="yes">
+			<source>Link</source>
+			<target>Enlace</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_location.lng" approved="yes">
+			<source>Longitude</source>
+			<target>Longitud</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_location.location_category" approved="yes">
+			<source>Location Category</source>
+			<target>Categoría lugar</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_location.name" approved="yes">
+			<source>Event Location</source>
+			<target>Lugar del evento</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_location.organizer" approved="yes">
+			<source>Organizer</source>
+			<target>Organizador</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_location.phone" approved="yes">
+			<source>Phone</source>
+			<target>Teléfono</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_location.street_and_nr" approved="yes">
+			<source>Street And Nr</source>
+			<target>Dirección</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_location.zip" approved="yes">
+			<source>Zip</source>
+			<target>CP</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_organizer" approved="yes">
+			<source>Organizer</source>
+			<target>Organizador</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_organizer.description" approved="yes">
+			<source>Description</source>
+			<target>Descripción</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_organizer.email" approved="yes">
+			<source>Email</source>
+			<target>E-mail</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_organizer.images" approved="yes">
+			<source>Images</source>
+			<target>Imágenes</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_organizer.name" approved="yes">
+			<source>Name</source>
+			<target>Nombre del organizador</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_organizer.organizer_category" approved="yes">
+			<source>Organizer Category</source>
+			<target>Categoría organizador</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_organizer.phone" approved="yes">
+			<source>Phone</source>
+			<target>Teléfono</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_organizer.sales_force_user_id" approved="yes">
+			<source>Sales Force User Id</source>
+			<target>Id usuario Salesforce</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant" approved="yes">
+			<source>Registrant</source>
+			<target>Participante</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.additional_info" approved="yes">
+			<source>Additional Info</source>
+			<target>Información adicional</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.city" approved="yes">
+			<source>City</source>
+			<target>Ciudad</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.company" approved="yes">
+			<source>Company</source>
+			<target>Empresa</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.confirmed" approved="yes">
+			<source>Confirmed by Organizer</source>
+			<target>Confirmado por el organizador</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.contact_id" approved="yes">
+			<source>Contact Id</source>
+			<target>Id Contacto</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.country" approved="yes">
+			<source>Country</source>
+			<target>País</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.customer_id" approved="yes">
+			<source>Customer Id</source>
+			<target>Id Cliente</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.department" approved="yes">
+			<source>Department</source>
+			<target>Provincia</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.email" approved="yes">
+			<source>Email</source>
+			<target>E-mail</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.first_name" approved="yes">
+			<source>First Name</source>
+			<target>Nombre</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.gender" approved="yes">
+			<source>Gender</source>
+			<target>Género</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.language" approved="yes">
+			<source>Language</source>
+			<target>Idioma</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.last_name" approved="yes">
+			<source>Last Name</source>
+			<target>Apellido</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.more1" approved="yes">
+			<source>More1</source>
+			<target>más1</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.more2" approved="yes">
+			<source>More2</source>
+			<target>más</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.more3" approved="yes">
+			<source>More3</source>
+			<target>más3</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.more4" approved="yes">
+			<source>More4</source>
+			<target>más4</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.more5bool" approved="yes">
+			<source>More5bool</source>
+			<target>más5booleana</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.more6int" approved="yes">
+			<source>More6int</source>
+			<target>más6int</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.more7date" approved="yes">
+			<source>More7date</source>
+			<target>más7fecha</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.more8file" approved="yes">
+			<source>More8file</source>
+			<target>más8archivo</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.newsletter" approved="yes">
+			<source>Newsletter</source>
+			<target>Newsletter</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.password" approved="yes">
+			<source>Password</source>
+			<target>Contraseña</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.phone" approved="yes">
+			<source>Phone</source>
+			<target>Teléfono</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.privacy" approved="yes">
+			<source>Privacy</source>
+			<target>Política de privacidad</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.profession" approved="yes">
+			<source>Profession</source>
+			<target>Profesión</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.recall" approved="yes">
+			<source>Recall</source>
+			<target>Respuesta</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.street_and_nr" approved="yes">
+			<source>Street And Nr</source>
+			<target>Dirección</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.username" approved="yes">
+			<source>Username</source>
+			<target>Nombre de usuario</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_registrant.zip" approved="yes">
+			<source>Zip</source>
+			<target>CP</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_tag" approved="yes">
+			<source>Tag</source>
+			<target>Etiqueta</target>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_tag.name" approved="yes">
+			<source>Name</source>
+			<target>Palabra clave</target>
+		</trans-unit>
+		</body>
+	</file>
+</xliff>
