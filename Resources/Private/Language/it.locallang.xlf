@@ -329,7 +329,7 @@
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.tags" approved="yes">
 			<source>Tags</source>
-			<target>parola d'ordine</target>
+			<target>Tags</target>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.teaser" approved="yes">
 			<source>Teaser</source>
