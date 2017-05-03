@@ -14,7 +14,6 @@
 			</event:regLink>
 
 		</li>
-
 	</f:if>
 
     <f:be.security.ifAuthenticated>
@@ -44,6 +43,7 @@
 			<f:render partial="Event/Single/Partial{settings.LayoutSingle}/Row"
 				arguments="{title: '', translate: '0', isHeadline: 'H2' ,value: '{event.name}' }" />
 
+
 			<div class="row">
 
 				<div class="col-sm-4">
@@ -67,7 +67,7 @@
 				arguments="{title: 'tx_jvevents_domain_model_location.name', translate: '1', value: '{event.location.name}' }"/>
             <f:if condition="{event.isNoFreeSeats}">
                 <div class="alert alert-warning">
-                    <h3>Ausgebucht</h3>
+                    <h3>+++Ausgebucht+++</h3>
                     <p>Leider sind für diese Veranstaltung derzeit keine Plätze mehr frei. </p>
 
                 </div>
