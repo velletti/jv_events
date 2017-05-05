@@ -946,8 +946,10 @@ $returnArray = array(
 				'type' => 'select',
 				'renderType' => 'selectMultipleSideBySide',
 				'foreign_table' => 'tx_jvevents_domain_model_category',
+
 				// 'foreign_table_where' => ' AND tx_jvevents_domain_model_category.type = 0 AND tx_jvevents_domain_model_category.sys_language_uid in (-1, 0)',
 				'foreign_table_where' => ' AND tx_jvevents_domain_model_category.type = 0 AND (tx_jvevents_domain_model_category.sys_language_uid = 0 OR tx_jvevents_domain_model_category.l10n_parent = 0) ORDER BY tx_jvevents_domain_model_category.title',
+                'itemsProcFunc' => 'JVE\\JvEvents\\UserFunc\\Flexforms->TranslateMMvalues' ,
 
 				'MM' => 'tx_jvevents_event_category_mm',
 				'size' => 10,
@@ -990,7 +992,8 @@ $returnArray = array(
 				'type' => 'select',
 				'renderType' => 'selectMultipleSideBySide',
 				'foreign_table' => 'tx_jvevents_domain_model_tag',
-				// 'foreign_table_where' => ' AND tx_jvevents_domain_model_tag.sys_language_uid in (-1, ###REC_FIELD_sys_language_uid###)',
+				//'foreign_table_where' => ' AND tx_jvevents_domain_model_tag.sys_language_uid in (-1, ###REC_FIELD_sys_language_uid###)',
+				'itemsProcFunc' => 'JVE\\JvEvents\\UserFunc\\Flexforms->TranslateMMvalues' ,
 				'foreign_table_where' => ' AND (tx_jvevents_domain_model_tag.sys_language_uid = 0 OR tx_jvevents_domain_model_tag.l10n_parent = 0) ORDER BY tx_jvevents_domain_model_tag.name',
 
 				'MM' => 'tx_jvevents_event_tag_mm',
@@ -1085,6 +1088,10 @@ if ( $configuration['hideEndDate'] == 1 ) {
     unset($returnArray['columns']['end_date'] ) ;
     unset($returnArray['columns']['end_time'] ) ;
 }
+if ( $configuration['hideAllLanguages'] == 1 ) {
+    unset($returnArray['columns']['sys_language_uid']['config']['items'][0] ) ;
+}
+
 
 if ( $configuration['RegistrationFormPid'] > 0 ) {
     $returnArray['columns']['registration_form_pid']['config']['default'] = $configuration['RegistrationFormPid'] ;
@@ -1094,5 +1101,7 @@ if ( $configuration['RegistrationFormPid'] > 0 ) {
 if ( $configuration['Registrationid'] > 0 ) {
     $returnArray['columns']['registration_pid']['config']['default'] = $configuration['RegistrationPid'] ;
 }
+
+
 
 return $returnArray ;

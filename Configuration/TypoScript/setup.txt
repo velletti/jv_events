@@ -56,7 +56,12 @@ plugin.tx_jvevents_events {
                 2Megra   = Extended Event Registration
                 3MegraAT   = Extended Event Registration mit UST Uid
             }
-
+			citrix{
+				orgID = {$plugin.tx_jvevents_events.settings.register.citrix.orgID}
+				orgAUTH = {$plugin.tx_jvevents_events.settings.register.citrix.orgAUTH}
+				username = {$plugin.tx_jvevents_events.settings.register.citrix.username}
+				password = 	{$plugin.tx_jvevents_events.settings.register.citrix.password}
+			}
 			requiredFields {
 				1Allplan =	{$plugin.tx_jvevents_events.settings.register.requiredFields.1Allplan}
 				2Megra 	=	{$plugin.tx_jvevents_events.settings.register.requiredFields.2Megra}

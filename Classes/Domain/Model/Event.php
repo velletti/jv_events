@@ -288,6 +288,16 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $isRegistrationPossible = false ;
 
     /**
+     * This event is an exception for an recurring event.
+     *
+     * @var bool
+     */
+    protected $isNoFreeSeats = false ;
+
+
+
+
+    /**
 	 * registrationPid
 	 *
 	 * @var integer
@@ -1668,6 +1678,30 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         }
         // access rights are NOT part of this check .. see mustLoginRights() and hasAccessRights() ..
         return true ;
+    }
+
+    /** + +++ special Helper functions for the model  */
+
+    /**
+     * @return boolean
+     */
+    public function isIsNoFreeSeats()
+    {
+
+        // only Check if is with internal registration and we have free seats
+        if ($this->withRegistration ) {
+            // Internal Registration Process : check $this->availableSeats  Seats against Registered
+            if (($this->registeredSeats + $this->unconfirmedSeats +1) > ($this->availableSeats + $this->availableWaitingSeats)  ) {
+                //  echo "<br>Line: " . __LINE__ . " : " . " File: " . __FILE__ . '<br>$this->registeredSeats + $this->unconfirmedSeats +1) > ($this->availableSeats + $this->availableWaitingSeat <hr>';
+                    return TRUE;
+            }
+            if (($this->unconfirmedSeats + 1) > ($this->availableSeats) && ( $this->availableSeats > 0 )) {
+                //  echo "<br>Line: " . __LINE__ . " : " . " File: " . __FILE__ . '<br>$this->unconfirmedSeats + 1) > ($this->availableSeats) && ( $this->availableSeats > 0  <hr>';
+                return TRUE;
+            }
+        }
+        // ok: we have free seats or it is eyternal registration so we do not need or can not show the No Free Seats warning
+        return false ;
     }
 
 	/**

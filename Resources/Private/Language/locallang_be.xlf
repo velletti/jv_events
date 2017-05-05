@@ -56,6 +56,10 @@
         <trans-unit id="extmng.hideEndEdate">
             <source>Do not show the inputfield EndDate</source>
         </trans-unit>
+        <trans-unit id="extmng.hideAllLanguages">
+            <source>Do not show the Option All Languages in Event Creation</source>
+        </trans-unit>
+
 		<trans-unit id="extmng.showImporter">
 			<source>Show Importer From CAL : This is just a plan and actually doing nothing !</source>
 		</trans-unit>

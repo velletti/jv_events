@@ -25,6 +25,22 @@
 			<source>privacy policy</source>
 			<target>Datenschutzbestimmungen</target>
 		</trans-unit>
+
+		<trans-unit id="register.overbooked">
+            <source>+++Overbooked+++</source>
+            <target>+++Ausgebucht+++</target>
+        </trans-unit>
+        <trans-unit id="register.overbooked_headline">
+            <source>This event is fully booked</source>
+            <target>Diese Veranstaltung ist ausgebucht.</target>
+        </trans-unit>
+        <trans-unit id="register.overbooked_text">
+            <source>Unfortunately, your registration to this event cannot be processed. Please contact the host to receive information about last minute tickets.</source>
+            <target>Leider sind keine Registrierungen mehr möglich. Bitte wenden Sie sich an den Veranstalter bezüglich Informationen zu Restplätzen.</target>
+        </trans-unit>
+
+
+
 		<trans-unit id="register.terms_of_use" approved="yes">
 			<source>Terms of use</source>
 			<target>Nutzungsbedingungen</target>

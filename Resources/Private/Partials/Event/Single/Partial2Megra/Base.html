@@ -14,8 +14,24 @@
 			</event:regLink>
 
 		</li>
-
 	</f:if>
+
+    <f:be.security.ifAuthenticated>
+        <f:then>
+            <li >
+                <f:render partial="Registrant/RegistrationsLink"  arguments="{event: event, hash: hash, settings: settings}"/>
+            </li >
+        </f:then>
+        <f:else>
+            <f:if condition="{settings.fe_user.organizer.showTools}">
+                <f:then>
+                    <li >
+                        <f:render partial="Registrant/RegistrationsLink"  arguments="{event: event, hash: hash, settings: settings}"/>
+                    </li>
+                </f:then>
+            </f:if>
+        </f:else>
+    </f:be.security.ifAuthenticated>
 
 	<f:if condition="{settings.debug} > 0">
 		<li ><a  id="jv_events_debug_nav" data-toggle="tab" href="#jv_events_debug">debug</a></li>
@@ -27,7 +43,9 @@
 			<f:render partial="Event/Single/Partial{settings.LayoutSingle}/Row"
 				arguments="{title: '', translate: '0', isHeadline: 'H2' ,value: '{event.name}' }" />
 
+
 			<div class="row">
+
 				<div class="col-sm-4">
 					<f:translate key="tx_jvevents_domain_model_event.date" />
 				</div>
@@ -47,6 +65,13 @@
 
 			<f:render partial="Event/Single/Partial{settings.LayoutSingle}/Row"
 				arguments="{title: 'tx_jvevents_domain_model_location.name', translate: '1', value: '{event.location.name}' }"/>
+            <f:if condition="{event.isNoFreeSeats}">
+                <div class="alert alert-warning">
+                    <h3>+++Ausgebucht+++</h3>
+                    <p>Leider sind für diese Veranstaltung derzeit keine Plätze mehr frei. </p>
+
+                </div>
+            </f:if>
 
 			<div class="row">
 				<div class="col-sm-4">
