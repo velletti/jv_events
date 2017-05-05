@@ -10,11 +10,13 @@
 		<div class="data">
 			<div class="clearfix">
 				<p class="title">
-					<strong>{event.name}</strong>
-					<f:if condition="{event.teaser}">
-						<br>
-						{event.teaser}
-					</f:if>
+					<f:link.action pageUid="{settings.detailPid}" action="show" arguments="{event : event}">
+						<strong>{event.name}</strong>
+						<f:if condition="{event.teaser}">
+							<br>
+							{event.teaser}
+						</f:if>
+					</f:link.action>
 				</p>
 				<p class="location">
 					{event.location.city}
@@ -35,7 +37,7 @@
 		</div>
 		<div class="link">
 			<p>
-				<f:link.action  pageUid="{settings.detailPid}" action="show" arguments="{event : event}">
+				<f:link.action class="internalLink" pageUid="{settings.detailPid}" action="show" arguments="{event : event}">
 					<f:translate key="tx_jvevents_domain_model_event.details.linktext" />
 				</f:link.action>
 			</p>
