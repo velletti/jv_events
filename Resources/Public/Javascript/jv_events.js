@@ -79,11 +79,12 @@ function jv_events_initOneFilter(filterName) {
 		});
 		var filterVal = GetURLParameter('tx_jvevents_events[eventsFilter][' + filterName + ']') ;
 		if ( filterVal ) {
-			jQuery('SELECT#jv_events_filter_' + filterName + ' OPTION').each(function(i) {
-				if ("'" + jQuery(this).val() + "'" == "'" + filterVal +"'") {
-					jQuery(this).prop("selected", true);
-				}
-			});
+		    jQuery('SELECT#jv_events_filter_' + filterName + ' OPTION').each(function(i) {
+                if ("'" + jQuery(this).val() + "'" == "'" + filterVal +"'") {
+                    jQuery(this).prop("selected", true);
+                }
+            });
+
 
 		}
 	}
@@ -93,11 +94,22 @@ function jv_events_initOneFilter(filterName) {
         });
         var filterVal = GetURLParameter('tx_jvevents_events[eventsFilter][' + filterName + ']') ;
         if ( filterVal ) {
-            jQuery('#jv_events_filter_' + filterName + ' input[type=checkbox]').each(function(i) {
-                if ("'" + jQuery(this).val() + "'" == "'" + filterVal +"'") {
-                    jQuery(this).prop("checked", true);
-                }
-            });
+            var filterSplit =  filterVal.split(",") ;
+            if(filterSplit.length > 1 ) {
+                jQuery('#jv_events_filter_' + filterName + ' input[type=checkbox]').each(function(i) {
+                    if(  filterSplit.indexOf( jQuery(this).val() ) > -1 ) {
+                        jQuery(this).prop("checked", true);
+                    }
+                });
+            } else {
+                jQuery('#jv_events_filter_' + filterName + ' input[type=checkbox]').each(function(i) {
+                    if ("'" + jQuery(this).val() + "'" == "'" + filterVal +"'") {
+                        jQuery(this).prop("checked", true);
+                    }
+                });
+            }
+
+
 
         }
     }
@@ -225,13 +237,63 @@ function jv_events_refreshList(){
             filterIsActive = true ;
 		}
 	});
+
+    var stateObj = { Event: "Filter" };
+    var urlFilter = jQuery('meta[name=realUrlPath]').attr('content')  ;
 	if ( filterIsActive ) {
 		jQuery( "#filter-reset-events").removeClass('hide') ;
 		jQuery( "#filter-result-hint-events").removeClass('hide') ;
+
+
+        // now change also the URL in the Browser to be able to copy the URL !!!
+        urlFilter = urlFilter + "?" ;
+        if( fOrg && fOrg.val() > 0 ) {
+            urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][organizers]=" + fOrg.val() ;
+        }
+
+        if( cCatChecked ) {
+
+            var catUrlFilter = '' ;
+            jQuery( cCats ).each( function() {
+				if ( jQuery(this).prop("checked") ) {
+                    catUrlFilter = catUrlFilter + jQuery(this).val() +","  ;
+				}
+			}) ;
+            urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][categories]=" +  catUrlFilter ;
+        }
+        if( cTagChecked ) {
+
+            var tagUrlFilter = '' ;
+            jQuery( cTags ).each( function() {
+                if ( jQuery(this).prop("checked") ) {
+                    tagUrlFilter = tagUrlFilter + jQuery(this).val() +","  ;
+                }
+            }) ;
+            urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][tags]=" +  tagUrlFilter ;
+        }
+
+
+        if( fCat && fCat.val() > 0 ) {
+            urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][categories]=" + fCat.val() ;
+        }
+
+        if( fCity && fCity.val() != ''  ) {
+            urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][citys]=" + fCity.val() ;
+        }
+        if( fMonth && fMonth.val() != ''  ) {
+            urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][months]=" + fMonth.val() ;
+        }
+
+
+        window.history.pushState(stateObj, "Filter", window.location.protocol + "//" + window.location.hostname  +  urlFilter);
 	} else {
         jQuery( "#filter-reset-events").addClass('hide') ;
         jQuery( "#filter-result-hint-events").addClass('hide') ;
+        window.history.pushState(stateObj, "Filter", window.location.protocol + "//" + window.location.hostname  +  urlFilter);
+
 	}
+
+
 }
 
 function jv_events_filter_reset() {
@@ -282,6 +344,11 @@ function jv_events_filter_reset() {
     jQuery('.tx-jv-events DIV.jv-events-singleEvent').each(function (i) {
         jQuery(this).removeClass('hide');
     });
+
+
+    var stateObj = { Event: "noFilter" };
+    var urlFilter = jQuery('meta[name=realUrlPath]').attr('content')  ;
+    window.history.pushState(stateObj, "Filter", window.location.protocol + "//" + window.location.hostname  +  urlFilter);
 
 }
 function jv_events_submit() {
