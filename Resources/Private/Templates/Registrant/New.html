@@ -12,7 +12,7 @@
 	<f:if condition="{event.isRegistrationPossible}">
 		<f:then>
 			<f:render partial="Registrant/Partial{settings.LayoutRegister}/Form"
-					  arguments="{event: event, settings: settings, otherEvents: otherEvents}"/>
+					  arguments="{event: event, settings: settings, hash: hash,  otherEvents: otherEvents}"/>
 		</f:then>
 		<f:else>
 
