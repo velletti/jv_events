@@ -244,7 +244,7 @@ function jv_events_refreshList(){
 		jQuery( "#filter-reset-events").removeClass('hide') ;
 		jQuery( "#filter-result-hint-events").removeClass('hide') ;
 
-        if ( urlFilter.length() > 0 ) {
+        if ( urlFilter.length > 0 ) {
             // now change also the URL in the Browser to be able to copy the URL !!!
             urlFilter = urlFilter + "?" ;
             if( fOrg && fOrg.val() > 0 ) {
@@ -291,7 +291,7 @@ function jv_events_refreshList(){
 	} else {
         jQuery( "#filter-reset-events").addClass('hide') ;
         jQuery( "#filter-result-hint-events").addClass('hide') ;
-        if ( urlFilter.length() > 0 ) {
+        if ( urlFilter.length > 0 ) {
             window.history.pushState(stateObj, "Filter", window.location.protocol + "//" + window.location.hostname + urlFilter);
         }
 
@@ -349,7 +349,7 @@ function jv_events_filter_reset() {
         jQuery(this).removeClass('hide');
     });
 
-    if ( urlFilter.length() > 0 ) {
+    if ( urlFilter.length > 0 ) {
         var stateObj = {Event: "noFilter"};
         var urlFilter = jQuery('meta[name=realUrlPath]').attr('content');
         window.history.pushState(stateObj, "Filter", window.location.protocol + "//" + window.location.hostname + urlFilter);
