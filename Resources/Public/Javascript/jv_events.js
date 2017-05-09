@@ -317,7 +317,7 @@ function jv_events_refreshList(){
 
 }
 function jv_events_pushUrl( urlFilter ) {
-    if( jQuery(".tx-jv-events .filter").length > 0 ) {
+    if( jQuery(".tx-jv-events .filter").length > 0 || jQuery(".tx-jv-events .jv_events_filter").length > 0 ) {
 
         var urlFilterBase = jQuery('meta[name=realUrlPath]').attr('content')  ;
         var stateObj = { Event: "Filter" };
