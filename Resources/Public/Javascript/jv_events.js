@@ -244,52 +244,56 @@ function jv_events_refreshList(){
 		jQuery( "#filter-reset-events").removeClass('hide') ;
 		jQuery( "#filter-result-hint-events").removeClass('hide') ;
 
+        if ( urlFilter.length() > 0 ) {
+            // now change also the URL in the Browser to be able to copy the URL !!!
+            urlFilter = urlFilter + "?" ;
+            if( fOrg && fOrg.val() > 0 ) {
+                urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][organizers]=" + fOrg.val() ;
+            }
 
-        // now change also the URL in the Browser to be able to copy the URL !!!
-        urlFilter = urlFilter + "?" ;
-        if( fOrg && fOrg.val() > 0 ) {
-            urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][organizers]=" + fOrg.val() ;
+            if( cCatChecked ) {
+
+                var catUrlFilter = '' ;
+                jQuery( cCats ).each( function() {
+                    if ( jQuery(this).prop("checked") ) {
+                        catUrlFilter = catUrlFilter + jQuery(this).val() +","  ;
+                    }
+                }) ;
+                urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][categories]=" +  catUrlFilter ;
+            }
+            if( cTagChecked ) {
+
+                var tagUrlFilter = '' ;
+                jQuery( cTags ).each( function() {
+                    if ( jQuery(this).prop("checked") ) {
+                        tagUrlFilter = tagUrlFilter + jQuery(this).val() +","  ;
+                    }
+                }) ;
+                urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][tags]=" +  tagUrlFilter ;
+            }
+
+
+            if( fCat && fCat.val() > 0 ) {
+                urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][categories]=" + fCat.val() ;
+            }
+
+            if( fCity && fCity.val() != ''  ) {
+                urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][citys]=" + fCity.val() ;
+            }
+            if( fMonth && fMonth.val() != ''  ) {
+                urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][months]=" + fMonth.val() ;
+            }
+
+
+            window.history.pushState(stateObj, "Filter", window.location.protocol + "//" + window.location.hostname  +  urlFilter);
         }
 
-        if( cCatChecked ) {
-
-            var catUrlFilter = '' ;
-            jQuery( cCats ).each( function() {
-				if ( jQuery(this).prop("checked") ) {
-                    catUrlFilter = catUrlFilter + jQuery(this).val() +","  ;
-				}
-			}) ;
-            urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][categories]=" +  catUrlFilter ;
-        }
-        if( cTagChecked ) {
-
-            var tagUrlFilter = '' ;
-            jQuery( cTags ).each( function() {
-                if ( jQuery(this).prop("checked") ) {
-                    tagUrlFilter = tagUrlFilter + jQuery(this).val() +","  ;
-                }
-            }) ;
-            urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][tags]=" +  tagUrlFilter ;
-        }
-
-
-        if( fCat && fCat.val() > 0 ) {
-            urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][categories]=" + fCat.val() ;
-        }
-
-        if( fCity && fCity.val() != ''  ) {
-            urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][citys]=" + fCity.val() ;
-        }
-        if( fMonth && fMonth.val() != ''  ) {
-            urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][months]=" + fMonth.val() ;
-        }
-
-
-        window.history.pushState(stateObj, "Filter", window.location.protocol + "//" + window.location.hostname  +  urlFilter);
 	} else {
         jQuery( "#filter-reset-events").addClass('hide') ;
         jQuery( "#filter-result-hint-events").addClass('hide') ;
-        window.history.pushState(stateObj, "Filter", window.location.protocol + "//" + window.location.hostname  +  urlFilter);
+        if ( urlFilter.length() > 0 ) {
+            window.history.pushState(stateObj, "Filter", window.location.protocol + "//" + window.location.hostname + urlFilter);
+        }
 
 	}
 
@@ -345,10 +349,11 @@ function jv_events_filter_reset() {
         jQuery(this).removeClass('hide');
     });
 
-
-    var stateObj = { Event: "noFilter" };
-    var urlFilter = jQuery('meta[name=realUrlPath]').attr('content')  ;
-    window.history.pushState(stateObj, "Filter", window.location.protocol + "//" + window.location.hostname  +  urlFilter);
+    if ( urlFilter.length() > 0 ) {
+        var stateObj = {Event: "noFilter"};
+        var urlFilter = jQuery('meta[name=realUrlPath]').attr('content');
+        window.history.pushState(stateObj, "Filter", window.location.protocol + "//" + window.location.hostname + urlFilter);
+    }
 
 }
 function jv_events_submit() {
