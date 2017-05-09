@@ -297,6 +297,10 @@ function jv_events_refreshList(){
             urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][categories]=" + fCat.val() ;
         }
 
+        if( fTag && fTag.val() > 0 ) {
+            urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][tags]=" + fTag.val() ;
+        }
+
         if( fCity && fCity.val() != ''  ) {
             urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][citys]=" + fCity.val() ;
         }
