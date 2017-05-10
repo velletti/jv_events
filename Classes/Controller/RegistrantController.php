@@ -81,6 +81,7 @@ class RegistrantController extends BaseController
         if( $checkHash ==  $hash ) {
             $registrants = $this->registrantRepository->findByFilter('', $event->getUid(), $pid , $this->settings, 9999) ;
 
+
             if( $doExport == 1 ) {
                 // csv Export
                 $d = ";" ;
@@ -88,14 +89,10 @@ class RegistrantController extends BaseController
                 $eol = "\r\n" ;
                  $t = "" ;
                 // $t = '"' ;
-
                 $csvdata = $this->getCsvHeader( $d , $eol ,  $t ) ;
-
                 foreach ($registrants as $registrant) {
                     $csvdata .= $this->getCsvValues($registrant ,$d , $eol ,  $t) ;
-
                 }
-
 
                 $csvdata =  pack("CCC", 0xef, 0xbb, 0xbf) . $csvdata ;
                 header("content-type: application/csv-comma-delimited-table; Charset=utf-8");
@@ -327,6 +324,8 @@ class RegistrantController extends BaseController
 				$registrant->setCompany2(" - ") ;
 			}
 		}
+        // $registrant->setLanguage( $this->settings['sys_language_uid'] ) ;
+
 
 		$this->settings['success'] = FALSE ;
 		$this->settings['successMsg'] = FALSE ;
@@ -351,7 +350,12 @@ class RegistrantController extends BaseController
 		// $this->settings['debug']  = 2 ;
 
 		$this->settings['debug']  = 0 ;
+
+
+
 		/** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $existingRegistration */
+        $this->registrantRepository->setDefaultQuerySettings() ;
+
 		$existingRegistration = $this->registrantRepository->findByFilter($registrant->getEmail() , $event->getUid() , 0 , $this->settings );
 
 
