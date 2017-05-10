@@ -34,11 +34,16 @@ class RegistrantRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface
 	 */
-	protected $defaultQuerySettings = null;
+	protected $defaultQuerySettings = null ;
 
 	protected $respectStoragePage = false;
 
 	protected $respectSysLanguage = false;
+
+	protected $languageOverlayMode = false;
+
+	protected $languageMode = 'content_fallback' ;
+
 
 	/**
 	 * @param string $fingerprint
@@ -52,6 +57,9 @@ class RegistrantRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 		$query = $this->createQuery();
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		$query->getQuerySettings()->setRespectSysLanguage(FALSE);
+        $query->getQuerySettings()->setLanguageOverlayMode(FALSE) ;
+        $query->getQuerySettings()->setLanguageMode('content_fallback') ;
+
 		// $query->getQuerySettings()->setIgnoreEnableFields(TRUE) ;
 
 		return $query->matching( $query->equals("fingerprint", $fingerprint) )->execute() ;
@@ -69,6 +77,8 @@ class RegistrantRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		$query->getQuerySettings()->setRespectSysLanguage(FALSE);
 		$query->getQuerySettings()->setIgnoreEnableFields(TRUE) ;
+		$query->getQuerySettings()->setLanguageOverlayMode(FALSE) ;
+		$query->getQuerySettings()->setLanguageMode('content_fallback') ;
 
         // $constraints[] = $query->equals("cruser_id", 0);
 		if($email <> '' ) {
