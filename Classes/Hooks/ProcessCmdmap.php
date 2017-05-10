@@ -40,6 +40,9 @@ class ProcessCmdmap {
 	/** @var  \JVE\JvEvents\Domain\Repository\EventRepository $this->eventRepository */
 	protected $eventRepository ;
 
+    /** @var  \JVE\JvEvents\Domain\Repository\RegistrantRepository $this->registrantRepository */
+    protected $registrantRepository ;
+
 	/** @var  \JVE\JvEvents\Domain\Model\Event $this->event */
 	protected $event;
 
@@ -124,7 +127,36 @@ class ProcessCmdmap {
 			}
 		
 		}
-	}
+
+
+
+        if ($table == 'tx_jvevents_domain_model_registrant') {
+            if($command == 'delete'){
+
+                $regevent = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $id , '*' , '' , false );
+                $eventId = $regevent['event'] ;
+                if( $eventId > 0 ) {
+                    $event = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('tx_jvevents_domain_model_event', $eventId );
+                    if( $regevent['confirmed'] == 1 ) {
+                        $registeredSeats = max( 0 , $event['registered_seats'] - 1 ) ;
+                        $updateData = array(
+                            'registered_seats' => $registeredSeats
+                        );
+                    }  else {
+                        if( $regevent['hidden'] == 0 ) {
+                            $unconfirmed_seats = max($event['unconfirmed_seats'] - 1);
+                            $updateData = array(
+                                'unconfirmed_seats' => $unconfirmed_seats
+                            );
+                        }
+                    }
+                    $GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_jvevents_domain_model_event', 'uid=' . intval($eventId), $updateData);
+
+                }
+            }
+
+        }
+    }
 
 
 	public function main() {

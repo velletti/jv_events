@@ -57,6 +57,20 @@ class RegistrantRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 		return $query->matching( $query->equals("fingerprint", $fingerprint) )->execute() ;
 	}
 
+    /**
+     * @param int $id
+     *
+     * @return array|bool|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+     */
+    public function getOneById($id) {
+
+        $query = $this->createQuery();
+        $query->getQuerySettings()->setRespectStoragePage(FALSE);
+        $query->getQuerySettings()->setRespectSysLanguage(FALSE);
+        // $query->getQuerySettings()->setIgnoreEnableFields(TRUE) ;
+
+        return $query->matching( $query->equals("uid", $id) )->execute()->getFirst() ;
+    }
 
 	/**
 	 * @param string $email
