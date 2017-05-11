@@ -157,6 +157,20 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             $months[$month] = $month ;
 
         }
+        $sortArray = array();
+        foreach($categories2 as $key => $array) {
+            $sortArray[$key] = ucfirst ( $array['title'] ) ;
+        }
+
+
+        array_multisort($sortArray, SORT_ASC, SORT_STRING , $categories2);
+
+        $sortArray = array();
+        foreach($tags as $key => $value) {
+            $sortArray[$key] = ucfirst ( $value ) ;
+        }
+        array_multisort($sortArray, SORT_ASC, SORT_NUMERIC, $tags);
+
         return array(
             "locations" => $locations ,  
             "organizers" => $organizers ,  

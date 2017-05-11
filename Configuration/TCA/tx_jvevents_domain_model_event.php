@@ -692,7 +692,7 @@ $returnArray = array(
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.notify_organizer',
 			'config' => array(
 				'type' => 'check',
-				'default' => 0
+				'default' => 1
 			)
 		),
 		'notify_registrant' => array(
@@ -701,7 +701,7 @@ $returnArray = array(
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.notify_registrant',
 			'config' => array(
 				'type' => 'check',
-				'default' => 0
+				'default' => 1
 			)
 		),
 		'subject_organizer' => array(
@@ -1044,9 +1044,10 @@ if ( $configuration['allDayEvent'] == 1 ) {
 }
 if ( ! $configuration['notifyRegistrant'] == 1 ) {
 	$returnArray['columns']['notify_registrant']['config']['default'] = 1  ;
-}
-if ( ! $configuration['needToConfirm'] == 1 ) {
-	$returnArray['columns']['need_to_confirm']['config']['default'] = 1  ;
+} else {
+    if ( ! $configuration['needToConfirm'] == 1 ) {
+        $returnArray['columns']['need_to_confirm']['config']['default'] = 1  ;
+    }
 }
 
 

@@ -68,12 +68,21 @@ class ProcessDatamap {
 
 			if( is_object( $this->event ) ) {
 
+                if ($this->event->getNotifyRegistrant() ==  0 && $this->event->getNeedToConfirm() == 1 ) {
+                    $this->event->setNeedToConfirm( 0 ) ;
+                    $this->flashMessage['ERROR'][] = 'You can not set Need to confirm without sending Email to the participant !' ;
+                    $allowedError ++ ;
+                }
 
 				if ($allowedError >  0 ) {
-					$this->event->setWithRegistration(FALSE ) ;
+					// $this->event->setWithRegistration(FALSE ) ;
 					$this->eventRepository->update($this->event) ;
 
-				}
+                    /** @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager $persistenceManager */
+                    $persistenceManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
+                    $persistenceManager->persistAll() ;
+
+                }
 			}
 
 			$this->showFlashMessage();
