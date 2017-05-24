@@ -47,14 +47,14 @@
 
             <div class="fieldsets">
 
-                <f:if condition="{f:count(subject: eventsFilter.tags)} > 0">
+                <f:if condition="{f:count(subject: eventsFilter.tags2)} > 0">
                     <fieldset>
                         <legend><f:translate key="tx_jvevents_domain_model_event.tags" /></legend>
 
                         <div class="checkbox" id="jv_events_filter_tags">
-                            <f:for each="{eventsFilter.tags}" as="tag" key="id">
+                            <f:for each="{eventsFilter.tags2}" as="tag">
                                 <label>
-                                    <input type="checkbox" id="jv_events_filter_tag-{id}" value="{id}">{tag}
+                                    <input type="checkbox" id="jv_events_filter_tag-{tag.id}" value="{tag.id}">{tag.title}
                                 </label>
                             </f:for>
                         </div>

@@ -135,6 +135,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
                 foreach ($objArray as $obj ) {
                     if ( is_object($obj) ) {
                         $tags[$obj->getUid()] = $obj->getName() ;
+                        $tags2[$obj->getUid()] = array( "id" => $obj->getUid() , "title" => $obj->getName() ) ;
                     }
                 }
             }
@@ -167,16 +168,25 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
         $sortArray = array();
         foreach($tags as $key => $value) {
-            $sortArray[$key] = ucfirst ( $value ) ;
+            $sortArray[$key] = ucfirst ( $value) ;
         }
         array_multisort($sortArray, SORT_ASC, SORT_NUMERIC, $tags);
+
+        $sortArray = array();
+
+
+        foreach($tags2 as $key => $array) {
+            $sortArray[$key] = ucfirst ( $array['title']  ) ;
+        }
+        array_multisort($sortArray, SORT_ASC, SORT_NUMERIC, $tags2);
 
         return array(
             "locations" => $locations ,  
             "organizers" => $organizers ,  
             "citys" => $citys ,  
             "tags" => $tags ,  
-            "categories" => $categories ,  
+            "tags2" => $tags2 ,
+            "categories" => $categories ,
             "categories2" => $categories2 ,
             "months" => $months ,
             

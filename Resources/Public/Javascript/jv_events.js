@@ -165,6 +165,7 @@ function jv_events_refreshList(){
     }) ;
     var filterIsActive = false ;
 	jQuery('.tx-jv-events DIV.jv-events-singleEvent').each(function (i) {
+       // console.log( " ************* event **************** UID: " + jQuery(this).data("eventuid")  ) ;
 		jQuery(this).removeClass('hide') ;
 
 		if( fMonth && fMonth.val().length > 0 ) {
@@ -207,14 +208,18 @@ function jv_events_refreshList(){
             }
         }
 
-        if( cTagChecked ) {
+        if( cTagChecked  ) {
             var sTags = jQuery(this).data("taguids") ;
+           //  console.log( " sTags : " + sTags ) ;
+
             if( sTags ) {
-                sTags = sTags.split(",") ;
-				var needTohide = true ;
+                sTags = "," + sTags + "," ;
+                var needTohide = true ;
 				jQuery( cTags ).each( function() {
+                   //  console.log( "Tag: " + jQuery(this).val() + "checked ? : " + jQuery(this).prop("checked") ) ;
 					if ( jQuery(this).prop("checked") ) {
-						if( sTags.indexOf( jQuery(this).val() ) > -1 ) {
+                      //  console.log( "position of " + jQuery(this).val() + " in string " + sTags + " = " + sTags.indexOf( "," + jQuery(this).val()   ) ) ;
+						if( sTags.indexOf( "," + jQuery(this).val() + ","  ) > -1 ) {
 							needTohide = false ;
 							return false ;
 						}
@@ -235,12 +240,13 @@ function jv_events_refreshList(){
             var sCats = jQuery(this).data("catuids") ;
             // console.log( " sCats : " + sCats ) ;
             if( sCats ) {
-                sCats = sCats.split(",") ;
+                sCats = "," + sCats + "," ;
                 var needTohide = true ;
                 jQuery( cCats ).each( function() {
 					// console.log( jQuery(this).prop("checked") ) ;
                     if ( jQuery(this).prop("checked") ) {
-                        if( sCats.indexOf( jQuery(this).val()  ) > -1 ) {
+                      //  console.log( "position: " + sCats.indexOf( jQuery(this).val()  ) ) ;
+                        if( sCats.indexOf( "," + jQuery(this).val() + ","  ) > -1 ) {
                             needTohide = false ;
                             return false ;
                         }
