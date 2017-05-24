@@ -354,9 +354,7 @@ class RegistrantController extends BaseController
 
 
 		/** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $existingRegistration */
-        $this->registrantRepository->setDefaultQuerySettings() ;
-
-		$existingRegistration = $this->registrantRepository->findByFilter($registrant->getEmail() , $event->getUid() , 0 , $this->settings );
+        $existingRegistration = $this->registrantRepository->findByFilter($registrant->getEmail() , $event->getUid() , 0 , $this->settings );
 
 
 		if( is_object( $existingRegistration ) ) {
