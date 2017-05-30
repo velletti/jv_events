@@ -179,7 +179,7 @@
 		</trans-unit>
         <trans-unit id="list.register.button.subscribe" approved="yes">
             <source>Subscribe</source>
-             <target>Abbonati</target>
+             <target>Iscriviti</target>
         </trans-unit>
         <trans-unit id="register.url.confirm_intro_text" approved="yes">
             <source>if the button does not work, copy the following URL into your browser:</source>
