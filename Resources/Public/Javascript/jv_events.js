@@ -185,9 +185,11 @@ function jv_events_refreshList(){
 			}
 
 		}
-		if( fCity && fCity.val().length > 0 ) {
-			if( jQuery(this).data("cityuid")  != fCity.val() ) {
-				jQuery(this).addClass('hide') ;
+		if( fCity && fCity.val() > 0 ) {
+		    if(  fCity.val().length > 0 ) {
+                if( jQuery(this).data("cityuid")  != fCity.val() ) {
+                    jQuery(this).addClass('hide') ;
+                }
 			}
 		}
 
