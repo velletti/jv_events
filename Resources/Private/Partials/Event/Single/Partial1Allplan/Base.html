@@ -12,7 +12,11 @@
 
 	<div class="row">
 		<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_event.date" />:</strong></div>
-		<div class="col-md-10">{event.startDate -> f:format.date(format:"d.m.Y")}</div>
+		<div class="col-md-10">{event.startDate -> f:format.date(format:"d.m.Y")}
+		<f:if condition="{event.startDate < event.endDate}">
+			- {event.endDate -> f:format.date(format:"d.m.Y")}
+		</f:if>
+		</div>
 	</div>
 
 	<f:if condition="{event.allDay}">
