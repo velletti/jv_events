@@ -107,9 +107,9 @@ class RegisterSalesforceSignal {
 
 
         $data['debug']  = "1" ;
-        $data['debugEmail']  = "jVelletti@allplan.com" ;
+        $data['debugEmail']  = "web-admin@allplan.com" ;
 
-        $data['retURL']  = "http://www.allplan.com" ;
+        $data['retURL']  = $_SERVER['SERVER_NAME'];
 
         $data['00N20000003aeMQ'] = 'commercial';
 
@@ -166,6 +166,7 @@ class RegisterSalesforceSignal {
         if( $event->getCitrixUid()  ) {
             $data['webinar'] = $event->getCitrixUid() ;
         }
+
 
         if ( ( substr($_SERVER['SERVER_NAME'], -6 , 6 )  == ".local" && 1==1 )  || $settings['debug'] > 0 ) {
             echo "<hr>No transport to salesForce / Citrix on a local testserver or if Debug is  set a value > 0 .. if you want to test curl and see response also local, set debug to 2  !!! <pre>" ;
