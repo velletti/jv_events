@@ -1,6 +1,6 @@
 {namespace event=JVE\JvEvents\ViewHelpers}
 
-<f:comment>
+<f:comment xmlns:f="http://www.w3.org/1999/html">
 	<!-- =========================================================================================================================== -->
 	<!-- Main infos -->
 	<!-- =========================================================================================================================== -->
@@ -14,7 +14,7 @@
 		<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_event.date" />:</strong></div>
 		<div class="col-md-10">{event.startDate -> f:format.date(format:"d.m.Y")}
 		<f:if condition="{event.startDate < event.endDate}">
-			- {event.endDate -> f:format.date(format:"d.m.Y")}
+			<f:comment>- {event.endDate -> f:format.date(format:"d.m.Y")}</f:comment>
 		</f:if>
 		</div>
 	</div>
