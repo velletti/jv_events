@@ -149,6 +149,11 @@ class RegisterSalesforceSignal {
 
         $data['00N20000001KIHf']  =   $settings['register']['salesForce']['lang'] ;
 
+        if( trim ( $event->getMarketingProcessId() ) != '' ) {
+            $data['00N200000035nbU']  =   $event->getMarketingProcessId() ;
+        }
+
+
 
         $URL =  $settings['register']['salesForce']['url'] ;
 
