@@ -99,7 +99,9 @@ class EventBackendController extends BaseController
 
                 $events[] = $event[0] ;
                 if ( $this->request->hasArgument("createDmailGroup")) {
-                    $this->createDmailGroup($event[0]);
+                    if ($eventID == 0 || ($eventID == $event[0]->getUid())) {
+                        $this->createDmailGroup($event[0]);
+                    }
                 }
             }
         }
@@ -301,7 +303,7 @@ class EventBackendController extends BaseController
 	    $dgroup['type'] = 3 ;
 
 	    // toDo get PID from Config
-	    $dgroup['pid'] = 138 ;
+	    $dgroup['pid'] = 141 ;
 	    $dgroup['tstamp'] = time()  ;
 
 	    $dgroup['static_list'] = $event->getUid()  ;
