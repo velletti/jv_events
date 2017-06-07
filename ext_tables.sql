@@ -207,6 +207,7 @@ CREATE TABLE tx_jvevents_domain_model_registrant (
 	title varchar(100) DEFAULT '' NOT NULL,
 	first_name varchar(100) DEFAULT '' NOT NULL,
 	last_name varchar(100) DEFAULT '' NOT NULL,
+	name varchar(200) DEFAULT '' NOT NULL,
 	email varchar(255) DEFAULT '' NOT NULL,
 	gender varchar(10) DEFAULT '' NOT NULL,
 	company varchar(100) DEFAULT '' NOT NULL,

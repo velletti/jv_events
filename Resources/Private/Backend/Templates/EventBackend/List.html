@@ -2,13 +2,20 @@
 
 <f:section name="content">
 <f:flashMessages />
-
 <h2><f:count>{registrants}</f:count> Registrations</h2>
 	<f:if condition="events">
+		<f:if condition="settings.directmail">
+			<div>
+				<span class="btn btn-default">
+					<f:be.buttons.icon uri="{f:uri.action(action:'list' , arguments: '{createDmailGroup: 1}' )}" title="Create Email Group" icon="actions-document"/>
+				</span> Create Email lists for Newsletter
+			</div>
+		</f:if>
 		<f:form id="jveventFilterForm" action="list" controller="EventBackend" method="post">
 			<input type="hidden" name="uid" value="{plugin.uid}" /><f:form.hidden name="pluginUid" value="{plugin.uid}" />
 			<f:form.select name="event" value="{event}" additionalAttributes="{onchange: 'document.getElementById(\'jveventFilterForm\').submit();'}" id="jvevents" property="event" options="{events}" optionLabelField="name" sortByOptionLabel="TRUE" prependOptionLabel="-" prependOptionValue="0"></f:form.select>
 		</f:form>
+
 	</f:if>
 	<f:be.widget.paginate objects="{registrants}" as="paginatedRegistrants" configuration="{itemsPerPage: itemsPerPage, insertAbove: 1, maximumNumberOfLinks: 3}">
 		<div class="row bg-primary ">

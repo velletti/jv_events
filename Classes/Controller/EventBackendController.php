@@ -67,6 +67,7 @@ class EventBackendController extends BaseController
 	}
     /**
      * action list
+     * http://master.dev/typo3/index.php?M=web_JvEventsEventmngt&moduleToken=0659e7b6ef0e5e1632d32734a03e2141563302d5
      *
      * @return void
      */
@@ -84,14 +85,22 @@ class EventBackendController extends BaseController
         }
         $this->settings['filter']['startDate']  = -9999 ;
         $this->settings['storagePid'] = $pageId ;
+        if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('direct_mail')) {
+            $this->settings['directmail'] = TRUE ;
+        }
         /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $events */
         $registrants = $this->registrantRepository->findByFilter($email, $eventID, $pageId ,  $this->settings , 999 );
         $eventIds = $this->registrantRepository->findEventsByFilter($email , $pageId , $this->settings  ) ;
-        if( count($eventIds) > 1 ) {
+        if( count($eventIds) > 0 ) {
             // $events[] = array( "0" => "-" ) ;
             foreach ($eventIds as $key => $eventId ) {
                 $event = $this->eventRepository->findByUidAllpages($eventId) ;
+                $event[0]->setName( $event[0]->getStartDate()->format("d.m.Y - ") . substr( $event[0]->getName() , 0 , 50 )  . " (" . $event[0]->getUid() . ")" ) ;
+
                 $events[] = $event[0] ;
+                if ( $this->request->hasArgument("createDmailGroup")) {
+                    $this->createDmailGroup($event[0]);
+                }
             }
         }
 
@@ -232,12 +241,77 @@ class EventBackendController extends BaseController
 	public function generateToken($action = "action")
 	{
 		/** @var \TYPO3\CMS\Core\FormProtection\FrontendFormProtection $formClass */
-		$formClass =  $this->objectManager->get( "TYPO3\\CMS\Core\\FormProtection\\FrontendFormProtection") ;
+		$formClass =  $this->objectManager->get( "TYPO3\\CMS\\Core\\FormProtection\\FrontendFormProtection") ;
 
 		return $formClass->generateToken(
 			'event', $action ,   "P" . $this->settings['pageId'] . "-L" .$this->settings['sys_language_uid']
 		);
 
 	}
+
+    /**
+     * @param \JVE\JvEvents\Domain\Model\Event $event
+     * @return bool
+     */
+	public function createDmailGroup( \JVE\JvEvents\Domain\Model\Event  $event ) {
+
+        if (! \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('direct_mail')) {
+            return ;
+        }
+        $dgroupRow =  \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw("sys_dmail_group" , "deleted = 0 AND static_list = " . $event->getUid() , "*" ) ;
+        if(is_array($dgroupRow )) {
+            return ;
+        }
+
+        $query[] = array (
+              'operator' => 'AND' ,
+              'type' => 'FIELD_event' ,
+              'comparison' => '32' ,
+              'inputValue' => $event->getUid()
+        ) ;
+        $query[] = array (
+            'operator' => 'AND' ,
+            'type' => 'FIELD_email' ,
+            'comparison' => '0' ,
+            'inputValue' => "@"
+        ) ;
+        $query[] = array (
+            'operator' => 'AND' ,
+            'type' => 'FIELD_hidden' ,
+            'comparison' => '129' ,
+            'negate' => 'on' ,
+            'inputValue' => "1"
+        ) ;
+        $query[] = array (
+            'operator' => 'AND' ,
+            'type' => 'FIELD_deleted' ,
+            'comparison' => '129' ,
+            'negate' => 'on' ,
+            'inputValue' => "1"
+        ) ;
+        $query[] = array (
+            'operator' => 'AND' ,
+            'type' => 'FIELD_confirmed' ,
+            'comparison' => '129' ,
+            'inputValue' => "1"
+        ) ;
+
+	    $dgroup['title'] = "Event " . $event->getStartDate()->format("d.m.Y" ) . " (" . $event->getUid() . ") "  ;
+	    //$dgroup['queryTable'] = "tx_jvevents_domain_model_registrant" ;
+	    $dgroup['type'] = 3 ;
+
+	    // toDo get PID from Config
+	    $dgroup['pid'] = 138 ;
+	    $dgroup['tstamp'] = time()  ;
+
+	    $dgroup['static_list'] = $event->getUid()  ;
+	    $dgroup['whichtables'] =  4 ;
+	    $dgroup['description'] =  $event->getName() ;
+	    $dgroup['list'] =  serialize( array() ) ;
+	    $dgroup['csv'] =  0 ;
+	    $dgroup['query'] = serialize($query) ;
+
+        return $GLOBALS['TYPO3_DB']->exec_INSERTquery( "sys_dmail_group" ,  $dgroup) ;
+    }
 
 }
