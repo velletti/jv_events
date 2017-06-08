@@ -436,7 +436,13 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 	 */
 	protected $externalurl;
 
-	/**
+    /**
+     * @var string
+     */
+    protected $url;
+
+
+    /**
 	 * __construct
 	 */
 	public function __construct()
@@ -1743,6 +1749,71 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function getLanguageUid()
     {
         return $this->_languageUid;
+    }
+
+    /**
+     * @return int
+     */
+    public function getUid()
+    {
+        return $this->uid;
+    }
+
+    /**
+     * @param int $uid
+     */
+    public function setUid($uid)
+    {
+        $this->uid = $uid;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLocalizedUid()
+    {
+        return $this->_localizedUid;
+    }
+
+    /**
+     * @param int $localizedUid
+     */
+    public function setLocalizedUid($localizedUid)
+    {
+        $this->_localizedUid = $localizedUid;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPid()
+    {
+        return $this->pid;
+    }
+
+    /**
+     * @param int $pid
+     */
+    public function setPid($pid)
+    {
+        $this->pid = $pid;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    /**
+     * @param string $url
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
     }
 
 

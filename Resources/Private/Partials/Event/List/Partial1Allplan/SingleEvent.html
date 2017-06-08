@@ -10,13 +10,26 @@
 		<div class="data">
 			<div class="clearfix">
 				<p class="title">
-					<f:link.action pageUid="{settings.detailPid}" action="show" arguments="{event : event}">
-						<strong>{event.name}</strong>
-						<f:if condition="{event.teaser}">
-							<br>
-							{event.teaser}
-						</f:if>
-					</f:link.action>
+					<f:if condition="{event.url}">
+						<f:then>
+							<f:link.typolink class="internalLink" parameter="{event.url}">
+								<strong>{event.name}</strong>
+								<f:if condition="{event.teaser}">
+									<br>
+									{event.teaser}
+								</f:if>
+							</f:link.typolink>
+						</f:then>
+						<f:else>
+							<f:link.action pageUid="{settings.detailPid}" action="show" arguments="{event : event}">
+								<strong>{event.name}</strong>
+								<f:if condition="{event.teaser}">
+									<br>
+									{event.teaser}
+								</f:if>
+							</f:link.action>
+						</f:else>
+					</f:if>
 				</p>
 				<p class="location">
 					{event.location.city}
@@ -37,9 +50,20 @@
 		</div>
 		<div class="link">
 			<p>
-				<f:link.action class="internalLink" pageUid="{settings.detailPid}" action="show" arguments="{event : event}">
-					<f:translate key="tx_jvevents_domain_model_event.details.linktext" />
-				</f:link.action>
+				<f:if condition="{event.url}">
+					<f:then>
+						<f:link.typolink class="internalLink" parameter="{event.url}">
+							<f:translate key="tx_jvevents_domain_model_event.details.linktext" />
+						</f:link.typolink>
+					</f:then>
+					<f:else>
+						<f:link.action class="internalLink" pageUid="{settings.detailPid}" action="show" arguments="{event : event}">
+							<f:translate key="tx_jvevents_domain_model_event.details.linktext" />
+						</f:link.action>
+					</f:else>
+				</f:if>
+
+
 			</p>
 		</div>
 	</div>
