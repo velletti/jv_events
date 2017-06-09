@@ -212,6 +212,21 @@ class RegisterSalesforceSignal {
             Die ;
         }
 
+        $Typo3_v6mail = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_mail_Message');
+        $Typo3_v6mail->setFrom( array( 'info.de@allplan.com' => $_SERVER['SERVER_NAME'] ) );
+        $Typo3_v6mail->setReturnPath( 'info.de@allplan.com' );
+        $Typo3_v6mail->setTo(
+            array(
+                'jvelletti@allplan.com' =>  '',
+                'pbenke@allplan.com' => '',
+            )
+        );
+
+        $Typo3_v6mail->setSubject( "JV Events Registration Debug - " . $event->getStartDate()->format("d.m.Y") . " - " . $event->getName()  );
+
+
+        $Typo3_v6mail->setBody(nl2br( $debugmail , 'text/html') );
+        $Typo3_v6mail->send();
 
     }
 
