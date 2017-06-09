@@ -33,7 +33,14 @@ class ProcessDatamap {
 	protected $deleted;
 	protected $fieldArray;
 
-	/** @var  \JVE\JvEvents\Domain\Repository\EventRepository $this->objectManager */
+	/** @var  array */
+	protected $flashMessage ;
+
+    /** @var  \JVE\JvEvents\Classes\Utility\SalesforceWrapper */
+    public $sfConnect ;
+
+
+    /** @var  \JVE\JvEvents\Domain\Repository\EventRepository $this->objectManager */
 	protected $objectManager ;
 
 	/** @var  \JVE\JvEvents\Domain\Repository\EventRepository $this->eventRepository */
@@ -76,13 +83,25 @@ class ProcessDatamap {
 
 				if ($allowedError >  0 ) {
 					// $this->event->setWithRegistration(FALSE ) ;
-					$this->eventRepository->update($this->event) ;
 
-                    /** @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager $persistenceManager */
-                    $persistenceManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
-                    $persistenceManager->persistAll() ;
+
+                } else {
+                    // j.v. : Kopiert von altem Plugin: wenn Store in Citrix "An" Ist, das Event NICHT als "TW Webinar /Event " nach Salesforce Schreiben !
+                    if( $this->event->getStoreInSalesForce() ) {
+                        if( $this->event->getStoreInCitrix() ) {
+                            $this->flashMessage['ERROR'][] = 'You can not set "Store in Salesforce" together with "Store in Citrix"! (store in salesforce is disabled)!' ;
+                            $this->event->setStoreInSalesForce(0) ;
+                        } else {
+                            $this->createUpdateEventForSF()  ;
+                        }
+                    }
 
                 }
+                $this->eventRepository->update($this->event) ;
+
+                /** @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager $persistenceManager */
+                $persistenceManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
+                $persistenceManager->persistAll() ;
 			}
 
 			$this->showFlashMessage();
@@ -91,272 +110,175 @@ class ProcessDatamap {
 
 	//  ForSF +++++++++++++++++  Salesforce übergabe  ++++++++++++++++++
 
-	private function parseDataArrayForSF($transferData){
 
-		$timeZoneStart = ".000+01:00" ;
-		$UnixStarttime = mktime( 10,10,0, substr( $transferData['start_date'],4,2) , substr( $transferData['start_date'],6,2) ,substr( $transferData['start_date'],0,4) ) ;
+	private function createUpdateEventForSF() {
+        /** @var  \JVE\JvEvents\Classes\Utility\SalesforceWrapper */
+        $this->sfConnect = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JVE\\JvEvents\\Classes\\Utility\\SalesforceWrapper');
 
-		if ( date("I" , $UnixStarttime) == "1" ) {
-			$timeZoneStart = ".000+02:00" ;
-		}
-		$this->flashMessage['INFO'][] = $transferData['start_date'] . " UNIX: " . $UnixStarttime . " tZ: " . $timeZoneStart ;
-		$timeZoneEnd = ".000+01:00" ;
-		if ( date("I" , mktime( 10,10,0, substr( $transferData['end_date'],4,2) , substr( $transferData['end_date'],6,2) ,  substr( $transferData['end_date'],0,4) )) == "1" ) {
-			$timeZoneEnd = ".000+02:00" ;
-		}
+        // With next Line you can force to write to a specific Salesforce system "PROD" / "STAGE" or "DEV"
+        // $this->sfConnect->forceEnv = "PROD" ;
+        $settings = $this->sfConnect->contactSF() ;
+        // var_dump($settings) ;
 
-		$dateObj = new tx_cal_date($transferData['start_date'].'000000');
-		$dateObj->setTZbyId('UTC');
-		$transferData['start_date'] = $dateObj->format("%Y-%m-%d");
+        if( $settings['faultstring'] ) {
+            $this->flashMessage['ERROR'][] = 'Store in Salesforce: could not Connect ! : ' . var_export( $settings , true ) ;
+            return ;
+        }
 
-		$dateObj = new tx_cal_date($transferData['end_date'].'000000');
-		$dateObj->setTZbyId('UTC');
-		$transferData['end_date'] = $dateObj->format("%Y-%m-%d");
+        /// ++++++++++++  first we genereate the data Array
+        $start = $this->event->getStartDate() ;
+        $end = $this->event->getStartDate() ;
+        $startD =  $this->sfConnect->convertDate2SFdate( $start ,  $this->event->getStartTime() ) ;
 
-		date_default_timezone_set('UTC');
-		$transferData['start_time'] = date("H:i:s", $transferData['start_time'] );
-
-		$transferData['end_time'] = date("H:i:s", $transferData['end_time']);
-
-		// TODO : now create the SF Array ..
-		$SFtransferData  = array() ;
-		if ( $transferData['tx_nemcalwebservices_salesforce_eventid'] != '') {
-			$SFtransferData['id'] = $transferData['tx_nemcalwebservices_salesforce_eventid'] ;
-		}
-
-		$salesForceContactId = $this->getSalesforceContactId($transferData['organizer_id']);
-		if ($salesForceContactId !== FALSE) {
-			$SFtransferData['OwnerId'] = $salesForceContactId;
-		}
+        $endD =  $this->sfConnect->convertDate2SFdate( $end ,  $this->event->getEndTime() ) ;
+        $this->flashMessage['NOTICE'][] = 'StartDate Converted for SalesForce to ! : ' . $startD ;
 
 
-		$SFtransferData['TW_Start_Time__c'] =  $transferData['start_date'] . "T" . $transferData['start_time'] .$timeZoneStart;
+        $SummerTime = new \DateTime( $start->format("Y-M-d" ) . ' Europe/Berlin');
+        $this->flashMessage['NOTICE'][] = "Date Formated : " . $start->format("d-M-Y" ) . ' as NEW Date for SummerTime ! : ' . $SummerTime->format( "d.m.Y H:i:s (I) ") ;
+        $data = array(
+            'TW_TrainingWebinarName__c' => html_entity_decode( strip_tags(  $this->event->getName() ) , ENT_COMPAT , 'UTF-8') ,
 
+            // RecordTypeId has to be set, otherwise TW_WebinarKeyText will not be set in salesforce
+            'RecordTypeId' => '01220000000cj8K' ,
 
-		$SFtransferData['TW_End_Time__c']   =  $transferData['end_date'] . "T" . $transferData['end_time'] .$timeZoneEnd;
+            // Store Typo3 Event UID to SF
+            'TW_UID__c' => $this->event->getUid()  ,
+            'TW_Start_Time__c' =>  $startD   ,
+            'TW_End_Time__c' =>  $endD ,
 
+            'TW_Description__c' =>  html_entity_decode( strip_tags( $this->event->getDescription() ) , ENT_COMPAT , 'UTF-8') ,
+            // Schulungsanmeldungen wien
 
-		// RecordTypeId has to be set, otherwise TW_WebinarKeyText will not be set in salesforce
-		$SFtransferData['RecordTypeId'] = '01220000000cj8K';
+        ) ;
+        if( trim( $this->event->getMarketingProcessId()) != '' ) {
+            $data['Marketing_Process__c'] = trim( $this->event->getMarketingProcessId() ) ;
+        }
 
-		$SFtransferData['TW_TrainingWebinarName__c'] = str_replace( array("&amp;" , "&" ) , array( "+", "+" ) , $transferData['title'] );
+        if(  is_object( $this->event->getOrganizer() ) ) {
+            $data['OwnerId']  =    trim( $this->event->getOrganizer()->getSalesForceUserId())  ;
+        } else {
+            $this->flashMessage['ERROR'][] = 'Store in Salesforce: No Organizer set in Relations ! : '  ;
+        }
+        if( $data['OwnerId']  == "" ) {
+            $this->flashMessage['ERROR'][] = 'Store in Salesforce: No Salesforce User ID set in Organizer Data ! : '  ;
+            return ;
 
-		// 9.7. Store Typo3 Event UID to SF
-		$SFtransferData['TW_UID__c'] = $transferData['uid'] ;
+        }
+        $this->flashMessage['NOTICE'][] = 'Data  : ' . var_export( $data , true ) ;
+        // ++++++++++++++++++   now update or create the Webinar
 
-		//&Ampersand vorher entfernen sonst kommt eine fehlermeldung!!
-		$transferData['description'] = str_replace( "&amp;" , "+" , $transferData['description'] );
+        if( $this->event->getSalesForceEventId() ) {
+            // Update
+            $url = $settings['SFREST']['instance_url'] . "/services/data/v20.0/sobjects/TW_TrainingWebinar__c/" . $this->event->getSalesForceEventId() ;
+            $sfResponse = $this->sfConnect->getCurl($url , $settings['SFREST']['access_token'] , "204" ,  $data , true  , false )  ;
+            if( is_int( $sfResponse ) && $sfResponse == 204 ) {
+                $this->flashMessage['OK'][] = "Updated in Salesforce: ! : " . $settings['SFREST']['instance_url'] . "/" . $this->event->getSalesForceEventId()   ;
+                $this->createUpdateSessionInSF($settings , $this->event->getSalesForceEventId() , $data ) ;
+            } else {
+                $this->flashMessage['ERROR'][] = 'Response  : ' . var_export( $sfResponse , true ) ;
+                $sfResponse = json_decode($sfResponse) ;
+            }
 
-		$SFtransferData['TW_Description__c'] =  html_entity_decode( strip_tags( $transferData['description']) , ENT_COMPAT , 'UTF-8');
-		return $SFtransferData;
+        } else {
+            // Insert
+            $url = $settings['SFREST']['instance_url'] . "/services/data/v20.0/sobjects/TW_TrainingWebinar__c/" ;
+            $sfResponse = $this->sfConnect->getCurl($url , $settings['SFREST']['access_token'] , "" ,  $data , false , false )  ;
+            $sfResponse = json_decode($sfResponse) ;
+
+            if( is_object($sfResponse)) {
+                if ($sfResponse->success && $sfResponse->id) {
+                    $this->flashMessage['OK'][] = "Inserted in Salesforce: ! : " . $settings['SFREST']['instance_url'] . "/" . $sfResponse->id   ;
+
+                    $this->event->setSalesForceEventId($sfResponse->id);
+                    $this->createUpdateSessionInSF($settings , $sfResponse->id , $data  ) ;
+                }
+            }
+        }
+
+        if( is_array( $sfResponse)) {
+            if( is_object( $sfResponse[0])) {
+                if( $sfResponse[0]->errorCode == "MALFORMED_ID") {
+                    $this->flashMessage['ERROR'][] = 'Store in Salesforce: MALFORMED_ID ! : Fields: ' .var_export( $sfResponse[0]->fields , true )  ;
+                } else {
+                    $this->flashMessage['ERROR'][] = 'Store in Salesforce: ' . $sfResponse[0]->errorCode  . " - " . $sfResponse[0]->message ;
+
+                }
+
+            }
+        }
 	}
 
+    public function createUpdateSessionInSF($settings , $id , $data ) {
 
-	// 5.12.2012 ForSF +++++++++++++++++  Salesforce übergabe statt notes ++++++++++++++++++
+        $sessionData = array(
+            'TW_TrainingWebinar__c' => $id  ,
+            'TW_Start_Time__c' => $data['TW_Start_Time__c'] ,
+            'TW_End_Time__c' => $data['TW_End_Time__c'] ,
+        ) ;
 
-	private function createUpdateEventForSF($transferData) {
+        // Now Insert or Update Session
 
-		$this->webservice = $this->initWebserviceForSF();
-		if(! $this->webservice ){
-			$this->flashMessage['ERROR'][] = 'Init Webservice failed';
-			$return['tx_nemcalwebservices_error'] = 1;
-			return $return ;
-		}
+        if( $this->event->getSalesForceSessionId() ) {
+            // Update
+            $url = $settings['SFREST']['instance_url'] . "/services/data/v20.0/sobjects/TW_Session__c/" . $this->event->getSalesForceSessionId() ;
+            $sfSessionResponse = $this->sfConnect->getCurl($url , $settings['SFREST']['access_token'] , "" ,  $sessionData , true  , false )  ;
 
-		$sObject= new stdclass();
-		$sObject->type='TW_TrainingWebinar__c';
+        } else {
+            // Insert
+            $url = $settings['SFREST']['instance_url'] . "/services/data/v20.0/sobjects/TW_Session__c/" ;
+            $sfSessionResponse = $this->sfConnect->getCurl($url , $settings['SFREST']['access_token'] , "" ,  $sessionData , false , false )  ;
+            $sfSessionResponse = json_decode($sfSessionResponse) ;
+            if( is_object($sfSessionResponse)) {
+                if ($sfSessionResponse->success && $sfSessionResponse->id) {
+                    $this->event->setSalesForceSessionId($sfSessionResponse->id);
 
+                }
+            }
 
-		$sObject->fields = $transferData ;
-		$this->flashMessage['INFO'][] = 'SF Transfer Object: <pre>'.print_r($sObject, true) . '</pre>';
-		try {
-			if ( $transferData['id'] == '' ) {
-				$response= $this->webservice->create( array($sObject));
-				$sussessmess = $GLOBALS['LANG']->sL('LLL:EXT:nem_calwebservices/Locallang/locallang_db.xml:tx_cal_event.webservicesSF.successNew');
-
-			} else {
-				$response= $this->webservice->update( array($sObject), '');
-				$sussessmess = $GLOBALS['LANG']->sL('LLL:EXT:nem_calwebservices/Locallang/locallang_db.xml:tx_cal_event.webservicesSF.successChange');
-			}
-		}
-		catch (exception $e)
-		{
-		}
-		$this->flashMessage['INFO'][] = 'SF Response: '.print_r($response, true);
-		if(!is_array($response)){
-			$this->flashMessage['INFO'][] = 'SF Connction Infos: '.print_r($this->webservice, true);
-
-			$this->flashMessage['ERROR'][] = $GLOBALS['LANG']->sL('LLL:EXT:nem_calwebservices/Locallang/locallang_db.xml:tx_cal_event.webservicesSF.error');
-			$this->flashMessage['ERROR'][] = '<b>'.$GLOBALS['LANG']->sL('LLL:EXT:nem_calwebservices/Locallang/locallang_db.xml:tx_cal_event.webservicesSF.errorprefix').'</b>';
-			$this->flashMessage['ERROR'][] = $GLOBALS['LANG']->sL('LLL:EXT:nem_calwebservices/Locallang/locallang_db.xml:tx_cal_event.webservicesSF.errornoresponse');
-			//   $this->flashMessage['ERROR'][] = '<br>Request: ' . htmlspecialchars($this->webservice->getRequest() , ENT_QUOTES);
-			$this->flashMessage['ERROR'][] = '!is_array($response)';
-			$return['tx_nemcalwebservices_error'] = 1;
-		} else {
-			if( is_object( $response[0] )){
-
-				if( $response[0]->success ){
-					$this->flashMessage['OK'][] = "OK! id: <a href=\"https://eu3.salesforce.com/" . $response[0]->id . "\" target=\"blank\">" . $response[0]->id  . "</a>";
-					$return['SALESFORCEID'] = $response[0]->id ;
-				} else {
-					$this->flashMessage['INFO'][] = 'SF Connction Infos: '.print_r($this->webservice, true);
-
-					$this->flashMessage['ERROR'][] = $GLOBALS['LANG']->sL('LLL:EXT:nem_calwebservices/Locallang/locallang_db.xml:tx_cal_event.webservicesSF.error');
-					$this->flashMessage['ERROR'][] = $GLOBALS['LANG']->sL('LLL:EXT:nem_calwebservices/Locallang/locallang_db.xml:tx_cal_event.webservicesSF.errorprefix');
-
-					if (is_array($response[0]->errors) && count($response[0]->errors > 0)) {
-						foreach($response[0]->errors as $salesForceResponseError) {
-							$this->flashMessage['ERROR'][] = $GLOBALS['LANG']->sL('LLL:EXT:nem_calwebservices/Locallang/locallang_db.xml:tx_cal_event.webservicesSF.' . $salesForceResponseError->statusCode);
-							if ($salesForceResponseError->statusCode === 'ENTITY_IS_DELETED') {
-								$this->removeSalesforceFieldsAfterDelete($this->record['uid']);
-							}
-						}
-					}
-
-					//        $this->flashMessage['ERROR'][] = $response['errormessage'];
-					$return['tx_nemcalwebservices_error'] = 1;
-					$this->flashMessage['ERROR'][] = '!is_object($response)';
-				}
-			} else {
-				$this->flashMessage['INFO'][] = 'SF Connction Infos: '.print_r($this->webservice, true);
-
-				$this->flashMessage['ERROR'][] = $GLOBALS['LANG']->sL('LLL:EXT:nem_calwebservices/Locallang/locallang_db.xml:tx_cal_event.webservicesSF.error');
-				$this->flashMessage['ERROR'][] = $GLOBALS['LANG']->sL('LLL:EXT:nem_calwebservices/Locallang/locallang_db.xml:tx_cal_event.webservicesSF.errorprefix');
-				//        $this->flashMessage['ERROR'][] = $response['errormessage'];
-				$return['tx_nemcalwebservices_error'] = 1;
-			}
-		}
-		return $return;
-	}
+        }
+        $this->flashMessage['NOTICE'][] = var_export( $sfSessionResponse , true ) ;
 
 
-	// 5.12.2012 ForSF +++++++++++++++++  Salesforce Create Session to Event ++++++++++++++++++
+    }
 
-	private function createUpdateSessionForSF($transferData) {
-		$this->webservice = $this->initWebserviceForSF();
-		$sObject= new stdclass();
-		$sObject->type='TW_Session__c';
 
-		$sObject->fields = $transferData ;
-		$this->flashMessage['INFO'][] = 'SF Session Transfer Object: <pre>'.print_r($sObject, true) . '</pre>';
-		try {
-			if ( $transferData['id'] == '' ) {
-				$response= $this->webservice->create( array($sObject));
-				$successmess = $GLOBALS['LANG']->sL('LLL:EXT:nem_calwebservices/Locallang/locallang_db.xml:tx_cal_event.webservicesSF.successSessionNew');
-
-			} else {
-				$response= $this->webservice->update( array($sObject), '');
-				$successmess = $GLOBALS['LANG']->sL('LLL:EXT:nem_calwebservices/Locallang/locallang_db.xml:tx_cal_event.webservicesSF.successSessionChange');
-
-			}
-		}
-		catch (exception $e)
-		{
-
-		}
-		$this->flashMessage['INFO'][] = 'SF Session Response: '.print_r($response, true);
-		if(!is_array($response)){
-			$this->flashMessage['ERROR'][] = $GLOBALS['LANG']->sL('LLL:EXT:nem_calwebservices/Locallang/locallang_db.xml:tx_cal_event.webservicesSF.error');
-			$this->flashMessage['ERROR'][] = '<b>'.$GLOBALS['LANG']->sL('LLL:EXT:nem_calwebservices/Locallang/locallang_db.xml:tx_cal_event.webservicesSF.errorprefix').'</b>';
-			$this->flashMessage['ERROR'][] = $GLOBALS['LANG']->sL('LLL:EXT:nem_calwebservices/Locallang/locallang_db.xml:tx_cal_event.webservicesSF.errornoresponse');
-			$this->flashMessage['ERROR'][] = '<br>Request: ' . htmlspecialchars($this->webservice->getRequest() , ENT_QUOTES);
-			$this->flashMessage['ERROR'][] = '!is_array($response): '.print_r($response, true);
-			$return['tx_nemcalwebservices_error'] = 1;
-		} else {
-			if( is_object( $response[0] )){
-
-				if( $response[0]->success ){
-					$this->flashMessage['OK'][] = "OK: " . $successmess  . " id: <a href=\"https://eu3.salesforce.com/" . $response[0]->id . "\" target=\"blank\">" . $response[0]->id  . "</a>";
-
-					$return['SALESFORCESESSIONID'] = $response[0]->id ;
-				} else {
-					$this->flashMessage['INFO'][] = 'SF Connction Infos: '.print_r($this->webservice, true);
-
-					$this->flashMessage['ERROR'][] = $GLOBALS['LANG']->sL('LLL:EXT:nem_calwebservices/Locallang/locallang_db.xml:tx_cal_event.webservicesSF.error');
-					$this->flashMessage['ERROR'][] = $GLOBALS['LANG']->sL('LLL:EXT:nem_calwebservices/Locallang/locallang_db.xml:tx_cal_event.webservicesSF.errorprefix');
-					//        $this->flashMessage['ERROR'][] = $response['errormessage'];
-					$return['tx_nemcalwebservices_error'] = 1;
-					$this->flashMessage['ERROR'][] = '!$response->success )';
-				}
-			} else {
-				$this->flashMessage['INFO'][] = 'SF Connection Infos: '.print_r($this->webservice, true);
-
-				$this->flashMessage['ERROR'][] = $GLOBALS['LANG']->sL('LLL:EXT:nem_calwebservices/Locallang/locallang_db.xml:tx_cal_event.webservicesSF.error');
-				$this->flashMessage['ERROR'][] = $GLOBALS['LANG']->sL('LLL:EXT:nem_calwebservices/Locallang/locallang_db.xml:tx_cal_event.webservicesSF.errorprefix');
-				//        $this->flashMessage['ERROR'][] = $response['errormessage'];
-				$this->flashMessage['ERROR'][] = '!is_object($response)';
-				$return['tx_nemcalwebservices_error'] = 1;
-			}
-		}
-		return $return;
-	}
-
-	private function initWebserviceForSF(){
-		//	$this->flashMessage['INFO'][] = 'init SF webservice: ' . t3lib_extMgm::extPath('nem_customizations') .'lib/salesforce/SforcePartnerClient.php' ;
-		// ToDO : change this to REST instead of Soap and use latest Rest Version instead of this old stuff
-
-		// require_once(t3lib_extMgm::extPath('nem_customizations').'lib/salesforce/SforcePartnerClient.php');
-		// require_once(t3lib_extMgm::extPath('nem_customizations').'lib/salesforce/SforceHeaderOptions.php');
-		// toDo : move these settings to a global place !!
-		//
-		$USERNAME = $_SERVER['NEM_SALESFORCE']['live']['bn']  ;
-		// $PASSWORD = "force12JV3ohTG6RcCERBbln62k4lezXt0" ;
-		// cahnge on 27.5.2013
-		$PASSWORD = $_SERVER['NEM_SALESFORCE']['live']['pw'] . $_SERVER['NEM_SALESFORCE']['live']['hash'] ;
-
-		$WSDLFILE = t3lib_extMgm::extPath('nem_customizations').'lib/salesforce/jul13.live.partner.wsdl.xml' ;
-
-		$this->flashMessage['INFO'][] = "Used WSDLFILE: " . $WSDLFILE;
-
-		try {
-			//connect to salesforce
-			$client = new SforcePartnerClient();
-
-			$client->createConnection($WSDLFILE);
-			$loginResult = $client->login($USERNAME,$PASSWORD);
-			$this->flashMessage['INFO'][] = 'config: username: '.$USERNAME  ; // . ' passwd: ' . $PASSWORD ;
-			if (!$loginResult) {
-				$this->flashMessage['INFO'][] = 'config: username: '.$USERNAME  ; // . ' passwd: ' . $PASSWORD ;
-				$this->flashMessage['INFO'][] = 'config: wsdl: '. $WSDLFILE  ;
-				$this->flashMessage['ERROR'][] = 'try to connect Error: '.print_r($loginResult, true);
-				$client = FALSE ;
-			}
-		}
-		catch (exception $e)
-		{
-			$this->flashMessage['INFO'][] = 'config: username: '.$USERNAME . ' passwd: ' . $PASSWORD ;
-			$this->flashMessage['INFO'][] = 'config: wsdl: '. $WSDLFILE  ;
-			$this->flashMessage['ERROR'][] = 'try to connect exception: '.print_r($e, true);
-			return false;
-			exit;
-		}
-
-		return $client ;
-	}
 
 	private function showFlashMessage(){
 		if(is_array($this->flashMessage)){
-			foreach($this->flashMessage as $type => $message){
+			foreach($this->flashMessage as $type => $messageArray){
 				switch ($type) {
 					case 'NOTICE':
-						$type = -2;
+						$typeInt = \TYPO3\CMS\Core\Messaging\FlashMessage::NOTICE;
 						break;
 					case 'INFO':
-						$type = -1;
+                        $typeInt = \TYPO3\CMS\Core\Messaging\FlashMessage::INFO;
 						break;
 					case 'OK':
-						$type = 0;
+                        $typeInt = \TYPO3\CMS\Core\Messaging\FlashMessage::OK;
 						break;
 					case 'WARNING':
-						$type = 1;
+                        $typeInt = \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING;
 						break;
 					case 'ERROR':
-						$type = 2;
+                        $typeInt = \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR;
 						break;
 				}
-				if(($type > -1 && $this->pObj->admin) || $type > -1)
+				if(($typeInt > -1 && $this->pObj->admin) || $typeInt > -1)
 				{
-					// toDo ad FlashMessage
+				    foreach ( $messageArray as $messageText ) {
+                        $tempText = ( is_string( $messageText )) ? $messageText : var_export( $messageText , true )  ;
+                        $message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class,
+                            $tempText ,
+                            $type , // [optional] the header
+                            $typeInt , // [optional] the severity defaults to \TYPO3\CMS\Core\Messaging\FlashMessage::OK
+                            true // [optional] whether the message should be stored in the session or only in the \TYPO3\CMS\Core\Messaging\FlashMessageQueue object (default is false)
+                        );
+                        $flashMessageService = $this->objectManager->get(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
+                        $messageQueue = $flashMessageService->getMessageQueueByIdentifier();
+                        $messageQueue->addMessage($message);
+                    }
+
 				}
 			}
 		}
