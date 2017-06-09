@@ -51,7 +51,7 @@ class RegisterSalesforceSignal {
      */
     public function createAction($registrant, $event ,  $settings)
     {
-        if ( $settings['EmConfiguration']['enableSalesForce'] < 1  || !is_object( $event->getOrganizer() ) ) {
+        if ( $settings['EmConfiguration']['enableSalesForce'] < 1  || !is_object( $event->getOrganizer() || $event->getStoreInSalesForce() < 1 ) ) {
             return ;
         }
 
