@@ -127,7 +127,6 @@ class ProcessCmdmap {
 						}
 					}
 				}
-				die ;
 			}
 
 			if($this->command == 'delete'){
