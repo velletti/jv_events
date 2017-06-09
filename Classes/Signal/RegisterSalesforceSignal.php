@@ -239,7 +239,8 @@ class RegisterSalesforceSignal {
 
     }
     private function logToFile( $text ) {
-
+        // disable next line if needed
+        return ;
         $fh = fopen( "../jvents_sf.log" , "w+" ) ;
         if ($fh) {
             fputs($fh, $text  , 9999 ) ;
