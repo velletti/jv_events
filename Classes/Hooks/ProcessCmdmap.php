@@ -96,7 +96,7 @@ class ProcessCmdmap {
 
 					if( intval( $newId ) > 0 ) {
 						/** @var  \JVE\JvEvents\Domain\Model\Event $event */
-						$this->event = $this->eventRepository->findByUid(intval($newId)) ;
+						$this->event = $this->eventRepository->findByUidAllpages(intval($newId) , false ) ;
 
 						if( is_object( $this->event ) ) {
 							$fields =  $this->extConf['resetFieldListAfterCopy']   ;
