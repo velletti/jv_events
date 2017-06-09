@@ -92,13 +92,14 @@ class ProcessCmdmap {
 				if( is_object($this->pObj )) {
 					$mapping = $this->pObj ->copyMappingArray['tx_jvevents_domain_model_event'] ;
 					$newId = $mapping[$this->id] ;
+
+
 					if( intval( $newId ) > 0 ) {
 						/** @var  \JVE\JvEvents\Domain\Model\Event $event */
 						$this->event = $this->eventRepository->findByUid(intval($newId)) ;
 
 						if( is_object( $this->event ) ) {
 							$fields =  $this->extConf['resetFieldListAfterCopy']   ;
-
 
 							// default: setUnconfirmedSeats:0;setRegisteredSeats:0;setSalesForceEventId:"";setSalesForceSessionId:""
 							$fieldsArray = explode(";" , trim($fields)  ) ;
@@ -110,9 +111,11 @@ class ProcessCmdmap {
 
 										if(method_exists($this->event , $func )) {
 										    if(strlen($fieldsArraySub[1]) == 0 ) {
-                                                $fieldsArraySub[1] = "''" ;
+                                                $this->event->$func( "" ) ;
+                                            } else {
+                                                $this->event->$func( $fieldsArraySub[1] ) ;
                                             }
-                                            $this->event->$func( $fieldsArraySub[1] ) ;
+
 
                                             // echo "<hr>event->" . $func . "(" . $fieldsArraySub[1] . ") ;" ;
 										}
@@ -124,6 +127,7 @@ class ProcessCmdmap {
 						}
 					}
 				}
+				die ;
 			}
 
 			if($this->command == 'delete'){
