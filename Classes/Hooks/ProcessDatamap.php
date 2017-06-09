@@ -72,7 +72,7 @@ class ProcessDatamap {
 			/** @var  \JVE\JvEvents\Domain\Model\Event $event */
 			$this->event = $this->eventRepository->findByUid(intval($this->id)) ;
 			$allowedError = 0 ;
-
+            $this->flashMessage['OK'][] = 'Hook ProcessDatamap is active ..' ;
 			if( is_object( $this->event ) ) {
 
                 if ($this->event->getNotifyRegistrant() ==  0 && $this->event->getNeedToConfirm() == 1 ) {

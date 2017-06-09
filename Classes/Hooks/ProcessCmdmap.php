@@ -71,6 +71,7 @@ class ProcessCmdmap {
 	 * @param void $pasteDatamap
 	 */
 	public function processCmdmap_postProcess($command, $table, $id, $value, $Obj, $pasteUpdate, $pasteDatamap) {
+
 		if ($table == 'tx_jvevents_domain_model_event') {
 			$this->id = (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($id)?$id:$this->pObj->substNEWwithIDs[$id]);
 			$this->command = $command;
@@ -87,8 +88,6 @@ class ProcessCmdmap {
 			/** @var  \JVE\JvEvents\Domain\Repository\EventRepository $eventRepository */
 			$this->eventRepository = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\EventRepository');
 
-
-
 			if( $this->command == 'copy') {
 				if( is_object($this->pObj )) {
 					$mapping = $this->pObj ->copyMappingArray['tx_jvevents_domain_model_event'] ;
@@ -98,8 +97,9 @@ class ProcessCmdmap {
 						$this->event = $this->eventRepository->findByUid(intval($newId)) ;
 
 						if( is_object( $this->event ) ) {
-
 							$fields =  $this->extConf['resetFieldListAfterCopy']   ;
+
+
 							// default: setUnconfirmedSeats:0;setRegisteredSeats:0;setSalesForceEventId:"";setSalesForceSessionId:""
 							$fieldsArray = explode(";" , trim($fields)  ) ;
 							if( is_array($fieldsArray)) {
@@ -107,8 +107,14 @@ class ProcessCmdmap {
 									$fieldsArraySub = explode(":" , trim($value)  ) ;
 									if( is_array($fieldsArraySub)) {
 										$func = $fieldsArraySub[0] ;
+
 										if(method_exists($this->event , $func )) {
-											$this->event->$func( $fieldsArraySub[1] ) ;
+										    if(strlen($fieldsArraySub[1]) == 0 ) {
+                                                $fieldsArraySub[1] = "''" ;
+                                            }
+                                            $this->event->$func( $fieldsArraySub[1] ) ;
+
+                                            // echo "<hr>event->" . $func . "(" . $fieldsArraySub[1] . ") ;" ;
 										}
 									}
 								}
@@ -119,8 +125,6 @@ class ProcessCmdmap {
 					}
 				}
 			}
-			
-
 
 			if($this->command == 'delete'){
 				$this->deleted = 1;
