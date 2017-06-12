@@ -51,10 +51,15 @@ class RegisterSalesforceSignal {
      */
     public function createAction($registrant, $event ,  $settings)
     {
-        if ( $settings['EmConfiguration']['enableSalesForce'] < 1  || !is_object( $event->getOrganizer() || $event->getStoreInSalesForce() < 1 ) ) {
-            return ;
-        }
+        $this->logToFile( "\n\n In RegisterSalesForceSignal - Registrant : " . $registrant->getEmail()
+                . "\n EmConf Enable SalesForce: " . $settings['EmConfiguration']['enableSalesForce']
+                . "\n Event: " . $event->getUid() . " - Store in SalesForce: " . $event->getStoreInSalesForce() );
 
+        if ( $settings['EmConfiguration']['enableSalesForce'] < 1  || !is_object( $event->getOrganizer() ) || $event->getStoreInSalesForce() < 1 )  {
+            return;
+
+        }
+        $this->logToFile( "SF start ..." )  ;
 
         $debugmail = "\n+++++++++++ got this data from Controller ++++++++++++++++++\n"  ;
         $debugmail .= "\nRegistrants Email " .  $registrant->getEmail() .  ""  ;
@@ -76,17 +81,19 @@ class RegisterSalesforceSignal {
 
         $debugmail .= "\n+++++++++++ store in Salesforce as LEAD is active ++++++++++++++++++\n\n"  ;
         $debugmail .= var_export( $data , true ) ;
+        // read generic SaelsForce Owner ID (who is allowed to see the lead Data
         $data['OwnerId'] =  $settings['register']['salesForce']['ownerId'] ;
 
-        // read generic SaelsForce Owner ID (who is allowed to see the lead Data
+
         $data['oid']  = $settings['register']['salesForce']['oid'] ;
 
         if( $data['oid'] == '' ) {
+            $this->logToFile( " \n no OID set !!!! Settings: " . var_export( $settings['register']['salesForce'] , true ))  ;
             return ;
         }
 
         if(  is_object( $event->getOrganizer() )  ) {
-            if (  strlen( $event->getOrganizer()->getSalesForceUserId())  > 12 ) {
+            if (  strlen( $event->getOrganizer()->getSalesForceUserId())  > 10 ) {
                 // overwrite it with value from organizer if it is defined and long enough to be a nearly valid SF ID (should be 16 or 19 digits ..
                 $data['OwnerId']  = $event->getOrganizer()->getSalesForceUserId() ;
 
@@ -211,8 +218,8 @@ class RegisterSalesforceSignal {
             echo " Die in Line " . __LINE__ . " in File: " . __FILE__ ;
             Die ;
         }
-
-        $Typo3_v6mail = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_mail_Message');
+        /** @var \TYPO3\CMS\Core\Mail\MailMessage $Typo3_v6mail */
+        $Typo3_v6mail = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
         $Typo3_v6mail->setFrom( array( 'info.de@allplan.com' => $_SERVER['SERVER_NAME'] ) );
         $Typo3_v6mail->setReturnPath( 'info.de@allplan.com' );
         $Typo3_v6mail->setTo(
@@ -228,8 +235,18 @@ class RegisterSalesforceSignal {
         $Typo3_v6mail->setBody(nl2br( $debugmail , 'text/html') );
         $Typo3_v6mail->send();
 
-    }
+        $this->logToFile( $debugmail )  ;
 
+    }
+    private function logToFile( $text ) {
+        // disable next line if needed
+        return ;
+        $fh = fopen( "../jvents_sf.log" , "w+" ) ;
+        if ($fh) {
+            fputs($fh, $text  , 9999 ) ;
+        }
+        fclose($fh) ;
+    }
      /** convertToString
      *
       * Create a string response from registrant Model
