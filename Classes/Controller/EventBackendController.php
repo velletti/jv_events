@@ -95,14 +95,19 @@ class EventBackendController extends BaseController
             // $events[] = array( "0" => "-" ) ;
             foreach ($eventIds as $key => $eventId ) {
                 $event = $this->eventRepository->findByUidAllpages($eventId) ;
-                $event[0]->setName( $event[0]->getStartDate()->format("d.m.Y - ") . substr( $event[0]->getName() , 0 , 50 )  . " (" . $event[0]->getUid() . ")" ) ;
+                if( is_array($event)) {
+                    if(  $event[0] instanceof  \JVE\JvEvents\Domain\Model\Event )  {
+                        $event[0]->setName( $event[0]->getStartDate()->format("d.m.Y - ") . substr( $event[0]->getName() , 0 , 50 )  . " (" . $event[0]->getUid() . ")" ) ;
 
-                $events[] = $event[0] ;
-                if ( $this->request->hasArgument("createDmailGroup")) {
-                    if ($eventID == 0 || ($eventID == $event[0]->getUid())) {
-                        $this->createDmailGroup($event[0]);
+                        $events[] = $event[0] ;
+                        if ( $this->request->hasArgument("createDmailGroup")) {
+                            if ($eventID == 0 || ($eventID == $event[0]->getUid())) {
+                                $this->createDmailGroup($event[0]);
+                            }
+                        }
                     }
                 }
+
             }
         }
 
