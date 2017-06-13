@@ -25,19 +25,21 @@
 
 		<trans-unit id="register.accept_privacy.and" approved="yes">
 			<source>and</source>
-			<target>e</target>
+			<target>e le informazioni sulla</target>
 		</trans-unit>
 		<trans-unit id="register.accept_privacy_end" approved="yes">
 			<source>.</source>
-			<target>.</target>
+			<target>.<br/><br/>
+* Autorizzo l’inserimento dei miei dati personali nelle liste di spedizione per eventuali comunicazioni, adempimenti di obblighi di legge e/o contrattuali. I miei dati personali saranno trattati in osservanza dell’Art. 11 del D.Lgs. n. 196/03 (Codice Privacy) e registrati ad uso esclusivo di Allplan Italia S.r.l. e della sua rete di vendita diretta e indiretta. In base all’Art. 7 potrò inoltre richiedere gratuitamente l’aggiornamento o la cancellazione dei miei dati comunicando la richiesta a italia@allplan.com.
+</target>
 		</trans-unit>
 		<trans-unit id="register.accept_privacy_intro" approved="yes">
 			<source>I have read and accept the </source>
-			<target>Ho letto e accetto </target>
+			<target>Ho letto e accetto le </target>
 		</trans-unit>
 		<trans-unit id="register.privacy" approved="yes">
 			<source>privacy policy</source>
-			<target>Informazioni privacy</target>
+			<target>protezione dei dati</target>
 		</trans-unit>
 		<trans-unit id="register.terms_of_use" approved="yes">
 			<source>Terms of use</source>
