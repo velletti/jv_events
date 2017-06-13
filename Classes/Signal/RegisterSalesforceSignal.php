@@ -70,7 +70,6 @@ class RegisterSalesforceSignal {
         $debugmail .= "\nEvent Id: " .  $event->getUid() . " Date: " . $event->getStartDate()->format( "d.m.Y" )   . " | Citrix ID: " . $event->getCitrixUid()   ;
         $debugmail .= "\nTitle: " .  $event->getName()  ;
 
-        $error = 2 ; // overwritten again if successfull ...
         $httpresponseErr = "" ;
         $httpresponseErrText = "" ;
         $data =  $this->convertToArray($registrant) ;
