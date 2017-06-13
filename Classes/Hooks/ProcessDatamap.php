@@ -77,7 +77,7 @@ class ProcessDatamap {
 
                 if ($this->event->getNotifyRegistrant() ==  0 && $this->event->getNeedToConfirm() == 1 ) {
                     $this->event->setNeedToConfirm( 0 ) ;
-                    $this->flashMessage['ERROR'][] = 'You can not set Need to confirm without sending Email to the participant !' ;
+                    $this->flashMessage['WARNING'][] = 'You can not set Need to confirm without sending Email to the participant !' ;
                     $allowedError ++ ;
                 }
 
@@ -89,7 +89,7 @@ class ProcessDatamap {
                     // j.v. : Kopiert von altem Plugin: wenn Store in Citrix "An" Ist, das Event NICHT als "TW Webinar /Event " nach Salesforce Schreiben !
                     if( $this->event->getStoreInSalesForce() ) {
                         if( $this->event->getStoreInCitrix() ) {
-                            $this->flashMessage['ERROR'][] = 'You can not set "Store in Salesforce" together with "Store in Citrix"! (store in salesforce is disabled)!' ;
+                            $this->flashMessage['WARNING'][] = 'You can not set "Store in Salesforce" together with "Store in Citrix"! (store in salesforce is disabled)!' ;
                             $this->event->setStoreInSalesForce(0) ;
                         } else {
                             $this->createUpdateEventForSF()  ;
@@ -176,7 +176,8 @@ class ProcessDatamap {
                 $this->flashMessage['OK'][] = "Updated in Salesforce: ! : " . $settings['SFREST']['instance_url'] . "/" . $this->event->getSalesForceEventId()   ;
                 $this->createUpdateSessionInSF($settings , $this->event->getSalesForceEventId() , $data ) ;
             } else {
-                $this->flashMessage['ERROR'][] = 'Response  : ' . var_export( $sfResponse , true ) ;
+
+                $this->flashMessage['WARNING'][] = 'Response  : ' . var_export( $sfResponse , true ) ;
                 $sfResponse = json_decode($sfResponse) ;
             }
 
@@ -199,12 +200,14 @@ class ProcessDatamap {
         if( is_array( $sfResponse)) {
             if( is_object( $sfResponse[0])) {
                 if( $sfResponse[0]->errorCode == "MALFORMED_ID") {
-                    $this->flashMessage['ERROR'][] = 'Store in Salesforce: MALFORMED_ID ! : Fields: ' .var_export( $sfResponse[0]->fields , true )  ;
+                    $this->flashMessage['ERROR'][] = 'Store in Salesforce: MALFORMED_ID ! Please check the ID of the Field : Fields: ' .var_export( $sfResponse[0]->fields , true )  ;
                 } else {
-                    $this->flashMessage['ERROR'][] = 'Store in Salesforce: ' . $sfResponse[0]->errorCode  . " - " . $sfResponse[0]->message ;
-
+                    if( $sfResponse[0]->errorCode == "FIELD_INTEGRITY_EXCEPTION") {
+                        $this->flashMessage['ERROR'][] = 'Store in Salesforce: ' . $sfResponse[0]->errorCode  . " - Please check the Salesforce ID of the Organizer and the Event -  " . $sfResponse[0]->message ;
+                    } else {
+                        $this->flashMessage['ERROR'][] = 'Store in Salesforce: ' . $sfResponse[0]->errorCode  . " - " . $sfResponse[0]->message ;
+                    }
                 }
-
             }
         }
 	}

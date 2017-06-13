@@ -51,17 +51,21 @@ class RegisterSalesforceSignal {
      */
     public function createAction($registrant, $event ,  $settings)
     {
-        $this->logToFile( "\n\n In RegisterSalesForceSignal - Registrant : " . $registrant->getEmail()
+        $error = false ;
+
+
+        if ( $settings['EmConfiguration']['enableSalesForce'] < 1  || !is_object( $event->getOrganizer() ) || $event->getStoreInSalesForce() < 1 )  {
+            $this->logToFile( "\n\n ### ERROR ### In RegisterSalesForceSignal - Registrant : " . $registrant->getEmail()
                 . "\n EmConf Enable SalesForce: " . $settings['EmConfiguration']['enableSalesForce']
                 . "\n Event: " . $event->getUid() . " - Store in SalesForce: " . $event->getStoreInSalesForce() );
 
-        if ( $settings['EmConfiguration']['enableSalesForce'] < 1  || !is_object( $event->getOrganizer() ) || $event->getStoreInSalesForce() < 1 )  {
             return;
 
         }
-        $this->logToFile( "SF start ..." )  ;
+        $this->logToFile( "\n**********************************\n SF Start ..." )  ;
 
         $debugmail = "\n+++++++++++ got this data from Controller ++++++++++++++++++\n"  ;
+        $debugmail .= "\nRunning on Server: " .  $_SERVER['HOSTNAME'] .  ""  ;
         $debugmail .= "\nRegistrants Email " .  $registrant->getEmail() .  ""  ;
         $debugmail .= "\nEvent Id: " .  $event->getUid() . " Date: " . $event->getStartDate()->format( "d.m.Y" )   . " | Citrix ID: " . $event->getCitrixUid()   ;
         $debugmail .= "\nTitle: " .  $event->getName()  ;
@@ -80,7 +84,7 @@ class RegisterSalesforceSignal {
 
 
         $debugmail .= "\n+++++++++++ store in Salesforce as LEAD is active ++++++++++++++++++\n\n"  ;
-        $debugmail .= var_export( $data , true ) ;
+
         // read generic SaelsForce Owner ID (who is allowed to see the lead Data
         $data['OwnerId'] =  $settings['register']['salesForce']['ownerId'] ;
 
@@ -96,7 +100,7 @@ class RegisterSalesforceSignal {
             if (  strlen( $event->getOrganizer()->getSalesForceUserId())  > 10 ) {
                 // overwrite it with value from organizer if it is defined and long enough to be a nearly valid SF ID (should be 16 or 19 digits ..
                 $data['OwnerId']  = $event->getOrganizer()->getSalesForceUserId() ;
-
+                $debugmail .= "\nField : SF OwnerId is taken from  getOrganizer()getSalesForceUserId =" . $data['OwnerId'] ;
             }
             $data['00N20000003aeN4']  .=  "\n" . \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate( "tx_jvevents_domain_model_event.organizer" , 'JvEvents' ) . ": "
                                             . $event->getOrganizer()->getName() ;
@@ -112,9 +116,16 @@ class RegisterSalesforceSignal {
         // remove unwanted  Characters from Array ..
         $data =  $this->cleanArray($data) ;
 
+        // problem from 12.6.:
+        if( strlen($data['00N20000003aeN4'] )  > 800 ) {
+            $debugmail .= "\n \n ###### ERROR !!! ##### Field Additional Info is more than 800 chars !!" ;
+            $data['00N20000003aeN4']  = substr( $data['00N20000003aeN4']  , 0 , 900 ) ;
+            $error = true ;
+        }
+
 
         $data['debug']  = "1" ;
-        $data['debugEmail']  = "web-admin@allplan.com" ;
+        $data['debugEmail']  = "jVelletti@gmail.com" ;
 
         $data['retURL']  = $_SERVER['SERVER_NAME'];
 
@@ -131,7 +142,9 @@ class RegisterSalesforceSignal {
         if ( $event->getSalesForceEventId()  <> '' ) {
             // <!-- Feld fÃ¼r Webinar Key  VARIABLER WERT fÃ¼r jedes Webinar eindeutiger Wert-->
             $data['00N20000003acfo']  = $event->getSalesForceEventId()  ;
-            $debugmail .= "\n00N20000003acfo: " . $data['00N20000003acfo'] ;
+
+
+            $debugmail .= "\nField : 00N20000003acfo: (SF Event ID from Event) = " . $data['00N20000003acfo'] ;
 
             // $data['recordType'] = "012W00000008aVq" ;
             // 27. Juni 2012 : nun doch der gleiche Record Type wie Citrix ....
@@ -141,9 +154,10 @@ class RegisterSalesforceSignal {
             // <!-- Feld fÃ¼r Webinar Key  VARIABLER WERT fÃ¼r jedes Webinar eindeutiger Wert-->
             if(  $event->getCitrixUid()  ) {
                 $data['00N20000003acfo']  = $event->getCitrixUid()  ;
+                $debugmail .= "\n Try to get WebinarKey from Citrix UID  .. "  ;
             }
 
-            $debugmail .= "\n00N20000003acfo: " . $data['00N20000003acfo'] ;
+            $debugmail .= "\nField : 00N20000003acfo: (WebinarKey) = " . $data['00N20000003acfo'] ;
 
             // <!-- Datensatztyp fÃ¼r CITRIX Webinare = FIXER WERT-->
             $data['recordType'] = "01220000000JRRJ" ;
@@ -169,7 +183,8 @@ class RegisterSalesforceSignal {
        //  $data['recordType'] = '01220000000JRRJ' ;
        //  $data['oid'] = '00D200000000ach' ;
 
-
+        $debugmail .= "\ndata Array : \n\n"  ;
+        $debugmail .= var_export( $data , true ) ;
 
         /// ************************ +++++++++++++++++++++++ -------------- #####################
 
@@ -228,19 +243,23 @@ class RegisterSalesforceSignal {
                 'pbenke@allplan.com' => '',
             )
         );
+        if( $error ) {
+            $Typo3_v6mail->setSubject( "[ERROR] JV Events Registration Debug - " . $event->getStartDate()->format("d.m.Y") . " - " . $event->getName()  );
+        } else {
 
-        $Typo3_v6mail->setSubject( "JV Events Registration Debug - " . $event->getStartDate()->format("d.m.Y") . " - " . $event->getName()  );
+            $Typo3_v6mail->setSubject( "JV Events Registration Debug - " . $event->getStartDate()->format("d.m.Y") . " - " . $event->getName()  );
+        }
 
 
-        $Typo3_v6mail->setBody(nl2br( $debugmail , 'text/html') );
+        $Typo3_v6mail->setBody(nl2br( $debugmail ) , 'text/html'  );
         $Typo3_v6mail->send();
 
         $this->logToFile( $debugmail )  ;
 
     }
     private function logToFile( $text ) {
-        // disable next line if needed
-        return ;
+        // disable/enable next line if needed
+        // return ;
         $fh = fopen( "../jvents_sf.log" , "w+" ) ;
         if ($fh) {
             fputs($fh, $text  , 9999 ) ;
@@ -310,6 +329,7 @@ class RegisterSalesforceSignal {
                 unset($data[$key ] ) ;
             }
         }
+
         return $data ;
     }
 
