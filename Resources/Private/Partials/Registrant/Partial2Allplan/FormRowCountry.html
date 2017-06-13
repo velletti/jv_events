@@ -8,7 +8,7 @@
 				<span class="required">*</span>
 			</f:if>
 		</label>
-		<register:SelectStaticCountries class="form-control jv-events-req-{required}" property="country" id="jv_events_country"
+		<register:SelectStaticCountries class="form-control jv-events-req-{required}" property="country"  value="{settings.register.defaultCountry}"  id="jv_events_country"
 			allowedCountries="{settings.register.allowedCountrys}" optionLabelField="cnShortLocal" sortByOptionLabel="TRUE"/>
 		<f:render partial="FieldError" section="Main" arguments="{for: 'registrant', field: '{FieldName}'}" />
 	</fieldset>

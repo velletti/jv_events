@@ -68,6 +68,8 @@ plugin.tx_jvevents_events {
 				3MegraAT 	=	{$plugin.tx_jvevents_events.settings.register.requiredFields.3MegraAT}
 			}
 			allowedCountrys =	{$plugin.tx_jvevents_events.settings.register.allowedCountrys}
+			defaultCountry =	{$plugin.tx_jvevents_events.settings.register.defaultCountry}
+
 			senderName = {$plugin.tx_jvevents_events.settings.register.senderName}
 			senderEmail = {$plugin.tx_jvevents_events.settings.register.senderEmail}
 			termsOfUsePid = {$plugin.tx_jvevents_events.settings.register.termsOfUsePid}

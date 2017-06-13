@@ -262,8 +262,6 @@ class RegistrantController extends BaseController
 
         }
 
-
-
 		$this->view->assign('hash', $checkHash);
 		$this->view->assign('otherEvents', $otherEvents);
 

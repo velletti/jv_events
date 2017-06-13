@@ -36,6 +36,8 @@ plugin.tx_jvevents_events {
 
 			# do your own settings :-) thsi is just an example ...
 			allowedCountrys = DE,AT,CH
+			# decide what you need or overwrite value in settings with any other Default Language Value ...
+			defaultCountry = DE
 
 			citrix{
 				# if you have a ready to use oAutho Code for Citrix rest api : (only valid one Year ! )
