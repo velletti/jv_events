@@ -317,7 +317,7 @@
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_organizer.name" approved="yes">
 			<source>Name</source>
-			<target>Nome</target>
+			<target>Organizzatore</target>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_organizer.organizer_category" approved="yes">
 			<source>Organizer Category</source>

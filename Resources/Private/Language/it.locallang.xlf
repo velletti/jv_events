@@ -409,7 +409,7 @@
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_location.name" approved="yes">
 			<source>Name</source>
-			<target>Nome</target>
+			<target>Organizzatore/sede</target>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_location.organizer" approved="yes">
 			<source>Organizer</source>
