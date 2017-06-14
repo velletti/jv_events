@@ -243,7 +243,7 @@ class RegisterSalesforceSignal {
             )
         );
         if( $error ) {
-            $Typo3_v6mail->setSubject( "[ERROR] JV Events Registration Debug - " . $event->getStartDate()->format("d.m.Y") . " - " . $event->getName()  );
+            $Typo3_v6mail->setSubject( "[ERROR] JV Events Registration - " . $event->getStartDate()->format("d.m.Y") . " - " . $event->getName()  );
         } else {
 
             $Typo3_v6mail->setSubject( "JV Events Registration Debug - " . $event->getStartDate()->format("d.m.Y") . " - " . $event->getName()  );
