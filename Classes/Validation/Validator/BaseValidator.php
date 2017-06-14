@@ -31,8 +31,10 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
 
 	public function __construct() {
 		$this->emConf =\JVE\JvEvents\Utility\EmConfiguration::getEmConf();
-		
-		$allSettings = \JVE\JvEvents\UserFunc\Flexforms::getSettings() ;
+
+		/** @var \JVE\JvEvents\UserFunc\Flexforms $flexhelper */
+        $flexhelper = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JVE\\JvEvents\\UserFunc\\Flexforms');
+		$allSettings = $flexhelper->getSettings() ;
 
 		$this->settings = $allSettings['plugin.']['tx_jvevents_events.']['settings.'];
 		$this->settings = \TYPO3\CMS\Core\Utility\GeneralUtility::removeDotsFromTS($this->settings ) ;
