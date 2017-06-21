@@ -65,13 +65,14 @@ class RegisterSalesforceSignal {
         $this->logToFile( "\n**********************************\n SF Start ..." )  ;
 
         $debugmail = "\n+++++++++++ got this data from Controller ++++++++++++++++++\n"  ;
-        $debugmail .= "\nRunning on Server: " .  $_SERVER['HOSTNAME'] .  ""  ;
+        $debugmail .= "\nRunning on Server: " .  $_SERVER['HOSTNAME'] .  " - "  . php_uname() ;
         $debugmail .= "\nRegistrants Email " .  $registrant->getEmail() .  ""  ;
         $debugmail .= "\nEvent Id: " .  $event->getUid() . " Date: " . $event->getStartDate()->format( "d.m.Y" )   . " | Citrix ID: " . $event->getCitrixUid()   ;
         $debugmail .= "\nTitle: " .  $event->getName()  ;
 
         $httpresponseErr = "" ;
         $httpresponseErrText = "" ;
+        unset( $data) ;
         $data =  $this->convertToArray($registrant) ;
 
 
@@ -253,10 +254,27 @@ class RegisterSalesforceSignal {
         $Typo3_v6mail->setBody(nl2br( $debugmail ) , 'text/html'  );
         $Typo3_v6mail->send();
 
-        $this->logToFile( $debugmail )  ;
+
+        $this->logToFile( $debugmail , $event->getPid() , $error )  ;
 
     }
-    private function logToFile( $text ) {
+    private function logToFile( $text , $pid = 0 , $error) {
+
+        $insertFields = array(
+            "action"  => 1 ,
+            "tablename" => "tx_jvevents_domain_model_registrant" ,
+            "error" => $error ,
+            "event_pid" => $pid ,
+            "details" => "Event registration sent to salesforce " ,
+            "tstamp" => time() ,
+            "type" => 1 ,
+            "message" => $text ,
+
+        ) ;
+
+        $GLOBALS['TYPO3_DB']->exec_INSERTquery("sys_log" , $insertFields ) ;
+
+
         // disable/enable next line if needed
         // return ;
         $fh = fopen( "../jvents_sf.log" , "w+" ) ;
