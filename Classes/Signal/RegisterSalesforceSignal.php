@@ -258,7 +258,7 @@ class RegisterSalesforceSignal {
         $this->logToFile( $debugmail , $event->getPid() , $error )  ;
 
     }
-    private function logToFile( $text , $pid = 0 , $error) {
+    private function logToFile( $text , $pid = 0 , $error = 0 ) {
 
         $insertFields = array(
             "action"  => 1 ,
