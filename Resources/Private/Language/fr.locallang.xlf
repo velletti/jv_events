@@ -23,6 +23,18 @@
             <target>Malheureusement votre inscription n'a pas pu être validée. Contactez votre agence, elle vous tiendra informé des désistements éventuels.</target>
         </trans-unit>
 
+   <trans-unit id="register.registraion_not_possible_text">
+                <source>Unfortunately, your registration to this event cannot be processed.</source>
+                <target>Malheureusement votre inscription n'a pas pu être validée.</target>
+             </trans-unit>
+             <trans-unit id="register.deadline_expired_text">
+                <source>The deadline for registration has expired.</source>
+                <target>La date limite d'inscription a expiré.</target>
+             </trans-unit>
+
+
+
+
 		<trans-unit id="register.accept_privacy.and" approved="yes">
 			<source>and</source>
 			<target>et</target>

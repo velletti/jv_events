@@ -33,7 +33,12 @@
         <trans-unit id="register.overbooked_text">
             <source>Unfortunately, your registration to this event cannot be processed. Please contact the host to receive information about last minute tickets.</source>
         </trans-unit>
-
+         <trans-unit id="register.registraion_not_possible_text">
+            <source>Unfortunately, your registration to this event cannot be processed.</source>
+         </trans-unit>
+         <trans-unit id="register.deadline_expired_text">
+            <source>The deadline for registration has expired.</source>
+         </trans-unit>
 		<trans-unit id="register.terms_of_use">
 			<source>Terms of use</source>
 		</trans-unit>

@@ -20,9 +20,16 @@
         </trans-unit>
         <trans-unit id="register.overbooked_text">
            <source>Unfortunately, your registration to this event cannot be processed. Please contact the host to receive information about last minute tickets.</source>
-            <target>Non è più possibile effettuare alcuna registrazione. Mettersi in contatto con l'organizzatore per avere informazioni su eventuali posti liberi.</target>
+            <target>Non è più possibile effettuare alcuna iscrizione. Mettersi in contatto con l'organizzatore per avere informazioni su eventuali posti liberi.</target>
         </trans-unit>
-
+        <trans-unit id="register.registraion_not_possible_text">
+                <source>Unfortunately, your registration to this event cannot be processed.</source>
+                <target>Non è più possibile effettuare alcuna iscrizione. </target>
+             </trans-unit>
+             <trans-unit id="register.deadline_expired_text">
+                <source>The deadline for registration has expired.</source>
+                <target>La scadenza per l'iscrizione è scaduta</target>
+             </trans-unit>
 		<trans-unit id="register.accept_privacy.and" approved="yes">
 			<source>and</source>
 			<target>e le informazioni sulla</target>

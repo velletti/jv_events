@@ -38,7 +38,14 @@
             <source>Unfortunately, your registration to this event cannot be processed. Please contact the host to receive information about last minute tickets.</source>
             <target>Leider sind keine Registrierungen mehr möglich. Bitte wenden Sie sich an den Veranstalter bezüglich Informationen zu Restplätzen.</target>
         </trans-unit>
-
+        <trans-unit id="register.registraion_not_possible_text">
+            <source>Unfortunately, your registration to this event cannot be processed.</source>
+            <target>Leider ist eine Registrierung nicht möglich.</target>
+         </trans-unit>
+         <trans-unit id="register.deadline_expired_text">
+            <source>The deadline for registration has expired.</source>
+            <target>Die Frist zur Anmeldung ist abgelaufen.</target>
+         </trans-unit>
 
 
 		<trans-unit id="register.terms_of_use" approved="yes">
