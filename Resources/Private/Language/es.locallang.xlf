@@ -23,7 +23,7 @@
             <target>Desafortunadamente, no pudo realizarse su registro para este evento. Por favor, póngase en contacto con el organizador para obtener información acerca de entradas de última hora.</target>
         </trans-unit>
 
-         <trans-unit id="register.registraion_not_possible_text">
+         <trans-unit id="register.registration_not_possible_text">
                 <source>Unfortunately, your registration to this event cannot be processed.</source>
                 <target>Desafortunadamente, no pudo realizarse su registro para este evento.</target>
              </trans-unit>

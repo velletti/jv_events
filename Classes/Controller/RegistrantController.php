@@ -212,7 +212,7 @@ class RegistrantController extends BaseController
      */
     public function newAction(\JVE\JvEvents\Domain\Model\Event $event)
     {
-		$this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
+		 $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
 		// $this->addFlashMessage($this->translate('msg_error_cid'), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
 
 		$this->settings['startReg'] = time() ;
@@ -276,6 +276,7 @@ class RegistrantController extends BaseController
      * @param \JVE\JvEvents\Domain\Model\Event $event
      * @param \JVE\JvEvents\Domain\Model\Registrant $registrant
 	 * @validate $registrant \JVE\JvEvents\Validation\Validator\RegistrantValidator
+	 * @validate $event \JVE\JvEvents\Validation\Validator\EventRegistrantValidator
      * @return void
      */
     public function createAction(\JVE\JvEvents\Domain\Model\Event $event, \JVE\JvEvents\Domain\Model\Registrant $registrant) {

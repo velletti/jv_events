@@ -30,7 +30,8 @@ class RegistrantValidator extends \JVE\JvEvents\Validation\Validator\BaseValidat
 		$generatedTokenBase = ( "P" . $this->settings['pageId'] . "-L" .$this->settings['sys_language_uid'] . "-E" . $form['event'] );
 		$generatedToken = md5( $generatedTokenBase);
 
-		if (! $formToken==$generatedToken ) {
+
+       	if (! $formToken==$generatedToken ) {
 			$error = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error',
 				$this->translate('register_mandatory_error_fingerprint'), time());
 			$this->result->forProperty('fingerprint')->addError($error);

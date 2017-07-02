@@ -1668,15 +1668,10 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         }
         // Check Dates :
         $now = new \DateTime('now') ;
-
-        if( $this->registrationUntil < $now && $this->registrationUntil > 1 ) {
-            //  echo "<br>Line: " . __LINE__ . " : " . " File: " . __FILE__ . '<br>$this->registrationUntil < $now " . $this->registrationUntil . "<" . $now . "<hr>";
-
+        if( $this->registrationUntil < $now && $this->registrationUntil->getTimestamp() > 1 ) {
             return false ;
         }
-        if( $this->startDate < $now && $this->registrationUntil < 1 ) {
-            //  echo "<br>Line: " . __LINE__ . " : " . " File: " . __FILE__ . '<br>$this->startDate < $now " . $this->startDate . "<" . $now . "<hr>";
-
+        if( $this->startDate < $now && $this->registrationUntil->getTimestamp() < 1 ) {
             return false ;
         }
         if ( ! $this->mustLoginRights()  ) {
@@ -1698,8 +1693,8 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         if ($this->withRegistration ) {
             // Internal Registration Process : check $this->availableSeats  Seats against Registered
             if (($this->registeredSeats + $this->unconfirmedSeats +1) > ($this->availableSeats + $this->availableWaitingSeats)  ) {
-                //  echo "<br>Line: " . __LINE__ . " : " . " File: " . __FILE__ . '<br>$this->registeredSeats + $this->unconfirmedSeats +1) > ($this->availableSeats + $this->availableWaitingSeat <hr>';
-                    return TRUE;
+                  // echo "<br>Line: " . __LINE__ . " : " . " File: " . __FILE__ . '<br>$this->registeredSeats + $this->unconfirmedSeats +1) > ($this->availableSeats + $this->availableWaitingSeat <hr>';
+                 return TRUE;
             }
             if (($this->unconfirmedSeats + 1) > ($this->availableSeats) && ( $this->availableSeats > 0 )) {
                 //  echo "<br>Line: " . __LINE__ . " : " . " File: " . __FILE__ . '<br>$this->unconfirmedSeats + 1) > ($this->availableSeats) && ( $this->availableSeats > 0  <hr>';

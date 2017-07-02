@@ -15,7 +15,8 @@
 
 <f:form action="create" class="jv-events-regform" name="registrant" object="{registrant}" enctype="multipart/form-data">
 	<f:render partial="FormErrors" section="Main" arguments="{for: 'registrant'}" />
-	<f:render partial="FieldError" section="Main" arguments="{for: 'event' ,field: 'uid'}" />
+	<f:render partial="FormOtherErrors" section="Main" arguments="{for: 'event' ,field: 'uid'}" />
+
 
 	<f:form.hidden class="hidden" name="event" value="{event.uid}" />
 	<f:form.textfield class="hidden" property="layoutRegister" value="{settings.LayoutRegister}" />
