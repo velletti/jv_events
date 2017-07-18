@@ -590,7 +590,7 @@
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_registrant.street_and_nr" approved="yes">
 			<source>Street And Nr</source>
-			<target>Strasse und Nr</target>
+			<target>Straße und Nr</target>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_registrant.username" approved="yes">
 			<source>Username</source>

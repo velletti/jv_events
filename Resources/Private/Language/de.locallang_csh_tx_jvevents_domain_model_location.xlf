@@ -53,7 +53,9 @@
 			<source>Address and Number of the location. separate special infos like Backyard or third floor with / 
 
 Fe.: &quot;Leopoldstreet 123a / Backyard building / 3 Floor</source>
-			<target>Geben Sie die Strasse und die Hausnummer des Veranstaltungsortes ein. </target>
+			<target>Geben Sie die Straße und die Hausnummer des Veranstaltungsortes ein. Trennen Sie Adresszusätze mit /
+
+			Z.B.: Leopoldstraße 123a / Rückgebäude/ 3. Stock</target>
 		</trans-unit>
 		<trans-unit id="zip.description" approved="yes">
 			<source>Zip / Postal Code</source>
