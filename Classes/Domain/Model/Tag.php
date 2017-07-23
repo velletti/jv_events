@@ -36,6 +36,13 @@ class Tag extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * name
      *
+     * @var integer
+     */
+    protected $sorting ;
+
+    /**
+     * name
+     *
      * @var string
      */
     protected $name = '';

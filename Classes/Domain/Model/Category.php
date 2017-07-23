@@ -32,6 +32,12 @@ namespace JVE\JvEvents\Domain\Model;
  */
 class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
+    /**
+     * name
+     *
+     * @var integer
+     */
+    protected $sorting ;
 
     /**
      * title
@@ -137,6 +143,22 @@ class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function setBlockRegistration($blockRegistration)
     {
         $this->blockRegistration = $blockRegistration;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSorting()
+    {
+        return $this->sorting;
+    }
+
+    /**
+     * @param int $sorting
+     */
+    public function setSorting($sorting)
+    {
+        $this->sorting = $sorting;
     }
 
     

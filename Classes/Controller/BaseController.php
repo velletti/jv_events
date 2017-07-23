@@ -135,7 +135,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
                 foreach ($objArray as $obj ) {
                     if ( is_object($obj) ) {
                         $tags[$obj->getUid()] = $obj->getName() ;
-                        $tags2[$obj->getUid()] = array( "id" => $obj->getUid() , "title" => $obj->getName() ) ;
+                        $tags2[$obj->getUid()] = array( "id" => $obj->getUid() , "title" => $obj->getName()  ) ;
                     }
                 }
             }
@@ -146,7 +146,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
                 foreach ($objArray as $obj ) {
                     if ( is_object($obj) ) {
                         $categories[$obj->getUid()] = $obj->getTitle() ;
-                        $categories2[$obj->getUid()] = array( "id" => $obj->getUid() , "title" => $obj->getTitle() , "description" => $obj->getDescription() );
+                        $categories2[$obj->getUid()] = array( "id" => $obj->getUid() , "title" => $obj->getTitle() , "description" => $obj->getDescription() , "sorting" => $obj->getSorting());
                     }
                 }
             }
@@ -160,9 +160,12 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         }
         $sortArray = array();
         foreach($categories2 as $key => $array) {
-            $sortArray[$key] = ucfirst ( $array['title'] ) ;
+            if( $this->settings['filter']['sorttags'] == "sorting" ) {
+                $sortArray[$key] = substr( "00000000000" . $array['sorting'], -12 , 12 )  ;
+            } else {
+                $sortArray[$key] = ucfirst ( $array['title']  ) ;
+            }
         }
-
 
         array_multisort($sortArray, SORT_ASC, SORT_STRING , $categories2);
 
@@ -176,7 +179,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
 
         foreach($tags2 as $key => $array) {
-            $sortArray[$key] = ucfirst ( $array['title']  ) ;
+           $sortArray[$key] = ucfirst ( $array['title']  ) ;
         }
         array_multisort($sortArray, SORT_ASC, SORT_NUMERIC, $tags2);
 

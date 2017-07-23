@@ -182,6 +182,52 @@
 
 					</settings.filter.categories>
 
+					<settings.filter.sorttags>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.sortTags</label>
+							<config>
+								<type>select</type>
+								<items type="array">
+									<numIndex index="0" type="array">
+										<numIndex index="0">LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.sortTags.alfabetic</numIndex>
+										<numIndex index="1">abc</numIndex>
+									</numIndex>
+									<numIndex index="1" type="array">
+										<numIndex index="0">LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.sortTags.likeInBackend</numIndex>
+										<numIndex index="1">sorting</numIndex>
+									</numIndex>
+								</items>
+							</config>
+						</TCEforms>
+					</settings.filter.sorttags>
+					<settings.filter.sortcategories>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.sortCategories</label>
+							<config>
+								<type>select</type>
+								<items type="array">
+									<numIndex index="0" type="array">
+										<numIndex index="0">LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.sortTags.alfabetic</numIndex>
+										<numIndex index="1">abc</numIndex>
+									</numIndex>
+									<numIndex index="1" type="array">
+										<numIndex index="0">LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.sortTags.likeInBackend</numIndex>
+										<numIndex index="1">sorting</numIndex>
+									</numIndex>
+								</items>
+							</config>
+						</TCEforms>
+					</settings.filter.sortcategories>
+
+					<settings.filter.combinetags>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.combineTags</label>
+							<config>
+								<type>check</type>
+							</config>
+						</TCEforms>
+					</settings.filter.combinetags>
+
 					<settings.filter.tags>
 						<TCEforms>
 							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.Tags</label>

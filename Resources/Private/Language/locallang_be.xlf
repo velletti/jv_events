@@ -117,6 +117,24 @@
 		<trans-unit id="plugin.filter.Categories">
 			<source>Show Only Events with these Categories (leave empty to show all)</source>
 		</trans-unit>
+			<trans-unit id="plugin.filter.sortCategories">
+				<source>Sort Categories in Filter</source>
+			</trans-unit>
+
+			<trans-unit id="plugin.filter.sortTags">
+				<source>Sort Tags in Filter</source>
+			</trans-unit>
+
+			<trans-unit id="plugin.filter.sortTags.alfabetic">
+				<source>Sort by Name alfabetically</source>
+			</trans-unit>
+			<trans-unit id="plugin.filter.sortTags.likeInBackend">
+				<source>Sort by Ordering in Backend</source>
+			</trans-unit>
+			<trans-unit id="plugin.filter.combineTags">
+				<source>Combine Selected Tags in Filter with AND </source>
+			</trans-unit>
+
 		<trans-unit id="plugin.filter.ShowAllCategories" xml:space="preserve">
 			<source>All Categories (If you select also this Option, the Event must have All of the other selected  Category filters)</source>
 		</trans-unit>

@@ -47,6 +47,9 @@ return array(
 				),
 			),
 		),
+
+
+
 		'l10n_parent' => array(
 			'displayCond' => 'FIELD:sys_language_uid:>:0',
 			'exclude' => 1,
@@ -76,7 +79,14 @@ return array(
 				'max' => 255,
 			)
 		),
-	
+        'sorting' => array(
+            'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.sorting',
+            'config' => array(
+                'type' => 'input',
+                'size' => 30,
+                'max' => 255,
+            )
+        ),
 		'hidden' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.hidden',
