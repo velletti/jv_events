@@ -192,7 +192,8 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             "categories" => $categories ,
             "categories2" => $categories2 ,
             "months" => $months ,
-            
+            "category50proz" => intval ( (count($categories2) ) / 2 ) ,
+            "tag50proz" => intval ( (count(tags2) +1) / 2 )
             ) ;
     }
 

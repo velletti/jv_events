@@ -56,33 +56,40 @@
                         <legend><f:translate key="tx_jvevents_domain_model_category" /></legend>
 
                         <div class="checkbox"  id="jv_events_filter_categories">
+                            <div class="col-sm-6">
+                                <f:for each="{eventsFilter.categories2}" as="category" iteration="index">
 
-                            <f:for each="{eventsFilter.categories2}" as="category">
-                                <label>
-                                    <input type="checkbox" id="jv_events_filter_cat-{category.id}" value="{category.id}">{category.title}
+
+                                    <label>
+                                        <input type="checkbox" id="jv_events_filter_cat-{category.id}" value="{category.id}">{category.title}
+                                        <f:if condition="{category.description}">
+                                            <a class="info" href="#" data-toggle="modal" data-target="#jv_events_cat_modal-{category.id}"><span>Info</span></a>
+                                        </f:if>
+                                    </label>
+
                                     <f:if condition="{category.description}">
-                                        <a class="info" href="#" data-toggle="modal" data-target="#jv_events_cat_modal-{category.id}"><span>Info</span></a>
-                                    </f:if>
-                                </label>
+                                        <div id="jv_events_cat_modal-{category.id}" class="modal fade" role="dialog">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <a href="#" class="close" data-dismiss="modal">&times;</a>
+                                                        <h4>{category.title}</h4>
+                                                    </div>
 
-                                <f:if condition="{category.description}">
-                                    <div id="jv_events_cat_modal-{category.id}" class="modal fade" role="dialog">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <a href="#" class="close" data-dismiss="modal">&times;</a>
-                                                    <h4>{category.title}</h4>
-                                                </div>
-
-                                                <div class="modal-body">
-                                                    <f:format.nl2br>{category.description}</f:format.nl2br>
+                                                    <div class="modal-body">
+                                                        <f:format.nl2br>{category.description}</f:format.nl2br>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                </f:if>
-                            </f:for>
+                                    </f:if>
+                                    <f:if condition="{index.cycle} == {eventsFilter.category50proz}">
+                                        </div>
+                                        <div class="col-sm-6">
+                                    </f:if>
+                                </f:for>
+                            </div>
 
                         </div>
 
