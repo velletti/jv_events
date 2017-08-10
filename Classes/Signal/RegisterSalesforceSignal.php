@@ -276,7 +276,7 @@ class RegisterSalesforceSignal {
 
 
         // disable/enable next line if needed
-        // return ;
+        return ;
         $fh = fopen( "../jvents_sf.log" , "w+" ) ;
         if ($fh) {
             fputs($fh, $text  , 9999 ) ;
