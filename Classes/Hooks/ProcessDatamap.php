@@ -72,7 +72,7 @@ class ProcessDatamap {
 			/** @var  \JVE\JvEvents\Domain\Model\Event $event */
 			$this->event = $this->eventRepository->findByUid(intval($this->id)) ;
 			$allowedError = 0 ;
-            $this->flashMessage['OK'][] = 'Hook ProcessDatamap is active ..' ;
+
 			if( is_object( $this->event ) ) {
 
                 if ($this->event->getNotifyRegistrant() ==  0 && $this->event->getNeedToConfirm() == 1 ) {
@@ -81,7 +81,62 @@ class ProcessDatamap {
                     $allowedError ++ ;
                 }
 
-				if ($allowedError >  0 ) {
+                if ($this->event->getWithRegistration()   ) {
+                    if (! $this->event->getRegistrationUntil() ) {
+                        $this->flashMessage['ERROR'][] = 'Registration Until date is not set!' ;
+                        $allowedError ++ ;
+                    } else {
+                        if ($this->event->getRegistrationUntil()->getTimestamp()  < time()  ) {
+                            $this->flashMessage['ERROR'][] = 'Registration Until date is in the Past!' ;
+                        }
+                    }
+                    if ($this->event->getRegistrationUntil()  >  $this->event->getStartDate()  ) {
+                        $this->flashMessage['WARNING'][] = 'Registration Until date is after Event Start Date!' ;
+
+                    }
+
+                    if( intval( $this->event->getRegistrationFormPid() ) < 1 ) {
+                        $this->flashMessage['WARNING'][] = 'You must select the Page with the Registration Form!' ;
+
+                    }
+                    if( intval( $this->event->getRegistrationPid() ) < 1 ) {
+                        $this->flashMessage['WARNING'][] = 'You must select the Page where the Registrations should be stored! (actual Pid was set)' ;
+                        $this->event->setRegistrationPid( $this->event->getPid()) ;
+                    }
+
+                } else {
+                    if (trim($this->event->getRegistrationUrl()) == '' || !$this->event->getRegistrationUrl() ) {
+                        $this->flashMessage['WARNING'][] = 'Registration URL is not set "' .  $this->event->getRegistrationUrl() . '" ' ;
+                    }
+                        if (! $this->event->getRegistrationUntil() ) {
+                            $this->flashMessage['ERROR'][] = 'Registration Until date is not set!' ;
+                            $allowedError ++ ;
+                        } else {
+                            if ($this->event->getRegistrationUntil()->getTimestamp()  < time()  ) {
+                                $this->flashMessage['ERROR'][] = 'Registration Until date is in the Past!' ;
+                            }
+                        }
+                        if ($this->event->getRegistrationUntil()  >  $this->event->getStartDate()  ) {
+                            $this->flashMessage['WARNING'][] = 'Registration Until date is after Event Start Date!' ;
+
+                        }
+                }
+                if( !$this->event->getOrganizer()) {
+                    $this->flashMessage['ERROR'][] = 'No organizer selected in Tab Relations!' ;
+                    $allowedError ++ ;
+                }
+                if( !$this->event->getLocation()) {
+                    $this->flashMessage['ERROR'][] = 'No Location selected in Tab Relations!' ;
+                    $allowedError ++ ;
+                }
+                if( count( $this->event->getEventCategory()) < 1 ) {
+                    $this->flashMessage['WARNING'][] = 'No Event Category selected in Tab Relations. This event may not be found in lists!' ;
+                }
+                if( count(  $this->event->getTags() ) < 1 ) {
+                    $this->flashMessage['WARNING'][] = 'No Event Tags selected in Tab Relations!' ;
+                }
+
+                if ($allowedError >  0 ) {
 					// $this->event->setWithRegistration(FALSE ) ;
 
 
@@ -91,6 +146,7 @@ class ProcessDatamap {
                         if( $this->event->getStoreInCitrix() ) {
                             $this->flashMessage['WARNING'][] = 'You can not set "Store in Salesforce" together with "Store in Citrix"! (store in salesforce is disabled)!' ;
                             $this->event->setStoreInSalesForce(0) ;
+                            $allowedError ++ ;
                         } else {
                             $this->createUpdateEventForSF()  ;
                         }
@@ -102,7 +158,12 @@ class ProcessDatamap {
                 /** @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager $persistenceManager */
                 $persistenceManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
                 $persistenceManager->persistAll() ;
-			}
+                if ( ( count($this->flashMessage['WARNING']) + count($this->flashMessage['ERROR']))  == 0 ) {
+                    $this->flashMessage['OK'][] = 'All syntax checks (V1.0) run successfull and the event was stored!' ;
+                }
+			} else {
+                $this->flashMessage['WARNING'][] = 'Hook ProcessDatamap is active but found no Event Object!' ;
+            }
 
 			$this->showFlashMessage();
 		}
