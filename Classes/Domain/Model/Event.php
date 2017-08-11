@@ -152,6 +152,13 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @var \DateTime
      */
     protected $registrationUntil = null;
+
+    /**
+     * the Actual Time Needed for is registration Possible
+     *
+     * @var \DateTime
+     */
+    protected $actualTime = null;
     
     /**
      * Registration is visible for this usergroups / access rights
@@ -1635,6 +1642,21 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 		$this->registrationFormPid = $registrationFormPid;
 	}
 
+	public function getActualTime() {
+        // Needs in Additoonal Configuration this setting to work
+        // $GLOBALS['TYPO3_CONF_VARS']['SYS']['oriPhpTimeZone'] = @date_default_timezone_get() ;
+        // important if you set $GLOBALS['TYPO3_CONF_VARS']['SYS']['phpTimeZone'] NOT TO UTC and in php.ini ist NOT set to UTC
+        // if both is set to UTC, every thing is fine.. but this will cause other problems :-)
+        //  REASON: in some cases TYPO3 uses date_default_timezone_get() .. in some cases it uses hardcoded UTC
+        // and in some cases it reads value from $GLOBALS['TYPO3_CONF_VARS']['SYS']['phpTimeZone']
+
+        $DTZ = $GLOBALS['TYPO3_CONF_VARS']['SYS']['oriPhpTimeZone'] == '' ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['phpTimeZone'] : $GLOBALS['TYPO3_CONF_VARS']['SYS']['oriPhpTimeZone'] ;
+
+        $DTZ = $DTZ == '' ? @date_default_timezone_get() : $DTZ ;
+        $DTZ = $DTZ == '' ? 'UTC' : $DTZ ;
+
+        return new \DateTime('now' , new \DateTimeZone($DTZ) ) ;
+    }
 
 
     /** + +++ special Helper functions for the model  */
@@ -1667,20 +1689,9 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
             }
         }
 
-        // Needs in Additoonal Configuration this setting to work
-        // $GLOBALS['TYPO3_CONF_VARS']['SYS']['oriPhpTimeZone'] = @date_default_timezone_get() ;
-        // important if you set $GLOBALS['TYPO3_CONF_VARS']['SYS']['phpTimeZone'] NOT TO UTC and in php.ini ist NOT set to UTC
-        // if both is set to UTC, every thing is fine.. but this will cause other problems :-)
-        //  REASON: in some cases TYPO3 uses date_default_timezone_get() .. in some cases it uses hardcoded UTC
-        // and in some cases it reads value from $GLOBALS['TYPO3_CONF_VARS']['SYS']['phpTimeZone']
-
-        $DTZ = $GLOBALS['TYPO3_CONF_VARS']['SYS']['oriPhpTimeZone'] == '' ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['phpTimeZone'] : $GLOBALS['TYPO3_CONF_VARS']['SYS']['oriPhpTimeZone'] ;
-
-        $DTZ = $DTZ == '' ? @date_default_timezone_get() : $DTZ ;
-        $DTZ = $DTZ == '' ? 'UTC' : $DTZ ;
-
-        $now = new \DateTime('now' , new \DateTimeZone($DTZ) ) ;
+        $now = $this->getActualTime() ;
         $nowDateString = $now->format("Y-m-d-H-i-s") ;
+
         $regDateString = $this->registrationUntil->format("Y-m-d-H-i-s") ;
         if( $regDateString < $nowDateString && $this->registrationUntil->getTimestamp() > 1 ) {
             return false ;
