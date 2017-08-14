@@ -1691,14 +1691,16 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
         $now = $this->getActualTime() ;
         $nowDateString = $now->format("Y-m-d-H-i-s") ;
+        if ( $this->registrationUntil ) {
+            $regDateString = $this->registrationUntil->format("Y-m-d-H-i-s") ;
+            if( $regDateString < $nowDateString && $this->registrationUntil->getTimestamp() > 1 ) {
+                return false ;
+            }
+            if( $this->startDate < $now && $this->registrationUntil->getTimestamp() < 1 ) {
+                return false ;
+            }
+        }
 
-        $regDateString = $this->registrationUntil->format("Y-m-d-H-i-s") ;
-        if( $regDateString < $nowDateString && $this->registrationUntil->getTimestamp() > 1 ) {
-            return false ;
-        }
-        if( $this->startDate < $now && $this->registrationUntil->getTimestamp() < 1 ) {
-            return false ;
-        }
         if ( ! $this->mustLoginRights()  ) {
             return false ;
         }
