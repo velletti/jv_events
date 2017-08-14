@@ -90,11 +90,20 @@ class ProcessDatamap {
                             $this->flashMessage['ERROR'][] = 'Registration Until date is in the Past!' ;
                         }
                     }
-                    if ($this->event->getRegistrationUntil()  >  $this->event->getStartDate()  ) {
-                        $this->flashMessage['WARNING'][] = 'Registration Until date is after Event Start Date!' ;
 
+                    $ST = $this->event->getStartDate() ;
+                    $ST = $ST->modify( "+" . intval($this->event->getStartTime() ) . " second" ) ;
+                    if ($this->event->getRegistrationUntil()  >  ( $ST )) {
+                        if( $this->event->getRegistrationUntil() && $this->event->getStartDate() ) {
+                            $this->flashMessage['WARNING'][] = 'Registration Until date ' . $this->event->getRegistrationUntil()->format("d.m.Y H:i") .  ' is after Event Start Date! ' . $ST->format("d.m.Y H:i:s") ;
+                        } else {
+                            $this->flashMessage['WARNING'][] = 'Registration Until date is after Event Start Date!' ;
+                        }
                     }
 
+                    // IMPORTANT: without this modification startDate  will have still added the start time !
+                    $ST = $ST->modify( "-" . intval($this->event->getStartTime() ) . " second" ) ;
+                    unset($ST) ;
                     if( intval( $this->event->getRegistrationFormPid() ) < 1 ) {
                         $this->flashMessage['WARNING'][] = 'You must select the Page with the Registration Form!' ;
 
@@ -108,18 +117,29 @@ class ProcessDatamap {
                     if (trim($this->event->getRegistrationUrl()) == '' || !$this->event->getRegistrationUrl() ) {
                         $this->flashMessage['WARNING'][] = 'Registration URL is not set "' .  $this->event->getRegistrationUrl() . '" ' ;
                     }
-                        if (! $this->event->getRegistrationUntil() ) {
-                            $this->flashMessage['ERROR'][] = 'Registration Until date is not set!' ;
-                            $allowedError ++ ;
-                        } else {
-                            if ($this->event->getRegistrationUntil()->getTimestamp()  < time()  ) {
-                                $this->flashMessage['ERROR'][] = 'Registration Until date is in the Past!' ;
-                            }
+                    if (! $this->event->getRegistrationUntil() ) {
+                        $this->flashMessage['ERROR'][] = 'Registration Until date is not set!' ;
+                        $allowedError ++ ;
+                    } else {
+                        if ($this->event->getRegistrationUntil()->getTimestamp()  < time()  ) {
+                            $this->flashMessage['ERROR'][] = 'Registration Until date is in the Past!' ;
                         }
-                        if ($this->event->getRegistrationUntil()  >  $this->event->getStartDate()  ) {
-                            $this->flashMessage['WARNING'][] = 'Registration Until date is after Event Start Date!' ;
+                    }
+                    $ST = $this->event->getStartDate() ;
+                    $ST = $ST->modify( "+" . intval($this->event->getStartTime() ) . " second" ) ;
 
+                    if ($this->event->getRegistrationUntil()  >  ( $ST )) {
+                        if( $this->event->getRegistrationUntil() && $this->event->getStartDate() ) {
+                            $this->flashMessage['WARNING'][] = 'Registration Until date ' . $this->event->getRegistrationUntil()->format("d.m.Y H:i") .  ' is after Event Start Date! ' . $ST->format("d.m.Y - H:i") ;
+                        } else {
+                            $this->flashMessage['WARNING'][] = 'Registration Until date is after Event Start Date!' ;
                         }
+
+
+                    }
+                    // IMPORTANT: without this modification startDate  will have still added the start time !
+                    $ST = $ST->modify( "-" . intval($this->event->getStartTime() ) . " second" ) ;
+                    unset($ST) ;
                 }
                 if( !$this->event->getOrganizer()) {
                     $this->flashMessage['ERROR'][] = 'No organizer selected in Tab Relations!' ;
