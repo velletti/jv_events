@@ -182,7 +182,7 @@ class ProcessDatamap {
                     $this->flashMessage['OK'][] = 'All syntax checks (V1.0) run successfull and the event was stored!' ;
                 }
 			} else {
-                $this->flashMessage['WARNING'][] = 'Hook ProcessDatamap is active but found no Event Object!' ;
+                $this->flashMessage['WARNING'][] = 'Hook ProcessDatamap is active but found no Event Object! Maybe this is a disabled event ??' ;
             }
 
 			$this->showFlashMessage();
