@@ -56,7 +56,7 @@ $returnArray = array(
 		'frequent' => array('showitem' => 'is_recurring, --linebreak--, frequency, freq_exception, --linebreak--, is_exception_for,  '),
 		'language' => array('showitem' => 'sys_language_uid;;;;1-1-1, ,l10n_parent,--linebreak--,l10n_diffsource,' ),
 
-		'access' =>  array('showitem' =>  'hidden;;1,--linebreak--,access' ),
+		'access' =>  array('showitem' =>  'hidden;;1,--linebreak--,access,--linebreak--,endtime' ),
 		'notification' =>  array('showitem' =>  'notify_organizer;;1,notify_registrant;;1,need_to_confirm;;1,--linebreak--' ),
 		'notifyOrg' =>  array('showitem' =>  'subject_organizer,--linebreak--,text_organizer' ),
 		'notifyReg' =>  array('showitem' =>  'subject_registrant,--linebreak--,introtext_registrant,--linebreak--,introtext_registrant_confirmed,--linebreak--,text_registrant' ),

@@ -116,7 +116,21 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @var int
      */
     protected $startTime = 0;
-    
+
+    /**
+     * Access Start Time of this event (default TYP3 Field )
+     *
+     * @var \DateTime
+     */
+    protected $starttime ;
+
+    /**
+     * Access End Time of this event (default TYP3 Field )
+     *
+     * @var \DateTime
+     */
+    protected $endtime ;
+
     /**
      * End Date of this event. Mandatory
      *
@@ -751,7 +765,47 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         return $this->endTime;
     }
-    
+
+    /**
+     * Returns the Access endtime
+     *
+     * @return \DateTime $endtime
+     */
+    public function getAccessEndtime()
+    {
+        return $this->endtime;
+    }
+
+    /**
+     * Returns the Access starttime
+     *
+     * @return \DateTime $starttime
+     */
+    public function getAccessStarttime()
+    {
+        return $this->starttime;
+    }
+
+    /**
+     * sets the Access endtime
+     *
+     * @param \DateTime $starttime
+     */
+
+    public function setAccessStarttime($starttime)
+    {
+        $this->starttime = $starttime;
+    }
+
+    /**
+     * sets the Access endtime
+     *
+     * @param \DateTime $endtime
+     */
+    public function setAccessEndtime($endtime)
+    {
+        $this->endtime = $endtime;
+    }
     /**
      * Sets the endTime
      *

@@ -81,6 +81,7 @@ class EventRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 
         $constraints = array();
 		$query->getQuerySettings()->setRespectStoragePage(false);
+       // $query->getQuerySettings()->setIgnoreEnableFields(FALSE) ;
 		if( $settings['filter']['skipEvent'] > 0 ) {
 			$constraints[] = $query->logicalNot( $query->equals("uid" , $settings['filter']['skipEvent'])) ;
 			
@@ -95,10 +96,22 @@ class EventRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 		if ( $configuration['recurring'] == 1 ) {
 			// do some magic for recurring events
 		}
-		if( intval( $settings['filter']['startDate'] ) > -9999  || intval( $settings['filter']['maxDays'] ) > 0  )  {
-			$constraints = $this->getDateContraints($constraints,  $settings , $configuration , $query );
-		}
+        $DTZ = $GLOBALS['TYPO3_CONF_VARS']['SYS']['oriPhpTimeZone'] == '' ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['phpTimeZone'] : $GLOBALS['TYPO3_CONF_VARS']['SYS']['oriPhpTimeZone'] ;
 
+        $DTZ = $DTZ == '' ? @date_default_timezone_get() : $DTZ ;
+        $DTZ = $DTZ == '' ? 'UTC' : $DTZ ;
+        $DateTimeZone = new \DateTimeZone($DTZ)  ;
+
+		if( intval( $settings['filter']['startDate'] ) > -9999  || intval( $settings['filter']['maxDays'] ) > 0  )  {
+			$constraints = $this->getDateContraints($constraints,  $settings , $configuration , $query  , $DateTimeZone);
+		}
+        // and the normal visibility contrains , including date Time
+        $actualTime = new \DateTime('now' ,$DateTimeZone ) ;
+        $subconstraints = array() ;
+        $subconstraints[] = $query->greaterThanOrEqual('endtime', $actualTime );
+        $subconstraints[] = $query->lessThanOrEqual('endtime', 1 );
+        $constraints[] = $query->logicalOr($subconstraints) ;
+        $constraints[] = $query->lessThanOrEqual('starttime', $actualTime );
 
         if (count($constraints) >  0) {
             $query->matching($query->logicalAnd($constraints));
@@ -115,6 +128,7 @@ class EventRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             $GLOBALS['TYPO3_DB']->explainOutput = true;
             $GLOBALS['TYPO3_DB']->store_lastBuiltQuery = true;
             $result->toArray();
+            var_dump( $GLOBALS['TYPO3_DB']->lastBuiltQuery );
             die;
         }
         return $result;
@@ -126,59 +140,66 @@ class EventRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 	 * @param array $settings
 	 * @param array $configuration
 	 * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
+	 * @param \DateTimeZone $DateTimeZone
 	 *
 	 * @return array
 	 */
-	private function getDateContraints($constraints, $settings , $configuration , $query)
+	private function getDateContraints($constraints, $settings , $configuration , $query , $DateTimeZone )
 	{
 		if( intval( $settings['filter']['startDate'] ) > -9999 ) {
+
+
+
 			/** @var \DateTime $startDate */
+			/** @var \DateTime $endDate */
 			switch ($settings['filter']['startDate']) {
 				case '0':
-					$startDate = new \DateTime( 'NOW') ;
-					$endDate = new \DateTime( 'NOW +' . $settings['filter']['maxDays'] . ' Days') ;
+                    $startDate = new \DateTime( 'NOW' , $DateTimeZone ) ;
+                    $endDate = new \DateTime( 'NOW +' . $settings['filter']['maxDays'] . ' Days' , $DateTimeZone) ;
 					break;
 				case '-1':
-					$startDate = new \DateTime( 'NOW -1 Days') ;
-					$endDate = new \DateTime( 'NOW +' . (intval ($settings['filter']['maxDays']) -1 ). ' Days') ;
+                    $startDate = new \DateTime( 'NOW -1 Days', $DateTimeZone) ;
+                    $endDate = new \DateTime( 'NOW +' . (intval ($settings['filter']['maxDays']) -1 ). ' Days', $DateTimeZone) ;
 					break;
 				case '+1':
-					$startDate = new \DateTime( 'NOW +1 Days') ;
-					$endDate = new \DateTime( 'NOW +' . (intval ($settings['filter']['maxDays']) +1 ). ' Days') ;
+                    $startDate = new \DateTime( 'NOW +1 Days', $DateTimeZone) ;
+                    $endDate = new \DateTime( 'NOW +' . (intval ($settings['filter']['maxDays']) +1 ). ' Days', $DateTimeZone) ;
 					break;
 				default:
 					if( intval( $settings['filter']['startDate'] ) > 9999 ) {
-						$startDate = new \DateTime( ) ;
-						$startDate->setTimestamp($settings['filter']['startDate']) ;
-						$endDate = new \DateTime(  ) ;
-						$endDate->setTimestamp($settings['filter']['startDate']) ;
-						$endDate->modify("+" . intval( $settings['filter']['maxDays']) . " Days" ) ;
+                        $startDate = new \DateTime("now" , $DateTimeZone ) ;
+                        $startDate->setTimestamp($settings['filter']['startDate']) ;
+                        $endDate = new \DateTime( 'now' , $DateTimeZone) ;
+                        $endDate->setTimestamp($settings['filter']['startDate']) ;
+                        $endDate->modify("+" . intval( $settings['filter']['maxDays']) . " Days" ) ;
 
 					} else {
 
-						$startDate = new \DateTime( 'NOW ' . $settings['filter']['startDate'] . ' Days') ;
-						$endDate = new \DateTime( 'NOW +' . (intval ($settings['filter']['maxDays']) + $settings['filter']['startDate'] ). ' Days') ;
+                        $startDate = new \DateTime( 'NOW ' . $settings['filter']['startDate'] . ' Days' , $DateTimeZone) ;
+                        $endDate = new \DateTime( 'NOW +' . (intval ($settings['filter']['maxDays']) + $settings['filter']['startDate'] ). ' Days' , $DateTimeZone) ;
 
-						$endDate->modify("+" . intval( $settings['filter']['maxDays']) . " Days" ) ;
+                        $endDate->modify("+" . intval( $settings['filter']['maxDays']) . " Days" ) ;
 
 					}
 
 					break;
 			}
+            $startDate->setTime(0,0,0) ;
 
-			$startDate->setTime(0,0,0) ;
-			$endDate->setTime(0,0,0) ;
-			$constraints[] = $query->greaterThanOrEqual('start_date', $startDate );
+            $endDate->setTime(0,0,0) ;
 
-			if( intval( $settings['filter']['maxDays'] ) > 0 ) {
-				$constraints[] = $query->lessThanOrEqual('start_date', $endDate );
-			}
+            // Now set  the Date values of the Event when it starts or ends
+            $constraints[] = $query->greaterThanOrEqual('start_date', $startDate );
+
+            if( intval( $settings['filter']['maxDays'] ) > 0 ) {
+                $constraints[] = $query->lessThanOrEqual('start_date', $endDate );
+            }
+
+
+
 		}
 
-
-
-
-		return $constraints;
+        return $constraints;
 	}
 
 	/**

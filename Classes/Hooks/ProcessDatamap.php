@@ -100,7 +100,21 @@ class ProcessDatamap {
                             $this->flashMessage['WARNING'][] = 'Registration Until date is after Event Start Date!' ;
                         }
                     }
+                    if ($this->event->getAccessStarttime()  >  ( $ST )) {
+                        $this->flashMessage['WARNING'][] = 'Event visibility Start date was after Start Date: ' .  $ST->format("d.m.Y - H:i") ;
+                        $this->event->setAccessStarttime( $ST) ;
+                    }
+                    if ($this->event->getAccessEndtime()  <  ( $ST ) &&  $this->event->getAccessEndtime() > 0 ) {
+                        $this->flashMessage['INFO'][] = 'Event visibility END date is BEFORE Start Date: ' .  $ST->format("d.m.Y - H:i") ;
+                        // $newaccessTime = new \DateTime( ) ;
+                        // $newaccessTime->setDate($this->event->getStartDate()->format("Y"), $this->event->getStartDate()->format("m") , $this->event->getStartDate()->format("d")) ;
+                        // $newaccessTime->setTime(0 , 0 , $this->event->getStartTime() ) ;
 
+                        // $this->event->setAccessEndtime( $newaccessTime ) ;
+                    }
+                    if ($this->event->getAccessEndtime() && $this->event->getAccessEndtime()->getTimestamp() < time() ) {
+                        $this->flashMessage['WARNING'][] = 'Event visibility END date is in the past: ' .  $this->event->getAccessEndtime()->format("d.m.Y - H:i") ;
+                    }
                     // IMPORTANT: without this modification startDate  will have still added the start time !
                     $ST = $ST->modify( "-" . intval($this->event->getStartTime() ) . " second" ) ;
                     unset($ST) ;
@@ -134,8 +148,21 @@ class ProcessDatamap {
                         } else {
                             $this->flashMessage['WARNING'][] = 'Registration Until date is after Event Start Date!' ;
                         }
+                    }
+                    if ($this->event->getAccessStarttime()  >  ( $ST )) {
+                        $this->flashMessage['WARNING'][] = 'Event visibility Start date was after Start Date: ' .  $ST->format("d.m.Y - H:i") ;
+                        $this->event->setAccessStarttime( $ST) ;
+                    }
+                    if ($this->event->getAccessEndtime()  <  ( $ST ) &&  $this->event->getAccessEndtime() > 0 ) {
+                        $this->flashMessage['INFO'][] = 'Event visibility END date is BEFORE Start Date: ' .  $ST->format("d.m.Y - H:i") ;
+                        // $newaccessTime = new \DateTime( ) ;
+                        // $newaccessTime->setDate($this->event->getStartDate()->format("Y"), $this->event->getStartDate()->format("m") , $this->event->getStartDate()->format("d")) ;
+                        // $newaccessTime->setTime(0 , 0 , $this->event->getStartTime() ) ;
 
-
+                        // $this->event->setAccessEndtime( $newaccessTime ) ;
+                    }
+                    if ($this->event->getAccessEndtime() &&  $this->event->getAccessEndtime()->getTimestamp() < time() ) {
+                        $this->flashMessage['WARNING'][] = 'Event visibility END date is in the past: ' .  $this->event->getAccessEndtime()->format("d.m.Y - H:i") ;
                     }
                     // IMPORTANT: without this modification startDate  will have still added the start time !
                     $ST = $ST->modify( "-" . intval($this->event->getStartTime() ) . " second" ) ;
@@ -348,7 +375,9 @@ class ProcessDatamap {
                         $typeInt = \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR;
 						break;
 				}
-				if(($typeInt > -1 && $this->pObj->admin) || $typeInt > -1)
+				// echo "admin: " . $this->pObj->admin . " Type : " . $typeInt ;
+				// die;
+				if(( $this->pObj->admin) || $typeInt > -1)
 				{
 				    foreach ( $messageArray as $messageText ) {
                         $tempText = ( is_string( $messageText )) ? $messageText : var_export( $messageText , true )  ;
