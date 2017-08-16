@@ -105,6 +105,7 @@ class EventController extends BaseController
      * action show
      *
      * @param \JVE\JvEvents\Domain\Model\Event $event
+     * @ignorevalidation $event
      * @return void
      */
     public function showAction(\JVE\JvEvents\Domain\Model\Event $event)
