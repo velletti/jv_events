@@ -208,6 +208,7 @@ class RegistrantController extends BaseController
      * action new
      *
      * @param \JVE\JvEvents\Domain\Model\Event $event
+     * @ignorevalidation $event
      * @return void
      */
     public function newAction(\JVE\JvEvents\Domain\Model\Event $event)
@@ -274,10 +275,10 @@ class RegistrantController extends BaseController
      * action createAction
      *
      * @param \JVE\JvEvents\Domain\Model\Event $event
+     * @ignorevalidation $event
      * @param \JVE\JvEvents\Domain\Model\Registrant $registrant
 	 * @validate $registrant \JVE\JvEvents\Validation\Validator\RegistrantValidator
-	 * @validate $event \JVE\JvEvents\Validation\Validator\EventRegistrantValidator
-     * @return void
+	 * @return void
      */
     public function createAction(\JVE\JvEvents\Domain\Model\Event $event, \JVE\JvEvents\Domain\Model\Registrant $registrant) {
 		$this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
