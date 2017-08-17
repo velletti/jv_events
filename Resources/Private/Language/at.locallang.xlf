@@ -65,9 +65,17 @@
 			<target>Herr</target>
 		</trans-unit>
 		<trans-unit id="register_head_company_data" approved="yes">
-			<source>Company Data / Invoice Address</source>
-			<target>Firma / Rechnungsadresse</target>
+            <source>Company Data / Invoice Address</source>
+            <target>Firma / Rechnungsadresse</target>
+        </trans-unit>
+		<trans-unit id="register_head_company_data_simple" approved="yes">
+			<source>Company Data</source>
+			<target>Firma</target>
 		</trans-unit>
+		<trans-unit id="register_head_company_data_simple" approved="yes">
+            <source>Company Data</source>
+            <target>Firma</target>
+        </trans-unit>
 		<trans-unit id="register_head_different_billing_address" approved="yes">
 			<source>Billing address, if different</source>
 			<target>Abweichende Rechnungsadresse</target>

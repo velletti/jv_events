@@ -52,7 +52,7 @@
 
 
 		<fieldset class="form-group">
-			<legend>{f:translate(key: 'register_head_company_data')}</legend>
+			<legend>{f:translate(key: 'register_head_company_data_simple')}</legend>
 
 			<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRow" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.company', FieldName : 'company' , settings: settings , cols: 'col-sm-12' ,  required: '{f:if(condition: \'{settings.register.required.company}\' , then: \'TRUE\')}'}"/>
 

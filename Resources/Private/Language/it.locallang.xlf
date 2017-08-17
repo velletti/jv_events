@@ -67,6 +67,10 @@
 			<source>Company Data / Invoice Address</source>
 			<target>Azienda / Indirizzo di fatturazione</target>
 		</trans-unit>
+		<trans-unit id="register_head_company_data_simple" approved="yes">
+            <source>Company Data</source>
+            <target>Azienda</target>
+        </trans-unit>
 		<trans-unit id="register_head_different_billing_address" approved="yes">
 			<source>Billing address, if different</source>
 			<target>Indirizzo di fatturazione, se diverso</target>

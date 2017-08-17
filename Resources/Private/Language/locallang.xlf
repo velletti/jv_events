@@ -54,6 +54,9 @@
 		<trans-unit id="register_head_company_data">
 			<source>Company Data / Invoice Address</source>
 		</trans-unit>
+		<trans-unit id="register_head_company_data_simple">
+            <source>Company Data</source>
+        </trans-unit>
 		<trans-unit id="register_head_different_billing_address">
 			<source>Billing address, if different</source>
 		</trans-unit>
