@@ -65,7 +65,9 @@ class RegisterCitrixSignal {
         $debugmail = "\n+++++++++++ got this data from Controller ++++++++++++++++++\n"  ;
         $debugmail .= "\nRegistrants Email " .  $registrant->getEmail() .  ""  ;
         $debugmail .= "\nEvent Id: " .  $event->getUid() . " Date: " . $event->getStartDate()->format( "d.m.Y" )   . " | Citrix ID: " . $event->getCitrixUid()   ;
+        $debugmailTitle = "Event Id: " .  $event->getUid() . " Date: " . $event->getStartDate()->format( "d.m.Y" )   . " | Citrix ID: " . $event->getCitrixUid()   ;
         $debugmail .= "\nTitle: " .  $event->getName()  ;
+        $debugmailTitle .= "\ - Title: " .  $event->getName()  ;
 
         $error = 2 ; // overwritten again if successfull ...
         $httpresponseErr = "" ;
@@ -83,6 +85,7 @@ class RegisterCitrixSignal {
         $debugmail .=  $citrixURL ;
 
         $data['webinar'] = $event->getCitrixUid() ;
+        $tag = "[CITRIX]" ;
         if ( substr($_SERVER['SERVER_NAME'], -6 , 6 )  == ".local"  || $settings['debug'] > 0 ) {
             echo "<hr>No transport to salesForce / Citrix on a local testserver or if Debug is  set a value > 0 .. if you want to test curl and see response also local, set debug to 2  !!! <pre>" ;
             echo $debugmail  ;
@@ -126,6 +129,7 @@ class RegisterCitrixSignal {
                     $error = 1 ;  // already registered for that event ..
                 }
             } else {
+                $tag = "[CITRIX-ERROR]" ;
                 $httpresponseErr = $httpval[1] ;
                 $httpresponseErrText = substr($result , 0 ,1800)  ;
                 $debugmail .= "\n+++++++++++ citrix error: ++++++++++++++++++\n"  ;
@@ -145,6 +149,7 @@ class RegisterCitrixSignal {
             Die ;
         }
 
+        // mail("jvelletti@allplan.com" , $tag  . $debugmailTitle , $debugmail ) ;
 
     }
 
