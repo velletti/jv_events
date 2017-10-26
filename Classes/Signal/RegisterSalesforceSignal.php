@@ -125,7 +125,7 @@ class RegisterSalesforceSignal {
 
 
         $data['debug']  = "1" ;
-        $data['debugEmail']  = "jVelletti@gmail.com" ;
+        $data['debugEmail']  = "connect-admin@allplan.com" ;
 
         $data['retURL']  = $_SERVER['SERVER_NAME'];
 
