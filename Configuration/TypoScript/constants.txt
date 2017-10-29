@@ -59,6 +59,10 @@ plugin.tx_jvevents_events {
 				3MegraAT = gender,company,streetAndNr,firstName,lastName,country,zip,city,phone,email,privacy,hotprice,more1
 
 			}
+			attachments {
+				# if you set this to 1 the field more6int is shown and the following files are sent
+				enabled = 1
+			}
 		}
 
 	}

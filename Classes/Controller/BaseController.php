@@ -335,9 +335,15 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             ->setSubject($subject);
 
         // Possible attachments here
-        //foreach ($attachments as $attachment) {
-        //	$message->attach(\Swift_Attachment::fromPath($attachment));
-        //}
+        $layout = $this->settings['LayoutRegister'] ;
+        $attachments = $this->settings['register']['attachments'][$layout] ;
+
+        if ( $registrant->getMore6int() == 1  && is_array( $attachments ) ) {
+            foreach ($attachments as $attachment) {
+                $message->attach(\Swift_Attachment::fromPath($attachment));
+            }
+        }
+
         $message->setBody($emailBody, 'text/html');
         $message->addPart($plainMsg, 'text/plain');
 

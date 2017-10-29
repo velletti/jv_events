@@ -119,7 +119,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * Access Start Time of this event (default TYP3 Field )
-     *
+     * @ignorevalidation
      * @var \DateTime
      */
     protected $starttime ;

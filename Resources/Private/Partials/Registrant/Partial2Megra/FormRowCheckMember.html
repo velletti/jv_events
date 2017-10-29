@@ -1,0 +1,30 @@
+<div class="col-xs-12">
+	<div class="checkbox" >
+		<label for="more6int_helper">
+			<f:form.checkbox class="checkbox" id="jv_events_more6inthelper" name="more6inthelper" value="1" checked=""/>
+			Ich bin noch kein Megra e.V. Mitglied
+		</label>
+	</div>
+</div>
+<div class="col-xs-12">
+	<div id="jv_events_more6int_sub" class="well">
+		<h4>Hinweise für Nichtmitglieder</h4>
+		Die Teilnahme an Veranstaltungen der MEGRA e.V. ist nur Mitgliedern vorbehalten. Um auch Nichtmitgliedern die Seminarteilnahme zu ermöglichen, können Sie gleichzeitig mit der Anmeldung zu einer Veranstaltung automatisch die Mitgliedschaft beantragen. Über Ihre Aufnahme entscheidet der Vorstand.
+		Der Mitgliedsbeitrag für das laufende Kalenderjahr ist in der von Nichtmitgliedern zu entrichtenden Seminargebühr bereits enthalten. Die Mitgliedsgebühr für jedes weitere Kalenderjahr beträgt € 140.00 bzw. € 35.00.<br>
+		<br>
+		<b>Wichtiger Hinweis zur Mitgliedschaft:</b><br>
+		Der Austritt aus der MEGRA e.V. kann jeweils bis spätestens <b>15.12. </b>zum Ende eines Kalenderjahres durch schriftliche Mitteilung an den Vorstand erklärt werden. Andernfalls verlängert sich die Mitgliedschaft automatisch um ein weiteres Kalenderjahr. Sie erhalten zusammen mit der Anmeldebestätigung auch die Satzung und das Beitrittsformular der MEGRA e.V. in ihrer jeweils gültigen Fassung.<br>
+		Nähere Informationen finden Sie auf der Seite <f:link.page pageUid="22" ><b>'Megra -> Mitglied werden'</b></f:link.page>.<br>
+
+
+		<div class="checkbox" >
+			<label for="more6int">
+				<f:form.checkbox class="checkbox" id="jv_events_more6int" property="more6int" value="1" checked=""/>
+
+				Ich bin Nichtmitglied und bestätige hiermit, dass ich gleichzeitig mit meiner Anmeldung zur oben genannten Veranstaltung die Mitgliedschaft bei der MEGRA e.V. beantrage. *
+			</label>
+
+			<f:render partial="FieldError" section="Main" arguments="{for: 'registrant', field: 'more6int'}" />
+		</div>
+	</div>
+</div>

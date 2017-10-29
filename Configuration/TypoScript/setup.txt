@@ -67,6 +67,20 @@ plugin.tx_jvevents_events {
 				2Megra 	=	{$plugin.tx_jvevents_events.settings.register.requiredFields.2Megra}
 				3MegraAT 	=	{$plugin.tx_jvevents_events.settings.register.requiredFields.3MegraAT}
 			}
+			attachments {
+				# if you set this to 1 the field more6int is shown and the following files are sent
+				enabled = {$plugin.tx_jvevents_events.settings.register.attachments.enabled}
+				2Megra {
+					1 = fileadmin/user_upload/files/2016/Aufnahmeantrag/MEGRA_Aufnahmeantrag2016.pdf
+					2 = fileadmin/user_upload/Megra_Satzung.pdf
+					3 = fileadmin/user_upload/files/Widerrufsbelehrung.pdf
+				}
+				3MegraAT {
+					1 = fileadmin/user_upload/files/2016/Aufnahmeantrag/MEGRA_Aufnahmeantrag2016.pdf
+					2 = fileadmin/user_upload/Megra_Satzung.pdf
+					3 = fileadmin/user_upload/files/Widerrufsbelehrung.pdf
+				}
+			}
 			allowedCountrys =	{$plugin.tx_jvevents_events.settings.register.allowedCountrys}
 			defaultCountry =	{$plugin.tx_jvevents_events.settings.register.defaultCountry}
 

@@ -13,7 +13,6 @@
 				<f:if condition="{propertyPath}=={field}">
 					<f:for each="{propertyErrors}" as="propertyError">
 						<div class="error errorMessage errorField field{field -> f:cObject(typoscriptObjectPath: 'plugin.tx_sfregister.fieldError')}">
-							{propertyError.message} : {propertyPath}
 							{propertyError.message -> f:format.printf(arguments: {field: '{f:translate(key: \'{propertyPath}\')}'})}
 						</div>
 					</f:for>

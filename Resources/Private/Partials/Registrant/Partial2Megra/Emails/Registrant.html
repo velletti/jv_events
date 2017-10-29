@@ -50,8 +50,12 @@
 				</p>
 			</f:if>
 		</f:if>
-
-
+		<f:if condition="{registrant.more6int}==1">
+			<b>Wichtiger Hinweis!</b><br/>
+			Als Nichtmitglied haben Sie gleichzeitig mit meiner Anmeldung zur genannten Veranstaltung die Mitgliedschaft bei der MEGRA e.V. beantragt.
+			Um Ihre Anmeldung abzuschliessen, senden Sie bitte das ausgefüllte Beitrittsformular an uns zurück.
+			<br/>
+		</f:if>
 
 		<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
 			{f:translate(key: 'tx_jvevents_domain_model_registrant.gender')}:
