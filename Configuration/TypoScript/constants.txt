@@ -61,7 +61,7 @@ plugin.tx_jvevents_events {
 			}
 			attachments {
 				# if you set this to 1 the field more6int is shown and the following files are sent
-				enabled = 1
+				enabled = 0
 			}
 		}
 
