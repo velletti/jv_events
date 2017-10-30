@@ -71,14 +71,14 @@ plugin.tx_jvevents_events {
 				# if you set this to 1 the field more6int is shown and the following files are sent
 				enabled = {$plugin.tx_jvevents_events.settings.register.attachments.enabled}
 				2Megra {
-					1 = fileadmin/user_upload/files/2016/Aufnahmeantrag/MEGRA_Aufnahmeantrag2016.pdf
-					2 = fileadmin/user_upload/Megra_Satzung.pdf
-					3 = fileadmin/user_upload/files/Widerrufsbelehrung.pdf
+					1 = fileadmin/user_upload/files/2017/MEGRA_Aufnahmeantrag_2017.pdf
+					2 = fileadmin/user_upload/files/2017/MEGRA_Satzung_2017.pdf
+					3 = fileadmin/user_upload/files/2017/MEGRA_Widerrufsbelehrung.pdf
 				}
 				3MegraAT {
-					1 = fileadmin/user_upload/files/2016/Aufnahmeantrag/MEGRA_Aufnahmeantrag2016.pdf
-					2 = fileadmin/user_upload/Megra_Satzung.pdf
-					3 = fileadmin/user_upload/files/Widerrufsbelehrung.pdf
+					1 = fileadmin/user_upload/files/2017/MEGRA_Aufnahmeantrag_2017.pdf
+					2 = fileadmin/user_upload/files/2017/MEGRA_Satzung_2017.pdf
+					3 = fileadmin/user_upload/files/2017/MEGRA_Widerrufsbelehrung.pdf
 				}
 			}
 			allowedCountrys =	{$plugin.tx_jvevents_events.settings.register.allowedCountrys}
