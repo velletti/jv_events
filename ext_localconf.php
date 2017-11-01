@@ -17,8 +17,9 @@ if (!defined('TYPO3_MODE')) {
 	),
 	// non-cacheable actions
 	array(
-		'Event' => 'search, new, create, edit, update, register, confirm, delete',
-		'Registrant' => 'new,create,delete,confirm',
+		'Event' => 'show, search, new, create, edit, update, register, confirm, delete',
+        'Organizer' => 'show, new, create, edit, update, delete',
+		'Registrant' => 'list,new,create,delete,confirm',
 		'Location' => 'new, create, edit, update, delete',
 		
 	)
