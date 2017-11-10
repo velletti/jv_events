@@ -68,7 +68,10 @@
 				{registrant.additionalInfo}
 			</p>
 
-		</f:if>
+			<f:if condition="{registrant.more6int}">
+				<b>Teilnehmer beantragt Mitgliedschaft!</b><br/>
+
+			</f:if>
 
 
 	</f:then>
@@ -118,7 +121,10 @@ UID-Nr: {registrant.more1}
 	{f:translate(key: 'tx_jvevents_domain_model_registrant.country')}: {registrant.country2} <br/>
 </f:if>
 *********************************
-{signature.plain}
+		<f:if condition="{registrant.more6int}">
+			!!! Teilnehmer beantragt Mitgliedschaft!! <br/>
+		</f:if>
+		{signature.plain}
 
 	</f:else>
 </f:if>
