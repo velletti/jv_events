@@ -433,13 +433,16 @@ function jv_events_submit() {
 
 	}) ;
 	// Special Field more6int
-    if( $('#jv_events_more6inthelper').is( ":checked" )) {
-        if( !$('#jv_events_more6int').is( ":checked" )) {
-            $('#jv_events_more6int_sub').addClass('has-error') ;
-            error = true ;
-        }
+    if( $('#jv_events_more6inthelper').val() == 1 ) {
+        if( $('#jv_events_more6inthelper').is( ":checked" ) || $('#jv_events_clientid').val(  ) ) {
+            if( !$('#jv_events_more6int').is( ":checked" )) {
+                $('#jv_events_more6int_sub').addClass('has-error') ;
+                error = true ;
+            }
 
+        }
     }
+
 
 	if( error) {
 		jQuery('#jv_events_js_error').removeClass('hidden') ;
