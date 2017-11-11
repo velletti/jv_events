@@ -437,6 +437,7 @@ function jv_events_submit() {
         if( $('#jv_events_more6inthelper').is( ":checked" ) || $('#jv_events_clientid').val(  ) ) {
             if( !$('#jv_events_more6int').is( ":checked" )) {
                 $('#jv_events_more6int_sub').addClass('has-error') ;
+                $('#jv_events_more6int_sub').show('fast') ;
                 error = true ;
             }
 
