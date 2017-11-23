@@ -1,0 +1,15 @@
+{namespace register=JVE\JvEvents\ViewHelpers}
+
+<div class="{cols}">
+	<fieldset class="form-group" >
+		<label for="jv_events_country">
+			<f:translate key="{label}" />
+			<f:if condition="{required}">
+				<span class="required">*</span>
+			</f:if>
+		</label>
+		<register:SelectStaticCountries class="form-control jv-events-req-{required}" property="country"  value="{settings.register.defaultCountry}"  id="jv_events_country"
+			allowedCountries="{settings.register.allowedCountrys}" optionLabelField="cnShortLocal" sortByOptionLabel="TRUE"/>
+		<f:render partial="FieldError" section="Main" arguments="{for: 'registrant', field: '{FieldName}'}" />
+	</fieldset>
+</div>

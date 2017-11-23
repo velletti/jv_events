@@ -1,0 +1,317 @@
+{namespace event=JVE\JvEvents\ViewHelpers}
+
+<f:comment xmlns:f="http://www.w3.org/1999/html">
+	<!-- =========================================================================================================================== -->
+	<!-- Main infos -->
+	<!-- =========================================================================================================================== -->
+</f:comment>
+
+<h1 data-eventUid="{event.uid}" data-eventPid="{event.pid}">{event.name}</h1>
+
+<div class="eventdata">
+
+	<div class="row">
+		<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_event.date" />:</strong></div>
+		<div class="col-md-10">{event.startDate -> f:format.date(format:"d.m.Y")}
+		<f:if condition="{event.startDate < event.endDate}">
+			<f:comment>- {event.endDate -> f:format.date(format:"d.m.Y")}</f:comment>
+		</f:if>
+		</div>
+	</div>
+
+	<f:if condition="{event.allDay}">
+		<f:else>
+			<div class="row">
+				<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_event.time" />:</strong></div>
+				<div class="col-md-10">{event.startTime -> event:format.date( format:"H:i")}<f:if condition="{event.endTime}"> - {event.endTime -> event:format.date( format:"H:i")}</f:if></div>
+			</div>
+		</f:else>
+	</f:if>
+
+	<!-- =============================================================================================================================== -->
+	<hr>
+	<!-- =============================================================================================================================== -->
+
+	<f:if condition="{event.location.name}">
+		<div class="row">
+			<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_location.name" />:</strong></div>
+			<div class="col-md-10">{event.location.name}</div>
+		</div>
+	</f:if>
+
+	<f:if condition="{event.location.city}">
+		<div class="row">
+			<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_location.street_and_nr" />:</strong></div>
+			<div class="col-md-10">
+				<f:if condition="{event.location.streetAndNr}">
+					{event.location.streetAndNr}<br>
+				</f:if>
+				<f:if condition="{event.location.city}">
+					{event.location.zip} {event.location.city}
+				</f:if>
+			</div>
+		</div>
+	</f:if>
+
+	<!-- =============================================================================================================================== -->
+	<hr>
+	<!-- =============================================================================================================================== -->
+
+	<f:if condition="{event.EventCategory}">
+		<div class="row">
+			<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_category" />:</strong></div>
+			<div class="col-md-10">
+				<f:for each="{event.EventCategory}" as="EventCategory" iteration="iteration"><f:if condition="{iteration.index} > 0 ">, </f:if>{EventCategory.title}</f:for>
+			</div>
+		</div>
+	</f:if>
+
+	<f:if condition="{event.Tags}">
+		<div class="row">
+			<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_event.tags" />:</strong></div>
+			<div class="col-md-10">
+				<f:for each="{event.Tags}" as="Tag" iteration="iteration"><f:if condition="{iteration.index} > 0 ">, </f:if>{Tag.name}</f:for>
+			</div>
+		</div>
+	</f:if>
+
+	<f:if condition="{event.isRegistrationPossible}">
+		<f:then>
+			<event:regLink event="{event}" settings="{settings}" uriOnly="0" class="button-orange-filled">
+				{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:list.register.button.subscribe' , default:'Anmelden')}
+			</event:regLink>
+		</f:then>
+		<f:else>
+			<f:if condition="{event.isNoFreeSeats}">
+				<f:then>
+					<h4>{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:register.overbooked' , default:'overbooked')}</h4>
+					<p>{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:register.overbooked_text' , default:'no free seats available')}</p>
+				</f:then>
+				<f:else>
+					<h4>{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:register.registration_not_possible_text' , default:'Error')}</h4>
+					<p>{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:register.deadline_expired_text' , default:'Registration deadline has expired ')}</p>
+
+				</f:else>
+
+			</f:if>
+
+		</f:else>
+	</f:if>
+
+
+
+</div>
+
+
+<f:comment>
+	<!-- =========================================================================================================================== -->
+	<!-- Tab-nav -->
+	<!-- =========================================================================================================================== -->
+</f:comment>
+
+<ul class="nav nav-tabs">
+	<li class="active">
+		<a href="#jv_events_event" data-toggle="tab"><f:translate key="tx_jvevents_domain_model_event.details.tab.details" /></a>
+	</li>
+	<f:if condition="{event.location.lng}">
+		<li>
+			<a href="#jv_events_map" data-toggle="tab"><f:translate key="tx_jvevents_domain_model_event.details.tab.map" /></a>
+		</li>
+	</f:if>
+	<li>
+		<a href="#jv_events_contact" data-toggle="tab"><f:translate key="tx_jvevents_domain_model_event.details.tab.contact" /></a>
+	</li>
+
+</ul>
+
+
+<f:comment>
+	<!-- =========================================================================================================================== -->
+	<!-- Details -->
+	<!-- =========================================================================================================================== -->
+</f:comment>
+
+
+<div class="tab-content clearfix">
+	<div class="tab-pane active" id="jv_events_event">
+
+		<h2><f:translate key="tx_jvevents_domain_model_event.details.tab.details" /></h2>
+
+		<div class="data clearfix">
+			<f:format.html parseFuncTSPath="lib.jveventsRTE">{event.description}</f:format.html>
+		</div>
+
+		<f:if condition="{event.files}">
+
+			<f:then>
+
+				<h3><f:translate key="tx_jvevents_domain_model_event.files" /></h3>
+				<ul class="files">
+					<f:for each="{event.files}" as="file" >
+						<li>
+							<a class="downloadPdf" href="{file.originalResource.publicUrl -> f:format.htmlspecialchars()}" target="_blank">
+								{f:if(condition:file.originalResource.title, then:file.originalResource.title, else:file.originalResource.name)}
+							</a>
+							({file.originalResource.size -> f:format.bytes()})
+						</li>
+					</f:for>
+				</ul>
+
+			</f:then>
+
+			<f:else>
+				<event:l10nFalImg event="{event}" tableFieldName="files">
+					<f:for each="{l10nfalimg}" as="falfile" iteration="iteration">
+						<f:if condition="{iteration.isFirst}">
+							<h3><f:translate key="tx_jvevents_domain_model_event.files" /></h3>
+							<ul class="files">
+						</f:if>
+						<li>
+							<a class="downloadPdf" href="{falfile._path -> f:format.htmlspecialchars()}" target="_blank">
+								{f:if(condition:falfile._file.propertiesOfFileReference.title, then:falfile._file.propertiesOfFileReference.title, else:falfile._file.originalFile.name)}
+							</a>
+							({falfile._file.originalFile.properties.size -> f:format.bytes()})
+						</li>
+						<f:if condition="{iteration.isLast}">
+							</ul>
+						</f:if>
+					</f:for>
+				</event:l10nFalImg>
+			</f:else>
+
+
+
+		</f:if>
+
+		<f:if condition="{event.images}">
+
+			<f:then>
+				<h3><f:translate key="tx_jvevents_domain_model_event.images" /></h3>
+				<ul class="images clearfix">
+					<f:for each="{event.images}" as="image" >
+						<li>
+							<f:image src="{image.uid}" maxWidth="300" maxHeight="220" alt="{image.alternative}" title="{image.title}" treatIdAsReference="true" />
+						</li>
+					</f:for>
+				</ul>
+			</f:then>
+
+			<f:else>
+				<event:l10nFalImg event="{event}" tableFieldName="images">
+					<f:for each="{l10nfalimg}" as="falimage" iteration="iteration">
+						<f:if condition="{iteration.isFirst}">
+							<h3><f:translate key="tx_jvevents_domain_model_event.images" /></h3>
+							<ul class="images clearfix">
+						</f:if>
+						<li>
+							<f:image
+								src="{falimage._file.publicUrl}"
+								title="{falimage._file.title}"
+								alt="{falimage._file.alternative}"
+								maxWidth="300"
+								maxHeight="220"
+								treatIdAsReference="1"
+							/>
+						</li>
+						<f:if condition="{iteration.isLast}">
+							</ul>
+						</f:if>
+					</f:for>
+				</event:l10nFalImg>
+			</f:else>
+
+		</f:if>
+
+	</div>
+
+
+	<f:comment>
+		<!-- =========================================================================================================================== -->
+		<!-- Map -->
+		<!-- =========================================================================================================================== -->
+	</f:comment>
+	<f:if condition="{event.location.lng}">
+		<div class="tab-pane " id="jv_events_map" >
+			<h2><f:translate key="tx_jvevents_domain_model_event.details.tab.map" /></h2>
+			<f:render partial="GoogleMapsAllplan" arguments="{addresses: {0:event.location}, settings:settings}" />
+		</div>
+	</f:if>
+
+
+	<f:comment>
+		<!-- =========================================================================================================================== -->
+		<!-- Contact -->
+		<!-- =========================================================================================================================== -->
+	</f:comment>
+	<div class="tab-pane" id="jv_events_contact">
+
+
+		<div class="row">
+			<div class="col-xs-12 col-sm-6">
+
+				<h2><f:translate key="tx_jvevents_domain_model_event.details.tab.contact" /></h2>
+
+				<f:if condition="{event.organizer.name}">
+					<div class="row">
+						<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_organizer.name" />:</strong></div>
+						<div class="col-md-10">{event.organizer.name}</div>
+					</div>
+				</f:if>
+
+				<f:if condition="{event.organizer.email}">
+					<div class="row">
+						<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_organizer.email" />:</strong></div>
+						<div class="col-md-10"><f:link.email class="email" email="{event.organizer.email}" /></div>
+					</div>
+				</f:if>
+
+				<f:if condition="{event.organizer.phone}">
+					<div class="row">
+						<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_organizer.phone" />:</strong></div>
+						<div class="col-md-10">{event.organizer.phone}</div>
+					</div>
+				</f:if>
+
+			</div>
+			<div class="col-xs-12 col-sm-6 logo">
+
+				<f:if condition="{event.teaserImage}">
+					<f:then>
+						<f:image src="{event.teaserImage.uid}" alt="{event.teaserImage.alternative}" title="{event.teaserImage.title}" maxWidth="300" maxHeight="220" treatIdAsReference="true" />
+					</f:then>
+					<f:else>
+						<event:l10nFalImg event="{event}" tableFieldName="teaser_image">
+							<f:for each="{l10nfalimg}" as="falimage" iteration="i">
+								<f:if condition="{i.index} == 0">
+									<f:image
+										src="{falimage._file.publicUrl}"
+										title="{falimage._file.title}"
+										alt="{falimage._file.alternative}"
+										maxWidth="300"
+										maxHeight="220"
+										treatIdAsReference="1"
+									/>
+								</f:if>
+							</f:for>
+						</event:l10nFalImg>
+					</f:else>
+
+				</f:if>
+
+			</div>
+		</div>
+
+	</div>
+
+	<div class="tab-pane" id="jv_events_debug">
+		<f:if condition="{settings.debug} > 0">
+			<f:render partial="Event/Single/MicroFormat" arguments="{event: event, settings: settings}"/>
+		</f:if>
+	</div>
+
+</div>
+
+
+<script type="application/ld+json">
+	<f:render partial="Event/Single/MicroFormat" arguments="{event: event, settings: settings}"/>
+</script>
