@@ -1,9 +1,16 @@
 <?php
 defined('TYPO3_MODE') or die();
-$_EXTKEY = 'jve_template' ;
+// EXTKEY is not set here .. see https://docs.typo3.org/typo3cms/ExtbaseFluidBook/b-ExtbaseReference/Index.html
+$_EXTKEY = 'jv_events' ;
 
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
+    'Jve.' . $_EXTKEY,
+    'Events',
+    'Events'
+);
 
 $pluginSignature = str_replace('_','',$_EXTKEY) . '_events';
+// $pluginSignature = str_replace('_','',$_EXTKEY) ;
 $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist'][$pluginSignature] = 'pi_flexform';
 $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist'][$pluginSignature] = 'pages, recursive,select_key';
 
@@ -42,7 +49,6 @@ if (TYPO3_MODE === 'BE') {
 }
 */
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'Eventmanagement');
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_jvevents_domain_model_event', 'EXT:jv_events/Resources/Private/Language/locallang_csh_tx_jvevents_domain_model_event.xlf');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_jvevents_domain_model_event');
@@ -61,6 +67,5 @@ if (TYPO3_MODE === 'BE') {
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_jvevents_domain_model_tag', 'EXT:jv_events/Resources/Private/Language/locallang_csh_tx_jvevents_domain_model_tag.xlf');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_jvevents_domain_model_tag');
-## EXTENSION BUILDER DEFAULTS END TOKEN - Everything BEFORE this line is overwritten with the defaults of the extension builder
 
 

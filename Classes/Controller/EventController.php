@@ -87,6 +87,7 @@ class EventController extends BaseController
         /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $events */
         $events = $this->eventRepository->findByFilter(false, false,  $this->settings );
 
+
 		$this->view->assign('events', $events);
         // read settings from Flexform .. if not set, take it from typoscript setup
         if( intval( $this->settings['detailPid'] ) < 1 ) {
@@ -94,10 +95,8 @@ class EventController extends BaseController
         }
 
         $eventsFilter = $this->generateFilter( $events->toArray() ) ;
-
         $this->view->assign('eventsFilter', $eventsFilter);
         $this->view->assign('settings', $this->settings );
-
     }
     
     /**
