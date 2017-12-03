@@ -1,4 +1,74 @@
-...
-<div>
-    Test
+{namespace event=JVE\JvEvents\ViewHelpers}
+
+<div class="jv-events-singleEvent" data-eventUid="{event.uid}" data-monthUid="{f:format.date(format:'m.Y', date: event.startDate )}" data-cityuid="{event.location.city}" data-catuids="{cat.uid -> f:for(each: event.EventCategory, as: 'cat', iteration: 'i')}"  data-taguids="">
+
+<div class="well well-sm well-primary ">
+    <div class="row row-fluid">
+        <div class="col-sm-2 col-xs-12">
+            <f:link.action pageUid="{settings.detailPid}" action="show" arguments="{event : event}">
+                {event.startDate -> f:format.date(format:"d.m.Y")}
+            </f:link.action>
+        </div>
+        <div class="col-sm-8 col-xs-12">
+            <h4>
+                <f:link.action  pageUid="{settings.detailPid}" action="show" arguments="{event : event}" >
+                    {event.name}
+                </f:link.action>
+            </h4>
+        </div>
+        <div class="col-sm-2 col-xs-12 text-right">
+            <f:if condition="{event.isRegistrationPossible}">
+                <event:regLink event="{event}" settings="{settings}" uriOnly="0">
+								<span class="btn btn-primary">
+									{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:list.register.button.subscribe' , default:'Anmelden')}
+								</span>
+                </event:regLink>
+            </f:if>
+        </div>
+        <div class="clearfix">
+            <br/>
+        </div>
+        <div class="col-sm-2 hidden-xs">
+            &nbsp;
+        </div>
+        <div class="col-sm-5 col-xs-12">
+            <f:if condition="{event.Tags}">
+                <div class="small">
+                    <f:for each="{event.Tags}" as="Tag" iteration="iteration"><f:if condition="{iteration.index} > 0 ">, </f:if>{Tag.name}
+                    </f:for>
+                </div>
+            </f:if>
+            <f:if condition="{event.teaser}">
+                <div class="jv_events_teaser">
+                    {event.teaser}
+                </div>
+            </f:if>
+
+            <f:if condition="{event.files}">
+                <br/>
+                <f:link.external defaultScheme="" uri="{event.files.0.originalResource.publicUrl -> f:format.htmlspecialchars()}" target="_blank">
+                    {f:if(condition:event.files.0.originalResource.title, then:event.files.0.originalResource.title, else:event.files.0.originalResource.name)}
+                </f:link.external>
+            </f:if>
+        </div>
+
+        <div class="col-sm-2 col-xs-6">
+            {event.location.city}
+        </div>
+
+        <div class="col-sm-3 col-xs-6">
+            <f:if condition="{event.EventCategory}">
+                <f:for each="{event.EventCategory}" as="EventCategory" iteration="iteration"><f:if condition="{iteration.index} > 0 ">, </f:if>{EventCategory.title}</f:for>
+
+            </f:if>
+
+        </div>
+
+    </div>
+</div>
+
+
+<div class="clearfix">
+    <br/>
+</div>
 </div>

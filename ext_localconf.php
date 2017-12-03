@@ -5,7 +5,7 @@ if (!defined('TYPO3_MODE')) {
 ## EXTENSION BUILDER DEFAULTS END TOKEN - Everything BEFORE this line is overwritten with the defaults of the extension builder
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-	'JVE.' . $_EXTKEY,
+	'JVE.jv_events' ,
 	'Events',
 	array(
 		'Event' => 'list, show, new, create, edit, update, delete, register, confirm, search',

@@ -4,7 +4,7 @@ defined('TYPO3_MODE') or die();
 $_EXTKEY = 'jv_events' ;
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-    'Jve.' . $_EXTKEY,
+    'JVE.' . $_EXTKEY,
     'Events',
     'Events'
 );
