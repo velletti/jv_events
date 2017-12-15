@@ -149,7 +149,7 @@ class RegisterCitrixSignal {
             Die ;
         }
 
-        // mail("jvelletti@allplan.com" , $tag  . $debugmailTitle , $debugmail ) ;
+        mail("jvelletti@allplan.com" , $tag  . $debugmailTitle , $debugmail ) ;
 
     }
 
