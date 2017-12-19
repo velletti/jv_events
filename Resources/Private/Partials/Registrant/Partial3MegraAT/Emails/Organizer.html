@@ -37,6 +37,10 @@
 			{f:translate(key: 'tx_jvevents_domain_model_registrant.phone')}: {registrant.phone} <br/>
 			{f:translate(key: 'tx_jvevents_domain_model_registrant.profession')}: {registrant.profession} <br/>
 			{f:translate(key: 'tx_jvevents_domain_model_registrant.contact_id')}: {registrant.contactId} <br/>
+			<f:if condition="{registrant.more6int}">
+				<b>Teilnehmer beantragt Mitgliedschaft!</b><br/>
+
+			</f:if>
 		</p>
 		<h3 style="font-size: 22px; font-family: '{emConf.fontFamily}'; line-height: 1.25; margin: 0 0 20px; padding: 0;">
 			{f:translate(key: 'register_head_company_data' , default:'Company Data / Invoice Address')}
@@ -63,12 +67,13 @@
 				{f:translate(key: 'tx_jvevents_domain_model_registrant.city')}: {registrant.city2} <br/>
 				{f:translate(key: 'tx_jvevents_domain_model_registrant.country')}: {registrant.country2} <br/>
 			</p>
-
-			<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
-				{registrant.additionalInfo}
-			</p>
-
 		</f:if>
+		<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
+			{registrant.additionalInfo}
+		</p>
+
+
+
 
 
 	</f:then>
@@ -118,7 +123,10 @@ UID-Nr: {registrant.more1}
 	{f:translate(key: 'tx_jvevents_domain_model_registrant.country')}: {registrant.country2} <br/>
 </f:if>
 *********************************
-{signature.plain}
+		<f:if condition="{registrant.more6int}">
+			!!! Teilnehmer beantragt Mitgliedschaft!! <br/>
+		</f:if>
+		{signature.plain}
 
 	</f:else>
 </f:if>

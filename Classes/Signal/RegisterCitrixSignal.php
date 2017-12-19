@@ -78,7 +78,7 @@ class RegisterCitrixSignal {
         $debugmail .= var_export( $json , true ) ;
 
         // $citrixURL =  'https://api.citrixonline.com/G2W/rest/organizers/1465928619483499268/webinars/' . $event->getCitrixUid() . '/registrants?oauth_token=24d3492169e0b4920678e1e20c1db967' ;
-        $citrixURL =  'https://api.citrixonline.com/G2W/rest/organizers/' . $settings['register']['citrix']['orgID']
+        $citrixURL =  'https://api.getgo.com/G2W/rest/organizers/' . $settings['register']['citrix']['orgID']
             . '/webinars/' . $event->getCitrixUid()
             . '/registrants?oauth_token=' . $settings['register']['citrix']['orgAUTH'];
         $debugmail .= "\n+++++++++++ store in citrix url: ++++++++++++++++++\n\n"  ;
@@ -149,7 +149,7 @@ class RegisterCitrixSignal {
             Die ;
         }
 
-        // mail("jvelletti@allplan.com" , $tag  . $debugmailTitle , $debugmail ) ;
+        mail("jvelletti@allplan.com" , $tag  . $debugmailTitle , $debugmail ) ;
 
     }
 

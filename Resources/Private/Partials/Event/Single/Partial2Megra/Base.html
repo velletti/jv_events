@@ -1,5 +1,23 @@
 {namespace event=JVE\JvEvents\ViewHelpers}
 
+
+<f:be.security.ifAuthenticated>
+	<f:then>
+		<p>
+			<b>Info:</b> You are loggend as Backend User
+		</p >
+	</f:then>
+	<f:else>
+		<f:if condition="{settings.fe_user.organizer.showTools}">
+			<f:then>
+				<p>
+					<b>Info:</b> You are logged in as Frontend user with special Access rights to see 'Event Tools'
+				</p>
+			</f:then>
+		</f:if>
+	</f:else>
+</f:be.security.ifAuthenticated>
+
 <ul class="nav nav-tabs">
 	<li class="active"><a id="jv_events_event_nav" data-toggle="tab" href="#jv_events_event">Info</a></li>
 	<f:if condition="{event.location.lng}">
@@ -176,7 +194,6 @@
 	</div>
 
 </div>
-
 
 
 
