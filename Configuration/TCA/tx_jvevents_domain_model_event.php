@@ -17,9 +17,7 @@ $returnArray = array(
         'sortby' => 'sorting',
 		'default_sortby' => 'start_date DESC',
 		'type' => 'event_type',
-		'versioningWS' => 2,
-		'versioning_followPages' => TRUE,
-		'requestUpdate' => 'all_day,event_type,with_registration,is_recurring,store_in_sales_force,store_in_citrix,notify_organizer,notify_registrant' ,
+		'versioningWS' => TRUE,
 		'languageField' => 'sys_language_uid',
 		'transOrigPointerField' => 'l10n_parent',
 		'transOrigDiffSourceField' => 'l10n_diffsource',
@@ -29,7 +27,7 @@ $returnArray = array(
 			'fe_group' => 'access' ,
 		),
 		'searchFields' => 'event_type,name,teaser,description,images,files,start_date,start_time,end_date,marketing_process_id,sales_force_record_type,sales_force_event_id,sales_force_session_id,subject_organizer,text_organizer,subject_registrant,introtext_registrant,text_registrant,organizer,location,',
-		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('jv_events') . 'Resources/Public/Icons/tx_jvevents_domain_model_event.gif'
+		'iconfile' => 'EXT:jv_events/Resources/Public/Icons/tx_jvevents_domain_model_event.gif'
 	),
 	'interface' => array(
 		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, event_type, teaser, description, images, files, all_day, start_date, start_time, end_date, end_time, access, with_registration, registration_until, registration_access, store_in_citrix, citrix_uid, store_in_sales_force, marketing_process_id, sales_force_record_type, sales_force_event_id, sales_force_session_id, available_seats,available_waiting_seats, registered_seats, unconfirmed_seats, notify_organizer, notify_registrant, subject_organizer, text_organizer, subject_registrant,introtext_registrant, text_registrant, need_to_confirm, is_recurring, frequency, freq_exception, is_exception_for, organizer, location, registrant, event_category, tags, url,',
@@ -40,7 +38,7 @@ $returnArray = array(
 		--div--;Relations, --palette--;;relations,
 		--div--;Files, teaser_image, files,
 		--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, --palette--;;access,'),
-		'2' => array('showitem' => 'event_type,--palette--;;dates,--palette--;;infos,description;;;richtext:rte_transform[mode=ts_links],
+		'2' => array('showitem' => 'event_type,--palette--;;dates,--palette--;;infos,description,
 		--div--;Advanced, --palette--;;language, --palette--;;frequent,
 		--div--;Relations, --palette--;;relations,
 		--div--;Files, teaser_image,images, files,
@@ -54,9 +52,9 @@ $returnArray = array(
 		'infos' => array('showitem' => 'name, --linebreak--, teaser '),
 		'relations' => array('showitem' => 'organizer, --linebreak--, location, --linebreak--,event_category, --linebreak--,tags '),
 		'frequent' => array('showitem' => 'is_recurring, --linebreak--, frequency, freq_exception, --linebreak--, is_exception_for,  '),
-		'language' => array('showitem' => 'sys_language_uid;;;;1-1-1, ,l10n_parent,--linebreak--,l10n_diffsource,' ),
+		'language' => array('showitem' => 'sys_language_uid, ,l10n_parent,--linebreak--,l10n_diffsource,' ),
 
-		'access' =>  array('showitem' =>  'hidden;;1,--linebreak--,access,--linebreak--,endtime' ),
+		'access' =>  array('showitem' =>  'hidden,--palette--;;1,--linebreak--,access,--linebreak--,endtime' ),
 		'notification' =>  array('showitem' =>  'notify_organizer;;1,notify_registrant;;1,need_to_confirm;;1,--linebreak--' ),
 		'notifyOrg' =>  array('showitem' =>  'subject_organizer,--linebreak--,text_organizer' ),
 		'notifyReg' =>  array('showitem' =>  'subject_registrant,--linebreak--,introtext_registrant,--linebreak--,introtext_registrant_confirmed,--linebreak--,text_registrant' ),
@@ -66,22 +64,22 @@ $returnArray = array(
 	
 		'sys_language_uid' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.language',
+			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.language',
 			'config' => array(
 				'type' => 'select',
 				'renderType' => 'selectSingle',
 				'foreign_table' => 'sys_language',
 				'foreign_table_where' => 'ORDER BY sys_language.title',
 				'items' => array(
-					array('LLL:EXT:lang/locallang_general.xlf:LGL.allLanguages', -1),
-					array('LLL:EXT:lang/locallang_general.xlf:LGL.default_value', 0)
+					array('LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', -1),
+					array('LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.default_value', 0)
 				),
 			),
 		),
 		'l10n_parent' => array(
 			'displayCond' => 'FIELD:sys_language_uid:>:0',
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.l18n_parent',
+			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
 			'config' => array(
 				'type' => 'select',
 				'renderType' => 'selectSingle',
@@ -107,7 +105,7 @@ $returnArray = array(
         ),
 		
 		't3ver_label' => array(
-			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.versionLabel',
+			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.versionLabel',
 			'config' => array(
 				'type' => 'input',
 				'size' => 30,
@@ -117,19 +115,21 @@ $returnArray = array(
 	
 		'hidden' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.hidden',
+			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
 			'config' => array(
 				'type' => 'check',
 			),
 		),
 		'starttime' => array(
 			'exclude' => 1,
-			'l10n_mode' => 'mergeIfNotBlank',
-			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.starttime',
+			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
 			'config' => array(
 				'type' => 'input',
+                'renderType' => 'inputDateTime' ,
+                'behaviour' => array(
+                    'allowLanguageSynchronization' => true ,
+                ) ,
 				'size' => 13,
-				'max' => 20,
 				'eval' => 'datetime',
 				'checkbox' => 0,
 				'default' => 0,
@@ -140,12 +140,14 @@ $returnArray = array(
 		),
 		'endtime' => array(
 			'exclude' => 1,
-			'l10n_mode' => 'mergeIfNotBlank',
-			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.endtime',
+			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
 			'config' => array(
 				'type' => 'input',
+                'renderType' => 'inputDateTime' ,
+                'behaviour' => array(
+                    'allowLanguageSynchronization' => true ,
+                ) ,
 				'size' => 13,
-				'max' => 20,
 				'eval' => 'datetime',
 				'checkbox' => 0,
 				'default' => 0,
@@ -161,6 +163,7 @@ $returnArray = array(
 			'config' => array(
 				'type' => 'select',
 				'renderType' => 'selectSingle',
+                'onChange' => 'reload' ,
 				'items' => array(
 					array('LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.event_type.link', 0),
 					array('LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.event_type.default', 2),
@@ -186,24 +189,11 @@ $returnArray = array(
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.event_type.link',
 			'config' => [
 				'type' => 'input',
-				'size' => '30',
+                'renderType' => 'inputLink ' ,
+                'size' => '30',
 				'max' => '255',
 				'eval' => 'trim,required',
-				'wizards' => [
-					'_PADDING' => 2,
-					'link' => [
-						'type' => 'popup',
-						'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header_link_formlabel',
-						'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif',
-						'module' => [
-							'name' => 'wizard_link',
-						],
-						'params' => array(
-							'blindLinkOptions' => 'mail,spec,folder',
-						),
-						'JSopenParams' => 'height=600,width=800,status=0,menubar=0,scrollbars=1'
-					]
-				],
+
 				'softref' => 'typolink'
 			]
 		],
@@ -226,9 +216,10 @@ $returnArray = array(
 				'cols' => 40,
 				'rows' => 15,
 				'eval' => 'trim',
+                'defaultExtras' => 'richtext:rte_transform' ,
 				'wizards' => array(
 					'RTE' => array(
-						'icon' => 'wizard_rte2.gif',
+						'icon' => 'actions-wizard-rte',
 						'notNewRecords'=> 1,
 						'RTEonly' => 1,
 						'module' => array(
@@ -387,6 +378,7 @@ $returnArray = array(
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.all_day',
 			'config' => array(
 				'type' => 'check',
+                'onChange' => 'reload' ,
 				'default' => 0
 			)
 		),
@@ -395,6 +387,7 @@ $returnArray = array(
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.start_date',
 			'config' => array(
 				'type' => 'input',
+				'renderType' => 'inputDateTime',
 				'size' => 7,
 				'eval' => 'date,required',
 				'checkbox' => 1,
@@ -407,6 +400,7 @@ $returnArray = array(
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.start_time',
 			'config' => array(
 				'type' => 'input',
+                'renderType' => 'inputDateTime',
 				'size' => 4,
 				'eval' => 'time',
 				'checkbox' => 1,
@@ -419,6 +413,7 @@ $returnArray = array(
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.end_date',
 			'config' => array(
 				'type' => 'input',
+                'renderType' => 'inputDateTime',
 				'size' => 7,
 				'eval' => 'date',
 				'checkbox' => 1,
@@ -430,6 +425,7 @@ $returnArray = array(
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.end_time',
 			'config' => array(
 				'type' => 'input',
+                'renderType' => 'inputDateTime',
 				'size' => 4,
 				'eval' => 'time',
 				'checkbox' => 1,
@@ -445,15 +441,15 @@ $returnArray = array(
 				'maxitems' => 20,
 				'items' => array(
 					array(
-						'LLL:EXT:lang/locallang_general.xlf:LGL.hide_at_login',
+						'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.hide_at_login',
 						-1
 					),
 					array(
-						'LLL:EXT:lang/locallang_general.xlf:LGL.any_login',
+						'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.any_login',
 						-2
 					),
 					array(
-						'LLL:EXT:lang/locallang_general.xlf:LGL.usergroups',
+						'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.usergroups',
 						'--div--'
 					)
 				),
@@ -468,6 +464,7 @@ $returnArray = array(
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.with_registration',
 			'config' => array(
 				'type' => 'check',
+                'onChange' => 'reload' ,
 				'default' => 0
 			)
 		),
@@ -477,20 +474,10 @@ $returnArray = array(
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.registrationUrl',
 			'config' => array(
 				'type' => 'input',
-				'default' => '' ,
-				 'softref' => 'typolink' ,
-				'wizards' => [
-					'_PADDING' => 2,
-					'link' => [
-						'type' => 'popup',
-						'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header_link_formlabel',
-						'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif',
-						'module' => [
-							'name' => 'wizard_link',
-						],
-						'JSopenParams' => 'height=600,width=800,status=0,menubar=0,scrollbars=1'
-					]
-				],
+                'renderType' => 'inputLink ' ,
+                'default' => '' ,
+				'softref' => 'typolink' ,
+
 			)
 		),
 		'registration_form_pid' => array(
@@ -503,17 +490,13 @@ $returnArray = array(
 				'allowed' => 'pages',
 				'foreign_table' => 'pages',
 				'size' => 1,
-                'show_thumbs' => '1',
 				'multiple' => 0,
 				'minitems' => 0,
 				'maxitems' => 1,
-				'wizards' => array(
-					'_VERTICAL' => 1,
-					'suggest' => array(
-						'type' => 'suggest'
-					),
-
-				),
+                'suggestOptions' => array(
+                    'default' => array(
+                    ) ,
+                ) ,
 			),
 		),
 		'registration_pid' => array(
@@ -526,17 +509,14 @@ $returnArray = array(
 				'allowed' => 'pages',
 				'foreign_table' => 'pages',
 				'size' => 1,
-                'show_thumbs' => '1',
 				'multiple' => 0,
 				'minitems' => 0,
 				'maxitems' => 1,
-				'wizards' => array(
-					'_VERTICAL' => 1,
-					'suggest' => array(
-						'type' => 'suggest'
-					),
+                'suggestOptions' => array(
+                    'default' => array(
 
-				),
+                    ) ,
+                ) ,
 			),
 		),
 		'registration_until' => array(
@@ -544,6 +524,7 @@ $returnArray = array(
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.registration_until',
 			'config' => array(
 				'type' => 'input',
+                'renderType' => 'inputDateTime',
 				'size' => 14,
 				'eval' => 'datetime',
 
@@ -559,15 +540,15 @@ $returnArray = array(
 				'maxitems' => 20,
 				'items' => array(
 					array(
-						'LLL:EXT:lang/locallang_general.xlf:LGL.hide_at_login',
+						'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.hide_at_login',
 						-1
 					),
 					array(
-						'LLL:EXT:lang/locallang_general.xlf:LGL.any_login',
+						'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.any_login',
 						-2
 					),
 					array(
-						'LLL:EXT:lang/locallang_general.xlf:LGL.usergroups',
+						'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.usergroups',
 						'--div--'
 					)
 				),
@@ -583,6 +564,7 @@ $returnArray = array(
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.store_in_citrix',
 			'config' => array(
 				'type' => 'check',
+                'onChange' => 'reload' ,
 				'default' => 0
 			)
 		),
@@ -602,6 +584,7 @@ $returnArray = array(
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.store_in_sales_force',
 			'config' => array(
 				'type' => 'check',
+                'onChange' => 'reload' ,
 				'default' => 0
 			)
 		),
@@ -783,6 +766,7 @@ $returnArray = array(
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.is_recurring',
 			'config' => array(
 				'type' => 'check',
+                'onChange' => 'reload' ,
 				'default' => 0
 			)
 		),
@@ -836,43 +820,36 @@ $returnArray = array(
 				'allowed' => 'tx_jvevents_domain_model_organizer',
 
 				'size' => 1,
-                'show_thumbs' => '1',
 				'multiple' => 0,
 				'minitems' => 0,
 				'maxitems' => 1,
-				'wizards' => array(
-					'_VERTICAL' => 1,
-					'suggest' => array(
-						'type' => 'suggest',
-                        'default' => array(
-                            'additionalSearchFields' => 'name',
-                        )
-					),
-					'edit' => array(
-						'type' => 'popup',
-						'title' => 'Edit template',
+                'suggestOptions' => array(
+                    'default' => array(
+                        "additionalSearchFields" => "name" ,
+                    ) ,
+                ) ,
+                'fieldControl' => array(
+                    'addRecord' => array(
+                        'disabled' => false ,
+                        'options' => array(
+                            'pid' => '###CURRENT_PID###' ,
+                            'setValue' => 'prepend' ,
+                            'icon' => 'actions-add',
+                            'table' => 'tx_jvevents_domain_model_organizer' ,
+                            'title' => 'Create new' ,
+                        ),
 
-						'module' => array(
-							'name' => 'wizard_edit',
-						),
-						'popup_onlyOpenIfSelected' => 1,
-						'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif',
-						'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1'
-					),
-					'add' => array(
-						'type' => 'script',
-						'title' => 'LLL:EXT:cms/locallang_tca.xlf:sys_template.basedOn_add',
-						'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif',
-						'params' => array(
-							'table' => 'tx_jvevents_domain_model_organizer',
-							'pid' => '###CURRENT_PID###',
-							'setValue' => 'prepend'
-						),
-						'module' => array(
-							'name' => 'wizard_add'
-						)
-					)
-				)
+                    ) ,
+                    'editPopup' => array(
+                        'disabled' => false ,
+                        'options' => array(
+                            'icon' => 'actions-open',
+                            'windowOpenParameters' => 'height=350,width=580,status=0,menubar=0,scrollbars=1' ,
+                            'title' => 'Edit' ,
+                        ),
+                    ) ,
+                ) ,
+
 			),
 		),
 		'location' => array(
@@ -885,41 +862,35 @@ $returnArray = array(
 				'allowed' => 'tx_jvevents_domain_model_location',
 				'size' => 1,
 				'multiple' => 0,
-                'show_thumbs' => '1',
 				'minitems' => 0,
 				'maxitems' => 1,
-				'wizards' => array(
-					'_VERTICAL' => 1,
-					'suggest' => array(
-						'type' => 'suggest',
-                        'default' => array(
-                            'additionalSearchFields' => 'name, city, zip',
-                        )
-					),
-					'edit' => array(
-						'type' => 'popup',
-						'title' => 'Edit template',
-						'module' => array(
-							'name' => 'wizard_edit',
-						),
-						'popup_onlyOpenIfSelected' => 1,
-						'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif',
-						'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1'
-					),
-					'add' => array(
-						'type' => 'script',
-						'title' => 'LLL:EXT:cms/locallang_tca.xlf:sys_template.basedOn_add',
-						'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif',
-						'params' => array(
-							'table' => 'tx_jvevents_domain_model_location',
-							'pid' => '###CURRENT_PID###',
-							'setValue' => 'prepend'
-						),
-						'module' => array(
-							'name' => 'wizard_add'
-						)
-					)
-				)
+                'suggestOptions' => array(
+                    'default' => array(
+                        "additionalSearchFields" => "name, city, zip" ,
+                    ) ,
+                ) ,
+                'fieldControl' => array(
+                    'addRecord' => array(
+                        'disabled' => false ,
+                        'options' => array(
+                            'pid' => '###CURRENT_PID###' ,
+                            'setValue' => 'prepend' ,
+                            'icon' => 'actions-add',
+                            'table' => 'tx_jvevents_domain_model_location' ,
+                            'title' => 'Create new' ,
+                        ),
+
+                    ) ,
+                    'editPopup' => array(
+                        'disabled' => false ,
+                        'options' => array(
+                            'icon' => 'actions-open',
+                            'windowOpenParameters' => 'height=350,width=580,status=0,menubar=0,scrollbars=1' ,
+                            'title' => 'Edit' ,
+                        ),
+                    ) ,
+                ) ,
+
 			),
 		),
 		'registrant' => array(
@@ -949,7 +920,7 @@ $returnArray = array(
 				'foreign_table' => 'tx_jvevents_domain_model_category',
 
 				// 'foreign_table_where' => ' AND tx_jvevents_domain_model_category.type = 0 AND tx_jvevents_domain_model_category.sys_language_uid in (-1, 0)',
-				'foreign_table_where' => ' AND tx_jvevents_domain_model_category.type = 0 AND (tx_jvevents_domain_model_category.sys_language_uid = 0 OR tx_jvevents_domain_model_category.l10n_parent = 0) ORDER BY tx_jvevents_domain_model_category.title',
+				'foreign_table_where' => ' AND tx_jvevents_domain_model_category.type = 0 AND (tx_jvevents_domain_model_category.sys_language_uid = 0 OR tx_jvevents_domain_model_category.l10n_parent = 0) AND tx_jvevents_domain_model_category.hidden=0 ORDER BY tx_jvevents_domain_model_category.title',
                 'itemsProcFunc' => 'JVE\\JvEvents\\UserFunc\\Flexforms->TranslateMMvalues' ,
 
 				'MM' => 'tx_jvevents_event_category_mm',
@@ -957,33 +928,29 @@ $returnArray = array(
 				'autoSizeMax' => 30,
 				'maxitems' => 9999,
 				'multiple' => 0,
-				'wizards' => array(
-					'_PADDING' => 1,
-					'_VERTICAL' => 1,
-					'edit' => array(
-						'module' => array(
-							'name' => 'wizard_edit',
-						),
-						'type' => 'popup',
-						'title' => 'Edit',
-						'icon' => 'edit2.gif',
-						'popup_onlyOpenIfSelected' => 1,
-						'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1',
-						),
-					'add' => Array(
-						'module' => array(
-							'name' => 'wizard_add',
-						),
-						'type' => 'script',
-						'title' => 'Create new',
-						'icon' => 'add.gif',
-						'params' => array(
-							'table' => 'tx_jvevents_domain_model_category',
-							'pid' => '###CURRENT_PID###',
-							'setValue' => 'prepend'
-						),
-					),
-				),
+
+                'fieldControl' => array(
+                    'addRecord' => array(
+                        'disabled' => false ,
+                        'options' => array(
+                            'pid' => '###CURRENT_PID###' ,
+                            'setValue' => 'prepend' ,
+                            'icon' => 'actions-add',
+                            'table' => 'tx_jvevents_domain_model_category' ,
+                            'title' => 'Create new' ,
+                        ),
+
+                    ) ,
+                    'editPopup' => array(
+                        'disabled' => false ,
+                        'options' => array(
+                            'icon' => 'actions-open',
+                            'windowOpenParameters' => 'height=350,width=580,status=0,menubar=0,scrollbars=1' ,
+                            'title' => 'Edit' ,
+                        ),
+                    ) ,
+                ) ,
+
 			),
 		),
 		'tags' => array(
@@ -1002,33 +969,27 @@ $returnArray = array(
 				'autoSizeMax' => 30,
 				'maxitems' => 9999,
 				'multiple' => 0,
-				'wizards' => array(
-					'_PADDING' => 1,
-					'_VERTICAL' => 1,
-					'edit' => array(
-						'module' => array(
-							'name' => 'wizard_edit',
-						),
-						'type' => 'popup',
-						'title' => 'Edit',
-						'icon' => 'edit2.gif',
-						'popup_onlyOpenIfSelected' => 1,
-						'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1',
-						),
-					'add' => Array(
-						'module' => array(
-							'name' => 'wizard_add',
-						),
-						'type' => 'script',
-						'title' => 'Create new',
-						'icon' => 'add.gif',
-						'params' => array(
-							'table' => 'tx_jvevents_domain_model_tag',
-							'pid' => '###CURRENT_PID###',
-							'setValue' => 'prepend'
-						),
-					),
-				),
+                'fieldControl' => array(
+                    'addRecord' => array(
+                        'disabled' => false ,
+                        'options' => array(
+                            'pid' => '###CURRENT_PID###' ,
+                            'setValue' => 'prepend' ,
+                            'icon' => 'actions-add',
+                            'table' => 'tx_jvevents_domain_model_tag' ,
+                            'title' => 'Create new' ,
+                        ),
+
+                    ) ,
+                    'editPopup' => array(
+                        'disabled' => false ,
+                        'options' => array(
+                            'icon' => 'actions-open',
+                            'windowOpenParameters' => 'height=350,width=580,status=0,menubar=0,scrollbars=1' ,
+                            'title' => 'Edit' ,
+                        ),
+                    ) ,
+                ) ,
 			),
 		),
 		
@@ -1064,10 +1025,10 @@ if ( ! $configuration['showIndividualMailTemplatesPerEvent'] == 1 ) {
 	unset($returnArray['columns']['text_organizer'] ) ;
 	unset($returnArray['columns']['subject_registrant'] ) ;
 	unset($returnArray['columns']['text_registrant'] ) ;
-	$returnArray['ctrl']['requestUpdate'] = str_replace( "notify_organizer" , ""  , $returnArray['ctrl']['requestUpdate'] ) ;
-	$returnArray['ctrl']['requestUpdate'] = str_replace( "notify_registrant" , ""  , $returnArray['ctrl']['requestUpdate'] ) ;
-	$returnArray['ctrl']['requestUpdate'] = str_replace( " " , ""  , $returnArray['ctrl']['requestUpdate'] ) ;
-	$returnArray['ctrl']['requestUpdate'] = str_replace( ",," , ","  , $returnArray['ctrl']['requestUpdate'] ) ;
+
+    unset($returnArray['columns']['notify_organizer']['config']['onChange']) ;
+    unset($returnArray['columns']['notify_registrant']['config']['onChange']) ;
+
 }
 
 if ( ! $configuration['enableCitrix'] == 1 ) {

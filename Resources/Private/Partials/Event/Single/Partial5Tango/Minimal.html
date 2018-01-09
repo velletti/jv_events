@@ -1,0 +1,32 @@
+{namespace event=JVE\JvEvents\ViewHelpers}
+
+<div class="event detail">
+	<h1><f:translate key="list.register.button.registration" />: {event.name}</h1>
+
+	<div class="eventdata">
+		<div class="row">
+			<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_event.date" />:</strong></div>
+			<div class="col-md-10">{event.startDate -> f:format.date(format:"d.m.Y")}</div>
+			<f:if condition="{event.startDate < event.endDate}">
+				<f:comment>- {event.endDate -> f:format.date(format:"d.m.Y")}</f:comment>
+			</f:if>
+		</div>
+
+		<f:if condition="{event.allDay}">
+			<f:else>
+				<div class="row">
+					<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_event.time" />:</strong></div>
+					<div class="col-md-10">{event.startTime -> event:format.date( format:"H:i")}<f:if condition="{event.endTime}"> - {event.endTime -> event:format.date( format:"H:i")}</f:if></div>
+				</div>
+			</f:else>
+		</f:if>
+
+		<f:if condition="{event.location.name}">
+			<div class="row">
+				<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_location.name" />:</strong></div>
+				<div class="col-md-10">{event.location.name}</div>
+			</div>
+		</f:if>
+	</div>
+
+</div>

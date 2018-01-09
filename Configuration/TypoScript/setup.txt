@@ -1,9 +1,9 @@
 
 plugin.tx_jvevents_events {
 	view {
-		templateRootPaths.0 = {$plugin.tx_jvevents_events.view.templateRootPath}
-		partialRootPaths.0 = {$plugin.tx_jvevents_events.view.partialRootPath}
-		layoutRootPaths.0 = {$plugin.tx_jvevents_events.view.layoutRootPath}
+		templateRootPaths.100 = {$plugin.tx_jvevents_events.view.templateRootPath}
+		partialRootPaths.100 = {$plugin.tx_jvevents_events.view.partialRootPath}
+		layoutRootPaths.100 = {$plugin.tx_jvevents_events.view.layoutRootPath}
 	}
 	persistence {
 		storagePid = {$plugin.tx_jvevents_events.persistence.storagePid}
@@ -103,9 +103,9 @@ module.tx_jvevents_web_jveventseventmngt {
 		storagePid = {$module.tx_jvevents_eventmngt.persistence.storagePid}
 	}
 	view {
-		templateRootPaths.0 = {$module.tx_jvevents_eventmngt.view.templateRootPath}
-		partialRootPaths.0 = {$module.tx_jvevents_eventmngt.view.partialRootPath}
-		layoutRootPaths.0 = {$module.tx_jvevents_eventmngt.view.layoutRootPath}
+		templateRootPaths.100 = {$module.tx_jvevents_eventmngt.view.templateRootPath}
+		partialRootPaths.100 = {$module.tx_jvevents_eventmngt.view.partialRootPath}
+		layoutRootPaths.100 = {$module.tx_jvevents_eventmngt.view.layoutRootPath}
 	}
     settings < plugin.tx_jvevents_events.settings
     settings.LayoutRegister = 2Megra
