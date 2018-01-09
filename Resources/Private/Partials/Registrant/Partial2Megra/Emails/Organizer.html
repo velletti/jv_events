@@ -40,6 +40,12 @@
 			{f:translate(key: 'tx_jvevents_domain_model_registrant.contact_id')}: {registrant.contactId} <br/>
 			<f:if condition="{registrant.more6int}">
 				<b>Teilnehmer beantragt Mitgliedschaft!</b><br/>
+				<f:if condition="{settings.register.attachments.2Megra}">
+					Gesendete Dateien:<br/>
+					<f:for each="{settings.register.attachments.2Megra}" as="attachment">
+						- <a href="{settings.servername}/{attachment}">{attachment}</a> <br/>
+					</f:for>
+				</f:if>
 			</f:if>
 		</p>
 		<h3 style="font-size: 22px; font-family: '{emConf.fontFamily}'; line-height: 1.25; margin: 0 0 20px; padding: 0;">
