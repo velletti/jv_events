@@ -1,6 +1,6 @@
 {namespace event=JVE\JvEvents\ViewHelpers}
 
-<f:comment xmlns:f="http://www.w3.org/1999/html">
+<f:comment>
 	<!-- =========================================================================================================================== -->
 	<!-- Main infos -->
 	<!-- =========================================================================================================================== -->
@@ -88,9 +88,10 @@
 					<p>{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:register.overbooked_text' , default:'no free seats available')}</p>
 				</f:then>
 				<f:else>
-					<h4>{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:register.registration_not_possible_text' , default:'Error')}</h4>
-					<p>{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:register.deadline_expired_text' , default:'Registration deadline has expired ')}</p>
-
+					<f:if condition="{event.withRegistration}">
+						<h4>{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:register.registration_not_possible_text' , default:'Error')}</h4>
+						<p>{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:register.deadline_expired_text' , default:'Registration deadline has expired ')}</p>
+					</f:if>
 				</f:else>
 
 			</f:if>
