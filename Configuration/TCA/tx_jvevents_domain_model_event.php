@@ -189,7 +189,7 @@ $returnArray = array(
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.event_type.link',
 			'config' => [
 				'type' => 'input',
-                'renderType' => 'inputLink ' ,
+                'renderType' => 'inputLink' ,
                 'size' => '30',
 				'max' => '255',
 				'eval' => 'trim,required',
@@ -474,7 +474,7 @@ $returnArray = array(
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.registrationUrl',
 			'config' => array(
 				'type' => 'input',
-                'renderType' => 'inputLink ' ,
+                'renderType' => 'inputLink' ,
                 'default' => '' ,
 				'softref' => 'typolink' ,
 
