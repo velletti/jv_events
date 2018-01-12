@@ -20,6 +20,29 @@
 				<f:for each="{events}" as="event">
 					<f:render partial="Event/List/Partial{settings.LayoutList}/SingleEvent" arguments="{event:event, settings: settings}" />
 				</f:for>
+
+				<f:if condition="{settings.debug} > 0 ">
+					<f:then>
+						<f:format.json>
+							<f:for each="{events}" as="event" iteration="index">
+
+								<f:render partial="Event/Single/MicroFormat" arguments="{event: event, settings: settings}"/>
+
+							</f:for>
+						</f:format.json>
+					</f:then>
+					<f:else>
+						<script type="application/ld+json">
+							<f:format.raw>
+								[
+									<f:for each="{events}" as="event" iteration="index">
+										<f:render partial="Event/Single/MicroFormat" arguments="{event: event, settings: settings}"/>
+									</f:for>
+								]
+							</f:format.raw>
+						</script>
+					</f:else>
+				</f:if>
 			</f:then>
 			<f:else>
 				<div class="alert alert-info">
