@@ -1,24 +1,22 @@
 <?php
 namespace JVE\JvEvents\ViewHelpers\Format;
 
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
+/*                                                                        *
+ * This script is a copy of the default fluid dateViewhelper              *
+ * but it is using the TYPO3 GLOBAL SYS phptimezone setting               *
+ *                                                                        *
+ * It is free software; you can redistribute it and/or modify it under    *
+ * the terms of the GNU Lesser General Public License, either version 3   *
+ *  of the License, or (at your option) any later version.                *
+ *                                                                        *
+ * The TYPO3 project - inspiring people to share!                         *
+ *                                                                        */
 
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Formats an object implementing \DateTimeInterface.
@@ -39,6 +37,14 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  * <output>
  * 01:23
  * (depending on the current time)
+ * </output>
+ *
+ * <code title="Custom date format with Time/zone">
+ * <f:format.date format="H:i" timeZone="Europe/Berlin">{dateObject}</f:format.date>
+ * </code>
+ * <output>
+ * 00:23
+ * (depending on the current time. UTC or see http://php.net/manual/en/timezones.php)
  * </output>
  *
  * <code title="Relative date with given time">
@@ -80,27 +86,41 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  * 1980-12-13
  * (depending on the value of {dateObject})
  * </output>
+ *
+ * @api
  */
-class DateViewHelper extends AbstractViewHelper
+class DateViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Format\DateViewHelper  implements CompilableInterface
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     /**
-     * Needed as child node's output can return a DateTime object which can't be escaped
-     *
      * @var bool
      */
-    protected $escapeChildren = false;
+    protected $escapingInterceptorEnabled = false;
 
     /**
-     * Initialize arguments
+     * Render the supplied DateTime object as a formatted date.
+     *
+     * @param mixed $date either an object implementing DateTimeInterface or a string that is accepted by DateTime constructor
+     * @param string $format Format String which is taken to format the Date/Time
+     * @param mixed $base A base time (an object implementing DateTimeInterface or a string) used if $date is a relative date specification. Defaults to current time.
+     * @param string $timeZone overWrite PHP timeZone Settings for Date/Time Object
+     *
+     * @return string Formatted date
+     * @throws Exception
+     * @api
      */
-    public function initializeArguments()
+    public function render($date = null, $format = '', $base = null , $timeZone = null )
     {
-        parent::initializeArguments();
-        $this->registerArgument('date', 'mixed', 'Either an object implementing DateTimeInterface or a string that is accepted by DateTime constructor');
-        $this->registerArgument('format', 'string', 'Format String which is taken to format the Date/Time', false, '');
-        $this->registerArgument('base', 'mixed', 'A base time (an object implementing DateTimeInterface or a string) used if $date is a relative date specification. Defaults to current time.');
+
+        return static::renderStatic(
+            [
+                'date' => $date,
+                'format' => $format,
+                'base' => $base,
+                'timeZone' => $timeZone
+            ],
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
     }
 
     /**
@@ -112,58 +132,6 @@ class DateViewHelper extends AbstractViewHelper
      * @throws Exception
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
-    {
-        $format = $arguments['format'];
-        $base = $arguments['base'] === null ? time() : $arguments['base'];
-        if (is_string($base)) {
-            $base = trim($base);
-        }
-
-        if ($format === '') {
-            $format = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] ?: 'Y-m-d';
-        }
-
-        $date = $renderChildrenClosure();
-        if ($date === null) {
-            return '';
-        }
-
-        if (is_string($date)) {
-            $date = trim($date);
-        }
-
-        if ($date === '') {
-            $date = 'now';
-        }
-
-        if (!$date instanceof \DateTimeInterface) {
-            try {
-                $base = $base instanceof \DateTimeInterface ? $base->format('U') : strtotime((MathUtility::canBeInterpretedAsInteger($base) ? '@' : '') . $base);
-                $dateTimestamp = strtotime((MathUtility::canBeInterpretedAsInteger($date) ? '@' : '') . $date, $base);
-                $date = new \DateTime('@' . $dateTimestamp);
-                $date->setTimezone(new \DateTimeZone(date_default_timezone_get()));
-            } catch (\Exception $exception) {
-                throw new Exception('"' . $date . '" could not be parsed by \DateTime constructor: ' . $exception->getMessage(), 1241722579);
-            }
-        }
-
-        if (strpos($format, '%') !== false) {
-            return strftime($format, $date->format('U'));
-        }
-        return $date->format($format);
-    }
-
-
-
-    /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
-     *
-     * @return string
-     * @throws Exception
-     */
-    public static function renderStaticOLD(array $arguments, \Closure $renderChildrenClosure, \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface $renderingContext)
     {
         $date = $arguments['date'];
         $format = $arguments['format'];

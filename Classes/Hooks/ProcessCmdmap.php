@@ -144,20 +144,21 @@ class ProcessCmdmap {
                 $eventId = $regevent['event'] ;
                 if( $eventId > 0 ) {
                     $event = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('tx_jvevents_domain_model_event', $eventId );
-                    if( $regevent['confirmed'] == 1 ) {
+                    if( $regevent['hidden'] == 0 ) {
                         $registeredSeats = max( 0 , $event['registered_seats'] - 1 ) ;
                         $updateData = array(
                             'registered_seats' => $registeredSeats
                         );
-                    }  else {
-                        if( $regevent['hidden'] == 0 ) {
-                            $unconfirmed_seats = max($event['unconfirmed_seats'] - 1);
-                            $updateData = array(
-                                'unconfirmed_seats' => $unconfirmed_seats
-                            );
-                        }
+                    } else {
+                        $unconfirmed_seats = max($event['unconfirmed_seats'] - 1 , 0 );
+                        $updateData = array(
+                            'unconfirmed_seats' => $unconfirmed_seats
+                        );
                     }
-                    $GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_jvevents_domain_model_event', 'uid=' . intval($eventId), $updateData);
+                    /** @var \TYPO3\CMS\Dbal\Database\DatabaseConnection $db */
+                    $db = $GLOBALS['TYPO3_DB'] ;
+                    $db->exec_UPDATEquery('tx_jvevents_domain_model_event', 'uid=' . intval($eventId), $updateData);
+
 
                 }
             }

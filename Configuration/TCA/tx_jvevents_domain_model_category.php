@@ -8,7 +8,9 @@ return array(
 		'cruser_id' => 'cruser_id',
 		'dividers2tabs' => TRUE,
 		'sortby' => 'sorting',
-		'versioningWS' => TRUE,
+		'versioningWS' => 2,
+		'versioning_followPages' => TRUE,
+		'requestUpdate' => 'type',
 		'languageField' => 'sys_language_uid',
 		'transOrigPointerField' => 'l10n_parent',
 		'transOrigDiffSourceField' => 'l10n_diffsource',
@@ -18,19 +20,13 @@ return array(
 
 		),
 		'searchFields' => 'title,type,',
-		'iconfile' =>  'EXT:jv_events/Resources/Public/Icons/tx_jvevents_domain_model_category.gif'
+		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('jv_events') . 'Resources/Public/Icons/tx_jvevents_domain_model_category.gif'
 	),
 	'interface' => array(
 		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, title, type, block_registration , description',
 	),
 	'types' => array(
-		'1' => array('showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden,--palette--;;1, title, type, description, block_registration' ,
-                     'columnsOverrides' => array(
-                         'sys_language_uid' => array(
-                            // 'defaultExtras' => ';;;1-1-1'
-                         )
-                     ) ,
-               ) ,
+		'1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, title, type, description, block_registration'),
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),
@@ -39,15 +35,15 @@ return array(
 	
 		'sys_language_uid' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.language',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.language',
 			'config' => array(
 				'type' => 'select',
 				'renderType' => 'selectSingle',
 				'foreign_table' => 'sys_language',
 				'foreign_table_where' => 'ORDER BY sys_language.title',
 				'items' => array(
-					array('LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', -1),
-					array('LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.default_value', 0)
+					array('LLL:EXT:lang/locallang_general.xlf:LGL.allLanguages', -1),
+					array('LLL:EXT:lang/locallang_general.xlf:LGL.default_value', 0)
 				),
 			),
 		),
@@ -57,7 +53,7 @@ return array(
 		'l10n_parent' => array(
 			'displayCond' => 'FIELD:sys_language_uid:>:0',
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.l18n_parent',
 			'config' => array(
 				'type' => 'select',
 				'renderType' => 'selectSingle',
@@ -76,7 +72,7 @@ return array(
 		
 		
 		't3ver_label' => array(
-			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.versionLabel',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.versionLabel',
 			'config' => array(
 				'type' => 'input',
 				'size' => 30,
@@ -84,7 +80,7 @@ return array(
 			)
 		),
         'sorting' => array(
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.sorting',
+            'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.sorting',
             'config' => array(
                 'type' => 'input',
                 'size' => 30,
@@ -93,7 +89,7 @@ return array(
         ),
 		'hidden' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.hidden',
 			'config' => array(
 				'type' => 'check',
 			),
@@ -122,7 +118,6 @@ return array(
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_category.type',
 			'config' => array(
 				'type' => 'select',
-                'onChange' => 'reload' ,
 				'renderType' => 'selectSingle',
 				'items' => array(
 					array('Event Category', '0'),
