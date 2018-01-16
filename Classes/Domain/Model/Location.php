@@ -110,7 +110,14 @@ class Location extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @var string
      */
     protected $description = '';
-    
+
+    /**
+     * Files that may be useful for this event
+     *
+     * @var \TYPO3\CMS\Extbase\Domain\Model\FileReference
+     */
+    protected $teaserImage = null;
+
     /**
      * Organizer Id of this Location
      *
@@ -440,6 +447,22 @@ class Location extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function setLocationCategory(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $locationCategory)
     {
         $this->locationCategory = $locationCategory;
+    }
+
+    /**
+     * @return \TYPO3\CMS\Extbase\Domain\Model\FileReference
+     */
+    public function getTeaserImage()
+    {
+        return $this->teaserImage;
+    }
+
+    /**
+     * @param \TYPO3\CMS\Extbase\Domain\Model\FileReference $teaserImage
+     */
+    public function setTeaserImage($teaserImage)
+    {
+        $this->teaserImage = $teaserImage;
     }
 
 }

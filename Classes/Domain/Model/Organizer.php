@@ -72,7 +72,14 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @var \TYPO3\CMS\Extbase\Domain\Model\FileReference
      */
     protected $images = null;
-    
+
+    /**
+     * Files that may be useful for this event
+     *
+     * @var \TYPO3\CMS\Extbase\Domain\Model\FileReference
+     */
+    protected $teaserImage = null;
+
     /**
      * description
      *
@@ -341,6 +348,23 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         $this->accessUsers = $accessUsers;
     }
+
+    /**
+     * @return \TYPO3\CMS\Extbase\Domain\Model\FileReference
+     */
+    public function getTeaserImage()
+    {
+        return $this->teaserImage;
+    }
+
+    /**
+     * @param \TYPO3\CMS\Extbase\Domain\Model\FileReference $teaserImage
+     */
+    public function setTeaserImage($teaserImage)
+    {
+        $this->teaserImage = $teaserImage;
+    }
+
 
 
 

@@ -28,7 +28,7 @@ return array(
 		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, street_and_nr, zip, city, country,lat, lng,  link, email, phone, description, organizer, location_category',
 	),
 	'types' => array(
-		'1' => array('showitem' => 'sys_language_uid, l10n_parent,l10n_diffsource,hidden,--palette--;;1,name,street_and_nr,zip,city,country,--palette--;;geo,link,email,phone,description,organizer,location_category,--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access,starttime,endtime'),
+		'1' => array('showitem' => 'sys_language_uid, l10n_parent,l10n_diffsource,hidden,--palette--;;1,name,street_and_nr,zip,city,country,--palette--;;geo,teaser_image,link,email,phone,description,organizer,location_category,--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access,starttime,endtime'),
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),
@@ -323,6 +323,52 @@ return array(
 
 			),
 		),
+        'teaser_image' => array(
+            'exclude' => 0,
+            'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_location.teaserImage',
+            'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
+                'teaser_image',
+                array(
+                    'appearance' => array(
+                        'createNewRelationLinkTitle' => 'LLL:EXT:cms/locallang_ttc.xlf:images.addFileReference'
+                    ),
+                    'foreign_types' => array(
+                        '0' => array(
+                            'showitem' => '
+							--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+							--palette--;;filePalette'
+                        ),
+                        \TYPO3\CMS\Core\Resource\File::FILETYPE_TEXT => array(
+                            'showitem' => '
+							--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+							--palette--;;filePalette'
+                        ),
+                        \TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => array(
+                            'showitem' => '
+							--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+							--palette--;;filePalette'
+                        ),
+                        \TYPO3\CMS\Core\Resource\File::FILETYPE_AUDIO => array(
+                            'showitem' => '
+							--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+							--palette--;;filePalette'
+                        ),
+                        \TYPO3\CMS\Core\Resource\File::FILETYPE_VIDEO => array(
+                            'showitem' => '
+							--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+							--palette--;;filePalette'
+                        ),
+                        \TYPO3\CMS\Core\Resource\File::FILETYPE_APPLICATION => array(
+                            'showitem' => '
+							--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+							--palette--;;filePalette'
+                        )
+                    ),
+                    'maxitems' => 1
+                ),
+                "jpg,jpeg,gif,png"
+            ),
+        ),
 		
 	),
 );## EXTENSION BUILDER DEFAULTS END TOKEN - Everything BEFORE this line is overwritten with the defaults of the extension builder
