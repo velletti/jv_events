@@ -194,6 +194,9 @@
 		<trans-unit id="tx_jvevents_domain_model_location.city">
 			<source>City</source>
 		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_location.teaserImage">
+			<source>Teaser Image</source>
+		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_location.country">
 			<source>Country</source>
 		</trans-unit>
@@ -238,6 +241,9 @@
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_organizer.email">
 			<source>Email</source>
+		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_organizer.teaserImage">
+			<source>Teaser Image</source>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_organizer.images">
 			<source>Images</source>

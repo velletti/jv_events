@@ -105,6 +105,7 @@ CREATE TABLE tx_jvevents_domain_model_organizer (
 	phone varchar(255) DEFAULT '' NOT NULL,
 	sales_force_user_id varchar(255) DEFAULT '' NOT NULL,
 	images int(11) unsigned NOT NULL default '0',
+	teaser_image int(11) unsigned NOT NULL default '0',
 	description text NOT NULL,
 	access_groups text NOT NULL,
 	access_users text NOT NULL,
@@ -149,6 +150,7 @@ CREATE TABLE tx_jvevents_domain_model_location (
 	pid int(11) DEFAULT '0' NOT NULL,
 
 	name varchar(255) DEFAULT '' NOT NULL,
+	teaser_image int(11) unsigned NOT NULL default '0',
 	street_and_nr varchar(255) DEFAULT '' NOT NULL,
 	zip varchar(255) DEFAULT '' NOT NULL,
 	city varchar(255) DEFAULT '' NOT NULL,
