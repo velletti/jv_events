@@ -18,7 +18,7 @@ class StoreToSalesforceRestAPI0Test extends \Tx_Phpunit_TestCase {
       */
     public $sfSettings;
 
-    /** @var  \JVE\JvEvents\Classes\Utility\SalesforceWrapper */
+    /** @var  \JVE\JvEvents\Classes\Utility\SalesforceWrapperUtility */
 	public $sfConnect ;
 
 
@@ -30,8 +30,8 @@ class StoreToSalesforceRestAPI0Test extends \Tx_Phpunit_TestCase {
 	 */
 	public function setUp() {
 
-        /** @var  \JVE\JvEvents\Classes\Utility\SalesforceWrapper */
-		$this->sfConnect = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JVE\\JvEvents\\Classes\\Utility\\SalesforceWrapper');
+        /** @var  \JVE\JvEvents\Classes\Utility\SalesforceWrapperUtility */
+		$this->sfConnect = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JVE\\JvEvents\\Classes\\Utility\\SalesforceWrapperUtility');
 
 	}
 

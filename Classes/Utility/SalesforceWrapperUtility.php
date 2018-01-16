@@ -9,7 +9,7 @@
 namespace JVE\JvEvents\Classes\Utility;
 
 
-class SalesforceWrapper
+class SalesforceWrapperUtility
 {
     /** @var  array */
     public $sfSettings ;

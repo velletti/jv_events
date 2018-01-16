@@ -36,7 +36,7 @@ class ProcessDatamap {
 	/** @var  array */
 	protected $flashMessage ;
 
-    /** @var  \JVE\JvEvents\Classes\Utility\SalesforceWrapper */
+    /** @var  \JVE\JvEvents\Classes\Utility\SalesforceWrapperUtility */
     public $sfConnect ;
 
 
@@ -220,8 +220,8 @@ class ProcessDatamap {
 
 
 	private function createUpdateEventForSF() {
-        /** @var  \JVE\JvEvents\Classes\Utility\SalesforceWrapper */
-        $this->sfConnect = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JVE\\JvEvents\\Classes\\Utility\\SalesforceWrapper');
+        /** @var  \JVE\JvEvents\Classes\Utility\SalesforceWrapperUtility */
+        $this->sfConnect = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JVE\\JvEvents\\Classes\\Utility\\SalesforceWrapperUtility');
 
         // With next Line you can force to write to a specific Salesforce system "PROD" / "STAGE" or "DEV"
         // $this->sfConnect->forceEnv = "PROD" ;

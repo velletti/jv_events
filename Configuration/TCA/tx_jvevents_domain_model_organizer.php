@@ -317,7 +317,7 @@ $returnArray = array(
 
 
 
-$configuration = \JVE\JvEvents\Utility\EmConfiguration::getEmConf();
+$configuration = \JVE\JvEvents\Utility\EmConfigurationUtility::getEmConf();
 
 if ( ! $configuration['hasLoginUser'] == 1 ) {
     unset($returnArray['columns']['access'] ) ;

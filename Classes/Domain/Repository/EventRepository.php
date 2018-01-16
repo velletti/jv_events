@@ -73,7 +73,7 @@ class EventRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      */
     public function findByFilter($filter = false, $limit = false, $settings )
     {
-		$configuration = \JVE\JvEvents\Utility\EmConfiguration::getEmConf();
+		$configuration = \JVE\JvEvents\Utility\EmConfigurationUtility::getEmConf();
 
         $query = $this->createQuery();
 		$query->setOrderings($this->defaultOrderings);

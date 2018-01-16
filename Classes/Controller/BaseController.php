@@ -84,7 +84,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         $this->settings['servername']					=  \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST');
         $this->settings['sys_language_uid']				=  $GLOBALS['TSFE']->sys_language_uid ;
 
-        $this->settings['EmConfiguration']	 			= \JVE\JvEvents\Utility\EmConfiguration::getEmConf();
+        $this->settings['EmConfiguration']	 			= \JVE\JvEvents\Utility\EmConfigurationUtility::getEmConf();
 
         // get the list of Required Fields for this layout and store it to the  settings Array
         // seemed faster than separate via a Viewhelper for each Field
@@ -310,8 +310,8 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
         $renderer->assign('layoutName', 'EmailSubject' . $partialName);
 
-        // read Colors and font settings from EmConfiguration as object
-        $renderer->assign('emConf', \JVE\JvEvents\Utility\EmConfiguration::getEmConf(TRUE));
+        // read Colors and font settings from EmConfigurationUtility as object
+        $renderer->assign('emConf', \JVE\JvEvents\Utility\EmConfigurationUtility::getEmConf(TRUE));
 
         // and do the rendering magic
         $subject = str_replace("\r", "", $renderer->render());

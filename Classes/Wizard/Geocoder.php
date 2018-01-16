@@ -40,7 +40,7 @@ class Geocoder extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWizardContro
 
 		$this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
 
-		$googleApiKey = \JVE\JvEvents\Utility\EmConfiguration::getGoogleApiKey();
+		$googleApiKey = \JVE\JvEvents\Utility\EmConfigurationUtility::getGoogleApiKey();
 		$this->doc->JScode = '<script async defer src="https://maps.googleapis.com/maps/api/js?key=' . $googleApiKey . '&callback=initMap"></script>';
 		$this->doc->addStyleSheet('The Google Geocoder','../typo3conf/ext/jv_events/Resources/Public/Css/geocoder.css');
 
