@@ -53,9 +53,11 @@ function jv_events_init() {
 	jv_events_initOneFilter('organizers') ;
 	jv_events_initOneFilter('months') ;
 	if( jQuery('#jv_events_geo').length > 0 ) {
-		if (navigator.geolocation) {
-			navigator.geolocation.getCurrentPosition(jv_events_initPosition);
-		}
+        if( jQuery('#jv_events_geo').data("askUser" )  == "1" {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(jv_events_initPosition);
+            }
+        }
 	}
     jQuery('#filter-reset-events' ).click(function(i) {
         jv_events_filter_reset() ;
