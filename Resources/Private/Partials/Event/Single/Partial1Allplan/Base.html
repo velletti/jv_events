@@ -169,9 +169,9 @@
 						</f:if>
 						<li>
 							<a class="downloadPdf" href="{falfile._path -> f:format.htmlspecialchars()}" target="_blank">
-								{f:if(condition:falfile._file.propertiesOfFileReference.title, then:falfile._file.propertiesOfFileReference.title, else:falfile._file.originalFile.name)}
+								{f:if(condition:falfile._properties.title, then:falfile._file._properties.title, else:falfile._properties.name)}
 							</a>
-							({falfile._file.originalFile.properties.size -> f:format.bytes()})
+							({falfile._properties.size -> f:format.bytes()})
 						</li>
 						<f:if condition="{iteration.isLast}">
 							</ul>

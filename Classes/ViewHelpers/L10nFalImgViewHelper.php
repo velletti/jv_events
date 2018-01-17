@@ -83,9 +83,12 @@ class L10nFalImgViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
 		foreach ($records as &$r) {
 			$sysPage->versionOL('sys_file_reference', $r);
 			$fileReferenceData = $db->exec_SELECTgetSingleRow('*', 'sys_file_reference', 'uid=' . $r['uid'] . ' AND deleted=0');
+			/** @var \TYPO3\CMS\Core\Resource\FileReference $obj */
 			$obj =  GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileReference', $fileReferenceData);
 			$r['_file'] = $obj;
 			$r['_path'] = $obj->getPublicUrl();
+
+			$r['_properties'] = $obj->getProperties();
 		}
 
 		$this->templateVariableContainer->add('l10nfalimg', $records);
