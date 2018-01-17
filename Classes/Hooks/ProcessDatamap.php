@@ -36,7 +36,9 @@ class ProcessDatamap {
 	/** @var  array */
 	protected $flashMessage ;
 
-    /** @var  \JVE\JvEvents\Classes\Utility\SalesforceWrapperUtility */
+    /** @var  \JVE\JvEvents\Utility\SalesforceWrapperUtility
+     * @inject
+     */
     public $sfConnect ;
 
 
@@ -220,8 +222,12 @@ class ProcessDatamap {
 
 
 	private function createUpdateEventForSF() {
-        /** @var  \JVE\JvEvents\Classes\Utility\SalesforceWrapperUtility */
-        $this->sfConnect = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JVE\\JvEvents\\Classes\\Utility\\SalesforceWrapperUtility');
+	    // ToDo fix this correctly !
+	    // include_once(__DIR__ . "../Utility/SalesForceWrapperUtility.php") ;
+
+        /** @var  \JVE\JvEvents\Utility\SalesforceWrapperUtility */
+        $this->sfConnect = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JVE\\JvEvents\\Utility\\SalesforceWrapperUtility');
+        // $this->sfConnect = new SalesforceWrapperUtility ;
 
         // With next Line you can force to write to a specific Salesforce system "PROD" / "STAGE" or "DEV"
         // $this->sfConnect->forceEnv = "PROD" ;

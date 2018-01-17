@@ -306,7 +306,9 @@
 
 	<div class="tab-pane" id="jv_events_debug">
 		<f:if condition="{settings.debug} > 0">
-			<f:render partial="Event/Single/MicroFormat" arguments="{event: event, settings: settings}"/>
+			<f:format.raw>
+				<f:render partial="Event/Single/MicroFormat" arguments="{event: event, settings: settings}"/>
+			</f:format.raw>
 		</f:if>
 	</div>
 
@@ -314,5 +316,7 @@
 
 
 <script type="application/ld+json">
-	<f:render partial="Event/Single/MicroFormat" arguments="{event: event, settings: settings}"/>
+	<f:format.raw>
+		<f:render partial="Event/Single/MicroFormat" arguments="{event: event, settings: settings}"/>
+	</f:format.raw>
 </script>

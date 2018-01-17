@@ -6,7 +6,7 @@
  * Time: 11:12
  */
 
-namespace JVE\JvEvents\Classes\Utility;
+namespace JVE\JvEvents\Utility;
 
 
 class SalesforceWrapperUtility
