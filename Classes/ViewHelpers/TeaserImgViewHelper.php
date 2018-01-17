@@ -12,8 +12,8 @@ namespace JVE\JvEvents\ViewHelpers;
  * LICENSE.txt file that was distributed with this source code.
  *
  * The TYPO3 project - inspiring people to share
- * 
- * Based on the news extension of Georg Ringer 
+ *
+ * Based on the news extension of Georg Ringer
  */
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -49,20 +49,19 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  * </output>
  *
  */
-class TeaserImgViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper
+class TeaserImgLinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper
 {
 
     /**
      * @var string
      */
-    protected $tagName = 'a';
+    protected $tagName = 'img';
 
-    
-  
+
+
     public function initializeArguments()
     {
         $this->registerUniversalTagAttributes();
-        $this->registerTagAttribute('section', 'string', 'Anchor for links', false);
     }
 
     /**
@@ -79,115 +78,17 @@ class TeaserImgViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBa
     public function render(
         \JVE\JvEvents\Domain\Model\Event $event,
         array $settings = [],
-        $uriOnly = false,
         $withProtocol = false,
-        $configuration = [],
-        $content = ''
+        $configuration = []
     ) {
-        $configuration = array() ;
-        $this->init();
-        
-       if( $event->getWithRegistration() ) {
-           
-            $configuration = $this->getLinkToEventRegistration($event, $settings, $configuration );
-        } else {
-           if( $event->getRegistrationUrl() <> '' ) {
-               $regUrl = GeneralUtility::trimExplode( " " , $event->getRegistrationUrl() ) ;
-               $configuration['parameter'] = $regUrl[0] ;
-
-               if ( $regUrl[1] =="_blank")  {
-                   $this->tag->addAttribute('target', '_blank');
-               }
-           }
-       }
 
 
-        if ($uriOnly) {
-            $configuration['forceAbsoluteUrl'] = 1 ;
-        }
+        $this->tag->addAttribute('class', "jv_events-teaser-img");
 
-        if ( intval( $GLOBALS['TSFE']->config['config']['sys_language_uid'] ) > 0 ) {
-            $configuration['additionalParams'] .= "&L=" . intval( $GLOBALS['TSFE']->config['config']['sys_language_uid'] ) ;
-        }
-        $url = $this->cObj->typoLink_URL($configuration);
-        
-        if ($this->hasArgument('section')) {
-            $url .= '#' . $this->arguments['section'];
-        }
-
-        if ($uriOnly) {
-            return $url;
-        }
-
-        $this->tag->addAttribute('href', $url);
-
-        if (empty($content)) {
-            $content = $this->renderChildren();
-        }
-        $this->tag->setContent($content);
 
         return $this->tag->render();
     }
 
-    /**
-     * Generate the link configuration for the link to the news item
-     *
-     * @param \JVE\JvEvents\Domain\Model\Event $event
-     * @param array $settings
-     * @param array $configuration
-     * @return array
-     */
-    protected function getLinkToEventRegistration(
-        \JVE\JvEvents\Domain\Model\Event $event,
-        $settings,
-        array $configuration = []
-    ) {
-
-        if (!isset($configuration['parameter'])) {
-        	// try to get PID from Event
-			$detailPid = $event->getRegistrationFormPid() ;
-			// if not set, show registration an the same page like Single View
-			if (!$detailPid) {
-				$detailPid = intval($settings['detailPid']);
-			}
-			// still not set: try the same page . will not work on pages with Event list view but on single View
-            if (!$detailPid) {
-                $detailPid = $GLOBALS['TSFE']->id;
-            }
-            $configuration['parameter'] = $detailPid;
-        }
-
-        $configuration['useCacheHash'] = $GLOBALS['TSFE']->sys_page->versioningPreview ? 0 : 1;
-        if( $settings['link']['doNotuseCacheHash'] ) {
-            $configuration['useCacheHash'] = 0 ;
-        }
-        if( $settings['link']['addNoCache'] ) {
-            $configuration['useCacheHash'] = 0 ;
-            $configuration['noCache'] = 1 ;
-        }
-
-        $categories = $event->getEventCategory() ;
-        $catTitles = "" ;
-        if ( $categories ) {
-            /** @var  \JVE\JvEvents\Domain\Model\Category $category */
-            foreach( $categories as $category ) {
-                if( is_object($category)) {
-                    $catTitles .= $category->getTitle() . " - ";
-                }
-            }
-
-        }
-
-        $configuration['additionalParams'] .= '&tx_jvevents_events[event]=' . ($event->getUid() );
-        $configuration['additionalParams'] .= '&tx_jvevents_events[eventTitle]=' . urlencode( $catTitles . $event->getName() );
-        $configuration['additionalParams'] .= '&tx_jvevents_events[controller]=Registrant' . '&tx_jvevents_events[action]=new';
-
-        $configuration['additionalParams'] .= '&tx_jvevents_events[date]=' . $event->getStartDate()->format( $settings['link']['dateFormat']  );
-        
-        return $configuration;
-    }
-
-    
 
     /**
      * Initialize properties
