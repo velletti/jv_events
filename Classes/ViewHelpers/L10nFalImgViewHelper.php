@@ -80,18 +80,23 @@ class L10nFalImgViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
 
 
 		$records = $db->exec_SELECTgetRows('*', 'sys_file_reference', $where);
+		$outArray = array() ;
 		foreach ($records as &$r) {
 			$sysPage->versionOL('sys_file_reference', $r);
 			$fileReferenceData = $db->exec_SELECTgetSingleRow('*', 'sys_file_reference', 'uid=' . $r['uid'] . ' AND deleted=0');
+
 			/** @var \TYPO3\CMS\Core\Resource\FileReference $obj */
 			$obj =  GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileReference', $fileReferenceData);
-			$r['_file'] = $obj;
-			$r['_path'] = $obj->getPublicUrl();
 
+			// Next line is obsolete! you can not access to non Public Properties of this OBJ
+			// $r['_file'] = $obj;
+
+			$r['_path'] = $obj->getPublicUrl();
 			$r['_properties'] = $obj->getProperties();
+            $outArray[] = $r ;
 		}
 
-		$this->templateVariableContainer->add('l10nfalimg', $records);
+		$this->templateVariableContainer->add('l10nfalimg', $outArray );
 		$output = $this->renderChildren();
 		$this->templateVariableContainer->remove('l10nfalimg');
 
