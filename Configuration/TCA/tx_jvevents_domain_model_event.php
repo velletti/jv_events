@@ -37,14 +37,14 @@ $returnArray = array(
 		--div--;Advanced, --palette--;;language, --palette--;;frequent,
 		--div--;Relations, --palette--;;relations,
 		--div--;Files, teaser_image, files,
-		--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, --palette--;;access,'),
+		--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, --palette--;;access,'),
 		'2' => array('showitem' => 'event_type,--palette--;;dates,--palette--;;infos,description,
 		--div--;Advanced, --palette--;;language, --palette--;;frequent,
 		--div--;Relations, --palette--;;relations,
 		--div--;Files, teaser_image,images, files,
 		--div--;Registration, --palette--;;register,
 		--div--;Notifications, --palette--;;notification, --palette--;Email;notifyOrg, --palette--;Email;notifyReg,
-		--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, --palette--;;access,'),
+		--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, --palette--;;access,'),
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),
@@ -54,7 +54,7 @@ $returnArray = array(
 		'frequent' => array('showitem' => 'is_recurring, --linebreak--, frequency, freq_exception, --linebreak--, is_exception_for,  '),
 		'language' => array('showitem' => 'sys_language_uid, ,l10n_parent,--linebreak--,l10n_diffsource,' ),
 
-		'access' =>  array('showitem' =>  'hidden,--palette--;;1,--linebreak--,access,--linebreak--,endtime' ),
+		'access' =>  array('showitem' =>  'hidden,--palette--;;1,--linebreak--,access,--linebreak--,starttime,endtime' ),
 		'notification' =>  array('showitem' =>  'notify_organizer;;1,notify_registrant;;1,need_to_confirm;;1,--linebreak--' ),
 		'notifyOrg' =>  array('showitem' =>  'subject_organizer,--linebreak--,text_organizer' ),
 		'notifyReg' =>  array('showitem' =>  'subject_registrant,--linebreak--,introtext_registrant,--linebreak--,introtext_registrant_confirmed,--linebreak--,text_registrant' ),
@@ -133,9 +133,7 @@ $returnArray = array(
 				'eval' => 'datetime',
 				'checkbox' => 0,
 				'default' => 0,
-				'range' => array(
-					'lower' => mktime(0, 0, 0, date('m'), date('d'), date('Y'))
-				),
+
 			),
 		),
 		'endtime' => array(
@@ -151,9 +149,7 @@ $returnArray = array(
 				'eval' => 'datetime',
 				'checkbox' => 0,
 				'default' => 0,
-				'range' => array(
-					'lower' => mktime(0, 0, 0, date('m'), date('d'), date('Y'))
-				),
+
 			),
 		),
 

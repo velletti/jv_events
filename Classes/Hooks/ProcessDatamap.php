@@ -71,11 +71,15 @@ class ProcessDatamap {
 			/** @var  \JVE\JvEvents\Domain\Repository\EventRepository $eventRepository */
 			$this->eventRepository = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\EventRepository');
 
+
 			/** @var  \JVE\JvEvents\Domain\Model\Event $event */
-			$this->event = $this->eventRepository->findByUid(intval($this->id)) ;
+			$this->event = $this->eventRepository->findByUidAllpages(intval($this->id), FALSE ) ;
+
 			$allowedError = 0 ;
 
 			if( is_object( $this->event ) ) {
+
+
 
                 if ($this->event->getNotifyRegistrant() ==  0 && $this->event->getNeedToConfirm() == 1 ) {
                     $this->event->setNeedToConfirm( 0 ) ;
@@ -89,7 +93,7 @@ class ProcessDatamap {
                         $allowedError ++ ;
                     } else {
                         if ($this->event->getRegistrationUntil()->getTimestamp()  < time()  ) {
-                            $this->flashMessage['ERROR'][] = 'Registration Until date is in the Past!' ;
+                            $this->flashMessage['WARNING'][] = 'Registration Until date is in the Past! Registration is not possible' ;
                         }
                     }
 
@@ -99,23 +103,15 @@ class ProcessDatamap {
                         if( $this->event->getRegistrationUntil() && $this->event->getStartDate() ) {
                             $this->flashMessage['WARNING'][] = 'Registration Until date ' . $this->event->getRegistrationUntil()->format("d.m.Y H:i") .  ' is after Event Start Date! ' . $ST->format("d.m.Y H:i:s") ;
                         } else {
-                            $this->flashMessage['WARNING'][] = 'Registration Until date is after Event Start Date!' ;
+                            $this->flashMessage['WARNING'][] = 'Registration Until date is after Event Start Date! StartDate is not set now!' ;
                         }
                     }
                     if ($this->event->getAccessStarttime()  >  ( $ST )) {
-                        $this->flashMessage['WARNING'][] = 'Event visibility Start date was after Start Date: ' .  $ST->format("d.m.Y - H:i") ;
+                        $this->flashMessage['WARNING'][] = 'Event visibility Start date was after Start Date: ' .  $ST->format("d.m.Y - H:i") . ". Error was corrected. ";
                         $this->event->setAccessStarttime( $ST) ;
                     }
-                    if ($this->event->getAccessEndtime()  <  ( $ST ) &&  $this->event->getAccessEndtime() > 0 ) {
-                        $this->flashMessage['INFO'][] = 'Event visibility END date is BEFORE Start Date: ' .  $ST->format("d.m.Y - H:i") ;
-                        // $newaccessTime = new \DateTime( ) ;
-                        // $newaccessTime->setDate($this->event->getStartDate()->format("Y"), $this->event->getStartDate()->format("m") , $this->event->getStartDate()->format("d")) ;
-                        // $newaccessTime->setTime(0 , 0 , $this->event->getStartTime() ) ;
-
-                        // $this->event->setAccessEndtime( $newaccessTime ) ;
-                    }
                     if ($this->event->getAccessEndtime() && $this->event->getAccessEndtime()->getTimestamp() < time() ) {
-                        $this->flashMessage['WARNING'][] = 'Event visibility END date is in the past: ' .  $this->event->getAccessEndtime()->format("d.m.Y - H:i") ;
+                        $this->flashMessage['WARNING'][] = 'Event visibility END date is in the past: ' .  $this->event->getAccessEndtime()->format("d.m.Y - H:i") . ". you will not see this event !" ;
                     }
                     // IMPORTANT: without this modification startDate  will have still added the start time !
                     $ST = $ST->modify( "-" . intval($this->event->getStartTime() ) . " second" ) ;
@@ -131,7 +127,7 @@ class ProcessDatamap {
 
                 } else {
                     if (trim($this->event->getRegistrationUrl()) == '' || !$this->event->getRegistrationUrl() ) {
-                        $this->flashMessage['WARNING'][] = 'Registration URL is not set "' .  $this->event->getRegistrationUrl() . '" ' ;
+                        $this->flashMessage['INFO'][] = 'Registration URL is not set "' .  $this->event->getRegistrationUrl() . '". Registration is not Possible.' ;
                     }
                     if (! $this->event->getRegistrationUntil() ) {
                         $this->flashMessage['ERROR'][] = 'Registration Until date is not set!' ;
@@ -154,14 +150,6 @@ class ProcessDatamap {
                     if ($this->event->getAccessStarttime()  >  ( $ST )) {
                         $this->flashMessage['WARNING'][] = 'Event visibility Start date was after Start Date: ' .  $ST->format("d.m.Y - H:i") ;
                         $this->event->setAccessStarttime( $ST) ;
-                    }
-                    if ($this->event->getAccessEndtime()  <  ( $ST ) &&  $this->event->getAccessEndtime() > 0 ) {
-                        $this->flashMessage['INFO'][] = 'Event visibility END date is BEFORE Start Date: ' .  $ST->format("d.m.Y - H:i") ;
-                        // $newaccessTime = new \DateTime( ) ;
-                        // $newaccessTime->setDate($this->event->getStartDate()->format("Y"), $this->event->getStartDate()->format("m") , $this->event->getStartDate()->format("d")) ;
-                        // $newaccessTime->setTime(0 , 0 , $this->event->getStartTime() ) ;
-
-                        // $this->event->setAccessEndtime( $newaccessTime ) ;
                     }
                     if ($this->event->getAccessEndtime() &&  $this->event->getAccessEndtime()->getTimestamp() < time() ) {
                         $this->flashMessage['WARNING'][] = 'Event visibility END date is in the past: ' .  $this->event->getAccessEndtime()->format("d.m.Y - H:i") ;
