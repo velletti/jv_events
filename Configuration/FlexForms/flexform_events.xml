@@ -20,7 +20,7 @@
 									</numIndex>
 									<numIndex index="1">
 										<numIndex index="0">EventSingle</numIndex>
-										<numIndex index="1">Event->new;Event->create;Event->edit;Event->update;Event->show;Event->register;Event->confirm;Event->delete;Registrant->new;Registrant->create;Registrant->list;Registrant->show;Registrant->confirm;Registrant->delete</numIndex>
+										<numIndex index="1">Event->show;Event->new;Event->create;Event->edit;Event->update;Event->register;Event->confirm;Event->delete;Registrant->new;Registrant->create;Registrant->list;Registrant->show;Registrant->confirm;Registrant->delete</numIndex>
 									</numIndex>
 								</items>
 							</config>
