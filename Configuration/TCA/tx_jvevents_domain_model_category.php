@@ -84,7 +84,7 @@ return array(
 			)
 		),
         'sorting' => array(
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.sorting',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:show_item.php.sorting',
             'config' => array(
                 'type' => 'input',
                 'size' => 30,
