@@ -30,7 +30,6 @@ class EmConfigurationUtility
      * Parses the extension settings.
      * @param boolean $asObject
      * @return array
-     * @throws \Exception If the configuration is invalid.
      */
     public static function getEmConf($asObject=false)
     {

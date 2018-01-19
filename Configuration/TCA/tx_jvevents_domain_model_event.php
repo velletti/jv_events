@@ -186,8 +186,8 @@ $returnArray = array(
 			'config' => [
 				'type' => 'input',
                 'renderType' => 'inputLink' ,
-                'size' => '30',
-				'max' => '255',
+                'size' => 30,
+				'max' => 255,
 				'eval' => 'trim,required',
 
 				'softref' => 'typolink'
@@ -223,7 +223,7 @@ $returnArray = array(
 				'teaser_image',
 				array(
 					'appearance' => array(
-						'createNewRelationLinkTitle' => 'LLL:EXT:cms/locallang_ttc.xlf:images.addFileReference'
+						'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:images.addFileReference'
 					),
 					'foreign_types' => array(
 						'0' => array(
@@ -269,7 +269,7 @@ $returnArray = array(
 				'images',
 				array(
 					'appearance' => array(
-						'createNewRelationLinkTitle' => 'LLL:EXT:cms/locallang_ttc.xlf:images.addFileReference'
+						'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:images.addFileReference'
 					),
 					'foreign_types' => array(
 						'0' => array(
@@ -315,7 +315,7 @@ $returnArray = array(
 				'files',
 				array(
 					'appearance' => array(
-						'createNewRelationLinkTitle' => 'LLL:EXT:cms/locallang_ttc.xlf:media.addFileReference'
+						'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.addFileReference'
 					),
 					'foreign_types' => array(
 						'0' => array(
