@@ -27,7 +27,7 @@ namespace JVE\JvEvents\Domain\Model;
  ***************************************************************/
 
 /**
- * Single Event
+ * Single Subevent
  */
 class Subevent extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 

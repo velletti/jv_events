@@ -48,7 +48,7 @@ $returnArray = array(
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),
-		'dates' => array('showitem' => 'all_day,--linebreak--,start_date,end_date,--linebreak--,start_time,end_time,--linebreak--,subevents'),
+		'dates' => array('showitem' => 'all_day,--linebreak--,start_date,end_date,--linebreak--,start_time,end_time,--linebreak--,subevent'),
 		'infos' => array('showitem' => 'name, --linebreak--, teaser '),
 		'relations' => array('showitem' => 'organizer, --linebreak--, location, --linebreak--,event_category, --linebreak--,tags '),
 		'frequent' => array('showitem' => 'is_recurring, --linebreak--, frequency, freq_exception, --linebreak--, is_exception_for,  '),
@@ -793,7 +793,7 @@ $returnArray = array(
 				'eval' => 'int'
 			)
 		),
-        'subevents' => array(
+        'subevent' => array(
             'exclude' => 0,
             'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_subevent',
 

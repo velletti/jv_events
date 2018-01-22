@@ -432,7 +432,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @cascade remove
      * @lazy
      */
-    protected $subevents = null;
+    protected $subevent = null;
 
     /**
      * location
@@ -1916,9 +1916,9 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param \JVE\JvEvents\Domain\Model\Subevent $subevent
      * @return void
      */
-    public function addSubevents(\JVE\JvEvents\Domain\Model\Subevent $subevent)
+    public function addSubevent(\JVE\JvEvents\Domain\Model\Subevent $subevent)
     {
-        $this->subevents->attach($subevent);
+        $this->subevent->attach($subevent);
     }
 
     /**
@@ -1929,28 +1929,28 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     public function removeSubevent(\JVE\JvEvents\Domain\Model\Subevent $subevent )
     {
-        $this->subevents->detach($subevent);
+        $this->subevent->detach($subevent);
     }
 
     /**
-     * Returns the Subevents
+     * Returns the Subevent
      *
      * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Subevent> $subevent
      */
-    public function getSubevents()
+    public function getSubevent()
     {
-        return $this->subevents;
+        return $this->subevent;
     }
 
     /**
-     * Sets the Subevents
+     * Sets the Subevent
      *
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Subevent> $Subevent
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Subevent> $subevent
      * @return void
      */
-    public function setSubevents(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $subevent)
+    public function setSubevent(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $subevent)
     {
-        $this->Subevents = $subevent;
+        $this->subevent = $subevent;
     }
 
     /**
@@ -1958,7 +1958,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     public function getSubeventCount()
     {
-        return  intval($this->getSubevents()->count() ) + 1;
+        return  intval($this->getSubevent()->count() ) + 1;
     }
 
 
