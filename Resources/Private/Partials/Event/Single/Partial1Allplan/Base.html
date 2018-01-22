@@ -5,27 +5,40 @@
 	<!-- Main infos -->
 	<!-- =========================================================================================================================== -->
 </f:comment>
-
 <h1 data-eventUid="{event.uid}" data-eventPid="{event.pid}">{event.name}</h1>
 
 <div class="eventdata">
 
 	<div class="row">
-		<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_event.date" />:</strong></div>
-		<div class="col-md-10">{event.startDate -> f:format.date(format:"d.m.Y")}
-		<f:if condition="{event.startDate < event.endDate}">
-			<f:comment>- {event.endDate -> f:format.date(format:"d.m.Y")}</f:comment>
-		</f:if>
+		<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_event.date" />
+			<f:if condition="{event.allDay}">
+				<f:else>
+					/ <f:translate key="tx_jvevents_domain_model_event.time" />
+				</f:else>
+			</f:if>
+			:</strong>
+		</div>
+		<div class="col-md-10">{event.startDate -> f:format.date(format:"d.m.Y")} |
+			<f:if condition="{event.allDay}">
+				<f:else>
+					{event.startTime -> event:format.date( format:"H:i")}<f:if condition="{event.endTime}"> - {event.endTime -> event:format.date( format:"H:i")}</f:if>
+				</f:else>
+			</f:if>
 		</div>
 	</div>
-
-	<f:if condition="{event.allDay}">
-		<f:else>
+	<f:if condition="{subevents} && {event.subeventCount} > 0 ">
+		<f:then>
+			<f:debug>{event}</f:debug>
+			<f:debug>{subevents}</f:debug>
 			<div class="row">
-				<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_event.time" />:</strong></div>
-				<div class="col-md-10">{event.startTime -> event:format.date( format:"H:i")}<f:if condition="{event.endTime}"> - {event.endTime -> event:format.date( format:"H:i")}</f:if></div>
+				<div class="col-md-2"><strong> {event.subeventCount} <f:translate key="days" /> (<f:count>{subevents}</f:count>)</strong></div>
+				<div class="col-md-10">
+					<f:for each="{subevents}" as="subevent" iteration="i">
+						{subevent.startDate -> f:format.date(format:"d.m.Y")} | {subevent.startTime -> event:format.date( format:"H:i")}<f:if condition="{subevent.endTime}"> - {subevent.endTime -> event:format.date( format:"H:i")}</f:if><br />
+					</f:for>
+				</div>
 			</div>
-		</f:else>
+		</f:then>
 	</f:if>
 
 	<!-- =============================================================================================================================== -->

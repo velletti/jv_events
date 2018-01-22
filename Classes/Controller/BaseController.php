@@ -33,14 +33,16 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
 class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
 
-    /**
-     * eventRepository
-     *
-     * @var \JVE\JvEvents\Domain\Repository\EventRepository
-     * @inject
-     */
+
     protected $eventRepository = NULL;
 
+    /**
+     * subeventRepository
+     *
+     * @var \JVE\JvEvents\Domain\Repository\SubeventRepository
+     * @inject
+     */
+    protected $subeventRepository = NULL;
 
 	/**
 	 * staticCountryRepository
@@ -96,8 +98,14 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             $this->settings['register']['required'][$field] = TRUE ;
         }
         $this->persistenceManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
+    }
 
-
+    /**
+     * @param \JVE\JvEvents\Domain\Repository\EventRepository $eventRepository
+     * @return \JVE\JvEvents\Domain\Repository\EventRepository
+     */
+    public function injectEventRepository(\JVE\JvEvents\Domain\Repository\EventRepository $eventRepository) {
+        return $this->eventRepository ;
     }
 
     public function generateFilter($eventsArray) {

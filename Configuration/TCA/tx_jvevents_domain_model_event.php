@@ -14,7 +14,7 @@ $returnArray = array(
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',
 		'dividers2tabs' => TRUE,
-        'sortby' => 'sorting',
+     //   'sortby' => 'sorting',
 		'default_sortby' => 'start_date DESC',
 		'type' => 'event_type',
 		'versioningWS' => TRUE,
@@ -48,7 +48,7 @@ $returnArray = array(
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),
-		'dates' => array('showitem' => 'all_day,--linebreak--,start_date,start_time,end_date,end_time'),
+		'dates' => array('showitem' => 'all_day,--linebreak--,start_date,end_date,--linebreak--,start_time,end_time,--linebreak--,subevents'),
 		'infos' => array('showitem' => 'name, --linebreak--, teaser '),
 		'relations' => array('showitem' => 'organizer, --linebreak--, location, --linebreak--,event_category, --linebreak--,tags '),
 		'frequent' => array('showitem' => 'is_recurring, --linebreak--, frequency, freq_exception, --linebreak--, is_exception_for,  '),
@@ -156,10 +156,11 @@ $returnArray = array(
 		'event_type' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.event_type',
-			'config' => array(
+            'onChange' => 'reload' ,
+            'config' => array(
 				'type' => 'select',
 				'renderType' => 'selectSingle',
-                'onChange' => 'reload' ,
+
 				'items' => array(
 					array('LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.event_type.link', 0),
 					array('LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.event_type.default', 2),
@@ -357,9 +358,9 @@ $returnArray = array(
 		'all_day' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.all_day',
+            'onChange' => 'reload' ,
 			'config' => array(
 				'type' => 'check',
-                'onChange' => 'reload' ,
 				'default' => 0
 			)
 		),
@@ -443,9 +444,10 @@ $returnArray = array(
 		'with_registration' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.with_registration',
+            'onChange' => 'reload' ,
 			'config' => array(
 				'type' => 'check',
-                'onChange' => 'reload' ,
+
 				'default' => 0
 			)
 		),
@@ -543,9 +545,9 @@ $returnArray = array(
 			'exclude' => 0,
 			'displayCond' => 'FIELD:with_registration:REQ:TRUE' ,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.store_in_citrix',
+            'onChange' => 'reload' ,
 			'config' => array(
 				'type' => 'check',
-                'onChange' => 'reload' ,
 				'default' => 0
 			)
 		),
@@ -563,9 +565,9 @@ $returnArray = array(
 			'exclude' => 0,
 			'displayCond' => 'FIELD:with_registration:REQ:TRUE' ,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.store_in_sales_force',
+            'onChange' => 'reload' ,
 			'config' => array(
 				'type' => 'check',
-                'onChange' => 'reload' ,
 				'default' => 0
 			)
 		),
@@ -745,9 +747,9 @@ $returnArray = array(
 		'is_recurring' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.is_recurring',
+            'onChange' => 'reload' ,
 			'config' => array(
 				'type' => 'check',
-                'onChange' => 'reload' ,
 				'default' => 0
 			)
 		),
@@ -791,6 +793,34 @@ $returnArray = array(
 				'eval' => 'int'
 			)
 		),
+        'subevents' => array(
+            'exclude' => 0,
+            'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_subevent',
+
+            'config' => array(
+                'type' => 'inline',
+                'allowed' => 'tx_jvevents_domain_model_subevent',
+                'foreign_table' => 'tx_jvevents_domain_model_subevent',
+                'foreign_sortby' => 'sorting',
+                'foreign_field' => 'event',
+                'size' => 5,
+                'minitems' => 0,
+                'maxitems' => 100,
+                'appearance' => [
+                    'collapseAll' => true,
+                    'expandSingle' => true,
+                    'levelLinksPosition' => 'bottom',
+                    'useSortable' => true,
+                    'showPossibleLocalizationRecords' => true,
+                    'showRemovedLocalizationRecords' => true,
+                    'showAllLocalizationLink' => true,
+                    'showSynchronizationLink' => true,
+                    'enabledControls' => [
+                        'info' => false,
+                    ]
+                ]
+            ),
+        ),
 		'organizer' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.organizer',
@@ -992,7 +1022,8 @@ if ( ! $configuration['notifyRegistrant'] == 1 ) {
         $returnArray['columns']['need_to_confirm']['config']['default'] = 1  ;
     }
 }
-
+// actually the follow Up Process is not defined (emails an so on .. ) so remove this from input ..
+unset($returnArray['columns']['need_to_confirm'] ) ;
 
 if ( ! $configuration['recurring'] == 1 ) {
 	unset($returnArray['columns']['is_recurring'] ) ;
@@ -1007,8 +1038,8 @@ if ( ! $configuration['showIndividualMailTemplatesPerEvent'] == 1 ) {
 	unset($returnArray['columns']['subject_registrant'] ) ;
 	unset($returnArray['columns']['text_registrant'] ) ;
 
-    unset($returnArray['columns']['notify_organizer']['config']['onChange']) ;
-    unset($returnArray['columns']['notify_registrant']['config']['onChange']) ;
+    unset($returnArray['columns']['notify_organizer']['onChange']) ;
+    unset($returnArray['columns']['notify_registrant']['onChange']) ;
 
 }
 
@@ -1030,7 +1061,6 @@ if ( ! $configuration['hasLoginUser'] == 1 ) {
 
 if ( $configuration['hideEndDate'] == 1 ) {
     unset($returnArray['columns']['end_date'] ) ;
-    unset($returnArray['columns']['end_time'] ) ;
 }
 if ( $configuration['hideAllLanguages'] == 1 ) {
     unset($returnArray['columns']['sys_language_uid']['config']['items'][0] ) ;

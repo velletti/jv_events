@@ -535,7 +535,9 @@
 		<trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.12">
 			<source>Dec</source>
 		</trans-unit>
-
+		<trans-unit id="days">
+			<source>Days</source>
+		</trans-unit>
 		</body>
 	</file>
 </xliff>

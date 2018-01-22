@@ -110,8 +110,17 @@ class EventController extends BaseController
     {
         $checkString =  $_SERVER["SERVER_NAME"] . "-" . $event->getUid() . "-" . $event->getCrdate() ;
         $checkHash = hash("sha256" , $checkString ) ;
-
-        $this->view->assign('hash', $checkHash);
+             $this->view->assign('hash', $checkHash);
+             // Todo Load subevents .. they are lazy !
+        echo " Event Uid = " . $event->getUid() . "<hr> found subevents: " ;
+        $subevents = $this->subeventRepository->findByEventAllpages($event->getUid() , FALSE ) ;
+        var_dump($subevents->count() ) ;
+        echo "<br>Now search ONE subevent buy UID 18 : " ;
+        $test = $this->subeventRepository->findByUidAllpages( 18 , false ) ;
+        echo $GLOBALS['TYPO3_DB']->sql_error() ;
+        echo "<hr>" . var_dump( $test ) ;
+        die ;
+	    $this->view->assign('subevents', $subevents);
 		$this->view->assign('event', $event);
     }
     

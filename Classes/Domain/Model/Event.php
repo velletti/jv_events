@@ -40,7 +40,15 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @validate NotEmpty
      */
     protected $eventType = 0;
-    
+
+    /**
+     * default: add allways 1 even if this object does not have a subevent
+     *
+     * @var int
+     */
+    protected $subeventCount = 1;
+
+
     /**
      * Short Title of this event. Used in listings
      *
@@ -415,7 +423,17 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @lazy
      */
     protected $organizer = null;
-    
+
+
+    /**
+     * Subevent (additional dates )
+     *
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Subevent>
+     * @cascade remove
+     * @lazy
+     */
+    protected $subevents = null;
+
     /**
      * location
      *
@@ -1892,8 +1910,56 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         $this->url = $url;
     }
 
+    /**
+     * Adds a Subevent
+     *
+     * @param \JVE\JvEvents\Domain\Model\Subevent $subevent
+     * @return void
+     */
+    public function addSubevents(\JVE\JvEvents\Domain\Model\Subevent $subevent)
+    {
+        $this->subevents->attach($subevent);
+    }
 
+    /**
+     * Removes a Subevent
+     *
+     * @param \JVE\JvEvents\Domain\Model\Subevent  $subevent ToRemove : The subevent  to be removed
+     * @return void
+     */
+    public function removeSubevent(\JVE\JvEvents\Domain\Model\Subevent $subevent )
+    {
+        $this->subevents->detach($subevent);
+    }
 
+    /**
+     * Returns the Subevents
+     *
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Subevent> $subevent
+     */
+    public function getSubevents()
+    {
+        return $this->subevents;
+    }
+
+    /**
+     * Sets the Subevents
+     *
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Subevent> $Subevent
+     * @return void
+     */
+    public function setSubevents(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $subevent)
+    {
+        $this->Subevents = $subevent;
+    }
+
+    /**
+     * @return int Count of days + 2
+     */
+    public function getSubeventCount()
+    {
+        return  intval($this->getSubevents()->count() ) + 1;
+    }
 
 
 }

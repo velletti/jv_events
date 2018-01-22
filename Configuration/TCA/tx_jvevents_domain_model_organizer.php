@@ -164,7 +164,7 @@ $returnArray = array(
 				'images',
 				array(
 					'appearance' => array(
-						'createNewRelationLinkTitle' => 'LLL:EXT:cms/locallang_ttc.xlf:images.addFileReference'
+						'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.addFileReference'
 					),
 					'foreign_types' => array(
 						'0' => array(
@@ -206,30 +206,15 @@ $returnArray = array(
 		'description' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_organizer.description',
-			'config' => array(
-				'type' => 'text',
-				'cols' => 40,
-				'rows' => 15,
-				'eval' => 'trim',
-                'defaultExtras' => 'richtext:rte_transform' ,
-
-				'wizards' => array(
-					'RTE' => array(
-						'icon' => 'actions-wizard-rte',
-						'notNewRecords'=> 1,
-						'RTEonly' => 1,
-						'module' => array(
-							'name' => 'wizard_rich_text_editor',
-							'urlParameters' => array(
-								'mode' => 'wizard',
-								'act' => 'wizard_rte.php'
-							)
-						),
-						'title' => 'LLL:EXT:cms/locallang_ttc.xlf:bodytext.W.RTE',
-						'type' => 'script'
-					)
-				)
-			),
+            'config' => [
+                'type' => 'text',
+                'enableRichtext' => true,
+                'fieldControl' => [
+                    'fullScreenRichtext' => [
+                        'disabled' => false,
+                    ],
+                ],
+            ],
 		),
         'access_groups' => array(
             'exclude' => 0,
@@ -318,7 +303,7 @@ $returnArray = array(
                 'teaser_image',
                 array(
                     'appearance' => array(
-                        'createNewRelationLinkTitle' => 'LLL:EXT:cms/locallang_ttc.xlf:images.addFileReference'
+                        'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.addFileReference'
                     ),
                     'foreign_types' => array(
                         '0' => array(
