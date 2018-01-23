@@ -112,15 +112,20 @@ class EventController extends BaseController
         $checkHash = hash("sha256" , $checkString ) ;
              $this->view->assign('hash', $checkHash);
              // Todo Load subevents .. they are lazy !
-        echo " Event Uid = " . $event->getUid() . "<hr> found subevents: " ;
+        $querysettings = new \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings ;
+        $querysettings->setStoragePageIds(array( $event->getPid() )) ;
+
+        $this->subeventRepository->setDefaultQuerySettings( $querysettings );
         $subevents = $this->subeventRepository->findByEventAllpages($event->getUid() , FALSE ) ;
-        var_dump($subevents->count() ) ;
-        echo "<br>Now search ONE subevent buy UID 18 : " ;
-        $test = $this->subeventRepository->findByUidAllpages( 18 , false ) ;
-        echo $GLOBALS['TYPO3_DB']->sql_error() ;
-        echo "<hr>" . var_dump( $test ) ;
-        die ;
-	    $this->view->assign('subevents', $subevents);
+        if ( ! is_object( $subevents ) ) {
+            $this->view->assign('subevents', null );
+            $this->view->assign('subeventcount', 0 );
+        } else {
+            $this->view->assign('subevents', $subevents);
+            $this->view->assign('subeventcount', $subevents->count() + 1 );
+
+        }
+
 		$this->view->assign('event', $event);
     }
     

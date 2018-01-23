@@ -44,9 +44,12 @@ class EventRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     public function findByUidAllpages($uid , $toArray=TRUE )
     {
         $query = $this->createQuery();
-        $query->getQuerySettings()->setRespectStoragePage(false);
-        $query->getQuerySettings()->setRespectSysLanguage(FALSE);
-        $query->getQuerySettings()->setIgnoreEnableFields(TRUE) ;
+        $querySettings = $query->getQuerySettings() ;
+        $querySettings->setRespectStoragePage(false);
+        $querySettings->setRespectSysLanguage(FALSE);
+        $querySettings->setIgnoreEnableFields(TRUE) ;
+        $query->setQuerySettings($querySettings) ;
+
         $query->setLimit(1) ;
 
         $query->matching( $query->equals('uid', $uid ) ) ;

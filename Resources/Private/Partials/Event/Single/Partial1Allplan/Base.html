@@ -18,7 +18,7 @@
 			</f:if>
 			:</strong>
 		</div>
-		<div class="col-md-10">{event.startDate -> f:format.date(format:"d.m.Y")} |
+		<div class="col-md-10">{event.startDate -> f:format.date(format:"d.m.Y")} :
 			<f:if condition="{event.allDay}">
 				<f:else>
 					{event.startTime -> event:format.date( format:"H:i")}<f:if condition="{event.endTime}"> - {event.endTime -> event:format.date( format:"H:i")}</f:if>
@@ -26,15 +26,13 @@
 			</f:if>
 		</div>
 	</div>
-	<f:if condition="{subevents} && {event.subeventCount} > 0 ">
+	<f:if condition="{subevents}">
 		<f:then>
-			<f:debug>{event}</f:debug>
-			<f:debug>{subevents}</f:debug>
 			<div class="row">
-				<div class="col-md-2"><strong> {event.subeventCount} <f:translate key="days" /> (<f:count>{subevents}</f:count>)</strong></div>
+				<div class="col-md-2"><strong>{subeventcount} <f:translate key="days" /></strong></div>
 				<div class="col-md-10">
 					<f:for each="{subevents}" as="subevent" iteration="i">
-						{subevent.startDate -> f:format.date(format:"d.m.Y")} | {subevent.startTime -> event:format.date( format:"H:i")}<f:if condition="{subevent.endTime}"> - {subevent.endTime -> event:format.date( format:"H:i")}</f:if><br />
+						{subevent.startDate -> f:format.date(format:"d.m.Y")} : {subevent.startTime -> event:format.date( format:"H:i")}<f:if condition="{subevent.endTime}"> - {subevent.endTime -> event:format.date( format:"H:i")}</f:if><br />
 					</f:for>
 				</div>
 			</div>

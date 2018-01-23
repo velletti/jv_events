@@ -42,9 +42,6 @@ class SubeventRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     public function findByUidAllpages($uid , $toArray=false )
     {
         $query = $this->createQuery();
-        $query->getQuerySettings()->setRespectStoragePage(false);
-        $query->getQuerySettings()->setRespectSysLanguage(FALSE);
-        $query->getQuerySettings()->setIgnoreEnableFields(TRUE) ;
 
         $query->matching( $query->equals('uid', $uid ) ) ;
         $query->setLimit( 1 ) ;
@@ -58,9 +55,6 @@ class SubeventRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     public function findByEventAllpages($event , $toArray=TRUE )
     {
         $query = $this->createQuery();
-        $query->getQuerySettings()->setRespectStoragePage(false);
-        $query->getQuerySettings()->setRespectSysLanguage(FALSE);
-        $query->getQuerySettings()->setIgnoreEnableFields(TRUE) ;
 
         $query->matching( $query->equals('event', $event ) ) ;
         if( $toArray === TRUE ) {

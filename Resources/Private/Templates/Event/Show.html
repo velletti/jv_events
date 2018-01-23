@@ -10,7 +10,7 @@
       Registration possible Until: {event.registrationUntil -> event:format.date( format:"d.m.Y H:i")}
       <br>Now from event: {event.actualTime -> event:format.date( format:"d.m.Y H:i")}
     </div>
-  <f:render partial="Event/Single/Partial{settings.LayoutSingle}/Base" arguments="{event:event, subevents:subevents, settings:settings , hash: hash}" />
+  <f:render partial="Event/Single/Partial{settings.LayoutSingle}/Base" arguments="{event:event, subevents:subevents, subeventcount: subeventcount , settings:settings , hash: hash}" />
 
   </div>
 
