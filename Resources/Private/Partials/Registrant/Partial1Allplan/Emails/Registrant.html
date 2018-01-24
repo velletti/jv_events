@@ -26,7 +26,7 @@
 				</f:then>
 			</f:if>
 			{event.location.name}<br />
-			{event.location.street}<br />
+			{event.location.streetAndNr}<br />
 			{event.location.zip} {event.location.city}<br />
 			<br />
 
@@ -119,6 +119,7 @@
 </f:if>
 {event.name}
 {event.location.name}
+{event.location.streetAndNr}
 {event.location.zip} {event.location.city}
 
 <f:if condition="{otherEvents}">
