@@ -1,32 +1,36 @@
 {namespace event=JVE\JvEvents\ViewHelpers}
+<div class="well">
+	<f:render partial="Event/Single/Partial{settings.LayoutSingle}/Row"
+			  arguments="{title: 'tx_jvevents_domain_model_event.name', translate: '1', isHeadline: 'H2' ,value: '{event.name}' }" />
 
-<div class="event detail">
-	<h1><f:translate key="list.register.button.registration" />: {event.name}</h1>
+	<f:if condition="{event.allDay}">
+		<f:then>
+			{event.startDate -> f:format.date(format:"d.m.Y")}
+		</f:then>
+		<f:else>
+			{event.startDate -> f:format.date(format:"d.m.Y")} um {event.startTime -> f:format.date( format:"H:i")}<f:if condition="{event.endTime}"> - {event.endTime -> f:format.date( format:"H:i")}</f:if>
+		</f:else>
 
-	<div class="eventdata">
-		<div class="row">
-			<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_event.date" />:</strong></div>
-			<div class="col-md-10">{event.startDate -> f:format.date(format:"d.m.Y")}</div>
-			<f:if condition="{event.startDate < event.endDate}">
-				<f:comment>- {event.endDate -> f:format.date(format:"d.m.Y")}</f:comment>
-			</f:if>
-		</div>
+	</f:if>
 
-		<f:if condition="{event.allDay}">
-			<f:else>
-				<div class="row">
-					<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_event.time" />:</strong></div>
-					<div class="col-md-10">{event.startTime -> event:format.date( format:"H:i")}<f:if condition="{event.endTime}"> - {event.endTime -> event:format.date( format:"H:i")}</f:if></div>
-				</div>
-			</f:else>
-		</f:if>
-
-		<f:if condition="{event.location.name}">
+	<f:if condition="{subevents}">
+		<f:then>
 			<div class="row">
-				<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_location.name" />:</strong></div>
-				<div class="col-md-10">{event.location.name}</div>
+				<div class="col-md-2"><strong>{subeventcount} <f:translate key="days" /></strong></div>
+				<div class="col-md-10">
+					<f:for each="{subevents}" as="subevent" iteration="i">
+						{subevent.startDate -> f:format.date(format:"d.m.Y")}
+						<f:if condition="{event.allDay}">
+							<f:else> : {subevent.startTime -> event:format.date( format:"H:i")}<f:if condition="{subevent.endTime}"> - {subevent.endTime -> event:format.date( format:"H:i")}</f:if>
+							</f:else>
+						</f:if><br />
+					</f:for>
+				</div>
 			</div>
-		</f:if>
-	</div>
+		</f:then>
+	</f:if>
+
+	<f:render partial="Event/Single/Partial{settings.LayoutSingle}/Row"
+			  arguments="{title: 'tx_jvevents_domain_model_location.name', translate: '1', value: '{event.location.name}' }"/>
 
 </div>

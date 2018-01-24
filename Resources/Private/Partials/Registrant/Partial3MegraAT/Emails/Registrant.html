@@ -15,7 +15,15 @@
 			<f:if condition="{subevents}">
 				<f:then>
 					<f:for each="{subevents}" as="subevent" iteration="i">
-						{subevent.startDate -> f:format.date(format:"d.m.Y")} : {subevent.startTime -> event:format.date( format:"H:i")}<f:if condition="{subevent.endTime}"> - {subevent.endTime -> event:format.date( format:"H:i")}</f:if><br />
+						<f:if condition="{subevent.allDay}">
+							<f:then>
+								{subevent.startDate -> f:format.date(format:"d.m.Y")} }<br />
+							</f:then>
+							<f:else>
+								{subevent.startDate -> f:format.date(format:"d.m.Y")} : {subevent.startTime -> event:format.date( format:"H:i")}<f:if condition="{subevent.endTime}"> - {subevent.endTime -> event:format.date( format:"H:i")}</f:if><br />
+							</f:else>
+						</f:if>
+
 					</f:for>
 					<br />
 				</f:then>

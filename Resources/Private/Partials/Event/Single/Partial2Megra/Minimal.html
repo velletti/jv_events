@@ -13,6 +13,23 @@
 
 		</f:if>
 
+		<f:if condition="{subevents}">
+			<f:then>
+				<div class="row">
+					<div class="col-md-2"><strong>{subeventcount} <f:translate key="days" /></strong></div>
+					<div class="col-md-10">
+						<f:for each="{subevents}" as="subevent" iteration="i">
+							{subevent.startDate -> f:format.date(format:"d.m.Y")}
+							<f:if condition="{event.allDay}">
+								<f:else> : {subevent.startTime -> event:format.date( format:"H:i")}<f:if condition="{subevent.endTime}"> - {subevent.endTime -> event:format.date( format:"H:i")}</f:if>
+								</f:else>
+							</f:if><br />
+						</f:for>
+					</div>
+				</div>
+			</f:then>
+		</f:if>
+
 		<f:render partial="Event/Single/Partial{settings.LayoutSingle}/Row"
 				  arguments="{title: 'tx_jvevents_domain_model_location.name', translate: '1', value: '{event.location.name}' }"/>
 
