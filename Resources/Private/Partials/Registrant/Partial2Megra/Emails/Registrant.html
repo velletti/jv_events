@@ -23,6 +23,7 @@
 				</f:then>
 			</f:if>
 			{event.location.name}<br />
+			{event.location.street}<br />
 			{event.location.zip} {event.location.city}<br />
 
 		</p>
@@ -111,6 +112,7 @@
  <f:format.date format="d.m.Y">{event.startDate}</f:format.date>
 {event.name}
 {event.location.name}
+{event.location.street}
 {event.location.zip} {event.location.city}
 
 <f:if condition="{otherEvents}">
