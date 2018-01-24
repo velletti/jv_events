@@ -4,11 +4,13 @@
 <f:flashMessages />
 <h2><f:count>{registrants}</f:count> Registrations</h2>
 	<f:if condition="events">
-		<f:if condition="settings.directmail">
+		<f:if condition="{settings.directmail}">
 			<div>
-				<span class="btn btn-default">
-					<f:be.buttons.icon uri="{f:uri.action(action:'list' , arguments: '{createDmailGroup: 1}' )}" title="Create Email Group" icon="actions-document"/>
-				</span> Create Email lists for Newsletter
+					<f:link.action class="btn btn-default" action="list" arguments="{createDmailGroup:1}" title="Create Email Group">
+						<core:icon identifier="actions-document"/> Create Email lists for Newsletter
+					</f:link.action>
+
+
 			</div>
 		</f:if>
 		<f:form id="jveventFilterForm" action="list" controller="EventBackend" method="post">
@@ -46,7 +48,7 @@
 					<div class="col-xs-1">
 
 						<button type="button" class="btn btn-info btn-sm"  data-toggle="collapse" data-target="#regInfo{registrant.uid}">
-							<f:be.buttons.icon icon="actions-document-info"/>
+							<core:icon identifier="actions-document-info"/>
 						</button>
 
 
@@ -71,9 +73,9 @@
 										ok
 									</f:then>
 									<f:else>
-										<span class="btn btn-sm">
-											<f:be.buttons.icon uri="{f:uri.action(action:'confirm' , arguments: '{registrant: registrant, eventID: event}' )}" title="Send Email confirmation" icon="actions-document"/>
-										</span>
+										<f:link.action class="btn btn-sm" action="confirm" arguments="{registrant: registrant, eventID: event}" title="Send Email confirmation">
+											<core:icon identifier="actions-document"/>
+										</f:link.action>
 									</f:else>
 								</f:if>
 							</f:else>

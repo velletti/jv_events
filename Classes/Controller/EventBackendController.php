@@ -85,6 +85,7 @@ class EventBackendController extends BaseController
         }
         $this->settings['filter']['startDate']  = -9999 ;
         $this->settings['storagePid'] = $pageId ;
+        $this->settings['directmail'] = FALSE  ;
         if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('direct_mail')) {
             $this->settings['directmail'] = TRUE ;
         }

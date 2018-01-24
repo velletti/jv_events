@@ -19,35 +19,7 @@ $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist'][$pluginSi
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
     'tt_content.pi_flexform.jvevents_events', 'EXT:jv_events/Resources/Private/Language/locallang_csh_flexforms.xlf');
 
-$configuration = \JVE\JvEvents\Utility\EmConfigurationUtility::getEmConf();
 
-if ( $configuration['showImporter'] == 1 ) {
-    // Todo add importer to modules
-    $EventModules = array('EventBackend' => 'list, show, new, create, edit, update, delete, register, confirm, search' ) ;
-
-} else {
-    $EventModules = array('EventBackend' => 'list, show, new, create, edit, update, delete, register, confirm, search' ) ;
-}
-
-/*
-if (TYPO3_MODE === 'BE') {
-
-    //       * Registers a Backend Module
-    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-        'JVE.' . $_EXTKEY,
-        'web',	 // Make module a submodule of 'web'
-        'eventmngt',	// Submodule key
-        'after:List',						// Position
-        $EventModules ,
-        array(
-            'access' => 'user,group',
-            'icon'   => 'EXT:' . $_EXTKEY . '/ext_icon_importer.gif',
-            'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_eventmngt.xlf',
-        )
-    );
-
-}
-*/
 
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_jvevents_domain_model_event', 'EXT:jv_events/Resources/Private/Language/locallang_csh_tx_jvevents_domain_model_event.xlf');
