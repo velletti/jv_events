@@ -349,8 +349,6 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
         $renderer->assign('layoutName', 'EmailHtml');
         $emailBody = $renderer->render();
-var_dump($emailBody) ;
-die;
         /** @var $message \TYPO3\CMS\Core\Mail\MailMessage */
         $message = $this->objectManager->get('TYPO3\\CMS\\Core\\Mail\\MailMessage');
         $message->setTo($recipient)
