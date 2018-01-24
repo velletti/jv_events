@@ -703,6 +703,14 @@
 			<source>Dec</source>
 			<target>Déc</target>
 		</trans-unit>
+			<trans-unit id="days">
+				<source>Days</source>
+				<target>Journées</target>
+			</trans-unit>
+			<trans-unit id="time">
+				<source>o'clock</source>
+				<target>heure</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

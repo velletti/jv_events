@@ -700,6 +700,14 @@
 			<source>Dec</source>
 			<target>Dic</target>
 		</trans-unit>
+			<trans-unit id="days">
+				<source>Days</source>
+				<target>dias</target>
+			</trans-unit>
+			<trans-unit id="time">
+				<source>o'clock</source>
+				<target></target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

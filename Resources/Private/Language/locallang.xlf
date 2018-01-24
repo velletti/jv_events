@@ -538,6 +538,10 @@
 		<trans-unit id="days">
 			<source>Days</source>
 		</trans-unit>
+		<trans-unit id="time">
+			<source>o'clock</source>
+		</trans-unit>
+
 		</body>
 	</file>
 </xliff>

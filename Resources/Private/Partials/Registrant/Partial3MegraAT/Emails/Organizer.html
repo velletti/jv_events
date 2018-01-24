@@ -8,6 +8,14 @@
 		<f:link.action absolute="1" action="list" noCache="1" arguments="{event : event.uid, hash: settings.hash, export: '1'}"> Get all Registrations as CSV Export </f:link.action>
 
 		<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
+			<f:if condition="{subevents}">
+				<f:then>
+					<f:for each="{subevents}" as="subevent" iteration="i">
+						{subevent.startDate -> f:format.date(format:"d.m.Y")} : {subevent.startTime -> event:format.date( format:"H:i")}<f:if condition="{subevent.endTime}"> - {subevent.endTime -> event:format.date( format:"H:i")}</f:if><br />
+					</f:for>
+					<br />
+				</f:then>
+			</f:if>
 			{event.name}<br />
 			{event.location.name}<br />
 			{event.location.zip} {event.location.city}<br />
@@ -74,6 +82,14 @@
 	</f:then>
 	<f:else>
 New Registrierung for Event id: {event.uid} - <f:format.date format="d.m.Y">{event.startDate}</f:format.date>
+<f:if condition="{subevents}">
+	<f:then>
+		<f:for each="{subevents}" as="subevent" iteration="i">
+			{subevent.startDate -> f:format.date(format:"d.m.Y")} : {subevent.startTime -> event:format.date( format:"H:i")}<f:if condition="{subevent.endTime}"> - {subevent.endTime -> event:format.date( format:"H:i")}</f:if><br />
+		</f:for>
+		<br />
+	</f:then>
+</f:if>
 {event.name}
 {event.location.name}
 {event.location.zip} {event.location.city}

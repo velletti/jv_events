@@ -33,7 +33,11 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
 class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
 
-
+    /**
+     *  $eventRepository
+     * @var \JVE\JvEvents\Domain\Repository\EventRepository
+     * @inject
+     */
     protected $eventRepository = NULL;
 
     /**
@@ -100,13 +104,6 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         $this->persistenceManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
     }
 
-    /**
-     * @param \JVE\JvEvents\Domain\Repository\EventRepository $eventRepository
-     * @return \JVE\JvEvents\Domain\Repository\EventRepository
-     */
-    public function injectEventRepository(\JVE\JvEvents\Domain\Repository\EventRepository $eventRepository) {
-        return $this->eventRepository ;
-    }
 
     public function generateFilter($eventsArray) {
         $locations = array() ;
@@ -301,9 +298,26 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             }
 
         }
+        $querysettings = new \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings ;
+        $querysettings->setStoragePageIds(array( $event->getPid() )) ;
+
+        $this->subeventRepository->setDefaultQuerySettings( $querysettings );
+        $subevents = $this->subeventRepository->findByEventAllpages($event->getUid() , FALSE ) ;
 
         /** @var \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
         $renderer = $this->getEmailRenderer($templatePath = '', '/Registrant/Email/' . $this->settings['LayoutRegister']);
+
+
+        if ( ! is_object( $subevents ) ) {
+            $renderer->assign('subevents', null );
+            $renderer->assign('subeventcount', 0 );
+        } else {
+            $renderer->assign('subevents', $subevents);
+            $renderer->assign('subeventcount', $subevents->count() + 1 );
+
+        }
+
+
 
         $renderer->assign('signature', $signature);
         $renderer->assign('registrant', $registrant);
@@ -335,7 +349,8 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
         $renderer->assign('layoutName', 'EmailHtml');
         $emailBody = $renderer->render();
-
+var_dump($emailBody) ;
+die;
         /** @var $message \TYPO3\CMS\Core\Mail\MailMessage */
         $message = $this->objectManager->get('TYPO3\\CMS\\Core\\Mail\\MailMessage');
         $message->setTo($recipient)

@@ -263,6 +263,20 @@ class RegistrantController extends BaseController
 
         }
 
+        $querysettings = new \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings ;
+        $querysettings->setStoragePageIds(array( $event->getPid() )) ;
+
+        $this->subeventRepository->setDefaultQuerySettings( $querysettings );
+        $subevents = $this->subeventRepository->findByEventAllpages($event->getUid() , FALSE ) ;
+        if ( ! is_object( $subevents ) ) {
+            $this->view->assign('subevents', null );
+            $this->view->assign('subeventcount', 0 );
+        } else {
+            $this->view->assign('subevents', $subevents);
+            $this->view->assign('subeventcount', $subevents->count() + 1 );
+
+        }
+
 		$this->view->assign('hash', $checkHash);
 		$this->view->assign('otherEvents', $otherEvents);
 

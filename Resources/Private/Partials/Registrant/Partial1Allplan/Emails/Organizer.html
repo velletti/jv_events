@@ -1,16 +1,34 @@
+{namespace event=JVE\JvEvents\ViewHelpers}
 <f:if condition="{html}">
 	<f:then>
 		<h2 style="font-size: 22px; font-family: '{emConf.fontFamily}'; line-height: 1.25; margin: 0 0 20px; padding: 0;">
-			Event ID: {event.uid} | <f:format.date format="d.m.Y">{event.startDate}</f:format.date>
+			Event ID: {event.uid} | {event.name}
 		</h2>
 
 		<f:link.action  absolute="true" action="list" class="btn btn-primary" arguments="{event : event.uid, hash: settings.hash, export: 1}"> CSV Export </f:link.action>
 
 
 		<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
-			{event.name}<br />
+
+			<f:if condition="{event.allDay}">
+				<f:then>
+					{event.startDate -> f:format.date(format:"d.m.Y")} <br />
+				</f:then>
+				<f:else>
+					{event.startDate -> f:format.date(format:"d.m.Y")} um {event.startTime -> event:format.date( format:"H:i")}<f:if condition="{event.endTime}"> - {event.endTime -> event:format.date( format:"H:i")}</f:if> <br />
+				</f:else>
+			</f:if>
+			<f:if condition="{subevents}">
+				<f:then>
+					<f:for each="{subevents}" as="subevent" iteration="i">
+						{subevent.startDate -> f:format.date(format:"d.m.Y")} : {subevent.startTime -> event:format.date( format:"H:i")}<f:if condition="{subevent.endTime}"> - {subevent.endTime -> event:format.date( format:"H:i")}</f:if><br />
+					</f:for>
+				</f:then>
+			</f:if>
+			<br />
 			{event.location.name}<br />
 			{event.location.zip} {event.location.city}<br />
+			<br />
 
 		</p>
 		<f:if condition="{otherEvents}">
@@ -70,6 +88,14 @@
 	</f:then>
 	<f:else>
 New Registrierung for Event id: {event.uid} - <f:format.date format="d.m.Y">{event.startDate}</f:format.date>
+		<f:if condition="{subevents}">
+			<f:then>
+				<f:for each="{subevents}" as="subevent" iteration="i">
+					{subevent.startDate -> f:format.date(format:"d.m.Y")} : {subevent.startTime -> event:format.date( format:"H:i")}<f:if condition="{subevent.endTime}"> - {subevent.endTime -> event:format.date( format:"H:i")}</f:if>
+				</f:for>
+			</f:then>
+		</f:if>
+
 {event.name}
 {event.location.name}
 {event.location.zip} {event.location.city}

@@ -111,7 +111,6 @@ class EventController extends BaseController
         $checkString =  $_SERVER["SERVER_NAME"] . "-" . $event->getUid() . "-" . $event->getCrdate() ;
         $checkHash = hash("sha256" , $checkString ) ;
              $this->view->assign('hash', $checkHash);
-             // Todo Load subevents .. they are lazy !
         $querysettings = new \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings ;
         $querysettings->setStoragePageIds(array( $event->getPid() )) ;
 

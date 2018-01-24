@@ -2,19 +2,26 @@
 <f:if condition="{html}">
 	<f:then>
 		<h2 style="font-size: 22px; font-family: '{emConf.fontFamily}'; line-height: 1.25; margin: 0 0 20px; padding: 0;">
-			<f:if condition="{event.allDay}">
-				<f:then>
-					{event.startDate -> f:format.date(format:"d.m.Y")} {event.name}<br />
-				</f:then>
-				<f:else>
-					{event.startDate -> f:format.date(format:"d.m.Y")} um {event.startTime -> event:format.date( format:"H:i")}<f:if condition="{event.endTime}"> - {event.endTime -> event:format.date( format:"H:i")}</f:if> - {event.name}<br />
-				</f:else>
-			</f:if>
-
-
+			{event.name}
 		</h2>
 
 		<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
+			<f:if condition="{event.allDay}">
+				<f:then>
+					{event.startDate -> f:format.date(format:"d.m.Y")} <br />
+				</f:then>
+				<f:else>
+					{event.startDate -> f:format.date(format:"d.m.Y")} : {event.startTime -> event:format.date( format:"H:i")}<f:if condition="{event.endTime}"> - {event.endTime -> event:format.date( format:"H:i")}</f:if> <br />
+				</f:else>
+			</f:if>
+			<f:if condition="{subevents}">
+				<f:then>
+					<f:for each="{subevents}" as="subevent" iteration="i">
+						{subevent.startDate -> f:format.date(format:"d.m.Y")} : {subevent.startTime -> event:format.date( format:"H:i")}<f:if condition="{subevent.endTime}"> - {subevent.endTime -> event:format.date( format:"H:i")}</f:if><br />
+					</f:for>
+					<br />
+				</f:then>
+			</f:if>
 			{event.location.name}<br />
 			{event.location.zip} {event.location.city}<br />
 
@@ -97,6 +104,13 @@
 	</f:then>
 	<f:else>
  <f:format.date format="d.m.Y">{event.startDate}</f:format.date>
+<f:if condition="{subevents}">
+	<f:then>
+		<f:for each="{subevents}" as="subevent" iteration="i">
+			{subevent.startDate -> f:format.date(format:"d.m.Y")} : {subevent.startTime -> event:format.date( format:"H:i")}<f:if condition="{subevent.endTime}"> - {subevent.endTime -> event:format.date( format:"H:i")}</f:if>
+		</f:for>
+	</f:then>
+</f:if>
 {event.name}
 {event.location.name}
 {event.location.zip} {event.location.city}
