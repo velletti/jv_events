@@ -34,7 +34,7 @@ class InlineLabelService
     {
         if ( isset($params['options']['tx_jvevents_domain_model_subevent']) && is_array($params['options']['tx_jvevents_domain_model_subevent']) ) {
             foreach ( $params['options']['tx_jvevents_domain_model_subevent'] as $field => $format ) {
-                $params['title'] .= date( $format ,  $params['row'][$field] ) ;
+                $params['title'] .= date( $format ,  intval($params['row'][$field] )) ;
 
             }
             if ( $params['row']['start_time'] > $params['row']['end_time'] ) {
