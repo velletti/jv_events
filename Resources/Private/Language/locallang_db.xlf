@@ -344,6 +344,9 @@
             <trans-unit id="tx_jvevents_domain_model_registrant.phone">
                 <source>Phone</source>
             </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_registrant.citrix_response">
+                <source>Response from Citrix_Webservice</source>
+            </trans-unit>
             <trans-unit id="tx_jvevents_domain_model_registrant.privacy">
                 <source>Privacy</source>
             </trans-unit>

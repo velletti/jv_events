@@ -160,7 +160,6 @@ $returnArray = array(
             'config' => array(
 				'type' => 'select',
 				'renderType' => 'selectSingle',
-                'onChange' => 'reload' ,
 				'items' => array(
 					array('LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.event_type.link', 0),
 					array('LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.event_type.default', 2),

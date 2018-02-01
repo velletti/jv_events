@@ -250,7 +250,7 @@ return array(
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_location.description',
 			'config' => array(
 				'type' => 'text',
-                'renderType' => 'richtext',
+                'enableRichtext' => true,
 				'cols' => 40,
 				'rows' => 15,
 				'eval' => 'trim',

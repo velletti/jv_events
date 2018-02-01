@@ -42,7 +42,13 @@ class EventBackendController extends BaseController
     protected $eventRepository = NULL;
 
 
-	/**
+    /**
+     * @var \JVE\JvEvents\Signal\RegisterCitrixSignal
+     * @inject
+     */
+    protected  $citrixSlot  ;
+
+    /**
 	 * staticCountryRepository
 	 *
 	 * @var \JVE\JvEvents\Domain\Repository\StaticCountryRepository
@@ -90,7 +96,7 @@ class EventBackendController extends BaseController
             $this->settings['directmail'] = TRUE ;
         }
         /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $events */
-        $registrants = $this->registrantRepository->findByFilter($email, $eventID, $pageId ,  $this->settings , 999 );
+        $registrants = $this->registrantRepository->findByFilter($email, $eventID, $pageId ,  $this->settings , 9999 );
         $eventIds = $this->registrantRepository->findEventsByFilter($email , $pageId , $this->settings  ) ;
         if( count($eventIds) > 0 ) {
             // $events[] = array( "0" => "-" ) ;
@@ -175,7 +181,74 @@ class EventBackendController extends BaseController
         }
         $this->redirect('list' , NULL , NULL , array( 'event' => $eventID )) ;
 	}
-    
+
+    /**
+     * action resendCitrix
+     * @return void
+     */
+    // public function confirmAction(\JVE\JvEvents\Domain\Model\Registrant $registrant )
+    public function resendCitrixAction()
+    {
+        if ( $this->request->hasArgument("registrant")) {
+            $regId = $this->request->getArgument("registrant") ;
+
+            if( $regId > 0 ) {
+                /** @var \JVE\JvEvents\Domain\Model\Registrant $registrant */
+                $registrant = $this->registrantRepository->findByUid($regId) ;
+                if( $registrant ) {
+
+                    /** @var \JVE\JvEvents\Domain\Model\Event $event */
+                    $event = $this->eventRepository->findByUidAllpages($registrant->getEvent() , FALSE  ) ;
+
+                    if( $event ) {
+
+                        $ts = \Allplan\AllplanTools\Utility\TyposcriptUtility::loadTypoScriptFromScratch(
+                            $event->getRegistrationFormPid() , "tx_jvevents_events" , array( "[globalVar = GP:L = 1]" ) ) ;
+                        $this->settings['register']['citrix']['orgID'] = $ts['settings']['register']['citrix']['orgID'] ;
+                        $this->settings['register']['citrix']['orgAUTH'] = $ts['settings']['register']['citrix']['orgAUTH'] ;
+                        $response = $this->citrixSlot->createAction($registrant , $event , $this->settings ) ;
+                        //   $response = "201" ;
+                        // $registrant->setCitrixResponse($response) ;
+                        // $this->registrantRepository->update($registrant) ;
+
+
+                        if ( $response == 200 ||$response == 201 ) {
+                            $colorCode = \TYPO3\CMS\Core\Messaging\AbstractMessage::INFO ;
+                        } else {
+                            $colorCode = \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING ;
+                        }
+                        $this->addFlashMessage( " Resent user " . $registrant->getEmail() . " to Citrix : " . var_export( $response , true )
+                                , '', $colorCode );
+
+                        $this->persistenceManager->persistAll() ;
+                        $output = array( "uid" => $regId , "text" => $response)  ;
+
+                        $jsonOutput = json_encode($output);
+                        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+                        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+                        header('Cache-Control: no-cache, must-revalidate');
+                        header('Pragma: no-cache');
+                        header('Content-Length: ' . strlen($jsonOutput));
+                        header('Content-Type: application/json; charset=utf-8');
+                        header('Content-Transfer-Encoding: 8bit');
+
+                        $callbackId = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP("callback");
+                        if ( $callbackId == '' ) {
+                            echo $jsonOutput;
+                        } else {
+                            echo $callbackId . "(" . $jsonOutput . ")";
+                        }
+
+                        die();
+
+                    }
+                }
+            }
+        }
+        die;
+    }
+
+
     /**
      * action create
      *

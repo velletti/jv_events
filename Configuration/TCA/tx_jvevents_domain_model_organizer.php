@@ -342,7 +342,7 @@ $returnArray = array(
                 "jpg,jpeg,gif,png"
             ),
         ),
-
+		
 	),
 );
 

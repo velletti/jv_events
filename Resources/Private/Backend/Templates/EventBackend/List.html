@@ -2,6 +2,19 @@
 
 <f:section name="content">
 <f:flashMessages />
+	<script type="application/javascript">
+        $(document).ready(function() {
+            $('.tx_jvevents_citrix').click( function(event) {
+                event.preventDefault() ;
+                $.get( $(this).attr("href") , function(data , status ){
+                    	$('.registrant' + data.uid+ ' .tx_jvevents_citrix').html(data.text )  ;
+					}
+				) ;
+            }) ;
+
+		}) ;
+
+	</script>
 <h2><f:count>{registrants}</f:count> Registrations</h2>
 	<f:if condition="events">
 		<f:if condition="{settings.directmail}">
@@ -44,7 +57,7 @@
 		<div class="jvevents-entrys">
 			<f:for each="{paginatedRegistrants}" as="registrant" iteration="iterator">
 
-				<div class="row regEvent{registrant.event}">
+				<div class="row registrant{registrant.uid} regEvent{registrant.event}">
 					<div class="col-xs-1">
 
 						<button type="button" class="btn btn-info btn-sm"  data-toggle="collapse" data-target="#regInfo{registrant.uid}">
@@ -70,7 +83,35 @@
 							<f:else>
 								<f:if condition="{registrant.confirmed}">
 									<f:then>
-										ok
+										<f:if condition="{settings.EmConfiguration.enableCitrix}">
+											<f:then>
+												<f:if condition="{0: registrant.citrixResponse} == {0: '200'} || {0: registrant.citrixResponse} == {0: '201'} ">
+													<f:then>
+														<f:if condition="{0: registrant.citrixResponse} == {0: '200'}">
+															<f:then>
+																<span title="Sent to Citrix. Response was OK">
+																	{registrant.citrixResponse}
+																</span>
+															</f:then>
+															<f:else>
+																<span title="Was ReSent to Citrix. Response was OK">
+																	{registrant.citrixResponse}
+																</span>
+															</f:else>
+														</f:if>
+													</f:then>
+													<f:else>
+														<f:link.action absolute="true" class="btn btn-sm tx_jvevents_citrix" action="resendCitrix" arguments="{registrant: registrant.uid}" title="Send to citrix - {registrant.citrixResponse} ">
+															<core:icon identifier="actions-system-backend-user-switch"/>
+														</f:link.action>
+													</f:else>
+												</f:if>
+											</f:then>
+											<f:else>
+												ok
+											</f:else>
+										</f:if>
+
 									</f:then>
 									<f:else>
 										<f:link.action class="btn btn-sm" action="confirm" arguments="{registrant: registrant, eventID: event}" title="Send Email confirmation">

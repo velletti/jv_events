@@ -68,6 +68,16 @@ class Registrant extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 	 */
 	protected $otherEvents = '' ;
 
+    /**
+     * event
+     *
+     * @var string
+     */
+    protected $citrixResponse = '' ;
+
+
+
+
 	/**
 	 * layoutRegister
 	 *
@@ -1298,6 +1308,23 @@ class Registrant extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 	{
 		$this->title = $title;
 	}
+
+    /**
+     * @return string
+     */
+    public function getCitrixResponse()
+    {
+        return $this->citrixResponse;
+    }
+
+    /**
+     * @param string $citrixResponse
+     */
+    public function setCitrixResponse($citrixResponse)
+    {
+        $this->citrixResponse = $citrixResponse;
+    }
+
 
 
 	

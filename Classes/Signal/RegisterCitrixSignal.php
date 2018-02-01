@@ -31,6 +31,22 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class RegisterCitrixSignal {
 
     /**
+     * persistencemanager
+     *
+     * @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
+     * @inject
+     */
+    protected $persistenceManager = NULL ;
+
+    /**
+     * registrantRepository
+     *
+     * @var \JVE\JvEvents\Domain\Repository\RegistrantRepository
+     * @inject
+     */
+    protected $registrantRepository = NULL;
+
+    /**
      * Initialize action settings
      * @return void
      */
@@ -86,6 +102,7 @@ class RegisterCitrixSignal {
 
         $data['webinar'] = $event->getCitrixUid() ;
         $tag = "[CITRIX]" ;
+        // $settings['debug'] = 2 ;
         if ( substr($_SERVER['SERVER_NAME'], -6 , 6 )  == ".local"  || $settings['debug'] > 0 ) {
             echo "<hr>No transport to salesForce / Citrix on a local testserver or if Debug is  set a value > 0 .. if you want to test curl and see response also local, set debug to 2  !!! <pre>" ;
             echo $debugmail  ;
@@ -123,18 +140,21 @@ class RegisterCitrixSignal {
                 }
             }
             if ( $resultvals['registrantKey'] <> '' ) {
+
                 if ( $httpval[1] == "201" )  {
                     $error = 0 ; //  no error Overwrite error 2
+
                 } else {
                     $error = 1 ;  // already registered for that event ..
                 }
+                $registrant->setCitrixResponse( $httpval[1] )  ;
             } else {
                 $tag = "[CITRIX-ERROR]" ;
                 $httpresponseErr = $httpval[1] ;
                 $httpresponseErrText = substr($result , 0 ,1800)  ;
                 $debugmail .= "\n+++++++++++ citrix error: ++++++++++++++++++\n"  ;
                 $debugmail .= "\nhttpresponseErrText: " . $httpresponseErrText ;
-
+                $registrant->setCitrixResponse( substr($result , 0 ,200) ) ;
 
             }
             $debugmail .= "\n+++++++++++ citrix result: ++++++++++++++++++\n"  ;
@@ -143,14 +163,17 @@ class RegisterCitrixSignal {
             $debugmail .= "\nErrorstatus: " . $error;
 
         }
+        // $settings['debug']  = 2 ;
         if ( $settings['debug'] > 1 ) {
             echo nl2br( $debugmail ) ;
             echo " Die in Line " . __LINE__ . " in File: " . __FILE__ ;
             Die ;
         }
+        $this->registrantRepository->update( $registrant ) ;
+        $this->persistenceManager->persistAll() ;
 
         mail("jvelletti@allplan.com" , $tag  . $debugmailTitle , $debugmail ) ;
-
+        return array( "data" => $resultvals , "status" => $httpval[1] ) ;
     }
 
      /** convertToJson

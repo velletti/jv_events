@@ -27,7 +27,7 @@ return array(
 		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, confirmed, hidden, gender, title,first_name, last_name, email, company, department, street_and_nr, zip, city, country, language, phone, additional_info, privacy, newsletter, customer_id, profession, recall, contact_id, username, more1, more2, more3, more4, more5bool, more6int, more7date, more8file, password, company2, department2, street_and_nr2, zip2, city2, country2',
 	),
 	'types' => array(
-		'1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, confirmed,  privacy, newsletter,  recall,other_events , --div--;UserData, gender, title, first_name, last_name,username,  profession, email,phone,language,contact_id , --div--;CompanyData, company, department, street_and_nr, zip, city, country,  customer_id, --div--; MoreData, additional_info,  more1, more2, more3, more4, more5bool, more6int, more7date, more8file, password,--div--;InvoiceAddress,company2,department2,street_and_nr2,zip2,city2,country2 '),
+		'1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, confirmed,  privacy, newsletter,  recall, citrix_response , --div--;UserData, gender, title, first_name, last_name,username,  profession, email,phone,language,contact_id , --div--;CompanyData, company, department, street_and_nr, zip, city, country,  customer_id, --div--; MoreData, additional_info,  more1, more2, more3, more4, more5bool, more6int, more7date, more8file, password,--div--;InvoiceAddress,company2,department2,street_and_nr2,zip2,city2,country2 '),
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),
@@ -125,6 +125,18 @@ return array(
 				'eval' => 'trim'
 			),
 		),
+        'citrix_response' => array(
+            'exclude' => 0,
+            'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_registrant.citrix_response',
+            'config' => array(
+                'type' => 'text',
+                'rows' => 5,
+                'cols' => 40,
+                'eval' => 'trim'
+            ),
+        ),
+
+
 		'last_name' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_registrant.last_name',
