@@ -342,6 +342,16 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
         $subject = '=?utf-8?B?' . base64_encode($subject) . '?=';
 
+        // Possible attachments here ... Need to integrate to do a better check for Contact  ID
+        $layout = $this->settings['LayoutRegister'] ;
+        $attachments = $this->settings['register']['attachments'][$layout] ;
+        if ( is_array( $attachments ) ) {
+            if ($registrant->getMore6int() == 0) {
+                if( strlen( trim( $registrant->getContactId() ) ) < 3 && $registrant->getMore6int() != 'unbekannt'  ) {
+                    $registrant->setMore6int(1) ;
+                }
+            }
+        }
 
         $renderer->assign('registrant', $registrant);
         $renderer->assign('layoutName', 'EmailPlain');
@@ -355,13 +365,14 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             ->setFrom($sender)
             ->setSubject($subject);
 
-        // Possible attachments here
-        $layout = $this->settings['LayoutRegister'] ;
-        $attachments = $this->settings['register']['attachments'][$layout] ;
 
-        if ( $registrant->getMore6int() == 1  && is_array( $attachments ) ) {
-            foreach ($attachments as $attachment) {
-                $message->attach(\Swift_Attachment::fromPath($attachment));
+
+
+        if ( is_array( $attachments ) ) {
+            if( $registrant->getMore6int() == 1  ) {
+                foreach ($attachments as $attachment) {
+                    $message->attach(\Swift_Attachment::fromPath($attachment));
+                }
             }
         }
 

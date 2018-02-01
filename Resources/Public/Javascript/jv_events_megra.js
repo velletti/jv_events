@@ -53,11 +53,9 @@ function jv_events_init() {
 	jv_events_initOneFilter('organizers') ;
 	jv_events_initOneFilter('months') ;
 	if( jQuery('#jv_events_geo').length > 0 ) {
-        if( jQuery('#jv_events_geo').data("askUser" )  == "1") {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(jv_events_initPosition);
-            }
-        }
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(jv_events_initPosition);
+		}
 	}
     jQuery('#filter-reset-events' ).click(function(i) {
         jv_events_filter_reset() ;
@@ -434,6 +432,18 @@ function jv_events_submit() {
 
 
 	}) ;
+	// Special Field more6int
+    if( !$('#jv_events_more6inthelper').is( ":checked" )) {
+        if( ( $('#jv_events_contactId') && $('#jv_events_contactId').val().trim().length < 4 &&  ! $('#jv_events_contactId').val().trim() == 'unbekannt' ))  {
+            if( !$('#jv_events_more6int').is( ":checked" ) ) {
+                $('#jv_events_more6int_sub').addClass('has-error') ;
+                error = true ;
+            }
+        }
+    }
+    if( $('#jv_events_contactId') && $('#jv_events_contactId').val().trim().length < 3 ) {
+        $('#jv_events_more6int_sub').show('fast');
+    }
 
 
 	if( error) {

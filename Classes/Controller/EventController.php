@@ -110,7 +110,7 @@ class EventController extends BaseController
     {
         $checkString =  $_SERVER["SERVER_NAME"] . "-" . $event->getUid() . "-" . $event->getCrdate() ;
         $checkHash = hash("sha256" , $checkString ) ;
-             $this->view->assign('hash', $checkHash);
+
         $querysettings = new \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings ;
         $querysettings->setStoragePageIds(array( $event->getPid() )) ;
 
@@ -125,6 +125,31 @@ class EventController extends BaseController
 
         }
 
+        $this->settings['fe_user']['user'] = $GLOBALS['TSFE']->fe_user->user ;
+        $this->settings['fe_user']['organizer']['showTools'] = FALSE ;
+
+        if ( $GLOBALS['TSFE']->fe_user->user ) {
+            $userUid = $GLOBALS['TSFE']->fe_user->user['uid'] ;
+            if( is_object($event->getOrganizer())) {
+                $userAccessArr = \TYPO3\CMS\CORE\Utility\GeneralUtility::trimExplode( "," , $event->getOrganizer()->getAccessUsers() ) ;
+                if( in_array( $userUid , $userAccessArr ))  {
+                    $this->settings['fe_user']['organizer']['showTools'] = TRUE ;
+                } else {
+                    $usersGroups = \TYPO3\CMS\CORE\Utility\GeneralUtility::trimExplode( "," ,  $GLOBALS['TSFE']->fe_user->user['usergroup'] ) ;
+                    $OrganizerAccessToolsGroups = \TYPO3\CMS\CORE\Utility\GeneralUtility::trimExplode( "," ,  $event->getOrganizer()->getAccessGroups() ) ;
+                    foreach ($OrganizerAccessToolsGroups as $tempGroup ) {
+                        if( in_array( $tempGroup , $usersGroups ))  {
+                            $this->settings['fe_user']['organizer']['showTools'] = TRUE ;
+                        }
+                    }
+
+                }
+            }
+
+        }
+
+        $this->view->assign('settings', $this->settings);
+        $this->view->assign('hash', $checkHash);
 		$this->view->assign('event', $event);
     }
     

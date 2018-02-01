@@ -54,6 +54,7 @@ class RegistrantController extends BaseController
     /**
      * action list
      * @param \JVE\JvEvents\Domain\Model\Event $event
+     * @ignorevalidation $event
      * @param string $hash
      * @return void
      */

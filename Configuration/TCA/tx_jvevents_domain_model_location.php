@@ -250,27 +250,11 @@ return array(
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_location.description',
 			'config' => array(
 				'type' => 'text',
+                'renderType' => 'richtext',
 				'cols' => 40,
 				'rows' => 15,
 				'eval' => 'trim',
-                'defaultExtras' => 'richtext:rte_transform' ,
 
-				'wizards' => array(
-					'RTE' => array(
-						'icon' => 'actions-wizard-rte',
-						'notNewRecords'=> 1,
-						'RTEonly' => 1,
-						'module' => array(
-							'name' => 'wizard_rich_text_editor',
-							'urlParameters' => array(
-								'mode' => 'wizard',
-								'act' => 'wizard_rte.php'
-							)
-						),
-						'title' => 'LLL:EXT:cms/locallang_ttc.xlf:bodytext.W.RTE',
-						'type' => 'script'
-					)
-				)
 			),
 		),
 		'organizer' => array(
@@ -369,6 +353,6 @@ return array(
                 "jpg,jpeg,gif,png"
             ),
         ),
-		
+
 	),
 );## EXTENSION BUILDER DEFAULTS END TOKEN - Everything BEFORE this line is overwritten with the defaults of the extension builder
