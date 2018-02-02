@@ -6,15 +6,37 @@
         $(document).ready(function() {
             $('.tx_jvevents_citrix').click( function(event) {
                 event.preventDefault() ;
-                $.get( $(this).attr("href") , function(data , status ){
-                    	$('.registrant' + data.uid+ ' .tx_jvevents_citrix').html(data.text )  ;
+                var thisReg = $(this)
+				$(thisReg).html( $('#jvevents-spinner-icon').html() )  ;
+
+                $.get( $(this).attr("href") , function(data , status ) {
+					$(thisReg).html($('#jvevents-close-icon').html());
+					if (data.uid) {
+						if (data.text.status) {
+							$('.registrant' + data.uid + ' .tx_jvevents_citrix').html(
+                                $(thisReg).html( $('#jvevents-okay-icon').html() + data.text.status )
+							);
+						}
+					} else {
+						$(thisReg).html($('#jvevents-error-icon').html());
 					}
-				) ;
+				}) ;
             }) ;
 
 		}) ;
 
 	</script>
+	<div class="hide">
+		<!-- comment: Icon or messages needed for Ajax see typo3\sysext\core\Classes\Imaging\IconRegistry.php //-->
+
+
+		<span id="jvevents-spinner-icon"><core:icon identifier="spinner-circle-dark"/></span>
+		<span id="jvevents-close-icon"><core:icon identifier="status-dialog-notification"/></span>
+		<span id="jvevents-error-icon"><core:icon identifier="status-dialog-error"/></span>
+		<span id="jvevents-okay-icon"><core:icon identifier="status-dialog-ok"/></span>
+	</div>
+
+
 <h2><f:count>{registrants}</f:count> Registrations</h2>
 	<f:if condition="events">
 		<f:if condition="{settings.directmail}">

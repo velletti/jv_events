@@ -63,7 +63,7 @@ class RegisterCitrixSignal {
      * @param \JVE\Jvevents\Domain\Model\Event $event
      * @param array $settings
      *
-     * @return void
+     * @return array
      */
     public function createAction($registrant, $event ,  $settings)
     {

@@ -104,7 +104,7 @@ class EventBackendController extends BaseController
                 $event = $this->eventRepository->findByUidAllpages($eventId) ;
                 if( is_array($event)) {
                     if(  $event[0] instanceof  \JVE\JvEvents\Domain\Model\Event )  {
-                        $event[0]->setName( $event[0]->getStartDate()->format("d.m.Y - ") . substr( $event[0]->getName() , 0 , 50 )  . " (" . $event[0]->getUid() . ")" ) ;
+                        $event[0]->setName( $event[0]->getStartDate()->format("Y-m-d - ") . substr( $event[0]->getName() , 0 , 50 )  . " (" . $event[0]->getUid() . ")" ) ;
 
                         $events[] = $event[0] ;
                         if ( $this->request->hasArgument("createDmailGroup")) {
@@ -184,68 +184,81 @@ class EventBackendController extends BaseController
 
     /**
      * action resendCitrix
-     * @return void
+     *
+     * will output json Resonse
      */
     // public function confirmAction(\JVE\JvEvents\Domain\Model\Registrant $registrant )
     public function resendCitrixAction()
     {
-        if ( $this->request->hasArgument("registrant")) {
-            $regId = $this->request->getArgument("registrant") ;
-
-            if( $regId > 0 ) {
+        if( $this->settings['EmConfiguration']['enableCitrix'] < 1 ) {
+            $output = array( "enableCitrix" => false ) ;
+        } elseif (!$this->request->hasArgument("registrant")) {
+            $output = array( "error" => true , "msg" => "No registrant Id" ) ;
+        } else {
+            $regId = intval( $this->request->getArgument("registrant")) ;
+            $registrant = false ;
+            $event = false ;
+            if ($regId < 1) {
+                $output = array( "error" => true , "msg" => "Registrant Id < 1" ) ;
+            } else {
                 /** @var \JVE\JvEvents\Domain\Model\Registrant $registrant */
-                $registrant = $this->registrantRepository->findByUid($regId) ;
-                if( $registrant ) {
+                $registrant = $this->registrantRepository->findByUid($regId);
+            }
+            if (! $registrant || !is_object($registrant)) {
+                $output = array( "error" => true , "msg" => "Registrant not Found" ) ;
+            } else {
+                /** @var \JVE\JvEvents\Domain\Model\Event $event */
+                $event = $this->eventRepository->findByUidAllpages($registrant->getEvent(), FALSE);
+            }
+            if (! $event || !is_object($event)) {
+                $output = array( "error" => true , "msg" => "Event not Found" ) ;
+            } else {
+                // Special Solution For allplan. So this Extension exists
+                // Condition is special for DE but should work also in all langauges
+                // if anybody also needs this, we should make it more flexibel ..
 
-                    /** @var \JVE\JvEvents\Domain\Model\Event $event */
-                    $event = $this->eventRepository->findByUidAllpages($registrant->getEvent() , FALSE  ) ;
+                $lng = intval( $event->getLanguageUid()) ;
+                $ts = \Allplan\AllplanTools\Utility\TyposcriptUtility::loadTypoScriptFromScratch(
+                    $event->getRegistrationFormPid(), "tx_jvevents_events", array("[globalVar = GP:L = " . $lng . "]")
+                );
 
-                    if( $event ) {
-
-                        $ts = \Allplan\AllplanTools\Utility\TyposcriptUtility::loadTypoScriptFromScratch(
-                            $event->getRegistrationFormPid() , "tx_jvevents_events" , array( "[globalVar = GP:L = 1]" ) ) ;
-                        $this->settings['register']['citrix']['orgID'] = $ts['settings']['register']['citrix']['orgID'] ;
-                        $this->settings['register']['citrix']['orgAUTH'] = $ts['settings']['register']['citrix']['orgAUTH'] ;
-                        $response = $this->citrixSlot->createAction($registrant , $event , $this->settings ) ;
-                        //   $response = "201" ;
-                        // $registrant->setCitrixResponse($response) ;
-                        // $this->registrantRepository->update($registrant) ;
+                $this->settings['register']['citrix']['orgID'] = $ts['settings']['register']['citrix']['orgID'];
+                $this->settings['register']['citrix']['orgAUTH'] = $ts['settings']['register']['citrix']['orgAUTH'];
+                $response = $this->citrixSlot->createAction($registrant, $event, $this->settings);
+                //   $response = "201" ;
+                // $registrant->setCitrixResponse($response) ;
+                // $this->registrantRepository->update($registrant) ;
 
 
-                        if ( $response == 200 ||$response == 201 ) {
-                            $colorCode = \TYPO3\CMS\Core\Messaging\AbstractMessage::INFO ;
-                        } else {
-                            $colorCode = \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING ;
-                        }
-                        $this->addFlashMessage( " Resent user " . $registrant->getEmail() . " to Citrix : " . var_export( $response , true )
-                                , '', $colorCode );
-
-                        $this->persistenceManager->persistAll() ;
-                        $output = array( "uid" => $regId , "text" => $response)  ;
-
-                        $jsonOutput = json_encode($output);
-                        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-                        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-                        header('Cache-Control: no-cache, must-revalidate');
-                        header('Pragma: no-cache');
-                        header('Content-Length: ' . strlen($jsonOutput));
-                        header('Content-Type: application/json; charset=utf-8');
-                        header('Content-Transfer-Encoding: 8bit');
-
-                        $callbackId = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP("callback");
-                        if ( $callbackId == '' ) {
-                            echo $jsonOutput;
-                        } else {
-                            echo $callbackId . "(" . $jsonOutput . ")";
-                        }
-
-                        die();
-
-                    }
+                if ($response == 200 || $response == 201) {
+                    $colorCode = \TYPO3\CMS\Core\Messaging\AbstractMessage::INFO;
+                } else {
+                    $colorCode = \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING;
                 }
+                // $this->addFlashMessage(" Resent user " . $registrant->getEmail() . " to Citrix : " . var_export($response, true)
+                //    , '', $colorCode);
+
+                $this->persistenceManager->persistAll();
+                $output = array("uid" => $regId, "text" => $response);
             }
         }
-        die;
+        $jsonOutput = json_encode($output);
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+        header('Cache-Control: no-cache, must-revalidate');
+        header('Pragma: no-cache');
+        header('Content-Length: ' . strlen($jsonOutput));
+        header('Content-Type: application/json; charset=utf-8');
+        header('Content-Transfer-Encoding: 8bit');
+
+        $callbackId = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP("callback");
+        if ($callbackId == '') {
+            echo $jsonOutput;
+        } else {
+            echo $callbackId . "(" . $jsonOutput . ")";
+        }
+
+        die();
     }
 
 
