@@ -13,10 +13,10 @@
 					$(thisReg).html($('#jvevents-close-icon').html());
 					if (data.uid) {
 						if (data.text.status) {
-							$('.registrant' + data.uid + ' .tx_jvevents_citrix').html(
-                                $(thisReg).html( $('#jvevents-okay-icon').html() + data.text.status )
-							);
-						}
+                            $(thisReg).html($('#jvevents-okay-icon').html());
+						} else {
+                            $(thisReg).html($('#jvevents-error-icon').html());
+                        }
 					} else {
 						$(thisReg).html($('#jvevents-error-icon').html());
 					}
