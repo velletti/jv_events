@@ -1,0 +1,7 @@
+<script type="application/ld+json">
+    <f:format.json>
+        <f:for each="{events}" as="event" iteration="index">
+            <f:render partial="Event/Single/MicroFormat" arguments="{event: event, settings: settings}"/>
+        </f:for>
+    </f:format.json>
+</script>
