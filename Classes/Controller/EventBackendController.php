@@ -226,8 +226,8 @@ class EventBackendController extends BaseController
                 $this->settings['register']['citrix']['orgAUTH'] = $ts['settings']['register']['citrix']['orgAUTH'];
                 $response = $this->citrixSlot->createAction($registrant, $event, $this->settings);
                 //   $response = "201" ;
-                // $registrant->setCitrixResponse($response) ;
-                // $this->registrantRepository->update($registrant) ;
+                $registrant->setCitrixResponse($response['CitrixResponse']) ;
+                $this->registrantRepository->update($registrant) ;
 
 
                 if ($response == 200 || $response == 201) {

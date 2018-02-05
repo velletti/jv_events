@@ -147,14 +147,14 @@ class RegisterCitrixSignal {
                 } else {
                     $error = 1 ;  // already registered for that event ..
                 }
-                $registrant->setCitrixResponse( $httpval[1] )  ;
+                $CitrixResponse =  $httpval[1]  ;
             } else {
                 $tag = "[CITRIX-ERROR]" ;
                 $httpresponseErr = $httpval[1] ;
                 $httpresponseErrText = substr($result , 0 ,1800)  ;
                 $debugmail .= "\n+++++++++++ citrix error: ++++++++++++++++++\n"  ;
                 $debugmail .= "\nhttpresponseErrText: " . $httpresponseErrText ;
-                $registrant->setCitrixResponse( substr($result , 0 ,200) ) ;
+                $CitrixResponse =  substr($result , 0 ,200)  ;
 
             }
             $debugmail .= "\n+++++++++++ citrix result: ++++++++++++++++++\n"  ;
@@ -163,17 +163,18 @@ class RegisterCitrixSignal {
             $debugmail .= "\nErrorstatus: " . $error;
 
         }
+
+        $registrant->setCitrixResponse( $CitrixResponse ) ;
         // $settings['debug']  = 2 ;
         if ( $settings['debug'] > 1 ) {
             echo nl2br( $debugmail ) ;
             echo " Die in Line " . __LINE__ . " in File: " . __FILE__ ;
             Die ;
         }
-        $this->registrantRepository->update( $registrant ) ;
-        $this->persistenceManager->persistAll() ;
+
 
         mail("jvelletti@allplan.com" , $tag  . $debugmailTitle , $debugmail ) ;
-        return array( "data" => $resultvals , "status" => $httpval[1] ) ;
+        return array( "data" => $resultvals , "status" => $httpval[1] , $CitrixResponse ) ;
     }
 
      /** convertToJson
