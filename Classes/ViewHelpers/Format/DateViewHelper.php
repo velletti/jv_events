@@ -122,6 +122,7 @@ class DateViewHelper extends AbstractViewHelper
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
         $format = $arguments['format'];
+        $date = $arguments['date'];
         $base = $arguments['base'] === null ? time() : $arguments['base'];
         if (is_string($base)) {
             $base = trim($base);
@@ -130,10 +131,11 @@ class DateViewHelper extends AbstractViewHelper
         if ($format === '') {
             $format = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] ?: 'Y-m-d';
         }
-
-        $date = $renderChildrenClosure();
         if ($date === null) {
-            return '';
+            $date = $renderChildrenClosure();
+            if ($date === null || $date == $format ) {
+                return '';
+            }
         }
 
         if (is_string($date)) {
@@ -151,7 +153,8 @@ class DateViewHelper extends AbstractViewHelper
                 $date = new \DateTime('@' . $dateTimestamp);
                 $date->setTimezone(new \DateTimeZone(date_default_timezone_get()));
             } catch (\Exception $exception) {
-                throw new Exception('"' . $date . '" could not be parsed by \DateTime constructor: ' . $exception->getMessage(), 1241722579);
+                return '';
+                // throw new Exception('"' . $date . '" could not be parsed by \DateTime constructor: ' . $exception->getMessage(), 1241722579);
             }
         }
 
@@ -215,7 +218,7 @@ class DateViewHelper extends AbstractViewHelper
                 $date = new \DateTime('@' . $dateTimestamp);
                 $date->setTimezone(new \DateTimeZone($timeZone));
             } catch (\Exception $exception) {
-                throw new Exception('"' . $date . '" could not be parsed by \DateTime constructor: ' . $exception->getMessage(), 1241722579);
+                throw new Exception('"' . $date . '" could not be parsed by \DateTime constructor. More Infos: Format was "' . $format . '" | base: "' . $base . '" -' . $exception->getMessage(), 1241722579);
             }
         }
 
