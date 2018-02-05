@@ -53,6 +53,10 @@ class RegisterSalesforceSignal {
     {
         $error = false ;
 
+        if ( !is_object( $event ))  {
+            $this->logToFile( "\n\n ### ERROR ### In RegisterSalesForceSignal - event is not an Object!: " . var_export($event , true )  );
+            return;
+        }
 
         if ( $settings['EmConfiguration']['enableSalesForce'] < 1  || !is_object( $event->getOrganizer() ) || $event->getStoreInSalesForce() < 1 )  {
             $this->logToFile( "\n\n ### ERROR ### In RegisterSalesForceSignal - Registrant : " . $registrant->getEmail()
@@ -62,6 +66,9 @@ class RegisterSalesforceSignal {
             return;
 
         }
+
+
+
         $this->logToFile( "\n**********************************\n SF Start ..." )  ;
 
         $debugmail = "\n+++++++++++ got this data from Controller ++++++++++++++++++\n"  ;
