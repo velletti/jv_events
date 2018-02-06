@@ -106,7 +106,7 @@ class DateViewHelper extends AbstractViewHelper
     public function initializeArguments()
     {
         parent::initializeArguments();
-     //   $this->registerArgument('date', 'mixed', 'Either an object implementing DateTimeInterface or a string that is accepted by DateTime constructor');
+        $this->registerArgument('date', 'mixed', 'Either an object implementing DateTimeInterface or a string that is accepted by DateTime constructor');
         $this->registerArgument('format', 'string', 'Format String which is taken to format the Date/Time', false, '');
         $this->registerArgument('base', 'mixed', 'A base time (an object implementing DateTimeInterface or a string) used if $date is a relative date specification. Defaults to current time.');
     }
@@ -134,6 +134,8 @@ class DateViewHelper extends AbstractViewHelper
         if ($date === null) {
             $date = $renderChildrenClosure();
             if ($date === null || $date == $format ) {
+                // var_dump($arguments) ;
+                // die;
                 return '';
             }
         }
@@ -153,6 +155,8 @@ class DateViewHelper extends AbstractViewHelper
                 $date = new \DateTime('@' . $dateTimestamp);
                 $date->setTimezone(new \DateTimeZone(date_default_timezone_get()));
             } catch (\Exception $exception) {
+                // var_dump($arguments) ;
+                // die;
                 return '';
                 // throw new Exception('"' . $date . '" could not be parsed by \DateTime constructor: ' . $exception->getMessage(), 1241722579);
             }

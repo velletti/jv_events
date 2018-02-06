@@ -21,7 +21,7 @@
 		<div class="col-md-10">{event.startDate -> f:format.date(format:"d.m.Y")}
 			<f:if condition="{event.allDay}">
 				<f:else>
-					: {event.startTime -> event:format.date( format:"H:i")}<f:if condition="{event.endTime}"> - {event.endTime -> event:format.date( format:"H:i")}</f:if>
+					: <event:format.date format="H:i" date="@{event.startTime}"></event:format.date> <f:if condition="{event.endTime}"> - <event:format.date format="H:i">@{event.endTime}</event:format.date></f:if>
 				</f:else>
 			</f:if>
 		</div>
