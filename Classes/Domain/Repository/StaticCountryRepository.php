@@ -30,7 +30,7 @@ class StaticCountryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository 
 	/**
 	 * Find all countries despecting the storage page
 	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult
+	 * @return array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
 	 */
 	public function findAll() {
 		$query = $this->createQuery();
@@ -41,12 +41,12 @@ class StaticCountryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository 
 		return $query->execute();
 	}
 
-	/**
-	 * Find countries by iso2 codes despection the storage page
-	 *
-	 * @param array $cnIso2
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult
-	 */
+
+    /**
+     * Find countries by iso2 codes despection the storage page
+     * @param array $cnIso2
+     * @return array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+     */
 	public function findByCnIso2(array $cnIso2) {
 
 		$query = $this->createQuery();
@@ -55,15 +55,6 @@ class StaticCountryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository 
 			->setRespectStoragePage(FALSE);
 
 		$query->matching($query->in('cn_iso_2', $cnIso2));
-		// $debug = TRUE ;
-		if ( $debug  ) {
-			$GLOBALS['TYPO3_DB']->debugOutput = 2;
-			$GLOBALS['TYPO3_DB']->explainOutput = true;
-			$GLOBALS['TYPO3_DB']->store_lastBuiltQuery = true;
-			$result = $query->execute() ;
-			 $result->toArray();
-			die;
-		}
 
 		return $query->execute();
 	}

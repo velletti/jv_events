@@ -1,17 +1,36 @@
 <f:layout name="Ajax" />
 
 <f:section name="main">
-    <f:if condition="{output.event.hasAccess}">
+    <f:if condition="{output.event.hasAccess} || {output.location.hasAccess} || {output.organizer.hasAccess} ">
         <ul>
-            <li>
-                Edit ID: {output.event.eventId}
-            </li>
-            <li>
-                Edit Location: {output.event.locationId}
-            </li>
-            <li>
+    </f:if>
 
+        <f:if condition="{output.event.hasAccess}">
+                <li>
+                    <f:link.action pageUid="{settings.pid.editEvent}" action="edit" controller="event" arguments="{event: output.event.eventId}">
+                        <span class="fa fa-4x fa-edit">
+                            <span class="hidden-xs">Edit Event</span>
+                        </span>
+                    </f:link.action>
+                </li>
+        </f:if>
+        <f:if condition="{output.location.hasAccess}">
+                <li>
+                    Edit Location: {output.location.locationId}
+                </li>
+        </f:if>
+        <f:if condition="{output.organizer.hasAccess}">
+            <li>
+                Edit organizer: {output.organizer.organizerId}
             </li>
+        </f:if>
+
+    <f:if condition="{output.event.hasAccess} || {output.location.hasAccess} || {output.organizer.hasAccess} ">
         </ul>
     </f:if>
+    <div class="ajaxInfo">
+        <f:if condition="{output.event.eventId}">
+            FreeSeats: {output.event.freeSeats}
+        </f:if>
+    </div>
 </f:section>

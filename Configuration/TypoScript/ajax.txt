@@ -29,3 +29,11 @@ eventAjaxResponse {
 		view =< plugin.tx_jvevents.view
 	}
 }
+
+plugin.tx_jvevents_events {
+	settings {
+        pageIds {
+        	editEvent =
+        }
+	}
+}

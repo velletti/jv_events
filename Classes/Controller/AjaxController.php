@@ -25,10 +25,10 @@ namespace JVE\JvEvents\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use \TYPO3\CMS\Core\Core\Bootstrap;
 use \TYPO3\CMS\Core\Utility\ArrayUtility;
 use \TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use \JVE\JvEvents\Utility\ShowAsJsonArrayUtility;
 use \TYPO3\CMS\Frontend\Utility\EidUtility;/**/
 
 
@@ -46,6 +46,26 @@ class AjaxController extends BaseController
      */
     protected $eventRepository ;
 
+
+
+    /**
+     * locationRepository
+     *
+     * @var \JVE\JvEvents\Domain\Repository\LocationRepository
+     * @inject
+     */
+    protected $locationRepository = NULL;
+
+
+    /**
+     * organizerRepository
+     *
+     * @var \JVE\JvEvents\Domain\Repository\OrganizerRepository
+     * @inject
+     */
+    protected $organizerRepository = NULL;
+
+
     /**
      * @var array
      */
@@ -61,9 +81,9 @@ class AjaxController extends BaseController
         /**
          * Gets the Ajax Call Parameters
          */
-        $_gp = \TYPO3\CMS\Core\Utility\GeneralUtility::_GPmerged('tx_jvevents_ajax');
-        $pid = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GPmerged('uid') );
-        $type =  intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GPmerged('type'));
+        $_gp = GeneralUtility::_GPmerged('tx_jvevents_ajax');
+        $pid = intval(GeneralUtility::_GPmerged('uid') );
+        $type =  intval(GeneralUtility::_GPmerged('type'));
 
         $ajax = array();
         $ajax['arguments']	= $_gp;
@@ -76,7 +96,7 @@ class AjaxController extends BaseController
         /**
          * @var $TSFE \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
          */
-        $TSFE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController', $GLOBALS['TYPO3_CONF_VARS'],
+        $TSFE = GeneralUtility::makeInstance('TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController', $GLOBALS['TYPO3_CONF_VARS'],
             $pid,  // pageUid Homepage
             $type   // pageType
         );
@@ -86,8 +106,8 @@ class AjaxController extends BaseController
 // Important: no Cache for Ajax stuff
         $GLOBALS['TSFE']->set_no_cache();
 
-        \TYPO3\CMS\Frontend\Utility\EidUtility::initLanguage();
-        \TYPO3\CMS\Frontend\Utility\EidUtility::initTCA();
+        EidUtility::initLanguage();
+        EidUtility::initTCA();
 // Get FE User Information
         $GLOBALS['TSFE']->initFEuser();
         $GLOBALS['TSFE']->initUserGroups();
@@ -99,7 +119,7 @@ class AjaxController extends BaseController
         $GLOBALS['TSFE']->getConfigArray();
         \TYPO3\CMS\Core\Core\Bootstrap::getInstance();
 
-        $GLOBALS['TSFE']->cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
+        $GLOBALS['TSFE']->cObj = GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
         $GLOBALS['TSFE']->settingLanguage();
         $GLOBALS['TSFE']->settingLocale();
 
@@ -117,7 +137,7 @@ class AjaxController extends BaseController
         /**
          * @var $objectManager \TYPO3\CMS\Extbase\Object\ObjectManager
          */
-        $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
+        $objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
 
         /**
          * Initialize Extbase bootstap
@@ -127,7 +147,7 @@ class AjaxController extends BaseController
 
         $bootstrap = new \TYPO3\CMS\Extbase\Core\Bootstrap();
         $bootstrap->initialize($bootstrapConf);
-        $bootstrap->cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
+        $bootstrap->cObj = GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
 
         /**
          * Build the request
@@ -164,10 +184,12 @@ class AjaxController extends BaseController
      */
     public function eventMenuAction()
     {
-        // ToDO replace Hardcoded Feuser ...
-        $feuser = $GLOBALS['TSFE']->fe_user->user['uid'] ;
+        /* ************************************************************************************************************ */
+        /*   Prepare the Output :
+        /* ************************************************************************************************************ */
+        $feuser = intval(  $GLOBALS['TSFE']->fe_user->user['uid']) ;
         $output = array (
-            "requestId" =>  $GLOBALS['TSFE']->id ,
+            "requestId" =>  intval( $GLOBALS['TSFE']->id ) ,
             "event" => array()  ,
             "feuser" => array(
                 "uid" => $GLOBALS['TSFE']->fe_user->user['uid'] ,
@@ -178,60 +200,119 @@ class AjaxController extends BaseController
             "location" => array() ,
 
         ) ;
+
+        /* ************************************************************************************************************ */
+        /*   Get infos about: EVENT
+        /* ************************************************************************************************************ */
+
         if( $this->request->hasArgument('event')) {
-            $output['event']['requestId'] =  $this->request->getArgument('event') ;
+            $output['event']['requestId'] =  intval( $this->request->getArgument('event') ) ;
 
             /** @var \JVE\JvEvents\Domain\Model\Event $event */
-            $event = $this->eventRepository->findByUidAllpages( $output['requestId'] , FALSE  , TRUE );
+            $event = $this->eventRepository->findByUidAllpages( $output['event']['requestId'] , FALSE  , TRUE );
             if( is_object($event )) {
                 $output['event']['eventId'] = $event->getUid() ;
-                if( is_object( $event->getOrganizer() )) {
-                    $output['event']['organizerId'] = $event->getOrganizer()->getUid()  ;
-                    $users = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode("," , $event->getOrganizer()->getAccessUsers() , TRUE ) ;
-                    if( in_array( $feuser  , $users )) {
+                $output['event']['registration']['possible'] = $event->isIsRegistrationPossible() ;
+                $output['event']['registration']['noFreeSeats'] = $event->isIsNoFreeSeats() ;
+                $output['event']['registration']['freeSeats'] = $event->getAvailableSeats() ;
 
-                        $output['event']['hasAccess'] = TRUE  ;
-                    }
+                if( is_object( $event->getOrganizer() )) {
+                    $organizer = $event->getOrganizer() ;
+                    $output['event']['organizerId'] = $organizer->getUid()  ;
+                    $output['event']['organizerEmail'] = $organizer->getEmail()  ;
+                    $output['event']['hasAccess'] = $this->hasUserAccess( $organizer ) ;
                 }
                 if( is_object( $event->getLocation() )) {
+
+                    $location = $event->getLocation() ;
                     $output['event']['locationId'] = $event->getLocation()->getUid() ;
                 }
             }
         }
+
+        /* ************************************************************************************************************ */
+        /*   Get infos about: Location
+        /* ************************************************************************************************************ */
+        if( $this->request->hasArgument('location')) {
+            $output['location']['requestId'] = $this->request->getArgument('location');
+
+            /** @var \JVE\JvEvents\Domain\Model\Event $event */
+            $location = $this->locationRepository->findByUidAllpages($output['location']['requestId'], FALSE, TRUE);
+
+        }
+
+        // Location is set either by Event OR by location uid from request
+        if( is_object($location )) {
+            $output['location']['locationId'] = $location->getUid() ;
+
+            if( is_object( $location->getOrganizer() )) {
+                $organizer = $location->getOrganizer() ;
+                $output['location']['organizerId'] = $organizer->getUid()  ;
+                $output['location']['organizerEmail'] = $organizer->getEmail()  ;
+                $output['location']['hasAccess'] = $this->hasUserAccess( $organizer ) ;
+
+            }
+
+        }
+        /* ************************************************************************************************************ */
+        /*   Get infos about: Organizer
+        /* ************************************************************************************************************ */
+        if( $this->request->hasArgument('organizer')) {
+            $output['organizer']['requestId'] = $this->request->getArgument('organizer');
+
+            /** @var \JVE\JvEvents\Domain\Model\Organizer $organizer */
+            $organizer = $this->organizerRepository->findByUidAllpages($output['organizer']['requestId'], FALSE, TRUE);
+        }
+
+        // Location is set either by Event OR by location uid from request
+        if( is_object($organizer )) {
+            $output['organizer']['organizerId'] = $organizer->getUid() ;
+            $output['organizer']['hasAccess'] = $this->hasUserAccess( $organizer ) ;
+
+
+        }
+
+        /* ************************************************************************************************************ */
+        /*   render the HTML Output :
+        /* ************************************************************************************************************ */
+
         /** @var \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
         $renderer = $this->getEmailRenderer($templatePath = '', '/Ajax/EventMenu' );
-        $layoutPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName("typo3conf/ext/jv_events/Resources/Private/Layouts/");
+        $layoutPath = GeneralUtility::getFileAbsFileName("typo3conf/ext/jv_events/Resources/Private/Layouts/");
         $renderer->setLayoutRootPaths(array(0 => $layoutPath));
 
 
         $renderer->assign('layout' , 'Ajax') ;
         $renderer->assign('output' , $output) ;
         $return = str_replace( array( "\n" , "\r" , "\t" , "    " , "   " , "  ") , array("" , "" , "" , " " , " " , " " ) , trim( $renderer->render() )) ;
-        $this->showArrayAsJson( array( 'values' => $output , 'html' => $return ) ) ;
+        ShowAsJsonArrayUtility::show( array( 'values' => $output , 'html' => $return ) ) ;
         die;
     }
+
     /**
-     * @param $output
+     * @param \JVE\JvEvents\Domain\Model\Organizer | \TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy  $organizer
+     * @return bool
      */
-    public function showArrayAsJson($output) {
-        $jsonOutput = json_encode($output);
-        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-        header('Cache-Control: no-cache, must-revalidate');
-        header('Pragma: no-cache');
-        header('Content-Length: ' . strlen($jsonOutput));
-        header('Content-Type: application/json; charset=utf-8');
-        header('Content-Transfer-Encoding: 8bit');
 
-        $callbackId = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP("callback");
-        if ( $callbackId == '' ) {
-            echo $jsonOutput;
+
+    public function hasUserAccess( $organizer ) {
+
+        $feuserUid = intval( $GLOBALS['TSFE']->fe_user->user['uid'] ) ;
+        $users = GeneralUtility::trimExplode("," , $organizer->getAccessUsers() , TRUE ) ;
+        if( in_array( $feuserUid  , $users )) {
+           return TRUE  ;
         } else {
-            echo $callbackId . "(" . $jsonOutput . ")";
+            $groups = GeneralUtility::trimExplode("," , $organizer->getAccessGroups() , TRUE ) ;
+            $feuserGroups = GeneralUtility::trimExplode("," ,  $GLOBALS['TSFE']->fe_user->user['usergroup']  , TRUE ) ;
+            foreach( $groups as $group ) {
+                if( in_array( $group  , $feuserGroups )) {
+                    return TRUE  ;
+                }
+            }
         }
-
-        die();
+        return FALSE  ;
     }
+
 
     // ########################################   functions ##################################
 	/**
