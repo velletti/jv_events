@@ -9,6 +9,11 @@ if (!defined('TYPO3_MODE')) {
 	'Events'
 );
 
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
+    'JVE.jv_events' ,
+    'Ajax',
+    'Ajax'
+);
 $configuration = \JVE\JvEvents\Utility\EmConfigurationUtility::getEmConf();
 
 if ( $configuration['showImporter'] == 1 ) {

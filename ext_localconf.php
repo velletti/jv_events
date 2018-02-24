@@ -3,6 +3,7 @@ if (!defined('TYPO3_MODE')) {
 	die('Access denied.');
 }
 ## EXTENSION BUILDER DEFAULTS END TOKEN - Everything BEFORE this line is overwritten with the defaults of the extension builder
+$_EXTKEY = "jv_events" ;
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
 	'JVE.' . $_EXTKEY,
@@ -25,6 +26,17 @@ if (!defined('TYPO3_MODE')) {
 	)
 );
 
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+    'JVE.' .$_EXTKEY,
+    'Ajax',
+    array(
+        'Ajax'  => 'eventMenu,locationList,organizerList,eventList',
+    ),
+    array(
+        'Ajax'  => 'eventMenu,locationList,organizerList,eventList',
+    )
+);
+
 
 
 /**
@@ -39,6 +51,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['proc
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']['jv_events'] =
 	'JVE\\JvEvents\\Hooks\\ProcessDatamap';
 
+$GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['jv_events'] = 'JVE\JvEvents\Controller\AjaxController::dispatcher';
 
 if (TYPO3_MODE === 'FE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
     /**
