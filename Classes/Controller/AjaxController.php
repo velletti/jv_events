@@ -281,9 +281,8 @@ class AjaxController extends BaseController
         $layoutPath = GeneralUtility::getFileAbsFileName("typo3conf/ext/jv_events/Resources/Private/Layouts/");
         $renderer->setLayoutRootPaths(array(0 => $layoutPath));
 
-
-        $renderer->assign('layout' , 'Ajax') ;
         $renderer->assign('output' , $output) ;
+        $renderer->assign('settings' , $this->settings ) ;
         $return = str_replace( array( "\n" , "\r" , "\t" , "    " , "   " , "  ") , array("" , "" , "" , " " , " " , " " ) , trim( $renderer->render() )) ;
         ShowAsJsonArrayUtility::show( array( 'values' => $output , 'html' => $return ) ) ;
         die;

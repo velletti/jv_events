@@ -6,6 +6,9 @@
 	<!-- =========================================================================================================================== -->
 </f:comment>
 
+<div class="jv_events-eventmenue navbar">
+	<span class="left"><span class="fa fa-4x fa-spinner"></span></span>
+</div>
 <h1 data-eventUid="{event.uid}" data-eventPid="{event.pid}">{event.name}</h1>
 
 <div class="eventdata">
@@ -328,6 +331,20 @@
 
 </div>
 
+<script type="application/javascript">
+	var eventId = {event.uid} ;
+
+	$(document).ready( function(){
+	     $.ajax( {
+                 url: '/index.php' ,
+                 data: 'uid=1&eID=jv_events&L=0&tx_jvevents_ajax[event]=' +  eventId + '&tx_jvevents_ajax[action]=eventMenu&tx_jvevents_ajax[controller]=Ajax&' ,
+                 success: function(response) {
+                     $('.jv_events-eventmenue').html( response.html) ;
+
+                 }
+		 })
+	}) ;
+</script>
 
 <script type="application/ld+json">
 	<f:render partial="Event/Single/MicroFormat" arguments="{event: event, settings: settings}"/>

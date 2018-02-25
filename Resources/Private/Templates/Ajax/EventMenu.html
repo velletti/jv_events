@@ -2,12 +2,12 @@
 
 <f:section name="main">
     <f:if condition="{output.event.hasAccess} || {output.location.hasAccess} || {output.organizer.hasAccess} ">
-        <ul>
+        <ul class="nav navbar-nav navbar navbar-left">
     </f:if>
 
         <f:if condition="{output.event.hasAccess}">
                 <li>
-                    <f:link.action pageUid="{settings.pid.editEvent}" action="edit" controller="event" arguments="{event: output.event.eventId}">
+                    <f:link.action pageUid="{settings.pageIds.editEvent}" action="edit" controller="Event" arguments="{event: output.event.eventId}">
                         <span class="fa fa-4x fa-edit">
                             <span class="hidden-xs">Edit Event</span>
                         </span>
@@ -16,21 +16,25 @@
         </f:if>
         <f:if condition="{output.location.hasAccess}">
                 <li>
-                    Edit Location: {output.location.locationId}
+                    <f:link.action pageUid="{settings.pageIds.editLocation}" action="edit" controller="Location" arguments="{location: output.location.locationId}">
+                        <span class="fa fa-4x fa-edit">
+                            <span class="hidden-xs">Edit Location</span>
+                        </span>
+                    </f:link.action>
                 </li>
         </f:if>
         <f:if condition="{output.organizer.hasAccess}">
             <li>
-                Edit organizer: {output.organizer.organizerId}
+                <f:link.action pageUid="{settings.pageIds.editOrganizer}" action="edit" controller="Organizer" arguments="{organizer: output.organizer.organizerId}">
+                        <span class="fa fa-4x fa-edit">
+                            <span class="hidden-xs">Edit organizer</span>
+                        </span>
+                </f:link.action>
             </li>
         </f:if>
 
     <f:if condition="{output.event.hasAccess} || {output.location.hasAccess} || {output.organizer.hasAccess} ">
         </ul>
     </f:if>
-    <div class="ajaxInfo">
-        <f:if condition="{output.event.eventId}">
-            FreeSeats: {output.event.freeSeats}
-        </f:if>
-    </div>
+
 </f:section>

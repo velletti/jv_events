@@ -93,6 +93,13 @@ plugin.tx_jvevents_events {
 		signature{
 			uid = 1
 		}
+
+
+		pageIds {
+			editEvent = 29
+			editLocation = 30
+			editOrganizer = 31
+		}
 	}
 }
 
