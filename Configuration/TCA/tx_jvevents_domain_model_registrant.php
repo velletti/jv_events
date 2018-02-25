@@ -9,8 +9,7 @@ return array(
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',
 		'dividers2tabs' => TRUE,
-		'versioningWS' => 2,
-		'versioning_followPages' => TRUE,
+		'versioningWS' => TRUE,
 
 		'languageField' => 'sys_language_uid',
 		'transOrigPointerField' => 'l10n_parent',
@@ -21,13 +20,13 @@ return array(
 
 		),
 		'searchFields' => 'first_name,last_name,email,title,company,department,street_and_nr,zip,city,country,language,phone,additional_info,customer_id,profession,contact_id,username,more1,more2,more3,more4,more5bool,more6int,more7date,more8file,company2,department2,street_and_nr2,zip2,city2,country2',
-		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('jv_events') . 'Resources/Public/Icons/tx_jvevents_domain_model_registrant.gif'
+		'iconfile' => '/typo3conf/ext/jv_events/Resources/Public/Icons/tx_jvevents_domain_model_registrant.gif'
 	),
 	'interface' => array(
 		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, confirmed, hidden, gender, title,first_name, last_name, email, company, department, street_and_nr, zip, city, country, language, phone, additional_info, privacy, newsletter, customer_id, profession, recall, contact_id, username, more1, more2, more3, more4, more5bool, more6int, more7date, more8file, password, company2, department2, street_and_nr2, zip2, city2, country2',
 	),
 	'types' => array(
-		'1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, confirmed,  privacy, newsletter,  recall, citrix_response , --div--;UserData, gender, title, first_name, last_name,username,  profession, email,phone,language,contact_id , --div--;CompanyData, company, department, street_and_nr, zip, city, country,  customer_id, --div--; MoreData, additional_info,  more1, more2, more3, more4, more5bool, more6int, more7date, more8file, password,--div--;InvoiceAddress,company2,department2,street_and_nr2,zip2,city2,country2 '),
+		'1' => array('showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, confirmed,  privacy, newsletter,  recall, citrix_response ,--div--;UserData, gender, title, first_name, last_name,username,  profession, email,phone,language,contact_id , --div--;CompanyData, company, department, street_and_nr, zip, city, country,  customer_id,--div--;MoreData, additional_info,  more1, more2, more3, more4, more5bool, more6int, more7date, more8file, password,--div--;InvoiceAddress,company2,department2,street_and_nr2,zip2,city2,country2 '),
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),
@@ -433,6 +432,7 @@ return array(
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_registrant.more7date',
 			'config' => array(
 				'type' => 'input',
+				'renderType' => 'inputDateTime',
 				'size' => 7,
 				'eval' => 'date',
 				'checkbox' => 1,
