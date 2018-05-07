@@ -612,14 +612,20 @@
 			<source>Filter by category</source>
 			<target>Kategorie filtern</target>
 		</trans-unit>
+		<trans-unit id="tx_jvevents_event.filter.organizer">
+			<source>Filter by organizer</source>
+			<target>Veranstalter filtern</target>
+		</trans-unit>
 		<trans-unit id="tx_jvevents_event.filter.city" approved="yes">
 			<source>Filter by city</source>
-			<target>Ort Filtern</target>
+			<target>Ort filtern</target>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_event.filter.location" approved="yes">
 			<source>Filter by location</source>
-			<target>Veranstungsort filtern</target>
+			<target>Veranstaltungsort filtern</target>
 		</trans-unit>
+
+
 		<trans-unit id="tx_jvevents_event.filter.month" approved="yes">
 			<source>Filter by month</source>
 			<target>Monat filtern</target>
