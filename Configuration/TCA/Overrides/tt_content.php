@@ -9,6 +9,13 @@ $_EXTKEY = 'jv_events' ;
     'Events'
 );
 
+
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
+    'JVE.' . $_EXTKEY,
+    'Ajax',
+    'Ajax Event Controller'
+);
+
 $pluginSignature = str_replace('_','',$_EXTKEY) . '_events';
 // $pluginSignature = str_replace('_','',$_EXTKEY) ;
 $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist'][$pluginSignature] = 'pi_flexform';

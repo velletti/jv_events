@@ -1,0 +1,32 @@
+eventAjaxResponse = PAGE
+eventAjaxResponse {
+	typeNum = 3009
+	headerData >
+	config {
+		no_cache = 1
+		disableAllHeaderCode = 1
+		additionalHeaders = Content-type:application/json; charset=utf-8
+		xhtml_cleaning = 0
+		admPanel = 0
+		debug = 0
+	}
+
+	10 = USER  # maybe we need a uncached USER_INT
+	10 {
+		userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+		extensionName = JvEvents
+		pluginName = Ajax
+		vendorName = JVE
+		controller = Ajax
+		action = eventmenu
+		switchableControllerActions {
+			Ajax {
+				1 = eventmenu,locationList,organizerList,eventList
+			}
+		}
+		settings =< plugin.tx_jvevents.settings
+		persistence =< plugin.tx_jvevents.persistence
+		view =< plugin.tx_jvevents.view
+	}
+}
+

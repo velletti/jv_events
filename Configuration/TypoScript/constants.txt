@@ -18,6 +18,9 @@ plugin.tx_jvevents_events {
 		# if it is set to 0 , you will get the warning, no typoscript settngs found. Numbers bigger than 1 will show some debug output in the frontend..
 		checkInstallation = 3
 
+		#try To Render also event Data as Microformat. this means all event data is rendered twice .. may slow down the server !
+		withMicroFormat = 0
+
 		#IF FlexForm of List Plugin is empty, overwrite it with this value
 		detailPidDefault = 111
 

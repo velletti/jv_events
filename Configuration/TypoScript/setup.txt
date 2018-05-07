@@ -14,6 +14,7 @@ plugin.tx_jvevents_events {
 		# set this setting in Case of Problems
 		debug = {$plugin.tx_jvevents_events.settings.debug}
 
+		withMicroFormat = {$plugin.tx_jvevents_events.settings.withMicroFormat}
 		#
 		ccsFile = /typo3conf/ext/jv_events/Resources/Public/Css/jv_events.css
 
@@ -91,6 +92,13 @@ plugin.tx_jvevents_events {
         }
 		signature{
 			uid = 1
+		}
+
+
+		pageIds {
+			editEvent = 29
+			editLocation = 30
+			editOrganizer = 31
 		}
 	}
 }

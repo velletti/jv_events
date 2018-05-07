@@ -26,7 +26,7 @@ $returnArray = array(
 		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, email, phone, sales_force_user_id, images, description, organizer_category',
 	),
 	'types' => array(
-		'1' => array('showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden,--palette--;;1, name, email, phone, sales_force_user_id, teaser_image, images, description, organizer_category, --div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, access_users, access_groups, starttime, endtime'),
+		'1' => array('showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden,--palette--;;1, name, email, phone, sales_force_user_id, teaser_image, images, description, organizer_category, --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, access_users, access_groups, starttime, endtime'),
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),
