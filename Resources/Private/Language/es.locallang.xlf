@@ -370,7 +370,7 @@
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.details.linktext" approved="yes">
 			<source>To the event</source>
-			<target>A día del evento</target>
+			<target>Asistir al evento</target>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.details.tab.details" approved="yes">
 			<source>Details</source>
