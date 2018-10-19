@@ -241,7 +241,10 @@ class AjaxController extends BaseController
             }
             $output['eventsFilter'] = $this->request->getArgument('eventsFilter') ;
 
-            $output['eventsFilter']['citys'] = "2,3,4,5,6,7"  ;
+            if ( $output['eventsFilter']['sameCity'] ) {
+                $output['eventsFilter']['citys'] = $output['event']['locationId']  ;
+            }
+
 
             /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $events */
             $events = $this->eventRepository->findByFilter( $output['eventsFilter'], $limit,  $this->settings );
@@ -250,11 +253,12 @@ class AjaxController extends BaseController
                 $tempEvent =  $events->getFirst() ;
                 if( is_object( $tempEvent )) {
                     $tempEventArray['uid'] = $tempEvent->getUid();
-                    $tempEventArray['title'] = $tempEvent->getName();
-                    $tempEventArray['Date'] = $tempEvent->getStartDate();
+                    $tempEventArray['name'] = $tempEvent->getName();
+                    $tempEventArray['startDate'] = $tempEvent->getStartDate();
+                    $tempEventArray['teaser'] = $tempEvent->getTeaser();
 
                     if (is_object($tempEvent->getLocation())) {
-                        $tempEventArray['Location'] = $tempEvent->getLocation()->getCity();
+                        $tempEventArray['LocationCity'] = $tempEvent->getLocation()->getCity();
                     }
 
                     $output['events'][] = $tempEventArray;
@@ -316,6 +320,9 @@ class AjaxController extends BaseController
      */
     public function eventListAction()
     {
+
+        //  https://www.allplan.com.ddev.local/index.php?uid=82&eID=jv_events&L=0&tx_jvevents_ajax[event]=94&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30
+
         $output = $this->eventsListMenuSub() ;
 
 
@@ -325,14 +332,17 @@ class AjaxController extends BaseController
         /* ************************************************************************************************************ */
 
         /** @var \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
-        $renderer = $this->getEmailRenderer($templatePath = '', '/Ajax/EventList' );
+        $renderer = $this->getEmailRenderer($templatePath = '', '/Ajax/EventListRss' );
         $layoutPath = GeneralUtility::getFileAbsFileName("typo3conf/ext/jv_events/Resources/Private/Layouts/");
 
         $renderer->setLayoutRootPaths(array(0 => $layoutPath));
 
+
         $renderer->assign('output' , $output) ;
         $renderer->assign('settings' , $this->settings ) ;
-        $return = str_replace( array( "\n" , "\r" , "\t" , "    " , "   " , "  ") , array("" , "" , "" , " " , " " , " " ) , trim( $renderer->render() )) ;
+
+        $return = str_replace( array( "\n" , "\r" , "\t" , "    " , "   " , "  ") ,
+            array("" , "" , "" , " " , " " , " " ) , trim( $renderer->render() )) ;
 
         ShowAsJsonArrayUtility::show( array( 'values' => $output , 'html' => $return ) ) ;
 

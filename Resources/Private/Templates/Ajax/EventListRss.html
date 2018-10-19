@@ -1,0 +1,16 @@
+<f:layout name="Ajax" />
+
+<f:section name="main">
+
+    <f:if condition="{output.events}">
+        <f:then>
+            <f:for each="{output.events}" as="event">
+                <f:format.date format="d.m.Y">{event.startDate}</f:format.date> | {event.name} | {event.locationCity}<br>
+                {event.teaser}
+
+            </f:for>
+        </f:then>
+    </f:if>
+</f:section>
+
+
