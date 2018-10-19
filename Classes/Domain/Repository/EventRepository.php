@@ -69,17 +69,20 @@ class EventRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 
 
     /**
-     * @param $filter
-     * @param $limit
-     * @param $pidList
-     * @return array
+     * @param array|boolean $filter
+     * @param integer|boolean $limit
+     * @param array|boolean $settings
+     * @return array|\TYPO3\CMS\Extbase\Persistence\QueryInterface $query
      */
-    public function findByFilter($filter = false, $limit = false, $settings )
+    public function findByFilter($filter = false, $limit = false, $settings=false )
     {
 		$configuration = \JVE\JvEvents\Utility\EmConfigurationUtility::getEmConf();
-
+        if ( is_array($filter)) {
+            $settings['filter'] = $filter ;
+        }
         $query = $this->createQuery();
 		$query->setOrderings($this->defaultOrderings);
+
 
 
         $constraints = array();
@@ -96,6 +99,11 @@ class EventRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 
 			$constraints = $this->getCatContraints($constraints,  $settings , $configuration , $query );
 		}
+
+        if( $settings['filter']['citys']  ) {
+            $constraints[] = $query->logicalAnd( $query->in("location" , \TYPO3\CMS\CORE\Utility\GeneralUtility::trimExplode( "," , $settings['filter']['citys'])) ) ;
+        }
+
 		if ( $configuration['recurring'] == 1 ) {
 			// do some magic for recurring events
 		}
@@ -122,7 +130,9 @@ class EventRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 
 		if( intval( $settings['filter']['maxEvents'] ) > 0 )  {
 			$query->setLimit( intval( $settings['filter']['maxEvents'])) ;
-		}
+		} elseif ($limit > 0) {
+            $query->setLimit( intval( $limit )) ;
+        }
 
         $result = $query->execute();
 		// $settings['debug'] = 2 ;

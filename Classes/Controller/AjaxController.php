@@ -182,7 +182,7 @@ class AjaxController extends BaseController
      *
      * @return void
      */
-    public function eventMenuAction()
+    public function eventsListMenuSub()
     {
         /* ************************************************************************************************************ */
         /*   Prepare the Output :
@@ -191,6 +191,8 @@ class AjaxController extends BaseController
         $output = array (
             "requestId" =>  intval( $GLOBALS['TSFE']->id ) ,
             "event" => array()  ,
+            "events" => array()  ,
+            "eventsFilter" => array()  ,
             "feuser" => array(
                 "uid" => $GLOBALS['TSFE']->fe_user->user['uid'] ,
                 "username" => $GLOBALS['TSFE']->fe_user->user['username'] ,
@@ -230,6 +232,36 @@ class AjaxController extends BaseController
             }
         }
 
+
+
+        if( $this->request->hasArgument('eventsFilter')) {
+            $limit = false ;
+            if( $this->request->hasArgument('limit')) {
+                $limit = $this->request->getArgument('limit') ;
+            }
+            $output['eventsFilter'] = $this->request->getArgument('eventsFilter') ;
+
+            $output['eventsFilter']['citys'] = "2,3,4,5,6,7"  ;
+
+            /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $events */
+            $events = $this->eventRepository->findByFilter( $output['eventsFilter'], $limit,  $this->settings );
+            if( is_object( $events )) {
+                /** @var \JVE\JvEvents\Domain\Model\Event $tempEvent */
+                $tempEvent =  $events->getFirst() ;
+                if( is_object( $tempEvent )) {
+                    $tempEventArray['uid'] = $tempEvent->getUid();
+                    $tempEventArray['title'] = $tempEvent->getName();
+                    $tempEventArray['Date'] = $tempEvent->getStartDate();
+
+                    if (is_object($tempEvent->getLocation())) {
+                        $tempEventArray['Location'] = $tempEvent->getLocation()->getCity();
+                    }
+
+                    $output['events'][] = $tempEventArray;
+                }
+            }
+
+        }
         /* ************************************************************************************************************ */
         /*   Get infos about: Location
         /* ************************************************************************************************************ */
@@ -271,6 +303,49 @@ class AjaxController extends BaseController
 
 
         }
+        return  $output  ;
+
+    }
+
+
+
+    /**
+     * action list
+     *
+     * @return void
+     */
+    public function eventListAction()
+    {
+        $output = $this->eventsListMenuSub() ;
+
+
+
+        /* ************************************************************************************************************ */
+        /*   render the HTML Output :
+        /* ************************************************************************************************************ */
+
+        /** @var \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
+        $renderer = $this->getEmailRenderer($templatePath = '', '/Ajax/EventList' );
+        $layoutPath = GeneralUtility::getFileAbsFileName("typo3conf/ext/jv_events/Resources/Private/Layouts/");
+
+        $renderer->setLayoutRootPaths(array(0 => $layoutPath));
+
+        $renderer->assign('output' , $output) ;
+        $renderer->assign('settings' , $this->settings ) ;
+        $return = str_replace( array( "\n" , "\r" , "\t" , "    " , "   " , "  ") , array("" , "" , "" , " " , " " , " " ) , trim( $renderer->render() )) ;
+
+        ShowAsJsonArrayUtility::show( array( 'values' => $output , 'html' => $return ) ) ;
+
+        die;
+    }
+    /**
+     * action Menu
+     *
+     * @return void
+     */
+    public function eventMenuAction()
+    {
+        $output = $this->eventsListMenuSub() ;
 
         /* ************************************************************************************************************ */
         /*   render the HTML Output :
@@ -287,6 +362,7 @@ class AjaxController extends BaseController
         ShowAsJsonArrayUtility::show( array( 'values' => $output , 'html' => $return ) ) ;
         die;
     }
+
 
     /**
      * @param \JVE\JvEvents\Domain\Model\Organizer | \TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy  $organizer
