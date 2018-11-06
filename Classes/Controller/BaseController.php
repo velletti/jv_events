@@ -365,13 +365,23 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             ->setFrom($sender)
             ->setSubject($subject);
 
-
-
+        if ( TYPO3_branch < 9 ) {
+            $rootPath = PATH_site ;
+        } else {
+            /* available from typo3 V9 */
+            $rootPath = \TYPO3\CMS\Core\Core\Environment::getPublicPath() ;
+        }
 
         if ( is_array( $attachments ) ) {
             if( $registrant->getMore6int() == 1  ) {
                 foreach ($attachments as $attachment) {
-                    $message->attach(\Swift_Attachment::fromPath($attachment));
+                    if( substr( $attachment , 0 , 1 ) <> "/" ) {
+                        $attachment = "/" . $attachment ;
+                    }
+                    $attachment = $rootPath . $attachment ;
+                    if ( file_exists($attachment )) {
+                        $message->attach(\Swift_Attachment::fromPath($attachment));
+                    }
                 }
             }
         }
