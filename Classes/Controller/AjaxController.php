@@ -248,10 +248,13 @@ class AjaxController extends BaseController
 
             /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $events */
             $events = $this->eventRepository->findByFilter( $output['eventsFilter'], $limit,  $this->settings );
-            if( is_object( $events )) {
+            if( count( $events ) > 0 ) {
+                $output['events'] = $events ;
                 /** @var \JVE\JvEvents\Domain\Model\Event $tempEvent */
                 $tempEvent =  $events->getFirst() ;
                 if( is_object( $tempEvent )) {
+                    $output['events'] = $events ;
+            /*
                     $tempEventArray['uid'] = $tempEvent->getUid();
                     $tempEventArray['name'] = $tempEvent->getName();
                     $tempEventArray['startDate'] = $tempEvent->getStartDate();
@@ -262,6 +265,7 @@ class AjaxController extends BaseController
                     }
 
                     $output['events'][] = $tempEventArray;
+                    */
                 }
             }
 
@@ -321,8 +325,10 @@ class AjaxController extends BaseController
     public function eventListAction()
     {
 
-        //  https://www.allplan.com.ddev.local/index.php?uid=82&eID=jv_events&L=0&tx_jvevents_ajax[event]=94&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&&tx_jvevents_ajax[rss]=1
+        //  https://www.allplan.com.ddev.local/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=94&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&&tx_jvevents_ajax[rss]=1
+        // https://www-dev.allplan.com/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=2049&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][sameCity]=&tx_jvevents_ajax[eventsFilter][skipEvent]=2049&tx_jvevents_ajax[eventsFilter][startDate]=1&tx_jvevents_ajax[rss]=1
 
+        // get all Access infos, Location infos , find similar events etc
         $output = $this->eventsListMenuSub() ;
 
 
