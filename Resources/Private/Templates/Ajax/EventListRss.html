@@ -1,7 +1,8 @@
+{namespace event=JVE\JvEvents\ViewHelpers}
+
 <f:layout name="Ajax" />
 
 <f:section name="main">
-
     <rss version="2.0"	xmlns:content="http://purl.org/rss/1.0/modules/content/"
          xmlns:atom="http://www.w3.org/2005/Atom">
         <channel>
@@ -24,11 +25,12 @@
                         <item>
                             <guid isPermaLink="false">event-{event.uid}</guid>
                             <pubDate><f:format.date format="d.M.Y H:i:s +0200">{event.startDate}</f:format.date></pubDate>
-                            <title>{event.name}</title>
-                            <link>{event.link}</link>
-                            <description><f:format.date format="d.M.Y">{event.startDate}</f:format.date> | {event.locationCity}</description>
-                            <content:encoded> {event.teaser}
-                            </content:encoded>
+                            <title><f:format.date format="d.M.Y">{event.startDate}</f:format.date> | {event.name}</title>
+                            <link>{event.url}</link>
+                            <description>{event.location.City} |<f:if condition="{event.EventCategory}">
+                                <f:for each="{event.EventCategory}" as="EventCategory" iteration="iteration"><f:if condition="{iteration.index} > 0 ">, </f:if>{EventCategory.title}</f:for>
+                            </f:if> | {event.teaser}</description>
+                            <content:encoded> {event.description} </content:encoded>
                         </item>
                     </f:for>
                 </f:then>
