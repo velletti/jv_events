@@ -321,7 +321,7 @@ class AjaxController extends BaseController
     public function eventListAction()
     {
 
-        //  https://www.allplan.com.ddev.local/index.php?uid=82&eID=jv_events&L=0&tx_jvevents_ajax[event]=94&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30
+        //  https://www.allplan.com.ddev.local/index.php?uid=82&eID=jv_events&L=0&tx_jvevents_ajax[event]=94&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&&tx_jvevents_ajax[rss]=1
 
         $output = $this->eventsListMenuSub() ;
 
@@ -340,13 +340,27 @@ class AjaxController extends BaseController
 
         $renderer->assign('output' , $output) ;
         $renderer->assign('settings' , $this->settings ) ;
+        $return = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" .  trim( $renderer->render() ) ;
 
-        $return = str_replace( array( "\n" , "\r" , "\t" , "    " , "   " , "  ") ,
-            array("" , "" , "" , " " , " " , " " ) , trim( $renderer->render() )) ;
+        if( $this->request->hasArgument('rss')) {
+            header_remove();
+        //    http_response_code(200);
+            header("content-type: application/rss+xml;charset=utf-8") ;
 
-        ShowAsJsonArrayUtility::show( array( 'values' => $output , 'html' => $return ) ) ;
+         //   header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+            header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+        //    header('Cache-Control: no-cache, must-revalidate');
+        //    header('Pragma: no-cache');
+        //    header('Content-Length: ' . strlen($return));
+          //  header('Content-Transfer-Encoding: 8bit');
+            echo $return ;
+            die;
+        } else {
+            header("Content-Type:application/json;charset=utf-8") ;
+            ShowAsJsonArrayUtility::show( array( 'values' => $output , 'html' => $return ) ) ;
+            die;
+        }
 
-        die;
     }
     /**
      * action Menu
