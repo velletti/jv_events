@@ -1,4 +1,5 @@
-{namespace event=JVE\JvEvents\ViewHelpers}
+{namespace jve=JVE\JvEvents\ViewHelpers}
+
 
 <f:layout name="Ajax" />
 
@@ -26,10 +27,10 @@
                             <guid isPermaLink="false">event-{event.uid}</guid>
                             <pubDate><f:format.date format="d.M.Y H:i:s +0200">{event.startDate}</f:format.date></pubDate>
                             <title><f:format.date format="d.M.Y">{event.startDate}</f:format.date> | {event.name}</title>
-                            <link>{event.url}</link>
+                            <link>https://www.allplan.com/de/termine/alle-termine/?</link>
                             <description>{event.location.City} |<f:if condition="{event.EventCategory}">
                                 <f:for each="{event.EventCategory}" as="EventCategory" iteration="iteration"><f:if condition="{iteration.index} > 0 ">, </f:if>{EventCategory.title}</f:for>
-                            </f:if> | {event.teaser}</description>
+                            </f:if> | {event.teaser} </description>
                             <content:encoded> {event.description} </content:encoded>
                         </item>
                     </f:for>
