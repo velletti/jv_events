@@ -64,7 +64,10 @@ class DataAttribViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
             $orgId  = $event->getOrganizer()->getUid()  ;
         }
 
-        $result = 'data-eventuid="' . $event->getUid() . '" data-eventpid="' .  $event->getPid() .   '" data-orguid="' .  $orgId  . '" data-monthuid="' . date("m.Y" , $event->getStartDate()->getTimestamp() )  . '" ' ;
+        $result = 'data-eventuid="' . $event->getUid() . '" data-eventpid="' .  $event->getPid() .   '" data-orguid="' .  $orgId
+            . '" data-monthuid="' . date("m.Y" , $event->getStartDate()->getTimestamp() )  . '" '
+            . '" data-dayuid="' . date("d.m.Y" , $event->getStartDate()->getTimestamp() )  . '" '
+        ;
 
 	    $locCity = '' ;
         if( is_object ( $event->getLocation() )) {

@@ -1,4 +1,10 @@
 {namespace jve=JVE\JvEvents\ViewHelpers}
+
+<f:if condition="{aktDate} != {lastDate}">
+    <div class="well well-sm well-primary jvevents-newDay"><i class="glyphicon glyphicon-calendar"> </i> {event.startDate -> f:format.date(format:"D d.M.Y")} </div>
+</f:if>
+
+
 <div class="jv-events-singleEvent" {jve:dataAttrib( event: event )}>
 
     <div class="well well-sm well-primary ">
@@ -30,61 +36,43 @@
 
                 </f:link.action>
             </div>
-            <div class="col-sm-8 col-xs-12">
-                <h4>
-                    <f:link.action  pageUid="{settings.detailPid}" action="show" arguments="{event : event}" >
-                        {event.name}
-                    </f:link.action>
-                </h4>
-            </div>
-            <div class="col-sm-2 col-xs-12 text-right">
-                <f:if condition="{event.isRegistrationPossible}">
-                    <jve:regLink event="{event}" settings="{settings}" uriOnly="0">
-                                    <span class="btn btn-primary">
-                                        {f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:list.register.button.subscribe' , default:'Anmelden')}
-                                    </span>
-                    </jve:regLink>
-                </f:if>
-            </div>
-            <div class="clearfix">
-                <br/>
-            </div>
-            <div class="col-sm-2 hidden-xs">
-                &nbsp;
-            </div>
-            <div class="col-sm-5 col-xs-12">
-                <f:if condition="{event.Tags}">
-                    <div class="small">
-                        <f:for each="{event.Tags}" as="Tag" iteration="iteration"><f:if condition="{iteration.index} > 0 ">, </f:if>{Tag.name}
-                        </f:for>
-                    </div>
-                </f:if>
-                {event.startDate -> f:format.date(format:"d.m.Y")}
-                <f:if condition="{event.teaser}">
-                    <div class="jv_events_teaser">
-                        {event.teaser}
-                    </div>
-                </f:if>
+            <div class="col-sm-10 col-xs-12">
+                <div class="col-sm-9 col-xs-12">
+                    <h4>
+                        <f:link.action  pageUid="{settings.detailPid}" action="show" arguments="{event : event}" >
+                            {event.name}
+                        </f:link.action>
+                    </h4>
+                </div>
+                <div class="col-sm-3 col-xs-12 text-left">
+                    {event.startTime -> f:format.date(format:"H:i")} - {event.endTime -> f:format.date(format:"H:i")}
+                </div>
+
+                <div class="col-sm-9 col-xs-12">
+                    <f:if condition="{event.Tags}">
+                        <div class="small">
+                            <f:for each="{event.Tags}" as="Tag" iteration="iteration"><f:if condition="{iteration.index} > 0 ">, </f:if>{Tag.name}
+                            </f:for>
+                        </div>
+                    </f:if>
+
+                    <f:if condition="{event.teaser}">
+                        <div class="jv_events_teaser">
+                            {event.teaser}
+                        </div>
+                    </f:if>
+
+                </div>
+
+                <div class="col-sm-3 col-xs-6">
+                    {event.location.city}
+                </div>
+
 
             </div>
-
-            <div class="col-sm-2 col-xs-6">
-                {event.location.city}
-            </div>
-
-            <div class="col-sm-3 col-xs-6">
-                <f:if condition="{event.EventCategory}">
-                    <f:for each="{event.EventCategory}" as="EventCategory" iteration="iteration"><f:if condition="{iteration.index} > 0 ">, </f:if>{EventCategory.title}</f:for>
-
-                </f:if>
-
-            </div>
-
         </div>
     </div>
 
-
     <div class="clearfix">
-        <br/>
     </div>
 </div>

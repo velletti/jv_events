@@ -1,0 +1,62 @@
+<div class="form-group display-data">
+	<f:render partial="FormErrorSingle" arguments="{property: property}"/>
+	<label for="{property}" class="control-label col-sm-5">
+		<f:if condition="{translationKey}">
+			<f:then>
+				<f:translate key="{translationKey}">{translationKey}</f:translate>
+			</f:then>
+			<f:else>
+				{label}
+			</f:else>
+		</f:if>
+
+		<f:if condition="{mandatory}">
+			<span class="mandatory">*</span>
+		</f:if>
+
+	</label>
+	<div class="col-sm-7">
+		<f:form.textarea class="form-control" property="{property}" id="{property}" cols="40" rows="15" />
+	</div>
+</div>
+
+
+<f:format.raw>
+	<script type="text/javascript">
+        $(function() {
+            CKEDITOR.replace('description') , {
+                stylesSet: [],
+                customConfig: '',
+                contentsCss:"\/typo3\/sysext\/rte_ckeditor\/Resources\/Public\/Css\/contents.css",
+                defaultContentLanguage:"en",
+                defaultLanguage:"en",
+                extraAllowedContent:"*(*)[data-*]",
+                height:300,width:"auto",
+
+                uiColor:"#F8F8F8",
+                removeDialogTabs:"image:advanced;link:advanced",
+                entities_latin:false,
+                entities:false,
+                format_tags:"p;h2;h3",
+                toolbarGroups: [
+                    {name: 'styles', groups: ['styles']},
+                    {name: 'clipboard', groups: ['clipboard', 'undo']},
+                    {name: 'basicstyles', groups: ['basicstyles', 'cleanup']},
+                    {name: 'document', groups: ['mode', 'document', 'doctools']},
+                    {name: 'editing', groups: ['find', 'selection', 'spellchecker', 'editing']},
+                    {name: 'forms', groups: ['forms']},
+                    {name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align', 'bidi', 'paragraph']},
+                    {name: 'links', groups: ['links']},
+                    {name: 'insert', groups: ['insert']},
+                    {name: 'colors', groups: ['colors']},
+                    {name: 'tools', groups: ['tools']},
+                    {name: 'others', groups: ['others']},
+                    {name: 'about', groups: ['about']}
+                ],
+                removeButtons: 'Source,Save,NewPage,Preview,Print,Templates,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Italic,Underline,Subscript,Superscript,Indent,Outdent,CreateDiv,Blockquote,BidiLtr,BidiRtl,Language,Image,Flash,Table,PageBreak,Iframe,Font,FontSize,TextColor,BGColor,About,Maximize,PasteFromWord,Find,Replace,SelectAll,Scayt,NumberedList,JustifyRight,JustifyBlock,Anchor,Smiley,Styles'
+
+            };
+        });
+
+	</script>
+</f:format.raw>

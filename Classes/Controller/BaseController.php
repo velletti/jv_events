@@ -26,6 +26,7 @@ namespace JVE\JvEvents\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * EventController
@@ -192,7 +193,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             "categories2" => $categories2 ,
             "months" => $months ,
             "category50proz" => intval ( (count($categories2) ) / 2 ) ,
-            "tag50proz" => intval ( (count(tags2) +1) / 2 )
+            "tag50proz" => intval ( (count($tags2) +1) / 2 )
             ) ;
     }
 
@@ -394,6 +395,31 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         return $message->isSent();
 
 
+    }
+
+
+    /**
+     * @param \JVE\JvEvents\Domain\Model\Organizer | \TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy  $organizer
+     * @return bool
+     */
+
+
+    public function hasUserAccess( $organizer ) {
+
+        $feuserUid = intval( $GLOBALS['TSFE']->fe_user->user['uid'] ) ;
+        $users = GeneralUtility::trimExplode("," , $organizer->getAccessUsers() , TRUE ) ;
+        if( in_array( $feuserUid  , $users )) {
+            return TRUE  ;
+        } else {
+            $groups = GeneralUtility::trimExplode("," , $organizer->getAccessGroups() , TRUE ) ;
+            $feuserGroups = GeneralUtility::trimExplode("," ,  $GLOBALS['TSFE']->fe_user->user['usergroup']  , TRUE ) ;
+            foreach( $groups as $group ) {
+                if( in_array( $group  , $feuserGroups )) {
+                    return TRUE  ;
+                }
+            }
+        }
+        return FALSE  ;
     }
 
     /**

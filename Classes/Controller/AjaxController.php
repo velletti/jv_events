@@ -394,29 +394,7 @@ class AjaxController extends BaseController
     }
 
 
-    /**
-     * @param \JVE\JvEvents\Domain\Model\Organizer | \TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy  $organizer
-     * @return bool
-     */
 
-
-    public function hasUserAccess( $organizer ) {
-
-        $feuserUid = intval( $GLOBALS['TSFE']->fe_user->user['uid'] ) ;
-        $users = GeneralUtility::trimExplode("," , $organizer->getAccessUsers() , TRUE ) ;
-        if( in_array( $feuserUid  , $users )) {
-           return TRUE  ;
-        } else {
-            $groups = GeneralUtility::trimExplode("," , $organizer->getAccessGroups() , TRUE ) ;
-            $feuserGroups = GeneralUtility::trimExplode("," ,  $GLOBALS['TSFE']->fe_user->user['usergroup']  , TRUE ) ;
-            foreach( $groups as $group ) {
-                if( in_array( $group  , $feuserGroups )) {
-                    return TRUE  ;
-                }
-            }
-        }
-        return FALSE  ;
-    }
 
 
     // ########################################   functions ##################################

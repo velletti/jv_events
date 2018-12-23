@@ -97,9 +97,10 @@ plugin.tx_jvevents_events {
 
 
 		pageIds {
-			editEvent = 29
-			editLocation = 30
-			editOrganizer = 31
+		 # insert event plugin on that page configure your own typoscript and set pid s
+			editEvent =  0
+			editLocation = 0
+			editOrganizer = 0
 		}
 	}
 }

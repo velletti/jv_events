@@ -1736,6 +1736,28 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @return boolean
      */
+    public function isRegistrationConfigured()
+    {
+
+        // first Text if internal or external registration is set.
+        if ($this->withRegistration ) {
+            // Internal Registration Process : check $this->availableSeats  configured and PID set
+
+            if (($this->unconfirmedSeats  + $this->availableSeats)  > 0  && $this->registrationFormPid > 0 ) {
+
+                return TRUE;
+            }
+        } else {
+            if ( $this->registrationUrl ) {
+                return TRUE  ;
+            }
+        }
+        return FALSE ;
+    }
+
+    /**
+     * @return boolean
+     */
     public function isIsRegistrationPossible()
     {
 

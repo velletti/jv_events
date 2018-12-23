@@ -1,0 +1,21 @@
+<div class="form-group display-data">
+	<f:render partial="FormErrorSingle" arguments="{property: property}"/>
+	<label for="{property}" class="control-label col-sm-5">
+		<f:if condition="{translationKey}">
+			<f:then>
+				<f:translate key="{translationKey}">{translationKey}</f:translate>
+			</f:then>
+			<f:else>
+				{label}
+			</f:else>
+		</f:if>
+
+		<f:if condition="{mandatory}">
+			<span class="mandatory">*</span>
+		</f:if>
+
+	</label>
+	<div class="col-sm-7">
+		<f:form.textfield class="form-control" property="{property}" id="{property}" maxlength="{maxLength}"/>
+	</div>
+</div>

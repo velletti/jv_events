@@ -34,7 +34,7 @@ class ProcessDatamap {
 	protected $fieldArray;
 
 	/** @var  array */
-	protected $flashMessage ;
+	protected $flashMessage = array() ;
 
     /** @var  \JVE\JvEvents\Utility\SalesforceWrapperUtility
      * @inject
@@ -195,7 +195,8 @@ class ProcessDatamap {
                 /** @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager $persistenceManager */
                 $persistenceManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
                 $persistenceManager->persistAll() ;
-                if ( ( count($this->flashMessage['WARNING']) + count($this->flashMessage['ERROR']))  == 0 ) {
+
+                if ( !key_exists( 'WARNING' , $this->flashMessage ) && !key_exists( 'ERROR' , $this->flashMessage ) ) {
                     $this->flashMessage['OK'][] = 'All syntax checks (V1.0) run successfull and the event was stored!' ;
                 }
 			} else {

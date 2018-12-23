@@ -1,26 +1,28 @@
 
-<f:layout name="Default" />
+<f:layout name="Edit" />
 
-This template displays a EDIT form for the current domain object.
-
-If you modify this template, do not forget to change the overwrite settings
-in /Configuration/ExtensionBuilder/settings.yaml:
-  Resources:
-    Private:
-      Templates:
-        Edit.html: keep
-
-Otherwise your changes will be overwritten the next time you save the extension in the extension builder
 
 <f:section name="main">
-<h1>Edit Organizer</h1>
 
-<f:flashMessages />
 
-<f:render partial="FormErrors" arguments="{object:Organizer}" />
+    <div class="panel panel-primary my-profile-edit" id="my-profile-edit-profiledata">
 
-<f:form action="update" name="organizer" object="{organizer}" >
-<f:render partial="Organizer/FormFields" arguments="{organizer:organizer}" />
-	<f:form.submit value="Save" />
-</f:form>
+        <div class="panel-heading">
+            <span class="glyphicon glyphicon-edit"></span>
+            <span><f:translate key="tx_jvevents_domain_model_organizer">Edit Organizer</f:translate></span>
+        </div>
+
+        <div class="panel-body">
+
+    <f:flashMessages />
+
+    <f:render partial="FormErrors" arguments="{object:Organizer}" />
+
+
+    <f:form class="form-horizontal"  action="update" name="organizer" object="{organizer}" id="organizer_edit">
+        <f:render partial="Organizer/FormFields" arguments="{organizer:organizer}" />
+        <div class="text-right">
+            <f:form.submit class="btn btn-primary" value="{f:translate(key: 'form.save', default: 'Save')}" />
+        </div>
+    </f:form>
 </f:section>

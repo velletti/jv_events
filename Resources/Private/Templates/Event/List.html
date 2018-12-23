@@ -1,6 +1,7 @@
 <f:layout name="Default" />
 
 <f:section name="main">
+	<f:variable name="lastDate">99.99.9999</f:variable>
 <f:flashMessages />
 
 	<f:render partial="Debug/CheckInstallation" arguments="{modulelist: 'TRUE' , event:event, settings: settings}" />
@@ -26,7 +27,9 @@
 			<f:then>
 				<f:render partial="Event/List/Partial{settings.LayoutList}/HeaderEvent" arguments="{event:event, settings: settings}" />
 				<f:for each="{events}" as="event">
-					<f:render partial="Event/List/Partial{settings.LayoutList}/SingleEvent" arguments="{event:event, settings: settings}" />
+					<f:variable name="aktDate">{event.startDate -> f:format.date(format:"d.m.Y")}</f:variable>
+					<f:render partial="Event/List/Partial{settings.LayoutList}/SingleEvent" arguments="{event:event, settings: settings, aktDate: aktDate, lastDate: lastDate}" />
+					<f:variable name="lastDate">{event.startDate -> f:format.date(format:"d.m.Y")}</f:variable>
 				</f:for>
 
 				<f:if condition="{settings.withMicroFormat}">

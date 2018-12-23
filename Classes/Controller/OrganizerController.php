@@ -113,13 +113,19 @@ class OrganizerController extends BaseController
      * action update
      *
      * @param \JVE\JvEvents\Domain\Model\Organizer $organizer
+     * @validate $organizer
      * @return void
      */
     public function updateAction(\JVE\JvEvents\Domain\Model\Organizer $organizer)
     {
-        $this->addFlashMessage('The object was updated. Please be aware that this action is publicly accessible unless you implement an access check. See http://wiki.typo3.org/T3Doc/Extension_Builder/Using_the_Extension_Builder#1._Model_the_domain', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
-		//    $this->organizerRepository->update($organizer);
-		//    $this->redirect('list');
+        if ( $this->hasUserAccess($organizer )) {
+            $this->addFlashMessage('The object was updated.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+            $this->organizerRepository->update($organizer);
+        } else {
+            $this->addFlashMessage('You do not have access rights to change this data.' . $organizer->getUid() , '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+        }
+
+		$this->redirect('edit' , NULL, Null , array( "organizer" => $organizer));
     }
     
     /**
