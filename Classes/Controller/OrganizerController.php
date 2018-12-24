@@ -106,6 +106,15 @@ class OrganizerController extends BaseController
      */
     public function editAction(\JVE\JvEvents\Domain\Model\Organizer $organizer)
     {
+
+
+        if ( ! $this->hasUserAccess($organizer )) {
+            $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
+
+            $this->addFlashMessage('No access.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
+            $this->view->assign('noAccess', TRUE );
+        }
+
         $this->view->assign('organizer', $organizer);
     }
     
@@ -113,17 +122,24 @@ class OrganizerController extends BaseController
      * action update
      *
      * @param \JVE\JvEvents\Domain\Model\Organizer $organizer
-     * @validate $organizer
+     * @validate $organizer \JVE\JvEvents\Validation\Validator\OrganizerValidator
+
      * @return void
      */
     public function updateAction(\JVE\JvEvents\Domain\Model\Organizer $organizer)
     {
         if ( $this->hasUserAccess($organizer )) {
+            $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
+
             $this->addFlashMessage('The object was updated.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
             $this->organizerRepository->update($organizer);
         } else {
+            $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
+
             $this->addFlashMessage('You do not have access rights to change this data.' . $organizer->getUid() , '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
         }
+
+        $this->showNoDomainMxError($organizer->getEmail() ) ;
 
 		$this->redirect('edit' , NULL, Null , array( "organizer" => $organizer));
     }

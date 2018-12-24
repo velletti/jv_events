@@ -1,6 +1,7 @@
 <div class="form-group display-data">
-	<f:render partial="FormErrorSingle" arguments="{property: property}"/>
-	<label for="{property}" class="control-label col-sm-5">
+
+	<f:render partial="FormErrorSingle" arguments="{property: errorProperty}"/>
+	<label for="{property}" class="control-label col-sm-4">
 		<f:if condition="{translationKey}">
 			<f:then>
 				<f:translate key="{translationKey}">{translationKey}</f:translate>
@@ -15,7 +16,7 @@
 		</f:if>
 
 	</label>
-	<div class="col-sm-7">
+	<div class="col-sm-8">
 		<f:form.textfield class="form-control" property="{property}" id="{property}" maxlength="{maxLength}"/>
 	</div>
 </div>

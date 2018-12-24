@@ -12,17 +12,28 @@
             <span><f:translate key="tx_jvevents_domain_model_organizer">Edit Organizer</f:translate></span>
         </div>
 
-        <div class="panel-body">
+        <div class="panel-body row">
 
-    <f:flashMessages />
+            <div class="col-sm-4">
+                <div class="well">
+                    <h3>Help</h3>
+                    <div>... to do some help text</div>
+                </div>
+            </div>
+            <div class="col-sm-8">
 
-    <f:render partial="FormErrors" arguments="{object:Organizer}" />
+
+                <f:render partial="HasFormErrors" arguments="{object:organizer}" />
 
 
-    <f:form class="form-horizontal"  action="update" name="organizer" object="{organizer}" id="organizer_edit">
-        <f:render partial="Organizer/FormFields" arguments="{organizer:organizer}" />
-        <div class="text-right">
-            <f:form.submit class="btn btn-primary" value="{f:translate(key: 'form.save', default: 'Save')}" />
+
+                <f:form class="form-horizontal"  action="update" name="organizer" object="{organizer}" id="organizer_edit">
+                    <f:render partial="Organizer/FormFields" arguments="{organizer:organizer}" />
+                    <div class="text-right">
+                        <f:form.submit class="btn btn-primary" value="{f:translate(key: 'form.save', default: 'Save')}" />
+                    </div>
+                </f:form>
+            </div>
         </div>
-    </f:form>
+    </div>
 </f:section>

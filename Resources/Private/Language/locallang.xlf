@@ -5,6 +5,10 @@
 			<generator>LFEditor</generator>
 		</header>
 		<body>
+		<trans-unit id="error.email.noMxRecord">
+            <source>Please check your email address. No MX Record found for the entered domain %1.</source>
+        </trans-unit>
+
 		<trans-unit id="jv_events_model_location.geocoder.title">
 			<source>Google Geocoder (Please enter the address data first!)</source>
 		</trans-unit>

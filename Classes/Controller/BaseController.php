@@ -27,6 +27,7 @@ namespace JVE\JvEvents\Controller;
  ***************************************************************/
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use \TYPO3\CMS\Core\Messaging\AbstractMessage ;
 
 /**
  * EventController
@@ -429,6 +430,15 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      */
     protected function translate($label, $arguments = NULL) {
         return \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($label, 'JvEvents', $arguments);
+    }
+
+    protected function showNoDomainMxError($email ) {
+        $domain  = explode('@', $email);
+        if( ! checkdnsrr($domain[1], 'MX') ) {
+            $msg = sprintf( $this->translate('error.email.noMxRecord') , "@" . $domain[1] ) . " ";
+
+            $this->addFlashMessage( $msg , '', AbstractMessage::WARNING);
+        }
     }
 
 }
