@@ -42,6 +42,7 @@ class EventController extends BaseController
     protected $eventRepository = NULL;
 
 
+
 	/**
 	 * staticCountryRepository
 	 *
@@ -61,7 +62,13 @@ class EventController extends BaseController
 		}
 		if (!$this->request->hasArgument('event')) {
 			// ToDo redirect to error
-		}
+		} else {
+		    /** @var \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration $propertyMappingConfiguration */
+            //  $propertyMappingConfiguration = $this->arguments['event']->getPropertyMappingConfiguration();
+            //  $propertyMappingConfiguration->allowProperties('tags') ;
+        }
+
+
 
         parent::initializeAction() ;
 	}
@@ -181,24 +188,67 @@ class EventController extends BaseController
      * action edit
      *
      * @param \JVE\JvEvents\Domain\Model\Event $event
+     * @ignorevalidation $event
      * @return void
      */
     public function editAction(\JVE\JvEvents\Domain\Model\Event $event)
     {
-        $this->view->assign('event', $event);
+
+        /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $categories */
+        $categories = $this->categoryRepository->findAllonAllPages( '0' );
+
+        /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $tags */
+        $tags = $this->tagRepository->findAllonAllPages();
+
+        if($this->isUserOrganizer() ) {
+            if( $this->hasUserAccess( $event->getOrganizer() )) {
+                $this->view->assign('user', intval($GLOBALS['TSFE']->fe_user->user['uid'] ) ) ;
+                $this->view->assign('event', $event);
+                $this->view->assign('categories', $categories);
+                $this->view->assign('tags', $tags);
+            }
+        }
     }
     
     /**
      * action update
      *
      * @param \JVE\JvEvents\Domain\Model\Event $event
+     * @validate $event \JVE\JvEvents\Validation\Validator\EventValidator
      * @return void
      */
     public function updateAction(\JVE\JvEvents\Domain\Model\Event $event)
     {
-        $this->addFlashMessage('The object was updated. Please be aware that this action is publicly accessible unless you implement an access check. See http://wiki.typo3.org/T3Doc/Extension_Builder/Using_the_Extension_Builder#1._Model_the_domain', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
-       // $this->eventRepository->update($event);
-       // $this->redirect('list');
+        if( $this->request->hasArgument('event')) {
+            $event = $this->cleanEventArguments( $event) ;
+
+        }
+
+        if ( $this->hasUserAccess($event->getOrganizer() )) {
+            $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
+
+            try {
+                $this->eventRepository->update($event) ;
+
+                // got from EM Settings
+                $clearCachePids = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode("," , $this->settings['EmConfiguration']['clearCachePids']) ;
+                if( is_array($clearCachePids) && count( $clearCachePids) > 0 ) {
+                    $this->cacheService->clearPageCache( $clearCachePids );
+                    $this->addFlashMessage('The object was updated and Cache of following pages are cleared: ' . implode("," , $clearCachePids), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+                } else {
+                    $this->addFlashMessage('The object was updated.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+                }
+
+            } catch ( \Exception $e ) {
+                $this->addFlashMessage($e->getMessage() , 'Error', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+
+            }
+
+        } else {
+            $this->addFlashMessage('You do not have access rights to change this data.' . $event->getUid() , '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+        }
+        $this->redirect('edit' , NULL, Null , array( "event" => $event));
+
     }
     
     /**
@@ -244,5 +294,49 @@ class EventController extends BaseController
 		);
 
 	}
+
+    /**
+     * @param \JVE\JvEvents\Domain\Model\Event $event
+     * @return mixed
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
+     */
+	public function cleanEventArguments(\JVE\JvEvents\Domain\Model\Event  $event)
+    {
+        // validation should be done in validatar class so we can ignore issue with wrong format
+
+        $eventArray = $this->request->getArgument('event');
+echo "<pre>" ;
+var_dump($eventArray) ;
+die;
+        // Update the Categories
+        $eventCatUid = intval($eventArray['eventCategory']) ;
+        /** @var \JVE\JvEvents\Domain\Model\Category $eventCat */
+        $eventCat = $this->categoryRepository->findByUid($eventCatUid) ;
+        if($eventCat) {
+            if( $event->getEventCategory() ){
+                $event->getEventCategory()->removeAll($event->getEventCategory()) ;
+            }
+            $event->addEventCategory($eventCat) ;
+        }
+
+
+        $stD = \DateTime::createFromFormat('d.m.Y', $eventArray['startDateFE']  );
+        $event->setStartDate( $stD ) ;
+
+        $startT =  ( intval( substr( $eventArray['startTimeFE']  , 0,2 ) ) * 3600 )
+                    + ( intval( substr( $eventArray['startTimeFE']  , 3,2 ) ) * 60 ) ;
+        $event->setStartTime( $startT ) ;
+
+        $endT =  ( intval( substr( $eventArray['endTimeFE']  , 0,2 ) ) * 3600 )
+            + ( intval( substr( $eventArray['endTimeFE']  , 3,2 ) ) * 60  ) ;
+        $event->setEndTime( $endT ) ;
+
+        $desc = str_replace( array( "\n" , "\r" , "\t" ), array(" " , "" , " " ), $eventArray['description'] ) ;
+        $desc = strip_tags($desc , "<p><br><a><i><strong><h2><h3>") ;
+
+        $event->setDescription( $desc ) ;
+
+        return $event ;
+    }
 
 }

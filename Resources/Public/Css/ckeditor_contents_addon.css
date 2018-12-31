@@ -1,0 +1,20 @@
+
+body {
+	margin: 20px !important;
+}
+.cke_panel_container body {
+	margin: 0px !important;
+}
+.cke_panel_container .cke_panel_block {
+	width: 200px;
+}
+
+
+p, H1, H2, H3, H4 {
+	line-height: 1.4 !important;
+	text-decoration: none ;
+}
+H1:first-of-type, H2:first-of-type, H3:first-of-type, H4:first-of-type {
+	margin-top: 0;
+	margin-bottom: 0;
+}

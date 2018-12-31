@@ -42,6 +42,13 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $eventType = 0;
 
     /**
+
+     * @var int
+     */
+    protected $sys_language_uid ;
+
+
+    /**
      * default: add allways 1 even if this object does not have a subevent
      *
      * @var int
@@ -63,7 +70,14 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @var string
      */
     protected $teaser = '';
-    
+
+    /**
+     * int Price only in EURO
+     *
+     * @var double
+     */
+    protected $price = 0 ;
+
     /**
      * Full decription of this event. May be formated. Only visible in Detail event
      * View.
@@ -113,11 +127,39 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Start Date of this event. Mandatory
      *
-     * @var \DateTime
      * @validate NotEmpty
+     * @var \DateTime
      */
     protected $startDate = null;
-    
+
+    /**
+     * Start Date of this event. replacement for startDate but FE = for frontend Editing
+     *
+    * @var string
+     */
+    protected $startDateFE = null;
+
+    /**
+     * Start Time of this event. replacement for startTime but FE = for frontend Editing
+     *
+     * @var string
+     */
+    protected $startTimeFE = null;
+
+    /**
+     * End Time of this event. replacement for endTime but FE = for frontend Editing
+     *
+     * @var string
+     */
+    protected $endTimeFE = null;
+
+    /**
+     * Tag list , comma separated of this event. replacement for tags Object Storage  but FE = for frontend Editing
+     *
+     * @var string
+     */
+    protected $tagsFE = null;
+
     /**
      * Start Time of this event
      *
@@ -128,21 +170,23 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Access Start Time of this event (default TYP3 Field )
      * @ignorevalidation
-     * @var \DateTime
+     * @dontvalidate
+     * @var int
      */
     protected $starttime ;
 
     /**
      * Access End Time of this event (default TYP3 Field )
-     *
-     * @var \DateTime
+     * @ignorevalidation
+     * @dontvalidate
+     * @var int
      */
     protected $endtime ;
 
     /**
-     * End Date of this event. Mandatory
+     * End Date of this event.
      *
-     * @var \DateTime
+     * @var \DateTime|int
 
      */
     protected $endDate = null;
@@ -1982,6 +2026,124 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         return  intval($this->getSubevent()->count() ) + 1;
     }
+
+    /**
+     * @return int
+     */
+    public function getPrice()
+    {
+        return $this->price;
+    }
+
+    /**
+     * @param int $price
+     */
+    public function setPrice($price)
+    {
+        $this->price = $price;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStartDateFE()
+    {
+        return $this->startDateFE;
+    }
+
+    /**
+     * @param string $startDateFE
+     */
+    public function setStartDateFE($startDateFE)
+    {
+        $this->startDateFE = $startDateFE;
+    }
+
+    /**
+     * @return int
+     */
+    public function getVersionedUid()
+    {
+        return $this->_versionedUid;
+    }
+
+    /**
+     * @param int $versionedUid
+     */
+    public function setVersionedUid($versionedUid)
+    {
+        $this->_versionedUid = $versionedUid;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStartTimeFE()
+    {
+        return $this->startTimeFE;
+    }
+
+    /**
+     * @param string $startTimeFE
+     */
+    public function setStartTimeFE($startTimeFE)
+    {
+        $this->startTimeFE = $startTimeFE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEndTimeFE()
+    {
+        return $this->endTimeFE;
+    }
+
+    /**
+     * @param string $endTimeFE
+     */
+    public function setEndTimeFE($endTimeFE)
+    {
+        $this->endTimeFE = $endTimeFE;
+    }
+
+
+
+
+    /**
+     * @return int
+     */
+    public function getSysLanguageUid()
+    {
+        return $this->sys_language_uid;
+    }
+
+    /**
+     * @param int $sys_language_uid
+     */
+    public function setSysLanguageUid($sys_language_uid)
+    {
+        $this->sys_language_uid = $sys_language_uid;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTagsFE()
+    {
+        return $this->tagsFE;
+    }
+
+    /**
+     * @param string $tagsFE
+     */
+    public function setTagsFE($tagsFE)
+    {
+        $this->tagsFE = $tagsFE;
+    }
+
+
+
 
 
 }

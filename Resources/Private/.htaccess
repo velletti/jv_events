@@ -2,10 +2,12 @@
 <IfModule !mod_authz_core.c>
 	Order allow,deny
 	Deny from all
-	Satisfy All
+	Allow from *.ddev.local
+	Satisfy Any
 </IfModule>
 
 # Apache >= 2.3
 <IfModule mod_authz_core.c>
+    Allow from *.ddev.local
 	Require all denied
 </IfModule>

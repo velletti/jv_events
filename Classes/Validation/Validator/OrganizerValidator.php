@@ -1,7 +1,7 @@
 <?php
 namespace JVE\JvEvents\Validation\Validator;
 
-class OrganizerValidator extends \JVE\JvEvents\Validation\Validator\BaseValidator {
+class OrganizerValidator extends BaseValidator {
 
 	/**
 	 * @var array
@@ -10,6 +10,7 @@ class OrganizerValidator extends \JVE\JvEvents\Validation\Validator\BaseValidato
 		'email'				=> 80,
 		'name'				=> 40,
 		'phone'				=> 30,
+		'link'				=> 80,
 	);
 
     /**
@@ -19,6 +20,7 @@ class OrganizerValidator extends \JVE\JvEvents\Validation\Validator\BaseValidato
         'email'				=> 8,
         'name'				=> 3,
         'phone'				=> 8,
+        'link'				=> -1,
     );
 
 	/**
@@ -33,10 +35,17 @@ class OrganizerValidator extends \JVE\JvEvents\Validation\Validator\BaseValidato
         $isValid = $this->securityChecks( $organizer->getEmail() , 'email' , $isValid ) ;
         $isValid = $this->securityChecks( $organizer->getName() , 'name' , $isValid ) ;
         $isValid = $this->securityChecks( $organizer->getPhone() , 'phone' , $isValid ) ;
+        $isValid = $this->securityChecks( $organizer->getPhone() , 'link' , $isValid ) ;
 
         $isValid = $this->emailIsValid( $organizer->getEmail() , 'email' , false , $isValid ) ;
         $isValid = $this->stringLengthIsValid($this->minLength['name'] , $this->maxLength['name'] , $organizer->getName() , 'name' , NULL , $isValid ) ;
         $isValid = $this->stringLengthIsValid($this->minLength['phone'] , $this->maxLength['phone'] , $organizer->getPhone() , 'phone' , NULL , $isValid ) ;
+        $isValid = $this->stringLengthIsValid($this->minLength['link'] , $this->maxLength['link'] , $organizer->getLink() , 'link' , NULL , $isValid ) ;
+
+        if( $organizer->getLink() ) {
+            $isValid = $this->urlIsValid( $organizer->getLink() , 'link' , NULL , $isValid ) ;
+        }
+        $isValid = $this->isHasUnwantedHtmlCodeValue( $organizer->getDescription() , 'description' , $isValid ) ;
 
 
 		return $isValid;

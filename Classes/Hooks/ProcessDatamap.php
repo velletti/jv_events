@@ -128,15 +128,17 @@ class ProcessDatamap {
                 } else {
                     if (trim($this->event->getRegistrationUrl()) == '' || !$this->event->getRegistrationUrl() ) {
                         $this->flashMessage['INFO'][] = 'Registration URL is not set "' .  $this->event->getRegistrationUrl() . '". Registration is not Possible.' ;
-                    }
-                    if (! $this->event->getRegistrationUntil() ) {
-                        $this->flashMessage['ERROR'][] = 'Registration Until date is not set!' ;
-                        $allowedError ++ ;
                     } else {
-                        if ($this->event->getRegistrationUntil()->getTimestamp()  < time()  ) {
-                            $this->flashMessage['ERROR'][] = 'Registration Until date is in the Past!' ;
+                        if (! $this->event->getRegistrationUntil() ) {
+                            $this->flashMessage['ERROR'][] = 'Registration Until date is not set!' ;
+                            $allowedError ++ ;
+                        } else {
+                            if ($this->event->getRegistrationUntil()->getTimestamp()  < time()  ) {
+                                $this->flashMessage['ERROR'][] = 'Registration Until date is in the Past!' ;
+                            }
                         }
                     }
+
                     $ST = $this->event->getStartDate() ;
                     $ST = $ST->modify( "+" . intval($this->event->getStartTime() ) . " second" ) ;
 
@@ -147,13 +149,32 @@ class ProcessDatamap {
                             $this->flashMessage['WARNING'][] = 'Registration Until date is after Event Start Date!' ;
                         }
                     }
-                    if ($this->event->getAccessStarttime()  >  ( $ST )) {
+                   // echo "this->event->getAccessStarttime(): " . $this->event->getAccessStarttime() ;
+
+                    if ( is_integer($this->event->getAccessStarttime())) {
+                        /** @var \DateTime $accessStart */
+                        $accessStart = new \DateTime(  ) ;
+                        $accessStart->setTimestamp($this->event->getAccessStarttime()) ;
+                    } else {
+                        $accessStart = $this->event->getAccessStarttime() ;
+                    }
+
+                    if ($accessStart  >  ( $ST )) {
                         $this->flashMessage['WARNING'][] = 'Event visibility Start date was after Start Date: ' .  $ST->format("d.m.Y - H:i") ;
                         $this->event->setAccessStarttime( $ST) ;
                     }
-                    if ($this->event->getAccessEndtime() &&  $this->event->getAccessEndtime()->getTimestamp() < time() ) {
-                        $this->flashMessage['WARNING'][] = 'Event visibility END date is in the past: ' .  $this->event->getAccessEndtime()->format("d.m.Y - H:i") ;
+                    if ( is_integer($this->event->getAccessEndtime())) {
+                        /** @var \DateTime $accessStart */
+                        $accessEnd = new \DateTime(  ) ;
+                        $accessEnd->setTimestamp($this->event->getAccessEndtime()) ;
+                    } else {
+                        $accessEnd = $this->event->getAccessEndtime() ;
                     }
+
+                    if ( $accessEnd->getTimestamp() < time() && $accessEnd->getTimestamp() > 0 ) {
+                        $this->flashMessage['WARNING'][] = 'Event visibility END date is in the past: ' .  $accessEnd->format("d.m.Y - H:i") ;
+                    }
+
                     // IMPORTANT: without this modification startDate  will have still added the start time !
                     $ST = $ST->modify( "-" . intval($this->event->getStartTime() ) . " second" ) ;
                     unset($ST) ;
@@ -197,7 +218,7 @@ class ProcessDatamap {
                 $persistenceManager->persistAll() ;
 
                 if ( !key_exists( 'WARNING' , $this->flashMessage ) && !key_exists( 'ERROR' , $this->flashMessage ) ) {
-                    $this->flashMessage['OK'][] = 'All syntax checks (V1.0) run successfull and the event was stored!' ;
+                    $this->flashMessage['OK'][] = 'All syntax checks (V1.2) run successfull and the event was stored!' ;
                 }
 			} else {
                 $this->flashMessage['WARNING'][] = 'Hook ProcessDatamap is active but found no Event Object! Maybe this is a disabled event ??' ;

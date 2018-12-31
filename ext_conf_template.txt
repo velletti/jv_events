@@ -89,3 +89,6 @@ useGeoLocation = 0
 
 # cat=advanced/default/7; type=text; label=Google API key;description=If you want to show a map, you need to register on Google.com and get an api KEY
 googleApiKey =
+
+# cat=advanced/default/7; type=text; label=Clear Cache PIDs;description=If you use Frontend editing, it will be usefull to add all pages with list View of events (comma separated)
+clearCachePids =

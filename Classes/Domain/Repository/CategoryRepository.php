@@ -40,4 +40,33 @@ class CategoryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         'sorting' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
     );
 
+    /**
+     * @param int $type default -1 means all Types
+     *                  1 = events 2 locations 3 = Organizer
+     *                  see TCA of event model
+     * @return array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+     */
+    public function findAllonAllPages($type= -1)
+    {
+        $query = $this->createQuery();
+        $querySettings = $query->getQuerySettings() ;
+        $querySettings->setRespectStoragePage(false);
+       // $querySettings->setRespectSysLanguage(FALSE);
+        $query->setQuerySettings($querySettings) ;
+        if( ($type > -1 )) {
+            $query->matching( $query->equals('type', $type) ) ;
+        }
+        $res = $query->execute() ;
+
+        // new way to debug typo3 db queries
+        // $queryParser = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class);
+        // var_dump($queryParser->convertQueryToDoctrineQueryBuilder($query)->getSQL());
+        // var_dump($queryParser->convertQueryToDoctrineQueryBuilder($query)->getParameters()) ;
+        // die;
+
+        return $res ;
+    }
+
+
+
 }

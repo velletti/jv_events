@@ -1,15 +1,17 @@
 
-
-	<f:form.validationResults for="{for}">
-		<f:if condition="{validationResults.flattenedErrors}">
-			<f:for each="{validationResults.flattenedErrors}" key="propertyPath" as="propertyErrors">
-				<f:for each="{propertyErrors}" as="propertyError">
-					<f:variable name="showError"><div class="alert alert-warning alert-dismissable"><b>Error.</b> Please check your input</div></f:variable>
-				</f:for>
+<f:form.validationResults for="{for}">
+	<f:if condition="{validationResults.flattenedErrors}">
+		<f:for each="{validationResults.flattenedErrors}" key="propertyPath" as="propertyErrors">
+			<f:for each="{propertyErrors}" as="propertyError">
+				<f:if condition="{debug}">
+					Debug: {propertyPath}')}  -> ({propertyError.message})<br>
+				</f:if>
+				<f:variable name="showError"><div class="alert alert-warning alert-dismissable"><b>Error.</b> Please check your input</div></f:variable>
 			</f:for>
+		</f:for>
 
-		</f:if>
-	</f:form.validationResults>
+	</f:if>
+</f:form.validationResults>
 
 <f:if condition="{showError}">
 	<f:then>

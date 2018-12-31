@@ -56,6 +56,14 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @var string
      */
     protected $phone = '';
+
+    /**
+     * Link of this organizer. Shown in Emails and as  Contact info in the event
+     * details
+     *
+     * @var string
+     */
+    protected $link = '';
     
     /**
      * if you use SalesForce to store eventsregistrations, we use this uid to store the
@@ -363,6 +371,22 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function setTeaserImage($teaserImage)
     {
         $this->teaserImage = $teaserImage;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLink()
+    {
+        return $this->link;
+    }
+
+    /**
+     * @param string $link
+     */
+    public function setLink($link)
+    {
+        $this->link = $link;
     }
 
 

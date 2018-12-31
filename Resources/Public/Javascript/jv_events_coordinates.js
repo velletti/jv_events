@@ -44,7 +44,7 @@ function jv_events_init() {
 	// http://nemetschek.local/index.php?id=116&tx_jvevents_events[eventsFilter][categories]=3&tx_jvevents_events[eventsFilter][citys]=4&tx_jvevents_events[eventsFilter][tags]=3&tx_jvevents_events[eventsFilter][months]=03.2017
     // https://allplan.local/index.php?id=110&L=1&no_cache=1&tx_jvevents_events[eventsFilter][categories]=4&tx_jvevents_events[eventsFilter][citys]=Ratingen
 
-
+    $(".js-warning-disabled").hide() ;
 
     jv_events_initOneFilter('categories') ;
 	jv_events_initOneFilter('locations') ;

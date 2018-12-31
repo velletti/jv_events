@@ -102,6 +102,12 @@ plugin.tx_jvevents_events {
 			editLocation = 0
 			editOrganizer = 0
 		}
+		feEdit {
+		    enabled = 0
+		    # comma separated list of IDs
+		    organizerGroudIds = 0
+		    adminOrganizerGroudIds = 0
+		}
 	}
 }
 

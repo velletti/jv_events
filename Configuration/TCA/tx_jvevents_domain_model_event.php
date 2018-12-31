@@ -30,7 +30,7 @@ $returnArray = array(
 		'iconfile' => 'EXT:jv_events/Resources/Public/Icons/tx_jvevents_domain_model_event.gif'
 	),
 	'interface' => array(
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, event_type, teaser, description, images, files, all_day, start_date, start_time, end_date, end_time, access, with_registration, registration_until, registration_access, store_in_citrix, citrix_uid, store_in_sales_force, marketing_process_id, sales_force_record_type, sales_force_event_id, sales_force_session_id, available_seats,available_waiting_seats, registered_seats, unconfirmed_seats, notify_organizer, notify_registrant, subject_organizer, text_organizer, subject_registrant,introtext_registrant, text_registrant, need_to_confirm, is_recurring, frequency, freq_exception, is_exception_for, organizer, location, registrant, event_category, tags, url,',
+		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, event_type, teaser, description, images, files, all_day, start_date, start_time, end_date, end_time, access, with_registration, registration_until, registration_access, store_in_citrix, citrix_uid, store_in_sales_force, marketing_process_id, sales_force_record_type, sales_force_event_id, sales_force_session_id, available_seats,available_waiting_seats, registered_seats, unconfirmed_seats, notify_organizer, notify_registrant, subject_organizer, text_organizer, subject_registrant,introtext_registrant, text_registrant, need_to_confirm, is_recurring, frequency, freq_exception, is_exception_for, organizer, location, registrant, event_category, tags, url,price,',
 	),
 	'types' => array(
 		'0' => array('showitem' => 'event_type,url,--palette--;;dates,--palette--;;infos,
@@ -49,7 +49,7 @@ $returnArray = array(
 	'palettes' => array(
 		'1' => array('showitem' => ''),
 		'dates' => array('showitem' => 'all_day,--linebreak--,start_date,end_date,--linebreak--,start_time,end_time,--linebreak--,subevent'),
-		'infos' => array('showitem' => 'name, --linebreak--, teaser '),
+		'infos' => array('showitem' => 'name, --linebreak--, teaser ,--linebreak--, price,'),
 		'relations' => array('showitem' => 'organizer, --linebreak--, location, --linebreak--,event_category, --linebreak--,tags '),
 		'frequent' => array('showitem' => 'is_recurring, --linebreak--, frequency, freq_exception, --linebreak--, is_exception_for,  '),
 		'language' => array('showitem' => 'sys_language_uid, ,l10n_parent,--linebreak--,l10n_diffsource,' ),
@@ -130,7 +130,7 @@ $returnArray = array(
                     'allowLanguageSynchronization' => true ,
                 ) ,
 				'size' => 13,
-				'eval' => 'datetime',
+				'eval' => 'datetime,int',
 				'checkbox' => 0,
 				'default' => 0,
 
@@ -146,7 +146,7 @@ $returnArray = array(
                     'allowLanguageSynchronization' => true ,
                 ) ,
 				'size' => 13,
-				'eval' => 'datetime',
+				'eval' => 'datetime,int',
 				'checkbox' => 0,
 				'default' => 0,
 
@@ -180,6 +180,15 @@ $returnArray = array(
 				'eval' => 'trim,required'
 			),
 		),
+        'price' => array(
+            'exclude' => 0,
+            'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.price',
+            'config' => array(
+                'type' => 'input',
+                'size' => 10,
+                'eval' => 'double2'
+            ),
+        ),
 		'url' => [
 			'exclude' => 0,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.event_type.link',
@@ -383,7 +392,7 @@ $returnArray = array(
 				'type' => 'input',
                 'renderType' => 'inputDateTime',
 				'size' => 4,
-				'eval' => 'time',
+				'eval' => 'time,int',
 				'checkbox' => 1,
 				'default' => time()
 			)
@@ -408,7 +417,7 @@ $returnArray = array(
 				'type' => 'input',
                 'renderType' => 'inputDateTime',
 				'size' => 4,
-				'eval' => 'time',
+				'eval' => 'time,int',
 				'checkbox' => 1,
 			)
 		),

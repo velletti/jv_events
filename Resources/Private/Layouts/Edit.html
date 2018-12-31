@@ -2,8 +2,12 @@
 	<style type="text/css"> @import url("{settings.ccsFile}"); </style>
 
 </f:if>
-<script type="text/javascript" src="/typo3/sysext/rte_ckeditor/Resources/Public/JavaScript/Contrib/ckeditor.js"></script>
+<script>
+    var CKEDITOR_BASEPATH = '/typo3conf/ext/jv_events/Resources/Public/Javascript/ckeditor/';
+</script>
+<script type="text/javascript" src="/typo3conf/ext/jv_events/Resources/Public/Javascript/ckeditor/ckeditor.js"></script>
 
 <div class="tx-jv-events">
+	<div class="alert alert-warning js-warning-disabled">Warning: If you see this message it means, you have javascript diabled (or we have an javascript error)</div>
 	<f:render section="main" />
 </div>

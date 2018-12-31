@@ -1,6 +1,6 @@
 <div class="form-group display-data">
-
-	<f:render partial="FormErrorSingle" arguments="{property: errorProperty}"/>
+	<f:variable name="propertyName">{object}.{property}</f:variable>
+	<f:render partial="FormErrorSingle" arguments="{property: errorProperty, field: propertyName}"/>
 	<label for="{property}" class="control-label col-sm-4">
 		<f:if condition="{translationKey}">
 			<f:then>

@@ -109,24 +109,33 @@ class LocationController extends BaseController
      */
     public function editAction(\JVE\JvEvents\Domain\Model\Location $location)
     {
-        $this->view->assign('location', $location);
+
+        if ( $this->hasUserAccess($location->getOrganizer() )) {
+            $this->view->assign('user', intval( $GLOBALS['TSFE']->fe_user->user['uid'] ) );
+            $this->view->assign('location', $location);
+        } else {
+            $this->addFlashMessage('You do not have access rights to change this data.' . $location->getUid() , '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+        }
+
     }
     
     /**
      * action update
      *
      * @param \JVE\JvEvents\Domain\Model\Location $location
+     * @validate $location \JVE\JvEvents\Validation\Validator\LocationValidator
      * @return void
      */
     public function updateAction(\JVE\JvEvents\Domain\Model\Location $location)
     {
         if ( $this->hasUserAccess($location->getOrganizer() )) {
+            $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
             $this->addFlashMessage('The object was updated.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
             $this->locationRepository->update($location);
         } else {
             $this->addFlashMessage('You do not have access rights to change this data.' . $location->getUid() , '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
         }
-
+        $this->showNoDomainMxError($location->getEmail() ) ;
         $this->redirect('edit' , NULL, Null , array( "location" => $location));
     }
     

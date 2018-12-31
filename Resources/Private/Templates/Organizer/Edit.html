@@ -14,21 +14,18 @@
 
         <div class="panel-body row">
 
-            <div class="col-sm-4">
-                <div class="well">
-                    <h3>Help</h3>
-                    <div>... to do some help text</div>
-                </div>
+            <div class="col-sm-4 equalHeight">
+                <f:render partial="FeEditHelp" arguments="{section: 'organizer', object: organizer , settings: settings , user: user}" />
             </div>
-            <div class="col-sm-8">
+            <div class="col-sm-8 equalHeight">
 
 
-                <f:render partial="HasFormErrors" arguments="{object:organizer}" />
+                <f:render partial="HasFormErrors" arguments="{object:organizer , debug: 'false'}" />
 
 
 
                 <f:form class="form-horizontal"  action="update" name="organizer" object="{organizer}" id="organizer_edit">
-                    <f:render partial="Organizer/FormFields" arguments="{organizer:organizer}" />
+                    <f:render partial="Organizer/FormFields" arguments="{organizer:organizer, settings: settings , user: user}" />
                     <div class="text-right">
                         <f:form.submit class="btn btn-primary" value="{f:translate(key: 'form.save', default: 'Save')}" />
                     </div>

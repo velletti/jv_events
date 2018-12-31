@@ -23,10 +23,10 @@ $returnArray = array(
 		'iconfile' =>  'EXT:jv_events/Resources/Public/Icons/tx_jvevents_domain_model_organizer.gif'
 	),
 	'interface' => array(
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, email, phone, sales_force_user_id, images, description, organizer_category',
+		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, email, link, phone, sales_force_user_id, images, description, organizer_category',
 	),
 	'types' => array(
-		'1' => array('showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden,--palette--;;1, name, email, phone, sales_force_user_id, teaser_image, images, description, organizer_category, --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, access_users, access_groups, starttime, endtime'),
+		'1' => array('showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden,--palette--;;1, name, email, link, phone, sales_force_user_id, teaser_image, images, description, organizer_category, --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, access_users, access_groups, starttime, endtime'),
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),
@@ -139,6 +139,30 @@ $returnArray = array(
 				'eval' => 'trim,required'
 			),
 		),
+        'link' => array(
+            'exclude' => 0,
+            'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_organizer.link',
+            'config' => array(
+                'type' => 'input',
+                'eval' => 'trim',
+                'size' => '30',
+                'max' => '255',
+                'softref' => 'typolink,url',
+                'renderType' => 'inputLink' ,
+
+                'fieldControl' => array(
+                    'linkPopup' => array(
+                        'options' => array(
+                            'blindLinkOptions' => 'mail,file,spec,folder' ,
+                            'title' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_location.link' ,
+                            'windowOpenParameters' => 'height=300,width=500,status=0,menubar=0,scrollbars=1' ,
+                        ),
+
+                    ),
+                ) ,
+            ) ,
+
+        ),
 		'phone' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_organizer.phone',
@@ -354,4 +378,8 @@ if ( ! $configuration['hasLoginUser'] == 1 ) {
     unset($returnArray['columns']['access'] ) ;
     unset($returnArray['columns']['registration_access'] ) ;
 }
+if ( ! $configuration['enableSalesForce'] == 1 ) {
+    unset($returnArray['columns']['sales_force_user_id'] ) ;
+}
+
 return $returnArray ;

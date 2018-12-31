@@ -115,6 +115,7 @@ class OrganizerController extends BaseController
             $this->view->assign('noAccess', TRUE );
         }
 
+        $this->view->assign('user', intval( $GLOBALS['TSFE']->fe_user->user['uid'] ) );
         $this->view->assign('organizer', $organizer);
     }
     

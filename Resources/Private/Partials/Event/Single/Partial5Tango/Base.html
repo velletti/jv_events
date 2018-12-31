@@ -76,7 +76,14 @@
 	<!-- =============================================================================================================================== -->
 	<hr>
 	<!-- =============================================================================================================================== -->
-
+	<f:if condition="{event.price}">
+		<div class="row">
+			<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_event.price" />:</strong></div>
+			<div class="col-md-10">
+				<f:format.number decimals="2">{event.price}</f:format.number> €
+			</div>
+		</div>
+	</f:if>
 	<f:if condition="{event.EventCategory}">
 		<div class="row">
 			<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_category" />:</strong></div>
@@ -119,6 +126,9 @@
 			</f:else>
 		</f:if>
 	</f:if>
+	<!-- =============================================================================================================================== -->
+	<hr>
+	<!-- =============================================================================================================================== -->
 
 
 
@@ -132,17 +142,35 @@
 </f:comment>
 
 <ul class="nav nav-tabs">
-	<li class="active">
-		<a href="#jv_events_event" data-toggle="tab"><f:translate key="tx_jvevents_domain_model_event.details.tab.details" /></a>
-	</li>
+	<f:if condition="{event.description}">
+		<f:variable name="tabDescActive">active</f:variable>
+
+		<li class="active">
+			<a href="#jv_events_event" data-toggle="tab"><f:translate key="tx_jvevents_domain_model_event.details.tab.details" /></a>
+		</li>
+	</f:if>
 	<f:if condition="{event.location.lng}">
+		<f:if condition="{tabDescActive}">
+			<f:else>
+				<f:variable name="tabMapActive">active</f:variable>
+			</f:else>
+		</f:if>
 		<li>
 			<a href="#jv_events_map" data-toggle="tab"><f:translate key="tx_jvevents_domain_model_event.details.tab.map" /></a>
 		</li>
 	</f:if>
-	<li>
-		<a href="#jv_events_contact" data-toggle="tab"><f:translate key="tx_jvevents_domain_model_event.details.tab.contact" /></a>
-	</li>
+	<f:if condition="{event.organizer}">
+		<f:if condition="{tabMapActive} || {tabDescActive} ">
+			<f:else>
+				<f:variable name="tabContactActive">active</f:variable>
+			</f:else>
+		</f:if>
+
+
+		<li>
+			<a href="#jv_events_contact" data-toggle="tab"><f:translate key="tx_jvevents_domain_model_event.details.tab.contact" /></a>
+		</li>
+	</f:if>
 
 </ul>
 
@@ -154,10 +182,8 @@
 </f:comment>
 
 
-<div class="tab-content clearfix">
-	<div class="tab-pane active" id="jv_events_event">
-
-		<h2><f:translate key="tx_jvevents_domain_model_event.details.tab.details" /></h2>
+<div class="tab-content clearfix well well-sm">
+	<div class="tab-pane {tabDescActive}" id="jv_events_event">
 
 		<div class="data clearfix">
 			<f:format.html parseFuncTSPath="lib.jveventsRTE">{event.description}</f:format.html>
@@ -253,7 +279,7 @@
 		<!-- =========================================================================================================================== -->
 	</f:comment>
 	<f:if condition="{event.location.lng}">
-		<div class="tab-pane " id="jv_events_map" >
+		<div class="tab-pane {tabMapActive}" id="jv_events_map" >
 			<h2><f:translate key="tx_jvevents_domain_model_event.details.tab.map" /></h2>
 			<f:render partial="GoogleMapsAllplan" arguments="{addresses: {0:event.location}, settings:settings}" />
 		</div>
@@ -265,11 +291,11 @@
 		<!-- Contact -->
 		<!-- =========================================================================================================================== -->
 	</f:comment>
-	<div class="tab-pane" id="jv_events_contact">
+	<div class="tab-pane {tabContactActive}" id="jv_events_contact">
 
 
 		<div class="row">
-			<div class="col-xs-12 col-sm-6">
+			<div class="col-xs-12 col-sm-8">
 
 				<h2><f:translate key="tx_jvevents_domain_model_event.details.tab.contact" /></h2>
 
@@ -293,9 +319,15 @@
 						<div class="col-md-10">{event.organizer.phone}</div>
 					</div>
 				</f:if>
+				<f:if condition="{event.organizer.link}">
+					<div class="row">
+						<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_organizer.link" />:</strong></div>
+						<div class="col-md-10"><f:link.external uri="{event.organizer.link}" target="_blank">{event.organizer.link}</f:link.external></div>
+					</div>
+				</f:if>
 
 			</div>
-			<div class="col-xs-12 col-sm-6 logo">
+			<div class="col-xs-12 col-sm-4 logo">
 
 				<f:if condition="{event.teaserImage}">
 					<f:then>
@@ -309,8 +341,9 @@
 										src="{falimage._file.publicUrl}"
 										title="{falimage._file.title}"
 										alt="{falimage._file.alternative}"
-										maxWidth="300"
-										maxHeight="220"
+										maxWidth="600"
+										maxHeight="400"
+										class="resizeable"
 										treatIdAsReference="1"
 									/>
 								</f:if>

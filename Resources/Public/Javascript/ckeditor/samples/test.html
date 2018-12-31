@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<!--
+Copyright (c) 2003-2018, CKSource - Frederico Knabben. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+-->
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>CKEditor Sample</title>
+	<script src="../ckeditor.js"></script>
+	<link rel="stylesheet" href="css/samples.css">
+</head>
+<body id="main">
+
+
+<main>
+	<div class="adjoined-top">
+		<div class="grid-container">
+			<div class="content grid-width-100">
+				<h1>Congratulations!</h1>
+				<p>
+					If you can see CKEditor below, it means that the installation succeeded.
+					You can now try out your new editor version, see its features, and when you are ready to move on, check some of the <a href="#sample-customize">most useful resources</a> recommended below.
+				</p>
+			</div>
+		</div>
+	</div>
+	<div class="adjoined-bottom">
+		<div class="grid-container">
+			<div class="grid-width-100">
+				<div id="editor">
+					<h2>Hello world!</h2>
+					<p>I'm an instance ... of <a href="https://ckeditor.com">CKEditor</a>.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+</main>
+
+
+<script>
+    if ( CKEDITOR.env.ie && CKEDITOR.env.version < 9 )
+        CKEDITOR.tools.enableHtml5Elements( document );
+
+    // The trick to keep the editor in the sample quite small
+    // unless user specified own height.
+    CKEDITOR.config.height = 300;
+    CKEDITOR.config.width = 'auto';
+    CKEDITOR.config.contentsCss = [ '/typo3conf/ext/jve_template/Resources/Public/Css/Www/rte.min.css' ,  '/typo3conf/ext/jv_events/Resources/Public/Javascript/ckeditor/contents.css' ] ;
+    CKEDITOR.config.customConfig =  '/typo3conf/ext/jv_events/Resources/Public/Javascript/ckeditor_config.js'   ;
+
+    var initSample = ( function() {
+        var FIELDID = 'editor';
+        return function() {
+            CKEDITOR.replace( FIELDID );
+
+        };
+
+    } )();
+
+    initSample();
+
+</script>
+
+</body>
+</html>

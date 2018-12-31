@@ -1,0 +1,35 @@
+
+<div class="well">
+	<h3 data-target="#eventEditHelp" data-toogle="collapse">Help</h3>
+	<div id="eventEditHelp" class="collapse in">
+		<f:render section="{section}" arguments="{section: 'organizer', object: object , settings: settings , user: user}" />
+	</div>
+
+</div>
+
+<f:section name="organizer">
+
+	UserId: {user}<br>
+	OrganizerId: {object.uid}<br>
+
+
+</f:section>
+
+<f:section name="location">
+
+	UserId: {user}<br>
+	OrganizerId: {object.organizer.uid}<br>
+	LocationId: {object.uid}<br>
+
+
+</f:section>
+
+<f:section name="event">
+
+	UserId: {user}<br>
+	EventId: {object.uid}<br>
+	OrganizerId: {object.organizer.uid}<br>
+	LocationId: {object.location.uid}<br>
+
+
+</f:section>

@@ -1,0 +1,46 @@
+
+
+<div class="form-group display-data">
+
+    <f:render partial="FormErrorSingle" arguments="{property: errorProperty, field: 'event.tagsFE'}"/>
+    <label  class=" col-sm-4">
+        <f:if condition="{translationKey}">
+            <f:then>
+                <f:translate key="{translationKey}">{translationKey}</f:translate>
+            </f:then>
+            <f:else>
+                {label}
+            </f:else>
+        </f:if>
+
+        <f:if condition="{mandatory}">
+            <span class="mandatory">*</span>
+        </f:if>
+
+    </label>
+    <div class="col-sm-8">
+
+
+        <f:for each="{tags}" as="Tag" iteration="iteration">
+            <div class="col-xs-6">
+                <f:variable name="checked"></f:variable>
+                <f:for each="{value}" as="existingTag" iteration="iteration">
+
+                    <f:if condition="{Tag.uid} == {existingTag.uid}">
+                        <f:variable name="checked">checked</f:variable>
+                        <f:variable name="oldTags">{Tag.uid},{oldTags}</f:variable>
+
+
+                    </f:if>
+
+                </f:for>
+
+                <f:form.checkbox name="tag[{Tag.uid}]"  value="{Tag.uid}" checked="{checked}" />
+                <label for="tx_jvevents_events[event][tags][{Tag.uid}]" class="control-label "> {Tag.name}</label>
+            </div>
+        </f:for>
+        <br>
+        <br>
+        <f:form.textfield class="form-control" property="tagsFE" id="tagsFE" value="{oldTags}" maxlength="200"/>
+    </div>
+</div>

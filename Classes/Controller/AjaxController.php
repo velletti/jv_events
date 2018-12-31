@@ -196,7 +196,8 @@ class AjaxController extends BaseController
             "feuser" => array(
                 "uid" => $GLOBALS['TSFE']->fe_user->user['uid'] ,
                 "username" => $GLOBALS['TSFE']->fe_user->user['username'] ,
-                "usergroup" => $GLOBALS['TSFE']->fe_user->user['usergroup']
+                "usergroup" => $GLOBALS['TSFE']->fe_user->user['usergroup'] ,
+                "isOrganizer" => $this->isUserOrganizer()
             )  ,
             "organizer" => array() ,
             "location" => array() ,

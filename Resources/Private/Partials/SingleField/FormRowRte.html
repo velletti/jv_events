@@ -21,42 +21,30 @@
 </div>
 
 
-<f:format.raw>
-	<script type="text/javascript">
-        $(function() {
-            CKEDITOR.replace('description') , {
-                stylesSet: [],
-                customConfig: '',
-                contentsCss:"\/typo3\/sysext\/rte_ckeditor\/Resources\/Public\/Css\/contents.css",
-                defaultContentLanguage:"en",
-                defaultLanguage:"en",
-                extraAllowedContent:"*(*)[data-*]",
-                height:300,width:"auto",
 
-                uiColor:"#F8F8F8",
-                removeDialogTabs:"image:advanced;link:advanced",
-                entities_latin:false,
-                entities:false,
-                format_tags:"p;h2;h3",
-                toolbarGroups: [
-                    {name: 'styles', groups: ['styles']},
-                    {name: 'clipboard', groups: ['clipboard', 'undo']},
-                    {name: 'basicstyles', groups: ['basicstyles', 'cleanup']},
-                    {name: 'document', groups: ['mode', 'document', 'doctools']},
-                    {name: 'editing', groups: ['find', 'selection', 'spellchecker', 'editing']},
-                    {name: 'forms', groups: ['forms']},
-                    {name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align', 'bidi', 'paragraph']},
-                    {name: 'links', groups: ['links']},
-                    {name: 'insert', groups: ['insert']},
-                    {name: 'colors', groups: ['colors']},
-                    {name: 'tools', groups: ['tools']},
-                    {name: 'others', groups: ['others']},
-                    {name: 'about', groups: ['about']}
-                ],
-                removeButtons: 'Source,Save,NewPage,Preview,Print,Templates,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Italic,Underline,Subscript,Superscript,Indent,Outdent,CreateDiv,Blockquote,BidiLtr,BidiRtl,Language,Image,Flash,Table,PageBreak,Iframe,Font,FontSize,TextColor,BGColor,About,Maximize,PasteFromWord,Find,Replace,SelectAll,Scayt,NumberedList,JustifyRight,JustifyBlock,Anchor,Smiley,Styles'
+		<script>
+            var FIELDID = '{property}';
+			<f:format.raw>
+                if ( CKEDITOR.env.ie && CKEDITOR.env.version < 9 )
+                    CKEDITOR.tools.enableHtml5Elements( document );
 
-            };
-        });
+                	// The trick to keep the editor in the sample quite small
+                	// unless user specified own height.
+					CKEDITOR.config.height = 300;
+					CKEDITOR.config.width = 'auto';
+					CKEDITOR.config.contentsCss = [ '/typo3conf/ext/jve_template/Resources/Public/Css/Www/rte.min.css'
+						,  '/typo3conf/ext/jv_events/Resources/Public/Javascript/ckeditor/contents.css'
+						,  '/typo3conf/ext/jv_events/Resources/Public/Css/ckeditor_contents_addon.css' ] ;
+					CKEDITOR.config.customConfig =  '/typo3conf/ext/jv_events/Resources/Public/Javascript/ckeditor_config.js'   ;
 
-	</script>
-</f:format.raw>
+					var initSample = ( function() {
+                    return function() {
+                        CKEDITOR.replace( FIELDID );
+                    };
+                } )();
+                initSample();
+			</f:format.raw>
+		</script>
+
+
+

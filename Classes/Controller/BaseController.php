@@ -75,8 +75,23 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      */
     protected $registrantRepository = NULL;
 
-       
-    
+
+    /**
+     * categoryRepository
+     *
+     * @var \JVE\JvEvents\Domain\Repository\CategoryRepository
+     * @inject
+     */
+    protected $categoryRepository = NULL;
+
+    /**
+     * tagRepository
+     *
+     * @var \JVE\JvEvents\Domain\Repository\TagRepository
+     * @inject
+     */
+    protected $tagRepository = NULL;
+
     /**
      * action list
      *
@@ -98,6 +113,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         // seemed faster than separate via a Viewhelper for each Field
 
         $layout = $this->settings['LayoutRegister'] ;
+        $this->settings['phpTimeZone'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['phpTimeZone'] ;
         $fields = $this->settings['register']['requiredFields'][$layout] ;
         $required  = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode( "," , $fields ) ;
         foreach( $required as $key => $field ) {
@@ -397,7 +413,21 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
 
     }
+    /**
+     * @return bool
+     */
 
+
+    public function isUserOrganizer() {
+        $groups = GeneralUtility::trimExplode("," , $this->settings['feEdit']['organizerGroudIds'] , TRUE ) ;
+        $feuserGroups = GeneralUtility::trimExplode("," ,  $GLOBALS['TSFE']->fe_user->user['usergroup']  , TRUE ) ;
+        foreach( $groups as $group ) {
+            if( in_array( $group  , $feuserGroups )) {
+                return TRUE  ;
+            }
+        }
+        return FALSE  ;
+    }
 
     /**
      * @param \JVE\JvEvents\Domain\Model\Organizer | \TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy  $organizer
@@ -433,12 +463,18 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     }
 
     protected function showNoDomainMxError($email ) {
-        $domain  = explode('@', $email);
-        if( ! checkdnsrr($domain[1], 'MX') ) {
-            $msg = sprintf( $this->translate('error.email.noMxRecord') , "@" . $domain[1] ) . " ";
-
-            $this->addFlashMessage( $msg , '', AbstractMessage::WARNING);
+        if( trim($email ) == '' ) {
+            return ;
         }
+        $domain  = explode('@', $email);
+        if( count($domain) > 0 ) {
+            if( ! checkdnsrr($domain[1], 'MX') ) {
+                $msg = sprintf( $this->translate('error.email.noMxRecord') , "@" . $domain[1] ) . " ";
+
+                $this->addFlashMessage( $msg , '', AbstractMessage::WARNING);
+            }
+        }
+
     }
 
 }
