@@ -17,6 +17,21 @@
 
 	</label>
 	<div class="col-sm-8">
-		<f:form.textfield pattern="^\d*(\.\d{0,2})?$" title="Format: 0.00" placeholder="0.00" class="form-control" property="{property}" id="{property}" maxlength="{maxLength}"/>
+		<f:if condition="{euro}">
+			<f:then>
+				<div class="input-group">
+					<f:form.textfield pattern="^\d*(\.\d{0,2})?$" title="Format: 0.00" placeholder="0.00" class="form-control" property="{property}" id="{property}" maxlength="{maxLength}"/>
+					<div class="input-group-addon btn btn-default">
+						<label for="{property}" class="control-label">
+							<i class="fas fa-euro-sign"></i>
+						</label>
+					</div>
+				</div>
+			</f:then>
+			<f:else>
+				<f:form.textfield pattern="^\d*(\.\d{0,2})?$" title="Format: 0.00" placeholder="0.00" class="form-control" property="{property}" id="{property}" maxlength="{maxLength}"/>
+			</f:else>
+		</f:if>
+
 	</div>
 </div>

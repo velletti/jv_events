@@ -4,7 +4,46 @@
  */
 jQuery(document).ready(function() {
 	jv_events_init() ;
+    jv_events_init_edit_tags() ;
 }) ;
+
+function jv_events_init_edit_tags() {
+    $(".jv-events-tags-div").on("click" , function () {
+        var jvEventsNewTags = '' ;
+        var thisCheck =  $(this).find(".jv-events-tags-edit") ;
+
+        if ($(thisCheck).prop("checked")) {
+            $(thisCheck).prop("checked", false);
+            $(this).removeClass("event-checked");
+        } else {
+            $(thisCheck).prop("checked" , true ) ;
+            $(this).addClass("event-checked");
+        }
+
+        $(".jv-events-tags-edit").each(function() {
+            if ($(this).prop("checked")) {
+                jvEventsNewTags =  $(this).val() + ","  + jvEventsNewTags ;
+            }
+        }) ;
+        $("#jv-events-tagsFE").val(jvEventsNewTags ) ;
+    }) ;
+    $(".jv-events-cats-div DIV").on("click" , function () {
+        if ($(this).find("INPUT").prop("checked" , true )) ;
+        $(".jv-events-cats-div INPUT").each(function() {
+            if ($(this).prop("checked")) {
+                $(this).parent().addClass("event-checked") ;
+            } else {
+                $(this).parent().removeClass("event-checked") ;
+            }
+        }) ;
+
+    }) ;
+
+
+
+    $('.clockpicker').clockpicker();
+
+}
 //  ############   generic function for everyone: test if a spezific Parameter is in URL and return its value ###########
 function jv_events_GetURLParameter(sParam) {
 	var sPageURL = window.location.search.substring(1);
@@ -459,3 +498,5 @@ function jv_events_submit() {
 
 
 $.fn.getType = function(){ return this[0].tagName == "INPUT" ? this[0].type.toLowerCase() : this[0].tagName.toLowerCase(); };
+
+

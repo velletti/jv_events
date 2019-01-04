@@ -1,3 +1,19 @@
 .jv-events-regform .radio label,
 .jv-events-regform .checkbox label,
 .jv-events-regform label { cursor: default }
+
+.jv-events-tags-div ,
+.jv-events-cats-div DIV {
+    border: 1px solid #DDD ;
+    margin: 4px 8px 4px -8px;
+    overflow: hidden;
+    height: 34px;
+}
+.jv-events-cats-div INPUT ,
+.jv-events-tags-div INPUT {
+    display: none;
+}
+.event-checked {
+    background: #2b80cb;
+    color: white;
+}

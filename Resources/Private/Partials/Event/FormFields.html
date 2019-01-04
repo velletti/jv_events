@@ -4,16 +4,17 @@
 
 <f:render partial="SingleField/FormRowTimes"
 		  arguments="{object: 'event', property:'startTime' ,  property2:'endTime', value: event.startTime , value2: event.endTime , label: 'Von - bis' , translationKey: '' ,  mandatory: '1' }" />
-
+<hr>
 <f:if condition="{tags}">
 	<f:render partial="SingleField/FormRowTags"
 			  arguments="{object: 'event', property:'tags' , value: '{event.tags}' , label: '' , translationKey: 'tx_jvevents_domain_model_tag' , tags: tags , mandatory: '1' }" />
-
+	<hr>
 </f:if>
 
 <f:if condition="{categories}">
 	<f:render partial="SingleField/FormRowCategories"
 			  arguments="{object: 'event', property:'eventCategory' , value: '{event.eventCategory.0.uid}', label: '' , translationKey: 'tx_jvevents_domain_model_category' , categories: categories , mandatory: '1' }" />
+	<hr>
 </f:if>
 
 <f:render partial="SingleField/FormRowDefault"
@@ -23,7 +24,7 @@
 		  arguments="{object: 'event', property:'teaser' , label: '' , translationKey: 'tx_jvevents_domain_model_event.teaser' ,  maxLength: 200 , rows: 3, mandatory: '1' }" />
 
 <f:render partial="SingleField/FormRowNumber"
-		  arguments="{object: 'event', property:'price' , label: '' , translationKey: 'tx_jvevents_domain_model_event.price' ,  maxLength: 20 ,  mandatory: '0' }" />
+		  arguments="{object: 'event', property:'price' , euro: 'true', label: '' , translationKey: 'tx_jvevents_domain_model_event.price' ,  maxLength: 20 ,  mandatory: '0' }" />
 
 <f:render partial="SingleField/FormRowRte"
 		  arguments="{object: 'event', property:'description' , label: '' , translationKey: 'tx_jvevents_domain_model_event.description' , mandatory: true }" />

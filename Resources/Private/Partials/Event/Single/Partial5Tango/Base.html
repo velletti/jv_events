@@ -305,26 +305,58 @@
 						<div class="col-md-10">{event.organizer.name}</div>
 					</div>
 				</f:if>
-
-				<f:if condition="{event.organizer.email}">
-					<div class="row">
-						<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_organizer.email" />:</strong></div>
-						<div class="col-md-10"><f:link.email class="email" email="{event.organizer.email}" /></div>
-					</div>
+				<f:if condition="{event.location.email}">
+					<f:then>
+						<div class="row">
+							<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_location.email" />:</strong></div>
+							<div class="col-md-10"><f:link.email class="email" email="{event.location.email}" /></div>
+						</div>
+					</f:then>
+					<f:else>
+						<f:if condition="{event.organizer.email}">
+							<div class="row">
+								<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_organizer.email" />:</strong></div>
+								<div class="col-md-10"><f:link.email class="email" email="{event.organizer.email}" /></div>
+							</div>
+						</f:if>
+					</f:else>
 				</f:if>
 
-				<f:if condition="{event.organizer.phone}">
-					<div class="row">
-						<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_organizer.phone" />:</strong></div>
-						<div class="col-md-10">{event.organizer.phone}</div>
-					</div>
+				<f:if condition="{event.location.phone}">
+					<f:then>
+						<div class="row">
+							<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_location.phone" />:</strong></div>
+							<div class="col-md-10">{event.location.phone}</div>
+						</div>
+					</f:then>
+					<f:else>
+						<f:if condition="{event.organizer.phone}">
+							<div class="row">
+								<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_organizer.phone" />:</strong></div>
+								<div class="col-md-10">{event.organizer.phone}</div>
+							</div>
+						</f:if>
+					</f:else>
 				</f:if>
-				<f:if condition="{event.organizer.link}">
-					<div class="row">
-						<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_organizer.link" />:</strong></div>
-						<div class="col-md-10"><f:link.external uri="{event.organizer.link}" target="_blank">{event.organizer.link}</f:link.external></div>
-					</div>
+
+				<f:if condition="{event.location.link}">
+					<f:then>
+						<div class="row">
+							<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_location.link" />:</strong></div>
+							<div class="col-md-10"><f:link.external uri="{event.location.link}" target="_blank">{event.location.link}</f:link.external></div>
+						</div>
+					</f:then>
+					<f:else>
+						<f:if condition="{event.organizer.link}">
+							<div class="row">
+								<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_organizer.link" />:</strong></div>
+								<div class="col-md-10"><f:link.external uri="{event.organizer.link}" target="_blank">{event.organizer.link}</f:link.external></div>
+							</div>
+						</f:if>
+					</f:else>
 				</f:if>
+
+
 
 			</div>
 			<div class="col-xs-12 col-sm-4 logo">

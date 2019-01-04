@@ -17,6 +17,23 @@
 
 	</label>
 	<div class="col-sm-8">
-		<f:form.textfield class="form-control" property="{property}" id="{property}" maxlength="{maxLength}"/>
+		<f:if condition="{fa-icon}">
+			<f:then>
+				<div class="input-group">
+					<f:form.textfield class="form-control" property="{property}" id="{property}" maxlength="{maxLength}"/>
+					<div class="input-group-addon btn btn-default">
+						<label for="{property}" class="control-label">
+							<i class="{fa-icon}"></i>
+						</label>
+
+					</div>
+				</div>
+
+			</f:then>
+			<f:else>
+				<f:form.textfield class="form-control" property="{property}" id="{property}" maxlength="{maxLength}"/>
+			</f:else>
+		</f:if>
+
 	</div>
 </div>

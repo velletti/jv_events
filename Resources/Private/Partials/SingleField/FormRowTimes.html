@@ -3,7 +3,7 @@
 <div class="form-group display-data">
     <f:variable name="propertyName">{object}.{property}</f:variable>
     <f:render partial="FormErrorSingle" arguments="{property: errorProperty, field: propertyName}"/>
-    <label for="{property}FE" class="control-label col-sm-4">
+    <label class="control-label col-sm-4">
         <f:if condition="{translationKey}">
             <f:then>
                 <f:translate key="{translationKey}">{translationKey}</f:translate>
@@ -20,38 +20,43 @@
     </label>
     <div class="col-sm-4">
         <!-- Datepicker from -->
-        <div class="input-group timepicker-hour">
+        <div class="input-group  clockpicker" data-autoclose="true"  data-donetext="Ok">
             <f:form.textfield
                     property="{property}FE"
                     title="Format: 12:00"
                     value="{f:format.date(format:'H:i', date: '{value}')}"
                     pattern="(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9])"
                     id="{property}FE"
-                    class="form-control datetimepicker clearable"
+                    class="form-control clearable"
                     data="{date-type: 'time'}"
             />
 
-            <div class="input-group-addon btn btn-default">
-                <i class="fas fa-clock "></i>
+            <div class="input-group-addon  btn btn-default">
+                <label for="{property}FE" class="">
+                    <i class="fas fa-clock "></i>
+                </label>
             </div>
         </div>
     </div>
     <div class="col-sm-4">
         <!-- Datepicker from -->
-        <div class="input-group  timepicker-hour">
+        <div class="input-group  clockpicker" data-autoclose="true" data-donetext="Ok">
             <f:form.textfield
                     property="{property2}FE"
                     title="Format: 12:00"
                     pattern="(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9])"
                     value="{f:format.date(format:'H:i', date: '{value2}')}"
                     id="{property2}FE"
-                    class="form-control datetimepicker clearable"
+                    class="form-control clearable"
                     data="{date-type: 'time'}"
             />
 
             <div class="input-group-addon btn btn-default">
-                <i class="fas fa-clock "></i>
+                <label for="{property2}FE" class="">
+                    <i class="fas fa-clock "></i>
+                </label>
             </div>
+
         </div>
     </div>
 </div>

@@ -247,6 +247,8 @@ class EventController extends BaseController
         } else {
             $this->addFlashMessage('You do not have access rights to change this data.' . $event->getUid() , '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
         }
+        $this->persistenceManager->persistAll() ;
+
         $this->redirect('edit' , NULL, Null , array( "event" => $event));
 
     }
@@ -305,9 +307,6 @@ class EventController extends BaseController
         // validation should be done in validatar class so we can ignore issue with wrong format
 
         $eventArray = $this->request->getArgument('event');
-echo "<pre>" ;
-var_dump($eventArray) ;
-die;
         // Update the Categories
         $eventCatUid = intval($eventArray['eventCategory']) ;
         /** @var \JVE\JvEvents\Domain\Model\Category $eventCat */
@@ -318,7 +317,34 @@ die;
             }
             $event->addEventCategory($eventCat) ;
         }
+        // Update the Categories
+        $eventTagUids =  $tagArray= \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode("," , $eventArray['tagsFE']) ;
+        if( is_array($eventTagUids) && count($eventTagUids) > 0  ) {
+            $existingTags = $event->getTags() ;
 
+            if ( $existingTags ) {
+                /** @var  \JVE\JvEvents\Domain\Model\Tag $existingTag */
+                foreach ( $existingTags as $existingTag ) {
+                    if( !in_array( $existingTag->getUid()  , $eventTagUids)) {
+                        $event->getTags()->detach($existingTag) ;
+                        unset($eventTagUids[$existingTag->getUid()] ) ;
+                    }
+
+                }
+            }
+            if( is_array($eventTagUids) && count($eventTagUids) > 0  ) {
+                foreach ($eventTagUids as $eventTagUid) {
+                    if( intval( $eventTagUid ) > 0 ) {
+                        /** @var  \JVE\JvEvents\Domain\Model\Tag $eventTag */
+                        $eventTag = $this->tagRepository->findByUid($eventTagUid) ;
+
+                        if($eventTag) {
+                            $event->addTag($eventTag) ;
+                        }
+                    }
+                }
+            }
+        }
 
         $stD = \DateTime::createFromFormat('d.m.Y', $eventArray['startDateFE']  );
         $event->setStartDate( $stD ) ;

@@ -11,19 +11,20 @@
             <f:else>
                 {label}
             </f:else>
+
         </f:if>
 
         <f:if condition="{mandatory}">
             <span class="mandatory">*</span>
         </f:if>
-
+        <br><span class="small font-weight-light">(max 1)</span>
     </label>
-    <div class="col-sm-8">
+    <div class="col-sm-8 jv-events-cats-div">
 
         <f:for each="{categories}" as="Category" iteration="iteration">
-            <div class="col-xs-6">
-                <f:form.radio name="{property}" property="{property}" value="{Category.uid}" checked="{f:if(condition:'{Category.uid} == {value}' , then:'checked' )}"/>
-                <label for="{property}" class="control-label"> {Category.title} </label>
+            <div class="col-xs-6 {f:if(condition:'{Category.uid} == {value}' , then:'event-checked' , else:'')}">
+                <f:form.radio id="{property}-{iteration.index}" property="{property}" value="{Category.uid}" checked="{f:if(condition:'{Category.uid} == {value}' , then:'checked' )}"/>
+                <label for="{property}-{iteration.index}" class="control-label"> {Category.title} </label>
             </div>
         </f:for>
 

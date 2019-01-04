@@ -377,7 +377,7 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
     }
     /**
      * Returns TRUE, if the given property ($propertyValue) is a valid
-     * alphanumeric string, which is defined as [a-zA-Z0-9_]*.
+     * intvalue , minum 1 tag is selected and not more than 5
      *
      * If at least one error occurred, the result is FALSE.
      *
@@ -390,7 +390,14 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
         $value = substr( $value , 0 , strlen($value ) -1 ) ;
 
         $tagArray= \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode("," , $value) ;
-
+        // max tag Count 5 should go to settings .
+        $max = 5 ;
+        if( count($tagArray ) > $max ) {
+            /** @var \TYPO3\CMS\Extbase\Error\Error $error */
+            $error = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error', 'Too much Tags selected (max ' . $max . ' allowed!)' , time());
+            $this->result->forProperty($propertyName)->addError($error);
+            return false ;
+        }
         if( count($tagArray ) > 0 ) {
             foreach ($tagArray as $key => $tag ) {
                 if( intval($tag) < 1 ) {
