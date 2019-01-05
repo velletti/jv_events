@@ -1,6 +1,7 @@
 <f:layout name="Ajax" />
 
 <f:section name="main">
+
     <f:if condition="{output.event.hasAccess} || {output.location.hasAccess} || {output.organizer.hasAccess} || {output.feuser.isOrganizer}">
         <ul class="nav navbar-nav navbar navbar-left">
 
@@ -13,7 +14,8 @@
                         </f:link.action>
                     </li>
             </f:if>
-            <f:if condition="{output.location.hasAccess}">
+
+            <f:if condition="{output.location.hasAccess} && {output.mode} != 'editLocation'">
                     <li>
                         <f:link.action pageUid="{settings.pageIds.editLocation}" class="btn btn-primary" title="Edit Location" action="edit" controller="Location" arguments="{location: output.location.locationId}">
                             <span class="fas fa-2x fa-map-marker-alt visible-xs"></span>

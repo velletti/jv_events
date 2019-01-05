@@ -32,13 +32,7 @@ namespace JVE\JvEvents\Controller;
 class LocationController extends BaseController
 {
 
-    /**
-     * locationRepository
-     *
-     * @var \JVE\JvEvents\Domain\Repository\LocationRepository
-     * @inject
-     */
-    protected $locationRepository = NULL;
+
 
 
     /**

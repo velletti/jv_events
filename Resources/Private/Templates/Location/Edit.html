@@ -3,6 +3,9 @@
 
 
 <f:section name="main">
+    <div class="jv_events-eventmenue navbar hide">
+        <span class="left"><span class="fa fa-4x fa-spinner"></span></span>
+    </div>
 
     <div class="panel panel-primary my-profile-edit" id="my-profile-edit-profiledata">
 
@@ -35,6 +38,25 @@
              </div>
         </div>
     </div>
+    <script type="application/javascript">
+        var locationId = {location.uid} ;
 
+        $(document).ready( function(){
+            if( $('.jv_events-eventmenue') ) {
+                $.ajax( {
+                    url: '/index.php' ,
+                    data: 'uid=1&eID=jv_events&L=0&mode=editLocation&tx_jvevents_ajax[mode]=editLocation&tx_jvevents_ajax[location]=' +  locationId + '&tx_jvevents_ajax[action]=eventMenu&tx_jvevents_ajax[controller]=Ajax&' ,
+                    before: function() {
+                        $('.jv_events-eventmenue').removeClass('hide') ;
+                    } ,
+                    success: function(response) {
+                        $('.jv_events-eventmenue').html( response.html) ;
+
+                    }
+                })
+            }
+
+        }) ;
+    </script>
 
 </f:section>

@@ -32,13 +32,7 @@ namespace JVE\JvEvents\Controller;
 class OrganizerController extends BaseController
 {
 
-    /**
-     * organizerRepository
-     *
-     * @var \JVE\JvEvents\Domain\Repository\OrganizerRepository
-     * @inject
-     */
-    protected $organizerRepository = NULL;
+
 
 
     /**

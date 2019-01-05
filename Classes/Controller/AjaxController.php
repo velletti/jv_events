@@ -188,11 +188,16 @@ class AjaxController extends BaseController
         /*   Prepare the Output :
         /* ************************************************************************************************************ */
         $feuser = intval(  $GLOBALS['TSFE']->fe_user->user['uid']) ;
+        $mode = '' ;
+        if( $this->request->hasArgument('mode')) {
+            $mode = $this->request->getArgument('mode') ;
+        }
         $output = array (
             "requestId" =>  intval( $GLOBALS['TSFE']->id ) ,
             "event" => array()  ,
             "events" => array()  ,
             "eventsFilter" => array()  ,
+            "mode" => $mode  ,
             "feuser" => array(
                 "uid" => $GLOBALS['TSFE']->fe_user->user['uid'] ,
                 "username" => $GLOBALS['TSFE']->fe_user->user['username'] ,
@@ -343,7 +348,6 @@ class AjaxController extends BaseController
         $layoutPath = GeneralUtility::getFileAbsFileName("typo3conf/ext/jv_events/Resources/Private/Layouts/");
 
         $renderer->setLayoutRootPaths(array(0 => $layoutPath));
-
 
         $renderer->assign('output' , $output) ;
         $renderer->assign('settings' , $this->settings ) ;

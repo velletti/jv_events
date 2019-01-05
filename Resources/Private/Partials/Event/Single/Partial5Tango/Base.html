@@ -402,14 +402,17 @@
 	var eventId = {event.uid} ;
 
 	$(document).ready( function(){
-	     $.ajax( {
-                 url: '/index.php' ,
-                 data: 'uid=1&eID=jv_events&L=0&tx_jvevents_ajax[event]=' +  eventId + '&tx_jvevents_ajax[action]=eventMenu&tx_jvevents_ajax[controller]=Ajax&' ,
-                 success: function(response) {
-                     $('.jv_events-eventmenue').html( response.html) ;
+	    if( $('.jv_events-eventmenue') ) {
+            $.ajax( {
+                url: '/index.php' ,
+                data: 'uid=1&eID=jv_events&L=0&tx_jvevents_ajax[event]=' +  eventId + '&tx_jvevents_ajax[action]=eventMenu&tx_jvevents_ajax[controller]=Ajax&' ,
+                success: function(response) {
+                    $('.jv_events-eventmenue').html( response.html) ;
 
-                 }
-		 })
+                }
+            })
+		}
+
 	}) ;
 </script>
 

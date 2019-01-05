@@ -58,6 +58,22 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 	 */
 	protected $staticCountryRepository = NULL;
 
+    /**
+     * organizerRepository
+     *
+     * @var \JVE\JvEvents\Domain\Repository\OrganizerRepository
+     * @inject
+     */
+    protected $organizerRepository = NULL;
+
+
+    /**
+     * locationRepository
+     *
+     * @var \JVE\JvEvents\Domain\Repository\LocationRepository
+     * @inject
+     */
+    protected $locationRepository = NULL;
 
     /**
      * persistencemanager
@@ -436,7 +452,9 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
 
     public function hasUserAccess( $organizer ) {
-
+        if(! $organizer instanceof \JVE\JvEvents\Domain\Model\Organizer ) {
+           return FALSE ;
+        }
         $feuserUid = intval( $GLOBALS['TSFE']->fe_user->user['uid'] ) ;
         $users = GeneralUtility::trimExplode("," , $organizer->getAccessUsers() , TRUE ) ;
         if( in_array( $feuserUid  , $users )) {

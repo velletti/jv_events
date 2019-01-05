@@ -25,6 +25,8 @@ namespace JVE\JvEvents\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
 
 /**
@@ -162,26 +164,91 @@ class EventController extends BaseController
     
     /**
      * action new
+     * @param \JVE\JvEvents\Domain\Model\Event $event
+     * @ignorevalidation $event
      *
      * @return void
      */
-    public function newAction()
+    public function newAction(\JVE\JvEvents\Domain\Model\Event $event=null)
     {
-		$this->addFlashMessage('Please be aware that this action is publicly accessible unless you implement an access check.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
+        /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $categories */
+        $categories = $this->categoryRepository->findAllonAllPages( '0' );
 
+        /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $tags */
+        $tags = $this->tagRepository->findAllonAllPages();
+
+        if ( $event==null) {
+
+
+            /** @var \JVE\JvEvents\Domain\Model\Event $event */
+            $event = $this->objectManager->get("JVE\\JvEvents\\Domain\\Model\\Event");
+        }
+        if ( $event->getUid() < 1 ) {
+            $event->setStartDate( new \DateTime ) ;
+
+            if( $this->request->hasArgument('organizer')) {
+                /** @var \JVE\JvEvents\Domain\Model\Organizer $organizer */
+                $organizer= $this->organizerRepository->findByUid( intval( $this->request->getArgument('organizer') )) ;
+                if($organizer instanceof  \JVE\JvEvents\Domain\Model\Organizer ) {
+                    $event->setOrganizer($organizer ) ;
+                }
+                $event->setEventType( 2 ) ;
+
+
+                // ToDo find good way to handle ID Default .. maybe a pid per User, per location or other typoscript setting
+                $event->setPid( 12 ) ;
+            }
+
+        }
+        if($this->isUserOrganizer() ) {
+            $this->view->assign('user', intval($GLOBALS['TSFE']->fe_user->user['uid'] ) ) ;
+            $this->view->assign('event', $event);
+            $this->view->assign('categories', $categories);
+            $this->view->assign('tags', $tags);
+        }
 	}
     
     /**
      * action create
      *
-     * @param \JVE\JvEvents\Domain\Model\Event $newEvent
+     * @param \JVE\JvEvents\Domain\Model\Event $event
+     * @validate $event \JVE\JvEvents\Validation\Validator\EventValidator
      * @return void
      */
-    public function createAction(\JVE\JvEvents\Domain\Model\Event $newEvent)
+    public function createAction(\JVE\JvEvents\Domain\Model\Event $event)
     {
-        $this->addFlashMessage('The object was created. Please be aware that this action is publicly accessible unless you implement an access check. See http://wiki.typo3.org/T3Doc/Extension_Builder/Using_the_Extension_Builder#1._Model_the_domain', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
-       // $this->eventRepository->add($newEvent);
-        // $this->redirect('list');
+
+        if( $this->request->hasArgument('event')) {
+            $event = $this->cleanEventArguments( $event) ;
+
+        }
+
+        if($this->isUserOrganizer() ) {
+            $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
+
+            try {
+                $this->eventRepository->add($event);
+                $this->persistenceManager->persistAll() ;
+
+                // got from EM Settings
+                $clearCachePids = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode("," , $this->settings['EmConfiguration']['clearCachePids']) ;
+                if( is_array($clearCachePids) && count( $clearCachePids) > 0 ) {
+                    $this->cacheService->clearPageCache( $clearCachePids );
+                    $this->addFlashMessage('The object was created and Cache of following pages are cleared: ' . implode("," , $clearCachePids), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+                } else {
+                    $this->addFlashMessage('The object was created.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+                }
+
+            } catch ( \Exception $e ) {
+                $this->addFlashMessage($e->getMessage() , 'Error', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+
+            }
+
+        } else {
+            $this->addFlashMessage('The object was NOT created. You are not logged in as Organizer.' . $event->getUid() , '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+        }
+
+        $this->redirect('edit' , 'Event' , NULL , array( 'event' => $event ) );
     }
     
     /**
@@ -194,19 +261,24 @@ class EventController extends BaseController
     public function editAction(\JVE\JvEvents\Domain\Model\Event $event)
     {
 
-        /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $categories */
-        $categories = $this->categoryRepository->findAllonAllPages( '0' );
-
-        /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $tags */
-        $tags = $this->tagRepository->findAllonAllPages();
-
         if($this->isUserOrganizer() ) {
             if( $this->hasUserAccess( $event->getOrganizer() )) {
+
+                /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $categories */
+                $categories = $this->categoryRepository->findAllonAllPages( '0' );
+
+                /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $tags */
+                $tags = $this->tagRepository->findAllonAllPages();
+
                 $this->view->assign('user', intval($GLOBALS['TSFE']->fe_user->user['uid'] ) ) ;
                 $this->view->assign('event', $event);
                 $this->view->assign('categories', $categories);
                 $this->view->assign('tags', $tags);
+            } else {
+                $this->view->assign('event', FALSE );
             }
+        } else {
+            $this->view->assign('event', FALSE );
         }
     }
     
@@ -261,7 +333,7 @@ class EventController extends BaseController
      */
     public function deleteAction(\JVE\JvEvents\Domain\Model\Event $event)
     {
-        $this->addFlashMessage('The object was deleted. Please be aware that this action is publicly accessible unless you implement an access check. See http://wiki.typo3.org/T3Doc/Extension_Builder/Using_the_Extension_Builder#1._Model_the_domain', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
+        $this->addFlashMessage('The object was NOT deleted.  this action is not  implemented yet', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
        // $this->eventRepository->remove($event);
        //  $this->redirect('list');
     }
