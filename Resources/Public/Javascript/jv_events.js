@@ -8,6 +8,22 @@ jQuery(document).ready(function() {
 }) ;
 
 function jv_events_init_edit_tags() {
+    var jvEventsNewTags = '' ;
+    $(".jv-events-tags-edit").each(function() {
+        if ($(this).prop("checked")) {
+            jvEventsNewTags =  $(this).val() + ","  + jvEventsNewTags ;
+            $(this).parent().addClass('event-checked') ;
+        }
+    }) ;
+    $(".jv-events-cats-div INPUT").each(function() {
+        if ($(this).prop("checked")) {
+            $(this).parent().addClass("event-checked") ;
+        } else {
+            $(this).parent().removeClass("event-checked") ;
+        }
+    }) ;
+    $("#jv-events-tagsFE").val(jvEventsNewTags ) ;
+
     $(".jv-events-tags-div").on("click" , function () {
         var jvEventsNewTags = '' ;
         var thisCheck =  $(this).find(".jv-events-tags-edit") ;
@@ -27,8 +43,9 @@ function jv_events_init_edit_tags() {
         }) ;
         $("#jv-events-tagsFE").val(jvEventsNewTags ) ;
     }) ;
-    $(".jv-events-cats-div DIV").on("click" , function () {
-        if ($(this).find("INPUT").prop("checked" , true )) ;
+
+    $(".jv-events-cats-div DIV DIV ").on("click" , function () {
+        $(this).find("INPUT").prop("checked" , true ) ;
         $(".jv-events-cats-div INPUT").each(function() {
             if ($(this).prop("checked")) {
                 $(this).parent().addClass("event-checked") ;
@@ -39,7 +56,9 @@ function jv_events_init_edit_tags() {
 
     }) ;
 
-
+    $("#lat").on("click" , function () {
+        $("#geoSearchModal").css("display" , "block") ;
+    });
 
     $('.clockpicker').clockpicker();
 

@@ -90,5 +90,8 @@ useGeoLocation = 0
 # cat=advanced/default/7; type=text; label=Google API key;description=If you want to show a map, you need to register on Google.com and get an api KEY
 googleApiKey =
 
-# cat=advanced/default/7; type=text; label=Clear Cache PIDs;description=If you use Frontend editing, it will be usefull to add all pages with list View of events (comma separated)
+# cat=advanced/default/8; type=text; label=Clear Cache PIDs;description=If you use Frontend editing, it will be usefull to add all pages with list View of events (comma separated)
 clearCachePids =
+
+# cat=advanced/default/9; type=text; label=Max Tags per Event;description=If you use Frontend editing, this will be the maximum amount of tags per event. will be checked during validation
+MaxTagsPerEvent = 5

@@ -22,9 +22,11 @@
     <div class="col-sm-8 jv-events-cats-div">
 
         <f:for each="{categories}" as="Category" iteration="iteration">
-            <div class="col-xs-6 {f:if(condition:'{Category.uid} == {value}' , then:'event-checked' , else:'')}">
-                <f:form.radio id="{property}-{iteration.index}" property="{property}" value="{Category.uid}" checked="{f:if(condition:'{Category.uid} == {value}' , then:'checked' )}"/>
-                <label for="{property}-{iteration.index}" class="control-label"> {Category.title} </label>
+            <div class="col-xs-6 ">
+                <div class="col-xs-11 {f:if(condition:'{Category.uid} == {value}' , then:'event-checked' , else:'')}">
+                    <f:form.radio id="{property}-{iteration.index}" property="{property}" value="{Category.uid}" checked="{f:if(condition:'{Category.uid} == {value}' , then:'checked' )}"/>
+                    <label for="{property}-{iteration.index}" class="control-label"> {Category.title} </label>
+                </div>
             </div>
         </f:for>
 

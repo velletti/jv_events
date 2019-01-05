@@ -169,6 +169,58 @@
 			<source>Starts Yesterday or in the Future</source>
 			<target>Startete gestern oder in der Zukunft</target>
 		</trans-unit>
+
+        <trans-unit id="geocoding.error" xml:space="preserve">
+            <source>Error</source>
+            <target>Fehler</target>
+        </trans-unit>
+        <trans-unit id="geocoding.error.referenceToParentWindow" xml:space="preserve">
+            <source>Reference to parent window not found!</source>
+            <target>Referenz zum öffnenden Fenster nicht gefunden!</target>
+        </trans-unit>
+        <trans-unit id="geocoding.error.geocodingNotSuccessful.part1" xml:space="preserve">
+            <source>Google Geocoding was not successful for the following reason:</source>
+            <target>Google Geocoding war aus folgendem Grund nicht erfolgreich:</target>
+        </trans-unit>
+        <trans-unit id="geocoding.error.geocodingNotSuccessful.part2" xml:space="preserve">
+            <source>(Maybe the address data is not complete? => address, city and country!)</source>
+            <target>Eventuell ist die Adresse nicht vollständig= => (Strasse, Ort oder PLZ und Land!)</target>
+        </trans-unit>
+
+
+        <trans-unit id="geocoding.page.title" xml:space="preserve">
+            <source>Google Geocoding</source>
+            <target>Google Geocoding</target>
+        </trans-unit>
+        <trans-unit id="geocoding.page.headline" xml:space="preserve">
+            <source>Google Geocoding</source>
+            <target>Google Geocoding</target>
+        </trans-unit>
+
+
+        <trans-unit id="geocoding.form.transferGeoData.label.submit" xml:space="preserve">
+            <source>Save</source>
+            <target>Speichern</target>
+        </trans-unit>
+        <trans-unit id="geocoding.form.transferGeoData.label.cancel" xml:space="preserve">
+            <source>Cancel</source>
+            <target>Abbruch</target>
+        </trans-unit>
+
+        <trans-unit id="geocoding.form.geosearch.label.searchFor" xml:space="preserve">
+            <source>Search for</source>
+            <target>Suchen nach</target>
+        </trans-unit>
+        <trans-unit id="geocoding.form.geosearch.label.find" xml:space="preserve">
+            <source>Find</source>
+            <target>Suchen</target>
+        </trans-unit>
+        <trans-unit id="geocoding.form.geosearch.label.updateMap" xml:space="preserve">
+            <source>Update Map</source>
+            <target>Position aktualisieren</target>
+        </trans-unit>
+
+
 		</body>
 	</file>
 </xliff>

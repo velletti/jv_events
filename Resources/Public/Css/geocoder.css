@@ -1,19 +1,24 @@
 body{
 	padding:20px;
+
 }
-form{
+
+#transferGeoData,
+#geoseach {
 	margin-bottom:10px;
 }
-form label{
+#transferGeoData label,
+#geoseach  label {
 	width:90px;
 }
-form input[type=text]{
+#transferGeoData  input[type=text],
+#geoseach  input[type=text]{
 	margin-right:15px;
 }
-form input#search{
+#geosearchbox {
 	width:550px;
 }
-#errormessage{
+#geoseacherrormessage{
 	display:none;
 	position: absolute;
 	left: 0;

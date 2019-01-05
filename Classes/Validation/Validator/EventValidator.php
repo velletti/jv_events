@@ -39,7 +39,6 @@ class EventValidator extends BaseValidator {
         $isValid = $this->isNumeric( $event->getEventCategory() , 'eventCategory' , $isValid ) ;
 
         $isValid = $this->isTagArray(  $event->getTagsFE() , 'tagsFE' , $isValid ) ;
-
         $isValid = $this->isStringDateValue( $event->getStartDateFE() , 'startDateV' , $isValid ) ;
         $isValid = $this->isStringTimeValue( $event->getStartTimeFE() , 'startTimeV' , $isValid ) ;
         $isValid = $this->isStringTimeValue( $event->getEndTimeFE() , 'endTimeV' , $isValid ) ;

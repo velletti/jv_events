@@ -390,11 +390,16 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
         $value = substr( $value , 0 , strlen($value ) -1 ) ;
 
         $tagArray= \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode("," , $value) ;
-        // max tag Count 5 should go to settings .
-        $max = 5 ;
+
+        if( strlen( trim($this->emConf['MaxTagsPerEvent'] )) > 0 && is_integer(intval($this->emConf['MaxTagsPerEvent']))) {
+            $max = intval($this->emConf['MaxTagsPerEvent']) ;
+        } else {
+            $max = 5 ;
+        }
+
         if( count($tagArray ) > $max ) {
             /** @var \TYPO3\CMS\Extbase\Error\Error $error */
-            $error = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error', 'Too much Tags selected (max ' . $max . ' allowed!)' , time());
+            $error = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error', 'Too much Tags (' . count($tagArray ) .') selected (max ' . $max . ' allowed!)' , time());
             $this->result->forProperty($propertyName)->addError($error);
             return false ;
         }

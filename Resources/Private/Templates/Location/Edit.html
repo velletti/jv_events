@@ -1,4 +1,4 @@
-
+{namespace jve=JVE\JvEvents\ViewHelpers}
 <f:layout name="Edit" />
 
 
@@ -24,12 +24,15 @@
 
 
                 <f:form class="form-horizontal"  action="update" name="location" object="{location}" id="location_edit">
+
+
                     <f:render partial="Location/FormFields" arguments="{location:location, settings: settings , user: user}" />
                     <div class="text-right">
                         <f:form.submit class="btn btn-primary" value="{f:translate(key: 'form.save', default: 'Save')}" />
                     </div>
                 </f:form>
-            </div>
+
+             </div>
         </div>
     </div>
 

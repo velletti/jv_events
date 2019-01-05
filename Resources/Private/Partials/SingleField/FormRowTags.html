@@ -19,26 +19,26 @@
         <br><span class="small font-weight-light">(max 5)</span>
     </label>
     <div class="col-sm-8">
-
+        <f:variable name="oldTags"></f:variable>
 
         <f:for each="{tags}" as="Tag" iteration="iteration">
             <f:variable name="checked"></f:variable>
             <f:variable name="checkedCss"></f:variable>
-            <f:for each="{value}" as="existingTag" iteration="iteration">
+            <f:for each="{value}" as="existingTag">
 
                 <f:if condition="{Tag.uid} == {existingTag.uid}">
                     <f:variable name="checked">checked</f:variable>
                     <f:variable name="checkedCss">event-checked</f:variable>
-                    <f:variable name="oldTags" >{Tag.uid},{oldTags}</f:variable>
+                    <f:variable name="oldTags" >{existingTag.uid},{oldTags}</f:variable>
                 </f:if>
             </f:for>
 
             <div class="col-xs-12 col-sm-6 ">
-                <div class="jv-events-tags-div col-xs-10 {checkedCss}">
+                <div class="jv-events-tags-div col-xs-11 {checkedCss}">
 
                     <f:form.checkbox name="tag[{Tag.uid}]"  value="{Tag.uid}" checked="{checked}" class="jv-events-tags-edit"/>
-                    <label for="tx_jvevents_events[event][tags][{Tag.uid}]" class="control-label " title="{Tag.name}">
-                        <f:format.crop maxCharacters="20">{Tag.name}</f:format.crop></label>
+                    <span for="tx_jvevents_events[event][tags][{Tag.uid}]" class="control-label " title="{Tag.name}">
+                        <f:format.crop maxCharacters="24">{Tag.name}</f:format.crop></span>
                 </div>
             </div>
         </f:for>

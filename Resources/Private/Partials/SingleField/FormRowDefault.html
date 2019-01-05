@@ -21,7 +21,10 @@
 			<f:then>
 				<div class="input-group">
 					<f:form.textfield class="form-control" property="{property}" id="{property}" maxlength="{maxLength}"/>
-					<div class="input-group-addon btn btn-default">
+
+					<div class="input-group-addon btn btn-default" {f:if(condition: '{data-toggle}' , then:'data-toggle="{data-toggle}"' )}
+						 {f:if(condition:'{data-target}' , then:'data-target="{data-target}"' )}
+					>
 						<label for="{property}" class="control-label">
 							<i class="{fa-icon}"></i>
 						</label>

@@ -223,8 +223,9 @@
 			<trans-unit id="geocoding.form.geosearch.label.find" xml:space="preserve">
 				<source>Find</source>
 			</trans-unit>
-
-
+            <trans-unit id="geocoding.form.geosearch.label.updateMap" xml:space="preserve">
+				<source>Update Map</source>
+			</trans-unit>
 
 		</body>
 	</file>

@@ -1,4 +1,4 @@
-{namespace event=JVE\JvEvents\ViewHelpers}
+{namespace jve=JVE\JvEvents\ViewHelpers}
 
 <f:comment>
 	<!-- =========================================================================================================================== -->
@@ -105,9 +105,9 @@
 	<f:if condition="{event.isRegistrationConfigured}">
 		<f:if condition="{event.isRegistrationPossible}">
 			<f:then>
-				<event:regLink event="{event}" settings="{settings}" uriOnly="0" class="button-orange-filled">
+				<jve:regLink event="{event}" settings="{settings}" uriOnly="0" class="button-orange-filled">
 					{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:list.register.button.subscribe' , default:'Anmelden')}
-				</event:regLink>
+				</jve:regLink>
 			</f:then>
 			<f:else>
 				<f:if condition="{event.isNoFreeSeats}">
@@ -208,7 +208,7 @@
 			</f:then>
 
 			<f:else>
-				<event:l10nFalImg event="{event}" tableFieldName="files">
+				<jve:l10nFalImg event="{event}" tableFieldName="files">
 					<f:for each="{l10nfalimg}" as="falfile" iteration="iteration">
 						<f:if condition="{iteration.isFirst}">
 							<h3><f:translate key="tx_jvevents_domain_model_event.files" /></h3>
@@ -224,7 +224,7 @@
 							</ul>
 						</f:if>
 					</f:for>
-				</event:l10nFalImg>
+				</jve:l10nFalImg>
 			</f:else>
 
 
@@ -245,7 +245,7 @@
 			</f:then>
 
 			<f:else>
-				<event:l10nFalImg event="{event}" tableFieldName="images">
+				<jve:l10nFalImg event="{event}" tableFieldName="images">
 					<f:for each="{l10nfalimg}" as="falimage" iteration="iteration">
 						<f:if condition="{iteration.isFirst}">
 							<h3><f:translate key="tx_jvevents_domain_model_event.images" /></h3>
@@ -265,7 +265,7 @@
 							</ul>
 						</f:if>
 					</f:for>
-				</event:l10nFalImg>
+				</jve:l10nFalImg>
 			</f:else>
 
 		</f:if>
@@ -366,7 +366,7 @@
 						<f:image src="{event.teaserImage.uid}" alt="{event.teaserImage.alternative}" title="{event.teaserImage.title}" maxWidth="300" maxHeight="220" treatIdAsReference="true" />
 					</f:then>
 					<f:else>
-						<event:l10nFalImg event="{event}" tableFieldName="teaser_image">
+						<jve:l10nFalImg event="{event}" tableFieldName="teaser_image">
 							<f:for each="{l10nfalimg}" as="falimage" iteration="i">
 								<f:if condition="{i.index} == 0">
 									<f:image
@@ -380,7 +380,7 @@
 									/>
 								</f:if>
 							</f:for>
-						</event:l10nFalImg>
+						</jve:l10nFalImg>
 					</f:else>
 
 				</f:if>

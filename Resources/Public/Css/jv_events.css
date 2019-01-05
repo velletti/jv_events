@@ -3,17 +3,47 @@
 .jv-events-regform label { cursor: default }
 
 .jv-events-tags-div ,
-.jv-events-cats-div DIV {
+.jv-events-cats-div DIV DIV {
     border: 1px solid #DDD ;
     margin: 4px 8px 4px -8px;
     overflow: hidden;
     height: 34px;
+    white-space: nowrap;
 }
 .jv-events-cats-div INPUT ,
 .jv-events-tags-div INPUT {
     display: none;
 }
+.jv-events-tags-div .control-label,
+.jv-events-cats-div .control-label {
+    display: inline-block;
+}
+
 .event-checked {
     background: #2b80cb;
     color: white;
+}
+
+#transferGeoData .form-group {
+   display: none ;
+}
+
+#geoseach  label {
+    width:90px;
+}
+#geosearchbox {
+    width: 420px;
+    margin-bottom: 15px;
+}
+#geoseacherrormessage{
+    display:none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    top: 250px;
+    width: 400px;
+    height: 150px;
+    z-index:1000;
 }
