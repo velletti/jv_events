@@ -41,11 +41,11 @@
         <form class="clearfix" action="#">
 
             <div class="hints clearfix">
-                <p class="left"><f:translate key="tx_jvevents_event.filter.hint" /></p>
+                <p class="left" data-target="jv-events-filter-sub" data-toggle="collapse"><a href="#"><f:translate key="tx_jvevents_event.filter.hint" /></a></p>
                 <p class="right hide" id="filter-reset-events"><a href="#"><f:translate key="tx_jvevents_event.filter.reset" /></a></p>
             </div>
 
-            <div class="fieldsets">
+            <div id="jv-events-filter-sub collapse fade" class="fieldsets">
 
                 <f:if condition="{f:count(subject: eventsFilter.tags2)} > 0">
                     <fieldset>
@@ -106,12 +106,6 @@
                         <div class="form-group">
                             <label for="jv_events_filter_citys" class="hidden">Ort:</label>
                             <f:form.select property="citys" class="form-control" id="jv_events_filter_citys" sortByOptionLabel="true" options="{eventsFilter.citys}" prependOptionLabel="{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_event.filter.city' , default:'by City')}" prependOptionValue="" />
-                        </div>
-                    </f:if>
-                    <f:if condition="{f:count(subject: eventsFilter.months)} > 0">
-                        <div class="form-group">
-                            <label for="jv_events_filter_months" class="hidden">Month:</label>
-                            <f:form.select property="months" class="form-control" id="jv_events_filter_months" options="{eventsFilter.months}" prependOptionLabel="{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_event.filter.month', default:'by month')}" prependOptionValue=""/>
                         </div>
                     </f:if>
                     <f:if condition="{f:count(subject: eventsFilter.organizers)} > 1">

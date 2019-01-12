@@ -220,7 +220,6 @@ class EventController extends BaseController
 
         if( $this->request->hasArgument('event')) {
             $event = $this->cleanEventArguments( $event) ;
-
         }
 
         if($this->isUserOrganizer() ) {
@@ -238,17 +237,22 @@ class EventController extends BaseController
                 } else {
                     $this->addFlashMessage('The object was created.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
                 }
-
+                $pid = $this->settings['pageIds']['showEventDetail'] ;
             } catch ( \Exception $e ) {
                 $this->addFlashMessage($e->getMessage() , 'Error', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
 
             }
 
         } else {
+            $pid = $this->settings['pageIds']['loginForm'] ;
             $this->addFlashMessage('The object was NOT created. You are not logged in as Organizer.' . $event->getUid() , '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
         }
-
-        $this->redirect('edit' , 'Event' , NULL , array( 'event' => $event ) );
+        // if PID from TS settings is set: if User is not logged in-> Page with loginForm , on success -> showEventDetail  Page
+        if( $pid < 1) {
+            // else : stay on this page
+            $pid = $GLOBALS['TSFE']->id ;
+        }
+        $this->redirect('edit' , 'Event' , NULL , array( 'event' => $event ) , $pid );
     }
     
     /**

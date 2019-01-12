@@ -228,7 +228,7 @@ function jv_events_refreshList(){
        // console.log( " ************* event **************** UID: " + jQuery(this).data("eventuid")  ) ;
 		jQuery(this).removeClass('hide') ;
 
-		if( fMonth && fMonth.val().length > 0 ) {
+		if( fMonth && fMonth.val() && fMonth.val().length > 0 ) {
 			if( jQuery(this).data("monthuid")  != fMonth.val() ) {
 				jQuery(this).addClass('hide') ;
             }

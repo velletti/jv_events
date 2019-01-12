@@ -97,7 +97,12 @@ plugin.tx_jvevents_events {
 
 
 		pageIds {
-		 # insert event plugin on that page configure your own typoscript and set pid s
+		    # insert event plugin on that page configure your own typoscript and set pid s
+		    # needed during frontend editing
+		    # page with a login FOrm is users session has got invalid
+            loginForm = 0
+            # page after susseccful storing an event
+         	showEventDetail = 0
 			editEvent =  0
 			editLocation = 0
 			editOrganizer = 0
