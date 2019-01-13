@@ -387,6 +387,7 @@ class EventController extends BaseController
         $eventCatUid = intval($eventArray['eventCategory']) ;
         /** @var \JVE\JvEvents\Domain\Model\Category $eventCat */
         $eventCat = $this->categoryRepository->findByUid($eventCatUid) ;
+
         if($eventCat) {
             if( $event->getEventCategory() ){
                 $event->getEventCategory()->removeAll($event->getEventCategory()) ;

@@ -168,6 +168,20 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $startTime = 0;
 
     /**
+     * mark this event as TOP Event (to be able to filter, place special CSS code etc.
+     *
+     * @var int
+     */
+    protected $topEvent = 0;
+
+    /**
+     *  this event is canceled bt should be still listed to show it in list as CANCELED
+     *
+     * @var int
+     */
+    protected $canceled = 0;
+
+    /**
      * Access Start Time of this event (default TYP3 Field )
      * @ignorevalidation
      * @dontvalidate
@@ -2141,6 +2155,40 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         $this->tagsFE = $tagsFE;
     }
+
+    /**
+     * @return int
+     */
+    public function getTopEvent()
+    {
+        return $this->topEvent;
+    }
+
+    /**
+     * @param int $topEvent
+     */
+    public function setTopEvent($topEvent)
+    {
+        $this->topEvent = $topEvent;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCanceled()
+    {
+        return $this->canceled;
+    }
+
+    /**
+     * @param int $canceled
+     */
+    public function setCanceled($canceled)
+    {
+        $this->canceled = $canceled;
+    }
+
+
 
 
 

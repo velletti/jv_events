@@ -30,6 +30,14 @@
             <trans-unit id="tx_jvevents_domain_model_event.access">
                 <source>Access</source>
             </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_event.canceled">
+                 <source>Mark Event as canceled</source>
+             </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_event.top_event">
+                 <source>Mark as TOP/sponsored Event</source>
+             </trans-unit>
+
+
             <trans-unit id="tx_jvevents_domain_model_event.price">
                 <source>Price in EUR</source>
             </trans-unit>

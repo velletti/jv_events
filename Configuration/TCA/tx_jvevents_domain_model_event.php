@@ -34,12 +34,12 @@ $returnArray = array(
 	),
 	'types' => array(
 		'0' => array('showitem' => 'event_type,url,--palette--;;dates,--palette--;;infos,
-		--div--;Advanced, --palette--;;language, --palette--;;frequent,
+		--div--;Advanced, --palette--;;language, --palette--;;advanced, --palette--;;frequent, 
 		--div--;Relations, --palette--;;relations,
 		--div--;Files, teaser_image, files,
 		--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, --palette--;;access,'),
 		'2' => array('showitem' => 'event_type,--palette--;;dates,--palette--;;infos,description,
-		--div--;Advanced, --palette--;;language, --palette--;;frequent,
+		--div--;Advanced, --palette--;;language, --palette--;;advanced, --palette--;;frequent,
 		--div--;Relations, --palette--;;relations,
 		--div--;Files, teaser_image,images, files,
 		--div--;Registration, --palette--;;register,
@@ -53,8 +53,9 @@ $returnArray = array(
 		'relations' => array('showitem' => 'organizer, --linebreak--, location, --linebreak--,event_category, --linebreak--,tags '),
 		'frequent' => array('showitem' => 'is_recurring, --linebreak--, frequency, freq_exception, --linebreak--, is_exception_for,  '),
 		'language' => array('showitem' => 'sys_language_uid, ,l10n_parent,--linebreak--,l10n_diffsource,' ),
+		'advanced' => array('showitem' => 'top_event,' ),
 
-		'access' =>  array('showitem' =>  'hidden,--palette--;;1,--linebreak--,access,--linebreak--,starttime,endtime' ),
+		'access' =>  array('showitem' =>  'hidden,--palette--;;1,canceled,--linebreak--,access,--linebreak--,starttime,endtime' ),
 		'notification' =>  array('showitem' =>  'notify_organizer;;1,notify_registrant;;1,need_to_confirm;;1,--linebreak--' ),
 		'notifyOrg' =>  array('showitem' =>  'subject_organizer,--linebreak--,text_organizer' ),
 		'notifyReg' =>  array('showitem' =>  'subject_registrant,--linebreak--,introtext_registrant,--linebreak--,introtext_registrant_confirmed,--linebreak--,text_registrant' ),
@@ -120,6 +121,20 @@ $returnArray = array(
 				'type' => 'check',
 			),
 		),
+        'canceled' => array(
+            'exclude' => 0,
+            'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.canceled',
+            'config' => array(
+                'type' => 'check',
+            ),
+        ),
+        'top_event' => array(
+            'exclude' => 0,
+            'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.top_event',
+            'config' => array(
+                'type' => 'check',
+            ),
+        ),
 		'starttime' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.starttime',

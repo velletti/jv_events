@@ -123,22 +123,30 @@ function jv_events_init() {
     });
 
     // Set the fieldsets to the same height
-    if($('.filter').length && ($('body').hasClass('lg'))){
+    if($('.filter').length ){
+        if( $('body').hasClass('lg') ) {
+            $('.filter').each(function(){
 
-        $('.filter').each(function(){
+                var heightBiggestElement = 0;
 
-            var heightBiggestElement = 0;
+                $(this).find('fieldset').each(function(){
+                    if($(this).height() > heightBiggestElement) {
+                        heightBiggestElement = $(this).height();
+                    }
+                });
+                $(this).find('fieldset').each(function(){
+                    $(this).css("min-height" , heightBiggestElement);
+                });
 
-            $(this).find('fieldset').each(function(){
-                if($(this).height() > heightBiggestElement) {
-                    heightBiggestElement = $(this).height();
-                }
             });
-            $(this).find('fieldset').each(function(){
-                $(this).height(heightBiggestElement);
-            });
+        } else {
+            if($('.filter fieldset').length ){
+                $('.filter fieldset').each(function(){
+                    $(this).width('100%') ;
+                });
+            }
+        }
 
-        });
 
     }
 
@@ -165,8 +173,6 @@ function jv_events_initOneFilter(filterName) {
                     jQuery(this).prop("selected", true);
                 }
             });
-
-
 		}
 	}
     if ( jQuery('#jv_events_filter_' + filterName + " input[type=checkbox]") ) {
@@ -189,9 +195,10 @@ function jv_events_initOneFilter(filterName) {
                     }
                 });
             }
-
-
-
+        } else {
+            jQuery('#jv_events_filter_' + filterName + ' input[type=checkbox]').each(function(i) {
+                jQuery(this).prop("checked", true);
+            });
         }
     }
 }
@@ -329,6 +336,7 @@ function jv_events_refreshList(){
 
 
 	if ( filterIsActive ) {
+		jQuery( "#filter-events A").addClass('hide') ;
 		jQuery( "#filter-reset-events").removeClass('hide') ;
 		jQuery( "#filter-result-hint-events").removeClass('hide') ;
 
@@ -380,6 +388,7 @@ function jv_events_refreshList(){
 
 
 	} else {
+        jQuery( "#filter-events A").removeClass('hide') ;
         jQuery( "#filter-reset-events").addClass('hide') ;
         jQuery( "#filter-result-hint-events").addClass('hide') ;
         jv_events_pushUrl( '' ) ;

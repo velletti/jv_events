@@ -41,14 +41,16 @@
         <form class="clearfix" action="#">
 
             <div class="hints clearfix">
-                <p class="left" data-target="jv-events-filter-sub" data-toggle="collapse"><a href="#"><f:translate key="tx_jvevents_event.filter.hint" /></a></p>
+                <p class="left" id="filter-events" data-target="jv-events-filter-sub" data-toggle="collapse">
+                    <a href="#"> <f:translate key="tx_jvevents_event.filter.hint" /> </a>
+                </p>
                 <p class="right hide" id="filter-reset-events"><a href="#"><f:translate key="tx_jvevents_event.filter.reset" /></a></p>
             </div>
 
             <div id="jv-events-filter-sub collapse fade" class="fieldsets">
 
-                <f:if condition="{f:count(subject: eventsFilter.tags2)} > 0">
-                    <fieldset>
+                <f:if condition="{f:count(subject: eventsFilter.tags2)} > 1">
+                    <fieldset id="jv_events_fieldset_tags">
                         <legend><f:translate key="tx_jvevents_domain_model_event.tags" /></legend>
 
                         <div class="checkbox" id="jv_events_filter_tags">
@@ -60,8 +62,8 @@
                         </div>
                     </fieldset>
                 </f:if>
-                <f:if condition="{f:count(subject: eventsFilter.categories2)} > 0">
-                    <fieldset>
+                <f:if condition="{f:count(subject: eventsFilter.categories2)} > 1">
+                    <fieldset id="jv_events_fieldset_categories">
 
                         <legend><f:translate key="tx_jvevents_domain_model_category" /></legend>
 
