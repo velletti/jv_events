@@ -269,22 +269,22 @@
 
 				<f:if condition="{event.organizer.name}">
 					<div class="row">
-						<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_organizer.name" />:</strong></div>
-						<div class="col-md-10">{event.organizer.name}</div>
+						<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_organizer.name" />:</strong></div>
+						<div class="col-md-8">{event.organizer.name}</div>
 					</div>
 				</f:if>
 
 				<f:if condition="{event.organizer.email}">
 					<div class="row">
-						<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_organizer.email" />:</strong></div>
-						<div class="col-md-10"><f:link.email class="email" email="{event.organizer.email}" /></div>
+						<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_organizer.email" />:</strong></div>
+						<div class="col-md-8"><f:link.email class="email" email="{event.organizer.email}" /></div>
 					</div>
 				</f:if>
 
 				<f:if condition="{event.organizer.phone}">
 					<div class="row">
-						<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_organizer.phone" />:</strong></div>
-						<div class="col-md-10">{event.organizer.phone}</div>
+						<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_organizer.phone" />:</strong></div>
+						<div class="col-md-8">{event.organizer.phone}</div>
 					</div>
 				</f:if>
 
