@@ -180,7 +180,7 @@ class AjaxController extends BaseController
     /**
      * action list
      *
-     * @return void
+     * @return array
      */
     public function eventsListMenuSub()
     {
@@ -208,7 +208,7 @@ class AjaxController extends BaseController
             "location" => array() ,
 
         ) ;
-
+        $needToStore = FALSE ;
         /* ************************************************************************************************************ */
         /*   Get infos about: EVENT
         /* ************************************************************************************************************ */
@@ -219,7 +219,11 @@ class AjaxController extends BaseController
             /** @var \JVE\JvEvents\Domain\Model\Event $event */
             $event = $this->eventRepository->findByUidAllpages( $output['event']['requestId'] , FALSE  , TRUE );
             if( is_object($event )) {
+                $event->increaseViewed();
+                $this->eventRepository->update($event) ;
+                $needToStore = TRUE ;
                 $output['event']['eventId'] = $event->getUid() ;
+                $output['event']['viewed'] = $event->getViewed(); ;
                 $output['event']['registration']['possible'] = $event->isIsRegistrationPossible() ;
                 $output['event']['registration']['noFreeSeats'] = $event->isIsNoFreeSeats() ;
                 $output['event']['registration']['freeSeats'] = $event->getAvailableSeats() ;
@@ -259,6 +263,10 @@ class AjaxController extends BaseController
                 /** @var \JVE\JvEvents\Domain\Model\Event $tempEvent */
                 $tempEvent =  $events->getFirst() ;
                 if( is_object( $tempEvent )) {
+                    $tempEvent->increaseViewed();
+
+                    $this->eventRepository->update($tempEvent) ;
+                    $needToStore = TRUE ;
                     $output['events'] = $events ;
             /*
                     $tempEventArray['uid'] = $tempEvent->getUid();
@@ -316,6 +324,9 @@ class AjaxController extends BaseController
             $output['organizer']['hasAccess'] = $this->hasUserAccess( $organizer ) ;
 
 
+        }
+        if( $needToStore) {
+            $this->persistenceManager->persistAll();
         }
         return  $output  ;
 
@@ -400,7 +411,79 @@ class AjaxController extends BaseController
 
 
 
+    public function locationListAction() {
+        /* ************************************************************************************************************ */
+        /*   render the HTML Output :
+        /* ************************************************************************************************************ */
 
+        $output = $this->locationListSub() ;
+
+        if( $output['feuser']['isOrganizer']) {
+            $organizers = $this->organizerRepository->findByUserAllpages( $output['feuser']['uid'] , FALSE ) ;
+            /** @var \JVE\JvEvents\Domain\Model\Organizer $organizer */
+            if( $organizers > 0 ) {
+                foreach ( $organizers as  $organizer ) {
+                    $orgArray[] = $organizer->getUid() ;
+                }
+                $output['organizer'] = $orgArray ;
+
+                $locations = $this->locationRepository->findByOrganizersAllpages( $orgArray ) ;
+                if($locations) {
+                    $output['locations'] = $locations ;
+                }
+            }
+
+
+        }
+
+        /** @var \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
+        $renderer = $this->getEmailRenderer($templatePath = '', '/Ajax/locationList' );
+        $layoutPath = GeneralUtility::getFileAbsFileName("typo3conf/ext/jv_events/Resources/Private/Layouts/");
+        $renderer->setLayoutRootPaths(array(0 => $layoutPath));
+
+        $renderer->assign('output' , $output) ;
+        $renderer->assign('settings' , $this->settings ) ;
+
+        $output["locations"] = count($locations) ;
+
+        $return = str_replace( array( "\n" , "\r" , "\t" , "    " , "   " , "  ") , array("" , "" , "" , " " , " " , " " ) , trim( $renderer->render() )) ;
+        ShowAsJsonArrayUtility::show( array( 'values' => $output , 'html' => $return ) ) ;
+        die;
+    }
+
+    /**
+     * action list
+     *
+     * @return array
+     */
+    public function locationListSub()
+    {
+        /* ************************************************************************************************************ */
+        /*   Prepare the Output :
+        /* ************************************************************************************************************ */
+        $feuser = intval($GLOBALS['TSFE']->fe_user->user['uid']);
+        $mode = '';
+        if ($this->request->hasArgument('mode')) {
+            $mode = $this->request->getArgument('mode');
+        }
+        $output = array(
+            "requestId" => intval($GLOBALS['TSFE']->id),
+            "mode" => $mode,
+            "feuser" => array(
+                "uid" => $feuser ,
+                "username" => $GLOBALS['TSFE']->fe_user->user['username'],
+                "usergroup" => $GLOBALS['TSFE']->fe_user->user['usergroup'],
+                "isOrganizer" => $this->isUserOrganizer()
+            ),
+            "organizer" => array(),
+            "locations" => array(),
+
+        );
+
+
+
+        return $output ;
+    }
 
     // ########################################   functions ##################################
 	/**

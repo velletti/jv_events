@@ -64,4 +64,37 @@ class LocationRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             return $res->getFirst() ;
         }
     }
+
+    /** takes UIDs of $organizers  as array
+     * @param array $organizers
+     * @param bool $toArray
+     * @param bool $ignoreEnableFields
+     * @return array|object
+     */
+
+    public function findByOrganizersAllpages($organizers , $toArray=TRUE , $ignoreEnableFields = TRUE )
+    {
+        $query = $this->createQuery();
+        $querySettings = $query->getQuerySettings() ;
+        $querySettings->setRespectStoragePage(false);
+        $querySettings->setRespectSysLanguage(FALSE);
+        $querySettings->setIgnoreEnableFields($ignoreEnableFields) ;
+        $query->setQuerySettings($querySettings) ;
+
+        // $query->setLimit($limit) ;
+
+        $query->matching( $query->in('organizer', $organizers ) ) ;
+        $res = $query->execute() ;
+
+        // new way to debug typo3 db queries
+        // $queryParser = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class);
+        // var_dump($queryParser->convertQueryToDoctrineQueryBuilder($query)->getSQL());
+        // var_dump($queryParser->convertQueryToDoctrineQueryBuilder($query)->getParameters()) ;
+        // die;
+        if( $toArray === TRUE ) {
+            return $res->toArray();
+        } else {
+            return $res ;
+        }
+    }
 }

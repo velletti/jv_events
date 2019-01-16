@@ -135,6 +135,20 @@ $returnArray = array(
                 'type' => 'check',
             ),
         ),
+        'viewed' => array(
+            'exclude' => 1,
+            'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.viewed',
+            'config' => array(
+                'type' => 'input',
+                'behaviour' => array(
+                    'allowLanguageSynchronization' => true ,
+                ) ,
+                'size' => 13,
+                'eval' => 'int',
+                'default' => 0,
+
+            ),
+        ),
 		'starttime' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.starttime',

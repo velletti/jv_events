@@ -1,0 +1,27 @@
+{namespace jve=JVE\JvEvents\ViewHelpers}
+
+
+<div class="text-right">
+    <f:link.action pageUid="{settings.pageIds.editLocation}" action="new" controller="Location" class="btn btn-primary">
+        <span class="fas fa-plus-square"> </span> <span class="hidden-xs">{f:translate(key: 'create.location', default: 'Create New Location')}</span>
+    </f:link.action>
+</div>
+
+
+<f:if condition="{locations}">
+    <f:then>
+        <h3>Select one of the existing Locations: </h3>
+        <f:for each="{locations}" as="location">
+            <div class="col-xs-12">
+                <f:link.action pageUid="{settings.pageIds.editEvent}" action="new" controller="Event" class="btn btn-default" arguments="{location: '{location.uid}', organizer: '{organizer.uid}'}">
+                    {location.uid} - {location.name}, {location.streetAndNr} - {location.city}
+                </f:link.action>
+            </div>
+
+             <br>
+        </f:for>
+    </f:then>
+    <f:else>
+
+    </f:else>
+</f:if>

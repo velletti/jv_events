@@ -65,4 +65,48 @@ class OrganizerRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         }
     }
 
+    public function findByUserAllpages($user , $toArray=TRUE , $ignoreEnableFields = TRUE )
+    {
+        $query = $this->createQuery();
+        $querySettings = $query->getQuerySettings() ;
+        $querySettings->setRespectStoragePage(false);
+        $querySettings->setRespectSysLanguage(FALSE);
+        $querySettings->setIgnoreEnableFields($ignoreEnableFields) ;
+        $query->setQuerySettings($querySettings) ;
+
+        // $query->setLimit($limit) ;
+        $constraints[] = $query->like('access_users', "%," . $user ) ;
+        $constraints[] = $query->like('access_users',  $user .",%") ;
+        $constraints[] = $query->equals('access_users',  $user ) ;
+
+        $query->matching( $query->logicalOr($constraints) ) ;
+        $res = $query->execute() ;
+
+        // $this->debugQuery($query) ;
+
+        if( $toArray === TRUE ) {
+            return $res->toArray();
+        } else {
+            return $res ;
+        }
+    }
+    function debugQuery($query) {
+        // new way to debug typo3 db queries
+        $queryParser = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class);
+        $querystr = $queryParser->convertQueryToDoctrineQueryBuilder($query)->getSQL() ;
+        echo $querystr ;
+        echo "<hr>" ;
+        $queryParams = $queryParser->convertQueryToDoctrineQueryBuilder($query)->getParameters() ;
+        var_dump($queryParams);
+        echo "<hr>" ;
+
+        foreach ($queryParams as $key => $value ) {
+            $search[] = ":" . $key ;
+            $replace[] = "'$value'" ;
+
+        }
+        echo str_replace( $search , $replace , $querystr ) ;
+
+        die;
+    }
 }

@@ -1,0 +1,12 @@
+<f:layout name="Ajax" />
+
+<f:section name="main">
+    <f:if condition="{output.locations}">
+        <f:for each="{output.locations}" as="location">
+            {location.uid} - {location.name} -  {location.streetAndNr} - {location.city} <br>
+        </f:for>
+    </f:if>
+
+</f:section>
+
+

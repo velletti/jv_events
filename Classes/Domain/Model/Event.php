@@ -42,6 +42,14 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $eventType = 0;
 
     /**
+     * event Viewed in single View (ajax Call requiered)
+     *
+     * @var int
+     */
+    protected $viewed = 0;
+
+
+    /**
 
      * @var int
      */
@@ -2188,8 +2196,29 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         $this->canceled = $canceled;
     }
 
+    /**
+     * @return int
+     */
+    public function getViewed()
+    {
+        return $this->viewed;
+    }
+
+    /**
+     * @param int $viewed
+     */
+    public function setViewed($viewed)
+    {
+        $this->viewed = $viewed;
+    }
 
 
+    /**
+     */
+    public function increaseViewed()
+    {
+        $this->viewed ++;
+    }
 
 
 

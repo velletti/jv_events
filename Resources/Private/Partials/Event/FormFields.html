@@ -1,4 +1,14 @@
 
+<div class="col-xs-12 ">
+	<h3 class="text-right">
+		<f:link.action pageUid="{settings.pageIds.editEvent}" action="new" controller="Event" class="btn btn-default left" arguments="{organizer: '{organizer.uid}'}">
+			<i class="fas fa-backward" title="back"></i>
+		</f:link.action>
+		<span > New Event: {location.name}, {location.streetAndNr} - {location.city}</span>
+	</h3>
+	<br>
+</div>
+<br>
 <f:render partial="SingleField/FormRowDate"
 		  arguments="{object: 'event', property:'startDate' , value: event.startDate , label: '' , translationKey: 'tx_jvevents_domain_model_event.start_date' ,  mandatory: '1' }" />
 

@@ -20,22 +20,38 @@
                 <f:render partial="FeEditHelp" arguments="{section: 'event', object: event , settings: settings , user: user}" />
             </div>
             <div class="col-sm-8 equalHeight">
-
-
                 <f:render partial="HasFormErrors" arguments="{object:event, debug: 'true' }" />
+                <f:if condition="{location.uid} < 1">
+                    <f:then>
+                        <f:form class="form-horizontal"  action="new" name="event" object="{event}" id="event_new">
+                            <f:render partial="Location/SelectLocation" arguments="{_all}" />
 
 
-                <f:form class="form-horizontal"  action="create" name="event" object="{event}" id="event_new">
-                    <f:render partial="Event/FormFields" arguments="{_all}" />
 
-                    <f:form.hidden property="organizer"  value="{event.organizer}" />
-                    <f:form.hidden property="eventType"  value="{event.eventType}" />
-                    <f:form.hidden property="pid"  value="{event.pid}" />
+                        </f:form>
+                    </f:then>
+                    <f:else>
+                        <f:form class="form-horizontal"  action="create" name="event" object="{event}" id="event_new">
 
-                    <div class="text-right">
-                        <f:form.submit class="btn btn-primary" value="{f:translate(key: 'form.save', default: 'Save')}" />
-                    </div>
-                </f:form>
+                            <f:render partial="Event/FormFields" arguments="{_all}" />
+
+
+                            <f:form.hidden property="location"  value="{event.location}" />
+                            <f:form.hidden property="organizer"  value="{event.organizer}" />
+                            <f:form.hidden property="eventType"  value="{event.eventType}" />
+                            <f:form.hidden property="pid"  value="{event.pid}" />
+
+                            <div class="text-right">
+                                <f:form.submit class="btn btn-primary" value="{f:translate(key: 'form.save', default: 'Save')}" />
+                            </div>
+                        </f:form>
+                    </f:else>
+                </f:if>
+
+
+
+
+
             </div>
         </div>
     </div>

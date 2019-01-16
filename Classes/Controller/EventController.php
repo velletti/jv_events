@@ -188,16 +188,30 @@ class EventController extends BaseController
 
             if( $this->request->hasArgument('organizer')) {
                 /** @var \JVE\JvEvents\Domain\Model\Organizer $organizer */
-                $organizer= $this->organizerRepository->findByUid( intval( $this->request->getArgument('organizer') )) ;
-                if($organizer instanceof  \JVE\JvEvents\Domain\Model\Organizer ) {
-                    $event->setOrganizer($organizer ) ;
+                $organizer = $this->organizerRepository->findByUid(intval($this->request->getArgument('organizer')));
+                if ($organizer instanceof \JVE\JvEvents\Domain\Model\Organizer) {
+                    $event->setOrganizer($organizer);
+                    $this->view->assign('organizer', $organizer );
                 }
-                $event->setEventType( 2 ) ;
-
-
-                // ToDo find good way to handle ID Default .. maybe a pid per User, per location or other typoscript setting
-                $event->setPid( 12 ) ;
+            } else {
+                // todo We do not have an Organizer.
             }
+            if( $this->request->hasArgument('location')) {
+                /** @var \JVE\JvEvents\Domain\Model\Location $location */
+                $location= $this->locationRepository->findByUid( intval( $this->request->getArgument('location') )) ;
+                if($location instanceof  \JVE\JvEvents\Domain\Model\Location ) {
+                    $event->setLocation($location ) ;
+                }
+                $this->view->assign('location', $location );
+            } else {
+                $locations= $this->locationRepository->findByOrganizersAllpages( array(0 => $organizer) , FALSE, FALSE ) ;
+                $this->view->assign('locations', $locations );
+            }
+
+            $event->setEventType( 2 ) ;
+
+            // ToDo find good way to handle ID Default .. maybe a pid per User, per location or other typoscript setting
+            $event->setPid( 12 ) ;
 
         }
         if($this->isUserOrganizer() ) {
@@ -221,9 +235,10 @@ class EventController extends BaseController
         if( $this->request->hasArgument('event')) {
             $event = $this->cleanEventArguments( $event) ;
         }
-
+        $action = "edit" ;
         if($this->isUserOrganizer() ) {
             $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
+            $event->setSysLanguageUid(-1) ;
 
             try {
                 $this->eventRepository->add($event);
@@ -238,21 +253,26 @@ class EventController extends BaseController
                     $this->addFlashMessage('The object was created.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
                 }
                 $pid = $this->settings['pageIds']['showEventDetail'] ;
+                $action = "show" ;
             } catch ( \Exception $e ) {
                 $this->addFlashMessage($e->getMessage() , 'Error', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
 
             }
 
         } else {
+            $action = false ;
+
             $pid = $this->settings['pageIds']['loginForm'] ;
             $this->addFlashMessage('The object was NOT created. You are not logged in as Organizer.' . $event->getUid() , '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+            $this->redirect(null , null , NULL , array( 'event' => $event ) , $pid );
         }
         // if PID from TS settings is set: if User is not logged in-> Page with loginForm , on success -> showEventDetail  Page
         if( $pid < 1) {
             // else : stay on this page
             $pid = $GLOBALS['TSFE']->id ;
+
         }
-        $this->redirect('edit' , 'Event' , NULL , array( 'event' => $event ) , $pid );
+        $this->redirect($action , 'Event' , NULL , array( 'event' => $event ) , $pid );
     }
     
     /**
