@@ -348,6 +348,14 @@
 			<source>Tags</source>
 			<target>Schlagworte</target>
 		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_tag.select">
+            <source>Select Tag(s)</source>
+            <target>Schlagwort(e) auswählen</target>
+        </trans-unit>
+        <trans-unit id="tx_jvevents_domain_model_category.select">
+            <source>Select Category</source>
+            <target>Kategorie auswählen</target>
+        </trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.teaser" approved="yes">
 			<source>Teaser</source>
 			<target>Zusammenfassung</target>

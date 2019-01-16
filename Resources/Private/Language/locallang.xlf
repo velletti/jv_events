@@ -477,6 +477,12 @@
 		<trans-unit id="tx_jvevents_domain_model_tag">
 			<source>Tag</source>
 		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_tag.select">
+            <source>Select Tag(s)</source>
+        </trans-unit>
+        <trans-unit id="tx_jvevents_domain_model_category.select">
+            <source>Select Category</source>
+        </trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_tag.name">
 			<source>Name</source>
 		</trans-unit>
