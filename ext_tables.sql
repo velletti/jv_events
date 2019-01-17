@@ -383,6 +383,7 @@ CREATE TABLE tx_jvevents_domain_model_tag (
 	pid int(11) DEFAULT '0' NOT NULL,
 
 	name varchar(255) DEFAULT '' NOT NULL,
+	tag_category int(11) unsigned DEFAULT '0' NOT NULL,
 
 	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
 	crdate int(11) unsigned DEFAULT '0' NOT NULL,
@@ -433,6 +434,19 @@ CREATE TABLE tx_jvevents_event_category_mm (
 
 	KEY uid_local (uid_local),
 	KEY uid_foreign (uid_foreign)
+);
+
+#
+# Table structure for table 'tx_jvevents_tag_category_mm'
+#
+CREATE TABLE tx_jvevents_tag_category_mm (
+		 uid_local int(11) unsigned DEFAULT '0' NOT NULL,
+		 uid_foreign int(11) unsigned DEFAULT '0' NOT NULL,
+		 sorting int(11) unsigned DEFAULT '0' NOT NULL,
+		 sorting_foreign int(11) unsigned DEFAULT '0' NOT NULL,
+
+		 KEY uid_local (uid_local),
+		 KEY uid_foreign (uid_foreign)
 );
 
 #

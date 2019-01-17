@@ -7,7 +7,7 @@ return array(
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',
 		'dividers2tabs' => TRUE,
-		'versioningWS' => TRUE ,
+		'versioningWS' => FALSE ,
         'default_sortby' => 'name ASC',
 		'languageField' => 'sys_language_uid',
 		'transOrigPointerField' => 'l10n_parent',
@@ -22,10 +22,10 @@ return array(
 		'iconfile' => '/typo3conf/ext/jv_events/Resources/Public/Icons/tx_jvevents_domain_model_tag.gif'
 	),
 	'interface' => array(
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name',
+		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, tag_category',
 	),
 	'types' => array(
-		'1' => array('showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name,--div--;access, starttime, endtime'),
+		'1' => array('showitem' => 'sys_language_uid, l10n_parent, name,tag_category,--div--;access, hidden, starttime, endtime'),
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),
@@ -129,6 +129,54 @@ return array(
 				'eval' => 'trim'
 			),
 		),
+        'tag_category' => array(
+            'exclude' => 0,
+            'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_tag.tag_category',
+            'config' => array(
+                'type' => 'select',
+                'renderType' => 'selectMultipleSideBySide',
+                'items' => [
+                    ['LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_tag.all_categories', -1],
+                    ['-------', '--div--'],
+                ],
+                'foreign_table' => 'tx_jvevents_domain_model_category',
+
+                // 'foreign_table_where' => ' AND tx_jvevents_domain_model_category.type = 0 AND tx_jvevents_domain_model_category.sys_language_uid in (-1, 0)',
+                'foreign_table_where' => ' AND tx_jvevents_domain_model_category.type = 0 AND (tx_jvevents_domain_model_category.sys_language_uid = 0 OR tx_jvevents_domain_model_category.l10n_parent = 0) ORDER BY tx_jvevents_domain_model_category.title',
+                'itemsProcFunc' => 'JVE\\JvEvents\\UserFunc\\Flexforms->TranslateMMvalues' ,
+
+                'MM' => 'tx_jvevents_tag_category_mm',
+                'size' => 10,
+                'autoSizeMax' => 30,
+                'maxitems' => 9999,
+                'multiple' => 0,
+                'exclusiveKeys' => '-1,-2',
+                'enableMultiSelectFilterTextfield' => true ,
+
+                'fieldControl' => array(
+                    'addRecord' => array(
+                        'disabled' => false ,
+                        'options' => array(
+                            'pid' => '###CURRENT_PID###' ,
+                            'setValue' => 'prepend' ,
+                            'icon' => 'actions-add',
+                            'table' => 'tx_jvevents_domain_model_category' ,
+                            'title' => 'Create new' ,
+                        ),
+
+                    ) ,
+                    'editPopup' => array(
+                        'disabled' => false ,
+                        'options' => array(
+                            'icon' => 'actions-open',
+                            'windowOpenParameters' => 'height=350,width=580,status=0,menubar=0,scrollbars=1' ,
+                            'title' => 'Edit' ,
+                        ),
+                    ) ,
+                ) ,
+
+            ),
+        ),
 		
 	),
-);## EXTENSION BUILDER DEFAULTS END TOKEN - Everything BEFORE this line is overwritten with the defaults of the extension builder
+);

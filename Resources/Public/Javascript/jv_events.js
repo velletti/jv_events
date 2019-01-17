@@ -9,12 +9,17 @@ jQuery(document).ready(function() {
 
 function jv_events_init_edit_tags() {
     var jvEventsNewTags = '' ;
+    var jvEventsTagsSum = 0 ;
     $(".jv-events-tags-edit").each(function() {
         if ($(this).prop("checked")) {
             jvEventsNewTags =  $(this).val() + ","  + jvEventsNewTags ;
             $(this).parent().addClass('event-checked') ;
+            jvEventsTagsSum++ ;
         }
     }) ;
+
+    $("#jv-events-tags-sum").html(jvEventsTagsSum) ;
+
     $(".jv-events-cats-div INPUT").each(function() {
         if ($(this).prop("checked")) {
             $(this).parent().addClass("event-checked") ;
@@ -26,6 +31,7 @@ function jv_events_init_edit_tags() {
 
     $(".jv-events-tags-div").on("click" , function () {
         var jvEventsNewTags = '' ;
+        var jvEventsTagsSum = 0 ;
         var thisCheck =  $(this).find(".jv-events-tags-edit") ;
 
         if ($(thisCheck).prop("checked")) {
@@ -39,8 +45,21 @@ function jv_events_init_edit_tags() {
         $(".jv-events-tags-edit").each(function() {
             if ($(this).prop("checked")) {
                 jvEventsNewTags =  $(this).val() + ","  + jvEventsNewTags ;
+                jvEventsTagsSum++ ;
             }
         }) ;
+        $("#jv-events-tags-sum").html(jvEventsTagsSum) ;
+        if ( jvEventsTagsSum > 4 ) {
+            $(".jv-events-tags-edit").each(function() {
+                if ( !$(this).prop("checked")) {
+                    $(this).parent().addClass("disabled");
+                }
+            }) ;
+        } else {
+            $(".jv-events-tags-edit").each(function() {
+                $(this).parent().removeClass("disabled");
+            }) ;
+        }
         $("#jv-events-tagsFE").val(jvEventsNewTags ) ;
     }) ;
 
