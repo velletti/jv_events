@@ -317,7 +317,9 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         =>
             $this->settings['register']['sendername']
         );
-
+        if (!\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($recipient )) {
+            throw new \Exception($recipient . ' is not a valid -recipient- Email Address. ');
+        }
         $signature = false;
         if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('mailsignature')) {
             /** @var \Velletti\Mailsignature\Service\SignatureService $signatureService */

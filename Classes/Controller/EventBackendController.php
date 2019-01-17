@@ -170,7 +170,7 @@ class EventBackendController extends BaseController
                             $name  = '=?utf-8?B?'. base64_encode( $name) .'?=' ;
                         }
 
-                        $this->sendEmail($event[0] , $registrant ,"Registrant" , array( $registrant->getEmail() => $name ) )  ;
+                        $this->sendEmail($event[0] , $registrant ,"Registrant" , array( $registrant->getEmail() => $name ) , FALSE )  ;
 
                         $this->registrantRepository->update($registrant) ;
                         $this->addFlashMessage($this->settings['register']['senderEmail'] . " -> Email send to " . $registrant->getEmail() . " - layout: " . $this->settings['LayoutRegister'] , '', \TYPO3\CMS\Core\Messaging\AbstractMessage::INFO);
