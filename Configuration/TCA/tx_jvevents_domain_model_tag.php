@@ -22,10 +22,10 @@ return array(
 		'iconfile' => '/typo3conf/ext/jv_events/Resources/Public/Icons/tx_jvevents_domain_model_tag.gif'
 	),
 	'interface' => array(
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, tag_category',
+		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, type, tag_category',
 	),
 	'types' => array(
-		'1' => array('showitem' => 'sys_language_uid, l10n_parent, name,tag_category,--div--;access, hidden, starttime, endtime'),
+		'1' => array('showitem' => 'sys_language_uid, l10n_parent, name,type, tag_category,--div--;access, hidden, starttime, endtime'),
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),
@@ -129,20 +129,41 @@ return array(
 				'eval' => 'trim'
 			),
 		),
+        'type' => array(
+            'exclude' => 1,
+            'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_category.type',
+
+            'config' => array(
+                'type' => 'select',
+                'onChange' => 'reload' ,
+                'renderType' => 'selectSingle',
+                'items' => array(
+                    array('Event Tag', '0'),
+                    array('Location Tag', '1'),
+                    array('Organizer Tag', '2'),
+
+                ),
+                'size' => 1,
+                'maxitems' => 1,
+                'eval' => 'trim'
+            ),
+        ),
         'tag_category' => array(
             'exclude' => 0,
             'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_tag.tag_category',
+         //   'displayCond' => 'FIELD:type:==:0',
+
             'config' => array(
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
                 'items' => [
-                    ['LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_tag.all_categories', -1],
+                    ['LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_tag.all_categories', 0],
                     ['-------', '--div--'],
                 ],
                 'foreign_table' => 'tx_jvevents_domain_model_category',
 
                 // 'foreign_table_where' => ' AND tx_jvevents_domain_model_category.type = 0 AND tx_jvevents_domain_model_category.sys_language_uid in (-1, 0)',
-                'foreign_table_where' => ' AND tx_jvevents_domain_model_category.type = 0 AND (tx_jvevents_domain_model_category.sys_language_uid = 0 OR tx_jvevents_domain_model_category.l10n_parent = 0) ORDER BY tx_jvevents_domain_model_category.title',
+                'foreign_table_where' => ' AND (tx_jvevents_domain_model_category.type = ###REC_FIELD_type### )  AND (tx_jvevents_domain_model_category.sys_language_uid = 0 OR tx_jvevents_domain_model_category.l10n_parent = 0) ORDER BY tx_jvevents_domain_model_category.title',
                 'itemsProcFunc' => 'JVE\\JvEvents\\UserFunc\\Flexforms->TranslateMMvalues' ,
 
                 'MM' => 'tx_jvevents_tag_category_mm',
@@ -150,7 +171,9 @@ return array(
                 'autoSizeMax' => 30,
                 'maxitems' => 9999,
                 'multiple' => 0,
-                'exclusiveKeys' => '-1,-2',
+                'exclusiveKeys' => '0',
+                'allowNonIdValues' => true ,
+
                 'enableMultiSelectFilterTextfield' => true ,
 
                 'fieldControl' => array(

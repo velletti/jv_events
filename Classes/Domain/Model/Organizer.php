@@ -48,7 +48,21 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @validate NotEmpty
      */
     protected $email = '';
-    
+
+    /**
+     * creation Date as timestring
+     *
+     * @var int
+     */
+    protected $crdate ;
+
+    /**
+     * lastmod Date as timestring
+     *
+     * @var int
+     */
+    protected $tstamp ;
+
     /**
      * Email of this organizer. Shown in Emails and as  Contact info in the event
      * details
@@ -122,7 +136,45 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Category>
      */
     protected $organizerCategory = null;
-    
+
+
+    /**
+     * Tag list , comma separated of this event. replacement for tags Object Storage  but FE = for frontend Editing
+     *
+     * @var string
+     */
+    protected $tagsFE = null;
+
+    /**
+     * tags
+     *
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Tag>
+     */
+    protected $tags = null;
+
+    /**
+     * __construct
+     */
+    public function __construct()
+    {
+        //Do not remove the next line: It would break the functionality
+        $this->initStorageObjects();
+    }
+
+    /**
+     * Initializes all ObjectStorage properties
+     *
+     * @return void
+     */
+    protected function initStorageObjects()
+    {
+        $this->organizerCategory = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+        $this->tags = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+
+        $this->images = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+        $this->teaserImage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+    }
+
     /**
      * Returns the name
      *
@@ -249,28 +301,9 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         $this->description = $description;
     }
     
-    /**
-     * __construct
-     */
-    public function __construct()
-    {
-        //Do not remove the next line: It would break the functionality
-        $this->initStorageObjects();
-    }
+
     
-    /**
-     * Initializes all ObjectStorage properties
-     * Do not modify this method!
-     * It will be rewritten on each save in the extension builder
-     * You may modify the constructor of this class instead
-     *
-     * @return void
-     */
-    protected function initStorageObjects()
-    {
-        $this->organizerCategory = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-    }
-    
+
     /**
      * Adds a Category
      *
@@ -410,7 +443,111 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         $this->hidden = $hidden;
     }
 
+    /**
+     * @return int
+     */
+    public function getCrdate()
+    {
+        return $this->crdate;
+    }
+
+    /**
+     * @param int $crdate
+     */
+    public function setCrdate($crdate)
+    {
+        $this->crdate = $crdate;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTstamp()
+    {
+        return $this->tstamp;
+    }
+
+    /**
+     * @param int $tstamp
+     */
+    public function setTstamp($tstamp)
+    {
+        $this->tstamp = $tstamp;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLanguageUid()
+    {
+        return $this->_languageUid;
+    }
+
+    /**
+     * @param int $languageUid
+     */
+    public function setLanguageUid($languageUid)
+    {
+        $this->_languageUid = $languageUid;
+    }
 
 
+    /**
+     * Adds a Tag
+     *
+     * @param \JVE\JvEvents\Domain\Model\Tag $tag
+     * @return void
+     */
+    public function addTag(\JVE\JvEvents\Domain\Model\Tag $tag)
+    {
+        $this->tags->attach($tag);
+    }
+
+    /**
+     * Removes a Tag
+     *
+     * @param \JVE\JvEvents\Domain\Model\Tag $tagToRemove The Tag to be removed
+     * @return void
+     */
+    public function removeTag(\JVE\JvEvents\Domain\Model\Tag $tagToRemove)
+    {
+        $this->tags->detach($tagToRemove);
+    }
+
+    /**
+     * Returns the tags
+     *
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Tag> $tags
+     */
+    public function getTags()
+    {
+        return $this->tags;
+    }
+
+    /**
+     * Sets the tags
+     *
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Tag> $tags
+     * @return void
+     */
+    public function setTags(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $tags)
+    {
+        $this->tags = $tags;
+    }
+    /**
+     * @return string
+     */
+    public function getTagsFE()
+    {
+        return $this->tagsFE;
+    }
+
+    /**
+     * @param string $tagsFE
+     */
+    public function setTagsFE($tagsFE)
+    {
+        $this->tagsFE = $tagsFE;
+    }
 
 }

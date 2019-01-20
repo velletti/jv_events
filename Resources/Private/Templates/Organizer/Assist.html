@@ -28,18 +28,12 @@
                                 <f:render section="createButton" arguments="{_all}"></f:render>
                             </f:then>
                             <f:else>
-                                Your ID: {organizer.0.uid}<br>
                                 <f:if condition="{organizer.0.hidden}">
                                     <f:then>
                                         <f:render section="stillHidden" arguments="{_all}"></f:render>
                                     </f:then>
                                     <f:else>
-                                        <div class="text-right">
-                                            <f:link.action pageUid="{settings.pageIds.editOrganizer}" action="edit" controller="Organizer" arguments="{organizer: organizer.0.uid}" class="btn btn-primary">
-                                                <span class="fas fa-users-cog"> </span> <span class="hidden-xs">{f:translate(key: 'edit', default: 'Edit')}</span>
-                                            </f:link.action>
-                                        </div>
-
+                                        <f:render section="oneOrganizer" arguments="{_all}"></f:render>
                                     </f:else>
                                 </f:if>
 
@@ -55,6 +49,26 @@
     </div>
 </f:section>
 
+
+<f:section name="oneOrganizer">
+    <div class="alert alert-info">
+        <h3>Status: <span class="far fa-check-square"> </span> <span>OK</span></h3>
+
+        <p>
+            Your ID: {organizer.0.uid}/{organizer.0.pid}<br>
+            Created: <f:format.date format="d. M Y - H:i">@{organizer.0.crdate}</f:format.date><br>
+            Changed: <f:format.date format="d. M Y - H:i">@{organizer.0.tstamp}</f:format.date><br>
+
+        </p>
+        <div class="text-right">
+            <f:link.action pageUid="{settings.pageIds.editOrganizer}" action="edit" controller="Organizer" arguments="{organizer: organizer.0.uid}" class="btn btn-primary">
+                <span class="fas fa-users-cog"> </span> <span class="hidden-xs">{f:translate(key: 'edit', default: 'Edit')}</span>
+            </f:link.action>
+        </div>
+    </div>
+</f:section>
+
+
 <f:section name="moreThanOne">
     <div class="alert alert-warning">
         <h2>
@@ -66,6 +80,9 @@
         </p>
     </div>
 </f:section>
+
+
+
 
 
 <f:section name="createButton">
@@ -81,15 +98,18 @@
 
 
 
+
+
+
 <f:section name="stillHidden">
     <div class="alert alert-warning">
-        <h2>
-            Please be patient...
-        </h2>
+        <h3>Status: <span class="far fa-square"> </span> <span>Pending</span></h3>
         <p>
             Your Organizer Account is not activated. This may take up to 2 Days.<br>
-            Please Contact Webmaster.
+            Please Contact Webmaster if it is urgent.
+
         </p>
     </div>
+
 
 </f:section>

@@ -23,14 +23,16 @@ $returnArray = array(
 		'iconfile' =>  'EXT:jv_events/Resources/Public/Icons/tx_jvevents_domain_model_organizer.gif'
 	),
 	'interface' => array(
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, email, link, phone, sales_force_user_id, images, description, organizer_category',
+		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, email, link, phone, sales_force_user_id, images, description, organizer_category, tags',
 	),
 	'types' => array(
-		'1' => array('showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden,--palette--;;1, name, email, link, phone, sales_force_user_id, teaser_image, images, description, organizer_category, --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, access_users, access_groups, starttime, endtime'),
+		'1' => array('showitem' => '--palette--;;data, --div--;Relations, --palette--;;relations, --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, '),
 	),
 	'palettes' => array(
-		'1' => array('showitem' => ''),
-	),
+		'data' => array('showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, --linebreak--,name, --linebreak--,email, --linebreak--,link, --linebreak--,phone, --linebreak--,sales_force_user_id, --linebreak--,description,'),
+		'relations' => array('showitem' => 'teaser_image, --linebreak--,images, --linebreak--,organizer_category, --linebreak--, tags,'),
+	    'access' => array('showitem' => ' starttime, endtime, --linebreak--,access_users,--linebreak--, access_groups,')
+    ),
 	'columns' => array(
 	
 		'sys_language_uid' => array(
@@ -120,6 +122,28 @@ $returnArray = array(
 				),
 			),
 		),
+        'crdate' => array(
+            'exclude' => 1,
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.crdate',
+            'config' => array(
+                'type' => 'input',
+                'renderType' => 'inputDateTime',
+                'behaviour' => array(
+                    'allowLanguageSynchronization' => true ,
+                ) ,
+                'size' => 13,
+                'eval' => 'datetime',
+                'checkbox' => 0,
+                'default' => 0,
+            ),
+        ),
+        'tstamp' => array(
+            'exclude' => 1,
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.tstamp',
+            'config' => array(
+                'type' => 'passthrough',
+            ),
+        ),
 
 		'name' => array(
 			'exclude' => 0,
@@ -364,6 +388,45 @@ $returnArray = array(
                     'maxitems' => 1
                 ),
                 "jpg,jpeg,gif,png"
+            ),
+        ),
+        'tags' => array(
+            'exclude' => 0,
+            'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.tags',
+            'config' => array(
+                'type' => 'select',
+                'renderType' => 'selectMultipleSideBySide',
+                'foreign_table' => 'tx_jvevents_domain_model_tag',
+                //'foreign_table_where' => ' AND tx_jvevents_domain_model_tag.sys_language_uid in (-1, ###REC_FIELD_sys_language_uid###)',
+                'itemsProcFunc' => 'JVE\\JvEvents\\UserFunc\\Flexforms->TranslateMMvalues' ,
+                'foreign_table_where' => ' AND tx_jvevents_domain_model_tag.type = 2 AND (tx_jvevents_domain_model_tag.sys_language_uid = 0 OR tx_jvevents_domain_model_tag.l10n_parent = 0) ORDER BY tx_jvevents_domain_model_tag.name',
+
+                'MM' => 'tx_jvevents_organizer_tag_mm',
+                'size' => 10,
+                'autoSizeMax' => 30,
+                'maxitems' => 9999,
+                'multiple' => 0,
+                'fieldControl' => array(
+                    'addRecord' => array(
+                        'disabled' => false ,
+                        'options' => array(
+                            'pid' => '###CURRENT_PID###' ,
+                            'setValue' => 'prepend' ,
+                            'icon' => 'actions-add',
+                            'table' => 'tx_jvevents_domain_model_tag' ,
+                            'title' => 'Create new' ,
+                        ),
+
+                    ) ,
+                    'editPopup' => array(
+                        'disabled' => false ,
+                        'options' => array(
+                            'icon' => 'actions-open',
+                            'windowOpenParameters' => 'height=350,width=580,status=0,menubar=0,scrollbars=1' ,
+                            'title' => 'Edit' ,
+                        ),
+                    ) ,
+                ) ,
             ),
         ),
 		

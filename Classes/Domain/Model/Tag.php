@@ -48,6 +48,13 @@ class Tag extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $name = '';
 
     /**
+     * type 0=Event Category 1=Location Category 2=Organizer Category
+     *
+     * @var int
+     */
+    protected $type = 0;
+
+    /**
      * tagCategory
      *
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Category>
@@ -109,6 +116,73 @@ class Tag extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     }
 
     /**
+     * @return int
+     */
+    public function getLanguageUid()
+    {
+        return $this->_languageUid;
+    }
+
+    /**
+     * @param int $languageUid
+     */
+    public function setLanguageUid($languageUid)
+    {
+        $this->_languageUid = $languageUid;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPid()
+    {
+        return $this->pid;
+    }
+
+    /**
+     * @param int $pid
+     */
+    public function setPid($pid)
+    {
+        $this->pid = $pid;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSorting()
+    {
+        return $this->sorting;
+    }
+
+    /**
+     * @param int $sorting
+     */
+    public function setSorting($sorting)
+    {
+        $this->sorting = $sorting;
+    }
+
+    /**
+     * @return int
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param int $type
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+    }
+
+
+
+
+    /**
      * Returns the tagCategory
      *
      * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Category> $tagCategory
@@ -128,5 +202,6 @@ class Tag extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         $this->tagCategory = $tagCategory;
     }
+
 
 }

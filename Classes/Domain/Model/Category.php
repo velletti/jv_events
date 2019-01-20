@@ -55,7 +55,7 @@ class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $description = '';
 
     /**
-     * type
+     * type 0=Event Category 1=Location Category 2=Organizer Category
      *
      * @var int
      */

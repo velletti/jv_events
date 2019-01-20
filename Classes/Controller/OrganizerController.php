@@ -60,12 +60,12 @@ class OrganizerController extends BaseController
      */
     public function indexAction()
     {
-        $organizers = $this->organizerRepository->findAll();
-        $this->view->assign('organizers', $organizers);
+        // maybe we need this as Overview -> Select type of Organizer -> jump to list -> Filtered by type
     }
     /**
      * action list
      *
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
      * @return void
      */
     public function assistAction()
@@ -102,12 +102,38 @@ class OrganizerController extends BaseController
     
     /**
      * action new
-     *
+     * @param \JVE\JvEvents\Domain\Model\Organizer|Null $organizer
+     * @ignorevalidation $organizer
      * @return void
      */
-    public function newAction()
+    public function newAction(\JVE\JvEvents\Domain\Model\Organizer $organizer = null )
     {
-        
+        /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $categories */
+        $categories = $this->categoryRepository->findAllonAllPages( '3' );
+
+
+        if ( $organizer==null) {
+
+
+            /** @var \JVE\JvEvents\Domain\Model\Organizer $organizer */
+            $organizer = $this->objectManager->get("JVE\\JvEvents\\Domain\\Model\\Organizer");
+        }
+        if ( $location->getUid() < 1 ) {
+            $organizer = $this->getOrganizer() ;
+            if( $organizer ) {
+                $location->setOrganizer($organizer);
+            }
+
+            // ToDo find good way to handle ID Default .. maybe a pid per User, per location or other typoscript setting
+            $location->setPid( 14 ) ;
+
+        }
+        if($this->isUserOrganizer() ) {
+            $this->view->assign('user', intval($GLOBALS['TSFE']->fe_user->user['uid'] ) ) ;
+            $this->view->assign('location', $location);
+            $this->view->assign('organizer', $organizer );
+            $this->view->assign('categories', $categories);
+        }
     }
     
     /**
