@@ -59,8 +59,9 @@ class GeocoderViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
      * @return string
      */
     public function render($location) {
-        /** @var \JVE\JvEvents\Utility\Geocoder $geoCoder */
-        $geoCoder = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("JVE\\JvEvents\\Utility\\Geocoder") ;
+        /** @var \JVE\JvEvents\Utility\GeocoderUtility $geoCoder */
+        $geoCoder = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("JVE\\JvEvents\\Utility\\GeocoderUtility") ;
+
         $formfieldIds["address"] = '#streetAndNr' ;
         $formfieldIds["zip"] = '#zip' ;
         $formfieldIds["city"] = '#city' ;
@@ -69,8 +70,13 @@ class GeocoderViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
         $formfieldIds["return"]["lat"] = "#lat" ;
         $formfieldIds["return"]["lng"] = "#lng" ;
         $return = $geoCoder->javascriptCode ;
+        if( $location ) {
+            $locID = $location->getUid() ;
+        } else {
+            $locID = 0 ;
+        }
 
-        $return .= $geoCoder->main(false , $location->getUid() ,"jQuery" , $formfieldIds ) ;
+        $return .= $geoCoder->main(false , $locID ,"jQuery" , $formfieldIds ) ;
 
         return $return ;
     }

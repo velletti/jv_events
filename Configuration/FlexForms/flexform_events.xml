@@ -24,7 +24,7 @@
 									</numIndex>
 									<numIndex index="2">
 										<numIndex index="0">Edit / Create Events</numIndex>
-										<numIndex index="1">Event->new;Event->show;Event->create;Event->edit;Event->update;Event->delete;</numIndex>
+										<numIndex index="1">Event->new;Event->show;Event->create;Event->edit;Event->update;Event->delete;Event->copy;Event->disable;</numIndex>
 									</numIndex>
 									<numIndex index="3">
 										<numIndex index="0">Edit / Create Locations</numIndex>
@@ -32,14 +32,33 @@
 									</numIndex>
 									<numIndex index="4">
 										<numIndex index="0">Edit / Create Organizers</numIndex>
-										<numIndex index="1">Organizer->list;Organizer->show;Organizer->new;Organizer->create;Organizer->edit;Organizer->update;Organizer->delete;</numIndex>
+										<numIndex index="1">Organizer->assist;Organizer->list;Organizer->show;Organizer->new;Organizer->create;Organizer->edit;Organizer->update;Organizer->delete;</numIndex>
+									</numIndex>
+								</items>
+							</config>
+						</TCEforms>
+					</switchableControllerActions>
+					<settings.defaultOrganizerAction>
+						<TCEforms>
+							<label>Select function</label>
+							<displayCond>FIELD:sDEF.switchableControllerActions:=:Organizer->assist;Organizer->list;Organizer->show;Organizer->new;Organizer->create;Organizer->edit;Organizer->update;Organizer->delete;</displayCond>
+
+							<config>
+								<type>select</type>
+								<items>
+									<numIndex index="0">
+										<numIndex index="0">Organizer List</numIndex>
+										<numIndex index="1">list</numIndex>
+									</numIndex>
+									<numIndex index="1">
+										<numIndex index="0">Organizer Assistent</numIndex>
+										<numIndex index="1">assist</numIndex>
 									</numIndex>
 
 								</items>
 							</config>
 						</TCEforms>
-					</switchableControllerActions>
-
+					</settings.defaultOrganizerAction>
 
 
 
@@ -363,6 +382,8 @@
 
 			</ROOT>
 		</sDEF4>
+
+
 
 		<sDEF5>
 			<ROOT>

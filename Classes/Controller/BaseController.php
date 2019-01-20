@@ -401,6 +401,11 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             ->setFrom($sender)
             ->setSubject($subject);
 
+        $returnPath = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFromAddress();
+        if ( $returnPath != "no-reply@example.com") {
+            $message->setReturnPath($returnPath);
+        }
+
         if ( TYPO3_branch < 9 ) {
             $rootPath = PATH_site ;
         } else {
@@ -471,6 +476,30 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             }
         }
         return FALSE  ;
+    }
+    public function getOrganizer() {
+        if (intval($GLOBALS['TSFE']->fe_user->user['uid']) < 1 ) {
+            return false ;
+        }
+        /** @var \JVE\JvEvents\Domain\Model\Organizer $organizer */
+        if( $this->request->hasArgument('organizer')) {
+            $id = intval($this->request->getArgument('organizer'));
+        }
+        if( $id > 0 ) {
+            $organizer = $this->organizerRepository->findByUidAllpages($id , FALSE);
+        }
+        if ($organizer instanceof \JVE\JvEvents\Domain\Model\Organizer) {
+            return $organizer ;
+        }
+
+        // TODo : think about a better solution how to manage that a user can be linked to more than one Organizer
+        // actually it will not work
+        $organizer = $this->organizerRepository->findByUserAllpages( intval($GLOBALS['TSFE']->fe_user->user['uid'])  , FALSE )->getFirst() ;
+        if ($organizer instanceof \JVE\JvEvents\Domain\Model\Organizer) {
+            return $organizer ;
+        }
+
+        return false ;
     }
 
     /**

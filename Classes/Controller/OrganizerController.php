@@ -43,9 +43,41 @@ class OrganizerController extends BaseController
     public function initializeAction()
     {
         parent::initializeAction() ;
+        if ($this->request->hasArgument('action')) {
+        // Todo some checks if all params exists ..
+
+        } else {
+            $this->forward( $this->settings['defaultOrganizerAction'],null,null, array('action' => $this->settings['defaultOrganizerAction'] )  ) ;
+        }
+
+
 
     }
-    
+    /**
+     * action list
+     *
+     * @return void
+     */
+    public function indexAction()
+    {
+        $organizers = $this->organizerRepository->findAll();
+        $this->view->assign('organizers', $organizers);
+    }
+    /**
+     * action list
+     *
+     * @return void
+     */
+    public function assistAction()
+    {
+        $this->view->assign('user', intval($GLOBALS['TSFE']->fe_user->user['uid'] ) ) ;
+        if($this->isUserOrganizer() ) {
+            $organizer = $this->organizerRepository->findByUserAllpages( intval($GLOBALS['TSFE']->fe_user->user['uid'] )  , FALSE , TRUE  );
+            $this->view->assign('count', count( $organizer )) ;
+            $this->view->assign('organizer', $organizer ) ;
+
+        }
+    }
     /**
      * action list
      *

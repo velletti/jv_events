@@ -65,6 +65,13 @@ class OrganizerRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         }
     }
 
+    /**
+     * @param integer $user UID of the User
+     * @param bool $toArray Result as QueryInterface or directly as Array
+     * @param bool $ignoreEnableFields Ignores Hidden, Startdate, enddate but NOT deleted!
+     * @return array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
+     */
     public function findByUserAllpages($user , $toArray=TRUE , $ignoreEnableFields = TRUE )
     {
         $query = $this->createQuery();
@@ -79,9 +86,15 @@ class OrganizerRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         $constraints[] = $query->like('access_users',  $user .",%") ;
         $constraints[] = $query->equals('access_users',  $user ) ;
 
-        $query->matching( $query->logicalOr($constraints) ) ;
-        $res = $query->execute() ;
+        if ( $ignoreEnableFields ) {
+            $query->matching( $query->logicalAnd(
+                array( $query->logicalOr($constraints)  , $query->equals('deleted',  0 )  )
+            ) ) ;
+        } else {
+            $query->matching( $query->logicalOr($constraints) ) ;
+        }
 
+        $res = $query->execute() ;
         // $this->debugQuery($query) ;
 
         if( $toArray === TRUE ) {

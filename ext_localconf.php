@@ -9,8 +9,8 @@ $_EXTKEY = "jv_events" ;
 	'JVE.' . $_EXTKEY,
 	'Events',
 	array(
-		'Event' => 'list, show, new, create, edit, update, delete, register, confirm, search',
-		'Organizer' => 'list, show, new, create, edit, update, delete',
+		'Event' => 'list, show, new, create, edit, update, delete, register, confirm, search,copy,disable',
+		'Organizer' => 'list, show, new, create, edit, update, delete,assist',
 		'Location' => 'list, show, new, create, edit, update, delete',
 		'Registrant' => 'list, show,new,create,delete,confirm',
 		'Tag' => 'list',
@@ -18,8 +18,8 @@ $_EXTKEY = "jv_events" ;
 	),
 	// non-cacheable actions
 	array(
-		'Event' => 'show, search, new, create, edit, update, register, confirm, delete',
-        'Organizer' => 'show, new, create, edit, update, delete',
+		'Event' => 'show, search, new, create, edit, update, register, confirm, delete,copy,disable',
+        'Organizer' => 'show, new, create, edit, update, delete,assist',
 		'Registrant' => 'list,new,create,delete,confirm',
 		'Location' => 'new, create, edit, update, delete',
 		
@@ -30,10 +30,10 @@ $_EXTKEY = "jv_events" ;
     'JVE.' .$_EXTKEY,
     'Ajax',
     array(
-        'Ajax'  => 'eventMenu,locationList,organizerList,eventList',
+        'Ajax'  => 'eventMenu,locationList,organizerList,eventList,eventDisable',
     ),
     array(
-        'Ajax'  => 'eventMenu,locationList,organizerList,eventList',
+        'Ajax'  => 'eventMenu,locationList,organizerList,eventList,eventDisable',
     )
 );
 

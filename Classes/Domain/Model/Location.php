@@ -465,4 +465,53 @@ class Location extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         $this->teaserImage = $teaserImage;
     }
 
+    /**
+     * @return int
+     */
+    public function getUid()
+    {
+        return $this->uid;
+    }
+
+    /**
+     * @param int $uid
+     */
+    public function setUid($uid)
+    {
+        $this->uid = $uid;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLanguageUid()
+    {
+        return $this->_languageUid;
+    }
+
+    /**
+     * @param int $languageUid
+     */
+    public function setLanguageUid($languageUid)
+    {
+        $this->_languageUid = $languageUid;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPid()
+    {
+        return $this->pid;
+    }
+
+    /**
+     * @param int $pid
+     */
+    public function setPid($pid)
+    {
+        $this->pid = $pid;
+    }
+
+
 }

@@ -9,7 +9,7 @@ use TYPO3\CMS\Lang\LanguageService;
  * @package JVE\JvEvents\Utility
  */
 
-class Geocoder {
+class GeocoderUtility {
 
     /**
      * @var string

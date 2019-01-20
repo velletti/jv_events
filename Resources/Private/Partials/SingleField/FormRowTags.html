@@ -24,7 +24,6 @@
         <f:for each="{tags}" as="Tag" iteration="iteration">
             <f:variable name="checked"></f:variable>
             <f:variable name="checkedCss"></f:variable>
-            <f:debug>{Tag}</f:debug>
             <f:if condition="{Tag.tagCategory}">
                 <f:for each="{Tag.tagCategory}" as="category">
                     <f:variable name="tagCategories">{tagCategories},{category.uid}</f:variable>

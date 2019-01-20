@@ -36,7 +36,9 @@ class LocationRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      * @var array
      */
     protected $defaultOrderings = array(
+        'crdate' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING ,
         'sorting' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
+
     );
 
     public function findByUidAllpages($uid , $toArray=TRUE , $ignoreEnableFields = TRUE )
@@ -83,14 +85,17 @@ class LocationRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 
         // $query->setLimit($limit) ;
 
-        $query->matching( $query->in('organizer', $organizers ) ) ;
+        $query->matching( $query->in('organizer.uid', $organizers ) ) ;
         $res = $query->execute() ;
 
         // new way to debug typo3 db queries
-        // $queryParser = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class);
-        // var_dump($queryParser->convertQueryToDoctrineQueryBuilder($query)->getSQL());
-        // var_dump($queryParser->convertQueryToDoctrineQueryBuilder($query)->getParameters()) ;
-        // die;
+        $debug = false ;
+        if ( $debug == true ) {
+            $queryParser = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class);
+            var_dump($queryParser->convertQueryToDoctrineQueryBuilder($query)->getSQL());
+             var_dump($queryParser->convertQueryToDoctrineQueryBuilder($query)->getParameters()) ;
+            die;
+        }
         if( $toArray === TRUE ) {
             return $res->toArray();
         } else {

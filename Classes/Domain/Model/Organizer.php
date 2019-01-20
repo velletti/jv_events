@@ -95,7 +95,12 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     protected $description = '';
 
-
+    /**
+     * hidden
+     *
+     * @var integer
+     */
+    protected $hidden ;
     /**
      * this event was admin Functions visible for the following usergroups / Access Rights
      *
@@ -387,6 +392,22 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function setLink($link)
     {
         $this->link = $link;
+    }
+
+    /**
+     * @return int
+     */
+    public function getHidden()
+    {
+        return $this->hidden;
+    }
+
+    /**
+     * @param int $hidden
+     */
+    public function setHidden($hidden)
+    {
+        $this->hidden = $hidden;
     }
 
 

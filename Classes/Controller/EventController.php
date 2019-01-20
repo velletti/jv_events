@@ -164,7 +164,7 @@ class EventController extends BaseController
     
     /**
      * action new
-     * @param \JVE\JvEvents\Domain\Model\Event $event
+     * @param \JVE\JvEvents\Domain\Model\Event|null $event
      * @ignorevalidation $event
      *
      * @return void
@@ -178,24 +178,23 @@ class EventController extends BaseController
         $tags = $this->tagRepository->findAllonAllPages();
 
         if ( $event==null) {
-
-
             /** @var \JVE\JvEvents\Domain\Model\Event $event */
             $event = $this->objectManager->get("JVE\\JvEvents\\Domain\\Model\\Event");
         }
         if ( $event->getUid() < 1 ) {
             $event->setStartDate( new \DateTime ) ;
 
-            if( $this->request->hasArgument('organizer')) {
-                /** @var \JVE\JvEvents\Domain\Model\Organizer $organizer */
-                $organizer = $this->organizerRepository->findByUid(intval($this->request->getArgument('organizer')));
-                if ($organizer instanceof \JVE\JvEvents\Domain\Model\Organizer) {
-                    $event->setOrganizer($organizer);
-                    $this->view->assign('organizer', $organizer );
-                }
+            /** @var \JVE\JvEvents\Domain\Model\Organizer $organizer */
+            $organizer = $this->getOrganizer() ;
+            if ($organizer instanceof \JVE\JvEvents\Domain\Model\Organizer) {
+                $event->setOrganizer($organizer);
+                $this->view->assign('organizer', $organizer );
             } else {
-                // todo We do not have an Organizer.
+                $pid = $this->settings['pageIds']['loginForm'] ;
+                $this->addFlashMessage('You are not logged in as Organizer.'  , '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+                $this->redirect(null , null , NULL , NULL , $pid );
             }
+
             if( $this->request->hasArgument('location')) {
                 /** @var \JVE\JvEvents\Domain\Model\Location $location */
                 $location= $this->locationRepository->findByUid( intval( $this->request->getArgument('location') )) ;
@@ -204,7 +203,7 @@ class EventController extends BaseController
                 }
                 $this->view->assign('location', $location );
             } else {
-                $locations= $this->locationRepository->findByOrganizersAllpages( array(0 => $organizer) , FALSE, FALSE ) ;
+                $locations= $this->locationRepository->findByOrganizersAllpages( array(0 => $organizer->getUid()) , FALSE, FALSE ) ;
                 $this->view->assign('locations', $locations );
             }
 

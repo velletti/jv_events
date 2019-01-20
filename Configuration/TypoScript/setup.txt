@@ -102,10 +102,16 @@ plugin.tx_jvevents_events {
 		    # page with a login FOrm is users session has got invalid
             loginForm = 0
             # page after susseccful storing an event
+
          	showEventDetail = 0
 			editEvent =  0
+
 			editLocation = 0
+			# After storing Locations and mayby on oter places, rediret to this page
+			editLocationSuccess
 			editOrganizer = 0
+
+			eventList = 0
 		}
 		feEdit {
 		    enabled = 0

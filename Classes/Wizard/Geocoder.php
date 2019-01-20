@@ -20,7 +20,7 @@ class Geocoder extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWizardContro
 	public $doc;
 
     /**
-     * @var \JVE\JvEvents\Utility\Geocoder
+     * @var \JVE\JvEvents\Utility\GeocoderUtility
      */
     public $geoCoder ;
 
@@ -43,7 +43,7 @@ class Geocoder extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWizardContro
 	 */
 	protected function init(){
 
-        $this->geoCoder = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("JVE\\JvEvents\\Utility\\Geocoder") ;
+        $this->geoCoder = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("JVE\\JvEvents\\Utility\\GeocoderUtility") ;
 
 		$this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
 
