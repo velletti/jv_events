@@ -272,6 +272,12 @@
             <trans-unit id="tx_jvevents_domain_model_organizer.phone">
                 <source>Phone</source>
             </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_organizer.link">
+                <source>Link / URL</source>
+            </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_organizer.tags">
+                <source>Tags</source>
+            </trans-unit>
             <trans-unit id="tx_jvevents_domain_model_organizer.accessGroups">
                 <source>Groups with Frontend Organizer Access to Events of this organizer</source>
             </trans-unit>
