@@ -4,8 +4,17 @@
  */
 jQuery(document).ready(function() {
 	jv_events_init() ;
-    jv_events_init_edit_tags() ;
+    jv_events_init_AjaxMenu() ;
+
+	if( $(".jv-events-tags-edit") ){
+        jv_events_init_edit_tags() ;
+    }
+
 }) ;
+
+
+
+
 
 function jv_events_init_edit_tags() {
     var jvEventsNewTags = '' ;

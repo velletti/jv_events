@@ -41,13 +41,13 @@
         <form class="clearfix" action="#">
 
             <div class="hints clearfix">
-                <p class="left" id="filter-events" data-target="jv-events-filter-sub" data-toggle="collapse">
-                    <a href="#"> <f:translate key="tx_jvevents_event.filter.hint" /> </a>
+                <p class="left" id="filter-events" >
+                    <a href="#" data-target="jv-events-filter-sub" data-toggle="collapse"> <f:translate key="tx_jvevents_event.filter.hint" /> </a>
                 </p>
-                <p class="right hide" id="filter-reset-events"><a href="#"><f:translate key="tx_jvevents_event.filter.reset" /></a></p>
+                <p class="right d-none" id="filter-reset-events"><a href="#"><f:translate key="tx_jvevents_event.filter.reset" /></a></p>
             </div>
 
-            <div id="jv-events-filter-sub collapse fade" class="fieldsets">
+            <div id="jv-events-filter-sub" class="fieldsets  collapse fade">
 
                 <f:if condition="{f:count(subject: eventsFilter.tags2)} > 1">
                     <fieldset id="jv_events_fieldset_tags">

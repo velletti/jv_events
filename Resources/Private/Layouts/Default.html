@@ -5,3 +5,57 @@
 <div class="tx-jv-events">
 	<f:render section="main" />
 </div>
+
+
+
+    <f:if condition="{event}">
+		<f:then>
+			<script type="application/javascript">
+                var eventId = {event.uid} ;
+                var locationId = {event.location.uid} ;
+			</script>
+		</f:then>
+		<f:else>
+			<f:if condition="{location}">
+				<f:then>
+					<script type="application/javascript">
+                        var eventId = 0 ;
+                        var locationId = {location.uid} ;
+					</script>
+				</f:then>
+				<f:else >
+					<script type="application/javascript">
+                        var eventId = 0 ;
+                        var locationId = 0 ;
+					</script>
+				</f:else>
+			</f:if>
+		</f:else>
+	</f:if>
+
+
+    <script type="application/javascript">
+		function jv_events_init_AjaxMenu() {
+			if ( $("#jvEventsAjaxMenu")) {
+				$.ajax( {
+					url: '/index.php' ,
+					data: 'uid=1&eID=jv_events&L=0&tx_jvevents_ajax[event]=' + eventId + '&tx_jvevents_ajax[location]=' +  locationId + '&tx_jvevents_ajax[action]=eventMenu&tx_jvevents_ajax[controller]=Ajax&' ,
+
+					before: function() {
+						$('#jvEventsAjaxMenu').addClass('show').addClass('d-block') ;
+					} ,
+					success: function(response) {
+                        $('#jvEventsAjaxMenu').removeClass('d-block') ;
+						 $('#jvEventsAjaxMenu').html( response.html) ;
+
+					},
+					error: function(response) {
+                        $('#jvEventsAjaxMenu').removeClass('show').addClass('d-none') ;
+
+                    }
+				})
+			} else {
+                $('#jvEventsAjaxMenu').removeClass('show').addClass('d-none') ;
+			}
+		}
+	</script>
