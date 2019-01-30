@@ -301,12 +301,13 @@ function jv_events_refreshList(){
 
     }) ;
     var filterIsActive = false ;
+    var needTohide = false ;
 	jQuery('.tx-jv-events DIV.jv-events-singleEvent').each(function (i) {
        // console.log( " ************* event **************** UID: " + jQuery(this).data("eventuid")  ) ;
 		jQuery(this).removeClass('hide') ;
 
 		if( fMonth && fMonth.val() && fMonth.val().length > 0 ) {
-			if( jQuery(this).data("monthuid")  != fMonth.val() ) {
+			if( jQuery(this).data("monthuid")  !== fMonth.val() ) {
 				jQuery(this).addClass('hide') ;
             }
 		}
@@ -324,7 +325,7 @@ function jv_events_refreshList(){
 		}
 		if( fCity && fCity.length > 0 ) {
 		    if(  fCity.val().length > 0 ) {
-                if( jQuery(this).data("cityuid")  != fCity.val() ) {
+                if( jQuery(this).data("cityuid")  !== fCity.val() ) {
                     jQuery(this).addClass('hide') ;
                 }
 			}
@@ -342,7 +343,7 @@ function jv_events_refreshList(){
 			}
 		}
         if( fOrg && fOrg.val() > 0 ) {
-            if( jQuery(this).data("orguid")  != fOrg.val() ) {
+            if( jQuery(this).data("orguid")  !== fOrg.val() ) {
                 jQuery(this).addClass('hide') ;
             }
         }
@@ -353,7 +354,7 @@ function jv_events_refreshList(){
 
             if( sTags ) {
                 sTags = "," + sTags + "," ;
-                var needTohide = true ;
+                needTohide = true ;
 				jQuery( cTags ).each( function() {
                    //  console.log( "Tag: " + jQuery(this).val() + "checked ? : " + jQuery(this).prop("checked") ) ;
 					if ( jQuery(this).prop("checked") ) {
@@ -380,7 +381,7 @@ function jv_events_refreshList(){
             // console.log( " sCats : " + sCats ) ;
             if( sCats ) {
                 sCats = "," + sCats + "," ;
-                var needTohide = true ;
+                needTohide = true ;
                 jQuery( cCats ).each( function() {
 					// console.log( jQuery(this).prop("checked") ) ;
                     if ( jQuery(this).prop("checked") ) {
@@ -472,13 +473,16 @@ function jv_events_pushUrl( urlFilter ) {
 
         var urlFilterBase = jQuery('meta[name=realUrlPath]').attr('content')  ;
         var stateObj = { Event: "Filter" };
-
+        var addChar = "?" ;
+        if ( urlFilterBase.indexOf(addChar) > 0 ) {
+            addChar = "&" ;
+        }
         if ( urlFilterBase.length > 0 ) {
             var moreParams = jv_events_GetURLnonEventParms( true) ;
-            window.history.pushState(stateObj, "Filter", window.location.protocol + "//" + window.location.hostname + urlFilterBase + "?" + urlFilter + moreParams);
+            window.history.pushState(stateObj, "Filter", window.location.protocol + "//" + window.location.hostname + urlFilterBase + addChar + urlFilter + moreParams);
         } else {
             var moreParams = jv_events_GetURLnonEventParms(false) ;
-            window.history.pushState(stateObj, "Filter", window.location.protocol + "//" + window.location.hostname +  window.location.pathname + "?" + urlFilter + moreParams);
+            window.history.pushState(stateObj, "Filter", window.location.protocol + "//" + window.location.hostname +  window.location.pathname + addChar + urlFilter + moreParams);
         }
     }
 }

@@ -26,6 +26,8 @@
 		<f:if condition="{events}">
 			<f:then>
 				<f:render partial="Event/List/Partial{settings.LayoutList}/HeaderEvent" arguments="{event:event, settings: settings}" />
+
+
 				<f:for each="{events}" as="event">
 					<f:variable name="aktDate">{event.startDate -> f:format.date(format:"d.m.Y")}</f:variable>
 					<f:render partial="Event/List/Partial{settings.LayoutList}/SingleEvent" arguments="{event:event, settings: settings, aktDate: aktDate, lastDate: lastDate}" />

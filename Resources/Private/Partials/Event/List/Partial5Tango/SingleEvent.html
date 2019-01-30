@@ -1,7 +1,7 @@
 {namespace jve=JVE\JvEvents\ViewHelpers}
 
 <f:if condition="{aktDate} != {lastDate}">
-    <div class="well well-sm well-primary jvevents-newDay"><i class="glyphicon glyphicon-calendar"> </i> {event.startDate -> f:format.date(format:"D d.M.Y")} </div>
+    <div class="alert alert-secondary text-black-50 jvevents-newDay"><i class="fas fa-calendar-alt"> </i> {event.startDate -> f:format.date(format:"D d. M. Y")} </div>
 </f:if>
 
 
