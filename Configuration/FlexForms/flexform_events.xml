@@ -314,7 +314,6 @@
 					<settings.LayoutSingle>
 						<TCEforms>
 							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms_additional.layout</label>
-							<displayCond>FIELD:sDEF.switchableControllerActions:=:Event->show;Event->new;Event->create;Event->edit;Event->update;Event->register;Event->confirm;Event->delete;Registrant->new;Registrant->create;Registrant->list;Registrant->show;Registrant->confirm;Registrant->delete</displayCond>
 							<config>
 								<type>user</type>
 

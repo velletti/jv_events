@@ -58,6 +58,7 @@
 <div class="tab-content clearfix " style="min-height:550px;">
 	<div class="tab-pane active " id="jv_events_event">
 		<div class="well">
+			<div class="hidden" id="jv-events-dataids" data-locationuid="{event.location.uid}" data-eventuid="{event.uid}" data-piduid="{event.pid}"></div>
 			<f:render partial="Event/Single/Partial{settings.LayoutSingle}/Row"
 				arguments="{title: '', translate: '0', isHeadline: 'H2' ,value: '{event.name}' }" />
 

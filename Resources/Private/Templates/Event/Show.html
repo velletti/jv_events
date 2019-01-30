@@ -6,11 +6,11 @@
 
   <f:render partial="Debug/CheckInstallation" arguments="{modulelist: 'FALSE' ,event:event, settings: settings}" />
   <div class="jv_events_{settings.LayoutSingle} {settings.single.additionalClass}">
-    <div class="hidden">
-      Registration possible Until: {event.registrationUntil -> event:format.date( format:"d.m.Y H:i")}
-      <br>Now from event: {event.actualTime -> event:format.date( format:"d.m.Y H:i")}
-    </div>
-  <f:render partial="Event/Single/Partial{settings.LayoutSingle}/Base" arguments="{event:event, subevents:subevents, subeventcount: subeventcount , settings:settings , hash: hash}" />
+      <div class="hidden d-none">
+        Registration possible Until: {event.registrationUntil -> event:format.date( format:"d.m.Y H:i")}
+        <br>Now from event: {event.actualTime -> event:format.date( format:"d.m.Y H:i")}
+      </div>
+      <f:render partial="Event/Single/Partial{settings.LayoutSingle}/Base" arguments="{event:event, subevents:subevents, subeventcount: subeventcount , settings:settings , hash: hash}" />
 
   </div>
 

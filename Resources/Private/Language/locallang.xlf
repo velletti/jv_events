@@ -131,6 +131,7 @@
         <trans-unit id="tx_jvevents_domain_model_event.price">
             <source>Price</source>
         </trans-unit>
+
 		<trans-unit id="tx_jvevents_domain_model_event.available_seats">
 			<source>Available Seats</source>
 		</trans-unit>

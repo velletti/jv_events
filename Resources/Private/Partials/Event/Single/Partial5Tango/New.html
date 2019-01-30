@@ -1,0 +1,40 @@
+
+<div class="card col-12 text-white bg-primary jv-events-partial{settings.LayoutSingle}" id="jv-event-new-data">
+    <div class="card-header"> <span class="glyphicon glyphicon-edit"></span>
+        <span class="fas fa-edit border-secondary rounded-circle"></span>
+        <span><f:translate key="tx_jvevents_domain_model_event">Event</f:translate></span>
+    </div>
+    <div class="card-body row text-black-50 bg-white">
+        <div class="col-md-4 equalHeight">
+            <f:render partial="FeEditHelp" arguments="{section: 'event', object: event , settings: settings , user: user}" />
+        </div>
+        <div class="col-md-8 equalHeight">
+            <f:render partial="HasFormErrors" arguments="{object:event, debug: 'true' }" />
+
+            <f:if condition="{location.uid} < 1">
+                <f:then>
+                    <f:form class="form-horizontal"  action="new" name="event" object="{event}" id="event_new">
+                        <f:render partial="Location/SelectLocation" arguments="{_all}" />
+                    </f:form>
+                </f:then>
+                <f:else>
+                    <f:form class="form-horizontal"  action="create" name="event" object="{event}" id="event_new">
+
+                        <f:render partial="Event/Single/Partial{settings.LayoutSingle}/FormFields" arguments="{_all}" />
+
+
+                        <f:form.hidden property="location"  value="{event.location}" />
+                        <f:form.hidden property="organizer"  value="{event.organizer}" />
+                        <f:form.hidden property="eventType"  value="{event.eventType}" />
+                        <f:form.hidden property="pid"  value="{event.pid}" />
+
+                        <div class="text-right">
+                            <f:form.submit class="btn btn-primary" value="{f:translate(key: 'form.save', default: 'Save')}" />
+                        </div>
+                    </f:form>
+                </f:else>
+            </f:if>
+
+        </div>
+    </div>
+</div>

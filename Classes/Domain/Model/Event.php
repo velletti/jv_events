@@ -87,6 +87,20 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $price = 0 ;
 
     /**
+     * int PriceReduced only in EURO
+     *
+     * @var double
+     */
+    protected $priceReduced = 0 ;
+
+    /**
+     * int PriceReduced only in EURO
+     *
+     * @var string
+     */
+    protected $priceReducedText = '' ;
+
+    /**
      * Full decription of this event. May be formated. Only visible in Detail event
      * View.
      *
@@ -2215,6 +2229,38 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function increaseViewed()
     {
         $this->viewed ++;
+    }
+
+    /**
+     * @return float
+     */
+    public function getPriceReduced()
+    {
+        return $this->priceReduced;
+    }
+
+    /**
+     * @param float $priceReduced
+     */
+    public function setPriceReduced($priceReduced)
+    {
+        $this->priceReduced = $priceReduced;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPriceReducedText()
+    {
+        return $this->priceReducedText;
+    }
+
+    /**
+     * @param string $priceReducedText
+     */
+    public function setPriceReducedText($priceReducedText)
+    {
+        $this->priceReducedText = $priceReducedText;
     }
 
 

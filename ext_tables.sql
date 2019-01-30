@@ -11,6 +11,8 @@ CREATE TABLE tx_jvevents_domain_model_event (
 	teaser varchar(255) DEFAULT '' NOT NULL,
 	description text NOT NULL,
 	price double default '0' NOT NULL ,
+	price_reduced double default '0' NOT NULL ,
+	price_reduced_text varchar(255) DEFAULT '' NOT NULL,
 	images int(11) unsigned NOT NULL default '0',
 	files int(11) unsigned NOT NULL default '0',
 	teaser_image int(11) unsigned NOT NULL default '0',

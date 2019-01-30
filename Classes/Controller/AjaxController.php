@@ -242,8 +242,6 @@ class AjaxController extends BaseController
             }
         }
 
-
-
         if( $this->request->hasArgument('eventsFilter')) {
             $limit = false ;
             if( $this->request->hasArgument('limit')) {

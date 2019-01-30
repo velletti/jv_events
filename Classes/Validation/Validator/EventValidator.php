@@ -35,8 +35,18 @@ class EventValidator extends BaseValidator {
         $isValid = $this->securityChecks( $event->getStartTimeFE() , 'startTimeV' , $isValid ) ;
         $isValid = $this->securityChecks( $event->getEndTimeFE() , 'endTimeV' , $isValid ) ;
         $isValid = $this->securityChecks( $event->getPrice() , 'price' , $isValid ) ;
+        $isValid = $this->securityChecks( $event->getPriceReduced() , 'priceReduced' , $isValid ) ;
+        $isValid = $this->securityChecks( $event->getPriceReducedText() , 'priceReducedText' , $isValid ) ;
 
         $isValid = $this->isNumeric( $event->getEventCategory() , 'eventCategory' , $isValid ) ;
+        if( intval( $event->getPrice()) != 0  ) {
+            $isValid = $this->isNumeric( $event->getPrice() , 'price' , $isValid ) ;
+        }
+
+        if ( $event->getPriceReduced() > 0 ) {
+            $isValid = $this->stringLengthIsValid(3 , 200 , $event->getPriceReducedText() , 'priceReducedText' , NULL , $isValid ) ;
+        }
+
 
         $isValid = $this->isTagArray(  $event->getTagsFE() , 'tagsFE' , $isValid ) ;
         $isValid = $this->isStringDateValue( $event->getStartDateFE() , 'startDateV' , $isValid ) ;

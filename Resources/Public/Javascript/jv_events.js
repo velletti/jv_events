@@ -12,11 +12,53 @@ jQuery(document).ready(function() {
 
 }) ;
 
+function jv_events_init_AjaxMenu() {
+    var eventId = 0;
+    var locationId = 0;
+    if( "#jv-events-dataids") {
+        if( $("#jv-events-dataids").data ("eventuid") ) {
+            eventId = parseInt( $("#jv-events-dataids").data("eventuid"));
+        }
+        if( $("#jv-events-dataids").data ("locationuid") ) {
+            locationId = parseInt( $("#jv-events-dataids").data("locationuid"));
+        }
+    }
+    if ( $("#jvEventsAjaxMenu")) {
+        $.ajax( {
+            url: '/index.php' ,
+            data: 'uid=1&eID=jv_events&L=0&tx_jvevents_ajax[event]=' + eventId + '&tx_jvevents_ajax[location]=' +  locationId + '&tx_jvevents_ajax[action]=eventMenu&tx_jvevents_ajax[controller]=Ajax&' ,
 
+            before: function() {
+                $('#jvEventsAjaxMenu').addClass('show').addClass('d-block') ;
+            } ,
+            success: function(response) {
+                $('#jvEventsAjaxMenu').removeClass('d-block') ;
+                $('#jvEventsAjaxMenu').html( response.html) ;
+
+            },
+            error: function(response) {
+                $('#jvEventsAjaxMenu').removeClass('show').addClass('d-none') ;
+
+            }
+        })
+    } else {
+        $('#jvEventsAjaxMenu').removeClass('show').addClass('d-none') ;
+    }
+}
 
 
 
 function jv_events_init_edit_tags() {
+
+    $("#priceReduced").on('change' , function() {
+        if(  parseInt( $("#priceReduced").val() ) > 0 ) {
+            $("#jv-events-edit-price-reduced").addClass('d-block').removeClass('d-none');
+        } else {
+            $("#jv-events-edit-price-reduced").addClass('d-none').removeClass('d-block');
+        }
+    }) ;
+
+
     var jvEventsNewTags = '' ;
     var jvEventsTagsSum = 0 ;
     $(".jv-events-tags-edit").each(function() {

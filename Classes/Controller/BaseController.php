@@ -446,10 +446,10 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         $feuserGroups = GeneralUtility::trimExplode("," ,  $GLOBALS['TSFE']->fe_user->user['usergroup']  , TRUE ) ;
         foreach( $groups as $group ) {
             if( in_array( $group  , $feuserGroups )) {
-                return TRUE  ;
+                return true  ;
             }
         }
-        return FALSE  ;
+        return false  ;
     }
 
     /**
@@ -459,23 +459,25 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
 
     public function hasUserAccess( $organizer ) {
-        if(! $organizer instanceof \JVE\JvEvents\Domain\Model\Organizer ) {
-           return FALSE ;
+        if(! is_object( $organizer ) ) {
+
+           return false ;
         }
         $feuserUid = intval( $GLOBALS['TSFE']->fe_user->user['uid'] ) ;
         $users = GeneralUtility::trimExplode("," , $organizer->getAccessUsers() , TRUE ) ;
+
         if( in_array( $feuserUid  , $users )) {
-            return TRUE  ;
+            return true  ;
         } else {
             $groups = GeneralUtility::trimExplode("," , $organizer->getAccessGroups() , TRUE ) ;
             $feuserGroups = GeneralUtility::trimExplode("," ,  $GLOBALS['TSFE']->fe_user->user['usergroup']  , TRUE ) ;
             foreach( $groups as $group ) {
                 if( in_array( $group  , $feuserGroups )) {
-                    return TRUE  ;
+                    return true  ;
                 }
             }
         }
-        return FALSE  ;
+        return false  ;
     }
     public function getOrganizer() {
         if (intval($GLOBALS['TSFE']->fe_user->user['uid']) < 1 ) {

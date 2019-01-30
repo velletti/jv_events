@@ -1,0 +1,38 @@
+{namespace jve=JVE\JvEvents\ViewHelpers}
+
+
+
+<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowDefault"
+		  arguments="{object: 'location', property:'name' , label: '' , translationKey: 'tx_jvevents_domain_model_location.name' , maxLength: 30 , mandatory: '1' }" />
+
+<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowDefault"
+		  arguments="{object: 'location', property:'streetAndNr' , label: '' , translationKey: 'tx_jvevents_domain_model_location.street_and_nr' ,  maxLength: 30 , mandatory: '1' }" />
+<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowDefault"
+		  arguments="{object: 'location', property:'zip' , label: '' , translationKey: 'tx_jvevents_domain_model_location.zip' ,  maxLength: 30 , mandatory: '' }" />
+
+<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowDefault"
+		  arguments="{object: 'location', property:'city' , label: '' , translationKey: 'tx_jvevents_domain_model_location.city' ,  maxLength: 30 , mandatory: '1' }" />
+<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowDefault"
+		  arguments="{object: 'location', property:'country' , label: '' , translationKey: 'tx_jvevents_domain_model_location.country' ,  maxLength: 30 , mandatory: '1' }" />
+
+<hr>
+
+<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowGeocoder"
+		  arguments="{object: 'location', location: location, property:'lng' ,  property2:'lat', fa-icon: 'fas fa-map-marked-alt' , label: 'Update Map' ,  maxLength: 30 , mandatory: '1' }" />
+
+<hr>
+<div class="alert alert-info">
+	Need a different contact info for this location? if not leave the next 3 fields empty
+</div>
+<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowDefault"
+		  arguments="{object: 'location', property:'link' , label: '' , translationKey: 'tx_jvevents_domain_model_location.link' ,  maxLength: 30 , mandatory: '' }" />
+
+<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowDefault"
+		  arguments="{object: 'location', property:'email' , label: '' , translationKey: 'tx_jvevents_domain_model_location.email' ,  maxLength: 30 , mandatory: '' }" />
+<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowDefault"
+		  arguments="{object: 'location', property:'phone' , label: '' , translationKey: 'tx_jvevents_domain_model_location.phone' ,  maxLength: 30 , mandatory: '' }" />
+<hr>
+
+<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowRte"
+		  arguments="{object: 'location', property:'description' , label: '' , translationKey: 'tx_jvevents_domain_model_organizer.description' , mandatory: false }" />
+

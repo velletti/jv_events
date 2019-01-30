@@ -7,12 +7,12 @@
 	<f:render partial="Debug/CheckInstallation" arguments="{modulelist: 'TRUE' , event:event, settings: settings}" />
 	<f:if condition="{settings.EmConfiguration.useGeoLocation}">
 		<f:then>
-			<div id="jv_events_geo" class="hidden" data-askUser="1" data-lng="{settings.list.longitude}" data-lat="{settings.list.latitude}">
+			<div id="jv_events_geo" class="hidden d-none" data-askUser="1" data-lng="{settings.list.longitude}" data-lat="{settings.list.latitude}">
 				GEO Position from user Position .. we are asking user to overwrite this
 			</div>
 		</f:then>
 		<f:else>
-			<div id="jv_events_geo" class="hidden" data-lng="{settings.list.longitude}" data-lat="{settings.list.latitude}">
+			<div id="jv_events_geo" class="hidden d-none" data-lng="{settings.list.longitude}" data-lat="{settings.list.latitude}">
 				GEO Position from Settings
 			</div>
 		</f:else>

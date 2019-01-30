@@ -38,7 +38,7 @@ $returnArray = array(
 		--div--;Relations, --palette--;;relations,
 		--div--;Files, teaser_image, files,
 		--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, --palette--;;access,'),
-		'2' => array('showitem' => 'event_type,--palette--;;dates,--palette--;;infos,description,
+		'2' => array('showitem' => 'event_type,--palette--;;dates,--palette--;;infos,price,--linebreak--,--palette--;LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.priceReducedHeader;priceReduced,description,
 		--div--;Advanced, --palette--;;language, --palette--;;advanced, --palette--;;frequent,
 		--div--;Relations, --palette--;;relations,
 		--div--;Files, teaser_image,images, files,
@@ -49,7 +49,8 @@ $returnArray = array(
 	'palettes' => array(
 		'1' => array('showitem' => ''),
 		'dates' => array('showitem' => 'all_day,--linebreak--,start_date,end_date,--linebreak--,start_time,end_time,--linebreak--,subevent'),
-		'infos' => array('showitem' => 'name, --linebreak--, teaser ,--linebreak--, price,'),
+		'infos' => array('showitem' => 'name, --linebreak--, teaser ,'),
+		'priceReduced' => array('showitem' => 'price_reduced,--linebreak--, price_reduced_text,'),
 		'relations' => array('showitem' => 'organizer, --linebreak--, location, --linebreak--,event_category, --linebreak--,tags '),
 		'frequent' => array('showitem' => 'is_recurring, --linebreak--, frequency, freq_exception, --linebreak--, is_exception_for,  '),
 		'language' => array('showitem' => 'sys_language_uid, ,l10n_parent,--linebreak--,l10n_diffsource,' ),
@@ -216,6 +217,24 @@ $returnArray = array(
                 'type' => 'input',
                 'size' => 10,
                 'eval' => 'double2'
+            ),
+        ),
+        'price_reduced' => array(
+            'exclude' => 0,
+            'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.priceReduced',
+            'config' => array(
+                'type' => 'input',
+                'size' => 10,
+                'eval' => 'double2'
+            ),
+        ),
+        'price_reduced_text' => array(
+            'exclude' => 0,
+            'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.priceReducedText',
+            'config' => array(
+                'type' => 'input',
+                'size' => 30,
+                'eval' => ''
             ),
         ),
 		'url' => [

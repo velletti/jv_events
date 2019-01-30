@@ -3,48 +3,6 @@
 
 <f:section name="main">
 
-    <f:if condition="{event}">
-        <f:else>
-            <div class="alert alert-warning">
-                No Access to this Event or Event not Found.
-            </div>
-        </f:else>
-        <f:then>
-            <div class="panel panel-primary my-profile-edit" id="my-profile-edit-profiledata">
-
-                <div class="panel-heading">
-                    <span class="glyphicon glyphicon-edit"></span>
-                    <span><f:translate key="tx_jvevents_domain_model_event">Edit Event</f:translate></span>
-                </div>
-
-                <div class="panel-body row">
-
-                    <div class="col-sm-4 equalHeight">
-                        <f:render partial="FeEditHelp" arguments="{section: 'event', object: event , settings: settings , user: user}" />
-                    </div>
-                    <div class="col-sm-8 equalHeight">
-
-
-                        <f:render partial="HasFormErrors" arguments="{object:event, debug: 'true' }" />
-
-
-                        <f:form class="form-horizontal"  action="update" name="event" object="{event}" id="event_edit">
-                            <f:render partial="Event/FormFields" arguments="{_all}" />
-
-
-                            <div class="text-right">
-                                <f:form.submit class="btn btn-primary" value="{f:translate(key: 'form.save', default: 'Save')}" />
-                            </div>
-                        </f:form>
-                    </div>
-                </div>
-            </div>
-
-        </f:then>
-
-    </f:if>
-
-
-
+    <f:render partial="Event/Single/Partial{settings.LayoutSingle}/Edit" arguments="{_all}" />
 
 </f:section>
