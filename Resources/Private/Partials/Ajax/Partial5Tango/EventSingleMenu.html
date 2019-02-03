@@ -12,13 +12,37 @@
                     <span class="d-none d-md-inline-block">Event</span>
                 </f:link.action>
 
-
-                <f:link.action pageUid="{settings.pageIds.editEvent}" class="nav-link" title="delete Event" action="delete" controller="Event" arguments="{event: output.event.eventId}">
-                    <button class="btn btn-outline-primary btn-xs rounded-circle" href="#">
+                <f:link.external uri="#" class="nav-link" title="delete Event" >
+                    <button data-toggle="modal" data-target="#eventDeleteModal-{event.uid}" class="btn btn-outline-primary btn-xs rounded-circle" href="#">
                         <i class="fas fa-trash "></i>
                     </button>
                     <span class="d-none d-md-inline-block">delete</span>
-                </f:link.action>
+                </f:link.external>
+
+                <f:variable name="deleteModalBody">
+                     <f:format.raw>
+                         <f:spaceless>
+                             This will delete the event without info. <br>
+                             Are you shure?<br>
+                        </f:spaceless>
+                    </f:format.raw>
+                </f:variable>
+                <f:variable name="deleteModalFooter">
+                    <f:format.raw>
+                        <f:spaceless>
+                            <f:link.action pageUid="{settings.pageIds.editEvent}" class="nav-link" title="delete Event" action="delete" controller="Event" arguments="{event: output.event.eventId}">
+                                <button class="btn btn-primary btn-xs " href="#">
+                                    <i class="fas fa-trash "></i> <span class="">Delete really!</span>
+                                </button>
+                            </f:link.action>
+                        </f:spaceless>
+                    </f:format.raw>
+                </f:variable>
+
+
+
+                <f:render partial="Helper/Bootstrap4/Modal" arguments="{'modalId':  'eventDeleteModal-{event.uid}', 'modalTitle': 'Delete Event', 'modalBody': deleteModalBody,'modalFooter': deleteModalFooter,  'settings': settings}" />
+
             </f:if>
         </f:if>
     </div>
