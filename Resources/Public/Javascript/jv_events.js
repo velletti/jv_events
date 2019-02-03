@@ -38,12 +38,32 @@ function jv_events_init_AjaxMenu() {
                 if ($('#jvEventsAjaxSingleMenu') ) {
                     $('#jvEventsAjaxSingleMenu').addClass('d-block').removeClass('d-none') ;
                     $('#jvEventsAjaxSingleMenu').html( response.html.single) ;
+                    if ($('#jv-events-cancelEvent') ) {
+                        $(function () {
+                            $('#jv-events-cancelEvent').bootstrapToggle();
+                        })
+                    }
                 }
 
             },
             error: function(response) {
                 $('#jvEventsAjaxMenu').removeClass('show').addClass('d-none') ;
             }
+        })
+        $('#jv-events-cancelEvent').change(function() {
+
+            if( $(this).prop('checked')) {
+                $(this).prop('checked' , '' ) ;
+                $('#jv-events-cancelEvent-info').addClass('fade slow') ;
+                $('#v-events-cancelEvent-info').addClass('d-none') ;
+                $('#v-events-cancelEvent-info').removeClass('in') ;
+            } else {
+                $(this).prop('checked' , 'checked' ) ;
+                $('#v-events-cancelEvent-info').addClass('in') ;
+                $('#v-events-cancelEvent-info').removeClass('d-none') ;
+                $('#v-events-cancelEvent-info').removeClass('fade') ;
+            }
+
         })
     }
 }
