@@ -48,7 +48,7 @@ $returnArray = array(
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),
-		'dates' => array('showitem' => 'all_day,--linebreak--,start_date,end_date,--linebreak--,start_time,end_time,--linebreak--,subevent'),
+		'dates' => array('showitem' => 'all_day,--linebreak--,start_date,end_date,--linebreak--,start_time,end_time,--linebreak--,entry_time,--linebreak--,subevent'),
 		'infos' => array('showitem' => 'name, --linebreak--, teaser ,'),
 		'priceReduced' => array('showitem' => 'price_reduced,--linebreak--, price_reduced_text,'),
 		'relations' => array('showitem' => 'organizer, --linebreak--, location, --linebreak--,event_category, --linebreak--,tags '),
@@ -445,6 +445,19 @@ $returnArray = array(
 				'default' => time()
 			)
 		),
+        'entry_time' => array(
+            'exclude' => 1,
+            'displayCond' => 'FIELD:all_day:REQ:FALSE' ,
+            'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.entry_time',
+            'config' => array(
+                'type' => 'input',
+                'renderType' => 'inputDateTime',
+                'size' => 4,
+                'eval' => 'time,int',
+                'checkbox' => 1,
+
+            )
+        ),
 		'end_date' => array(
 			'exclude' => 0,
 

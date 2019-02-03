@@ -42,6 +42,12 @@ plugin.tx_jvevents_events {
 			}
 			# Addional class for your list wrapper
 			additionalClass =
+			image {
+			     # Fallback Image for event list with complete path /fileadmin/user_upload/.. default /typo3conf/ext/jv_events/Resource/Public/Images/DefaultImage.jpg
+			     defaultImage = /typo3conf/ext/jv_events/Resources/Public/Images/defaultImage.jpg
+			     width = 240
+			     height = 180
+			}
 		}
 		single {
 			layouts {
@@ -104,12 +110,18 @@ plugin.tx_jvevents_events {
             # page after susseccful storing an event
 
          	showEventDetail = 0
+         	# pageID with plugin edit Event
 			editEvent =  0
 
+            # pageID with plugin edit Location
 			editLocation = 0
 			# After storing Locations and mayby on oter places, rediret to this page
-			editLocationSuccess
+			editLocationSuccess = 0
+
+			# pageID with plugin edit Organizer
 			editOrganizer = 0
+			# pageID with plugin Organizer Assist
+			organizerAssist = 0
 
 			eventList = 0
 		}

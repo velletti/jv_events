@@ -172,6 +172,12 @@
             <trans-unit id="tx_jvevents_domain_model_event.start_time">
                 <source>Start Time</source>
             </trans-unit>
+             <trans-unit id="tx_jvevents_domain_model_event.entry_time">
+                <source>Opening time</source>
+            </trans-unit>
+             <trans-unit id="tx_jvevents_domain_model_event.entry_time_help">
+                <source>Just put a time to this field, if your participants should or may come before the official start time</source>
+            </trans-unit>
             <trans-unit id="tx_jvevents_domain_model_event.store_in_citrix">
                 <source>Store In Citrix</source>
             </trans-unit>

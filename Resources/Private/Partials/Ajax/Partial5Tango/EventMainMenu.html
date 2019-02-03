@@ -1,0 +1,115 @@
+
+    <div class="d-inline-flex float-left">
+
+        <f:if condition="{output.feuser.uid}">
+            <f:then>
+                <!--  ################# the second nav  loaded via AJAX to #jvEventsAjaxMenu  -for users  ##################### //-->
+                <f:if condition="{settings.pageIds.loginForm}">
+                    <f:link.action pageUid="{settings.pageIds.loginForm}" class="nav-link" title="Organizer Main Menu">
+                        <button class="btn btn-outline-primary btn-xs rounded-circle" href="#">
+                            <i class="fas fa-wrench "></i>
+                        </button>
+
+                    </f:link.action>
+                </f:if>
+
+                <f:if condition="{settings.pageIds.editLocation}">
+                    <f:if condition="{output.location.hasAccess} && {output.mode} != 'editLocation'">
+                        <f:link.action pageUid="{settings.pageIds.editLocation}" class="nav-link" title="Edit Location" action="edit" controller="Location" arguments="{location: output.location.locationId}">
+                            <button class="btn btn-outline-primary btn-xs rounded-circle" href="#">
+                                <i class="fas fa-map-marked-alt "></i>
+                            </button>
+                            <span class="d-none d-md-inline-block">Location</span>
+                        </f:link.action>
+                    </f:if>
+                </f:if>
+                <f:if condition="{settings.pageIds.editOrganizer}">
+                    <f:if condition="{output.organizer.hasAccess}">
+                        <f:link.action pageUid="{settings.pageIds.editOrganizer}" class="nav-link" title="Edit organizer" action="edit" controller="Organizer" arguments="{organizer: output.organizer.organizerId}">
+                            <button class="btn btn-outline-primary btn-xs rounded-circle" href="#">
+                                <i class="fas fa-user "></i>
+                            </button>
+                            <span class="d-none d-md-inline-block">Veranstalter</span>
+                        </f:link.action>
+                    </f:if>
+                </f:if>
+                <f:if condition="{settings.pageIds.editEvent}">
+                    <f:if condition="{output.feuser.isOrganizer}">
+                        <f:link.action pageUid="{settings.pageIds.editEvent}" class="nav-link" title="New Event" action="new" controller="Event" arguments="{organizer: output.organizer.organizerId}">
+                            <button class="btn btn-outline-primary btn-xs rounded-circle" href="#">
+                                <i class="fas fa-calendar-plus "></i>
+                            </button>
+                            <span class="d-none d-md-inline-block">Neuer Termin</span>
+                        </f:link.action>
+                    </f:if>
+                </f:if>
+                <f:if condition="{settings.pageIds.loginForm}">
+                    <f:link.page pageUid="{settings.pageIds.loginForm}" class="nav-link" title="Logout" additionalParams="{'tx_felogin_pi1': {'norediret' : '0' },'logintype' : 'logout' , 'submit' : 'Logout'}">
+                        <button class="btn btn-outline-danger btn-xs rounded-circle" >
+                            <i class="fas fa-sign-out-alt "></i>
+                        </button>
+                        <span class="d-none d-sm-inline-block"> Logout</span>
+                    </f:link.page>
+                </f:if>
+
+            </f:then>
+
+
+            <f:else>
+                <!--  ################# the second nav  loaded via AJAX to #jvEventsAjaxMenu  -for NON users  ##################### //-->
+
+                <f:if condition="{settings.pageIds.loginForm}">
+                    <f:link.page pageUid="{settings.pageIds.loginForm}" class="nav-link" title="Login" >
+                        <button class="btn btn-outline-danger btn-xs rounded-circle" >
+                            <i class="fas fa-sign-out-alt "></i>
+                        </button>
+                        <span class="d-none d-sm-inline-block"> Login</span>
+                    </f:link.page>
+                </f:if>
+
+                <f:if condition="{settings.pageIds.loginFormNotHidden}">
+
+                    <!--  ################# the second nav  loaded via AJAX to #jvEventsAjaxMenu  -for NON users  ##################### //-->
+                    <form action="/index.php?id={settings.pageIds.loginForm}&amp;L={settings.sys_language.uid}" target="_top" method="post" onsubmit=";return true;" class="form-inline my-2">
+                        <div class="form-group">
+                            <label class="d-none" for="user">Email</label>
+                            <input type="text" id="user" name="user" value="" placeholder="name@domain.de" class="form-control mx-2">
+                        </div>
+                        <div class="form-group">
+                            <label class="d-none" for="pass">Password</label>
+                            <input type="password" id="pass" name="pass" value="" placeholder="*password*"  class="form-control mx-2">
+                        </div>
+                        <div class="form-group mx-2">
+                            <input type="submit" class="btn btn-primary" name="submit" value="Login">
+                        </div>
+                        <div class="form-group text-left float-left small" style="flex: none; display: inline-block;">
+                            <div  class="col-6">
+                                <a href="/index.php?id={settings.pageIds.organizerAssist}" rel="nofollow">Not registered yet?</a>
+                            </div>
+                            <div  class="col-6">
+                                <a href="/index.php?id={settings.pageIds.loginForm}&amp;L=0&amp;tx_felogin_pi1%5Bforgot%5D=1" rel="nofollow">Forgot your password?</a>
+                            </div>
+
+                        </div>
+
+                        <div class="felogin-hidden">
+                            <input type="hidden" name="logintype" value="login">
+                            <input type="hidden" name="pid" value="15">
+                            <input type="hidden" name="redirect_url" value="">
+                            <input type="hidden" name="tx_felogin_pi1[noredirect]" value="0">
+
+                        </div>
+
+
+                    </form>
+                </f:if>
+            </f:else>
+
+        </f:if>
+
+    </div>
+
+
+
+
+

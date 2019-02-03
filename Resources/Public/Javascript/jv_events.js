@@ -33,16 +33,18 @@ function jv_events_init_AjaxMenu() {
             } ,
             success: function(response) {
                 $('#jvEventsAjaxMenu').removeClass('d-block') ;
-                $('#jvEventsAjaxMenu').html( response.html) ;
+                $('#jvEventsAjaxMenu').html( response.html.main) ;
+
+                if ($('#jvEventsAjaxSingleMenu') ) {
+                    $('#jvEventsAjaxSingleMenu').addClass('d-block').removeClass('d-none') ;
+                    $('#jvEventsAjaxSingleMenu').html( response.html.single) ;
+                }
 
             },
             error: function(response) {
                 $('#jvEventsAjaxMenu').removeClass('show').addClass('d-none') ;
-
             }
         })
-    } else {
-        $('#jvEventsAjaxMenu').removeClass('show').addClass('d-none') ;
     }
 }
 

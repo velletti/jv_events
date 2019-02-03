@@ -356,9 +356,33 @@ class EventController extends BaseController
      */
     public function deleteAction(\JVE\JvEvents\Domain\Model\Event $event)
     {
-        $this->addFlashMessage('The object was NOT deleted.  this action is not  implemented yet', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
-       // $this->eventRepository->remove($event);
-       //  $this->redirect('list');
+
+        if ( $this->hasUserAccess($event->getOrganizer() )) {
+            $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
+
+            try {
+                $this->eventRepository->remove($event) ;
+
+                // got from EM Settings
+                $clearCachePids = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode("," , $this->settings['EmConfiguration']['clearCachePids']) ;
+                if( is_array($clearCachePids) && count( $clearCachePids) > 0 ) {
+                    $this->cacheService->clearPageCache( $clearCachePids );
+                    $this->addFlashMessage('The object was successfully deleted and Cache of following pages are cleared: ' . implode("," , $clearCachePids), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+                } else {
+                    $this->addFlashMessage('The Event was deleted.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+                }
+
+            } catch ( \Exception $e ) {
+                $this->addFlashMessage($e->getMessage() , 'Error', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+
+            }
+
+        } else {
+            $this->addFlashMessage('You do not have access rights to delete this event.' . $event->getUid() , '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+        }
+        $this->persistenceManager->persistAll() ;
+
+        $this->redirect('list' , null , null , null, $this->settings['pageIds']['eventList']);
     }
     
 

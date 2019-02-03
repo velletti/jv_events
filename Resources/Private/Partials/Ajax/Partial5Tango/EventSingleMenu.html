@@ -1,0 +1,29 @@
+
+    <div class="d-inline-flex float-right">
+
+        <!--  ################# the third nav  loaded via AJAX to #jvEventsAjaxSingleMenu  - for Organizer   ##################### //-->
+        <f:if condition="{output.event.hasAccess}">
+            <f:if condition="{settings.pageIds.editEvent}">
+
+                <f:link.action pageUid="{settings.pageIds.editEvent}" class="nav-link" title="Edit Event" action="edit" controller="Event" arguments="{event: output.event.eventId}">
+                    <button class="btn btn-outline-primary btn-xs rounded-circle" href="#">
+                        <i class="fas fa-edit "></i>
+                    </button>
+                    <span class="d-none d-md-inline-block">Event</span>
+                </f:link.action>
+
+
+                <f:link.action pageUid="{settings.pageIds.editEvent}" class="nav-link" title="delete Event" action="delete" controller="Event" arguments="{event: output.event.eventId}">
+                    <button class="btn btn-outline-primary btn-xs rounded-circle" href="#">
+                        <i class="fas fa-trash "></i>
+                    </button>
+                    <span class="d-none d-md-inline-block">delete</span>
+                </f:link.action>
+            </f:if>
+        </f:if>
+    </div>
+
+
+
+
+

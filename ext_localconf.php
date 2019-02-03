@@ -9,7 +9,7 @@ $_EXTKEY = "jv_events" ;
 	'JVE.' . $_EXTKEY,
 	'Events',
 	array(
-		'Event' => 'list, show, new, create, edit, update, delete, register, confirm, search,copy,disable',
+		'Event' => 'list, show, new, create, edit, update, delete, register, confirm, search,copy,cancel',
 		'Organizer' => 'list, show, new, create, edit, update, delete,assist',
 		'Location' => 'list, show, new, create, edit, update, delete',
 		'Registrant' => 'list, show,new,create,delete,confirm',

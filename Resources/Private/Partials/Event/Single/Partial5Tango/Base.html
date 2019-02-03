@@ -2,6 +2,17 @@
 
 <f:comment>
 	<!-- =========================================================================================================================== -->
+	<!-- Place Holder for organizer menü , filled via javascript , no spinner as this function is already in main menu  ! -->
+	<!-- =========================================================================================================================== -->
+</f:comment>
+
+<div id="jvEventsAjaxSingleMenu" class="d-none"></div>
+
+<div class="d-block d-sm-none">
+	<br class="clearfix" /><br />
+</div>
+<f:comment>
+	<!-- =========================================================================================================================== -->
 	<!-- Main infos -->
 	<!-- =========================================================================================================================== -->
 </f:comment>
@@ -9,11 +20,13 @@
 
 <h1 id="jv-events-dataids" data-locationuid="{event.location.uid}" data-eventuid="{event.uid}" data-eventPid="{event.pid}">{event.name}</h1>
 
+
+
 <div class="eventdata">
 
 	<div class="row">
-		<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_event.date" />:</strong></div>
-		<div class="col-md-10">{event.startDate -> f:format.date(format:"d.m.Y")}
+		<div class="col-md-3"><strong><f:translate key="tx_jvevents_domain_model_event.date" />:</strong></div>
+		<div class="col-md-9">{event.startDate -> f:format.date(format:"d.m.Y")}
 		<f:if condition="{event.startDate < event.endDate}">
 			<f:comment>- {event.endDate -> f:format.date(format:"d.m.Y")}</f:comment>
 		</f:if>
@@ -23,8 +36,8 @@
 	<f:if condition="{event.allDay}">
 		<f:else>
 			<div class="row">
-				<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_event.time" />:</strong></div>
-				<div class="col-md-10">{event.startTime -> event:format.date( format:"H:i")}<f:if condition="{event.endTime}"> - {event.endTime -> event:format.date( format:"H:i")}</f:if></div>
+				<div class="col-md-3"><strong><f:translate key="tx_jvevents_domain_model_event.time" />:</strong></div>
+				<div class="col-md-9">{event.startTime -> event:format.date( format:"H:i")}<f:if condition="{event.endTime}"> - {event.endTime -> event:format.date( format:"H:i")}</f:if></div>
 			</div>
 		</f:else>
 	</f:if>
@@ -32,8 +45,8 @@
 	<f:if condition="{subevents}">
 		<f:then>
 			<div class="row">
-				<div class="col-md-2"><strong>{subeventcount} <f:translate key="days" /></strong></div>
-				<div class="col-md-10">
+				<div class="col-md-3"><strong>{subeventcount} <f:translate key="days" /></strong></div>
+				<div class="col-md-9">
 					<f:for each="{subevents}" as="subevent" iteration="i">
 						{subevent.startDate -> f:format.date(format:"d.m.Y")}
 						<f:if condition="{event.allDay}">
@@ -52,15 +65,15 @@
 
 	<f:if condition="{event.location.name}">
 		<div class="row">
-			<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_location.name" />:</strong></div>
-			<div class="col-md-10">{event.location.name}</div>
+			<div class="col-md-3"><strong><f:translate key="tx_jvevents_domain_model_location.name" />:</strong></div>
+			<div class="col-md-9">{event.location.name}</div>
 		</div>
 	</f:if>
 
 	<f:if condition="{event.location.city}">
 		<div class="row">
-			<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_location.street_and_nr" />:</strong></div>
-			<div class="col-md-10">
+			<div class="col-md-3"><strong><f:translate key="tx_jvevents_domain_model_location.street_and_nr" />:</strong></div>
+			<div class="col-md-9">
 				<f:if condition="{event.location.streetAndNr}">
 					{event.location.streetAndNr}<br>
 				</f:if>
@@ -76,16 +89,16 @@
 	<!-- =============================================================================================================================== -->
 	<f:if condition="{event.price}">
 		<div class="row">
-			<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_event.price" />:</strong></div>
-			<div class="col-md-10">
+			<div class="col-md-3"><strong><f:translate key="tx_jvevents_domain_model_event.price" />:</strong></div>
+			<div class="col-md-9">
 				<f:format.number decimals="2">{event.price}</f:format.number> €
 			</div>
 		</div>
 	</f:if>
 	<f:if condition="{event.EventCategory}">
 		<div class="row">
-			<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_category" />:</strong></div>
-			<div class="col-md-10">
+			<div class="col-md-3"><strong><f:translate key="tx_jvevents_domain_model_category" />:</strong></div>
+			<div class="col-md-9">
 				<f:for each="{event.EventCategory}" as="EventCategory" iteration="iteration"><f:if condition="{iteration.index} > 0 ">, </f:if>{EventCategory.title}</f:for>
 			</div>
 		</div>
@@ -93,8 +106,8 @@
 
 	<f:if condition="{event.Tags}">
 		<div class="row">
-			<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_event.tags" />:</strong></div>
-			<div class="col-md-10">
+			<div class="col-md-3"><strong><f:translate key="tx_jvevents_domain_model_event.tags" />:</strong></div>
+			<div class="col-md-9">
 				<f:for each="{event.Tags}" as="Tag" iteration="iteration"><f:if condition="{iteration.index} > 0 ">, </f:if>{Tag.name}</f:for>
 			</div>
 		</div>
@@ -132,274 +145,287 @@
 
 </div>
 
+<div class="card">
 
-<f:comment>
-	<!-- =========================================================================================================================== -->
-	<!-- Tab-nav -->
-	<!-- =========================================================================================================================== -->
-</f:comment>
+	<f:comment>
+		<!-- =========================================================================================================================== -->
+		<!-- Tab-nav -->
+		<!-- =========================================================================================================================== -->
+	</f:comment>
 
-<ul class="nav nav-tabs">
-	<f:if condition="{event.description}">
-		<f:variable name="tabDescActive">active</f:variable>
+	<ul class="nav nav-tabs py-2 " role="tablist">
+		<f:if condition="{event.description}">
+			<f:variable name="tabDescActive">active</f:variable>
 
-		<li class="active">
-			<a href="#jv_events_event" data-toggle="tab"><f:translate key="tx_jvevents_domain_model_event.details.tab.details" /></a>
-		</li>
-	</f:if>
-	<f:if condition="{event.location.lng}">
-		<f:if condition="{tabDescActive}">
-			<f:else>
-				<f:variable name="tabMapActive">active</f:variable>
-			</f:else>
+			<li class="nav-item" role="presentation">
+				<a class="active mx-3" href="#jv_events_event" data-toggle="tab"><f:translate key="tx_jvevents_domain_model_event.details.tab.details" /></a>
+			</li>
 		</f:if>
-		<li>
-			<a href="#jv_events_map" data-toggle="tab"><f:translate key="tx_jvevents_domain_model_event.details.tab.map" /></a>
-		</li>
-	</f:if>
-	<f:if condition="{event.organizer}">
-		<f:if condition="{tabMapActive} || {tabDescActive} ">
-			<f:else>
-				<f:variable name="tabContactActive">active</f:variable>
-			</f:else>
+		<f:if condition="{event.location.lng}">
+			<f:if condition="{tabDescActive}">
+				<f:else>
+					<f:variable name="tabMapActive">active</f:variable>
+				</f:else>
+			</f:if>
+			<li class="nav-item">
+				<a class="{tabMapActive} mx-3" role="presentation" href="#jv_events_map" data-toggle="tab"><f:translate key="tx_jvevents_domain_model_event.details.tab.map" /></a>
+			</li>
+		</f:if>
+		<f:if condition="{event.organizer}">
+			<f:if condition="{tabMapActive} || {tabDescActive} ">
+				<f:else>
+					<f:variable name="tabContactActive">active</f:variable>
+				</f:else>
+			</f:if>
+
+			<li class="nav-item " role="presentation">
+				<a class="{tabContactActive} mx-3" href="#jv_events_contact" data-toggle="tab"><f:translate key="tx_jvevents_domain_model_event.details.tab.contact" /></a>
+			</li>
 		</f:if>
 
-
-		<li>
-			<a href="#jv_events_contact" data-toggle="tab"><f:translate key="tx_jvevents_domain_model_event.details.tab.contact" /></a>
-		</li>
-	</f:if>
-
-</ul>
+	</ul>
 
 
-<f:comment>
-	<!-- =========================================================================================================================== -->
-	<!-- Details -->
-	<!-- =========================================================================================================================== -->
-</f:comment>
+	<f:comment>
+		<!-- =========================================================================================================================== -->
+		<!-- Details -->
+		<!-- =========================================================================================================================== -->
+	</f:comment>
 
 
-<div class="tab-content clearfix well well-sm">
-	<div class="tab-pane {tabDescActive}" id="jv_events_event">
+	<div class="tab-content clearfix">
+		<div class="tab-pane {tabDescActive} p-3" id="jv_events_event">
+			<div class="row">
+				<div class="col-12 col-md-8">
 
-		<div class="data clearfix">
-			<f:format.html parseFuncTSPath="lib.jveventsRTE">{event.description}</f:format.html>
-		</div>
+					<div class="data clearfix">
+						<f:format.html parseFuncTSPath="lib.jveventsRTE">{event.description}</f:format.html>
+					</div>
 
-		<f:if condition="{event.files}">
+					<f:if condition="{event.files}">
 
-			<f:then>
+						<f:then>
 
-				<h3><f:translate key="tx_jvevents_domain_model_event.files" /></h3>
-				<ul class="files">
-					<f:for each="{event.files}" as="file" >
-						<li>
-							<a class="downloadPdf" href="{file.originalResource.publicUrl -> f:format.htmlspecialchars()}" target="_blank">
-								{f:if(condition:file.originalResource.title, then:file.originalResource.title, else:file.originalResource.name)}
-							</a>
-							({file.originalResource.size -> f:format.bytes()})
-						</li>
-					</f:for>
-				</ul>
-
-			</f:then>
-
-			<f:else>
-				<jve:l10nFalImg event="{event}" tableFieldName="files">
-					<f:for each="{l10nfalimg}" as="falfile" iteration="iteration">
-						<f:if condition="{iteration.isFirst}">
 							<h3><f:translate key="tx_jvevents_domain_model_event.files" /></h3>
 							<ul class="files">
-						</f:if>
-						<li>
-							<a class="downloadPdf" href="{falfile._path -> f:format.htmlspecialchars()}" target="_blank">
-								{f:if(condition:falfile._properties.title, then:falfile._file._properties.title, else:falfile._properties.name)}
-							</a>
-							({falfile._properties.size -> f:format.bytes()})
-						</li>
-						<f:if condition="{iteration.isLast}">
+								<f:for each="{event.files}" as="file" >
+									<li>
+										<a class="downloadPdf" href="{file.originalResource.publicUrl -> f:format.htmlspecialchars()}" target="_blank">
+											{f:if(condition:file.originalResource.title, then:file.originalResource.title, else:file.originalResource.name)}
+										</a>
+										({file.originalResource.size -> f:format.bytes()})
+									</li>
+								</f:for>
 							</ul>
-						</f:if>
-					</f:for>
-				</jve:l10nFalImg>
-			</f:else>
+
+						</f:then>
+
+						<f:else>
+							<jve:l10nFalImg event="{event}" tableFieldName="files">
+								<f:for each="{l10nfalimg}" as="falfile" iteration="iteration">
+									<f:if condition="{iteration.isFirst}">
+										<h3><f:translate key="tx_jvevents_domain_model_event.files" /></h3>
+										<ul class="files">
+									</f:if>
+									<li>
+										<a class="downloadPdf" href="{falfile._path -> f:format.htmlspecialchars()}" target="_blank">
+											{f:if(condition:falfile._properties.title, then:falfile._file._properties.title, else:falfile._properties.name)}
+										</a>
+										({falfile._properties.size -> f:format.bytes()})
+									</li>
+									<f:if condition="{iteration.isLast}">
+										</ul>
+									</f:if>
+								</f:for>
+							</jve:l10nFalImg>
+						</f:else>
 
 
+					</f:if>
+				</div>
 
-		</f:if>
+				<f:comment>
+					<!-- =========================================================================================================================== -->
+					<!-- images  -->
+					<!-- =========================================================================================================================== -->
+				</f:comment>
 
-		<f:if condition="{event.images}">
+				<div class="col-12 col-md-4 logo">
 
-			<f:then>
-				<h3><f:translate key="tx_jvevents_domain_model_event.images" /></h3>
-				<ul class="images clearfix">
-					<f:for each="{event.images}" as="image" >
-						<li>
-							<f:image src="{image.uid}" maxWidth="300" maxHeight="220" alt="{image.alternative}" title="{image.title}" treatIdAsReference="true" />
-						</li>
-					</f:for>
-				</ul>
-			</f:then>
+					<f:if condition="{event.images}">
 
-			<f:else>
-				<jve:l10nFalImg event="{event}" tableFieldName="images">
-					<f:for each="{l10nfalimg}" as="falimage" iteration="iteration">
-						<f:if condition="{iteration.isFirst}">
+						<f:then>
 							<h3><f:translate key="tx_jvevents_domain_model_event.images" /></h3>
 							<ul class="images clearfix">
-						</f:if>
-						<li>
-							<f:image
-								src="{falimage._file.publicUrl}"
-								title="{falimage._file.title}"
-								alt="{falimage._file.alternative}"
-								maxWidth="300"
-								maxHeight="220"
-								treatIdAsReference="1"
-							/>
-						</li>
-						<f:if condition="{iteration.isLast}">
+								<f:for each="{event.images}" as="image" >
+									<li>
+										<f:image class="d-block w-100 h-auto img-float rounded shadow-lg" src="{image.uid}" maxWidth="300" maxHeight="220" alt="{image.alternative}" title="{image.title}" treatIdAsReference="true" />
+									</li>
+								</f:for>
 							</ul>
-						</f:if>
-					</f:for>
-				</jve:l10nFalImg>
-			</f:else>
+						</f:then>
 
-		</f:if>
+						<f:else>
+							<jve:l10nFalImg event="{event}" tableFieldName="images">
+								<f:for each="{l10nfalimg}" as="falimage" iteration="iteration">
+									<f:if condition="{iteration.isFirst}">
+										<h3><f:translate key="tx_jvevents_domain_model_event.images" /></h3>
+										<ul class="images clearfix">
+									</f:if>
+									<li>
+										<f:image
+												src="{falimage._file.publicUrl}"
+												title="{falimage._file.title}"
+												alt="{falimage._file.alternative}"
+												maxWidth="600"
+												maxHeight="400"
+												treatIdAsReference="1"
+												class="d-block w-100 h-auto img-float rounded shadow-lg"
+										/>
+									</li>
+									<f:if condition="{iteration.isLast}">
+										</ul>
+									</f:if>
+								</f:for>
+							</jve:l10nFalImg>
+						</f:else>
 
-	</div>
+					</f:if>
 
-
-	<f:comment>
-		<!-- =========================================================================================================================== -->
-		<!-- Map -->
-		<!-- =========================================================================================================================== -->
-	</f:comment>
-	<f:if condition="{event.location.lng}">
-		<div class="tab-pane {tabMapActive}" id="jv_events_map" >
-			<h2><f:translate key="tx_jvevents_domain_model_event.details.tab.map" /></h2>
-			<f:render partial="GoogleMapsAllplan" arguments="{addresses: {0:event.location}, settings:settings}" />
-		</div>
-	</f:if>
-
-
-	<f:comment>
-		<!-- =========================================================================================================================== -->
-		<!-- Contact -->
-		<!-- =========================================================================================================================== -->
-	</f:comment>
-	<div class="tab-pane {tabContactActive}" id="jv_events_contact">
-
-
-		<div class="row">
-			<div class="col-xs-12 col-sm-8">
-
-				<h2><f:translate key="tx_jvevents_domain_model_event.details.tab.contact" /></h2>
-
-				<f:if condition="{event.organizer.name}">
-					<div class="row">
-						<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_organizer.name" />:</strong></div>
-						<div class="col-md-10">{event.organizer.name}</div>
-					</div>
-				</f:if>
-				<f:if condition="{event.location.email}">
-					<f:then>
-						<div class="row">
-							<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_location.email" />:</strong></div>
-							<div class="col-md-10"><f:link.email class="email" email="{event.location.email}" /></div>
-						</div>
-					</f:then>
-					<f:else>
-						<f:if condition="{event.organizer.email}">
-							<div class="row">
-								<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_organizer.email" />:</strong></div>
-								<div class="col-md-10"><f:link.email class="email" email="{event.organizer.email}" /></div>
-							</div>
-						</f:if>
-					</f:else>
-				</f:if>
-
-				<f:if condition="{event.location.phone}">
-					<f:then>
-						<div class="row">
-							<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_location.phone" />:</strong></div>
-							<div class="col-md-10">{event.location.phone}</div>
-						</div>
-					</f:then>
-					<f:else>
-						<f:if condition="{event.organizer.phone}">
-							<div class="row">
-								<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_organizer.phone" />:</strong></div>
-								<div class="col-md-10">{event.organizer.phone}</div>
-							</div>
-						</f:if>
-					</f:else>
-				</f:if>
-
-				<f:if condition="{event.location.link}">
-					<f:then>
-						<div class="row">
-							<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_location.link" />:</strong></div>
-							<div class="col-md-10"><f:link.external uri="{event.location.link}" target="_blank">{event.location.link}</f:link.external></div>
-						</div>
-					</f:then>
-					<f:else>
-						<f:if condition="{event.organizer.link}">
-							<div class="row">
-								<div class="col-md-2"><strong><f:translate key="tx_jvevents_domain_model_organizer.link" />:</strong></div>
-								<div class="col-md-10"><f:link.external uri="{event.organizer.link}" target="_blank">{event.organizer.link}</f:link.external></div>
-							</div>
-						</f:if>
-					</f:else>
-				</f:if>
-
-
-
+				</div>
 			</div>
-			<div class="col-xs-12 col-sm-4 logo">
 
-				<f:if condition="{event.teaserImage}">
-					<f:then>
-						<f:image src="{event.teaserImage.uid}" alt="{event.teaserImage.alternative}" title="{event.teaserImage.title}" maxWidth="300" maxHeight="220" treatIdAsReference="true" />
-					</f:then>
-					<f:else>
-						<jve:l10nFalImg event="{event}" tableFieldName="teaser_image">
-							<f:for each="{l10nfalimg}" as="falimage" iteration="i">
-								<f:if condition="{i.index} == 0">
-									<f:image
-										src="{falimage._file.publicUrl}"
-										title="{falimage._file.title}"
-										alt="{falimage._file.alternative}"
-										maxWidth="600"
-										maxHeight="400"
-										class="resizeable"
-										treatIdAsReference="1"
-									/>
-								</f:if>
-							</f:for>
-						</jve:l10nFalImg>
-					</f:else>
 
-				</f:if>
 
-			</div>
+
+
 		</div>
 
-	</div>
 
-	<div class="tab-pane" id="jv_events_debug">
-		<f:if condition="{settings.debug} > 0">
-			<f:render partial="Event/Single/MicroFormat" arguments="{event: event, settings: settings}"/>
+		<f:comment>
+			<!-- =========================================================================================================================== -->
+			<!-- Map -->
+			<!-- =========================================================================================================================== -->
+		</f:comment>
+		<f:if condition="{event.location.lng}">
+			<div class="tab-pane {tabMapActive} p-0" id="jv_events_map" >
+				<f:render partial="GoogleMapsAllplan" arguments="{addresses: {0:event.location}, settings:settings}" />
+			</div>
 		</f:if>
-	</div>
 
+
+		<f:comment>
+			<!-- =========================================================================================================================== -->
+			<!-- Contact -->
+			<!-- =========================================================================================================================== -->
+		</f:comment>
+		<div class="tab-pane {tabContactActive} p-3" id="jv_events_contact">
+
+
+			<div class="row">
+				<div class="col-12 col-md-8">
+
+					<f:if condition="{event.organizer.name}">
+						<div class="row">
+							<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_organizer.name" />:</strong></div>
+							<div class="col-md-8">{event.organizer.name}</div>
+						</div>
+					</f:if>
+					<f:if condition="{event.location.email}">
+						<f:then>
+							<div class="row">
+								<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_location.email" />:</strong></div>
+								<div class="col-md-8"><f:link.email class="email" email="{event.location.email}" /></div>
+							</div>
+						</f:then>
+						<f:else>
+							<f:if condition="{event.organizer.email}">
+								<div class="row">
+									<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_organizer.email" />:</strong></div>
+									<div class="col-md-8"><f:link.email class="email" email="{event.organizer.email}" /></div>
+								</div>
+							</f:if>
+						</f:else>
+					</f:if>
+
+					<f:if condition="{event.location.phone}">
+						<f:then>
+							<div class="row">
+								<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_location.phone" />:</strong></div>
+								<div class="col-md-8">{event.location.phone}</div>
+							</div>
+						</f:then>
+						<f:else>
+							<f:if condition="{event.organizer.phone}">
+								<div class="row">
+									<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_organizer.phone" />:</strong></div>
+									<div class="col-md-8">{event.organizer.phone}</div>
+								</div>
+							</f:if>
+						</f:else>
+					</f:if>
+
+					<f:if condition="{event.location.link}">
+						<f:then>
+							<div class="row">
+								<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_location.link" />:</strong></div>
+								<div class="col-md-8"><f:link.external uri="{event.location.link}" target="_blank">{event.location.link}</f:link.external></div>
+							</div>
+						</f:then>
+						<f:else>
+							<f:if condition="{event.organizer.link}">
+								<div class="row">
+									<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_organizer.link" />:</strong></div>
+									<div class="col-md-8"><f:link.external uri="{event.organizer.link}" target="_blank">{event.organizer.link}</f:link.external></div>
+								</div>
+							</f:if>
+						</f:else>
+					</f:if>
+					<br />
+					<br />
+
+
+				</div>
+				<div class="col-12 col-md-4 logo">
+
+					<f:if condition="{event.teaserImage}">
+						<f:then>
+							<f:image src="{event.teaserImage.uid}"  class="d-block w-100 h-auto img-float rounded shadow-lg" alt="{event.teaserImage.alternative}" title="{event.teaserImage.title}" maxWidth="300" maxHeight="220" treatIdAsReference="true" />
+						</f:then>
+						<f:else>
+							<jve:l10nFalImg event="{event}" tableFieldName="teaser_image">
+								<f:for each="{l10nfalimg}" as="falimage" iteration="i">
+									<f:if condition="{i.index} == 0">
+										<f:image
+											src="{falimage._file.publicUrl}"
+											title="{falimage._file.title}"
+											alt="{falimage._file.alternative}"
+											maxWidth="600"
+											maxHeight="400"
+											class="d-block w-100 h-auto img-float rounded shadow-lg"
+											treatIdAsReference="1"
+										/>
+									</f:if>
+								</f:for>
+							</jve:l10nFalImg>
+						</f:else>
+
+					</f:if>
+
+				</div>
+			</div>
+
+		</div>
+
+		<div class="tab-pane" id="jv_events_debug">
+			<f:if condition="{settings.debug} > 0">
+				<f:render partial="Event/Single/MicroFormat" arguments="{event: event, settings: settings}"/>
+			</f:if>
+		</div>
+
+	</div>
 </div>
 
-<script type="application/javascript">
-	eventId = {event.uid} ;
-
-</script>
 
 <script type="application/ld+json">
 	<f:render partial="Event/Single/MicroFormat" arguments="{event: event, settings: settings}"/>

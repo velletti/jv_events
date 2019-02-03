@@ -21,6 +21,7 @@ CREATE TABLE tx_jvevents_domain_model_event (
 	canceled tinyint(1) unsigned DEFAULT '0' NOT NULL,
 	start_date int(11) DEFAULT '0' NOT NULL,
 	start_time int(11) DEFAULT '0' NOT NULL,
+	entry_time int(11) DEFAULT '0' NOT NULL,
 	end_date int(11) DEFAULT '0' NOT NULL,
 	end_time int(11) DEFAULT '0' NOT NULL,
 	subevent int(11) DEFAULT '0' NOT NULL,

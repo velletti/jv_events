@@ -398,11 +398,26 @@ class AjaxController extends BaseController
         /** @var \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
         $renderer = $this->getEmailRenderer($templatePath = '', '/Ajax/EventMenu' );
         $layoutPath = GeneralUtility::getFileAbsFileName("typo3conf/ext/jv_events/Resources/Private/Layouts/");
+
+        // Fallback to Partial Tango, as this actually is the only one using this.
+        if( ! $this->settings['LayoutSingle'] ) {
+            $this->settings['LayoutSingle'] = '5Tango' ;
+        }
+
         $renderer->setLayoutRootPaths(array(0 => $layoutPath));
 
         $renderer->assign('output' , $output) ;
+        $this->settings['Ajax']['Action'] = "Main" ;
         $renderer->assign('settings' , $this->settings ) ;
-        $return = str_replace( array( "\n" , "\r" , "\t" , "    " , "   " , "  ") , array("" , "" , "" , " " , " " , " " ) , trim( $renderer->render() )) ;
+        $returnMain = str_replace( array( "\n" , "\r" , "\t" , "    " , "   " , "  ") , array("" , "" , "" , " " , " " , " " ) , trim( $renderer->render() )) ;
+
+        $this->settings['Ajax']['Action'] = "Single" ;
+        $renderer->assign('settings' , $this->settings ) ;
+        $returnSingle = str_replace( array( "\n" , "\r" , "\t" , "    " , "   " , "  ") , array("" , "" , "" , " " , " " , " " ) , trim( $renderer->render() )) ;
+
+
+        $return = array( "main" => $returnMain , "single" => $returnSingle ) ;
+
         ShowAsJsonArrayUtility::show( array( 'values' => $output , 'html' => $return ) ) ;
         die;
     }

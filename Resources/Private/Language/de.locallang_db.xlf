@@ -186,6 +186,15 @@
 			<source>Start Time</source>
 			<target>Start Zeit</target>
 		</trans-unit>
+
+		<trans-unit id="tx_jvevents_domain_model_event.entry_time">
+            <source>Opening time</source>
+            <target>Einlass ab</target>
+        </trans-unit>
+        <trans-unit id="tx_jvevents_domain_model_event.entry_time_help">
+            <source>Just put a time to this field, if your participants should or may come before the official start time</source>
+            <target>Diese Uhrzeit nur ausfüllen, wenn ein Einlass vor der eigentlichen Startzeit möglich oder gar gewünscht ist</target>
+        </trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.store_in_citrix" approved="yes">
 			<source>Store In Citrix</source>
 			<target>Store In Citrix</target>

@@ -24,7 +24,7 @@
 									</numIndex>
 									<numIndex index="2">
 										<numIndex index="0">Edit / Create Events</numIndex>
-										<numIndex index="1">Event->new;Event->show;Event->create;Event->edit;Event->update;Event->delete;Event->copy;Event->disable;</numIndex>
+										<numIndex index="1">Event->new;Event->show;Event->create;Event->edit;Event->update;Event->delete;Event->copy;Event->cancel;</numIndex>
 									</numIndex>
 									<numIndex index="3">
 										<numIndex index="0">Edit / Create Locations</numIndex>

@@ -1,66 +1,8 @@
 <f:layout name="Ajax" />
 
 <f:section name="main">
-    <div class="d-inline-flex float-left">
 
-
-        <f:if condition="{output.feuser.uid > 0}">
-            <f:then>
-                <!--  ################# the second nav  loaded via AJAX to #jvEventsAjaxMenu  -for users  ##################### //-->
-                <a class="nav-link " href="#">
-                    <button class="btn btn-outline-primary btn-xs rounded-circle" href="#">
-                        <i class="fas fa-wrench "></i>
-                    </button>
-                </a>
-                <f:if condition="{output.event.hasAccess}">
-                    <f:link.action pageUid="{settings.pageIds.editEvent}" class="nav-link" title="Edit Event" action="edit" controller="Event" arguments="{event: output.event.eventId}">
-                        <button class="btn btn-outline-primary btn-xs rounded-circle" href="#">
-                            <i class="fas fa-edit "></i>
-                        </button>
-                        <span class="d-none d-md-inline-block">Event</span>
-                    </f:link.action>
-                </f:if>
-                <f:if condition="{output.location.hasAccess} && {output.mode} != 'editLocation'">
-                    <f:link.action pageUid="{settings.pageIds.editLocation}" class="nav-link" title="Edit Location" action="edit" controller="Location" arguments="{location: output.location.locationId}">
-                        <button class="btn btn-outline-primary btn-xs rounded-circle" href="#">
-                            <i class="fas fa-map-marked-alt "></i>
-                        </button>
-                        <span class="d-none d-md-inline-block">Location</span>
-                    </f:link.action>
-                </f:if>
-                <f:if condition="{output.organizer.hasAccess}">
-                    <f:link.action pageUid="{settings.pageIds.editOrganizer}" class="nav-link" title="Edit organizer" action="edit" controller="Organizer" arguments="{organizer: output.organizer.organizerId}">
-                        <button class="btn btn-outline-primary btn-xs rounded-circle" href="#">
-                            <i class="fas fa-user "></i>
-                        </button>
-                        <span class="d-none d-md-inline-block">Veranstalter</span>
-                    </f:link.action>
-                </f:if>
-                <f:if condition="{output.feuser.isOrganizer}">
-                    <f:link.action pageUid="{settings.pageIds.editEvent}" class="nav-link" title="New Event" action="new" controller="Event" arguments="{organizer: output.organizer.organizerId}">
-                        <button class="btn btn-outline-primary btn-xs rounded-circle" href="#">
-                            <i class="fas fa-calendar-plus "></i>
-                        </button>
-                        <span class="d-none d-md-inline-block">Neuer Termin</span>
-                    </f:link.action>
-                </f:if>
-
-                <a class="nav-link flex-column" href="#">
-                    <button class="btn btn-outline-danger btn-xs rounded-circle">
-                        <i class="fas fa-sign-out-alt "></i>
-                    </button>
-                    <span class="d-none d-sm-inline-block"> Logout</span>
-                </a>
-            </f:then>
-
-
-            <f:else>
-                <!--  ################# the second nav  loaded via AJAX to #jvEventsAjaxMenu  -for NON users  ##################### //-->
-                <f:debug>{output}</f:debug>
-            </f:else>
-
-        </f:if>
-    </div>
+    <f:render partial="Ajax/Partial{settings.LayoutSingle}/Event{settings.Ajax.Action}Menu" arguments="{_all}" />
 
 </f:section>
 
