@@ -153,6 +153,7 @@ class EventBackendController extends BaseController
 		if ( $this->request->hasArgument("registrant")) {
 		    $regId = $this->request->getArgument("registrant") ;
 
+
 		    if( $regId > 0 ) {
 		        /** @var \JVE\JvEvents\Domain\Model\Registrant $registrant */
                 $registrant = $this->registrantRepository->findByUid($regId) ;
@@ -162,6 +163,29 @@ class EventBackendController extends BaseController
                     $event = $this->eventRepository->findByUidAllpages($registrant->getEvent() ) ;
 
                     if( $event ) {
+
+                        $pid = $event[0]->getRegistrationFormPid() ;
+                        $lng = $event[0]->getSysLanguageUid() ;
+                        $typoScript = \JVE\JvEvents\Utility\TyposcriptUtility::loadTypoScriptFromScratch( $pid , "tx_jvevents_events" , array( "[globalVar = GP:L = " . intval($lng ) . "]" )) ;
+
+
+                        $this->settings = array_merge( $this->settings ,  $typoScript['settings'] ) ;
+                        $this->settings['pageId'] = $pid ;
+                        $this->settings['sys_language_uid'] = $lng ;
+
+                        // ***** NEEDS a FIX !!! ********************
+                        // ToDo : J.v. 4.2.2019 Keine Ahnung wie das früher jemals funktioniert hat ?
+                        // das Layout steht nur in dem Plug, an das komme ich aber vom Backend so nicht dran ..
+
+
+                        if( !$this->settings['LayoutRegister'] ) {
+                            $this->settings['LayoutRegister'] = "2Allplan" ;
+                        }
+                        // echo "<pre>" ;
+                        // var_dump($this->settings) ;
+                        // die;
+                        // ***** NEEDS a FIX !!! ********************
+
                         $registrant->setConfirmed("1") ;
                         $name = trim( $registrant->getFirstName() . " " . $registrant->getLastName())  ;
                         if( strlen( $name ) < 3 ) {
@@ -187,7 +211,6 @@ class EventBackendController extends BaseController
      *
      * will output json Resonse
      */
-    // public function confirmAction(\JVE\JvEvents\Domain\Model\Registrant $registrant )
     public function resendCitrixAction()
     {
         if( $this->settings['EmConfiguration']['enableCitrix'] < 1 ) {

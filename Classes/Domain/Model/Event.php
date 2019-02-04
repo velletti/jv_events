@@ -53,7 +53,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
      * @var int
      */
-    protected $sys_language_uid ;
+    protected $sysLanguageUid ;
 
 
     /**
@@ -2196,15 +2196,15 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     public function getSysLanguageUid()
     {
-        return $this->sys_language_uid;
+        return $this->sysLanguageUid;
     }
 
     /**
-     * @param int $sys_language_uid
+     * @param int $sysLanguageUid
      */
-    public function setSysLanguageUid($sys_language_uid)
+    public function setSysLanguageUid($sysLanguageUid)
     {
-        $this->sys_language_uid = $sys_language_uid;
+        $this->sysLanguageUid = $sysLanguageUid;
     }
 
     /**

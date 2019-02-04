@@ -8,6 +8,21 @@
 
 		</h2>
 
+		<f:if condition="{registrant.confirmed}==1">
+			<f:if condition="{event.introtextRegistrantConfirmed}">
+				<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
+					<f:format.nl2br>{event.introtextRegistrantConfirmed}</f:format.nl2br>
+				</p>
+			</f:if>
+		</f:if>
+		<f:if condition="{registrant.confirmed}==0">
+			<f:if condition="{event.introtextRegistrant}">
+				<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
+					<f:format.nl2br>{event.introtextRegistrant}</f:format.nl2br>
+				</p>
+			</f:if>
+		</f:if>
+
 		<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
 			<f:if condition="{event.allDay}">
 				<f:then>
@@ -34,6 +49,17 @@
 					<br />
 				</f:then>
 			</f:if>
+			<f:if condition="{event.price}">
+				<f:then>
+					<f:translate key="tx_jvevents_domain_model_event.price" />:
+					<f:format.currency>{event.price}</f:format.currency>
+					<f:if condition="{event.priceReducedText}">
+						/ <f:format.currency>{event.priceReduced}</f:format.currency> {event.priceReducedText}
+					</f:if>
+					<br/>
+				</f:then>
+			</f:if>
+			<br />
 			{event.location.name}<br />
 			{event.location.streetAndNr}<br />
 			{event.location.zip} {event.location.city}<br />
@@ -59,24 +85,11 @@
 			<br />
 		</f:if>
 
-		<f:if condition="{registrant.confirmed}==1">
-			<f:if condition="{event.introtextRegistrantConfirmed}">
-				<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
-					<f:format.nl2br>{event.introtextRegistrantConfirmed}</f:format.nl2br>
-				</p>
-			</f:if>
-		</f:if>
-		<f:if condition="{registrant.confirmed}==0">
-			<f:if condition="{event.introtextRegistrant}">
-				<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
-					<f:format.nl2br>{event.introtextRegistrant}</f:format.nl2br>
-				</p>
-			</f:if>
-		</f:if>
+
 		<f:if condition="{event.organizer.registrationInfo}">
-				<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
-					<f:format.nl2br>{event.organizer.registrationInfo}</f:format.nl2br>
-				</p>
+			<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
+				<f:format.html>{event.organizer.registrationInfo}</f:format.html>
+			</p>
 		</f:if>
 
 
@@ -131,6 +144,9 @@
 		</f:for>
 	</f:then>
 </f:if>
+<f:if condition="{event.price}"><f:then>
+<f:translate key="tx_jvevents_domain_model_event.price" />: <f:format.currency>{event.price}</f:format.currency><f:if condition="{event.priceReducedText}"> / <f:format.currency>{event.priceReduced}</f:format.currency> {event.priceReducedText}</f:if>
+</f:then></f:if>
 {event.name}
 {event.location.name}
 {event.location.streetAndNr}
@@ -155,9 +171,11 @@ Weitere gebuchte Termine:
 *********************************
 </f:if>
 </f:if>
+
+</f:if>
 <f:if condition="{event.organizer.registrationInfo}">
-{event.organizer.registrationInfo}
-*********************************
+	{event.organizer.registrationInfo}
+	*********************************
 </f:if>
 
 {f:translate(key: 'register_head_participant_data' , default:'Participants Data')}
