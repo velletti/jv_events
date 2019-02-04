@@ -15,7 +15,9 @@
 				</f:then>
 				<f:else>
 					{event.startDate -> f:format.date(format:"d.m.Y")} : {event.startTime -> event:format.date( format:"H:i")}<f:if condition="{event.endTime}"> - {event.endTime -> event:format.date( format:"H:i")}</f:if><br />
+					<f:if condition="{event.entryTime}"><f:translate key="tx_jvevents_domain_model_event.entry_time" default="Entry starting at: " /> {event.entryTime -> event:format.date( format:"H:i")}</f:if><br />
 				</f:else>
+
 			</f:if>
 			<f:if condition="{subevents}">
 				<f:then>
@@ -71,7 +73,11 @@
 				</p>
 			</f:if>
 		</f:if>
-
+		<f:if condition="{event.organizer.registrationInfo}">
+				<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
+					<f:format.nl2br>{event.organizer.registrationInfo}</f:format.nl2br>
+				</p>
+		</f:if>
 
 
 		<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
@@ -117,6 +123,7 @@
 	</f:then>
 	<f:else>
 <f:format.date format="d.m.Y">{event.startDate}</f:format.date>
+<f:if condition="{event.entryTime}"><f:translate key="tx_jvevents_domain_model_event.entry_time" default="Entry starting at: " /> {event.entryTime -> event:format.date( format:"H:i")}</f:if>
 <f:if condition="{subevents}">
 	<f:then>
 		<f:for each="{subevents}" as="subevent" iteration="i">
@@ -140,7 +147,7 @@ Weitere gebuchte Termine:
 <f:if condition="{event.introtextRegistrantConfirmed}">
 {event.introtextRegistrantConfirmed}
 *********************************
-</f:if>
+
 </f:if>
 <f:if condition="{registrant.confirmed}==0">
 <f:if condition="{event.introtextRegistrant}">
@@ -148,6 +155,11 @@ Weitere gebuchte Termine:
 *********************************
 </f:if>
 </f:if>
+<f:if condition="{event.organizer.registrationInfo}">
+{event.organizer.registrationInfo}
+*********************************
+</f:if>
+
 {f:translate(key: 'register_head_participant_data' , default:'Participants Data')}
 ID: {registrant.uid} | <f:format.date format="d.m.Y">{registrant.created}</f:format.date>
 *********************************

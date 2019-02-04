@@ -19,17 +19,17 @@ $returnArray = array(
 			'starttime' => 'starttime',
 			'endtime' => 'endtime',
 		),
-		'searchFields' => 'name,email,phone,sales_force_user_id,images,description,organizer_category,',
+		'searchFields' => 'name,email,phone,sales_force_user_id,images,description,organizer_category,registration_info,',
 		'iconfile' =>  'EXT:jv_events/Resources/Public/Icons/tx_jvevents_domain_model_organizer.gif'
 	),
 	'interface' => array(
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, email, link, phone, sales_force_user_id, images, description, organizer_category, tags',
+		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, email, link, phone, sales_force_user_id, images, description, organizer_category, tags,registration_info,',
 	),
 	'types' => array(
 		'1' => array('showitem' => '--palette--;;data, --div--;Relations, --palette--;;relations, --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, --palette--;;access,'),
 	),
 	'palettes' => array(
-		'data' => array('showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, --linebreak--,name, --linebreak--,email, --linebreak--,link, --linebreak--,phone, --linebreak--,sales_force_user_id, --linebreak--,description,'),
+		'data' => array('showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, --linebreak--,name, --linebreak--,email, --linebreak--,link, --linebreak--,phone, --linebreak--,sales_force_user_id, --linebreak--,description,--linebreak--,registration_info,'),
 		'relations' => array('showitem' => 'teaser_image, --linebreak--,images, --linebreak--,organizer_category, --linebreak--, tags,'),
 	    'access' => array('showitem' => ' starttime, endtime, --linebreak--,access_users,--linebreak--, access_groups,')
     ),
@@ -264,6 +264,19 @@ $returnArray = array(
                 ],
             ],
 		),
+        'registration_info' => array(
+            'exclude' => 1,
+            'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_organizer.registration_info',
+            'config' => [
+                'type' => 'text',
+                'enableRichtext' => true,
+                'fieldControl' => [
+                    'fullScreenRichtext' => [
+                        'disabled' => false,
+                    ],
+                ],
+            ],
+        ),
         'access_groups' => array(
             'exclude' => 0,
             'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_organizer.accessGroups',

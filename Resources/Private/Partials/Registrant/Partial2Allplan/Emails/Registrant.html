@@ -12,6 +12,7 @@
 				</f:then>
 				<f:else>
 					{event.startDate -> f:format.date(format:"d.m.Y")} : {event.startTime -> event:format.date( format:"H:i")}<f:if condition="{event.endTime}"> - {event.endTime -> event:format.date( format:"H:i")}</f:if> <br />
+					<f:if condition="{event.entryTime}"><f:translate key="tx_jvevents_domain_model_event.entry_time" default="Entry starting at: " /> {event.entryTime -> event:format.date( format:"H:i")}</f:if><br />
 				</f:else>
 			</f:if>
 			<f:if condition="{subevents}">
@@ -104,22 +105,23 @@
 
 	</f:then>
 	<f:else>
- <f:format.date format="d.m.Y">{event.startDate}</f:format.date>
+<f:format.date format="d.m.Y">{event.startDate}</f:format.date>
+<f:if condition="{event.entryTime}"><f:translate key="tx_jvevents_domain_model_event.entry_time" default="Entry starting at: " /> {event.entryTime -> event:format.date( format:"H:i")}</f:if>
 <f:if condition="{subevents}">
-	<f:then>
-		<f:for each="{subevents}" as="subevent" iteration="i">
-			<f:if condition="{subevent.allDay}">
-				<f:then>
-					{subevent.startDate -> f:format.date(format:"d.m.Y")} }<br />
-				</f:then>
-				<f:else>
-					{subevent.startDate -> f:format.date(format:"d.m.Y")} : {subevent.startTime -> event:format.date( format:"H:i")}<f:if condition="{subevent.endTime}"> - {subevent.endTime -> event:format.date( format:"H:i")}</f:if><br />
-				</f:else>
-			</f:if>
-
-		</f:for>
-	</f:then>
+<f:then>
+<f:for each="{subevents}" as="subevent" iteration="i">
+<f:if condition="{subevent.allDay}">
+<f:then>
+{subevent.startDate -> f:format.date(format:"d.m.Y")} }<br />
+</f:then>
+<f:else>
+{subevent.startDate -> f:format.date(format:"d.m.Y")} : {subevent.startTime -> event:format.date( format:"H:i")}<f:if condition="{subevent.endTime}"> - {subevent.endTime -> event:format.date( format:"H:i")}</f:if><br />
+</f:else>
 </f:if>
+</f:for>
+</f:then>
+</f:if>
+
 {event.name}
 {event.location.name}
 {event.location.streetAndNr}

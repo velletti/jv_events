@@ -324,6 +324,10 @@
 			<source>Start Time</source>
 			<target>Startzeit</target>
 		</trans-unit>
+        <trans-unit id="tx_jvevents_domain_model_event.entry_time">
+            <source>Opening time</source>
+            <target>Einlass ab</target>
+        </trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.time" approved="yes">
 			<source>Time</source>
 			<target>Zeit</target>

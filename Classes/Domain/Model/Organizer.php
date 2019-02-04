@@ -110,6 +110,14 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $description = '';
 
     /**
+     * registrationInfo
+     *
+     * @var string
+     */
+    protected $registrationInfo = '';
+
+
+    /**
      * hidden
      *
      * @var integer
@@ -299,6 +307,22 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function setDescription($description)
     {
         $this->description = $description;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRegistrationInfo()
+    {
+        return $this->registrationInfo;
+    }
+
+    /**
+     * @param string $registrationInfo
+     */
+    public function setRegistrationInfo($registrationInfo)
+    {
+        $this->registrationInfo = $registrationInfo;
     }
     
 

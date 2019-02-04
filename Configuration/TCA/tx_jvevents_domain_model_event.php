@@ -33,13 +33,17 @@ $returnArray = array(
 		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, event_type, teaser, description, images, files, all_day, start_date, start_time, end_date, end_time, access, with_registration, registration_until, registration_access, store_in_citrix, citrix_uid, store_in_sales_force, marketing_process_id, sales_force_record_type, sales_force_event_id, sales_force_session_id, available_seats,available_waiting_seats, registered_seats, unconfirmed_seats, notify_organizer, notify_registrant, subject_organizer, text_organizer, subject_registrant,introtext_registrant, text_registrant, need_to_confirm, is_recurring, frequency, freq_exception, is_exception_for, organizer, location, registrant, event_category, tags, url,price,',
 	),
 	'types' => array(
-		'0' => array('showitem' => 'event_type,url,--palette--;;dates,--palette--;;infos,
+		'0' => array('showitem' => 'event_type,url,--palette--;LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.entry_time_help;entryTime,
+		   --palette--;;infos,
 		--div--;Advanced, --palette--;;language, --palette--;;advanced, --palette--;;frequent, 
+		   price,--linebreak--,--palette--;LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.priceReducedHeader;priceReduced,
 		--div--;Relations, --palette--;;relations,
 		--div--;Files, teaser_image, files,
 		--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, --palette--;;access,'),
-		'2' => array('showitem' => 'event_type,--palette--;;dates,--palette--;;infos,price,--linebreak--,--palette--;LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.priceReducedHeader;priceReduced,description,
+		'2' => array('showitem' => 'event_type,--palette--;;dates,--palette--;LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.entry_time_help;entryTime,
+		   --palette--;;infos,description,
 		--div--;Advanced, --palette--;;language, --palette--;;advanced, --palette--;;frequent,
+		  price,--linebreak--,--palette--;LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.priceReducedHeader;priceReduced,
 		--div--;Relations, --palette--;;relations,
 		--div--;Files, teaser_image,images, files,
 		--div--;Registration, --palette--;;register,
@@ -48,7 +52,8 @@ $returnArray = array(
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),
-		'dates' => array('showitem' => 'all_day,--linebreak--,start_date,end_date,--linebreak--,start_time,end_time,--linebreak--,entry_time,--linebreak--,subevent'),
+		'dates' => array('showitem' => 'all_day,--linebreak--,start_date,end_date,--linebreak--,start_time,end_time,--linebreak--,subevent'),
+		'entryTime' => array('showitem' => 'entry_time'),
 		'infos' => array('showitem' => 'name, --linebreak--, teaser ,'),
 		'priceReduced' => array('showitem' => 'price_reduced,--linebreak--, price_reduced_text,'),
 		'relations' => array('showitem' => 'organizer, --linebreak--, location, --linebreak--,event_category, --linebreak--,tags '),
@@ -211,7 +216,7 @@ $returnArray = array(
 			),
 		),
         'price' => array(
-            'exclude' => 0,
+            'exclude' => 1,
             'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.price',
             'config' => array(
                 'type' => 'input',
@@ -220,7 +225,7 @@ $returnArray = array(
             ),
         ),
         'price_reduced' => array(
-            'exclude' => 0,
+            'exclude' => 1,
             'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.priceReduced',
             'config' => array(
                 'type' => 'input',
@@ -229,7 +234,7 @@ $returnArray = array(
             ),
         ),
         'price_reduced_text' => array(
-            'exclude' => 0,
+            'exclude' => 1,
             'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.priceReducedText',
             'config' => array(
                 'type' => 'input',

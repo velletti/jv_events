@@ -15,6 +15,8 @@
                 <source>Description</source>
             </trans-unit>
 
+
+
             <trans-unit id="tx_jvevents_domain_model_category.type">
                 <source>Type</source>
             </trans-unit>
@@ -270,6 +272,9 @@
             </trans-unit>
             <trans-unit id="tx_jvevents_domain_model_organizer.description">
                 <source>Description</source>
+            </trans-unit>
+             <trans-unit id="tx_jvevents_domain_model_organizer.registration_info">
+                <source>Additional Description, shown in Registration e-Mail</source>
             </trans-unit>
             <trans-unit id="tx_jvevents_domain_model_organizer.email">
                 <source>Email</source>

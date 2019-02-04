@@ -258,7 +258,7 @@
 			<source>Start Time</source>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.entry_time">
-            <source>Opening time</source>
+            <source>Entry starting at</source>
         </trans-unit>
 
 		<trans-unit id="tx_jvevents_domain_model_event.time">

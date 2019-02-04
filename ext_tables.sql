@@ -165,6 +165,8 @@ CREATE TABLE tx_jvevents_domain_model_organizer (
 	images int(11) unsigned NOT NULL default '0',
 	teaser_image int(11) unsigned NOT NULL default '0',
 	description text NOT NULL,
+	registration_info text NOT NULL,
+
 	access_groups text NOT NULL,
 	access_users text NOT NULL,
 	organizer_category int(11) unsigned DEFAULT '0' NOT NULL,

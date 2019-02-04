@@ -168,12 +168,27 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     protected $startTimeFE = null;
 
+
     /**
      * End Time of this event. replacement for endTime but FE = for frontend Editing
      *
      * @var string
      */
     protected $endTimeFE = null;
+
+    /**
+     * Start Time of this event
+     *
+     * @var int
+     */
+    protected $entryTime = 0;
+
+    /**
+     * End Time of this event. replacement for endTime but FE = for frontend Editing
+     *
+     * @var string
+     */
+    protected $entryTimeFE = null;
 
     /**
      * Tag list , comma separated of this event. replacement for tags Object Storage  but FE = for frontend Editing
@@ -2139,6 +2154,39 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         $this->endTimeFE = $endTimeFE;
     }
+
+    /**
+     * @return int
+     */
+    public function getEntryTime()
+    {
+        return $this->entryTime;
+    }
+
+    /**
+     * @param int $entryTime
+     */
+    public function setEntryTime($entryTime)
+    {
+        $this->entryTime = $entryTime;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEntryTimeFE()
+    {
+        return $this->entryTimeFE;
+    }
+
+    /**
+     * @param string $entryTimeFE
+     */
+    public function setEntryTimeFE($entryTimeFE)
+    {
+        $this->entryTimeFE = $entryTimeFE;
+    }
+
 
 
 

@@ -79,6 +79,14 @@
 
 		</fieldset>
 
+		<f:if condition="{event.organizer.registrationInfo}">
+			<fieldset class="form-group">
+				<div class="col-sm-12">
+					<f:format.html>{event.organizer.registrationInfo}</f:format.html>
+				</div>
+			</fieldset>
+		</f:if>
+
 		<div class="clearfix text-right col-xs-12">
 			<a class="button-orange-filled" onclick="jv_events_submit();return false;">
 				{f:translate(key: 'register_send' , default:'Register')}
