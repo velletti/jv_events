@@ -42,6 +42,22 @@ function jv_events_init_AjaxMenu() {
                         $(function () {
                             $('#jv-events-cancelEvent').bootstrapToggle();
                         })
+                        $('#jv-events-cancelEvent').change(function() {
+                            $(this).parent().addClass('blink') ;
+                            if( $(this).prop('checked')) {
+                                $(this).prop('checked' , '' ) ;
+                                $('#jv-events-cancelEvent-info').addClass('fade slow') ;
+                                $('#jv-events-cancelEvent-info').addClass('d-none') ;
+                                $('#jv-events-cancelEvent-info').removeClass('in') ;
+                            } else {
+                                $(this).prop('checked' , 'checked' ) ;
+                                $('#jv-events-cancelEvent-info').addClass('in') ;
+                                $('#jv-events-cancelEvent-info').removeClass('d-none') ;
+                                $('#jv-events-cancelEvent-info').removeClass('fade') ;
+                            }
+                            window.location.href = $("#jv-events-cancelEvent-link").href() ;
+
+                        })
                     }
                 }
 
@@ -50,21 +66,7 @@ function jv_events_init_AjaxMenu() {
                 $('#jvEventsAjaxMenu').removeClass('show').addClass('d-none') ;
             }
         })
-        $('#jv-events-cancelEvent').change(function() {
 
-            if( $(this).prop('checked')) {
-                $(this).prop('checked' , '' ) ;
-                $('#jv-events-cancelEvent-info').addClass('fade slow') ;
-                $('#v-events-cancelEvent-info').addClass('d-none') ;
-                $('#v-events-cancelEvent-info').removeClass('in') ;
-            } else {
-                $(this).prop('checked' , 'checked' ) ;
-                $('#v-events-cancelEvent-info').addClass('in') ;
-                $('#v-events-cancelEvent-info').removeClass('d-none') ;
-                $('#v-events-cancelEvent-info').removeClass('fade') ;
-            }
-
-        })
     }
 }
 

@@ -304,7 +304,49 @@ class EventController extends BaseController
             $this->view->assign('event', FALSE );
         }
     }
-    
+
+    /**
+     * action cancel - will toogle the canceled status
+     *
+     * @param \JVE\JvEvents\Domain\Model\Event $event
+     * @ignorevalidation $event
+     * @return void
+     */
+    public function cancelAction(\JVE\JvEvents\Domain\Model\Event $event)
+    {
+        if($this->isUserOrganizer() ) {
+            if( $this->hasUserAccess( $event->getOrganizer() )) {
+                if( $event->getCanceled() ) {
+                    $event->setCanceled( '0' ) ;
+                } else {
+                    $event->setCanceled( '1' ) ;
+                }
+
+                try {
+                    $this->eventRepository->update($event) ;
+
+                    // got from EM Settings
+                    $clearCachePids = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode("," , $this->settings['EmConfiguration']['clearCachePids']) ;
+                    if( is_array($clearCachePids) && count( $clearCachePids) > 0 ) {
+                        $clearCachePids[] = $GLOBALS['TSFE']->id ;
+                        $this->cacheService->clearPageCache( $clearCachePids );
+                        $this->addFlashMessage('The object was updated and Cache of following pages are cleared: ' . implode("," , $clearCachePids), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+                    } else {
+                        $this->addFlashMessage('The object was updated.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+                    }
+
+                } catch ( \Exception $e ) {
+                    $this->addFlashMessage($e->getMessage() , 'Error', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+
+                }
+                $this->persistenceManager->persistAll() ;
+            }
+
+
+        }
+
+        $this->redirect('show' ,null , null , array("event" => $event )) ;
+    }
     /**
      * action update
      *

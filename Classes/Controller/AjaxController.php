@@ -223,7 +223,8 @@ class AjaxController extends BaseController
                 $this->eventRepository->update($event) ;
                 $needToStore = TRUE ;
                 $output['event']['eventId'] = $event->getUid() ;
-                $output['event']['viewed'] = $event->getViewed(); ;
+                $output['event']['viewed'] = $event->getViewed();
+                $output['event']['canceled'] = $event->getCanceled();
                 $output['event']['registration']['possible'] = $event->isIsRegistrationPossible() ;
                 $output['event']['registration']['noFreeSeats'] = $event->isIsNoFreeSeats() ;
                 $output['event']['registration']['freeSeats'] = $event->getAvailableSeats() ;

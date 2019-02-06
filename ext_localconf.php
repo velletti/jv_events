@@ -18,7 +18,7 @@ $_EXTKEY = "jv_events" ;
 	),
 	// non-cacheable actions
 	array(
-		'Event' => 'show, search, new, create, edit, update, register, confirm, delete,copy,disable',
+		'Event' => 'show, search, new, create, edit, update, register, confirm, delete,copy,cancel',
         'Organizer' => 'show, new, create, edit, update, delete,assist',
 		'Registrant' => 'list,new,create,delete,confirm',
 		'Location' => 'new, create, edit, update, delete',

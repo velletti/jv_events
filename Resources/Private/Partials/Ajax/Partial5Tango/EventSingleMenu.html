@@ -12,15 +12,16 @@
                     <span class="d-none d-md-inline-block">Event</span>
                 </f:link.action>
 
-                <input id="jv-events-cancelEvent" type="checkbox" checked data-onstyle="primary" data-offstyle="secondary" data-toggle="toggle" data-style="ios my-2" data-on="Online" data-off="Canceled!">
+                <f:link.action id="jv-events-cancelEvent-link" absolute="true" noCacheHash="true" pageUid="{settings.pageIds.editEvent}" class="nav-link" title="Cancel Event" action="cancel" controller="Event" arguments="{event: output.event.eventId}">
+                    <input id="jv-events-cancelEvent"   type="checkbox" {f:if(condition: '{output.event.canceled}' , else : 'checked' )} data-onstyle="primary" data-offstyle="secondary" data-toggle="toggle" data-style="ios " data-on="{f:if(condition: '{output.event.canceled}' , else: 'Active' , then: 'activating ..' )}" data-off="{f:if(condition: '{output.event.canceled}' , then:'Canceled!' , else: 'Canceling ...' )}">
+                </f:link.action>
 
-
-                <f:link.external uri="#" class="nav-link" title="delete Event" >
+                <span class="nav-link" title="delete Event" >
                     <button data-toggle="modal" data-target="#eventDeleteModal-{event.uid}" class="btn btn-outline-primary btn-xs rounded-circle" href="#">
                         <i class="fas fa-trash "></i>
                     </button>
                     <span class="d-none d-md-inline-block">delete</span>
-                </f:link.external>
+                <span>
 
                 <f:variable name="deleteModalBody">
                      <f:format.raw>
@@ -35,7 +36,7 @@
                         <f:spaceless>
                             <f:link.action pageUid="{settings.pageIds.editEvent}" class="nav-link" title="delete Event" action="delete" controller="Event" arguments="{event: output.event.eventId}">
                                 <button class="btn btn-primary btn-xs " href="#">
-                                    <i class="fas fa-trash "></i> <span class="">Delete really!</span>
+                                    <i class="fas fa-trash "></i> <span class="mx-1">Delete really!</span>
                                 </button>
                             </f:link.action>
                         </f:spaceless>

@@ -128,14 +128,14 @@ $returnArray = array(
 			),
 		),
         'canceled' => array(
-            'exclude' => 0,
+            'exclude' => 1,
             'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.canceled',
             'config' => array(
                 'type' => 'check',
             ),
         ),
         'top_event' => array(
-            'exclude' => 0,
+            'exclude' => 1,
             'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.top_event',
             'config' => array(
                 'type' => 'check',
