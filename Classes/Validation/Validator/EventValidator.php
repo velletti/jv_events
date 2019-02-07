@@ -9,12 +9,14 @@ class EventValidator extends BaseValidator {
 	protected $maxLength = array(
 		'name'				=> 30,
 		'link'				=> 80,
+		'teaser'			=> 200,
 	);
 
     /**
      * @var array
      */
     protected $minLength = array(
+        'teaser'			=> 5,
         'name'				=> 3,
         'link'				=> -1,
     );
@@ -31,9 +33,10 @@ class EventValidator extends BaseValidator {
 
         $isValid = $this->securityChecks( $event->getName() , 'name' , $isValid ) ;
         $isValid = $this->securityChecks( $event->getTeaser() , 'teaser' , $isValid ) ;
-        $isValid = $this->securityChecks( $event->getStartDateFE() , 'startDateV' , $isValid ) ;
-        $isValid = $this->securityChecks( $event->getStartTimeFE() , 'startTimeV' , $isValid ) ;
-        $isValid = $this->securityChecks( $event->getEndTimeFE() , 'endTimeV' , $isValid ) ;
+        $isValid = $this->securityChecks( $event->getStartDateFE() , 'startDateFE' , $isValid ) ;
+        $isValid = $this->securityChecks( $event->getStartTimeFE() , 'startTimeFE' , $isValid ) ;
+        $isValid = $this->securityChecks( $event->getEndTimeFE() , 'endTimeFE' , $isValid ) ;
+        $isValid = $this->securityChecks( $event->getEntryTimeFE() , 'entryTimeFE' , $isValid ) ;
         $isValid = $this->securityChecks( $event->getPrice() , 'price' , $isValid ) ;
         $isValid = $this->securityChecks( $event->getPriceReduced() , 'priceReduced' , $isValid ) ;
         $isValid = $this->securityChecks( $event->getPriceReducedText() , 'priceReducedText' , $isValid ) ;
@@ -49,15 +52,18 @@ class EventValidator extends BaseValidator {
 
 
         $isValid = $this->isTagArray(  $event->getTagsFE() , 'tagsFE' , $isValid ) ;
-        $isValid = $this->isStringDateValue( $event->getStartDateFE() , 'startDateV' , $isValid ) ;
-        $isValid = $this->isStringTimeValue( $event->getStartTimeFE() , 'startTimeV' , $isValid ) ;
-        $isValid = $this->isStringTimeValue( $event->getEndTimeFE() , 'endTimeV' , $isValid ) ;
-
+        $isValid = $this->isStringDateValue( $event->getStartDateFE() , 'startDateFE' , $isValid ) ;
+        $isValid = $this->isStringTimeValue( $event->getStartTimeFE() , 'startTimeFE' , $isValid ) ;
+        if ( trim( strlen($event->getEndTimeFE()) > 0 )) {
+            $isValid = $this->isStringTimeValue( $event->getEndTimeFE() , 'endTimeFE' , $isValid ) ;
+        }
+        if ( trim( strlen($event->getEntryTimeFE()) > 0 )) {
+            $isValid = $this->isStringTimeValue($event->getEntryTimeFE(), 'entryTimeFE', $isValid);
+        }
         $isValid = $this->stringLengthIsValid($this->minLength['name'] , $this->maxLength['name'] , $event->getName() , 'name' , NULL , $isValid ) ;
+        $isValid = $this->stringLengthIsValid($this->minLength['teaser'] , $this->maxLength['teaser'] , $event->getTeaser() , 'teaser' , NULL , $isValid ) ;
 
         $isValid = $this->isHasUnwantedHtmlCodeValue( $event->getDescription() , 'description' , $isValid ) ;
-
-
 
 		return $isValid;
 

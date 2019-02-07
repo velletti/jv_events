@@ -12,15 +12,20 @@
 <div class="d-none">
 	Canceled:  <f:form.checkbox id="jv-event-canceled" property="canceled" value="1" checked="{event.canceled}"/>
 </div>
-<div class="{f:if( condition: '{event.canceled}'  , else: 'd-none ' )} alert alert-info alert-dismissable" id="jv-events-cancelEvent-info">
-	This event will be shown in the list as "CANCELED" Event. Feel free to update the Text info to inform visitors about the reason
-</div>
+<f:if condition="{event.canceled}">
+	<div class="alert alert-info alert-dismissable" id="jv-events-cancelEvent-info">
+		This event will be shown in the list as "CANCELED" Event. Feel free to update the Text info to inform visitors about the reason.
+	</div>
+</f:if>
+
 
 <f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowDate"
 		  arguments="{object: 'event', property:'startDate' , value: event.startDate , label: '' , translationKey: 'tx_jvevents_domain_model_event.start_date' ,  mandatory: '1' }" />
 
 <f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowTimes"
 		  arguments="{object: 'event', property:'startTime' ,  property2:'endTime', value: event.startTime , value2: event.endTime , label: 'Von - bis' , translationKey: '' ,  mandatory: '1' }" />
+<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowTimes"
+		  arguments="{object: 'event', property:'entryTime' ,  value: event.entryTime , label: '' , translationKey: 'tx_jvevents_domain_model_event.entry_time' ,  mandatory: '0' }" />
 <hr>
 <f:if condition="{categories}">
 	<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowCategories"

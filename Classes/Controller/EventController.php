@@ -56,21 +56,16 @@ class EventController extends BaseController
 	public function initializeAction() {
 		if ($this->request->hasArgument('action')) {
 
-			if ($this->request->getArgument('action') == "show") {
+			if ( in_array( $this->request->getArgument('action') , array("show" , "edit" , "update" , "create" , "delete" , "cancel") )) {
 				if (!$this->request->hasArgument('event')) {
-					throw new \Exception('Missing Event Id in URL');
+					throw new \Exception('Missing Event Id in your request ');
+                    // ToDo redirect to list ??
 				}
 			}
 		}
-		if (!$this->request->hasArgument('event')) {
-			// ToDo redirect to error
-		} else {
-		    /** @var \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration $propertyMappingConfiguration */
-            //  $propertyMappingConfiguration = $this->arguments['event']->getPropertyMappingConfiguration();
-            //  $propertyMappingConfiguration->allowProperties('tags') ;
-        }
-
-
+        /** @var \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration $propertyMappingConfiguration */
+        //  $propertyMappingConfiguration = $this->arguments['event']->getPropertyMappingConfiguration();
+        //  $propertyMappingConfiguration->allowProperties('tags') ;
 
         parent::initializeAction() ;
 	}

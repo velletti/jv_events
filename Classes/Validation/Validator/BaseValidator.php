@@ -314,7 +314,7 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
         if (is_string($value) && preg_match('/^[0-2][0-9]:[0-5][0-9]$/i', $value)) return $isValid;
 
         /** @var \TYPO3\CMS\Extbase\Error\Error $error */
-        $error = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error','The given subject was not a valid Time value like hh:mm.', time());
+        $error = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error','The given Time \'' . $value . '\' ('. $propertyName .') was not a valid Time value like hh:mm.', time());
         $this->result->forProperty($propertyName)->addError($error);
 
         return FALSE;
@@ -339,7 +339,7 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
             if (is_string($value) && preg_match('/^[0-3][0-9].[0-1][0-9].[1-2][0-9]{3}$/i', $value)) return $isValid;
         }
         /** @var \TYPO3\CMS\Extbase\Error\Error $error */
-        $error = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error','The given subject was not a valid Date value like dd.mm.yyyy .', time());
+        $error = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error','The given value \'' . $value .'\' was not a valid Date value like dd.mm.yyyy .', time());
         $this->result->forProperty($propertyName)->addError($error);
 
         return FALSE;
