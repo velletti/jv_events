@@ -153,9 +153,7 @@ function jv_events_init_edit_tags() {
     $("#lat").on("click" , function () {
         $("#geoSearchModal").css("display" , "block") ;
     });
-    if(  $('.clockpicker')){
-        $('.clockpicker').clockpicker();
-    }
+    //    $('.clockpicker').clockpicker();
 
 }
 //  ############   generic function for everyone: test if a spezific Parameter is in URL and return its value ###########
