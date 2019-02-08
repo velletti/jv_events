@@ -15,7 +15,7 @@ jQuery(document).ready(function() {
 function jv_events_init_AjaxMenu() {
     var eventId = 0;
     var locationId = 0;
-    if( $("#jv-events-dataids").length  {
+    if( $("#jv-events-dataids").length ) {
         if( $("#jv-events-dataids").data ("eventuid") ) {
             eventId = parseInt( $("#jv-events-dataids").data("eventuid"));
         }
