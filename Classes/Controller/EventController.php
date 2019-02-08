@@ -170,7 +170,7 @@ class EventController extends BaseController
         $categories = $this->categoryRepository->findAllonAllPages( '0' );
 
         /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $tags */
-        $tags = $this->tagRepository->findAllonAllPages();
+        $tags = $this->tagRepository->findAllonAllPages('0');
 
         if ( $event==null) {
             /** @var \JVE\JvEvents\Domain\Model\Event $event */
@@ -286,7 +286,7 @@ class EventController extends BaseController
                 $categories = $this->categoryRepository->findAllonAllPages( '0' );
 
                 /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $tags */
-                $tags = $this->tagRepository->findAllonAllPages();
+                $tags = $this->tagRepository->findAllonAllPages('0');
 
                 $this->view->assign('user', intval($GLOBALS['TSFE']->fe_user->user['uid'] ) ) ;
                 $this->view->assign('event', $event);

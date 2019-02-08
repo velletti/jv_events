@@ -19,6 +19,9 @@
                     <f:render partial="HasFormErrors" arguments="{object:event, debug: 'true' }" />
 
                     <f:form class="form-horizontal"  action="update" name="event" object="{event}" id="event_edit">
+                        <div class="text-right">
+                            <f:form.submit class="btn btn-primary" value="{f:translate(key: 'form.save', default: 'Save')}" />
+                        </div>
                         <f:render partial="Event/Single/Partial{settings.LayoutSingle}/FormFields" arguments="{_all}" />
 
                         <div class="text-right">

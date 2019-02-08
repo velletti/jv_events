@@ -1,10 +1,13 @@
 <div class="col-xs-12 " xmlns:f="http://www.w3.org/1999/html">
+
 	<h4 class="text-left">
 		<f:link.action pageUid="{settings.pageIds.editEvent}" action="new" controller="Event" class="btn  btn-outline-primary left rounded-circle" arguments="{organizer: '{organizer.uid}'}">
 			<i class="fas fa-backward " title="back"></i>
 		</f:link.action>
-		<span > New Event: ({event.location.uid})</span>
+		<span> Event: ({event.location.uid})</span>
 	</h4>
+
+
 	<span >{event.location.name}, {event.location.streetAndNr} - {event.location.city}</span>
 	<br>
 </div>
@@ -14,7 +17,15 @@
 </div>
 <f:if condition="{event.canceled}">
 	<div class="alert alert-info alert-dismissable" id="jv-events-cancelEvent-info">
-		This event will be shown in the list as "CANCELED" Event. Feel free to update the Text info to inform visitors about the reason.
+		<div class="float-right">
+			<f:link.action id="jv-events-cancelEvent-link" absolute="true" noCacheHash="true" pageUid="{settings.pageIds.editEvent}" class="nav-link" title="Cancel Event" action="cancel" controller="Event" arguments="{event: event.eventId}">
+				<input id="jv-events-cancelEvent"   type="checkbox" {f:if(condition: '{event.canceled}' , else : 'checked' )} data-onstyle="primary" data-offstyle="secondary" data-toggle="toggle" data-style="ios " data-on="{f:if(condition: '{event.canceled}' , else: 'Active' , then: 'activating ..' )}" data-off="{f:if(condition: '{event.canceled}' , then:'Canceled!' , else: 'Canceling ...' )}">
+			</f:link.action>
+		</div>
+		<p>
+			This event will be shown in the list as "CANCELED" Event. Feel free to update the Text info to inform visitors about the reason.
+		</p>
+
 	</div>
 </f:if>
 

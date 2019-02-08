@@ -41,13 +41,20 @@ class TagRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     );
 
     /**
+     * @param int $type default -1 means all Types
+     *                  1 = events 2 locations 3 = Organizer
+     *                  see TCA of event model
+     *
      * @return array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
      */
-    public function findAllonAllPages()
+    public function findAllonAllPages($type= -1)
     {
         $query = $this->createQuery();
         $querySettings = $query->getQuerySettings() ;
         $querySettings->setRespectStoragePage(false);
+        if( ($type > -1 )) {
+            $query->matching( $query->equals('type', $type) ) ;
+        }
         // $querySettings->setRespectSysLanguage(FALSE);
         $query->setQuerySettings($querySettings) ;
         $res = $query->execute() ;

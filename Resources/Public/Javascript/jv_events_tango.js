@@ -4,8 +4,10 @@
  */
 jQuery(document).ready(function() {
 	jv_events_init() ;
-    if ( $("#jvEventsAjaxMenu").length ) {
-        jv_events_init_AjaxMenu();
+    jv_events_init_AjaxMenu() ;
+
+	if( $(".jv-events-tags-edit") ){
+        jv_events_init_edit_tags() ;
     }
 
 }) ;
@@ -14,14 +16,14 @@ function jv_events_init_AjaxMenu() {
     var eventId = 0;
     var locationId = 0;
     if( $("#jv-events-dataids").length ) {
-        if( $("#jv-events-dataids").data ("eventuid") ) {
+        if( $("#jv-events-dataids").data("eventuid") ) {
             eventId = parseInt( $("#jv-events-dataids").data("eventuid"));
         }
-        if( $("#jv-events-dataids").data ("locationuid") ) {
+        if( $("#jv-events-dataids").data("locationuid") ) {
             locationId = parseInt( $("#jv-events-dataids").data("locationuid"));
         }
     }
-    if ( $("#jvEventsAjaxMenu").length ) {
+    if ( $("#jvEventsAjaxMenu").length) {
         $.ajax( {
             url: '/index.php' ,
             data: 'uid=1&eID=jv_events&L=0&tx_jvevents_ajax[event]=' + eventId + '&tx_jvevents_ajax[location]=' +  locationId + '&tx_jvevents_ajax[action]=eventMenu&tx_jvevents_ajax[controller]=Ajax&' ,
@@ -30,32 +32,28 @@ function jv_events_init_AjaxMenu() {
                 $('#jvEventsAjaxMenu').addClass('show').addClass('d-block') ;
             } ,
             success: function(response) {
-                $('#jvEventsAjaxMenu').removeClass('d-block') ;
-                $('#jvEventsAjaxMenu').html( response.html.main) ;
+                $('#jvEventsAjaxMenu').removeClass('d-block').html( response.html.main) ;
 
                 if ($('#jvEventsAjaxSingleMenu') ) {
-                    $('#jvEventsAjaxSingleMenu').addClass('d-block').removeClass('d-none') ;
-                    $('#jvEventsAjaxSingleMenu').html( response.html.single) ;
-                    if ($('#jv-events-cancelEvent') ) {
-                        $(function () {
-                            $('#jv-events-cancelEvent').bootstrapToggle();
-                        })
-                        $('#jv-events-cancelEvent').change(function() {
+                    $('#jvEventsAjaxSingleMenu').addClass('d-block').removeClass('d-none').html( response.html.single) ;
+                    if ($('#jv-events-cancelEvent').length ) {
+
+                        $('#jv-events-cancelEvent').bootstrapToggle();
+
+                        $('#jv-events-cancelEvent').on('change' , function() {
                             $(this).parent().addClass('blink') ;
                             if( $(this).prop('checked')) {
                                 $(this).prop('checked' , '' ) ;
-                                $('#jv-events-cancelEvent-info').addClass('fade slow') ;
-                                $('#jv-events-cancelEvent-info').addClass('d-none') ;
-                                $('#jv-events-cancelEvent-info').removeClass('in') ;
+                                $('#jv-events-cancelEvent-info').addClass('fade slow').addClass('d-none').removeClass('in') ;
                             } else {
                                 $(this).prop('checked' , 'checked' ) ;
-                                $('#jv-events-cancelEvent-info').addClass('in') ;
-                                $('#jv-events-cancelEvent-info').removeClass('d-none') ;
-                                $('#jv-events-cancelEvent-info').removeClass('fade') ;
+                                $('#jv-events-cancelEvent-info').addClass('in').removeClass('d-none').removeClass('fade') ;
                             }
-                            window.location.href = $("#jv-events-cancelEvent-link").href() ;
+                            if ( $("#jv-events-cancelEvent-link").href().length ) {
+                                window.location.href = $("#jv-events-cancelEvent-link").href() ;
+                            }
 
-                        })
+                        }) ;
                     }
                 }
 
@@ -70,6 +68,124 @@ function jv_events_init_AjaxMenu() {
 
 
 
+function jv_events_init_edit_tags() {
+    var jvEventsNewTags = '' ;
+    var jvEventsTagsSum = 0 ;
+    $("#priceReduced").on('change' , function() {
+        if(  parseInt( $("#priceReduced").val() ) > 0 ) {
+            $("#jv-events-edit-price-reduced").addClass('d-block').removeClass('d-none');
+        } else {
+            $("#jv-events-edit-price-reduced").addClass('d-none').removeClass('d-block');
+        }
+    }) ;
+
+
+
+    $(".jv-events-tags-edit").each(function() {
+        if ($(this).prop("checked")) {
+            jvEventsNewTags =  $(this).val() + ","  + jvEventsNewTags ;
+            $(this).parent().addClass('event-checked') ;
+            jvEventsTagsSum++ ;
+        }
+    }) ;
+
+    $("#jv-events-tags-sum").html(jvEventsTagsSum) ;
+
+    $(".jv-events-cats-div INPUT").each(function() {
+        if ($(this).prop("checked")) {
+            $(this).parent().addClass("event-checked") ;
+        } else {
+            $(this).parent().removeClass("event-checked") ;
+        }
+    }) ;
+
+    $(".jv-events-cats-div-div ").on("click" , function () {
+        $(this).find("INPUT").prop("checked" , true ) ;
+
+        jv_events_refreshTags() ;
+
+        $(".jv-events-cats-div INPUT").each(function() {
+            if ($(this).prop("checked")) {
+                $(this).parent().addClass("event-checked") ;
+            } else {
+                $(this).parent().removeClass("event-checked") ;
+            }
+        }) ;
+
+    }) ;
+
+
+    jv_events_refreshTags() ;
+
+
+
+
+    $(".jv-events-tags-div").on("click" , function () {
+
+        var thisCheck =  $(this).find(".jv-events-tags-edit") ;
+
+        if ($(thisCheck).prop("checked")) {
+            $(thisCheck).prop("checked", false);
+            $(this).removeClass("event-checked");
+        } else {
+            $(thisCheck).prop("checked" , true ) ;
+            $(this).addClass("event-checked");
+        }
+        jv_events_refreshTags() ;
+
+    }) ;
+
+
+
+    $("#lat").on("click" , function () {
+        $("#geoSearchModal").css("display" , "block") ;
+    });
+
+    if( $('.clockpicker').length ) {
+        $('.clockpicker').clockpicker();
+    }
+
+}
+function jv_events_refreshTags() {
+    var clickedCat =  $(".jv-events-cats-div-div INPUT:checked").val() ;
+
+    if (clickedCat ) {
+        var parentCats = '' ;
+        $(".jv-events-tags-div").each(function() {
+            parentCats           = $(this).data("parent")  ;
+            console.log( " has Tag parent Cat ??  " + parentCats)  ;
+            parentCatArray = parentCats.split(",") ;
+            var thisCheck =  $(this).find(".jv-events-tags-edit") ;
+            if( $.inArray( clickedCat ,  parentCatArray) > -1 ) {
+                $(this).removeClass("d-none");
+            } else {
+                if ($(thisCheck).prop("checked")) {
+                    $(thisCheck).prop("checked", false);
+                    $(this).removeClass("event-checked");
+                }
+                $(this).addClass("d-none");
+            }
+        }) ;
+    }
+    var jvEventsNewTags = '' ;
+    var jvEventsTagsSum = 0 ;
+
+    $(".jv-events-tags-edit").each(function() {
+        if ($(this).prop("checked")) {
+            jvEventsNewTags =  $(this).val() + ","  + jvEventsNewTags ;
+            jvEventsTagsSum++ ;
+        }
+    }) ;
+    $("#jv-events-tags-sum").html(jvEventsTagsSum) ;
+    if ( jvEventsTagsSum > 4 ) {
+        $(".jv-events-tags-edit").each(function() {
+            if ( !$(this).prop("checked")) {
+                $(this).parent().addClass("d-none");
+            }
+        }) ;
+    }
+    $("#jv-events-tagsFE").val(jvEventsNewTags ) ;
+}
 
 //  ############   generic function for everyone: test if a spezific Parameter is in URL and return its value ###########
 function jv_events_GetURLParameter(sParam) {

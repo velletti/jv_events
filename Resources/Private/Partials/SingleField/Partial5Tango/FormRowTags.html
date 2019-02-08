@@ -24,6 +24,7 @@
         <f:for each="{tags}" as="Tag" iteration="iteration">
             <f:variable name="checked"></f:variable>
             <f:variable name="checkedCss"></f:variable>
+            <f:variable name="tagCategories"></f:variable>
             <f:if condition="{Tag.tagCategory}">
                 <f:for each="{Tag.tagCategory}" as="category">
                     <f:variable name="tagCategories">{tagCategories},{category.uid}</f:variable>
@@ -41,7 +42,7 @@
             </f:for>
 
             <div class="col-12 col-sm-6 ">
-                <div class="jv-events-tags-div px-1 text-center {checkedCss}" data-parent="{tagCategories}">
+                <div class="jv-events-tags-div cursor-pointer px-1 text-center {checkedCss}" data-parent="{tagCategories}" title="{tagCategories}">
                     <f:form.checkbox name="tag[{Tag.uid}]"  value="{Tag.uid}" checked="{checked}" class="jv-events-tags-edit"/>
                     <span for="tx_jvevents_events[event][tags][{Tag.uid}]" class="control-label " title="{Tag.name}">
                         <f:format.crop maxCharacters="24">{Tag.name}</f:format.crop></span>
