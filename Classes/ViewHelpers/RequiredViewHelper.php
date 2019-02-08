@@ -1,27 +1,9 @@
 <?php
 namespace JVE\JvEvents\ViewHelpers;
-/***************************************************************
- * Copyright notice
- *
- * (c) 2011-13 Sebastian Fischer <typo3@evoweb.de>
- * All rights reserved
- *
- * This script is part of the TYPO3 project. The TYPO3 project is
- * free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
- *
- * This script is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Viewhelper to render a selectbox with values
@@ -32,7 +14,7 @@ namespace JVE\JvEvents\ViewHelpers;
  * <register:form.required fieldName="'username"/>
  * </code>
  */
-class RequiredViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper   {
+class RequiredViewHelper extends AbstractConditionViewHelper implements CompilableInterface  {
 	/**
 	 * Configuration manager to fetch settings from
 	 *
@@ -58,6 +40,7 @@ class RequiredViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
 	 * Injection of configuration manager
 	 *
 	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
+     * @throws \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException
 	 * @return void
 	 */
 	public function injectConfigurationManager(
@@ -68,6 +51,7 @@ class RequiredViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
 			\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS
 		);
 		$layout = $this->settings['LayoutRegister'] ;
+        if ( $layout == '' ) { $layout = "1Allplan" ; }
 
 		$fields = $this->settings['register']['requiredFields'][$layout] ;
 		$this->settings['register']['requiredFields'] = $fields ;
@@ -75,25 +59,36 @@ class RequiredViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
 			\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK
 		);
 	}
-	public function __initialize() {
-		$this->registerArgument('fieldName', 'string', 'field name stat should be in requiredFields', false);
+	public function initializeArguments() {
+		$this->registerArgument('fieldName', 'string', 'field name that should be in requiredFields', false);
+        parent::initializeArguments();
 	}
 
 
 
-	/**
-	 * Render a special sign if the field is required
-	 *
-	 * @param string $fieldName Name of the field to render the required marker to
-	 * @return string
-	 */
-	public function render($fieldName) {
+    /**
+     * @param array|null $arguments
+     * @return bool
+     */
+    protected static function evaluateCondition($arguments = null, $settings = array() )
+    {
+        $fieldSettings = GeneralUtility::trimExplode( "," , $settings['register']['requiredFields'] ) ;
+        if ( is_array($fieldSettings) && in_array( $arguments['fieldName'], $fieldSettings)) {
+            return  TRUE ;
+        }
+        return false;
+    }
 
-		$fieldSettings = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode( $this->settings['register']['requiredFields'] ) ;
-		if ( is_array($fieldSettings) && in_array( $fieldName, $fieldSettings)) {
-			return  TRUE ;
-		}
+    /**
+     * @return mixed
+     */
+    public function render()
+    {
+        if (static::evaluateCondition($this->arguments , $this->settings )) {
+            return $this->renderThenChild();
+        }
+        return $this->renderElseChild();
+    }
 
-		return false;
-	}
+
 }
