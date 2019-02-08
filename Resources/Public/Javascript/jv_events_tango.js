@@ -153,10 +153,9 @@ function jv_events_refreshTags() {
         var parentCats = '' ;
         $(".jv-events-tags-div").each(function() {
             parentCats           = $(this).data("parent")  ;
-            console.log( " has Tag parent Cat ??  " + parentCats)  ;
             parentCatArray = parentCats.split(",") ;
             var thisCheck =  $(this).find(".jv-events-tags-edit") ;
-            if( $.inArray( clickedCat ,  parentCatArray) > -1 ) {
+            if( $.inArray( clickedCat ,  parentCatArray) > -1 || ! parentCats ) {
                 $(this).removeClass("d-none");
             } else {
                 if ($(thisCheck).prop("checked")) {
