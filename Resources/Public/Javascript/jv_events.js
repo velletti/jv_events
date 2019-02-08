@@ -15,7 +15,7 @@ jQuery(document).ready(function() {
 function jv_events_init_AjaxMenu() {
     var eventId = 0;
     var locationId = 0;
-    if( "#jv-events-dataids") {
+    if( $("#jv-events-dataids").length  {
         if( $("#jv-events-dataids").data ("eventuid") ) {
             eventId = parseInt( $("#jv-events-dataids").data("eventuid"));
         }
@@ -23,7 +23,7 @@ function jv_events_init_AjaxMenu() {
             locationId = parseInt( $("#jv-events-dataids").data("locationuid"));
         }
     }
-    if ( $("#jvEventsAjaxMenu")) {
+    if ( $("#jvEventsAjaxMenu").length ) {
         $.ajax( {
             url: '/index.php' ,
             data: 'uid=1&eID=jv_events&L=0&tx_jvevents_ajax[event]=' + eventId + '&tx_jvevents_ajax[location]=' +  locationId + '&tx_jvevents_ajax[action]=eventMenu&tx_jvevents_ajax[controller]=Ajax&' ,
@@ -153,7 +153,10 @@ function jv_events_init_edit_tags() {
     $("#lat").on("click" , function () {
         $("#geoSearchModal").css("display" , "block") ;
     });
-    //    $('.clockpicker').clockpicker();
+    if ( $('.clockpicker').length ) {
+        $('.clockpicker').clockpicker();
+    }
+
 
 }
 //  ############   generic function for everyone: test if a spezific Parameter is in URL and return its value ###########
@@ -255,7 +258,7 @@ function jv_events_initPosition(position) {
 
 function jv_events_initOneFilter(filterName) {
 
-	if ( jQuery('SELECT#jv_events_filter_' + filterName ) ) {
+	if ( jQuery('SELECT#jv_events_filter_' + filterName ).length ) {
 		jQuery('SELECT#jv_events_filter_' + filterName ).change(function(i) {
 			jv_events_refreshList() ;
 		});
@@ -268,7 +271,7 @@ function jv_events_initOneFilter(filterName) {
             });
 		}
 	}
-    if ( jQuery('#jv_events_filter_' + filterName + " input[type=checkbox]") ) {
+    if ( jQuery('#jv_events_filter_' + filterName + " input[type=checkbox]").length ) {
         jQuery('#jv_events_filter_' + filterName + " input[type=checkbox]").change(function(i) {
             jv_events_refreshList() ;
         });
