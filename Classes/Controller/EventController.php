@@ -273,15 +273,32 @@ class EventController extends BaseController
      * action edit
      *
      * @param \JVE\JvEvents\Domain\Model\Event $event
+     * @param integer|boolean $copy2Date if set, Copy the event to the given DateDiff in DAYS
+     * @param integer|boolean $amount if set, the amount of Copys that shall be created
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      * @ignorevalidation $event
      * @return void
      */
-    public function editAction(\JVE\JvEvents\Domain\Model\Event $event)
+    public function editAction(\JVE\JvEvents\Domain\Model\Event $event , $copy2Day=false , $amount=false )
     {
 
         if($this->isUserOrganizer() ) {
             if( $this->hasUserAccess( $event->getOrganizer() )) {
 
+                // ++++++++++ if ation is called with second parameter ( int val in Days ) jump to the function copy
+                if( $this->request->hasArgument('copy2Day')) {
+                    $copy2Day = $this->request->getArgument('copy2Day')  ;
+                    if( $this->request->hasArgument('amount')) {
+                        $amount = $this->request->getArgument('amount');
+                    }
+                    // ammount must be not more than max 8 / min 1
+                    $amount = min ( max ( $amount , 1) , 8 ) ;
+                    if( $copy2Day != 0 ) {
+                        $this->copyEvent($event , intval( $copy2Day ) , $amount ) ;
+                   }
+                }
                 /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $categories */
                 $categories = $this->categoryRepository->findAllonAllPages( '0' );
 
@@ -301,9 +318,74 @@ class EventController extends BaseController
     }
 
     /**
+     * @param \JVE\JvEvents\Domain\Model\Event $event
+     * @param int $copy2Day
+     * @param int $amount
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
+     */
+    private function copyEvent(\JVE\JvEvents\Domain\Model\Event $event, $copy2Day= 0, $amount= 1){
+
+        for ( $i=1 ;$i<= $amount ; $i++) {
+            /** @var \JVE\JvEvents\Domain\Model\Event $newEvent */
+
+            $newEvent = $this->objectManager->get( "JVE\\JvEvents\\Domain\\Model\\Event")  ;
+
+            $properties = $event->_getProperties() ;
+            unset($properties['uid']) ;
+
+            // copy  most properties
+            foreach ($properties as $key => $value ) {
+                $newEvent->_setProperty( $key , $value ) ;
+            }
+            // now set the new Date
+            $newDate = $event->getStartDate() ;
+            $addDays = intval( $copy2Day  ) ;
+            $diff= date_interval_create_from_date_string( $addDays  . " days") ;
+            $newDate->add( $diff) ;
+
+            $newEvent->setStartDate($newDate ) ;
+
+            // ++++ now copy the Categories and tags  ++++
+            if( $event->getEventCategory() ) {
+                /** @var \JVE\JvEvents\Domain\Model\Category $category */
+                foreach ($event->getEventCategory() as $category ) {
+                    $newEvent->addEventCategory($category) ;
+                }
+            }
+
+            if( $event->getTags() ) {
+                /** @var \JVE\JvEvents\Domain\Model\Tag $tag */
+                foreach ($event->getTags() as $tag ) {
+                    $newEvent->addTag($tag) ;
+                }
+            }
+            // ----- end copy the Categories and tags  -----
+
+            $this->eventRepository->add($newEvent) ;
+            try {
+                $this->persistenceManager->persistAll() ;
+                $this->addFlashMessage('The Event was copied to: ' . $newEvent->getStartDate( )->format("d.m.Y"), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+
+            } catch ( \Exception $e ) {
+                $this->addFlashMessage($e->getMessage() , 'Error in action ' . ' - copyEvent -', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+            }
+            $eventUid = $newEvent->getUid() ;
+            unset( $newEvent ) ;
+        }
+
+
+       $this->redirect("edit" , null , null , array( "event" => $eventUid  )) ;
+
+    }
+    /**
      * action cancel - will toogle the canceled status
      *
      * @param \JVE\JvEvents\Domain\Model\Event $event
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      * @ignorevalidation $event
      * @return void
      */

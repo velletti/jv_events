@@ -57,7 +57,7 @@ class EventRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 
         // new way to debug typo3 db queries
         // $queryParser = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class);
-        // var_dump($queryParser->convertQueryToDoctrineQueryBuilder($query)->getSQL());
+        //  var_dump($queryParser->convertQueryToDoctrineQueryBuilder($query)->getSQL());
         // var_dump($queryParser->convertQueryToDoctrineQueryBuilder($query)->getParameters()) ;
         // die;
         if( $toArray === TRUE ) {
@@ -137,11 +137,23 @@ class EventRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         $result = $query->execute();
 		// $settings['debug'] = 2 ;
 		if ($settings['debug'] == 2 ) {
-            $GLOBALS['TYPO3_DB']->debugOutput = 2;
-            $GLOBALS['TYPO3_DB']->explainOutput = true;
-            $GLOBALS['TYPO3_DB']->store_lastBuiltQuery = true;
-            $result->toArray();
-            var_dump( $GLOBALS['TYPO3_DB']->lastBuiltQuery );
+            $queryParser = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class);
+            echo "<pre>" ;
+            $sqlquery = $queryParser->convertQueryToDoctrineQueryBuilder($query)->getSQL() ;
+            var_dump($sqlquery) ;
+            echo "<hr>Values: <br>" ;
+            $values = ($queryParser->convertQueryToDoctrineQueryBuilder($query)->getParameters()) ;
+            var_dump($values) ;
+            $from = array() ;
+            $to = array() ;
+            foreach ($values as $key => $value) {
+                $from[] = ":" .$key ;
+                $to[] = $value ;
+            }
+            $sqlFinalQuery = str_replace($from , $to , $sqlquery ) ;
+            echo "<hr>Final: <br>" ;
+            echo $sqlFinalQuery ;
+
             die;
         }
         return $result;

@@ -5,23 +5,78 @@
         <f:if condition="{output.event.hasAccess}">
             <f:if condition="{settings.pageIds.editEvent}">
 
-                <f:link.action pageUid="{settings.pageIds.editEvent}" class="nav-link" title="Edit Event" action="edit" controller="Event" arguments="{event: output.event.eventId}">
+                <f:link.action pageUid="{settings.pageIds.editEvent}" class="nav-link  px-1" title="Edit Event" action="edit" controller="Event" arguments="{event: output.event.eventId}">
                     <button class="btn btn-outline-primary btn-xs rounded-circle" href="#">
                         <i class="fas fa-edit "></i>
                     </button>
                     <span class="d-none d-md-inline-block">Event</span>
                 </f:link.action>
 
-                <f:link.action id="jv-events-cancelEvent-link" absolute="true" noCacheHash="true" pageUid="{settings.pageIds.editEvent}" class="nav-link" title="Cancel Event" action="cancel" controller="Event" arguments="{event: output.event.eventId}">
+                <f:link.action id="jv-events-cancelEvent-link" absolute="true" noCacheHash="true" pageUid="{settings.pageIds.editEvent}" class="nav-link  px-1" title="Cancel Event" action="cancel" controller="Event" arguments="{event: output.event.eventId}">
                     <input id="jv-events-cancelEvent"   type="checkbox" {f:if(condition: '{output.event.canceled}' , else : 'checked' )} data-onstyle="primary" data-offstyle="secondary" data-toggle="toggle" data-style="ios " data-on="{f:if(condition: '{output.event.canceled}' , else: 'Active' , then: 'activating ..' )}" data-off="{f:if(condition: '{output.event.canceled}' , then:'Canceled!' , else: 'Canceling ...' )}">
                 </f:link.action>
 
-                <span class="nav-link" title="delete Event" >
-                    <button data-toggle="modal" data-target="#eventDeleteModal-{event.uid}" class="btn btn-outline-primary btn-xs rounded-circle" href="#">
+
+                <span class="nav-link d-inline-block px-1" title="copy Event" >
+                    <button data-toggle="modal" data-target="#eventCopyModal-{output.event.uid}" class="btn btn-outline-primary btn-xs rounded-circle" href="#">
+                        <i class="fas fa-copy "></i>
+                    </button>
+                    <span class="d-none d-md-inline-block">copy</span>
+                </span>
+
+
+                <span class="nav-link d-inline-block px-1" title="delete Event" >
+                    <button data-toggle="modal" data-target="#eventDeleteModal-{output.event.uid}" class="btn btn-outline-primary btn-xs rounded-circle" href="#">
                         <i class="fas fa-trash "></i>
                     </button>
                     <span class="d-none d-md-inline-block">delete</span>
-                <span>
+                </span>
+
+
+                <f:variable name="copyModalBody">
+                     <f:format.raw>
+                         <f:spaceless>
+
+                             <div class="row">
+                                 <div class="col-6">
+                                     Create one Copy  <br>
+                                     <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '1', msgtext: 'Next Day'}" />
+                                     <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '2', msgtext: 'In 2 Days'}" />
+                                     <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '7', msgtext: 'In 7 Days'}" />
+                                     <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '14', msgtext: 'In 14 Days'}" />
+                                     <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '21', msgtext: 'In 21 Days'}" />
+                                     <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '28', msgtext: 'In 28 Days'}" />
+
+
+                                 </div>
+                                  <div class="col-6">
+                                     Copy multiple weekly<br>
+                                     <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '7', amount: '3' , msgtext: '3 copies'}" />
+                                     <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '7', amount: '4' , msgtext: '4 copies'}" />
+                                     <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '7', amount: '5' , msgtext: '5 copies'}" />
+                                     <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '7', amount: '6' , msgtext: '6 copies'}" />
+                                      Copy multiple every 14 Days<br>
+                                     <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '14', amount: '2' , msgtext: '2 copies '}" />
+                                     <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '14', amount: '4' , msgtext: '4 copies '}" />
+
+                                 </div>
+                             </div>
+
+                        </f:spaceless>
+                    </f:format.raw>
+                </f:variable>
+                <f:variable name="copyModalFooter">
+                    <f:format.raw>
+                        <f:spaceless>
+
+                        </f:spaceless>
+                    </f:format.raw>
+                </f:variable>
+
+
+
+                <f:render partial="Helper/Bootstrap4/Modal" arguments="{'modalId':  'eventCopyModal-{output.event.uid}', 'modalTitle': 'Copy Event', 'modalBody': copyModalBody,'modalFooter': copyModalFooter,  'settings': settings}" />
+
 
                 <f:variable name="deleteModalBody">
                      <f:format.raw>
@@ -45,13 +100,19 @@
 
 
 
-                <f:render partial="Helper/Bootstrap4/Modal" arguments="{'modalId':  'eventDeleteModal-{event.uid}', 'modalTitle': 'Delete Event', 'modalBody': deleteModalBody,'modalFooter': deleteModalFooter,  'settings': settings}" />
+                <f:render partial="Helper/Bootstrap4/Modal" arguments="{'modalId':  'eventDeleteModal-{output.event.uid}', 'modalTitle': 'Delete Event', 'modalBody': deleteModalBody,'modalFooter': deleteModalFooter,  'settings': settings}" />
 
             </f:if>
         </f:if>
     </div>
 
 
-
+<f:section name="renderCopyLink">
+    <f:link.action pageUid="{settings.pageIds.editEvent}" class="nav-link" title="copy Event" action="edit" controller="Event" arguments="{event: eventId, copy2Day: copy2Day, amount: amount}">
+        <button class="btn btn-primary btn-xs " href="#">
+            <i class="fas fa-copy "></i> <span class="mx-1">{msgtext}</span>
+        </button>
+    </f:link.action>
+</f:section>
 
 
