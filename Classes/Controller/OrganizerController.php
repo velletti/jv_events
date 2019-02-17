@@ -85,7 +85,7 @@ class OrganizerController extends BaseController
      */
     public function listAction()
     {
-        $organizers = $this->organizerRepository->findAll();
+        $organizers = $this->organizerRepository->findByFilterAllpages();
         $this->view->assign('organizers', $organizers);
     }
     

@@ -36,7 +36,7 @@ class OrganizerRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      * @var array
      */
     protected $defaultOrderings = array(
-        'sorting' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
+        'sorting' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING
     );
 
     public function findByUidAllpages($uid , $toArray=TRUE , $ignoreEnableFields = TRUE )
@@ -103,6 +103,51 @@ class OrganizerRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             return $res ;
         }
     }
+
+    /**
+     * @param array|bool $filter possible Filters
+     * @param bool $toArray Result as QueryInterface or directly as Array
+     * @param bool $ignoreEnableFields Ignores Hidden, Startdate, enddate but NOT deleted!
+     * @return array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
+     */
+    public function findByFilterAllpages($filter=FALSE , $toArray=FALSE , $ignoreEnableFields = FALSE , $limit=FALSE)
+    {
+        $query = $this->createQuery();
+        $query->setOrderings($this->defaultOrderings);
+
+        $querySettings = $query->getQuerySettings() ;
+        $querySettings->setRespectStoragePage(false);
+        $querySettings->setRespectSysLanguage(FALSE);
+        $querySettings->setIgnoreEnableFields($ignoreEnableFields) ;
+        $query->setQuerySettings($querySettings) ;
+        $constraints = array() ;
+        if ( $filter ) {
+            foreach ( $filter as $field => $value) {
+                $constraints[] = $query->equals($field ,  $value ) ;
+            }
+        }
+        if( $limit) {
+            $query->setLimit(intval($limit));
+        }
+
+        if ( $ignoreEnableFields ) {
+            $constraints[] =  $query->equals('deleted',  0 )  ;
+        }
+        if( count($constraints) > 0) {
+            $query->matching( $query->logicalAnd($constraints)) ;
+        }
+
+        $res = $query->execute() ;
+        // $this->debugQuery($query) ;
+
+        if( $toArray === TRUE ) {
+            return $res->toArray();
+        } else {
+            return $res ;
+        }
+    }
+
     function debugQuery($query) {
         // new way to debug typo3 db queries
         $queryParser = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class);

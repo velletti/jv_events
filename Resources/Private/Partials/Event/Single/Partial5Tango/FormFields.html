@@ -1,16 +1,4 @@
-<div class="col-xs-12 " xmlns:f="http://www.w3.org/1999/html">
 
-	<h4 class="text-left">
-		<f:link.action pageUid="{settings.pageIds.editEvent}" action="new" controller="Event" class="btn  btn-outline-primary left rounded-circle" arguments="{organizer: '{organizer.uid}'}">
-			<i class="fas fa-backward " title="back"></i>
-		</f:link.action>
-		<span> Event: ({event.location.uid})</span>
-	</h4>
-
-
-	<span >{event.location.name}, {event.location.streetAndNr} - {event.location.city}</span>
-	<br>
-</div>
 <br>
 <div class="d-none">
 	Canceled:  <f:form.checkbox id="jv-event-canceled" property="canceled" value="1" checked="{event.canceled}"/>

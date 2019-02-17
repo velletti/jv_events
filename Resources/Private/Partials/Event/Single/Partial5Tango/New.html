@@ -20,6 +20,20 @@
                 <f:else>
                     <f:form class="form-horizontal"  action="create" name="event" object="{event}" id="event_new">
 
+                        <div class="col-xs-12 " xmlns:f="http://www.w3.org/1999/html">
+
+                            <h4 class="text-left">
+                                <f:link.action pageUid="{settings.pageUids.organizerAssist}" controller="Organizer" class="btn  btn-outline-primary left rounded-circle">
+                                    <i class="fas fa-wedge " title="show"></i>
+                                </f:link.action>
+                                <span>New Event </span>
+                            </h4>
+
+
+                            <span >({event.location.uid}) - {event.location.name}, {event.location.streetAndNr} - {event.location.city}</span>
+                            <br>
+                        </div>
+
                         <f:render partial="Event/Single/Partial{settings.LayoutSingle}/FormFields" arguments="{_all}" />
 
 

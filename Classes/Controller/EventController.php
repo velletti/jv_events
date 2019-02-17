@@ -57,12 +57,18 @@ class EventController extends BaseController
 		if ($this->request->hasArgument('action')) {
 
 			if ( in_array( $this->request->getArgument('action') , array("show" , "edit" , "update" , "create" , "delete" , "cancel") )) {
-				if (!$this->request->hasArgument('event')) {
-					throw new \Exception('Missing Event Id in your request ');
-                    // ToDo redirect to list ??
+				// user is calling  one of the actions, that requires and event ID.
+			    if (!$this->request->hasArgument('event') && !$this->request->getArgument('action') == "show") {
+			        // if no event with that ID found, redirect to show event. this will show the error message, that no event wit that id exists
+					$this->forward("show") ;
 				}
 			}
-		}
+
+		} else {
+		    // no action is set ? prevent
+		    $this->request->setArgument('action', 'list') ;
+            $this->forward("list") ;
+        }
         /** @var \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration $propertyMappingConfiguration */
         //  $propertyMappingConfiguration = $this->arguments['event']->getPropertyMappingConfiguration();
         //  $propertyMappingConfiguration->allowProperties('tags') ;
@@ -106,54 +112,56 @@ class EventController extends BaseController
     /**
      * action show
      *
-     * @param \JVE\JvEvents\Domain\Model\Event $event
+     * @param \JVE\JvEvents\Domain\Model\Event|null $event
      * @ignorevalidation $event
      * @return void
      */
-    public function showAction(\JVE\JvEvents\Domain\Model\Event $event)
+    public function showAction(\JVE\JvEvents\Domain\Model\Event $event=null)
     {
-        $checkString =  $_SERVER["SERVER_NAME"] . "-" . $event->getUid() . "-" . $event->getCrdate() ;
-        $checkHash = hash("sha256" , $checkString ) ;
+        if( $event ) {
+            $checkString = $_SERVER["SERVER_NAME"] . "-" . $event->getUid() . "-" . $event->getCrdate();
+            $checkHash = hash("sha256", $checkString);
 
-        $querysettings = new \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings ;
-        $querysettings->setStoragePageIds(array( $event->getPid() )) ;
+            $querysettings = new \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
+            $querysettings->setStoragePageIds(array($event->getPid()));
 
-        $this->subeventRepository->setDefaultQuerySettings( $querysettings );
-        $subevents = $this->subeventRepository->findByEventAllpages($event->getUid() , FALSE ) ;
-        if ( ! is_object( $subevents ) ) {
-            $this->view->assign('subevents', null );
-            $this->view->assign('subeventcount', 0 );
-        } else {
-            $this->view->assign('subevents', $subevents);
-            $this->view->assign('subeventcount', $subevents->count() + 1 );
+            $this->subeventRepository->setDefaultQuerySettings($querysettings);
+            $subevents = $this->subeventRepository->findByEventAllpages($event->getUid(), FALSE);
+            if (!is_object($subevents)) {
+                $this->view->assign('subevents', null);
+                $this->view->assign('subeventcount', 0);
+            } else {
+                $this->view->assign('subevents', $subevents);
+                $this->view->assign('subeventcount', $subevents->count() + 1);
 
-        }
-
-        $this->settings['fe_user']['user'] = $GLOBALS['TSFE']->fe_user->user ;
-        $this->settings['fe_user']['organizer']['showTools'] = FALSE ;
-
-        if ( $GLOBALS['TSFE']->fe_user->user ) {
-            $userUid = $GLOBALS['TSFE']->fe_user->user['uid'] ;
-            if( is_object($event->getOrganizer())) {
-                $userAccessArr = \TYPO3\CMS\CORE\Utility\GeneralUtility::trimExplode( "," , $event->getOrganizer()->getAccessUsers() ) ;
-                if( in_array( $userUid , $userAccessArr ))  {
-                    $this->settings['fe_user']['organizer']['showTools'] = TRUE ;
-                } else {
-                    $usersGroups = \TYPO3\CMS\CORE\Utility\GeneralUtility::trimExplode( "," ,  $GLOBALS['TSFE']->fe_user->user['usergroup'] ) ;
-                    $OrganizerAccessToolsGroups = \TYPO3\CMS\CORE\Utility\GeneralUtility::trimExplode( "," ,  $event->getOrganizer()->getAccessGroups() ) ;
-                    foreach ($OrganizerAccessToolsGroups as $tempGroup ) {
-                        if( in_array( $tempGroup , $usersGroups ))  {
-                            $this->settings['fe_user']['organizer']['showTools'] = TRUE ;
-                        }
-                    }
-
-                }
             }
 
-        }
+            $this->settings['fe_user']['user'] = $GLOBALS['TSFE']->fe_user->user;
+            $this->settings['fe_user']['organizer']['showTools'] = FALSE;
 
+            if ($GLOBALS['TSFE']->fe_user->user) {
+                $userUid = $GLOBALS['TSFE']->fe_user->user['uid'];
+                if (is_object($event->getOrganizer())) {
+                    $userAccessArr = \TYPO3\CMS\CORE\Utility\GeneralUtility::trimExplode(",", $event->getOrganizer()->getAccessUsers());
+                    if (in_array($userUid, $userAccessArr)) {
+                        $this->settings['fe_user']['organizer']['showTools'] = TRUE;
+                    } else {
+                        $usersGroups = \TYPO3\CMS\CORE\Utility\GeneralUtility::trimExplode(",", $GLOBALS['TSFE']->fe_user->user['usergroup']);
+                        $OrganizerAccessToolsGroups = \TYPO3\CMS\CORE\Utility\GeneralUtility::trimExplode(",", $event->getOrganizer()->getAccessGroups());
+                        foreach ($OrganizerAccessToolsGroups as $tempGroup) {
+                            if (in_array($tempGroup, $usersGroups)) {
+                                $this->settings['fe_user']['organizer']['showTools'] = TRUE;
+                            }
+                        }
+
+                    }
+                }
+
+
+            }
+            $this->view->assign('hash', $checkHash);
+        }
         $this->view->assign('settings', $this->settings);
-        $this->view->assign('hash', $checkHash);
 		$this->view->assign('event', $event);
     }
     
@@ -374,6 +382,7 @@ class EventController extends BaseController
             $eventUid = $newEvent->getUid() ;
             unset( $newEvent ) ;
         }
+
 
 
        $this->redirect("edit" , null , null , array( "event" => $eventUid  )) ;

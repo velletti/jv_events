@@ -241,6 +241,7 @@ function jv_events_init() {
         }
 	}
     jQuery('#filter-reset-events' ).click(function(i) {
+        $(this).preventDefault() ;
         jv_events_filter_reset() ;
         return false ;
     });
@@ -357,11 +358,11 @@ function jv_events_refreshList(){
     var needTohide = false ;
 	jQuery('.tx-jv-events DIV.jv-events-singleEvent').each(function (i) {
        // console.log( " ************* event **************** UID: " + jQuery(this).data("eventuid")  ) ;
-		jQuery(this).removeClass('hide') ;
+		jQuery(this).removeClass('d-none') ;
 
 		if( fMonth && fMonth.val() && fMonth.val().length > 0 ) {
 			if( jQuery(this).data("monthuid")  !== fMonth.val() ) {
-				jQuery(this).addClass('hide') ;
+				jQuery(this).addClass('d-none') ;
             }
 		}
 		if( fTag && fTag.val() > 0 ) {
@@ -369,17 +370,17 @@ function jv_events_refreshList(){
 			if( fTags ) {
 				fTags = fTags.split(",") ;
 				if( fTags.indexOf( fTag.val() ) < 0 ) {
-					jQuery(this).addClass('hide') ;
+					jQuery(this).addClass('d-none') ;
 				}
 			} else {
-				jQuery(this).addClass('hide') ;
+				jQuery(this).addClass('d-none') ;
 			}
 
 		}
 		if( fCity && fCity.length > 0 ) {
 		    if(  fCity.val().length > 0 ) {
                 if( jQuery(this).data("cityuid")  !== fCity.val() ) {
-                    jQuery(this).addClass('hide') ;
+                    jQuery(this).addClass('d-none') ;
                 }
 			}
 		}
@@ -389,15 +390,16 @@ function jv_events_refreshList(){
 			if( fCats ) {
 				fCats = fCats.split(",") ;
 				if( fCats.indexOf( fCat.val() ) < 0 ) {
-					jQuery(this).addClass('hide') ;
+					jQuery(this).addClass('d-none') ;
 				}
 			} else {
-				jQuery(this).addClass('hide') ;
+				jQuery(this).addClass('d-none') ;
 			}
 		}
         if( fOrg && fOrg.val() > 0 ) {
-            if( jQuery(this).data("orguid")  !== fOrg.val() ) {
-                jQuery(this).addClass('hide') ;
+            console.log( " data-orguid : " + jQuery(this).data("orguid")  + " Filter: " + fOrg.val() ) ;
+            if( parseInt( jQuery(this).data("orguid"))  !== parseInt( fOrg.val()) ) {
+                jQuery(this).addClass('d-none') ;
             }
         }
 
@@ -422,10 +424,10 @@ function jv_events_refreshList(){
 
 
                 if( needTohide ) {
-                    jQuery(this).addClass('hide') ;
+                    jQuery(this).addClass('d-none') ;
                 }
             } else {
-                jQuery(this).addClass('hide') ;
+                jQuery(this).addClass('d-none') ;
             }
         }
 
@@ -447,22 +449,22 @@ function jv_events_refreshList(){
 
                 }) ;
                 if( needTohide ) {
-                    jQuery(this).addClass('hide') ;
+                    jQuery(this).addClass('d-none') ;
                 }
             } else {
-                jQuery(this).addClass('hide') ;
+                jQuery(this).addClass('d-none') ;
             }
         }
-        if ( jQuery(this).hasClass('hide')) {
+        if ( jQuery(this).hasClass('d-none')) {
             filterIsActive = true ;
 		}
 	});
 
 
 	if ( filterIsActive ) {
-		jQuery( "#filter-events A").addClass('hide') ;
-		jQuery( "#filter-reset-events").removeClass('hide') ;
-		jQuery( "#filter-result-hint-events").removeClass('hide') ;
+		jQuery( "#filter-events BUTTON").addClass('d-none') ;
+		jQuery( "#filter-reset-events").removeClass('d-none') ;
+		jQuery( "#filter-result-hint-events").removeClass('d-none') ;
 
 
         // now change also the URL in the Browser to be able to copy the URL !!!
@@ -512,9 +514,9 @@ function jv_events_refreshList(){
 
 
 	} else {
-        jQuery( "#filter-events A").removeClass('hide') ;
-        jQuery( "#filter-reset-events").addClass('hide') ;
-        jQuery( "#filter-result-hint-events").addClass('hide') ;
+        jQuery( "#filter-events BUTTON").removeClass('d-none') ;
+        jQuery( "#filter-reset-events").addClass('d-none') ;
+        jQuery( "#filter-result-hint-events").addClass('d-none') ;
         jv_events_pushUrl( '' ) ;
 
 	}
@@ -577,18 +579,18 @@ function jv_events_filter_reset() {
         }) ;
     }
     if(jQuery('#filter-reset-events').length){
-		jQuery('#filter-reset-events').addClass('hide');
+		jQuery('#filter-reset-events').addClass('d-none');
 	}
 	if(jQuery('#filter-result-hint-events').length){
-		jQuery('#filter-result-hint-events').addClass('hide');
+		jQuery('#filter-result-hint-events').addClass('d-none');
 	}
 
 
     jQuery('.tx-jv-events DIV.jv-events-singleEvent').each(function (i) {
-        jQuery(this).removeClass('hide');
+        jQuery(this).removeClass('d-none');
     });
 
-    jv_events_pushUrl( '' ) ;
+	jv_events_pushUrl( '' ) ;
 
 }
 

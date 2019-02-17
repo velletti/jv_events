@@ -1,0 +1,72 @@
+{namespace jve=JVE\JvEvents\ViewHelpers}
+<f:variable name="tagnames"></f:variable>
+<f:variable name="tagids"></f:variable>
+<f:if condition="{organizer.Tags}">
+
+    <f:for each="{organizer.Tags}" as="Tag" iteration="iteration">
+        <f:variable name="tagids">{Tag.uid},{tagids}</f:variable>
+        <f:variable name="tagnames">{Tag.name}, {tagnames}</f:variable>
+    </f:for>
+</f:if>
+
+<f:spaceless>
+    <div class="jv-events-singleOrganizer" data-orguid="{organizer.uid}" data-tags="{tagids}">
+
+        <div class="card col-12 my-4 clearfix rounded-bottom">
+            <div class="row">
+                <div class="col-4  order-1 col-sm-3 px-0">
+
+                    <f:link.action pageUid="{settings.pageIds.organizerAssist}" action="show" arguments="{organizer : organizer}">
+                            <f:if condition="{organizer.teaserImage}">
+                                <f:then>
+                                    <f:image src="{organizer.teaserImage.uid}" class="d-block w-100 h-auto img-float rounded shadow-lg" alt="{organizer.teaserImage.alternative}" title="{organizer.teaserImage.title}" width="{settings.list.image.width}c" maxWidth="{settings.list.image.width}" maxHeight="{settings.list.image.height}" treatIdAsReference="true" />
+                                </f:then>
+                                <f:else>
+                                    <f:image src="{settings.list.image.defaultImage}" class="d-block w-100 h-auto img-float rounded shadow-lg" alt="img" title="Settings: {settings.list.image.defaultImage}" width="{settings.list.image.width}c" maxWidth="{settings.list.image.width}" maxHeight="{settings.list.image.height}" treatIdAsReference="false" />
+                                </f:else>
+                            </f:if>
+
+                    </f:link.action>
+                </div>
+
+
+                <div class="col-12 col-sm-6  order-3 order-sm-2 py-3">
+                    <div class="card-block">
+                        <h4 class="card-title"><f:link.action  pageUid="{settings.pageIds.organizerAssist}" action="show" arguments="{organizer : organizer}" >
+                            {organizer.name}
+                        </f:link.action></h4>
+                        <f:if condition="{organizer.email}">
+                            <span class="fa fa-envelope mh-sm"></span> <f:link.email email="{organizer.email}">{organizer.email}</f:link.email><br>
+                        </f:if>
+                        <f:if condition="{organizer.phone}">
+                            <span class="fa fa-phone mh-sm"></span> <f:link.external uri="{organizer.phone}" defaultScheme="tel">{organizer.phone}</f:link.external><br>
+                        </f:if>
+                        <f:if condition="{organizer.link}">
+                            <span class="fa fa-link mh-sm"></span> <f:link.external uri="{organizer.link}" >{organizer.link}</f:link.external><br>
+                        </f:if>
+                        <br>
+                        <div class="d-none d-sm-block">
+                            <small>
+                                <span class="fa fa-folder mh-sm"></span> Registered since: <f:format.date format="d.m.Y">{organizer.crdate}</f:format.date><br>
+                                <span class="fa fa-edit mh-sm"></span> Last Update: <f:format.date format="d.m.Y">{organizer.tstamp}</f:format.date><br>
+                            </small>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-8 col-sm-3 text-black-50 bg-gradient-light  order-2 order-sm-3 py-3 small">
+
+                    {tagnames}
+                    <f:if condition="{organizer.organizerCategory}">
+                        <br>
+                        <f:for each="{organizer.organizerCategory}" as="Category" iteration="iteration">
+                            <f:render partial="Organizer/Single/Partial5Tango/CategoryIcon" arguments="{uid: Category.uid, text: Category.title}"/>
+                        </f:for>
+                    </f:if>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</f:spaceless>

@@ -31,7 +31,7 @@
 										<numIndex index="1">Location->list;Location->show;Location->new;Location->create;Location->edit;Location->update;Location->delete;</numIndex>
 									</numIndex>
 									<numIndex index="4">
-										<numIndex index="0">Edit / Create Organizers</numIndex>
+										<numIndex index="0">Organizers (List/Edit/Create ...)</numIndex>
 										<numIndex index="1">Organizer->assist;Organizer->list;Organizer->show;Organizer->new;Organizer->create;Organizer->edit;Organizer->update;Organizer->delete;</numIndex>
 									</numIndex>
 								</items>
@@ -115,28 +115,7 @@
 						</TCEforms>
 					</settings.ShowFilter>
 
-					<!-- PID Single Page -->
-					<settings.detailPid>
-						<TCEforms>
-							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms_additional.detailPid</label>
-							<displayCond>FIELD:sDEF.switchableControllerActions:=:Event->list;Event->search</displayCond>
-							<config>
-								<type>group</type>
-								<internal_type>db</internal_type>
 
-								<allowed>pages</allowed>
-								<size>1</size>
-								<maxitems>1</maxitems>
-								<minitems>0</minitems>
-								<show_thumbs>1</show_thumbs>
-								<wizards>
-									<suggest>
-										<type>suggest</type>
-									</suggest>
-								</wizards>
-							</config>
-						</TCEforms>
-					</settings.detailPid>
 					<settings.filter.startDate>
 						<TCEforms>
 							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.startDate</label>
@@ -446,7 +425,27 @@
 							</config>
 						</TCEforms>
 					</settings.recursive>
+					<!-- PID Single Page -->
+					<settings.detailPid>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms_additional.detailPid</label>
+							<config>
+								<type>group</type>
+								<internal_type>db</internal_type>
 
+								<allowed>pages</allowed>
+								<size>1</size>
+								<maxitems>1</maxitems>
+								<minitems>0</minitems>
+								<show_thumbs>1</show_thumbs>
+								<wizards>
+									<suggest>
+										<type>suggest</type>
+									</suggest>
+								</wizards>
+							</config>
+						</TCEforms>
+					</settings.detailPid>
 				</el>
 
 			</ROOT>

@@ -123,6 +123,7 @@ plugin.tx_jvevents_events {
 			# pageID with plugin Organizer Assist
 			organizerAssist = 0
 
+            # Falback id: if not event list ID is definied, go here :
 			eventList = 0
 		}
 		feEdit {

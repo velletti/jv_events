@@ -14,35 +14,25 @@ in /Configuration/ExtensionBuilder/settings.yaml:
 Otherwise your changes will be overwritten the next time you save the extension in the extension builder
 
 <f:section name="main">
-<h1>Listing for Organizer</h1>
+	<f:if condition="{settings.LayoutList}">
+		<f:then>
+			<f:variable name="layoutList">{settings.LayoutList}</f:variable>
+		</f:then>
+		<f:else>
+			<f:variable name="layoutList">5Tango</f:variable>
+		</f:else>
+	</f:if>
+	<f:flashMessages />
 
-<f:flashMessages />
+	<div class="jv_events_{settings.LayoutList} {settings.list.additionalClass}">
+		<f:if condition="{organizers}">
+			<f:then>
+				<f:render partial="Organizer/List/Partial{layoutList}/Header" arguments="{settings: settings}" />
 
-<table  class="tx_jvevents" >
-	<tr>
-		<th><f:translate key="tx_jvevents_domain_model_organizer.name" /></th>
-		<th><f:translate key="tx_jvevents_domain_model_organizer.email" /></th>
-		<th><f:translate key="tx_jvevents_domain_model_organizer.phone" /></th>
-		<th><f:translate key="tx_jvevents_domain_model_organizer.sales_force_user_id" /></th>
-		<th><f:translate key="tx_jvevents_domain_model_organizer.images" /></th>
-		<th><f:translate key="tx_jvevents_domain_model_organizer.description" /></th>
-		<th> </th>
-		<th> </th>
-	</tr>
-
-	<f:for each="{organizers}" as="organizer">
-		<tr>
-			<td><f:link.action action="show" arguments="{organizer : organizer}"> {organizer.name}</f:link.action></td>
-			<td><f:link.action action="show" arguments="{organizer : organizer}"> {organizer.email}</f:link.action></td>
-			<td><f:link.action action="show" arguments="{organizer : organizer}"> {organizer.phone}</f:link.action></td>
-			<td><f:link.action action="show" arguments="{organizer : organizer}"> {organizer.salesForceUserId}</f:link.action></td>
-			<td><f:link.action action="show" arguments="{organizer : organizer}"> {organizer.images.originalResource.name}</f:link.action></td>
-			<td><f:link.action action="show" arguments="{organizer : organizer}"> {organizer.description}</f:link.action></td>
-			<td><f:link.action action="edit" arguments="{organizer : organizer}">Edit</f:link.action></td>
-			<td><f:link.action action="delete" arguments="{organizer : organizer}">Delete</f:link.action></td>
-		</tr>
-	</f:for>
-</table>
-
-<f:link.action action="new">New Organizer</f:link.action>
+				<f:for each="{organizers}" as="organizer">
+					<f:render partial="Organizer/List/Partial{layoutList}/SingleOrganizer" arguments="{organizer:organizer, settings: settings}" />
+				</f:for>
+			</f:then>
+		</f:if>
+	</div>
 </f:section>
