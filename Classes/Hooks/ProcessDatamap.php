@@ -78,139 +78,155 @@ class ProcessDatamap {
 			$allowedError = 0 ;
 
 			if( is_object( $this->event ) ) {
+                if ($this->event->getEventType() == 0 ) {
+                    // this uses an external page for details, not the internal Registration , detail View etc. so no checks possible
+                    // Also we will remove possible false settings
 
-
-
-                if ($this->event->getNotifyRegistrant() ==  0 && $this->event->getNeedToConfirm() == 1 ) {
+                    $this->event->setWithRegistration(0) ;
+                    $this->event->setRegistrationPid(0);
+                    $this->event->setRegistrationFormPid(0);
                     $this->event->setNeedToConfirm( 0 ) ;
-                    $this->flashMessage['WARNING'][] = 'You can not set Need to confirm without sending Email to the participant !' ;
-                    $allowedError ++ ;
-                }
-
-                if ($this->event->getWithRegistration()   ) {
-                    if (! $this->event->getRegistrationUntil() ) {
-                        $this->flashMessage['ERROR'][] = 'Registration Until date is not set!' ;
-                        $allowedError ++ ;
-                    } else {
-                        if ($this->event->getRegistrationUntil()->getTimestamp()  < time()  ) {
-                            $this->flashMessage['WARNING'][] = 'Registration Until date is in the Past! Registration is not possible' ;
-                        }
-                    }
-
-                    $ST = $this->event->getStartDate() ;
-                    $ST = $ST->modify( "+" . intval($this->event->getStartTime() ) . " second" ) ;
-                    if ($this->event->getRegistrationUntil()  >  ( $ST )) {
-                        if( $this->event->getRegistrationUntil() && $this->event->getStartDate() ) {
-                            $this->flashMessage['WARNING'][] = 'Registration Until date ' . $this->event->getRegistrationUntil()->format("d.m.Y H:i") .  ' is after Event Start Date! ' . $ST->format("d.m.Y H:i:s") ;
-                        } else {
-                            $this->flashMessage['WARNING'][] = 'Registration Until date is after Event Start Date! StartDate is not set now!' ;
-                        }
-                    }
-                    if ($this->event->getAccessStarttime()  >  ( $ST )) {
-                        $this->flashMessage['WARNING'][] = 'Event visibility Start date was after Start Date: ' .  $ST->format("d.m.Y - H:i") . ". Error was corrected. ";
-                        $this->event->setAccessStarttime( $ST) ;
-                    }
-                    if ($this->event->getAccessEndtime() && $this->event->getAccessEndtime()->getTimestamp() < time() ) {
-                        $this->flashMessage['WARNING'][] = 'Event visibility END date is in the past: ' .  $this->event->getAccessEndtime()->format("d.m.Y - H:i") . ". you will not see this event !" ;
-                    }
-                    // IMPORTANT: without this modification startDate  will have still added the start time !
-                    $ST = $ST->modify( "-" . intval($this->event->getStartTime() ) . " second" ) ;
-                    unset($ST) ;
-                    if( intval( $this->event->getRegistrationFormPid() ) < 1 ) {
-                        $this->flashMessage['WARNING'][] = 'You must select the Page with the Registration Form!' ;
-
-                    }
-                    if( intval( $this->event->getRegistrationPid() ) < 1 ) {
-                        $this->flashMessage['WARNING'][] = 'You must select the Page where the Registrations should be stored! (actual Pid was set)' ;
-                        $this->event->setRegistrationPid( $this->event->getPid()) ;
-                    }
+                    $this->event->setNotifyOrganizer( 0 ) ;
+                    $this->event->setNotifyRegistrant( 0 ) ;
 
                 } else {
-                    if (trim($this->event->getRegistrationUrl()) == '' || !$this->event->getRegistrationUrl() ) {
-                        $this->flashMessage['INFO'][] = 'Registration URL is not set "' .  $this->event->getRegistrationUrl() . '". Registration is not Possible.' ;
-                    } else {
-                        if (! $this->event->getRegistrationUntil() ) {
-                            $this->flashMessage['ERROR'][] = 'Registration Until date is not set!' ;
+                    if ($this->event->getNotifyRegistrant() ==  0 && $this->event->getNeedToConfirm() == 1 ) {
+                        $this->event->setNeedToConfirm( 0 ) ;
+                        $this->flashMessage['WARNING'][] = 'You can not set Need to confirm without sending Email to the participant !' ;
+                        $allowedError ++ ;
+                    }
+
+                    if ($this->event->getWithRegistration()   ) {
+                        if (! $this->event->getRegistrationUntil() || is_integer( $this->event->getRegistrationUntil()) ) {
+                            $this->flashMessage['ERROR'][] = 'Registration Until date is not set! ' ;
+                            $this->event->setWithRegistration(0) ;
                             $allowedError ++ ;
                         } else {
-                            if ($this->event->getRegistrationUntil()->getTimestamp()  < time()  ) {
-                                $this->flashMessage['ERROR'][] = 'Registration Until date is in the Past!' ;
+                            if( $this->event->getRegistrationUntil() instanceof \DateTime ) {
+                                if ($this->event->getRegistrationUntil()->getTimestamp()  < time()  ) {
+                                    $this->flashMessage['WARNING'][] = 'Registration Until date is in the Past! Registration is not possible' ;
+                                }
+                            }
+
+                        }
+
+                        $ST = $this->event->getStartDate() ;
+                        $ST = $ST->modify( "+" . intval($this->event->getStartTime() ) . " second" ) ;
+                        if ($this->event->getRegistrationUntil()  >  ( $ST )) {
+                            if( $this->event->getRegistrationUntil() && $this->event->getStartDate() ) {
+                                $this->flashMessage['WARNING'][] = 'Registration Until date ' . $this->event->getRegistrationUntil()->format("d.m.Y H:i") .  ' is after Event Start Date! ' . $ST->format("d.m.Y H:i:s") ;
+                            } else {
+                                $this->flashMessage['WARNING'][] = 'Registration Until date is after Event Start Date! StartDate is not set now!' ;
+                            }
+                        }
+                        if ($this->event->getAccessStarttime()  >  ( $ST )) {
+                            $this->flashMessage['WARNING'][] = 'Event visibility Start date was after Start Date: ' .  $ST->format("d.m.Y - H:i") . ". Error was corrected. ";
+                            $this->event->setAccessStarttime( $ST) ;
+                        }
+                        if ($this->event->getAccessEndtime() && $this->event->getAccessEndtime()->getTimestamp() < time() ) {
+                            $this->flashMessage['WARNING'][] = 'Event visibility END date is in the past: ' .  $this->event->getAccessEndtime()->format("d.m.Y - H:i") . ". you will not see this event !" ;
+                        }
+                        // IMPORTANT: without this modification startDate  will have still added the start time !
+                        $ST = $ST->modify( "-" . intval($this->event->getStartTime() ) . " second" ) ;
+                        unset($ST) ;
+                        if( intval( $this->event->getRegistrationFormPid() ) < 1 ) {
+                            $this->flashMessage['WARNING'][] = 'You must select the Page with the Registration Form!' ;
+
+                        }
+                        if( intval( $this->event->getRegistrationPid() ) < 1 ) {
+                            $this->flashMessage['WARNING'][] = 'You must select the Page where the Registrations should be stored! (actual Pid was set)' ;
+                            $this->event->setRegistrationPid( $this->event->getPid()) ;
+                        }
+
+                    } else {
+                        if (trim($this->event->getRegistrationUrl()) == '' || !$this->event->getRegistrationUrl() ) {
+                            $this->flashMessage['INFO'][] = 'Registration URL is not set "' .  $this->event->getRegistrationUrl() . '". Registration is not Possible.' ;
+                        } else {
+                            if (! $this->event->getRegistrationUntil() ) {
+                                $this->flashMessage['ERROR'][] = 'Registration Until date is not set!' ;
+                                $allowedError ++ ;
+                            } else {
+                                if ($this->event->getRegistrationUntil()->getTimestamp()  < time()  ) {
+                                    $this->flashMessage['ERROR'][] = 'Registration Until date is in the Past!' ;
+                                }
+                            }
+                        }
+
+                        $ST = $this->event->getStartDate() ;
+                        $ST = $ST->modify( "+" . intval($this->event->getStartTime() ) . " second" ) ;
+
+                        if ($this->event->getRegistrationUntil()  >  ( $ST )) {
+                            if( $this->event->getRegistrationUntil() && $this->event->getStartDate() ) {
+                                $this->flashMessage['WARNING'][] = 'Registration Until date ' . $this->event->getRegistrationUntil()->format("d.m.Y H:i") .  ' is after Event Start Date! ' . $ST->format("d.m.Y - H:i") ;
+                            } else {
+                                $this->flashMessage['WARNING'][] = 'Registration Until date is after Event Start Date!' ;
+                            }
+                        }
+                        // echo "this->event->getAccessStarttime(): " . $this->event->getAccessStarttime() ;
+
+                        if ( is_integer($this->event->getAccessStarttime())) {
+                            /** @var \DateTime $accessStart */
+                            $accessStart = new \DateTime(  ) ;
+                            $accessStart->setTimestamp($this->event->getAccessStarttime()) ;
+                        } else {
+                            $accessStart = $this->event->getAccessStarttime() ;
+                        }
+
+                        if ($accessStart  >  ( $ST )) {
+                            $this->flashMessage['WARNING'][] = 'Event visibility Start date was after Start Date: ' .  $ST->format("d.m.Y - H:i") ;
+                            $this->event->setAccessStarttime( $ST) ;
+                        }
+                        if ( is_integer($this->event->getAccessEndtime())) {
+                            /** @var \DateTime $accessStart */
+                            $accessEnd = new \DateTime(  ) ;
+                            $accessEnd->setTimestamp($this->event->getAccessEndtime()) ;
+                        } else {
+                            $accessEnd = $this->event->getAccessEndtime() ;
+                        }
+
+                        if ( $accessEnd->getTimestamp() < time() && $accessEnd->getTimestamp() > 0 ) {
+                            $this->flashMessage['WARNING'][] = 'Event visibility END date is in the past: ' .  $accessEnd->format("d.m.Y - H:i") ;
+                        }
+
+                        // IMPORTANT: without this modification startDate  will have still added the start time !
+                        $ST = $ST->modify( "-" . intval($this->event->getStartTime() ) . " second" ) ;
+                        unset($ST) ;
+                    }
+                    if( !$this->event->getOrganizer()) {
+                        $this->flashMessage['ERROR'][] = 'No organizer selected in Tab Relations!' ;
+                        $allowedError ++ ;
+                    }
+                    if( !$this->event->getLocation()) {
+                        $this->flashMessage['ERROR'][] = 'No Location selected in Tab Relations!' ;
+                        $allowedError ++ ;
+                    }
+                    if( count( $this->event->getEventCategory()) < 1 ) {
+                        $this->flashMessage['WARNING'][] = 'No Event Category selected in Tab Relations. This event may not be found in lists!' ;
+                    }
+                    if( count(  $this->event->getTags() ) < 1 ) {
+                        $this->flashMessage['WARNING'][] = 'No Event Tags selected in Tab Relations!' ;
+                    }
+
+                    if ($allowedError >  0 ) {
+                        // $this->event->setWithRegistration(FALSE ) ;
+
+
+                    } else {
+                        // j.v. : Kopiert von altem Plugin: wenn Store in Citrix "An" Ist, das Event NICHT als "TW Webinar /Event " nach Salesforce Schreiben !
+                        if( $this->event->getStoreInSalesForce() ) {
+                            if( $this->event->getStoreInCitrix() ) {
+                                $this->flashMessage['WARNING'][] = 'You can not set "Store in Salesforce" together with "Store in Citrix"! (store in salesforce is disabled)!' ;
+                                $this->event->setStoreInSalesForce(0) ;
+                                $allowedError ++ ;
+                            } else {
+                                $this->createUpdateEventForSF()  ;
                             }
                         }
                     }
-
-                    $ST = $this->event->getStartDate() ;
-                    $ST = $ST->modify( "+" . intval($this->event->getStartTime() ) . " second" ) ;
-
-                    if ($this->event->getRegistrationUntil()  >  ( $ST )) {
-                        if( $this->event->getRegistrationUntil() && $this->event->getStartDate() ) {
-                            $this->flashMessage['WARNING'][] = 'Registration Until date ' . $this->event->getRegistrationUntil()->format("d.m.Y H:i") .  ' is after Event Start Date! ' . $ST->format("d.m.Y - H:i") ;
-                        } else {
-                            $this->flashMessage['WARNING'][] = 'Registration Until date is after Event Start Date!' ;
-                        }
-                    }
-                   // echo "this->event->getAccessStarttime(): " . $this->event->getAccessStarttime() ;
-
-                    if ( is_integer($this->event->getAccessStarttime())) {
-                        /** @var \DateTime $accessStart */
-                        $accessStart = new \DateTime(  ) ;
-                        $accessStart->setTimestamp($this->event->getAccessStarttime()) ;
-                    } else {
-                        $accessStart = $this->event->getAccessStarttime() ;
-                    }
-
-                    if ($accessStart  >  ( $ST )) {
-                        $this->flashMessage['WARNING'][] = 'Event visibility Start date was after Start Date: ' .  $ST->format("d.m.Y - H:i") ;
-                        $this->event->setAccessStarttime( $ST) ;
-                    }
-                    if ( is_integer($this->event->getAccessEndtime())) {
-                        /** @var \DateTime $accessStart */
-                        $accessEnd = new \DateTime(  ) ;
-                        $accessEnd->setTimestamp($this->event->getAccessEndtime()) ;
-                    } else {
-                        $accessEnd = $this->event->getAccessEndtime() ;
-                    }
-
-                    if ( $accessEnd->getTimestamp() < time() && $accessEnd->getTimestamp() > 0 ) {
-                        $this->flashMessage['WARNING'][] = 'Event visibility END date is in the past: ' .  $accessEnd->format("d.m.Y - H:i") ;
-                    }
-
-                    // IMPORTANT: without this modification startDate  will have still added the start time !
-                    $ST = $ST->modify( "-" . intval($this->event->getStartTime() ) . " second" ) ;
-                    unset($ST) ;
-                }
-                if( !$this->event->getOrganizer()) {
-                    $this->flashMessage['ERROR'][] = 'No organizer selected in Tab Relations!' ;
-                    $allowedError ++ ;
-                }
-                if( !$this->event->getLocation()) {
-                    $this->flashMessage['ERROR'][] = 'No Location selected in Tab Relations!' ;
-                    $allowedError ++ ;
-                }
-                if( count( $this->event->getEventCategory()) < 1 ) {
-                    $this->flashMessage['WARNING'][] = 'No Event Category selected in Tab Relations. This event may not be found in lists!' ;
-                }
-                if( count(  $this->event->getTags() ) < 1 ) {
-                    $this->flashMessage['WARNING'][] = 'No Event Tags selected in Tab Relations!' ;
                 }
 
-                if ($allowedError >  0 ) {
-					// $this->event->setWithRegistration(FALSE ) ;
 
 
-                } else {
-                    // j.v. : Kopiert von altem Plugin: wenn Store in Citrix "An" Ist, das Event NICHT als "TW Webinar /Event " nach Salesforce Schreiben !
-                    if( $this->event->getStoreInSalesForce() ) {
-                        if( $this->event->getStoreInCitrix() ) {
-                            $this->flashMessage['WARNING'][] = 'You can not set "Store in Salesforce" together with "Store in Citrix"! (store in salesforce is disabled)!' ;
-                            $this->event->setStoreInSalesForce(0) ;
-                            $allowedError ++ ;
-                        } else {
-                            $this->createUpdateEventForSF()  ;
-                        }
-                    }
-
-                }
                 $this->eventRepository->update($this->event) ;
 
                 /** @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager $persistenceManager */
