@@ -127,6 +127,14 @@ class OrganizerRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
                 $constraints[] = $query->equals($field ,  $value ) ;
             }
         }
+
+        // and the normal visibility contrains , including date Time
+        /** @var \DateTime $actualTime */
+        $actualTime = new \DateTime('now' ) ;
+        $actualTime->modify('-3 YEAR') ;
+        $constraints[] = $query->greaterThanOrEqual('tstamp', $actualTime );
+
+
         if( $limit) {
             $query->setLimit(intval($limit));
         }

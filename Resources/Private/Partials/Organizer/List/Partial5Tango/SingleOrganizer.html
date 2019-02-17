@@ -51,7 +51,12 @@
                                 <span class="fa fa-edit mh-sm"></span> Last Update: <f:format.date format="d.m.Y">{organizer.tstamp}</f:format.date><br>
                             </small>
                         </div>
+                        <div class="text-right">
+                                <f:link.page class="badge badge-secondary m-2" pageUid="{settings.pageIds.eventList}" additionalParams="{'tx_jvevents_events' : {'eventsFilter': {'organizers': '{organizer.uid}'},'overruleFilter': {'category' : 'true'}}}">
+                                    <span class="fas fa-calendar-alt "></span> Termine >>
+                                </f:link.page>
 
+                        </div>
                     </div>
                 </div>
 
