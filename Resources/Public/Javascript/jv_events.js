@@ -245,7 +245,7 @@ function jv_events_refreshList(){
 		jQuery(this).removeClass('hide') ;
 
 		if( fMonth && fMonth.val() && fMonth.val().length > 0 ) {
-			if( jQuery(this).data("monthuid")  !== fMonth.val() ) {
+			if( jQuery(this).data("monthuid")  != fMonth.val() ) {
 				jQuery(this).addClass('hide') ;
             }
 		}
@@ -263,7 +263,7 @@ function jv_events_refreshList(){
 		}
 		if( fCity && fCity.length > 0 ) {
 		    if(  fCity.val().length > 0 ) {
-                if( jQuery(this).data("cityuid")  !== fCity.val() ) {
+                if( (jQuery(this).data("cityuid"))  != (fCity.val()) ) {
                     jQuery(this).addClass('hide') ;
                 }
 			}
@@ -281,7 +281,7 @@ function jv_events_refreshList(){
 			}
 		}
         if( fOrg && fOrg.val() > 0 ) {
-            if( jQuery(this).data("orguid")  !== fOrg.val() ) {
+            if( parseInt( jQuery(this).data("orguid"))   !== parseInt( fOrg.val()) ) {
                 jQuery(this).addClass('hide') ;
             }
         }
