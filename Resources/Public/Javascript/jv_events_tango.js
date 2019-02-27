@@ -202,8 +202,10 @@ function jv_events_GetURLnonEventParms( noIdandLang ) {
     var sURLVariables = sPageURL.split('&');
     var ret = '' ;
     for (var i = 0; i < sURLVariables.length; i++) {
+        // console.log( "i: " + i + " = " + sURLVariables[i] ) ;
         if ( sURLVariables[i].length > 1 ) {
             var sParameterName = sURLVariables[i].split('=');
+            // console.log(  sParameterName[0] + " = " + sParameterName[1] ) ;
             if (sParameterName[0].substring(0,18) != 'tx_jvevents_events') {
                 if(noIdandLang) {
                     if( sParameterName[0] != "id" && sParameterName[0] != "L") {
@@ -212,7 +214,12 @@ function jv_events_GetURLnonEventParms( noIdandLang ) {
                 } else {
                     ret = ret + "&" + sParameterName[0] + "=" +  decodeURIComponent(sParameterName[1]);
                 }
-
+            } else {
+                // console.log(  " is events Param , check if Overrule " ) ;
+                if (sParameterName[0].indexOf('overruleFilter') > 0 ) {
+                    // console.log(  " add  Overrule : " + sParameterName[0]  ) ;
+                    ret = ret + "&" + sParameterName[0] + "=" +  decodeURIComponent(sParameterName[1]);
+                }
             }
         }
     }
@@ -397,7 +404,7 @@ function jv_events_refreshList(){
 			}
 		}
         if( fOrg && fOrg.val() > 0 ) {
-            console.log( " data-orguid : " + jQuery(this).data("orguid")  + " Filter: " + fOrg.val() ) ;
+//            console.log( " data-orguid : " + jQuery(this).data("orguid")  + " Filter: " + fOrg.val() ) ;
             if( parseInt( jQuery(this).data("orguid"))  !== parseInt( fOrg.val()) ) {
                 jQuery(this).addClass('d-none') ;
             }

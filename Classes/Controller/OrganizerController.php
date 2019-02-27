@@ -120,20 +120,16 @@ class OrganizerController extends BaseController
 
             /** @var \JVE\JvEvents\Domain\Model\Organizer $organizer */
             $organizer = $this->objectManager->get("JVE\\JvEvents\\Domain\\Model\\Organizer");
-        }
-        if ( $location->getUid() < 1 ) {
-            $organizer = $this->getOrganizer() ;
-            if( $organizer ) {
-                $location->setOrganizer($organizer);
-            }
-
             // ToDo find good way to handle ID Default .. maybe a pid per User, per location or other typoscript setting
-            $location->setPid( 14 ) ;
+            $organizer->setPid( 13 ) ;
+            $organizer->setEmail( $GLOBALS['TSFE']->fe_user->user['username'] ) ;
+
+            // We want to confirm each new Organizer
+            $organizer->sethidden( 1 ) ;
 
         }
         if($this->isUserOrganizer() ) {
             $this->view->assign('user', intval($GLOBALS['TSFE']->fe_user->user['uid'] ) ) ;
-            $this->view->assign('location', $location);
             $this->view->assign('organizer', $organizer );
             $this->view->assign('categories', $categories);
         }
@@ -142,14 +138,22 @@ class OrganizerController extends BaseController
     /**
      * action create
      *
-     * @param \JVE\JvEvents\Domain\Model\Organizer $newOrganizer
+     * @param \JVE\JvEvents\Domain\Model\Organizer $organizer
+     * @validate $organizer \JVE\JvEvents\Validation\Validator\OrganizerValidator
      * @return void
      */
-    public function createAction(\JVE\JvEvents\Domain\Model\Organizer $newOrganizer)
+    public function createAction(\JVE\JvEvents\Domain\Model\Organizer $organizer)
     {
-        $this->addFlashMessage('The object was created. Please be aware that this action is publicly accessible unless you implement an access check. See http://wiki.typo3.org/T3Doc/Extension_Builder/Using_the_Extension_Builder#1._Model_the_domain', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
-		//    $this->organizerRepository->add($newOrganizer);
-		//    $this->redirect('list');
+        $this->addFlashMessage('The object NewOrganizer was NOT created, because the "create" Action not finished Yet!', 'Uncomplete Function', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
+		// Todo: add needed checks like in updateAction
+        // adding some default Fields
+        // Look via Email into Old Organizer Table and get "tango_veranstler -> created Date  ??
+        // send Email to Admin with Link to add user to Organizer FE User Gorup
+
+        // create a validator( Name, Email, phone, link tags, and Description
+
+        $this->organizerRepository->add($organizer);
+		$this->redirect('new' , null, null );
     }
     
     /**
@@ -208,9 +212,9 @@ class OrganizerController extends BaseController
      */
     public function deleteAction(\JVE\JvEvents\Domain\Model\Organizer $organizer)
     {
-        $this->addFlashMessage('The object was deleted. Please be aware that this action is publicly accessible unless you implement an access check. See http://wiki.typo3.org/T3Doc/Extension_Builder/Using_the_Extension_Builder#1._Model_the_domain', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
+        $this->addFlashMessage('The object was NOT deleted. this feature is not implemented yet', 'Unfinised Feature', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
      //   $this->organizerRepository->remove($organizer);
-     //   $this->redirect('list');
+        $this->redirect('list');
     }
 
 }

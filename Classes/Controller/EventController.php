@@ -82,21 +82,21 @@ class EventController extends BaseController
      */
     public function listAction()
     {
-    	if( $this->request->hasArgument('startDate')) {
-    		$startDate = $this->request->getArgument('startDate') ;
-			$sdArr = explode("." , $startDate ) ;
-			if( $sdArr[0] > 0 && $sdArr[0] < 32 && $sdArr[1] > 0 && $sdArr[1] < 13  && $sdArr[2] > 1970 ) {
-				$this->settings['filter']['startDate'] = mktime(0,0,0, $sdArr[1] , $sdArr[0] , $sdArr[2] ) ;
-			} else {
-				$this->settings['filter']['startDate'] = intval( $startDate ) ;
-			}
-			// https://tango.ddev.local/index.php?id=9&L=0&&tx_jvevents_events[eventsFilter][organizers]=1&tx_jvevents_events[eventsFilter][tags]=5,6,8,7,10,4,1,20,11,14,&tx_jvevents_events[eventsFilter][citys]=undefined&tx_jvevents_events[startDate]=24.07.2019&no_cache=1
-		}
         if( $this->request->hasArgument('overruleFilter')) {
             $filter = $this->request->getArgument('overruleFilter') ;
             if( array_key_exists( "category" , $filter )) {
                 if( $filter['category'] === 'true' ) {
                     $this->settings['filter']['categories'] = false ;
+                }
+            }
+            if( array_key_exists( "startDate" , $filter )) {
+                if( $filter['startDate']  ) {
+                    $sdArr = explode("." , $filter['startDate'] ) ;
+                    if( $sdArr[0] > 0 && $sdArr[0] < 32 && $sdArr[1] > 0 && $sdArr[1] < 13  && $sdArr[2] > 1970 ) {
+                        $this->settings['filter']['startDate'] = mktime(0,0,0, $sdArr[1] , $sdArr[0] , $sdArr[2] ) ;
+                    } else {
+                        $this->settings['filter']['startDate'] = intval( $filter['startDate'] ) ;
+                    }
                 }
             }
             // https://tango.ddev.local/index.php?id=9&L=0&&tx_jvevents_events[eventsFilter][organizers]=1&tx_jvevents_events[eventsFilter][tags]=5,6,8,7,10,4,1,20,11,14,&tx_jvevents_events[eventsFilter][citys]=undefined&tx_jvevents_events[eventsFilter][months]=undefined&tx_jvevents_events[overruleFilter][category]=true&no_cache=1

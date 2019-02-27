@@ -18,18 +18,18 @@ $EM_CONF[$_EXTKEY] = array(
 	'author_email' => 'typo3@velletti.de',
 	'state' => 'beta',
 	'internal' => '',
-	'uploadfolder' => '1',
+	'uploadfolder' => '',
 	'createDirs' => '',
 	'clearCacheOnLoad' => 1,
-	'version' => '0.1.6',
+	'version' => '8.7.6',
 	'constraints' => array(
 		'depends' => array(
-			'typo3' => '7.6.0-8.7.99',
-			'static_info_tables' => '6.3.0-6.99.99',
+			'typo3' => '8.7.0-8.7.99',
 		),
 		'conflicts' => array(
 		),
 		'suggests' => array(
+            'static_info_tables' => '6.4.0-6.99.99',
 		),
 	),
 );
