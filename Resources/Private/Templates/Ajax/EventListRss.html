@@ -10,9 +10,9 @@
             <title>ALLPLAN GmbH Events</title>
             <link>https://www.allplan.com/</link>
             <description>Similar Events</description>
-            <language>de</language>
-            <pubDate>Mon, 22 Oct 2018 02:43:45 +0000</pubDate>
-            <lastBuildDate>Mon, 22 Oct 2018 02:43:45 +0000</lastBuildDate>
+            <language><f:if condition="{settings.language}"><f:then>{settings.language}</f:then><f:else>de</f:else></f:if></language>
+            <pubDate><f:format.date format="D, d.M.Y H:i:s +0200"date="now"></f:format.date></pubDate>
+            <lastBuildDate><f:format.date format="D, d.M.Y H:i:s +0200"date="now"></f:format.date></lastBuildDate>
             <image>
                 <title>www.allplan.com</title>
                 <link>https://www.allplan.com/</link>
@@ -22,17 +22,18 @@
             <f:if condition="{output.events}">
                 <f:then>
                     <f:for each="{output.events}" as="event">
-
                         <item>
                             <guid isPermaLink="false">event-{event.uid}</guid>
                             <pubDate><f:format.date format="d.M.Y H:i:s +0200">{event.startDate}</f:format.date></pubDate>
-                            <title><f:format.date format="d.M.Y">{event.startDate}</f:format.date> | {event.name}</title>
-                            <link>https://www.allplan.com/de/termine/alle-termine/?</link>
-                            <description>{event.location.City} |<f:if condition="{event.EventCategory}">
-                                <f:for each="{event.EventCategory}" as="EventCategory" iteration="iteration"><f:if condition="{iteration.index} > 0 ">, </f:if>{EventCategory.title}</f:for>
-                            </f:if> | {event.teaser} </description>
-                            <content:encoded> {event.description} </content:encoded>
+                            <title><f:format.htmlspecialchars>{event.location.City}</f:format.htmlspecialchars> | <f:format.htmlspecialchars>{event.name}</f:format.htmlspecialchars></title>
+                            <link><f:if condition="{event.type} == '0'">
+                                <f:then><f:format.htmlspecialchars>{event.url}</f:format.htmlspecialchars></f:then>
+                                <f:else>https://www.allplan.com/index.php?id=111&amp;L=1&amp;tx_jvevents_events[event]={event.uid}&amp;tx_jvevents_events[action]=show&amp;no_cache=1</f:else>
+                            </f:if></link>
+                            <description><f:format.date format="d. M. Y">{event.startDate}</f:format.date> <f:if condition="{event.EventCategory}"><f:for each="{event.EventCategory}" as="EventCategory" iteration="iteration"><f:if condition="{iteration.index} > 0 ">, </f:if>{EventCategory.title}</f:for></f:if> | <f:format.cdata>{event.teaser}</f:format.cdata></description>
+                            <content:encoded><f:format.htmlspecialchars>{event.description}</f:format.htmlspecialchars></content:encoded>
                         </item>
+
                     </f:for>
                 </f:then>
             </f:if>
