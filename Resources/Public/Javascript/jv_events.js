@@ -205,7 +205,7 @@ function jv_events_initOneFilter(filterName) {
             }
         } else {
             jQuery('#jv_events_filter_' + filterName + ' input[type=checkbox]').each(function(i) {
-                jQuery(this).prop("checked", true);
+            //    jQuery(this).prop("checked", true);
             });
         }
     }
@@ -288,19 +288,32 @@ function jv_events_refreshList(){
 
         if( cTagChecked  ) {
             var sTags = jQuery(this).data("taguids") ;
-           //  console.log( " sTags : " + sTags ) ;
+            // console.log( " sTags (Tag Ids of Event) : " + sTags ) ;
 
             if( sTags ) {
                 sTags = "," + sTags + "," ;
                 needTohide = true ;
+                var combineTags =  jQuery('#jv_events_filter_tags').data('combinetags') ;
+                //console.log( "Combine Tags: " +  combineTags  ) ;
 				jQuery( cTags ).each( function() {
-                   //  console.log( "Tag: " + jQuery(this).val() + "checked ? : " + jQuery(this).prop("checked") ) ;
+                   // console.log( "Filter Tag: " + jQuery(this).val() + " checked ? : " + jQuery(this).prop("checked") ) ;
+
 					if ( jQuery(this).prop("checked") ) {
-                      //  console.log( "position of " + jQuery(this).val() + " in string " + sTags + " = " + sTags.indexOf( "," + jQuery(this).val()   ) ) ;
+                        // console.log( "position of " + jQuery(this).val() + " in string " + sTags + " = " + sTags.indexOf( "," + jQuery(this).val()   ) ) ;
 						if( sTags.indexOf( "," + jQuery(this).val() + ","  ) > -1 ) {
-							needTohide = false ;
-							return false ;
-						}
+                            needTohide = false ;
+                           // console.log(" if All Tags must fit (combineTags = " + combineTags + "): we can not exit , we need to stay in loop and check all " ) ;
+                            if ( combineTags != "1") {
+                                return false ;
+                            }
+                        } else {
+                            // console.log(" if All Tags must fit (combineTags = " + combineTags + "): we will exit and hide event " ) ;
+                            //
+                            if ( combineTags == "1") {
+                                needTohide = true ;
+                                return false ;
+                            }
+                        }
 					}
 
 				}) ;

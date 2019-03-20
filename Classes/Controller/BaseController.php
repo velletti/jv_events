@@ -139,7 +139,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     }
 
 
-    public function generateFilter($eventsArray) {
+    public function generateFilter($eventsArray , $filter ) {
         $locations = array() ;
         $organizers = array() ;
         $citys = array() ;
@@ -170,11 +170,16 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
             $objArray =  $event->getTags() ;
             if( is_object( $objArray)) {
+                // Plugin settings: are there TAGS as filter defined in the Plugin
+                $filterTags = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $filter['tags'], true);
+
                 /** @var \JVE\JvEvents\Domain\Model\Tag $obj */
                 foreach ($objArray as $obj ) {
                     if ( is_object($obj) ) {
-                        $tags[$obj->getUid()] = $obj->getName() ;
-                        $tags2[$obj->getUid()] = array( "id" => $obj->getUid() , "title" => $obj->getName()  ) ;
+                      //  if ( $filter['combinetags'] == "0" || count($filterTags) < 1 || in_array(  $obj->getUid() , $filterTags )) {
+                            $tags[$obj->getUid()] = $obj->getName() ;
+                            $tags2[$obj->getUid()] = array( "id" => $obj->getUid() , "title" => $obj->getName()  ) ;
+                     //   }
                     }
                 }
             }

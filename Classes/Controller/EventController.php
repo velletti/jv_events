@@ -116,7 +116,8 @@ class EventController extends BaseController
             $this->settings['detailPid'] = intval( $this->settings['link']['detailPidDefault']) ;
         }
 
-        $eventsFilter = $this->generateFilter( $events->toArray() ) ;
+        $eventsFilter = $this->generateFilter( $events->toArray() ,  $this->settings['filter']) ;
+
         $this->view->assign('eventsFilter', $eventsFilter);
         $this->view->assign('settings', $this->settings );
     }

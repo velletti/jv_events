@@ -182,12 +182,6 @@
 							<config>
 								<type>select</type>
 								<renderType>selectMultipleSideBySide</renderType>
-								<items type="array">
-									<numIndex index="1" type="array">
-										<numIndex index="0">LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.ShowAllCategories</numIndex>
-										<numIndex index="1">_ALL</numIndex>
-									</numIndex>
-								</items>
 								<maxitems>100</maxitems>
 								<size>5</size>
 								<autoSizeMax>10</autoSizeMax>
@@ -259,12 +253,7 @@
 							<config>
 								<type>select</type>
 								<renderType>selectMultipleSideBySide</renderType>
-								<items type="array">
-									<numIndex index="1" type="array">
-										<numIndex index="0">LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.ShowAllTags</numIndex>
-										<numIndex index="1">_ALL</numIndex>
-									</numIndex>
-								</items>
+
 								<maxitems>100</maxitems>
 								<size>5</size>
 								<autoSizeMax>10</autoSizeMax>

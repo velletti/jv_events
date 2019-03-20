@@ -96,9 +96,11 @@ class EventRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 			$constraints = $this->getPidContraints($constraints,  $settings , $configuration , $query );
 		}
 		if( $settings['filter']['categories']  ) {
-
 			$constraints = $this->getCatContraints($constraints,  $settings , $configuration , $query );
 		}
+        if( $settings['filter']['tags']  ) {
+            $constraints = $this->getTagContraints($constraints,  $settings , $configuration , $query );
+        }
 
         if( $settings['filter']['citys']  ) {
             $constraints[] = $query->logicalAnd( $query->in("location" , \TYPO3\CMS\CORE\Utility\GeneralUtility::trimExplode( "," , $settings['filter']['citys'])) ) ;
@@ -143,16 +145,17 @@ class EventRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             var_dump($sqlquery) ;
             echo "<hr>Values: <br>" ;
             $values = ($queryParser->convertQueryToDoctrineQueryBuilder($query)->getParameters()) ;
-            var_dump($values) ;
+            echo var_export($values , true ) ;
             $from = array() ;
             $to = array() ;
-            foreach ($values as $key => $value) {
+            foreach (array_reverse( $values ) as $key => $value) {
                 $from[] = ":" .$key ;
                 $to[] = $value ;
             }
             $sqlFinalQuery = str_replace($from , $to , $sqlquery ) ;
             echo "<hr>Final: <br>" ;
             echo $sqlFinalQuery ;
+            echo "<br><hr><br>" ;
 
             die;
         }
@@ -268,18 +271,53 @@ class EventRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 		if( count($catList) < 1 ) {
 			return $constraints ;
 		}
-		if( in_array("_ALL" , $catList) ) {
-			return $constraints ;
-		}
+
+
 
 		if (count($catList) == 1) {
 			$constraints[] = $query->equals('eventCategory.uid', $catList[0]);
 
 		} else {
-			$constraints[] = $query->in('eventCategory.uid', $catList);
-
+            $catConstraints = array() ;
+            foreach ( $catList as $catUid ) {
+                if ( $catUid > 0 ) {
+                    $catConstraints[] = $query->equals('eventCategory.uid', $catUid);
+                }
+            }
+            $constraints[] = $query->logicalOr( $catConstraints ) ;
 		}
 
 		return $constraints;
 	}
+
+    /**
+     * @param array $constraints
+     * @param array $settings
+     * @param array $configuration
+     * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
+     *
+     * @return array
+     */
+    private function getTagContraints($constraints, $settings , $configuration , $query)
+    {
+        $tagList = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $settings['filter']['tags'], true);
+        if( count($tagList) < 1 ) {
+            return $constraints ;
+        }
+
+        if (count($tagList) == 1) {
+            $constraints[] = $query->equals('tags.uid', $tagList[0]);
+        } else {
+            $tagConstraints = array() ;
+
+            foreach ( $tagList as $tagUid ) {
+                if ( $tagUid > 0 ) {
+                    $tagConstraints[] = $query->equals('tags.uid', $tagUid );
+                }
+            }
+            $constraints[] = $query->logicalOr( $tagConstraints ) ;
+        }
+
+        return $constraints;
+    }
 }

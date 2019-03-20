@@ -78,6 +78,11 @@ class ProcessDatamap {
 			$allowedError = 0 ;
 
 			if( is_object( $this->event ) ) {
+			    // remove unwanted Chars from Text Initial we start with removign ETX = end of text
+			    $search[] = chr(3) ;
+			    $replace[] = '' ;
+                $this->event->setDescription( str_replace($search , $replace , $this->event->getDescription())) ;
+
                 if ($this->event->getEventType() == 0 ) {
                     // this uses an external page for details, not the internal Registration , detail View etc. so no checks possible
                     // Also we will remove possible false settings

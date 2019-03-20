@@ -9,7 +9,7 @@
             </f:if>
             <f:if condition="{f:count(subject: eventsFilter.tags)} > 1">
                 <div class="col-sm-2 col-xs-4">
-                    <f:form.select property="tags" class="form-control" id="jv_events_filter_tags" options="{eventsFilter.tags}" prependOptionLabel="{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_event.filter.tag', default:'by tag')}" prependOptionValue=""/>
+                    <f:form.select property="tags" class="form-control" id="jv_events_filter_tags"  data="{'combinetags' : '{settings.filter.combinetags}'}"options="{eventsFilter.tags}" prependOptionLabel="{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_event.filter.tag', default:'by tag')}" prependOptionValue=""/>
                 </div>
             </f:if>
             <f:if condition="{f:count(subject: eventsFilter.citys)} > 1">
@@ -51,7 +51,7 @@
                     <fieldset>
                         <legend><f:translate key="tx_jvevents_domain_model_event.tags" /></legend>
 
-                        <div class="checkbox" id="jv_events_filter_tags">
+                        <div class="checkbox" id="jv_events_filter_tags" data-combinetags="{settings.filter.combinetags}">
                             <f:for each="{eventsFilter.tags2}" as="tag">
                                 <label>
                                     <input type="checkbox" id="jv_events_filter_tag-{tag.id}" value="{tag.id}">{tag.title}
