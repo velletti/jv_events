@@ -93,6 +93,14 @@ class AjaxController extends BaseController
         $ajax['controller'] 	= 'Ajax';
         $ajax['action'] 	= $_gp['action'] ;
 
+        /*
+        * check if action is allowed
+        */
+        if ( !in_array( $ajax['action'] , array("eventMenu" , "eventList" , "locationList") ) ) {
+            $ajax['action'] = "eventMenu" ;
+        }
+
+
         /**
          * @var $TSFE \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
          */

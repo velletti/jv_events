@@ -291,7 +291,23 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @var bool
      */
     protected $storeInCitrix = false;
-    
+
+
+    /**
+     * If you want to store registrants user data to Citrix GoTo Webinar, activate this
+     * checkbox and enter the Citrix Uid of the Webinar
+     *
+     * @var bool
+     */
+    protected $storeInHubspot = false;
+
+    /**
+     * Autoamtic geneated Salesforce Campagne ID. If enableHubpot is set to 1 in extConf and store_in_hubspot is activated in Event, druing save event hook we create or update a campagign in salesforce
+     *
+     * @var string
+     */
+    protected $salesForceCampaignId= '';
+
     /**
      * enter the Citrix Uid of the Webinar
      *
@@ -2309,6 +2325,38 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function setPriceReducedText($priceReducedText)
     {
         $this->priceReducedText = $priceReducedText;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getStoreInHubspot()
+    {
+        return $this->storeInHubspot;
+    }
+
+    /**
+     * @param bool $storeInHubspot
+     */
+    public function setStoreInHubspot($storeInHubspot)
+    {
+        $this->storeInHubspot = $storeInHubspot;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSalesForceCampaignId()
+    {
+        return $this->salesForceCampaignId;
+    }
+
+    /**
+     * @param string $salesForceCampaignId
+     */
+    public function setSalesForceCampaignId($salesForceCampaignId)
+    {
+        $this->salesForceCampaignId = $salesForceCampaignId;
     }
 
 

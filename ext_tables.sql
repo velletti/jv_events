@@ -313,6 +313,7 @@ CREATE TABLE tx_jvevents_domain_model_registrant (
 	more8file int(11) unsigned NOT NULL default '0',
 	password varchar(32) DEFAULT '' NOT NULL,
   citrix_response varchar(255) DEFAULT '' NOT NULL,
+  hubspot_response varchar(255) DEFAULT '' NOT NULL,
 	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
 	crdate int(11) unsigned DEFAULT '0' NOT NULL,
 	cruser_id int(11) unsigned DEFAULT '0' NOT NULL,

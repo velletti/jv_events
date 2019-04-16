@@ -69,13 +69,19 @@ class Registrant extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 	protected $otherEvents = '' ;
 
     /**
-     * event
+     * response from citrix webservice
      *
      * @var string
      */
     protected $citrixResponse = '' ;
 
 
+    /**
+     * response from Hubspot webservice
+     *
+     * @var string
+     */
+    protected $hubspotResponse = '' ;
 
 
 	/**
@@ -1323,6 +1329,22 @@ class Registrant extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function setCitrixResponse($citrixResponse)
     {
         $this->citrixResponse = $citrixResponse;
+    }
+
+    /**
+     * @return string
+     */
+    public function getHubspotResponse()
+    {
+        return $this->hubspotResponse;
+    }
+
+    /**
+     * @param string $hubspotResponse
+     */
+    public function setHubspotResponse($hubspotResponse)
+    {
+        $this->hubspotResponse = $hubspotResponse;
     }
 
 

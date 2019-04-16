@@ -76,6 +76,13 @@ if (TYPO3_MODE === 'FE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
         'createAction'
     );
 
+    $signalSlotDispatcher->connect(
+        \JVE\JvEvents\Controller\RegistrantController::class,
+        'createAction',
+        \JVE\JvEvents\Signal\RegisterHubspotSignal::class,
+        'createAction'
+    );
+
     // Feel Free to add your Own extension , and add your Own signal Slot to handle a registration
     // if you need more slots, contact me .. typo3@velletti.de
 }
