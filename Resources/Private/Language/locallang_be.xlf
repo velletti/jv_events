@@ -50,6 +50,12 @@
 		<trans-unit id="extmng.enableSalesForce">
 			<source>Show Options to store Events and registrations to Salesforce (Needs a special settings and custom Object in SalesForce!)</source>
 		</trans-unit>
+		<trans-unit id="extmng.enableHubspot">
+			<source>Show Options to store Events as Campaign to Salesforce and the registrations to Hubspot</source>
+		</trans-unit>
+
+
+
 		<trans-unit id="extmng.hasLoginUser">
 			<source>Show Options to restrict Access to an Event (only usefull if you have a frontend Login)</source>
 		</trans-unit>

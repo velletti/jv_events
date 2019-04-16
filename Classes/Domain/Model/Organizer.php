@@ -49,6 +49,15 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     protected $email = '';
 
+
+    /**
+     * Please enter one or more valid Email Addresses.
+     * Used as CC email address to inform more than one person at the organizer on new registrations
+     *
+     * @var string
+     */
+    protected $emailCc = '';
+
     /**
      * creation Date as timestring
      *
@@ -224,7 +233,25 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         $this->email = $email;
     }
-    
+
+    /**
+     * @return string
+     */
+    public function getEmailCc()
+    {
+        return $this->emailCc;
+    }
+
+    /**
+     * @param string $emailCc
+     */
+    public function setEmailCc($emailCc)
+    {
+        $this->emailCc = $emailCc;
+    }
+
+
+
     /**
      * Returns the phone
      *

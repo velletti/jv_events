@@ -36,9 +36,13 @@ CREATE TABLE tx_jvevents_domain_model_event (
 	registration_until int(11) DEFAULT '0' NOT NULL,
 	registration_access text NULL DEFAULT NULL,
 
+  store_in_hubspot tinyint(1) unsigned DEFAULT '0' NOT NULL,
+	sales_force_campaign_id varchar(60) DEFAULT '' NOT NULL,
+
 	store_in_citrix tinyint(1) unsigned DEFAULT '0' NOT NULL,
 	citrix_uid varchar(255) DEFAULT '' NOT NULL,
 	store_in_sales_force tinyint(1) unsigned DEFAULT '0' NOT NULL,
+
 	marketing_process_id varchar(255) DEFAULT '' NOT NULL,
 	sales_force_record_type varchar(255) DEFAULT '' NOT NULL,
 	sales_force_event_id varchar(255) DEFAULT '' NOT NULL,
@@ -159,6 +163,7 @@ CREATE TABLE tx_jvevents_domain_model_organizer (
 
 	name varchar(255) DEFAULT '' NOT NULL,
 	email varchar(255) DEFAULT '' NOT NULL,
+	email_cc varchar(255) DEFAULT '' NOT NULL,
 	link varchar(255) DEFAULT '' NOT NULL,
 	phone varchar(255) DEFAULT '' NOT NULL,
 	sales_force_user_id varchar(255) DEFAULT '' NOT NULL,

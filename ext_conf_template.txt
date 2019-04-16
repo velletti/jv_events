@@ -9,6 +9,9 @@ enableCitrix = 0
 # cat=General/enable/3; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.enableSalesForce; decription=Under developement!
 enableSalesForce = 0
 
+# cat=General/enable/3; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.enableHubspot; decription=Under developement!
+enableHubspot = 0
+
 # cat=General/enable/4; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.hasLoginUser
 hasLoginUser = 0
 

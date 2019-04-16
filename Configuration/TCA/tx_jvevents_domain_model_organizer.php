@@ -19,17 +19,17 @@ $returnArray = array(
 			'starttime' => 'starttime',
 			'endtime' => 'endtime',
 		),
-		'searchFields' => 'name,email,phone,sales_force_user_id,images,description,organizer_category,registration_info,',
+		'searchFields' => 'name,email,email_cc,phone,sales_force_user_id,images,description,organizer_category,registration_info,',
 		'iconfile' =>  'EXT:jv_events/Resources/Public/Icons/tx_jvevents_domain_model_organizer.gif'
 	),
 	'interface' => array(
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, email, link, phone, sales_force_user_id, images, description, organizer_category, tags,registration_info,',
+		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, email, email_cc, link, phone, sales_force_user_id, images, description, organizer_category, tags,registration_info,',
 	),
 	'types' => array(
 		'1' => array('showitem' => '--palette--;;data, --div--;Relations, --palette--;;relations, --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, --palette--;;access,'),
 	),
 	'palettes' => array(
-		'data' => array('showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, --linebreak--,name, --linebreak--,email, --linebreak--,link, --linebreak--,phone, --linebreak--,sales_force_user_id, --linebreak--,description,--linebreak--,registration_info,'),
+		'data' => array('showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, --linebreak--,name, --linebreak--,email, --linebreak--,email_cc,--linebreak--,link, --linebreak--,phone, --linebreak--,sales_force_user_id, --linebreak--,description,--linebreak--,registration_info,'),
 		'relations' => array('showitem' => 'teaser_image, --linebreak--,images, --linebreak--,organizer_category, --linebreak--, tags,'),
 	    'access' => array('showitem' => ' starttime, endtime, --linebreak--,access_users,--linebreak--, access_groups,')
     ),
@@ -163,6 +163,15 @@ $returnArray = array(
 				'eval' => 'trim,required'
 			),
 		),
+        'email_cc' => array(
+            'exclude' => 0,
+            'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_organizer.email_cc',
+            'config' => array(
+                'type' => 'input',
+                'size' => 30,
+                'eval' => 'trim'
+            ),
+        ),
         'link' => array(
             'exclude' => 0,
             'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_organizer.link',

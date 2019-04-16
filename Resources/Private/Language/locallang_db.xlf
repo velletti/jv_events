@@ -183,6 +183,14 @@
             <trans-unit id="tx_jvevents_domain_model_event.store_in_citrix">
                 <source>Store In Citrix</source>
             </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_event.store_in_hubspot">
+                <source>Store In Hubspot</source>
+            </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_event.sales_force_campaign_id">
+                <source>Salesforce Campaign ID (automatic created)</source>
+            </trans-unit>
+
+
             <trans-unit id="tx_jvevents_domain_model_event.store_in_sales_force">
                 <source>Store In Sales Force</source>
             </trans-unit>
@@ -278,6 +286,9 @@
             </trans-unit>
             <trans-unit id="tx_jvevents_domain_model_organizer.email">
                 <source>Email</source>
+            </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_organizer.email_cc">
+                <source>Additional Email addresses (komma separated)</source>
             </trans-unit>
             <trans-unit id="tx_jvevents_domain_model_organizer.teaserImage">
                 <source>Teaser Image</source>

@@ -507,6 +507,17 @@ class RegistrantController extends BaseController
 						$this->sendEmail($event, $registrant, "Organizer" ,
 							array( $event->getOrganizer()->getEmail() => '=?utf-8?B?'. base64_encode( $event->getOrganizer()->getName() ) .'?=' ) , $otherEvents);
 					}
+					$ccEmails = str_replace( array("," , ";" , " " ) , array("," , "," , ",") , $event->getOrganizer()->getEmailCc() ) ;
+                    $ccEmailsArray = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode("," , $ccEmails , true ) ;
+                    if ( count($ccEmailsArray) > 0 ) {
+                        foreach ( $ccEmailsArray as $ccEmail ) {
+                            if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail( $ccEmail ) ) {
+
+                                $this->sendEmail($event, $registrant, "Organizer" ,
+                                    array( $ccEmail => '=?utf-8?B?'. base64_encode( $event->getOrganizer()->getName() ) .'?=' ) , $otherEvents);
+                            }
+                        }
+                    }
 				}
 			}
 		}
