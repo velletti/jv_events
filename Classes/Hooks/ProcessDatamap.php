@@ -218,10 +218,14 @@ class ProcessDatamap {
 
                     } else {
                         // j.v. : Kopiert von altem Plugin: wenn Store in Citrix "An" Ist, das Event NICHT als "TW Webinar /Event " nach Salesforce Schreiben !
+                        if( $this->event->getStoreInHubspot() ) {
+                            $this->event->setStoreInSalesForce(0) ;
+                            $this->createUpdateEventForSF2019()  ;
+                        }
                         if( $this->event->getStoreInSalesForce() ) {
                             if( $this->event->getStoreInCitrix() ) {
                                 $this->flashMessage['WARNING'][] = 'You can not set "Store in Salesforce" together with "Store in Citrix"! (store in salesforce is disabled)!' ;
-                                $this->event->setStoreInSalesForce(0) ;
+
                                 $allowedError ++ ;
                             } else {
                                 $this->createUpdateEventForSF()  ;
@@ -250,7 +254,104 @@ class ProcessDatamap {
 	}
 
 	//  ForSF +++++++++++++++++  Salesforce übergabe  ++++++++++++++++++
+    private function createUpdateEventForSF2019() {
+        /** @var  \JVE\JvEvents\Utility\SalesforceWrapperUtility */
+        $this->sfConnect = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JVE\\JvEvents\\Utility\\SalesforceWrapperUtility');
+        $settings = $this->sfConnect->contactSF() ;
+        // var_dump($settings) ;
 
+        if( $settings['faultstring'] ) {
+            $this->flashMessage['ERROR'][] = 'Create Update Campaign in Salesforce: could not Connect ! : ' . var_export( $settings , true ) ;
+            return ;
+        }
+
+        /// ++++++++++++  first we genereate the data Array
+        $start = $this->event->getStartDate() ;
+        $end = $this->event->getStartDate() ;
+        $startD =  $this->sfConnect->convertDate2SFdate( $start ,  $this->event->getStartTime() ) ;
+
+        $endD =  $this->sfConnect->convertDate2SFdate( $end ,  $this->event->getEndTime() ) ;
+        $this->flashMessage['NOTICE'][] = 'StartDate Converted for SalesForce to ! : ' . $startD ;
+
+
+        $SummerTime = new \DateTime( $start->format("Y-M-d" ) . ' Europe/Berlin');
+        $this->flashMessage['NOTICE'][] = "Date Formated : " . $start->format("d-M-Y" ) . ' as NEW Date for SummerTime ! : ' . $SummerTime->format( "d.m.Y H:i:s (I) ") ;
+        $owner = " not set" ;
+        if(  is_object( $this->event->getOrganizer() ) ) {
+            $owner  =    trim( $this->event->getOrganizer()->getName() )  ;
+        }
+        $data = array(
+            'IsActive' => true,
+            'Description' =>  "TYPO3 Event: " . $this->event->getUid() . " on PID: " . $this->event->getPid() . " of:" . $owner . " \n\n"
+                . html_entity_decode( strip_tags( $this->event->getDescription() ) , ENT_COMPAT , 'UTF-8') ,
+            'Name' => substr( html_entity_decode( strip_tags(  $this->event->getName() ) , ENT_COMPAT , 'UTF-8') , 0 , 80 ) ,
+            'EndDate' =>  $endD ,
+            'StartDate' =>  $startD   ,
+            'Status' =>  ''   ,  // see https://doc.allplan.com/display/SFDOC/Event+Registration+Mapping+Tables
+            'Type' =>  'Training'   ,
+            'AllplanOrganization__c' =>  '300'   ,
+            'ListPricePerCampaignMember__c' =>  $this->event->getPrice() ,
+
+        ) ;
+
+        if(  is_object( $this->event->getOrganizer() ) ) {
+    //        $data['OwnerId']  =    trim( $this->event->getOrganizer()->getSalesForceUserId())  ;
+        } else {
+            $this->flashMessage['ERROR'][] = 'Store in Salesforce: No Organizer set in Relations ! : '  ;
+        }
+    //    $data['OwnerId']  = "0051w000000rsfAAAQ" ;
+        if( $data['OwnerId']  == "" ) {
+            $this->flashMessage['ERROR'][] = 'Store in Salesforce: No Salesforce User ID set in Organizer Data ! : '  ;
+            return ;
+
+        }
+
+
+        $this->flashMessage['NOTICE'][] = 'Data  : ' . var_export( $data , true ) ;
+
+
+        if( $this->event->getSalesForceCampaignId() ) {
+            // Update
+            $url = $settings['SFREST']['instance_url'] . "/services/data/v30.0/sobjects/Campaign/" . $this->event->getSalesForceCampaignId() ;
+            $sfResponse = $this->sfConnect->getCurl($url , $settings['SFREST']['access_token'] , "204" ,  $data , true  , false )  ;
+            if( is_int( $sfResponse ) && $sfResponse == 204 ) {
+                $this->flashMessage['OK'][] = "Updated in Salesforce: ! : " . $settings['SFREST']['instance_url'] . "/" . $this->event->getSalesForceCampaignId()   ;
+            } else {
+                $this->flashMessage['WARNING'][] = 'Response  : ' . var_export( $sfResponse , true ) ;
+                $sfResponse = json_decode($sfResponse) ;
+            }
+
+        } else {
+            // Insert
+            $url = $settings['SFREST']['instance_url'] . "/services/data/v30.0/sobjects/Campaign/" ;
+            $sfResponse = $this->sfConnect->getCurl($url , $settings['SFREST']['access_token'] , "201" ,  $data , false , false )  ;
+            $this->flashMessage['NOTICE'][] = 'Store in Salesforce: ' .var_export( $sfResponse , true )  ;
+            $sfResponse = json_decode($sfResponse) ;
+
+            if( is_object($sfResponse)) {
+                if ($sfResponse->success && $sfResponse->id) {
+                    $this->flashMessage['OK'][] = "Campaign created in Salesforce: ! : " . $settings['SFREST']['instance_url'] . "/" . $sfResponse->id   ;
+
+                    $this->event->setSalesForceCampaignId($sfResponse->id);
+                }
+            }
+        }
+
+        if( is_array( $sfResponse)) {
+            if( is_object( $sfResponse[0])) {
+                if( $sfResponse[0]->errorCode == "MALFORMED_ID") {
+                    $this->flashMessage['ERROR'][] = 'Store in Salesforce: MALFORMED_ID ! Please check the ID of the Field : Fields: ' .var_export( $sfResponse[0]->fields , true )  ;
+                } else {
+                    if( $sfResponse[0]->errorCode == "FIELD_INTEGRITY_EXCEPTION") {
+                        $this->flashMessage['ERROR'][] = 'Store in Salesforce: ' . $sfResponse[0]->errorCode  . " - Please check the Salesforce ID of the Organizer and the Event -  " . $sfResponse[0]->message ;
+                    } else {
+                        $this->flashMessage['ERROR'][] = 'Store in Salesforce: ' . $sfResponse[0]->errorCode  . " - " . $sfResponse[0]->message ;
+                    }
+                }
+            }
+        }
+
+    }
 
 	private function createUpdateEventForSF() {
 	    // ToDo fix this correctly !
@@ -292,7 +393,7 @@ class ProcessDatamap {
             'TW_Start_Time__c' =>  $startD   ,
             'TW_End_Time__c' =>  $endD ,
 
-            'TW_Description__c' =>  html_entity_decode( strip_tags( $this->event->getDescription() ) , ENT_COMPAT , 'UTF-8') ,
+            'TW_Description__c' =>   html_entity_decode( strip_tags( $this->event->getDescription() ) , ENT_COMPAT , 'UTF-8') ,
             // Schulungsanmeldungen wien
 
         ) ;

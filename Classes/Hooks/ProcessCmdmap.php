@@ -66,9 +66,9 @@ class ProcessCmdmap {
 	 * @param string $table
 	 * @param int $id
 	 * @param string $value
-	 * @param void $Obj
-	 * @param void $pasteUpdate
-	 * @param void $pasteDatamap
+	 * @param mixed $Obj
+	 * @param mixed $pasteUpdate
+	 * @param mixed $pasteDatamap
 	 */
 	public function processCmdmap_postProcess($command, $table, $id, $value, $Obj, $pasteUpdate, $pasteDatamap) {
 

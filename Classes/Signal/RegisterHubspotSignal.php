@@ -88,6 +88,7 @@ class RegisterHubspotSignal {
 
         // Subject
         $data['typo3_event_id']  =   $event->getUid()  ;
+        $data['event_date']  =   $event->getStartDate()->format( "d.m.Y" )  ;
         $data['sf_campaign_id']  =   $event->getSalesForceCampaignId()  ;
         $data['comment']  .=   "\n" . " ********************** " . $event->getStartDate()->format("D d.m.Y") . " - " ;
 
@@ -145,6 +146,8 @@ class RegisterHubspotSignal {
             $formId = $settings['register']['hubspot']['formId'] ;
         }
         /// ************************ +++++++++++++++++++++++ -------------- #####################
+        $form = $this->hubspotApi->getForm($formId) ;
+        $formFields = $this->hubspotApi->getFieldnamesFromForm( $form['data']['formFieldGroups']) ;
 
         $debugmail .= "\n+++++++++++ store in Hubspot url: ++++++++++++++++++\n\n"  ;
         $debugmail .=  $this->hubspotApi->getConfigConnectionUri() ;
@@ -222,6 +225,7 @@ class RegisterHubspotSignal {
         $jsonArray['firstname'] = trim($registrant->getFirstName()) ;
         $jsonArray['lastname'] = trim($registrant->getLastName()) ;
 
+        $jsonArray['gender'] = $registrant->getGender() ;
         // ToDo Maybe need to create a kind fo mapping including translation ..
         $jsonArray['salutation'] = "Mrs." ;
         if( $registrant->getGender() == 1) {
@@ -229,30 +233,27 @@ class RegisterHubspotSignal {
         }
 
         $jsonArray['company'] = trim($registrant->getCompany()) ;
-        $jsonArray['street'] = trim($registrant->getStreetAndNr() ) ;
+        $jsonArray['address'] = trim($registrant->getStreetAndNr() ) ;
         $jsonArray['zip'] = trim($registrant->getZip() ) ;
         $jsonArray['city'] = trim($registrant->getCity() ) ;
         $jsonArray['country'] = trim($registrant->getCountry() ) ;
         $jsonArray['phone'] = trim($registrant->getPhone() ) ;
         $jsonArray['email'] = trim($registrant->getEmail() ) ;
+        $jsonArray['invoice_company_name'] = trim($registrant->getCompany2() ) ;
+        $jsonArray['invoice_street_address'] = trim($registrant->getStreetAndNr2()) ;
+        $jsonArray['invoice_postal_code'] = trim($registrant->getZip2()) ;
+        $jsonArray['invoice_city'] = trim($registrant->getCity2() ) ;
         $jsonArray['customerno__c'] = trim($registrant->getCustomerId() ) ;
-        // $jsonArray['00N20000003aceq'] = trim($registrant->getContactId()  ) ;
 
-        // $jsonArray['00N20000003aeM'] = trim($registrant->getDepartment()  ) ;
-        $jsonArray['jobtitle'] = trim($registrant->getProfession()  ) ;
+      //  $jsonArray['invoice_email'] = ''  ;
+      //  $jsonArray['industry'] = ''  ;
+      //  $jsonArray['title'] = ''  ;
+
+
+        $jsonArray['profession'] = trim($registrant->getProfession()  ) ;
 
         $jsonArray['comment'] = trim($registrant->getAdditionalInfo() ) ;
 
-        // used Software ...
-        // $jsonArray['00N20000001Jy8z'] = trim($registrant->getAdditionalInfo() ) ;
-
-        // Registration for Newsletter
-        // $jsonArray['00N20000003aHCA'] = trim($registrant->get .. ) ;
-
-        // Nuber of registerd Persons
-        // $jsonArray['00N200000011kGJ'] = trim($registrant->get ... ) ;
-
-        //
 
 
         return $jsonArray  ;

@@ -113,7 +113,7 @@ class SalesforceWrapperUtility
                 $error .= "Line " . __LINE__ . ":Error - instance URL missing from response!";
             }
             if ($error <> "") {
-                if( $json_response['error'] == "unknown_error" &&  $json_response['error_description'] == "retry your request" ) {
+                if( array_key_exists( "error" , $response) && $response['error'] == "unknown_error" &&  $response['error_description'] == "retry your request" ) {
 
                     $this->sfSettings['SFREST']['faultstring'] = $error . "\n The Redirection to the correct Salesforce instance ( f.e. login.salesforce.com to eu3.salesforce.com did not work !! " ;
                     $this->sfSettings['SFREST']['faultstring'] = $error . "\n See: https://developer.salesforce.com/forums/?id=906F00000008tiFIAQ " ;
