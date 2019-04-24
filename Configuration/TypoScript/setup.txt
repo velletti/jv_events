@@ -14,6 +14,12 @@ plugin.tx_jvevents_events {
 		# set this setting in Case of Problems
 		debug = {$plugin.tx_jvevents_events.settings.debug}
 
+
+
+		sys_language_uid = {$plugin.config.sys_language_uid}
+		language = {$plugin.config.language}
+		lang = {$plugin.config.lang}
+
 		withMicroFormat = {$plugin.tx_jvevents_events.settings.withMicroFormat}
 		#
 		ccsFile = /typo3conf/ext/jv_events/Resources/Public/Css/jv_events.css

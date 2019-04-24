@@ -30,14 +30,23 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class RegisterHubspotSignal {
 
+
+    /** @var \Allplan\Library\Hubspot\Service\Hubspot */
+    public $hubspotApi ;
+
     /**
      * Initialize action settings
      * @return void
      */
-    public function initializeAction()
+    public function __construct()
     {
-        // do we need this ??
-
+        $env = $_SERVER['NEM_HUBSPOT']['env'] ;
+        $config = $_SERVER['NEM_HUBSPOT'][$env] ;
+        if( !array_key_exists( "portalID" , $config) || !array_key_exists( "formID" , $config) || !array_key_exists( "hapikey" , $config) || !array_key_exists( "uri" , $config)  ) {
+            $this->logToFile( " \n no hapikey,  portalID, FirmID or URI set ! See : ../conf/AllplanHubspotConfiguration.php OR Typoscript Settings -> register -> hubspot: " . var_export( $config , true ))  ;
+            return ;
+        }
+        $this->hubspotApi = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("Allplan\\Library\\Hubspot\\Service\\Hubspot" , $config);
     }
 
     /**
@@ -51,34 +60,26 @@ class RegisterHubspotSignal {
      */
     public function createAction($registrant, $event ,  $settings)
     {
-        $error = false ;
-        // still in work
-        return;
 
         if ( !is_object( $event ))  {
             $this->logToFile( "\n\n ### ERROR ### In RegisterHubspotSignal - event is not an Object!: " . var_export($event , true )  );
             return;
         }
 
-        if ( $settings['EmConfiguration']['enableHubspot'] < 1  || !is_object( $event->getOrganizer() ) || $event->getStoreInSalesForce() < 1 )  {
+        if ( $settings['EmConfiguration']['enableHubspot'] < 1  || !is_object( $event->getOrganizer() ) || $event->getStoreInHubspot() < 1 )  {
             $this->logToFile( "\n\n ### ERROR ### In RegisterHubspotSignal - Registrant : " . $registrant->getEmail()
                 . "\n EmConf Enable enableHubspot: " . $settings['EmConfiguration']['enableHubspot']
-                . "\n Event: " . $event->getUid() . " - Store in SalesForce: " . $event->getStoreInSalesForce() );
+                . "\n Event: " . $event->getUid() . " - Store in SalesForce: " . $event->getStoreInHubspot() );
 
             return;
 
         }
-
-
-
-        $this->logToFile( "\n**********************************\n  Start in Hubspot Signal ..." )  ;
 
         $debugmail = "\n+++++++++++ got this data from Controller ++++++++++++++++++\n"  ;
         $debugmail .= "\nRunning on Server: " .  $_SERVER['HOSTNAME'] .  " - "  . php_uname() ;
         $debugmail .= "\nRegistrants Email " .  $registrant->getEmail() .  ""  ;
         $debugmail .= "\nEvent Id: " .  $event->getUid() . " Date: " . $event->getStartDate()->format( "d.m.Y" )   . " | Citrix ID: " . $event->getCitrixUid()   ;
         $debugmail .= "\nTitle: " .  $event->getName()  ;
-
         $httpresponseErr = "" ;
         $httpresponseErrText = "" ;
         unset( $data) ;
@@ -95,14 +96,8 @@ class RegisterHubspotSignal {
 
         $debugmail .= "\n+++++++++++ store in Hubspot as LEAD is active ++++++++++++++++++\n\n"  ;
 
-        // read generic SaelsForce Owner ID (who is allowed to see the lead Data
-        $config =  $settings['register']['hubspot'] ;
 
 
-        if( !array_key_exists( "portalId" , $config) || !array_key_exists( "formId" , $config) || !array_key_exists( "hapi_key" , $config) || !array_key_exists( "uri" , $config)  ) {
-            $this->logToFile( " \n no hapi_key,  portalId, FirmId or URL set ! See Typoscript Settings -> register -> hubspot: " . var_export( $config , true ))  ;
-            return ;
-        }
 
         if(  is_object( $event->getOrganizer() )  ) {
             if (  strlen( $event->getOrganizer()->getSalesForceUserId())  > 10 ) {
@@ -127,7 +122,7 @@ class RegisterHubspotSignal {
         // problem from 12.6.:
         if( strlen($data['comment'] )  > 800 ) {
             $debugmail .= "\n \n ###### ERROR !!! ##### Field Additional Info is more than 800 chars !!" ;
-            $data['comment']  = substr( $data['00N20000003aeN4']  , 0 , 900 ) ;
+            $data['comment']  = substr( $data['comment']  , 0 , 900 ) ;
             $error = true ;
         }
 
@@ -140,31 +135,41 @@ class RegisterHubspotSignal {
 
         }
 
-        $data['language']  =   $settings['register']['hubspot']['lang'] ;
+        $data['language']  =   $settings['lang'] ;
 
         $debugmail .= "\ndata Array : \n\n"  ;
         $debugmail .= var_export( $data , true ) ;
 
+        $formId = $this->hubspotApi->getConfigConnectionFormID() ;
+        if( $settings['register']['hubspot']['formId']) {
+            $formId = $settings['register']['hubspot']['formId'] ;
+        }
         /// ************************ +++++++++++++++++++++++ -------------- #####################
 
         $debugmail .= "\n+++++++++++ store in Hubspot url: ++++++++++++++++++\n\n"  ;
-        $debugmail .=  $config['uri'] ;
+        $debugmail .=  $this->hubspotApi->getConfigConnectionUri() ;
+        $debugmail .=  $formId ;
 
 
-        if ( ( substr($_SERVER['SERVER_NAME'], -6 , 6 )  == ".local" && 1==1 )  || $settings['debug'] > 0 ) {
-            echo "<hr>No transport to Hubspot on a local testserver or if Debug is  set a value > 0 .. if you want to test curl and see response also local, set debug to 2  !!! <pre>" ;
+
+        // $settings['debug'] == 1
+
+        if (   $settings['debug'] == 1 ) {
+            echo "<hr>No transport to Hubspot if Debug is  set a value > 0 .. if you want to test curl and see response also local, set debug to 2  !!! <pre>" ;
             echo $debugmail  ;
+            echo "<hr>" ;
             var_dump($data) ;
             echo "</pre>" ;
             die;
         } else {
-
-
+            $response = $this->hubspotApi->submitForm( $formId , $data ) ;
+            $debugmail .= "\n+++++++++++  Hubspot response: ++++++++++++++++++\n\n"  ;
+            $debugmail .= var_export($response , true ) ;
         }
-        if ( $settings['debug'] > 1 || 2==1 ) {
+        if ( $settings['debug'] > 1 ) {
+            echo " Settings debug > 2 .. so we Die() in Line " . __LINE__ . " in File: " . __FILE__ . "<hr>";
             echo nl2br( $debugmail ) ;
-            echo " Die in Line " . __LINE__ . " in File: " . __FILE__ ;
-            Die ;
+            die ;
         }
         /** @var \TYPO3\CMS\Core\Mail\MailMessage $Typo3_v6mail */
         $Typo3_v6mail = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
@@ -176,13 +181,11 @@ class RegisterHubspotSignal {
                 'pbenke@allplan.com' => '',
             )
         );
-        if( $error ) {
+        if( $response['error'] ) {
             $Typo3_v6mail->setSubject( "[ERROR] JV Events Registration - " . $event->getStartDate()->format("d.m.Y") . " - " . $event->getName()  );
         } else {
-
             $Typo3_v6mail->setSubject( "JV Events Registration Debug - " . $event->getStartDate()->format("d.m.Y") . " - " . $event->getName()  );
         }
-
 
         $Typo3_v6mail->setBody(nl2br( $debugmail ) , 'text/html'  );
         $Typo3_v6mail->send();
@@ -207,14 +210,6 @@ class RegisterHubspotSignal {
 
         $GLOBALS['TYPO3_DB']->exec_INSERTquery("sys_log" , $insertFields ) ;
 
-
-        // disable/enable next line if needed
-        return ;
-        $fh = fopen( "../jvents_sf.log" , "w+" ) ;
-        if ($fh) {
-            fputs($fh, $text  , 9999 ) ;
-        }
-        fclose($fh) ;
     }
     /** convertToString
      *
@@ -253,6 +248,7 @@ class RegisterHubspotSignal {
 
         // Registration for Newsletter
         // $jsonArray['00N20000003aHCA'] = trim($registrant->get .. ) ;
+
         // Nuber of registerd Persons
         // $jsonArray['00N200000011kGJ'] = trim($registrant->get ... ) ;
 

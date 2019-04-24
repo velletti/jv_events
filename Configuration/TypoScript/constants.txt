@@ -24,6 +24,11 @@ plugin.tx_jvevents_events {
 		#IF FlexForm of List Plugin is empty, overwrite it with this value
 		detailPidDefault = 111
 
+		sys_language_uid = {$config.sys_language_uid}
+		language = {$config.language}
+		lang = {$config.lang}
+
+
 		# set this setting in Case of Problems :
 		# 1 is normal debug output (see Templates and Partials),
 		# 2 shows  DB sql Query (do not use on LIVE!)
