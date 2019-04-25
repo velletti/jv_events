@@ -295,7 +295,7 @@ class ProcessDatamap {
         ) ;
 
         if(  is_object( $this->event->getOrganizer() ) ) {
-    //        $data['OwnerId']  =    trim( $this->event->getOrganizer()->getSalesForceUserId())  ;
+            $data['OwnerId']  =    trim( $this->event->getOrganizer()->getSalesForceUserId())  ;
         } else {
             $this->flashMessage['ERROR'][] = 'Store in Salesforce: No Organizer set in Relations ! : '  ;
         }
