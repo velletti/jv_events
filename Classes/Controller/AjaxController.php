@@ -227,20 +227,37 @@ class AjaxController extends BaseController
             /** @var \JVE\JvEvents\Domain\Model\Event $event */
             $event = $this->eventRepository->findByUidAllpages( $output['event']['requestId'] , FALSE  , TRUE );
             if( is_object($event )) {
-                $event->increaseViewed();
-                $this->eventRepository->update($event) ;
-                $needToStore = TRUE ;
+                if ( !$output['mode'] == "onlyValues") {
+                    $event->increaseViewed();
+                    $this->eventRepository->update($event) ;
+                    $needToStore = TRUE ;
+                }
+
                 $output['event']['eventId'] = $event->getUid() ;
                 $output['event']['viewed'] = $event->getViewed();
                 $output['event']['canceled'] = $event->getCanceled();
+                $output['event']['startDate'] = $event->getStartDate()->format("d.m.Y") ;
+                $output['event']['startTime'] = date( "H:i" , $event->getStartTime()) ;
+                $output['event']['endTime'] = date( "H:i" , $event->getEndTime()) ;
+                $output['event']['creationTime'] = date( "d.m.Y H:i" , $event->getCrdate() ) ;
+                $output['event']['name'] = $event->getName() ;
+                $output['event']['price'] = $event->getPrice();
+                $output['event']['priceReduced'] = $event->getPriceReduced();
+                $output['event']['priceReducedText'] = $event->getPriceReducedText();
+
                 $output['event']['registration']['possible'] = $event->isIsRegistrationPossible() ;
                 $output['event']['registration']['noFreeSeats'] = $event->isIsNoFreeSeats() ;
                 $output['event']['registration']['freeSeats'] = $event->getAvailableSeats() ;
+                $output['event']['registration']['sfCampaignId'] = $event->getSalesForceCampaignId() ;
 
                 if( is_object( $event->getOrganizer() )) {
                     $organizer = $event->getOrganizer() ;
                     $output['event']['organizerId'] = $organizer->getUid()  ;
-                    $output['event']['organizerEmail'] = $organizer->getEmail()  ;
+                    $output['organizer']['organizerName'] = $organizer->getname()  ;
+                    $output['organizer']['organizerEmail'] = $organizer->getEmail()  ;
+                    $output['organizer']['organizerPhone'] = $organizer->getPhone()  ;
+                    $output['organizer']['organizerSFID'] = $organizer->getSalesForceUserId() ;
+                    $output['event']['registration']['registrationInfo'] = $organizer->getRegistrationInfo() ;
                     $output['event']['hasAccess'] = $this->hasUserAccess( $organizer ) ;
                 }
                 if( is_object( $event->getLocation() )) {
@@ -270,23 +287,25 @@ class AjaxController extends BaseController
                 /** @var \JVE\JvEvents\Domain\Model\Event $tempEvent */
                 $tempEvent =  $events->getFirst() ;
                 if( is_object( $tempEvent )) {
-                    $tempEvent->increaseViewed();
+                    if ( !$output['mode'] == "onlyValues") {
+                        $tempEvent->increaseViewed();
 
-                    $this->eventRepository->update($tempEvent) ;
-                    $needToStore = TRUE ;
-                    $output['events'] = $events ;
-            /*
-                    $tempEventArray['uid'] = $tempEvent->getUid();
-                    $tempEventArray['name'] = $tempEvent->getName();
-                    $tempEventArray['startDate'] = $tempEvent->getStartDate();
-                    $tempEventArray['teaser'] = $tempEvent->getTeaser();
-
-                    if (is_object($tempEvent->getLocation())) {
-                        $tempEventArray['LocationCity'] = $tempEvent->getLocation()->getCity();
+                        $this->eventRepository->update($tempEvent);
+                        $needToStore = TRUE;
                     }
+                    $output['events'] = $events ;
+                    /*
+                            $tempEventArray['uid'] = $tempEvent->getUid();
+                            $tempEventArray['name'] = $tempEvent->getName();
+                            $tempEventArray['startDate'] = $tempEvent->getStartDate();
+                            $tempEventArray['teaser'] = $tempEvent->getTeaser();
 
-                    $output['events'][] = $tempEventArray;
-                    */
+                            if (is_object($tempEvent->getLocation())) {
+                                $tempEventArray['LocationCity'] = $tempEvent->getLocation()->getCity();
+                            }
+
+                            $output['events'][] = $tempEventArray;
+                            */
                 }
             }
 
@@ -294,7 +313,7 @@ class AjaxController extends BaseController
         /* ************************************************************************************************************ */
         /*   Get infos about: Location
         /* ************************************************************************************************************ */
-        if( $this->request->hasArgument('location')) {
+        if( $this->request->hasArgument('location') && !is_object($location ) ) {
             $output['location']['requestId'] = $this->request->getArgument('location');
 
             /** @var \JVE\JvEvents\Domain\Model\Event $event */
@@ -305,6 +324,14 @@ class AjaxController extends BaseController
         // Location is set either by Event OR by location uid from request
         if( is_object($location )) {
             $output['location']['locationId'] = $location->getUid() ;
+            $output['location']['streetAndNr'] = $location->getStreetAndNr() ;
+            $output['location']['zip'] = $location->getZip() ;
+            $output['location']['city'] = $location->getCity() ;
+            $output['location']['link'] = $location->getLink() ;
+            $output['location']['description'] = $location->getDescription() ;
+            $output['location']['country'] = $location->getCountry() ;
+            $output['location']['lat'] = $location->getLat() ;
+            $output['location']['lng'] = $location->getLng() ;
 
             if( is_object( $location->getOrganizer() )) {
                 $organizer = $location->getOrganizer() ;
@@ -318,7 +345,7 @@ class AjaxController extends BaseController
         /* ************************************************************************************************************ */
         /*   Get infos about: Organizer
         /* ************************************************************************************************************ */
-        if( $this->request->hasArgument('organizer')) {
+        if( $this->request->hasArgument('organizer') && !is_object($organizer ) ) {
             $output['organizer']['requestId'] = $this->request->getArgument('organizer');
 
             /** @var \JVE\JvEvents\Domain\Model\Organizer $organizer */
@@ -329,6 +356,7 @@ class AjaxController extends BaseController
         if( is_object($organizer )) {
             $output['organizer']['organizerId'] = $organizer->getUid() ;
             $output['organizer']['hasAccess'] = $this->hasUserAccess( $organizer ) ;
+
 
 
         }
@@ -398,7 +426,12 @@ class AjaxController extends BaseController
      */
     public function eventMenuAction()
     {
+        // https://www.allplan.com.ddev.local/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=94&tx_jvevents_ajax[action]=eventMenu&tx_jvevents_ajax[controller]=Ajax
+        // https://www.allplan.com.ddev.local/index.php?uid=82&eID=jv_events&tx_jvevents_ajax[event]=2934&tx_jvevents_ajax[action]=eventMenu&tx_jvevents_ajax[mode]=onlyValues
         $output = $this->eventsListMenuSub() ;
+        if ( $output['mode'] == "onlyValues") {
+            ShowAsJsonArrayUtility::show(  $output ) ;
+        }
 
         /* ************************************************************************************************************ */
         /*   render the HTML Output :
