@@ -252,6 +252,9 @@ class ProcessDatamap {
                                             /** @var  \JVE\JvEvents\Domain\Model\Registrant $registrant */
                                             $registrant = $registrants->getFirst() ;
                                             while ( $repairCount < $registrants->count()  ){
+                                                if ( !is_object($registrant)) {
+                                                    break ;
+                                                }
                                                 $repairCount++ ;
                                                 $registrant->setHubspotResponse("100") ;
                                                 $registrantRepository->update($registrant ) ;
@@ -338,7 +341,7 @@ class ProcessDatamap {
         } else {
             $this->flashMessage['ERROR'][] = 'Store in Salesforce: No Organizer set in Relations ! : '  ;
         }
-    //    $data['OwnerId']  = "0051w000000rsfAAAQ" ;
+    //    $data['OwnerId']  = "0051w000000rsfAAAQ" ;  // taht ist on DEV the user allplan-dev-api@allplan.com
         if( $data['OwnerId']  == "" ) {
             $this->flashMessage['ERROR'][] = 'Store in Salesforce: No Salesforce User ID set in Organizer Data ! : '  ;
             return ;
