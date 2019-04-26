@@ -327,7 +327,7 @@ class ProcessDatamap {
             'StartDate' =>  $startD   ,
             'Status' =>  ''   ,  // see https://doc.allplan.com/display/SFDOC/Event+Registration+Mapping+Tables
             'Type' =>  'Training'   ,
-            'AllplanOrganization__c' =>  '300'   ,
+            'AllplanOrganization__c' =>  '300'   , // will be overwritten later
             'ListPricePerCampaignMember__c' =>  $this->event->getPrice() ,
 
         ) ;
@@ -376,6 +376,10 @@ class ProcessDatamap {
                     $this->flashMessage['OK'][] = "Campaign created in Salesforce: ! : " . $settings['SFREST']['instance_url'] . "/" . $sfResponse->id   ;
 
                     $this->event->setSalesForceCampaignId($sfResponse->id);
+                }
+            } else {
+                if ( substr( $sfResponse , 0 , 6 ) == "Error" ) {
+                    $this->flashMessage['ERROR'][] = "Could not create Campaign in Salesforce: ! : " . $settings['SFREST']['instance_url'] . "/" . $sfResponse->id   ;
                 }
             }
         }
