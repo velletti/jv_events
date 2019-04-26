@@ -19,17 +19,17 @@ $returnArray = array(
 			'starttime' => 'starttime',
 			'endtime' => 'endtime',
 		),
-		'searchFields' => 'name,email,email_cc,phone,sales_force_user_id,images,description,organizer_category,registration_info,',
+		'searchFields' => 'name,email,email_cc,phone,sales_force_user_id,sales_force_user_id2,images,description,organizer_category,registration_info,',
 		'iconfile' =>  'EXT:jv_events/Resources/Public/Icons/tx_jvevents_domain_model_organizer.gif'
 	),
 	'interface' => array(
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, email, email_cc, link, phone, sales_force_user_id, images, description, organizer_category, tags,registration_info,',
+		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, email, email_cc, link, phone, sales_force_user_id,sales_force_user_id2, sales_force_user_org,images, description, organizer_category, tags,registration_info,',
 	),
 	'types' => array(
 		'1' => array('showitem' => '--palette--;;data, --div--;Relations, --palette--;;relations, --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, --palette--;;access,'),
 	),
 	'palettes' => array(
-		'data' => array('showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, --linebreak--,name, --linebreak--,email, --linebreak--,email_cc,--linebreak--,link, --linebreak--,phone, --linebreak--,sales_force_user_id, --linebreak--,description,--linebreak--,registration_info,'),
+		'data' => array('showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, --linebreak--,name, --linebreak--,email, --linebreak--,email_cc,--linebreak--,link, --linebreak--,phone, --linebreak--,sales_force_user_id,  --linebreak--, sales_force_user_id2, sales_force_user_org,--linebreak--,description,--linebreak--,registration_info,'),
 		'relations' => array('showitem' => 'teaser_image, --linebreak--,images, --linebreak--,organizer_category, --linebreak--, tags,'),
 	    'access' => array('showitem' => ' starttime, endtime, --linebreak--,access_users,--linebreak--, access_groups,')
     ),
@@ -214,6 +214,41 @@ $returnArray = array(
 				'eval' => 'trim'
 			),
 		),
+        'sales_force_user_id2' => array(
+            'exclude' => 0,
+            'label' => 'sales_force_user_id NEW since 2019',
+            'config' => array(
+                'type' => 'input',
+                'size' => 30,
+                'eval' => 'trim'
+            ),
+        ),
+        'sales_force_user_org' => array(
+            'exclude' => 0,
+            'label' => 'Allplan Organisation (Mandant) ',
+            'config' => array(
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'items' => array(
+                    array('please select', ''),
+                    array('Allplan Deutschland (300)', '300'),
+                    array('Allplan International (301)', '301'),
+                    array('Allplan Switzerland (400)', '400'),
+                    array('Allplan France (410)', '410'),
+                    array('Allplan Austria (420)', '420'),
+                    array('Allplan Italy (430)', '430'),
+                    array('Allplan Spain (440)', '440'),
+                    array('Allplan UK (460)', '460'),
+                    array('Allplan USA (470)', '470'),
+                    array('Allplan Czech Republic (610)', '610'),
+                    array('Allplan Slovakia (660)', '660'),
+                    array('Allplan Infrastructure (680)', '680'),
+                    array('Allplan Global (000)', '000'),
+                ),
+                'size' => 1,
+                'maxitems' => 1,
+            ),
+        ),
 		'images' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_organizer.images',

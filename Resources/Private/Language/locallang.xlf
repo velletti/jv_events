@@ -12,6 +12,12 @@
                 <source>Please check your input. Looks as it contains unwanted HTML Code</source>
             </trans-unit>
 
+            <trans-unit id="jv_events_model_event.currency.label">
+                <source>Currency</source>
+            </trans-unit>
+            <trans-unit id="jv_events_model_event.inclusiveVat">
+                <source>incl. VAT</source>
+            </trans-unit>
 
             <trans-unit id="jv_events_model_location.geocoder.title">
                 <source>Google Geocoder (Please enter the address data first!)</source>

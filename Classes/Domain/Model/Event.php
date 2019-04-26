@@ -41,6 +41,14 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     protected $eventType = 0;
 
+
+    /**
+     * hidden or not that is the question
+     *
+     * @var int
+     */
+    protected $hidden ;
+
     /**
      * event Viewed in single View (ajax Call requiered)
      *
@@ -80,11 +88,18 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $teaser = '';
 
     /**
-     * int Price only in EURO
+     * int Price only inclusive VAT
      *
      * @var double
      */
     protected $price = 0 ;
+
+    /**
+     * currency ( $ € , CHF or Pound ) see tca )
+     *
+     * @var string
+     */
+    protected $currency  ;
 
     /**
      * int PriceReduced only in EURO
@@ -2357,6 +2372,38 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function setSalesForceCampaignId($salesForceCampaignId)
     {
         $this->salesForceCampaignId = $salesForceCampaignId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrency()
+    {
+        return $this->currency;
+    }
+
+    /**
+     * @param string $currency
+     */
+    public function setCurrency($currency)
+    {
+        $this->currency = $currency;
+    }
+
+    /**
+     * @return int
+     */
+    public function getHidden()
+    {
+        return $this->hidden;
+    }
+
+    /**
+     * @param int $hidden
+     */
+    public function setHidden($hidden)
+    {
+        $this->hidden = $hidden;
     }
 
 

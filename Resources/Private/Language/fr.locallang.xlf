@@ -5,6 +5,14 @@
 			<generator>LFEditor</generator>
 		</header>
 		<body>
+			<trans-unit id="jv_events_model_event.currency.label">
+				<source>Currency</source>
+				<target>Devise</target>
+			</trans-unit>
+			<trans-unit id="jv_events_model_event.inclusiveVat">
+				<source>incl. VAT</source>
+				<target>TVA comprise</target>
+			</trans-unit>
 		<trans-unit id="register.accept_privacy" approved="yes">
 			<source>I have read and accept the </source>
 			<target>J'ai lu et accepté les</target>

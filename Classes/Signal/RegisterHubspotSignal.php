@@ -24,7 +24,7 @@ namespace JVE\JvEvents\Signal;
  ***************************************************************/
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
- * Class RegisterSalesforceSignal
+ * Class RegisterHubspotSignal
  *
  * @package JVE\Jvevents\Signal
  */
@@ -69,7 +69,7 @@ class RegisterHubspotSignal {
         if ( $settings['EmConfiguration']['enableHubspot'] < 1  || !is_object( $event->getOrganizer() ) || $event->getStoreInHubspot() < 1 )  {
             $this->logToFile( "\n\n ### ERROR ### In RegisterHubspotSignal - Registrant : " . $registrant->getEmail()
                 . "\n EmConf Enable enableHubspot: " . $settings['EmConfiguration']['enableHubspot']
-                . "\n Event: " . $event->getUid() . " - Store in SalesForce: " . $event->getStoreInHubspot() );
+                . "\n Event: " . $event->getUid() . " - Store in Hubspot: " . $event->getStoreInHubspot() );
 
             return;
 
@@ -101,10 +101,10 @@ class RegisterHubspotSignal {
 
 
         if(  is_object( $event->getOrganizer() )  ) {
-            if (  strlen( $event->getOrganizer()->getSalesForceUserId())  > 10 ) {
+            if (  strlen( $event->getOrganizer()->getSalesForceUserId2())  > 10 ) {
                 // overwrite it with value from organizer if it is defined and long enough to be a nearly valid SF ID (should be 16 or 19 digits ..
-                $data['comment']  .=  "\n SF Owner: " . $event->getOrganizer()->getSalesForceUserId() . " " .  $event->getOrganizer()->getName() ;
-                $debugmail .= "\nField : SF OwnerId is taken from  getOrganizer()getSalesForceUserId =" . $data['OwnerId'] ;
+                $data['comment']  .=  "\n SF Owner: " . $event->getOrganizer()->getSalesForceUserId2() . " " .  $event->getOrganizer()->getName() ;
+                $debugmail .= "\nField : SF OwnerId is taken from  getOrganizer()getSalesForceUserId2 =" . $data['OwnerId'] . " | Org: " . $event->getOrganizer()->getSalesForceUserOrg() ;
             }
             $data['comment']  .=  "\n" . \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate( "tx_jvevents_domain_model_event.organizer" , 'JvEvents' ) . ": "
                 . $event->getOrganizer()->getName() ;
@@ -204,7 +204,7 @@ class RegisterHubspotSignal {
             "tablename" => "tx_jvevents_domain_model_registrant" ,
             "error" => $error ,
             "event_pid" => $pid ,
-            "details" => "Event registration sent to salesforce " ,
+            "details" => "Event registration sent to Hubspot " ,
             "tstamp" => time() ,
             "type" => 1 ,
             "message" => $text ,

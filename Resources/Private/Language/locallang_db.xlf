@@ -41,7 +41,7 @@
 
 
             <trans-unit id="tx_jvevents_domain_model_event.price">
-                <source>Price in EUR</source>
+                <source>Price incl. VAT</source>
             </trans-unit>
 
              <trans-unit id="tx_jvevents_domain_model_event.priceReduced">

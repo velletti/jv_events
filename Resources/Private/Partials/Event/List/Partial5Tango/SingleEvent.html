@@ -56,7 +56,7 @@
                 <div class="col-6 col-sm-3 text-black-50 bg-gradient-light  order-2 order-sm-3 py-3">
                     {event.location.city}<br>
                     {event.startTime -> f:format.date(format:"H:i")} - {event.endTime -> f:format.date(format:"H:i")} h<br>
-                    {event.price} € <f:if condition="{event.priceReduced}">({event.priceReduced} € )</f:if><br>
+                    {event.price} {event.currency} <f:if condition="{event.priceReduced}">({event.priceReduced} {event.currency} )</f:if> (<f:translate key="jv_events_model_event.inclusiveVat" />)<br>
 
                 </div>
             </div>

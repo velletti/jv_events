@@ -42,10 +42,11 @@
 			<f:if condition="{event.price}">
 				<f:then>
 					<f:translate key="tx_jvevents_domain_model_event.price" />:
-					<f:format.currency>{event.price}</f:format.currency>
+					<f:format.currency>{event.price}</f:format.currency> {event.currency}
 					<f:if condition="{event.priceReducedText}">
-						/ <f:format.currency>{event.priceReduced}</f:format.currency> {event.priceReducedText}
+						/ <f:format.currency>{event.priceReduced}</f:format.currency> {event.currency} {event.priceReducedText}
 					</f:if>
+					(<f:translate key="jv_events_model_event.inclusiveVat" />)
 					<br/>
 				</f:then>
 			</f:if>

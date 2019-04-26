@@ -60,6 +60,9 @@ class ProcessDatamap {
 		$this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['jv_events']);
 		$this->main();
 	}
+ //   public function processDatamap_beforeStart($pObj ) {
+ //
+ //   }
 
 	public function main() {
 
@@ -225,10 +228,44 @@ class ProcessDatamap {
                         if( $this->event->getStoreInSalesForce() ) {
                             if( $this->event->getStoreInCitrix() ) {
                                 $this->flashMessage['WARNING'][] = 'You can not set "Store in Salesforce" together with "Store in Citrix"! (store in salesforce is disabled)!' ;
-
+                                $this->event->setStoreInSalesForce(0) ;
                                 $allowedError ++ ;
                             } else {
-                                $this->createUpdateEventForSF()  ;
+                                $configuration = \JVE\JvEvents\Utility\EmConfigurationUtility::getEmConf();
+                                if( $configuration['enableHubspot'] == 1 ) {
+                                    if( $this->event->getStartDate()->format("Ymd") > date("Ymd") && ! $this->event->getHidden() ) {
+                                        $this->flashMessage['WARNING'][] = 'You can not set "Store in Salesforce" anymore! "Store in Hubspot" is now enabled' ;
+                                        $this->event->setStoreInSalesForce(0) ;
+                                        $this->event->setStoreInHubspot(1) ;
+                                        $this->createUpdateEventForSF2019()  ;
+
+
+                                        // Automatic Migration 2019 : Update registrants that they have to be moved to hubspot
+
+                                         /** @var  \JVE\JvEvents\Domain\Repository\RegistrantRepository $registrantRepository */
+                                        $registrantRepository = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\RegistrantRepository');
+
+                                        /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $registrants */
+                                        $registrants = $registrantRepository->findByFilter('' , $this->event->getUid(), 0 , array() , 999 ) ;
+                                        $repairCount = 0 ;
+                                        if ( $registrants->count() > 0 ) {
+                                            /** @var  \JVE\JvEvents\Domain\Model\Registrant $registrant */
+                                            $registrant = $registrants->getFirst() ;
+                                            while ( $repairCount < $registrants->count()  ){
+                                                $repairCount++ ;
+                                                $registrant->setHubspotResponse("100") ;
+                                                $registrantRepository->update($registrant ) ;
+                                                $registrant = $registrants->next() ;
+                                            }
+                                            if( $repairCount ) {
+                                                $this->flashMessage['WARNING'][] = 'Found ' .  $repairCount . " exisiting Registration(s). Please go to Event Mngt, filter by Event and send Registration to Hubspot!";
+                                            }
+                                        }
+                                    }
+
+                                } else {
+                                    $this->createUpdateEventForSF()  ;
+                                }
                             }
                         }
                     }
@@ -277,9 +314,7 @@ class ProcessDatamap {
         $SummerTime = new \DateTime( $start->format("Y-M-d" ) . ' Europe/Berlin');
         $this->flashMessage['NOTICE'][] = "Date Formated : " . $start->format("d-M-Y" ) . ' as NEW Date for SummerTime ! : ' . $SummerTime->format( "d.m.Y H:i:s (I) ") ;
         $owner = " not set" ;
-        if(  is_object( $this->event->getOrganizer() ) ) {
-            $owner  =    trim( $this->event->getOrganizer()->getName() )  ;
-        }
+
         $data = array(
             'IsActive' => true,
             'Description' =>  "TYPO3 Event: " . $this->event->getUid() . " on PID: " . $this->event->getPid() . " of:" . $owner . " \n\n"
@@ -295,7 +330,11 @@ class ProcessDatamap {
         ) ;
 
         if(  is_object( $this->event->getOrganizer() ) ) {
-            $data['OwnerId']  =    trim( $this->event->getOrganizer()->getSalesForceUserId())  ;
+            $owner  =    trim( $this->event->getOrganizer()->getName() )  ;
+            if( $this->event->getOrganizer()->getSalesForceUserOrg() ) {
+                $data['AllplanOrganization__c']  =   $this->event->getOrganizer()->getSalesForceUserOrg() ;  ;
+            }
+            $data['OwnerId']  =    trim( $this->event->getOrganizer()->getSalesForceUserId2())  ;
         } else {
             $this->flashMessage['ERROR'][] = 'Store in Salesforce: No Organizer set in Relations ! : '  ;
         }
@@ -307,6 +346,7 @@ class ProcessDatamap {
         }
 
 
+
         $this->flashMessage['NOTICE'][] = 'Data  : ' . var_export( $data , true ) ;
 
 
@@ -315,7 +355,7 @@ class ProcessDatamap {
             $url = $settings['SFREST']['instance_url'] . "/services/data/v30.0/sobjects/Campaign/" . $this->event->getSalesForceCampaignId() ;
             $sfResponse = $this->sfConnect->getCurl($url , $settings['SFREST']['access_token'] , "204" ,  $data , true  , false )  ;
             if( is_int( $sfResponse ) && $sfResponse == 204 ) {
-                $this->flashMessage['OK'][] = "Updated in Salesforce: ! : " . $settings['SFREST']['instance_url'] . "/" . $this->event->getSalesForceCampaignId()   ;
+                $this->flashMessage['OK'][] = "Campaign was updated in Salesforce: ! : " . $settings['SFREST']['instance_url'] . "/" . $this->event->getSalesForceCampaignId()   ;
             } else {
                 $this->flashMessage['WARNING'][] = 'Response  : ' . var_export( $sfResponse , true ) ;
                 $sfResponse = json_decode($sfResponse) ;
@@ -325,7 +365,7 @@ class ProcessDatamap {
             // Insert
             $url = $settings['SFREST']['instance_url'] . "/services/data/v30.0/sobjects/Campaign/" ;
             $sfResponse = $this->sfConnect->getCurl($url , $settings['SFREST']['access_token'] , "201" ,  $data , false , false )  ;
-            $this->flashMessage['NOTICE'][] = 'Store in Salesforce: ' .var_export( $sfResponse , true )  ;
+            $this->flashMessage['NOTICE'][] = 'Store Campaign in Salesforce: ' .var_export( $sfResponse , true )  ;
             $sfResponse = json_decode($sfResponse) ;
 
             if( is_object($sfResponse)) {

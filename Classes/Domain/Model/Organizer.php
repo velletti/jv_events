@@ -96,7 +96,23 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @var string
      */
     protected $salesForceUserId = '';
-    
+
+    /**
+     * if you use SalesForce to store Campaigns for eventsregistrations, we use this uid to store the
+     * data. NEW
+     *
+     * @var string
+     */
+    protected $salesForceUserId2 = '';
+
+    /**
+     * if you use SalesForce to store Campaigns for eventsregistrations, we use this uid to store the
+     * data. NEW
+     *
+     * @var string
+     */
+    protected $salesForceUserOrg = '';
+
     /**
      * a logo / Image for this organizer
      *
@@ -600,5 +616,39 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         $this->tagsFE = $tagsFE;
     }
+
+    /**
+     * @return string
+     */
+    public function getSalesForceUserId2()
+    {
+        return $this->salesForceUserId2;
+    }
+
+    /**
+     * @param string $salesForceUserId2
+     */
+    public function setSalesForceUserId2($salesForceUserId2)
+    {
+        $this->salesForceUserId2 = $salesForceUserId2;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSalesForceUserOrg()
+    {
+        return $this->salesForceUserOrg;
+    }
+
+    /**
+     * @param string $salesForceUserOrg
+     */
+    public function setSalesForceUserOrg($salesForceUserOrg)
+    {
+        $this->salesForceUserOrg = $salesForceUserOrg;
+    }
+
+
 
 }

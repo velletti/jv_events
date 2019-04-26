@@ -78,7 +78,8 @@ class ProcessCmdmap {
 			$this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['jv_events']);
 			$this->table = $table;
 			$this->pObj = $Obj;
-
+echo " in Hook " . __FILE__ . " Comand=" . $this->command  ;
+die;
 			/** @var  \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
 			$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("TYPO3\\CMS\\Extbase\\Object\\ObjectManager") ;
 

@@ -9,7 +9,14 @@
 			<source>I have read and accept the </source>
 			<target>Četl(a) jsem a akceptuji </target>
 		</trans-unit>
-
+			<trans-unit id="jv_events_model_event.currency.label">
+				<source>Currency</source>
+				<target>Měna</target>
+			</trans-unit>
+			<trans-unit id="jv_events_model_event.inclusiveVat">
+				<source>incl. VAT</source>
+				<target>včetně DPH</target>
+			</trans-unit>
 		<trans-unit id="register.overbooked">
             <source>+++Overbooked+++</source>
             <target>+++obsazen+++</target>

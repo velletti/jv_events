@@ -80,46 +80,6 @@ class RegistrantRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         return $query->matching( $query->equals("uid", $id) )->execute()->getFirst() ;
     }
 
-	/**
-	 * @param string $email
-	 * @param uid $event
-	 * @return array
-	 */
-	public function findByFilter($email = '', $eventID = 0, $pid = 0 , $settings , $limit=1 ) {
-		$query = $this->createQuery();
-		$constraints = array();
-		$query->getQuerySettings()->setRespectStoragePage(FALSE);
-		$query->getQuerySettings()->setRespectSysLanguage(FALSE);
-		$query->getQuerySettings()->setIgnoreEnableFields(TRUE) ;
-		$query->getQuerySettings()->setLanguageOverlayMode(FALSE) ;
-		$query->getQuerySettings()->setLanguageMode('content_fallback') ;
-
-        // $constraints[] = $query->equals("cruser_id", 0);
-		if($email <> '' ) {
-			$constraints[] = $query->equals("email", $email);
-		}
-        if($pid > 0 ) {
-            $constraints[] = $query->equals("pid", $pid);
-        }
-		if($eventID > 0 ) {
-			$constraints[] = $query->equals("event", $eventID);
-		}
-
-		if(count($constraints) > 0 ) {
-			$query->matching($query->logicalAnd($constraints));
-		}
-
-		$query->setLimit($limit);
-		$result = $query->execute();
-		if ($settings['debug']  == 2 ) {
-			$GLOBALS['TYPO3_DB']->debugOutput = 2;
-			$GLOBALS['TYPO3_DB']->explainOutput = true;
-			$GLOBALS['TYPO3_DB']->store_lastBuiltQuery = true;
-			$result->toArray();
-			die;
-		}
-		return $result;
-	}
     /**
      * @param string $email
      * @param uid $event
@@ -139,6 +99,48 @@ class RegistrantRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
        foreach ( $regevents as $next ) {
             $result[] = $next['event'] ;
         }
+        return $result;
+    }
+    /**
+     * @param string $email
+     * @param int $eventID
+     * @param int $pid
+
+     * @param array $settings
+     * @param int $limit
+     * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array
+     */
+    public function findByFilter($email = '', $eventID = 0, $pid = 0 , $settings , $limit=1 ) {
+        $query = $this->createQuery();
+        $constraints = array();
+        $query->getQuerySettings()->setRespectStoragePage(FALSE);
+        $query->getQuerySettings()->setRespectSysLanguage(FALSE);
+        $query->getQuerySettings()->setIgnoreEnableFields(TRUE) ;
+        $query->getQuerySettings()->setLanguageOverlayMode(FALSE) ;
+        $query->getQuerySettings()->setLanguageMode('content_fallback') ;
+
+        // $constraints[] = $query->equals("cruser_id", 0);
+        if($email <> '' ) {
+            $constraints[] = $query->equals("email", $email);
+        }
+        if($pid > 0 ) {
+            $constraints[] = $query->equals("pid", $pid);
+        }
+        if($eventID > 0 ) {
+            $constraints[] = $query->equals("event", $eventID);
+        }
+
+        if(count($constraints) > 0 ) {
+            $query->matching($query->logicalAnd($constraints));
+        }
+        // new way to debug typo3 db queries
+         // $queryParser = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class);
+        //   var_dump($queryParser->convertQueryToDoctrineQueryBuilder($query)->getSQL());
+        //  var_dump($queryParser->convertQueryToDoctrineQueryBuilder($query)->getParameters()) ;
+        //  die;
+
+        $query->setLimit($limit);
+        $result = $query->execute();
         return $result;
     }
 }

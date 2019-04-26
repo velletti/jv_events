@@ -5,6 +5,19 @@
 			<generator>LFEditor</generator>
 		</header>
 		<body>
+			<trans-unit id="tx_jvevents_domain_model_event.price">
+				<source>Price incl. VAT</source>
+				<target>Preis inkl. MwSt.</target>
+			</trans-unit>
+			<trans-unit id="tx_jvevents_domain_model_event.priceReduced">
+				<source>Reduced Price</source>
+				<target>Ermäßigter Preis</target>
+			</trans-unit>
+			<trans-unit id="tx_jvevents_domain_model_event.priceReducedText">
+				<source>Grund für eine Reduzierung</source>
+			</trans-unit>
+
+
 		<trans-unit id="tx_jvevents_domain_model_category" approved="yes">
 			<source>Category</source>
 			<target>Category</target>
