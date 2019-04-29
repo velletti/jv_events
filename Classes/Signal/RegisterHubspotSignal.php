@@ -89,7 +89,7 @@ class RegisterHubspotSignal {
         // Subject
         $data['typo3_event_id']  =   $event->getUid()  ;
         $data['event_date']  =   $event->getStartDate()->format( "d.m.Y" )  ;
-        $data['sf_campaign_id']  =   $event->getSalesForceCampaignId()  ;
+
         $data['comment']  .=   "\n" . " ********************** " . $event->getStartDate()->format("D d.m.Y") . " - " ;
 
 
@@ -116,7 +116,7 @@ class RegisterHubspotSignal {
                 . $event->getLocation()->getZip() . " " . $event->getLocation()->getCity() . " \n" . $event->getLocation()->getStreetAndNr() ;
         }
         $data['comment'] .= " \n\nTYPO3 Event " . $event->getUid() . " on Page: " . $event->getPid() ;
-
+        $data['comment'] .= "\n**********************************\n" . $registrant->getAdditionalInfo() ;
         // remove unwanted  Characters from Array ..
         $data =  $this->cleanArray($data) ;
 
@@ -131,12 +131,25 @@ class RegisterHubspotSignal {
 
         if ( $event->getSalesForceCampaignId()  <> '' ) {
             // <!-- Feld fÃ¼r Webinar Key  VARIABLER WERT fÃ¼r jedes Webinar eindeutiger Wert-->
-            $data['sf_campaign_id']  = $event->getSalesForceCampaignId()  ;
-            $debugmail .= "\nField : sf_campaign_id  = " . $data['sf_campaign_id'] ;
+           // $data['sf_campaign_id']  = $event->getSalesForceCampaignId()  ;
+            $data['sfdc_campaign_id']  =   $event->getSalesForceCampaignId()  ;
+            $debugmail .= "\nField : sfdc_campaign_id  = " . $data['sfdc_campaign_id'] ;
 
         }
 
         $data['language']  =   $settings['lang'] ;
+        $data['is_hidden']  =   $registrant->getHidden() ;
+        $data['is_confirmed']  =   $registrant->getConfirmed() ;
+
+        $hubspotutk      = $_COOKIE['hubspotutk']; //grab the cookie from the visitors browser.
+        $ip_addr         = $_SERVER['REMOTE_ADDR']; //IP address too.
+        $hs_context      = array(
+            'hutk' => $hubspotutk,
+            'ipAddress' => $ip_addr,
+            'pageUrl' => 'https://www.allplan.com/index.php?id=' . $event->getRegistrationFormPid() . "&tx_jvevents_events[event]=" . $event->getUid() . "&L=" . $event->getSysLanguageUid() . "&tx_jvevents_events[action]=new&tx_jvevents_events[controller]=Registrant",
+            'pageName' =>  $event->getName()
+        );
+        $data['hs_context'] = $hs_context ;
 
         $debugmail .= "\ndata Array : \n\n"  ;
         $debugmail .= var_export( $data , true ) ;
@@ -195,7 +208,7 @@ class RegisterHubspotSignal {
 
 
         $this->logToFile( $debugmail , $event->getPid() , $error )  ;
-
+        return $response  ;
     }
     private function logToFile( $text , $pid = 0 , $error = 0 ) {
 
@@ -236,7 +249,7 @@ class RegisterHubspotSignal {
         $jsonArray['address'] = trim($registrant->getStreetAndNr() ) ;
         $jsonArray['zip'] = trim($registrant->getZip() ) ;
         $jsonArray['city'] = trim($registrant->getCity() ) ;
-        $jsonArray['country'] = trim($registrant->getCountry() ) ;
+        $jsonArray['country_salesforce'] = trim($registrant->getCountry() ) ;
         $jsonArray['phone'] = trim($registrant->getPhone() ) ;
         $jsonArray['email'] = trim($registrant->getEmail() ) ;
         $jsonArray['invoice_company_name'] = trim($registrant->getCompany2() ) ;

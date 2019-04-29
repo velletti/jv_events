@@ -49,6 +49,12 @@ class EventBackendController extends BaseController
     protected  $citrixSlot  ;
 
     /**
+     * @var \JVE\JvEvents\Signal\RegisterHubspotSignal
+     * @inject
+     */
+    protected  $hubspotSlot  ;
+
+    /**
 	 * staticCountryRepository
 	 *
 	 * @var \JVE\JvEvents\Domain\Repository\StaticCountryRepository
@@ -68,7 +74,7 @@ class EventBackendController extends BaseController
 		if (!$this->request->hasArgument('event')) {
 			// ToDo redirect to error
 		}
-
+        $this->hubspotSlot = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("JVE\\JvEvents\\Signal\\RegisterHubspotSignal");
         parent::initializeAction() ;
 	}
     /**
@@ -284,6 +290,83 @@ class EventBackendController extends BaseController
         die();
     }
 
+
+    /**
+     * action resendHubspotAction
+     *
+     * will output json Resonse
+     */
+    public function resendHubspotAction()
+    {
+        if( $this->settings['EmConfiguration']['enableHubspot'] < 1 ) {
+            $output = array( "enableHubspot" => false ) ;
+        } elseif (!$this->request->hasArgument("registrant")) {
+            $output = array( "error" => true , "msg" => "No registrant Id" ) ;
+        } else {
+            $regId = intval( $this->request->getArgument("registrant")) ;
+            $registrant = false ;
+            $event = false ;
+            if ($regId < 1) {
+                $output = array( "error" => true , "msg" => "Registrant Id < 1" ) ;
+            } else {
+                /** @var \JVE\JvEvents\Domain\Model\Registrant $registrant */
+                $registrant = $this->registrantRepository->findByUid($regId);
+            }
+            if (! $registrant || !is_object($registrant)) {
+                $output = array( "error" => true , "msg" => "Registrant not Found" ) ;
+            } else {
+                /** @var \JVE\JvEvents\Domain\Model\Event $event */
+                $event = $this->eventRepository->findByUidAllpages($registrant->getEvent(), FALSE);
+            }
+            if (! $event || !is_object($event)) {
+                $output = array( "error" => true , "msg" => "Event not Found" ) ;
+            } else {
+                // Special Solution For allplan. So this Extension exists
+                // Condition is special for DE but should work also in all langauges
+                // if anybody also needs this, we should make it more flexibel ..
+
+                $lng = intval( $event->getLanguageUid()) ;
+
+                $ts = \Allplan\AllplanTools\Utility\TyposcriptUtility::loadTypoScriptFromScratch(
+                    $event->getRegistrationFormPid(), "tx_jvevents_events", array("[globalVar = GP:L = " . $lng . "]")
+                );
+
+                $response = $this->hubspotSlot->createAction($registrant, $event, $this->settings);
+
+
+                if ($response['status'] == 201 || $response['status']  == 204) {
+                    $colorCode = \TYPO3\CMS\Core\Messaging\AbstractMessage::INFO;
+                    $registrant->setHubspotResponse($response['status']) ;
+                } else {
+                    $colorCode = \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING;
+                    $registrant->setHubspotResponse($response['status'] . " - " . $response['error']) ;
+                }
+                $this->registrantRepository->update($registrant) ;
+                // $this->addFlashMessage(" Resent user " . $registrant->getEmail() . " to Citrix : " . var_export($response, true)
+                //    , '', $colorCode);
+
+                $this->persistenceManager->persistAll();
+                $output = array("uid" => $regId, "text" => $response);
+            }
+        }
+
+        $jsonOutput = json_encode($output);
+        $callbackId = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP("callback");
+        if ($callbackId ) {
+            $jsonOutput = $callbackId . "(" . $jsonOutput . ")";
+        }
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+        header('Cache-Control: no-cache, must-revalidate');
+        header('Pragma: no-cache');
+        header('Content-Length: ' . strlen($jsonOutput));
+        header('Content-Type: application/json; charset=utf-8');
+        header('Content-Transfer-Encoding: 8bit');
+
+         echo $jsonOutput;
+
+        die();
+    }
 
     /**
      * action create

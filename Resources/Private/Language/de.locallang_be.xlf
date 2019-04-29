@@ -11,7 +11,7 @@
 		</trans-unit>
 		<trans-unit id="extmng.adminUserGroups" approved="yes">
 			<source>Leave Empty or Enter list of UIDs of Admin Groups ( actually unused) </source>
-			<target>Leer lassen oder eine Liste von UID von ADMIN Gruppen eintragen ( dezeit ungenutzt)</target>
+			<target>Leer lassen oder eine Liste von UID von ADMIN Gruppen eintragen ( derzeit ungenutzt)</target>
 		</trans-unit>
 		<trans-unit id="extmng.defaultAllDayEvent" approved="yes" xml:space="preserve">
 			<source>set Default all Day Event = 1 (this hides the fields  start- and endtime)</source>
@@ -19,7 +19,7 @@
 		</trans-unit>
 		<trans-unit id="extmng.defaultNeedToConfirm" approved="yes">
 			<source>Set Default User needs To Confirm via Email = 1</source>
-			<target>Setze &quot;Teilhnemer muss bestätigen&quot; als Voreinstellung</target>
+			<target>Setze &quot;Teilnenmer muss bestätigen&quot; als Voreinstellung</target>
 		</trans-unit>
 		<trans-unit id="extmng.defaultNotifyOrganizer" approved="yes">
 			<source>Set Default notify Organizer = 1</source>
@@ -59,19 +59,19 @@
 		</trans-unit>
 		<trans-unit id="extmng.enableCitrix" approved="yes">
 			<source>Show Options to store the Event registrants to Citrix (as GoTo Webinar Registrants)</source>
-			<target>Zeite die Option um Events nach Citrix zu speichern</target>
+			<target>Zeige die Option um Events nach Citrix zu speichern</target>
 		</trans-unit>
 		<trans-unit id="extmng.enableSalesForce" approved="yes">
 			<source>Show Options to store Events and registrations to Salesforce (Needs a special settings and custom Object in SalesForce!)</source>
-			<target>Zeite die Option um Events nach Salesforcce zu speichern</target>
+			<target>Zeige die Option um Events nach Salesforce zu speichern</target>
 		</trans-unit>
 		<trans-unit id="extmng.hasLoginUser" approved="yes">
 			<source>Show Options to restrict Access to an Event (only usefull if you have a frontend Login)</source>
-			<target>Zeite die Option um den Zugriff auf Events zu beschränken (nur sinnvol mit Frontend Userlogin)</target>
+			<target>Zeige die Option um den Zugriff auf Events zu beschränken (nur sinnvoll mit Frontend User login)</target>
 		</trans-unit>
 		<trans-unit id="extmng.showImporter" approved="yes">
 			<source>Show Importer From CAL : This is just a plan and actually doing nothing !</source>
-			<target>zeige Import Modul von CAL ( das ist derzeti nur ein Plan!!!)</target>
+			<target>zeige Import Modul von CAL (Falls das jemand mal sponsoren möchte)</target>
 		</trans-unit>
 		<trans-unit id="extmng.showIndividualMailTemplatesPerEvent" approved="yes">
 			<source>Show separate Fields with Subject and Mail text for each event to create individual Emails per Event : (This is just a plan and Actually doing nothing !)</source>
@@ -79,7 +79,7 @@
 		</trans-unit>
 		<trans-unit id="extmng.showRecurring" approved="yes">
 			<source>Use Recurring Events Model. May Slow down frontend List Views : THIS is Still under development</source>
-			<target>Option: Wiederkehre Veranstaltungen aktivieren. Dies kann die Frontend darstellung verlangsamen. THIS is Still under development</target>
+			<target>Option: Wiederkehre Veranstaltungen aktivieren. Dies kann die Frontend darstellung verlangsamen. (ist auch nur eine mögliche Option, da ist nichts programmiert)</target>
 		</trans-unit>
 		<trans-unit id="flexforms.DataSettings" approved="yes">
 			<source>Data Settings</source>

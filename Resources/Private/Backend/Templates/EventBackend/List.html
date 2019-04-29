@@ -14,12 +14,16 @@
 					if (data.uid) {
 						if (data.text.status) {
                             $(thisReg).html($('#jvevents-okay-icon').html());
+							$(thisReg).attr("title" , "Response Status: " . data.text.status ) ;
 						} else {
                             $(thisReg).html($('#jvevents-error-icon').html());
+							$(thisReg).attr("title" , 'error : '  . data.text.error ) ;
                         }
 					} else {
 						$(thisReg).html($('#jvevents-error-icon').html());
+						$(thisReg).attr("title" , 'undefined error' ) ;
 					}
+
 				}) ;
             }) ;
 
@@ -60,20 +64,23 @@
 
 			</div>
 			<div class="col-xs-4">
-				<b>Vor- Nachname</b>
+				<b>First- Lastname</b>
 			</div>
-			<div class="col-xs-4">
+			<div class="col-xs-3">
 				<b>E-Mail</b>
 			</div>
 
 			<div class="col-xs-1">
-				O
+				<span title="This is a registration is UNconfirmed by User (if here is an 'X') ">U</span>
 			</div>
 			<div class="col-xs-1">
-				C
+				<span title="This is a registration is confirmed / send to citrix">C</span>
 			</div>
 			<div class="col-xs-1">
-				BB
+				<span title="This is a registration is confirmed / send to Hubspot">H</span>
+			</div>
+			<div class="col-xs-1">
+				<span title="This is a registration for multiple events (BB=BlockBooking) ">BB</span>
 			</div>
 		</div>
 		<div class="jvevents-entrys">
@@ -91,7 +98,7 @@
 					<div class="col-xs-4">
 						{registrant.firstName} {registrant.lastName}
 					</div>
-					<div class="col-xs-4">
+					<div class="col-xs-3">
 						{registrant.email}
 					</div>
 					<div class="col-xs-1">
@@ -147,8 +154,52 @@
 
 					</div>
 					<div class="col-xs-1">
+						<f:if condition="{registrant.hidden}">
+							<f:else>
+								<f:if condition="{settings.EmConfiguration.enableHubspot}">
+									<f:then>
+										<f:if condition="{0: registrant.hubspotResponse} == {0: '201'} || {0: registrant.hubspotResponse} == {0: '204'} ">
+											<f:then>
+												<f:if condition="{0: registrant.hubspotResponse} == {0: '204'}">
+													<f:then>
+														<span title="Sent to Hubspot. Response was OK - {registrant.hubspotResponse}">
+															{registrant.hubspotResponse}
+														</span>
+													</f:then>
+													<f:else>
+														<span title="Was ReSent to Hubspot. Response was OK - {registrant.hubspotResponse}">
+															{registrant.hubspotResponse}
+														</span>
+													</f:else>
+												</f:if>
+											</f:then>
+											<f:else>
+												<f:if condition="{0: registrant.hubspotResponse} == {0: '100'} || {0: registrant.hubspotResponse} == {0: '404'} || {0: registrant.hubspotResponse} == {0: '500'}">
+													<f:then>
+														<f:link.action absolute="true" class="btn btn-sm tx_jvevents_citrix" action="resendHubspot" arguments="{registrant: registrant.uid}" title="Send to Hubspot - {registrant.hubspotResponse} ">
+															<core:icon identifier="actions-system-backend-user-switch"/>
+														</f:link.action>
+													</f:then>
+													<f:else>
+														{registrant.hubspotResponse}
+													</f:else>
+												</f:if>
+
+											</f:else>
+										</f:if>
+									</f:then>
+									<f:else>
+										{registrant.hubspotResponse}
+									</f:else>
+								</f:if>
+							</f:else>
+
+						</f:if>
+
+					</div>
+					<div class="col-xs-1">
 						<f:if condition="{registrant.otherEvents}">
-	BB
+							<span title="This is a registration for multiple events (BB=BlockBooking) ">BB</span>
 						</f:if>
 					</div>
 
@@ -164,7 +215,7 @@
 							Info: <f:format.nl2br>{registrant.additionalInfo}</f:format.nl2br><br>
 
 							<f:if condition="{registrant.otherEvents}">
-								Blockbucher
+								This is a registration for multiple events (BB=BlockBooking)
 							</f:if>
 						</p>
 					</div>

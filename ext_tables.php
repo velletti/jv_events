@@ -18,10 +18,10 @@ $configuration = \JVE\JvEvents\Utility\EmConfigurationUtility::getEmConf();
 
 if ( $configuration['showImporter'] == 1 ) {
     // Todo add importer to modules
-    $EventModules = array('EventBackend' => 'list, show, new, create, edit, update, delete, register, confirm, search, resendCitrix' ) ;
+    $EventModules = array('EventBackend' => 'list, show, new, create, edit, update, delete, register, confirm, search, resendCitrix,resendHubspot' ) ;
 
 } else {
-    $EventModules = array('EventBackend' => 'list, show, new, create, edit, update, delete, register, confirm, search, resendCitrix' ) ;
+    $EventModules = array('EventBackend' => 'list, show, new, create, edit, update, delete, register, confirm, search, resendCitrix,resendHubspot' ) ;
 }
 if (TYPO3_MODE === 'BE') {
 
