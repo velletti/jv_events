@@ -240,6 +240,9 @@ class RegisterHubspotSignal {
 
         $jsonArray['gender'] = $registrant->getGender() ;
         // ToDo Maybe need to create a kind fo mapping including translation ..
+        $lng = $registrant->getEvent()->get->Syslanguage.uid() ;
+
+
         $jsonArray['salutation'] = "Mrs." ;
         if( $registrant->getGender() == 1) {
             $jsonArray['salutation'] = "Mr." ;
@@ -249,7 +252,7 @@ class RegisterHubspotSignal {
         $jsonArray['address'] = trim($registrant->getStreetAndNr() ) ;
         $jsonArray['zip'] = trim($registrant->getZip() ) ;
         $jsonArray['city'] = trim($registrant->getCity() ) ;
-        $jsonArray['country_salesforce'] = trim($registrant->getCountry() ) ;
+        $jsonArray['laenderkennzeichen__c'] = trim($registrant->getCountry() ) ;
         $jsonArray['phone'] = trim($registrant->getPhone() ) ;
         $jsonArray['email'] = trim($registrant->getEmail() ) ;
         $jsonArray['invoice_company_name'] = trim($registrant->getCompany2() ) ;

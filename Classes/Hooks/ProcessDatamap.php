@@ -307,7 +307,8 @@ class ProcessDatamap {
 
         /// ++++++++++++  first we genereate the data Array
         $start = $this->event->getStartDate() ;
-        $end = $this->event->getStartDate() ;
+        $end = $this->event->getStartDate()->modify("+30 day") ;
+        // OR $date->add(new DateInterval('P30D'));
         $startD =  $this->sfConnect->convertDate2SFdate( $start ,  $this->event->getStartTime() ) ;
 
         $endD =  $this->sfConnect->convertDate2SFdate( $end ,  $this->event->getEndTime() ) ;
@@ -317,20 +318,29 @@ class ProcessDatamap {
         $SummerTime = new \DateTime( $start->format("Y-M-d" ) . ' Europe/Berlin');
         $this->flashMessage['NOTICE'][] = "Date Formated : " . $start->format("d-M-Y" ) . ' as NEW Date for SummerTime ! : ' . $SummerTime->format( "d.m.Y H:i:s (I) ") ;
         $owner = " not set" ;
-
+        if(  is_object( $this->event->getLocation() ) ) {
+            $cntry = $this->event->getLocation()->getCountry() ;
+        } else {
+            $cntry = "XX" ;
+        }
+        $campaignName = $cntry . "-" . $this->event->getStartDate()->format("Y-m-") . strip_tags ( $this->event->getName() ) ;
         $data = array(
             'IsActive' => true,
-            'Description' =>  "TYPO3 Event: " . $this->event->getUid() . " on PID: " . $this->event->getPid() . " of:" . $owner . " \n\n"
+            'Description' =>  "TYPO3 Event: " . $this->event->getUid() . " on PID: " . $this->event->getPid() . " \n\n"
                 . html_entity_decode( strip_tags( $this->event->getDescription() ) , ENT_COMPAT , 'UTF-8') ,
-            'Name' => substr( html_entity_decode( strip_tags(  $this->event->getName() ) , ENT_COMPAT , 'UTF-8') , 0 , 80 ) ,
+            'Name' => substr( html_entity_decode(  $campaignName  , ENT_COMPAT , 'UTF-8') , 0 , 80 ) ,
             'EndDate' =>  $endD ,
             'StartDate' =>  $startD   ,
-            'Status' =>  ''   ,  // see https://doc.allplan.com/display/SFDOC/Event+Registration+Mapping+Tables
-            'Type' =>  'Training'   ,
+            'Status' =>  'pending'   ,  // see https://doc.allplan.com/display/SFDOC/Event+Registration+Mapping+Tables
+            'Type' =>  'Outbound - Event'   ,
             'AllplanOrganization__c' =>  '300'   , // will be overwritten later
             'ListPricePerCampaignMember__c' =>  $this->event->getPrice() ,
 
         ) ;
+        if ( $this->event->getPrice() > 0 ) {
+            $data['Type']  = 'Training' ;
+        }
+
 
         if(  is_object( $this->event->getOrganizer() ) ) {
             $owner  =    trim( $this->event->getOrganizer()->getName() )  ;
@@ -376,6 +386,9 @@ class ProcessDatamap {
                     $this->flashMessage['OK'][] = "Campaign created in Salesforce: ! : " . $settings['SFREST']['instance_url'] . "/" . $sfResponse->id   ;
 
                     $this->event->setSalesForceCampaignId($sfResponse->id);
+                    $url = $settings['SFREST']['instance_url'] . "/services/data/v30.0/sobjects/CampaignMemberStatus/" ;
+                    $this->createCampaignMemberStati( $url , $settings['SFREST']['access_token'] ,  $sfResponse->id ) ;
+
                 }
             } else {
                 if ( substr( $sfResponse , 0 , 6 ) == "Error" ) {
@@ -400,6 +413,58 @@ class ProcessDatamap {
 
     }
 
+    private function createCampaignMemberStati( $url , $access_token , $sfCampaignId ) {
+	    $dataMaster[] = array(  "CampaignId" => $sfCampaignId ,
+                                "HasResponded" => false ,
+                                "IsDefault" => true ,
+                                "Label" => 'Registered'
+                            ) ;
+
+        $dataMaster[] = array(  "CampaignId" => $sfCampaignId ,
+            "HasResponded" => true ,
+            "IsDefault" => false ,
+            "Label" => 'Attended'
+        ) ;
+        $dataMaster[] = array(  "CampaignId" => $sfCampaignId ,
+            "HasResponded" => false ,
+            "IsDefault" => false ,
+            "Label" => 'No Show'
+        ) ;
+        $dataMaster[] = array(  "CampaignId" => $sfCampaignId ,
+            "HasResponded" => false ,
+            "IsDefault" => false ,
+            "Label" => 'Cancelled'
+        ) ;
+        $dataMaster[] = array(  "CampaignId" => $sfCampaignId ,
+            "HasResponded" => false ,
+            "IsDefault" => false ,
+            "Label" => 'Blocked by Sales'
+        ) ;
+        $status = "" ;
+        foreach ( $dataMaster as $key => $data ) {
+            $data['SortOrder'] = $key + 1 ;
+            $sfResponse = $this->sfConnect->getCurl($url , $access_token , "201" ,  $data , false , false )  ;
+          //  $this->flashMessage['NOTICE'][] = 'Campaign Member Status "' . $data['Label'] . '" created : ' . var_export($sfResponse , true ) ;
+            $sfResponse = json_decode($sfResponse) ;
+            if( is_object($sfResponse)) {
+                if ($sfResponse->success && $sfResponse->id) {
+                    $status .= $data['Label'] . ", " ;
+                }
+            }
+        }
+        if ( $status ) {
+            $this->flashMessage['OK'][] = 'Campaign Member Stati created : ' . $status ;
+        } else {
+            $this->flashMessage['WARNING'][] = 'NO Campaign Member Stati created ! ' .  var_export($sfResponse , true ) ;
+        }
+
+    }
+    /**
+     * Use only createUpdateEventForSF2019() above !
+     * can be removed, when enableHubspot is live !
+     * @deprecated
+     * @throws \Exception
+     */
 	private function createUpdateEventForSF() {
 	    // ToDo fix this correctly !
 	    // include_once(__DIR__ . "../Utility/SalesForceWrapperUtility.php") ;

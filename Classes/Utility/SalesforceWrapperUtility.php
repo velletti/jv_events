@@ -219,6 +219,29 @@ class SalesforceWrapperUtility
 
 
     /**
+     *
+     * @param    array $instance_url URL
+     * @param    array $access_token Token to compute with
+     * @param    array $data Data Array to compute with
+     * @return    array result of request
+     * @access   public
+     */
+    public function getData($instance_url , $access_token , $data  ) {
+        $query = "SELECT Id" .  $data['what'] . " from " . $data['from']  .  " WHERE  " . $data['where'] ;
+
+        $url = $instance_url . "/services/data/v30.0/query?q=" . urlencode($query);
+
+        $json_response = $this->getCurl($url , $access_token, '');
+        $result = json_decode($json_response, true);
+
+        $response['url'] = $url ;
+        $response['query'] = $query ;
+        $response['result'] = $result ;
+
+        return $response;
+    }
+
+    /**
      * @param \DateTime $Date
      * @param integer $time
      * @return null|string
