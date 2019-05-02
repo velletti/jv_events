@@ -13,16 +13,27 @@
 					<f:if condition="{event.url}">
 						<f:then>
 							<f:link.typolink class="internalLink" parameter="{event.url}">
-								<strong>{event.name}</strong>
+								<strong>
+									{event.name}
+									<f:if condition="{event.organizer.name}">
+										<br />({event.organizer.name})
+									</f:if>
+								</strong>
 								<f:if condition="{event.teaser}">
 									<br>
 									{event.teaser}
 								</f:if>
+
 							</f:link.typolink>
 						</f:then>
 						<f:else>
 							<f:link.action pageUid="{settings.detailPid}" action="show" noCacheHash="true" arguments="{event : event}">
-								<strong>{event.name}</strong>
+								<strong>
+									{event.name}
+									<f:if condition="{event.organizer.name}">
+										<br />({event.organizer.name})
+									</f:if>
+								</strong>
 								<f:if condition="{event.teaser}">
 									<br>
 									{event.teaser}
