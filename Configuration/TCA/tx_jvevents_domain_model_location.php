@@ -1,5 +1,5 @@
 <?php
-return array(
+$return = array(
 	'ctrl' => array(
 		'title'	=> 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_location',
 		'label' => 'name',
@@ -355,4 +355,36 @@ return array(
         ),
 
 	),
-);## EXTENSION BUILDER DEFAULTS END TOKEN - Everything BEFORE this line is overwritten with the defaults of the extension builder
+);
+
+/*
+* overwrite Country configuration from Free Text Field to Select
+*/
+if( class_exists('\SJBR\StaticInfoTables\Hook\Backend\Form\FormDataProvider\TcaSelectItemsProcessor')) {
+
+    $return['columns']['country']['config'] = array(
+        'type' => 'select',
+        'renderType' => 'selectSingle',
+        'items' => array(
+            array('please select', ""),
+        ),
+        'foreign_table' => 'static_countries',
+        'foreign_table_where' => 'ORDER BY static_countries.cn_short_en',
+        'allowNonIdValues' => TRUE,
+        'itemsProcFunc' => 'SJBR\\StaticInfoTables\\Hook\\Backend\\Form\\FormDataProvider\\TcaSelectItemsProcessor->translateCountriesSelector',
+        'itemsProcFunc_config' => array(
+            'indexField' => 'cn_iso_2',
+        ),
+        'suggestOptions' => [
+            'default' => [
+                'pidList' => '0'
+            ]
+        ],
+        'size' => 1,
+        'minitems' => 0,
+        'maxitems' => 1
+    );
+
+}
+
+return $return ;
