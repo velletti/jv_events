@@ -242,6 +242,7 @@ class AjaxController extends BaseController
                 $output['event']['creationTime'] = date( "d.m.Y H:i" , $event->getCrdate() ) ;
                 $output['event']['name'] = $event->getName() ;
                 $output['event']['price'] = $event->getPrice();
+                $output['event']['currency'] = $event->getCitrixUid();
                 $output['event']['priceReduced'] = $event->getPriceReduced();
                 $output['event']['priceReducedText'] = $event->getPriceReducedText();
 

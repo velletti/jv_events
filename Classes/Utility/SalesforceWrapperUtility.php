@@ -54,6 +54,7 @@ class SalesforceWrapperUtility
         }
         $this->sfSettings['ENV'] = $env ;
 
+
         if( $_SERVER['NEM_SALESFORCE'][$env]['uri'] == '' ) {
             return array( "faultstring" => 'Could not load SalesForce Settings from Env : ' . $env  ) ;
         }
@@ -101,7 +102,6 @@ class SalesforceWrapperUtility
             curl_close($curl);
 
             $response = json_decode($json_response , true);
-
             $this->sfSettings['SFREST']['access_token'] = $response['access_token'];
             $this->sfSettings['SFREST']['instance_url'] = $response['instance_url'];
 
@@ -240,6 +240,41 @@ class SalesforceWrapperUtility
 
         return $response;
     }
+
+    /**
+     * @access   public
+     * @param string $url Path to Salesforce
+     * @param string $access_token from SF
+     * @param string $sfobj  name of the Object: normaly only adminkey__c
+     * @param string $id of the pSalesForce Object you want to delete
+     * string $response   SalesForcestatus
+     */
+    public function curl_delete_obj($url, $access_token, $sfobj, $id) {
+        $url = $url . "/v30.0/sobjects/" . $sfobj . "/" . $id;
+
+        $curl = curl_init($url);
+        curl_setopt($curl, CURLOPT_HEADER, false);
+        curl_setopt($curl, CURLOPT_HTTPHEADER,
+            array("Authorization: OAuth $access_token"));
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "DELETE");
+
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+
+        $curl = $this->setAdditionalCurlOptions($curl);
+
+        curl_exec($curl);
+
+        $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+        if ($status != 204) {
+            $status = curl_error($curl) ;
+        }
+
+        curl_close($curl);
+        return $status;
+    }
+
 
     /**
      * @param \DateTime $Date

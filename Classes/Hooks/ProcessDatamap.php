@@ -323,7 +323,8 @@ class ProcessDatamap {
         } else {
             $cntry = "XX" ;
         }
-        $campaignName = $cntry . "-" . $this->event->getStartDate()->format("Y-m-") . strip_tags ( $this->event->getName() ) ;
+
+        $campaignName = $cntry . "-" . $this->event->getStartDate()->format("Y-m ") . strip_tags ( $this->event->getName() ) ;
         $data = array(
             'IsActive' => true,
             'Description' =>  "TYPO3 Event: " . $this->event->getUid() . " on PID: " . $this->event->getPid() . " \n\n"
@@ -386,6 +387,13 @@ class ProcessDatamap {
                     $this->flashMessage['OK'][] = "Campaign created in Salesforce: ! : " . $settings['SFREST']['instance_url'] . "/" . $sfResponse->id   ;
 
                     $this->event->setSalesForceCampaignId($sfResponse->id);
+
+
+                    // every campaign needs a set of campaignmemberStati
+                    // see : https://doc.allplan.com/display/SFDOC/Event+Campaign+Definition
+                    // first remove automatically created stati then add our set of stati ..
+                    $this->renameCampaignMemberStati( $settings['SFREST']['instance_url'] , $settings['SFREST']['access_token'] ,  $sfResponse->id ) ;
+
                     $url = $settings['SFREST']['instance_url'] . "/services/data/v30.0/sobjects/CampaignMemberStatus/" ;
                     $this->createCampaignMemberStati( $url , $settings['SFREST']['access_token'] ,  $sfResponse->id ) ;
 
@@ -413,36 +421,55 @@ class ProcessDatamap {
 
     }
 
-    private function createCampaignMemberStati( $url , $access_token , $sfCampaignId ) {
-	    $dataMaster[] = array(  "CampaignId" => $sfCampaignId ,
-                                "HasResponded" => false ,
-                                "IsDefault" => true ,
-                                "Label" => 'Registered'
-                            ) ;
+    private function renameCampaignMemberStati( $url , $access_token , $sfCampaignId ) {
+        $data['what'] = ", Label,HasResponded,IsDefault ";
+        $data['from'] = "CampaignMemberStatus" ;
+        $data['where']= " CampaignId = '" . $sfCampaignId . "'" ;
 
-        $dataMaster[] = array(  "CampaignId" => $sfCampaignId ,
-            "HasResponded" => true ,
-            "IsDefault" => false ,
-            "Label" => 'Attended'
-        ) ;
-        $dataMaster[] = array(  "CampaignId" => $sfCampaignId ,
-            "HasResponded" => false ,
-            "IsDefault" => false ,
-            "Label" => 'No Show'
-        ) ;
-        $dataMaster[] = array(  "CampaignId" => $sfCampaignId ,
-            "HasResponded" => false ,
-            "IsDefault" => false ,
-            "Label" => 'Cancelled'
-        ) ;
-        $dataMaster[] = array(  "CampaignId" => $sfCampaignId ,
-            "HasResponded" => false ,
-            "IsDefault" => false ,
-            "Label" => 'Blocked by Sales'
-        ) ;
+        $sfResponse = $this->sfConnect->getData($url , $access_token ,   $data  )  ;
+        if ( is_array($sfResponse) ) {
+            if  ( array_key_exists( "records" , $sfResponse['result'] )) {
+                if ( count ( $sfResponse['result']['records']) > 0 ) {
+                    foreach ($sfResponse['result']['records'] as $record ) {
+                        $this->flashMessage['NOTICE'][] = 'Campaign Member Stati found : ' . var_export($record, true)  ;
+                        if ( $record['IsDefault']) {
+                            $record['Label'] = 'Registered' ;
+                            $record['SortOrder'] = 1 ;
+                        }
+                        if ( $record['HasResponded']) {
+                            $record['Label'] = 'Attended' ;
+                            $record['SortOrder'] = 2 ;
+                        }
+                        $id = $record['Id'] ;
+                        unset ( $record['Id'] ) ;
+
+                        $upDate = $this->sfConnect->getCurl($url . "/services/data/v30.0/sobjects/CampaignMemberStatus/" . $id ,
+                            $access_token , "204" ,  $record , true  , false )  ;
+                        $this->flashMessage['NOTICE'][] = 'Campaign Member Stati rename : ' . $id . " to " . $record['Label'] . " => " . var_export($upDate , true );
+
+                    }
+                }
+            }
+        }
+
+    }
+
+    /**
+     * @param $url
+     * @param $access_token
+     * @param $sfCampaignId
+     */
+    private function createCampaignMemberStati( $url , $access_token , $sfCampaignId ) {
+
+        $dataMaster = array( 'Wait listed' , 'Confirmed' , 'No Show' , 'Cancelled' , 'Blocked from Email' ,  'Blocked by Sales' ) ;
+
         $status = "" ;
-        foreach ( $dataMaster as $key => $data ) {
-            $data['SortOrder'] = $key + 1 ;
+        foreach ( $dataMaster as $key => $datalabel ) {
+            $data['Label'] = $datalabel  ;
+            $data['CampaignId'] = $sfCampaignId  ;
+            $data['HasResponded'] = false  ;
+            $data['IsDefault'] = false  ;
+            $data['SortOrder'] = $key + 3 ;
             $sfResponse = $this->sfConnect->getCurl($url , $access_token , "201" ,  $data , false , false )  ;
           //  $this->flashMessage['NOTICE'][] = 'Campaign Member Status "' . $data['Label'] . '" created : ' . var_export($sfResponse , true ) ;
             $sfResponse = json_decode($sfResponse) ;
@@ -570,6 +597,12 @@ class ProcessDatamap {
         }
 	}
 
+    /**
+     * @param $settings
+     * @param $id
+     * @param $data
+     * @deprecated Not Needed after June 2019 as we create Campaigns!
+     */
     public function createUpdateSessionInSF($settings , $id , $data ) {
 
         $sessionData = array(
