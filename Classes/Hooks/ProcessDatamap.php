@@ -479,10 +479,14 @@ class ProcessDatamap {
                     $url = $settings['SFREST']['instance_url'] . "/services/data/v30.0/sobjects/CampaignMemberStatus/" ;
                     $this->createCampaignMemberStati( $url , $settings['SFREST']['access_token'] ,  $sfResponse->id ) ;
 
+                } else {
+                    if ( substr( $sfResponse , 0 , 6 ) == "Error" ) {
+                        $this->flashMessage['ERROR'][] = "Could not create Campaign in Salesforce: ! : " . var_export( $sfResponse , true )  ;
+                    }
                 }
             } else {
                 if ( substr( $sfResponse , 0 , 6 ) == "Error" ) {
-                    $this->flashMessage['ERROR'][] = "Could not create Campaign in Salesforce: ! : " . $settings['SFREST']['instance_url'] . "/" . $sfResponse->id   ;
+                    $this->flashMessage['ERROR'][] = "Could not create Campaign in Salesforce: ! : " . var_export( $sfResponse , true )  ;
                 }
             }
         }
