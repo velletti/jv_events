@@ -233,13 +233,31 @@ class AjaxController extends BaseController
                     $needToStore = TRUE ;
                 }
 
+
                 $output['event']['eventId'] = $event->getUid() ;
                 $output['event']['viewed'] = $event->getViewed();
                 $output['event']['canceled'] = $event->getCanceled();
+
                 $output['event']['startDate'] = $event->getStartDate()->format("d.m.Y") ;
                 $output['event']['startTime'] = date( "H:i" , $event->getStartTime()) ;
                 $output['event']['endTime'] = date( "H:i" , $event->getEndTime()) ;
                 $output['event']['creationTime'] = date( "d.m.Y H:i" , $event->getCrdate() ) ;
+                $output['event']['noNotification'] = $event->getNotifyRegistrant() ;
+                if( $event->getNotifyRegistrant() == 0  ) {
+                    $reminder2 = new \DateInterval("P1D") ;
+                    $reminderDate2 =  new \DateTime($event->getStartDate()->format("c")) ;
+
+                    $reminder1 = new \DateInterval("P7D") ;
+                    $reminderDate1 =  new \DateTime($event->getStartDate()->format("c")) ;
+                    $now =  new \DateTime() ;
+                    if ( $reminderDate1 > $now ) {
+                        $output['event']['reminderDate1'] =  $reminderDate1->sub( $reminder1 )->format("d.m.Y") ;
+                    }
+                    if ( $reminderDate2 > $now ) {
+                        $output['event']['reminderDate2'] =  $reminderDate2->sub( $reminder2 )->format("d.m.Y") ;
+                    }
+                }
+
                 $output['event']['name'] = $event->getName() ;
                 $output['event']['price'] = $event->getPrice();
                 $output['event']['currency'] = $event->getCitrixUid();

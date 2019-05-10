@@ -89,6 +89,17 @@ class ProcessDatamap {
                 if ($this->event->getEventType() == 0 ) {
                     // this uses an external page for details, not the internal Registration , detail View etc. so no checks possible
                     // Also we will remove possible false settings
+                    if(
+                        $this->event->getWithRegistration() ||
+                        $this->event->getRegistrationPid() ||
+                        $this->event->getRegistrationFormPid() ||
+                        $this->event->getNeedToConfirm() ||
+                        $this->event->getNotifyOrganizer() ||
+                        $this->event->getNotifyRegistrant() )
+                    {
+                        $this->flashMessage['WARNING'][] = 'We disable all fields related to internal registration! !' ;
+
+                    }
 
                     $this->event->setWithRegistration(0) ;
                     $this->event->setRegistrationPid(0);
@@ -98,6 +109,11 @@ class ProcessDatamap {
                     $this->event->setNotifyRegistrant( 0 ) ;
 
                 } else {
+                    if( $this->event->getUrl() != '' ) {
+                        $this->event->setUrl('') ;
+                        $this->flashMessage['WARNING'][] = 'You have changed the EventType from "Link" to "internal Event". To correct this, the info in field URL was removed!' ;
+                    }
+
                     if ($this->event->getNotifyRegistrant() ==  0 && $this->event->getNeedToConfirm() == 1 ) {
                         $this->event->setNeedToConfirm( 0 ) ;
                         $this->flashMessage['WARNING'][] = 'You can not set Need to confirm without sending Email to the participant !' ;
@@ -222,7 +238,12 @@ class ProcessDatamap {
                     } else {
                         // j.v. : Kopiert von altem Plugin: wenn Store in Citrix "An" Ist, das Event NICHT als "TW Webinar /Event " nach Salesforce Schreiben !
                         if( $this->event->getStoreInHubspot() ) {
-                            $this->event->setStoreInSalesForce(0) ;
+                            if(  $this->event->getStoreInSalesForce() ) {
+                                $allowedError ++ ;
+                                $this->flashMessage['WARNING'][] = 'You can not set "Store in Salesforce" together with "Store in Hubspot"! (store in salesforce is disabled)!' ;
+
+                                $this->event->setStoreInSalesForce(0) ;
+                            }
                             $this->createUpdateEventForSF2019()  ;
                         }
                         if( $this->event->getStoreInSalesForce() ) {
@@ -232,7 +253,7 @@ class ProcessDatamap {
                                 $allowedError ++ ;
                             } else {
                                 $configuration = \JVE\JvEvents\Utility\EmConfigurationUtility::getEmConf();
-                                if( $configuration['enableHubspot'] == 1 ) {
+                                if( $configuration['enableSalesForceLightning'] == 1 ) {
                                     if( $this->event->getStartDate()->format("Ymd") > date("Ymd") && ! $this->event->getHidden() ) {
                                         $this->flashMessage['WARNING'][] = 'You can not set "Store in Salesforce" anymore! "Store in Hubspot" is now enabled' ;
                                         $this->event->setStoreInSalesForce(0) ;
@@ -251,6 +272,7 @@ class ProcessDatamap {
                                         if ( $registrants->count() > 0 ) {
                                             /** @var  \JVE\JvEvents\Domain\Model\Registrant $registrant */
                                             $registrant = $registrants->getFirst() ;
+                                            $pid = $registrant->getPid() ;
                                             while ( $repairCount < $registrants->count()  ){
                                                 if ( !is_object($registrant)) {
                                                     break ;
@@ -261,7 +283,7 @@ class ProcessDatamap {
                                                 $registrant = $registrants->next() ;
                                             }
                                             if( $repairCount ) {
-                                                $this->flashMessage['WARNING'][] = 'Found ' .  $repairCount . " exisiting Registration(s). Please go to Event Mngt, filter by Event and send Registration to Hubspot!";
+                                                $this->flashMessage['WARNING'][] = 'We Found ' .  $repairCount . " exisiting Registration(s). Please go to PageID : " . $pid . ", use Module: Event Mngt, filter by Event and send Registration to Hubspot!";
                                             }
                                         }
                                     }
@@ -293,13 +315,21 @@ class ProcessDatamap {
 		}
 	}
 
-	//  ForSF +++++++++++++++++  Salesforce übergabe  ++++++++++++++++++
+
+
+    /*  Create or Update a campaign and needed campaign memberStatus +++++++++++++++++  Salesforce ++++++++++++++++++
+    *   New since May 2019 needs enableHubspot in extension Configuration (emConf) reads also enableSalesForceLightning
+    */
+
     private function createUpdateEventForSF2019() {
+        $configuration = \JVE\JvEvents\Utility\EmConfigurationUtility::getEmConf();
+
         /** @var  \JVE\JvEvents\Utility\SalesforceWrapperUtility */
         $this->sfConnect = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JVE\\JvEvents\\Utility\\SalesforceWrapperUtility');
-        $settings = $this->sfConnect->contactSF() ;
-        // var_dump($settings) ;
 
+        $settings = $this->sfConnect->contactSF() ;
+    //    echo "<pre>" ;
+    //    var_dump($settings) ;
         if( $settings['faultstring'] ) {
             $this->flashMessage['ERROR'][] = 'Create Update Campaign in Salesforce: could not Connect ! : ' . var_export( $settings , true ) ;
             return ;
@@ -317,34 +347,33 @@ class ProcessDatamap {
 
         $SummerTime = new \DateTime( $start->format("Y-M-d" ) . ' Europe/Berlin');
         $this->flashMessage['NOTICE'][] = "Date Formated : " . $start->format("d-M-Y" ) . ' as NEW Date for SummerTime ! : ' . $SummerTime->format( "d.m.Y H:i:s (I) ") ;
-        $owner = " not set" ;
-        if(  is_object( $this->event->getLocation() ) ) {
-            $cntry = $this->event->getLocation()->getCountry() ;
-        } else {
-            $cntry = "XX" ;
-        }
 
-        $campaignName = $cntry . "-" . $this->event->getStartDate()->format("Y-m ") . strip_tags ( $this->event->getName() ) ;
+
+
         $data = array(
             'IsActive' => true,
             'Description' =>  "TYPO3 Event: " . $this->event->getUid() . " on PID: " . $this->event->getPid() . " \n\n"
                 . html_entity_decode( strip_tags( $this->event->getDescription() ) , ENT_COMPAT , 'UTF-8') ,
-            'Name' => substr( html_entity_decode(  $campaignName  , ENT_COMPAT , 'UTF-8') , 0 , 80 ) ,
+
             'EndDate' =>  $endD ,
             'StartDate' =>  $startD   ,
+
             'Status' =>  'pending'   ,  // see https://doc.allplan.com/display/SFDOC/Event+Registration+Mapping+Tables
+            // and https://doc.allplan.com/display/SFDOC/Event+Campaign+Definition maybe  replaced by "ongoing"
+
             'Type' =>  'Outbound - Event'   ,
             'AllplanOrganization__c' =>  '300'   , // will be overwritten later
             'ListPricePerCampaignMember__c' =>  $this->event->getPrice() ,
 
         ) ;
+
         if ( $this->event->getPrice() > 0 ) {
             $data['Type']  = 'Training' ;
         }
 
 
         if(  is_object( $this->event->getOrganizer() ) ) {
-            $owner  =    trim( $this->event->getOrganizer()->getName() )  ;
+            $owner = str_replace( " " , "_" , substr( trim( strip_tags ( $this->event->getOrganizer()->getName())) , 0, 10 ) ) ;
             if( $this->event->getOrganizer()->getSalesForceUserOrg() ) {
                 $data['AllplanOrganization__c']  =   $this->event->getOrganizer()->getSalesForceUserOrg() ;  ;
             }
@@ -352,14 +381,54 @@ class ProcessDatamap {
         } else {
             $this->flashMessage['ERROR'][] = 'Store in Salesforce: No Organizer set in Relations ! : '  ;
         }
-    //    $data['OwnerId']  = "0051w000000rsfAAAQ" ;  // taht ist on DEV the user allplan-dev-api@allplan.com
-        if( $data['OwnerId']  == "" ) {
-            $this->flashMessage['ERROR'][] = 'Store in Salesforce: No Salesforce User ID set in Organizer Data ! : '  ;
-            return ;
 
+
+
+        // +++ generate the name of the Campaign should be like DE-2019-05 Organizer_name city_name And Now Event Titel
+        // Organizer_name and City is cut to 10 chars
+        if ( !$owner ) {
+            $owner = "NoOrgName" ;
         }
 
 
+        if(  is_object( $this->event->getLocation() ) ) {
+            $cntry = $this->event->getLocation()->getCountry() ;
+            $locCity = str_replace( " " , "_" , substr( trim( strip_tags ($this->event->getLocation()->getCity())) , 0, 10 ) ) ;
+        }
+        if ( !$cntry ) {
+            $cntry = "XX" ;
+        }
+        if ( !$locCity ) {
+            $locCity = "NonameCity" ;
+        }
+        $campaignName = $cntry . "-" . $this->event->getStartDate()->format("Y-m-") . $owner. "-" . $locCity . "-" .  strip_tags ( $this->event->getName() ) ;
+        $data['Name'] = substr( html_entity_decode(  $campaignName  , ENT_COMPAT , 'UTF-8') , 0 , 80 ) ;
+
+
+
+
+
+        /*
+        * May 2019: as we need this new feature BEFORE we need to know if we talk to NEW or  OLD Salesforce
+        */
+
+        if( !$configuration['enableSalesForceLighning']  ) {
+            unset( $data['AllplanOrganization__c']) ;
+            unset( $data['ListPricePerCampaignMember__c']) ;
+            $data['Type'] = "Event" ;
+          //  $data['OwnerId']  =    trim( $this->event->getOrganizer()->getSalesForceUserId())  ;
+            // During Pre Sunrise period: we need to put here hardcoded the User Id of Linda Graf
+            $data['OwnerId']  =    "005w0000007HsMd"  ;
+        }
+
+
+        // a possible fallback during tests :
+        //    $data['OwnerId']  = "0051w000000rsfAAAQ" ;  // that is the ID (on DEV !) of the user: allplan-dev-api@allplan.com
+
+        if( $data['OwnerId']  == "" ) {
+            $this->flashMessage['ERROR'][] = 'Store in Salesforce: No Salesforce User ID set in Organizer Data ! : '  ;
+            return ;
+        }
 
         $this->flashMessage['NOTICE'][] = 'Data  : ' . var_export( $data , true ) ;
 
