@@ -482,7 +482,8 @@ class ProcessDatamap {
                     /** @var \TYPO3\CMS\Core\Mail\MailMessage $Typo3_v6mail */
                     $Typo3_v6mail = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
                     $Typo3_v6mail->setFrom( array( 'info.de@allplan.com' => $_SERVER['SERVER_NAME'] ) );
-                    $Typo3_v6mail->setReturnPath( 'jvelletti@allplan.com' );
+                    $Typo3_v6mail->setReturnPath( 'info.de@allplan.com' );
+
                     $Typo3_v6mail->setTo(
                         array(
                             'jvelletti@allplan.com' =>  '',
@@ -492,7 +493,7 @@ class ProcessDatamap {
                     $Typo3_v6mail->setSubject( "[JV Events] Campaign created  - " .  $data['Name']  );
                     $Typo3_v6mail->setBody(nl2br( $settings['SFREST']['instance_url'] . "/" . $sfResponse->id . "\n\n\n" .var_export($data )  ) , 'text/html'  );
                     $Typo3_v6mail->send();
-
+                    $this->flashMessage['NOTICE'][] = 'send Info Email to : ' .var_export( $Typo3_v6mail->getTo()  , true )  ;
                 } else {
                     if ( substr( $sfResponse , 0 , 6 ) == "Error" ) {
                         $this->flashMessage['ERROR'][] = "Could not create Campaign in Salesforce: ! : " . var_export( $sfResponse , true )  ;
