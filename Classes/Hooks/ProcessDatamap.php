@@ -491,7 +491,7 @@ class ProcessDatamap {
                         )
                     );
                     $Typo3_v6mail->setSubject( "[JV Events] Campaign created  - " .  $data['Name']  );
-                    $Typo3_v6mail->setBody(nl2br( $settings['SFREST']['instance_url'] . "/" . $sfResponse->id . "\n\n\n" .var_export($data )  ) , 'text/html'  );
+                    $Typo3_v6mail->setBody(nl2br( $settings['SFREST']['instance_url'] . "/" . $sfResponse->id . "\n\n\n" . var_export($data , true  )  ) , 'text/html'  );
                     $Typo3_v6mail->send();
                     $this->flashMessage['NOTICE'][] = 'send Info Email to : ' .var_export( $Typo3_v6mail->getTo()  , true )  ;
                 } else {
