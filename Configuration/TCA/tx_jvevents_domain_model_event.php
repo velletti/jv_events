@@ -1166,9 +1166,9 @@ if ( ! $configuration['enableSalesForce'] == 1 ) {
 	unset($returnArray['columns']['marketing_process_id'] ) ;
 }
 
-if ( ! $configuration['enableSalesForceLightning'] == 1 ) {
+// if ( ! $configuration['enableSalesForceLightning'] == 1 ) {
     unset( $returnArray['columns']['sales_force_campaign_id']['config']['readOnly'] ) ;
-}
+// }
 
 if ( ! $configuration['enableHubspot'] == 1 ) {
     unset($returnArray['columns']['store_in_hubspot'] ) ;

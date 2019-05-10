@@ -328,21 +328,22 @@ class ProcessDatamap {
         $this->sfConnect = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JVE\\JvEvents\\Utility\\SalesforceWrapperUtility');
 
         $settings = $this->sfConnect->contactSF() ;
-    //    echo "<pre>" ;
-    //    var_dump($settings) ;
+    //    $this->flashMessage['NOTICE'][] = 'Salesforce: Connect result ! : ' . var_export( $settings , true ) ;
         if( $settings['faultstring'] ) {
+            $settings['SFREST']['SF_PASSWORD'] = substr( $settings['SFREST']['SF_PASSWORD'] , 0 , 3 ) . "...." . substr( $settings['SFREST']['SF_PASSWORD'] , 8 , 99 ) ;
             $this->flashMessage['ERROR'][] = 'Create Update Campaign in Salesforce: could not Connect ! : ' . var_export( $settings , true ) ;
             return ;
         }
 
         /// ++++++++++++  first we genereate the data Array
-        $start = $this->event->getStartDate() ;
-        $end = $this->event->getStartDate()->modify("+30 day") ;
+        $start = new \DateTime( $this->event->getStartDate()->format("c")) ;
+        $end = new \DateTime( $this->event->getStartDate()->format("c")) ;
+        $end = $end->modify("+30 day") ;
         // OR $date->add(new DateInterval('P30D'));
         $startD =  $this->sfConnect->convertDate2SFdate( $start ,  $this->event->getStartTime() ) ;
 
         $endD =  $this->sfConnect->convertDate2SFdate( $end ,  $this->event->getEndTime() ) ;
-        $this->flashMessage['NOTICE'][] = 'StartDate Converted for SalesForce to ! : ' . $startD ;
+        // $this->flashMessage['NOTICE'][] = 'StartDate Converted for SalesForce to ! : ' . $startD ;
 
 
         $SummerTime = new \DateTime( $start->format("Y-M-d" ) . ' Europe/Berlin');
@@ -411,14 +412,22 @@ class ProcessDatamap {
         /*
         * May 2019: as we need this new feature BEFORE we need to know if we talk to NEW or  OLD Salesforce
         */
+        if ( $_SERVER['SERVER_NAME'] == "www.allplan.com.ddev.local") {
+            $data['OwnerId']  =   $settings['SFREST']['id'] ;
+            $this->flashMessage['NOTICE'][] = 'On www.allplan.com.ddev.local  OwernId is always set to: ' . $data['OwnerId'] ;
 
-        if( !$configuration['enableSalesForceLighning']  ) {
+        }
+        if( !$configuration['enableSalesForceLightning']  ) {
             unset( $data['AllplanOrganization__c']) ;
             unset( $data['ListPricePerCampaignMember__c']) ;
             $data['Type'] = "Event" ;
           //  $data['OwnerId']  =    trim( $this->event->getOrganizer()->getSalesForceUserId())  ;
             // During Pre Sunrise period: we need to put here hardcoded the User Id of Linda Graf
-            $data['OwnerId']  =    "005w0000007HsMd"  ;
+            $data['OwnerId']  =    "0051w000000rsfAAAQ"  ;
+
+            $this->flashMessage['NOTICE'][] = 'enableSalesForceLightning is not activated! we unset AllplanOrganization__c and Type and OwernId is set to: ' .
+             $data['OwnerId'] ;
+
         }
 
 

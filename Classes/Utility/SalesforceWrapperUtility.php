@@ -105,6 +105,11 @@ class SalesforceWrapperUtility
             $this->sfSettings['SFREST']['access_token'] = $response['access_token'];
             $this->sfSettings['SFREST']['instance_url'] = $response['instance_url'];
 
+            $userIdArray = explode("/" , $response['id'] ) ;
+            $count = count($userIdArray) - 1 ;
+            $UserId = $userIdArray[ $count ] ;
+            $this->sfSettings['SFREST']['id'] = $UserId ;
+
             if (!isset($this->sfSettings['SFREST']['access_token']) || $this->sfSettings['SFREST']['access_token'] == "") {
                 $error = "Line " . __LINE__ . ": Error - access token missing from response! ";
             }
