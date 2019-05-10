@@ -426,7 +426,8 @@ class ProcessDatamap {
             $data['Type'] = "Event" ;
           //  $data['OwnerId']  =    trim( $this->event->getOrganizer()->getSalesForceUserId())  ;
             // During Pre Sunrise period: we need to put here hardcoded the User Id of Linda Graf
-            $data['OwnerId']  =    "0051w000000rsfAAAQ"  ;
+            $data['OwnerId']  =    "005w0000007HsMd"  ;
+
 
             $this->flashMessage['NOTICE'][] = 'enableSalesForceLightning is not activated! we unset AllplanOrganization__c and Type and OwernId is set to: ' .
              $data['OwnerId'] ;
@@ -452,7 +453,7 @@ class ProcessDatamap {
             if( is_int( $sfResponse ) && $sfResponse == 204 ) {
                 $this->flashMessage['OK'][] = "Campaign was updated in Salesforce: ! : " . $settings['SFREST']['instance_url'] . "/" . $this->event->getSalesForceCampaignId()   ;
             } else {
-                $this->flashMessage['WARNING'][] = 'Response  : ' . var_export( $sfResponse , true ) ;
+                $this->flashMessage['WARNING'][] = 'Could not update Response  : ' . var_export( $sfResponse , true ) ;
                 $sfResponse = json_decode($sfResponse) ;
             }
 
