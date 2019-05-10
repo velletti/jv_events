@@ -233,7 +233,7 @@ class ProcessDatamap {
 
                     if ($allowedError >  0 ) {
                         // $this->event->setWithRegistration(FALSE ) ;
-
+                        $this->flashMessage['NOTICE'][] = $allowedError .' AllowedErrors found! We do not store to external Systems like Salesforce etc,!' ;
 
                     } else {
                         // j.v. : Kopiert von altem Plugin: wenn Store in Citrix "An" Ist, das Event NICHT als "TW Webinar /Event " nach Salesforce Schreiben !
@@ -244,6 +244,8 @@ class ProcessDatamap {
 
                                 $this->event->setStoreInSalesForce(0) ;
                             }
+                            $this->flashMessage['NOTICE'][] = '"Store in Hubspot" should run now!' ;
+
                             $this->createUpdateEventForSF2019()  ;
                         }
                         if( $this->event->getStoreInSalesForce() ) {
@@ -255,6 +257,7 @@ class ProcessDatamap {
                                 $configuration = \JVE\JvEvents\Utility\EmConfigurationUtility::getEmConf();
                                 if( $configuration['enableSalesForceLightning'] == 1 ) {
                                     if( $this->event->getStartDate()->format("Ymd") > date("Ymd") && ! $this->event->getHidden() ) {
+
                                         $this->flashMessage['WARNING'][] = 'You can not set "Store in Salesforce" anymore! "Store in Hubspot" is now enabled' ;
                                         $this->event->setStoreInSalesForce(0) ;
                                         $this->event->setStoreInHubspot(1) ;
