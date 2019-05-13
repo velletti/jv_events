@@ -523,12 +523,6 @@ class RegistrantController extends BaseController
 		}
 		
 
-		// TODo Store Data to SF
-		// TODo Store Data to Citrix
-		// TODo Send Debug Mails to admin or Developer
-
-
-
         $this->view->assign('event', $event);
 		if( $this->settings['alreadyRegistered'] ) {
 			$this->view->assign('registrant', $oldReg);

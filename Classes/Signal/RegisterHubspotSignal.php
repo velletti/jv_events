@@ -65,6 +65,14 @@ class RegisterHubspotSignal {
             $this->logToFile( "\n\n ### ERROR ### In RegisterHubspotSignal - event is not an Object!: " . var_export($event , true )  );
             return;
         }
+        $debugmail = "\n+++++++++++ got this data from Controller ++++++++++++++++++\n"  ;
+        $debugmail .= "\nRunning on Server: " .  $_SERVER['HOSTNAME'] .  " - "  . php_uname() ;
+        $debugmail .= "\nRegistrants Email " .  $registrant->getEmail() .  ""  ;
+        $debugmail .= "\nEvent Id: " .  $event->getUid() . " Date: " . $event->getStartDate()->format( "d.m.Y" )   . " | Salesforce Campaign ID: " . $event->getSalesForceCampaignId()   ;
+        $debugmail .= "\nExtension Manager: enableHubspot: " .   $settings['EmConfiguration']['enableHubspot'] . " Stroe In Hubspot: " . $event->getStoreInHubspot()  ;
+        $debugmail .= "\nTitle: " .  $event->getName()  ;
+       // echo $debugmail ;
+       // die;
 
         if ( $settings['EmConfiguration']['enableHubspot'] < 1  || !is_object( $event->getOrganizer() ) || $event->getStoreInHubspot() < 1 )  {
             $this->logToFile( "\n\n ### ERROR ### In RegisterHubspotSignal - Registrant : " . $registrant->getEmail()
@@ -75,11 +83,7 @@ class RegisterHubspotSignal {
 
         }
 
-        $debugmail = "\n+++++++++++ got this data from Controller ++++++++++++++++++\n"  ;
-        $debugmail .= "\nRunning on Server: " .  $_SERVER['HOSTNAME'] .  " - "  . php_uname() ;
-        $debugmail .= "\nRegistrants Email " .  $registrant->getEmail() .  ""  ;
-        $debugmail .= "\nEvent Id: " .  $event->getUid() . " Date: " . $event->getStartDate()->format( "d.m.Y" )   . " | Citrix ID: " . $event->getCitrixUid()   ;
-        $debugmail .= "\nTitle: " .  $event->getName()  ;
+
         $httpresponseErr = "" ;
         $httpresponseErrText = "" ;
         unset( $data) ;
@@ -167,8 +171,7 @@ class RegisterHubspotSignal {
         $debugmail .=  $formId ;
 
 
-
-        // $settings['debug'] == 1
+        // $settings['debug'] = 1 ;
 
         if (   $settings['debug'] == 1 ) {
             echo "<hr>No transport to Hubspot if Debug is  set a value > 0 .. if you want to test curl and see response also local, set debug to 2  !!! <pre>" ;
@@ -241,7 +244,7 @@ class RegisterHubspotSignal {
 
         $jsonArray['gender'] = $registrant->getGender() ;
         // ToDo Maybe need to create a kind fo mapping including translation ..
-        $lng = $registrant->getEvent()->get->Syslanguage.uid() ;
+        $lng = $registrant->getEvent()->getSysLanguageUid() ;
 
 
         $jsonArray['salutation'] = "Mrs." ;
