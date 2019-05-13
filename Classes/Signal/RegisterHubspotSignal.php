@@ -87,7 +87,7 @@ class RegisterHubspotSignal {
         $httpresponseErr = "" ;
         $httpresponseErrText = "" ;
         unset( $data) ;
-        $data =  $this->convertToArray($registrant) ;
+        $data =  $this->convertToArray($registrant , $event->getSysLanguageUid() ) ;
 
 
         // Subject
@@ -237,14 +237,14 @@ class RegisterHubspotSignal {
      * @param \JVE\Jvevents\Domain\Model\Registrant $registrant
      * @return array
      */
-    public function convertToArray(  $registrant ) {
+    public function convertToArray(  $registrant , $lng = 0) {
         $jsonArray = array() ;
         $jsonArray['firstname'] = trim($registrant->getFirstName()) ;
         $jsonArray['lastname'] = trim($registrant->getLastName()) ;
 
         $jsonArray['gender'] = $registrant->getGender() ;
         // ToDo Maybe need to create a kind fo mapping including translation ..
-        $lng = $registrant->getEvent()->getSysLanguageUid() ;
+
 
 
         $jsonArray['salutation'] = "Mrs." ;
