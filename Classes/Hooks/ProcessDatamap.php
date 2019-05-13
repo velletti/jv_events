@@ -357,6 +357,8 @@ class ProcessDatamap {
         $data = array(
             'IsActive' => true,
             'Description' =>  "TYPO3 Event: " . $this->event->getUid() . " on PID: " . $this->event->getPid() . " \n\n"
+                . $this->event->getStartDate()->format("d.m.Y") . " - " . date( "H:i" ,  $this->event->getStartTime() )  . " \n"
+
                 . html_entity_decode( strip_tags( $this->event->getDescription() ) , ENT_COMPAT , 'UTF-8') ,
 
             'EndDate' =>  $endD ,

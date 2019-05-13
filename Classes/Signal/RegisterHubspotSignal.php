@@ -189,8 +189,9 @@ class RegisterHubspotSignal {
         }
         /** @var \TYPO3\CMS\Core\Mail\MailMessage $Typo3_v6mail */
         $Typo3_v6mail = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
-        $Typo3_v6mail->setFrom( array( 'info.de@allplan.com' => $_SERVER['SERVER_NAME'] ) );
-        $Typo3_v6mail->setReturnPath( 'info.de@allplan.com' );
+        $Typo3_v6mail->setFrom( array( 'www@systems.allplan.com' => $_SERVER['SERVER_NAME'] ) );
+        $Typo3_v6mail->setReturnPath( 'www@systems.allplan.com' );
+
         $Typo3_v6mail->setTo(
             array(
                 'jvelletti@allplan.com' =>  '',
