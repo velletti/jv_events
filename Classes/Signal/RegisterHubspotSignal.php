@@ -167,7 +167,7 @@ class RegisterHubspotSignal {
         $formFields = $this->hubspotApi->getFieldnamesFromForm( $form['data']['formFieldGroups']) ;
 
         $debugmail .= "\n+++++++++++ store in Hubspot url: ++++++++++++++++++\n\n"  ;
-        $debugmail .=  $this->hubspotApi->getConfigConnectionUri() ;
+        $debugmail .=  $this->hubspotApi->getConfigConnectionUri() ."/" . $this->getConfigConnectionPortalID(). "/" ;
         $debugmail .=  $formId ;
 
 
@@ -184,6 +184,7 @@ class RegisterHubspotSignal {
             $response = $this->hubspotApi->submitForm( $formId , $data ) ;
             $debugmail .= "\n+++++++++++  Hubspot response: ++++++++++++++++++\n\n"  ;
             $debugmail .= var_export($response , true ) ;
+            $registrant->setHubspotResponse($response['status']) ;
         }
         if ( $settings['debug'] > 1 ) {
             echo " Settings debug > 2 .. so we Die() in Line " . __LINE__ . " in File: " . __FILE__ . "<hr>";
