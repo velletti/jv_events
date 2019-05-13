@@ -167,7 +167,7 @@ class RegisterHubspotSignal {
         $formFields = $this->hubspotApi->getFieldnamesFromForm( $form['data']['formFieldGroups']) ;
 
         $debugmail .= "\n+++++++++++ store in Hubspot url: ++++++++++++++++++\n\n"  ;
-        $debugmail .=  $this->hubspotApi->getConfigConnectionUri() ."/" . $this->getConfigConnectionPortalID(). "/" ;
+        $debugmail .=  $this->hubspotApi->getConfigConnectionUri() ."/" . $this->hubspotApi->getConfigConnectionPortalID(). "/" ;
         $debugmail .=  $formId ;
 
 
