@@ -20,6 +20,7 @@ class LinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedVi
         $this->registerTagAttribute('name', 'string', 'Specifies the name of an anchor');
         $this->registerTagAttribute('uid', 'integer', 'Uid of the data record' , true );
         $this->registerTagAttribute('pageId', 'integer', 'page Uid where to go back' , true );
+        $this->registerTagAttribute('onlyActual', 'integer', 'actually default : Date -30 Days if checked'  , true );
         $this->registerTagAttribute('eventId', 'integer', 'id of the event if set ' , false );
         $this->registerTagAttribute('recursive', 'integer', 'if checkbox is set to search recursive ' , false );
         $this->registerTagAttribute('table', 'string', 'Name of the database table' , false , "tx_jvevents_domain_model_event" );
@@ -49,6 +50,7 @@ class LinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedVi
         $returnArray[$returnModule]['controller'] = $this->arguments['returnController'] ;
         $returnArray[$returnModule]['event'] =  $this->arguments['eventId'] ;
         $returnArray[$returnModule]['recursive'] = $this->arguments['recursive'] ;
+        $returnArray[$returnModule]['onlyActual'] = $this->arguments['onlyActual'] ;
 
 
         $returnUrl = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl($_GET['M'] , array( $returnArray ) ) ;

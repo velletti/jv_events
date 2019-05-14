@@ -27,6 +27,21 @@
 
 				}) ;
             }) ;
+			$('.pagination LI A').each( function() {
+				var eventId = $("#jveventFilterForm #jvevents").val() ;
+				var recursive = $("#jveventFilterForm #recursive").val() ;
+				var onlyActual = $("#jveventFilterForm #onlyActual").val() ;
+				var addString =  "&tx_jvevents_web_jveventseventmngt[recursive]=" +  recursive ;
+				addString = addString +  "&tx_jvevents_web_jveventseventmngt[onlyActual]=" +  onlyActual ;
+				addString = addString + "&tx_jvevents_web_jveventseventmngt[event]=" +  eventId ;
+				console.log( " Addstrng= " +addString ) ;
+				console.log( " old HREF = " +$(this).attr("href"  ) ) ;
+
+				$(this).attr("href" , $(this).attr("href") + addString )  ;
+				console.log( " NEW HREF = " +$(this).attr("href"  ) ) ;
+
+			}) ;
+
 
 		}) ;
 
@@ -56,7 +71,8 @@
 		<f:form id="jveventFilterForm" action="list" controller="EventBackend" method="post">
 			<input type="hidden" name="uid" value="{plugin.uid}" /><f:form.hidden name="pluginUid" value="{plugin.uid}" />
 			<f:form.select name="event" value="{event}" additionalAttributes="{onchange: 'document.getElementById(\'jveventFilterForm\').submit();'}" id="jvevents" property="event" options="{events}" optionLabelField="name" sortByOptionLabel="TRUE" prependOptionLabel="-" prependOptionValue="0"></f:form.select>
-			<br><f:form.checkbox name="recursive" property="recursive"  value="1" checked="{recursive} == 1" additionalAttributes="{onchange: 'document.getElementById(\'jveventFilterForm\').submit();'}" /> Search also subpages of Page ID: {pageId}
+			<br><f:form.checkbox name="recursive" id="recursive" property="recursive"  value="1" checked="{recursive} == 1" additionalAttributes="{onchange: 'document.getElementById(\'jveventFilterForm\').submit();'}" /> Search also subpages of Page ID: {pageId}
+			<br><f:form.checkbox name="onlyActual" id="onlyActual" property="onlyActual"  value="-30" checked="{onlyActual} == -30" additionalAttributes="{onchange: 'document.getElementById(\'jveventFilterForm\').submit();'}" /> not older than 30 Days
 		</f:form>
 
 	</f:if>
@@ -214,22 +230,22 @@
 					<div class="well">
 						<p>
 
-							Event :
-							<jve:be.link uid="{registrant.event}" table="tx_jvevents_domain_model_event" pageId="{pageId}" recursive="{recursive}" eventId="{event}" returnModule="tx_jvevents_web_jveventseventmngt"  returnController="EventBackend" returnAction="list" title="Edit Event" class="btn btn-default">
+							Event:
+							<jve:be.link uid="{registrant.event}" table="tx_jvevents_domain_model_event" pageId="{pageId}" onlyActual="{onlyActual}" recursive="{recursive}" eventId="{event}" returnModule="tx_jvevents_web_jveventseventmngt"  returnController="EventBackend" returnAction="list" title="Edit Event" class="btn btn-default">
 								<core:icon identifier="actions-document-open"/> {registrant.event}
-							</jve:be.link> {eventName}
+							</jve:be.link>
 							<br>
 							<br>
-							<jve:be.link uid="{registrant.uid}" table="tx_jvevents_domain_model_registrant" pageId="{pageId}" recursive="{recursive}" eventId="{event}" returnModule="tx_jvevents_web_jveventseventmngt"  returnController="EventBackend" returnAction="list" title="Edit Registration" class="btn btn-default">
+							<jve:be.link uid="{registrant.uid}" table="tx_jvevents_domain_model_registrant" pageId="{pageId}" onlyActual="{onlyActual}" recursive="{recursive}" eventId="{event}" returnModule="tx_jvevents_web_jveventseventmngt"  returnController="EventBackend" returnAction="list" title="Edit Registration" class="btn btn-default">
 								<core:icon identifier="actions-document-open"/>
-							</jve:be.link> Registriert am: <f:format.date format="d.m.Y">{registrant.crdate}</f:format.date><br>
-							Firma: {registrant.company}<br>
-							Ort: {registrant.zip} {registrant.city}<br>
+							</jve:be.link> Registrered at: <f:format.date format="d.m.Y">{registrant.crdate}</f:format.date><br>
+							Company: {registrant.company}<br>
+							City: {registrant.zip} {registrant.city}<br>
 							Tel: {registrant.phone}<br>
-							Info: <f:format.nl2br>{registrant.additionalInfo}</f:format.nl2br><br>
+							Additional Info: <f:format.nl2br>{registrant.additionalInfo}</f:format.nl2br><br>
 
 							<f:if condition="{registrant.otherEvents}">
-								This is a registration for multiple events (BB=BlockBooking)
+								<br>This is a registration for multiple events <b>(BB=BlockBooking)</b>
 							</f:if>
 						</p>
 					</div>

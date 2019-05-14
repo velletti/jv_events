@@ -93,12 +93,17 @@ class EventBackendController extends BaseController
             $recursive = $this->request->getArgument('recursive') ;
 
         }
+        $onlyActual = -999 ;
+        if( $this->request->hasArgument('onlyActual')) {
+            $onlyActual = $this->request->getArgument('onlyActual') ;
+
+        }
         if ( $recursive ) {
             $queryGenerator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\QueryGenerator');
             $this->settings['storagePids'] = $queryGenerator->getTreeList($pageId, 9999, 0, 1) ;
         }
          $email = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('email');
-        $this->settings['filter']['startDate']  = -9999 ;
+        $this->settings['filter']['startDate']  = $onlyActual ;
         $this->settings['storagePid'] = $pageId ;
 
 
@@ -119,9 +124,7 @@ class EventBackendController extends BaseController
 
         /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $events */
         $registrants = $this->registrantRepository->findByFilter($email, $eventID, $pageId ,  $this->settings , 999 );
-        if( $pageId == 0 ) {
-            $this->settings['filter']['startDate']  = -30 ;
-        }
+
 
         $pageRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord(
             'pages',
@@ -169,6 +172,7 @@ class EventBackendController extends BaseController
             $this->view->assign('events', $events);
             $this->view->assign('registrants', $registrants);
             $this->view->assign('settings', $this->settings );
+            $this->view->assign('onlyActual', $onlyActual  );
             $this->view->assign('recursive', $recursive );
             $this->view->assign('pageId', $pageId );
         } else {
