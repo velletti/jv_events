@@ -87,49 +87,95 @@ class EventBackendController extends BaseController
     {
         $itemsPerPage = 20 ;
         $pageId = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
+        $recursive = false ;
+
+        if( $this->request->hasArgument('recursive')) {
+            $recursive = $this->request->getArgument('recursive') ;
+
+        }
+        if ( $recursive ) {
+            $queryGenerator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\QueryGenerator');
+            $this->settings['storagePids'] = $queryGenerator->getTreeList($pageId, 9999, 0, 1) ;
+        }
          $email = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('email');
+        $this->settings['filter']['startDate']  = -9999 ;
+        $this->settings['storagePid'] = $pageId ;
+
+
+        $this->settings['directmail'] = FALSE  ;
+
         if( $this->request->hasArgument('event')) {
             $eventID = $this->request->getArgument('event') ;
             if( $eventID > 0 ) {
-                $itemsPerPage = 200 ;
+                $itemsPerPage = 100 ;
             }
 
         }
-        $this->settings['filter']['startDate']  = -9999 ;
-        $this->settings['storagePid'] = $pageId ;
-        $this->settings['directmail'] = FALSE  ;
+
         if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('direct_mail')) {
             $this->settings['directmail'] = TRUE ;
         }
-        /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $events */
-        $registrants = $this->registrantRepository->findByFilter($email, $eventID, $pageId ,  $this->settings , 9999 );
-        $eventIds = $this->registrantRepository->findEventsByFilter($email , $pageId , $this->settings  ) ;
-        if( count($eventIds) > 0 ) {
-            // $events[] = array( "0" => "-" ) ;
-            foreach ($eventIds as $key => $eventId ) {
-                $event = $this->eventRepository->findByUidAllpages($eventId) ;
-                if( is_array($event)) {
-                    if(  $event[0] instanceof  \JVE\JvEvents\Domain\Model\Event )  {
-                        $event[0]->setName( $event[0]->getStartDate()->format("Y-m-d - ") . substr( $event[0]->getName() , 0 , 50 )  . " (" . $event[0]->getUid() . ")" ) ;
 
-                        $events[] = $event[0] ;
-                        if ( $this->request->hasArgument("createDmailGroup")) {
-                            if ($eventID == 0 || ($eventID == $event[0]->getUid())) {
-                                $this->createDmailGroup($event[0]);
+
+        /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $events */
+        $registrants = $this->registrantRepository->findByFilter($email, $eventID, $pageId ,  $this->settings , 999 );
+        if( $pageId == 0 ) {
+            $this->settings['filter']['startDate']  = -30 ;
+        }
+
+        $pageRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord(
+            'pages',
+            $pageId,
+            '*'
+        );
+
+        if( $GLOBALS['BE_USER']->doesUserHaveAccess($pageRow , 1 ) ) {
+
+            /**
+             * @var $queryGenerator \TYPO3\CMS\Core\Database\QueryGenerator
+             */
+
+            $eventIds = $this->registrantRepository->findEventsByFilter($email , $pageId , $this->settings  ) ;
+            if( count($eventIds) > 0 ) {
+                // $events[] = array( "0" => "-" ) ;
+                foreach ($eventIds as $key => $eventId ) {
+                    $event = $this->eventRepository->findByUidAllpages($eventId) ;
+                    if( is_array($event)) {
+                        if(  $event[0] instanceof  \JVE\JvEvents\Domain\Model\Event )  {
+                            $location = '' ;
+                            if ($event[0]->getLocation() instanceof  \JVE\JvEvents\Domain\Model\Location )  {
+                                $location = $event[0]->getLocation()->getCity() ;
+                            }
+                            $event[0]->setName( $event[0]->getStartDate()->format("Y-m-d - ") . substr( $event[0]->getName() , 0 , 50 ) . " | " . $location . " (ID: " . $event[0]->getUid() . ")" ) ;
+                            if( $eventID > 0 ) {
+                                $this->view->assign('eventName', $event[0]->getName() );
+
+                            }
+                            $events[] = $event[0] ;
+                            if ( $this->request->hasArgument("createDmailGroup")) {
+                                if ($eventID == 0 || ($eventID == $event[0]->getUid())) {
+                                    $this->createDmailGroup($event[0]);
+                                }
                             }
                         }
                     }
-                }
 
+                }
             }
+
+
+            $this->view->assign('event', $eventID );
+            $this->view->assign('itemsPerPage', $itemsPerPage );
+            $this->view->assign('events', $events);
+            $this->view->assign('registrants', $registrants);
+            $this->view->assign('settings', $this->settings );
+            $this->view->assign('recursive', $recursive );
+            $this->view->assign('pageId', $pageId );
+        } else {
+            die("You do not have Access to page " .$pageId ) ;
         }
 
 
-        $this->view->assign('event', $eventID );
-        $this->view->assign('itemsPerPage', $itemsPerPage );
-        $this->view->assign('events', $events);
-        $this->view->assign('registrants', $registrants);
-        $this->view->assign('settings', $this->settings );
     }
     
     /**

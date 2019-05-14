@@ -1,3 +1,4 @@
+{namespace jve=JVE\JvEvents\ViewHelpers}
 <f:layout name="Default" />
 
 <f:section name="content">
@@ -55,6 +56,7 @@
 		<f:form id="jveventFilterForm" action="list" controller="EventBackend" method="post">
 			<input type="hidden" name="uid" value="{plugin.uid}" /><f:form.hidden name="pluginUid" value="{plugin.uid}" />
 			<f:form.select name="event" value="{event}" additionalAttributes="{onchange: 'document.getElementById(\'jveventFilterForm\').submit();'}" id="jvevents" property="event" options="{events}" optionLabelField="name" sortByOptionLabel="TRUE" prependOptionLabel="-" prependOptionValue="0"></f:form.select>
+			<br><f:form.checkbox name="recursive" property="recursive"  value="1" checked="{recursive} == 1" additionalAttributes="{onchange: 'document.getElementById(\'jveventFilterForm\').submit();'}" /> Search also subpages of Page ID: {pageId}
 		</f:form>
 
 	</f:if>
@@ -89,10 +91,13 @@
 				<div class="row registrant{registrant.uid} regEvent{registrant.event}">
 					<div class="col-xs-1">
 
-						<button type="button" class="btn btn-info btn-sm"  data-toggle="collapse" data-target="#regInfo{registrant.uid}">
-							<core:icon identifier="actions-document-info"/>
-						</button>
 
+						<div class="btn-group" role="group">
+							<button type="button" class="btn btn-info btn-sm"  data-toggle="collapse" data-target="#regInfo{registrant.uid}">
+								<core:icon identifier="actions-document-info"/>
+							</button>
+
+						</div>
 
 					</div>
 					<div class="col-xs-4">
@@ -208,7 +213,16 @@
 				<div id="regInfo{registrant.uid}" class="collapse" role="dialog">
 					<div class="well">
 						<p>
-							Registriert am: <f:format.date format="d.m.Y">{registrant.crdate}</f:format.date><br>
+
+							Event :
+							<jve:be.link uid="{registrant.event}" table="tx_jvevents_domain_model_event" pageId="{pageId}" recursive="{recursive}" eventId="{event}" returnModule="tx_jvevents_web_jveventseventmngt"  returnController="EventBackend" returnAction="list" title="Edit Event" class="btn btn-default">
+								<core:icon identifier="actions-document-open"/> {registrant.event}
+							</jve:be.link> {eventName}
+							<br>
+							<br>
+							<jve:be.link uid="{registrant.uid}" table="tx_jvevents_domain_model_registrant" pageId="{pageId}" recursive="{recursive}" eventId="{event}" returnModule="tx_jvevents_web_jveventseventmngt"  returnController="EventBackend" returnAction="list" title="Edit Registration" class="btn btn-default">
+								<core:icon identifier="actions-document-open"/>
+							</jve:be.link> Registriert am: <f:format.date format="d.m.Y">{registrant.crdate}</f:format.date><br>
 							Firma: {registrant.company}<br>
 							Ort: {registrant.zip} {registrant.city}<br>
 							Tel: {registrant.phone}<br>

@@ -90,8 +90,20 @@ class RegistrantRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         $query = $this->createQuery();
         // $query->getQuerySettings()->setReturnRawQueryResult(TRUE);
         if ( $pid > 0 ) {
-            $additionalWhere = ' AND pid = ' . $pid  ;
+
+            $pageIds = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode( "," , $settings['storagePids'], true)  ;
+            if ( count($pageIds) > 0 ) {
+                $additionalWhere = ' AND find_in_set( pid , "' .  $settings['storagePids'] . '" ) '  ;
+            } else {
+                $additionalWhere = ' AND pid = ' . $pid  ;
+            }
+
+        } else {
+
+            $additionalWhere = ' AND crdate > ' . mktime( 0 , 0 , 0 , date("m") , intval( date("d") + $settings['filter']['startDate'] ) , date("y") ) ;
         }
+
+
         $query->statement('SELECT event from tx_jvevents_domain_model_registrant where deleted = 0 ' . $additionalWhere . ' Group By event ');
         $regevents = $query->execute(true) ;
         // var_dump($regevents) ;
@@ -108,24 +120,41 @@ class RegistrantRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 
      * @param array $settings
      * @param int $limit
+     * @param array $orderings
      * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array
      */
-    public function findByFilter($email = '', $eventID = 0, $pid = 0 , $settings , $limit=1 ) {
+    public function findByFilter($email = '', $eventID = 0, $pid = 0 , $settings , $limit=1 , $orderings = array(
+        'uid' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING
+    ) ) {
         $query = $this->createQuery();
         $constraints = array();
-        $query->getQuerySettings()->setRespectStoragePage(FALSE);
+
+        $pageIds = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode( "," , $settings['storagePids'], true)  ;
+        if ( count($pageIds) > 0 ) {
+            $query->getQuerySettings()->setRespectStoragePage(TRUE);
+            $query->getQuerySettings()->setStoragePageIds($pageIds) ;
+        } else {
+            $query->getQuerySettings()->setRespectStoragePage(FALSE);
+            if($pid > 0 ) {
+                $constraints[] = $query->equals("pid", $pid);
+            }
+        }
+
+
         $query->getQuerySettings()->setRespectSysLanguage(FALSE);
         $query->getQuerySettings()->setIgnoreEnableFields(TRUE) ;
         $query->getQuerySettings()->setLanguageOverlayMode(FALSE) ;
+
         $query->getQuerySettings()->setLanguageMode('content_fallback') ;
+
+        $query->setOrderings($orderings) ;
+
 
         // $constraints[] = $query->equals("cruser_id", 0);
         if($email <> '' ) {
             $constraints[] = $query->equals("email", $email);
         }
-        if($pid > 0 ) {
-            $constraints[] = $query->equals("pid", $pid);
-        }
+
         if($eventID > 0 ) {
             $constraints[] = $query->equals("event", $eventID);
         }
