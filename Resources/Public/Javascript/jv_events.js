@@ -543,6 +543,10 @@ function jv_events_submit() {
 			}
 		}
 		if (retVal == 1) {
+            if (typeof showSpinner == 'function')
+            {
+                showSpinner();
+            }
 			jQuery(".jv-events-regform").submit();
 		}
 	}
