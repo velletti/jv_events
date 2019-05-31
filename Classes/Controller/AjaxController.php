@@ -235,7 +235,6 @@ class AjaxController extends BaseController
 
 
                 $output['event']['eventId'] = $event->getUid() ;
-                $output['event']['sfCampaignId'] = $event->getSalesForceCampaignId();
                 $output['event']['viewed'] = $event->getViewed();
                 $output['event']['canceled'] = $event->getCanceled();
 
