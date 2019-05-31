@@ -235,6 +235,7 @@ class AjaxController extends BaseController
 
 
                 $output['event']['eventId'] = $event->getUid() ;
+                $output['event']['sfCampaignId'] = $event->getSalesForceCampaignId();
                 $output['event']['viewed'] = $event->getViewed();
                 $output['event']['canceled'] = $event->getCanceled();
 
@@ -343,7 +344,7 @@ class AjaxController extends BaseController
         // Location is set either by Event OR by location uid from request
         if( is_object($location )) {
             $output['location']['locationId'] = $location->getUid() ;
-            $output['location']['name'] = $location->getName();
+            $output['location']['locationName'] = $location->getName();
             $output['location']['streetAndNr'] = $location->getStreetAndNr() ;
             $output['location']['zip'] = $location->getZip() ;
             $output['location']['city'] = $location->getCity() ;
