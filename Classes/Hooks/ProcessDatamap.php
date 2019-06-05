@@ -247,55 +247,57 @@ class ProcessDatamap {
                             $this->flashMessage['NOTICE'][] = '"Store in Hubspot" should run now!' ;
 
                             $this->createUpdateEventForSF2019()  ;
-                        }
-                        if( $this->event->getStoreInSalesForce() ) {
-                            if( $this->event->getStoreInCitrix() ) {
-                                $this->flashMessage['WARNING'][] = 'You can not set "Store in Salesforce" together with "Store in Citrix"! (store in salesforce is disabled)!' ;
-                                $this->event->setStoreInSalesForce(0) ;
-                                $allowedError ++ ;
-                            } else {
-                                $configuration = \JVE\JvEvents\Utility\EmConfigurationUtility::getEmConf();
-                                if( $configuration['enableSalesForceLightning'] == 1 ) {
-                                    if( $this->event->getStartDate()->format("Ymd") > date("Ymd") && ! $this->event->getHidden() ) {
+                        } else {
+                            if( $this->event->getStoreInSalesForce() ) {
+                                if( $this->event->getStoreInCitrix() ) {
+                                    $this->flashMessage['WARNING'][] = 'You can not set "Store in Salesforce" together with "Store in Citrix"! (store in salesforce is disabled)!' ;
+                                    $this->event->setStoreInSalesForce(0) ;
+                                    $allowedError ++ ;
+                                } else {
+                                    $configuration = \JVE\JvEvents\Utility\EmConfigurationUtility::getEmConf();
+                                    if( $configuration['enableSalesForceLightning'] == 1 ) {
+                                        if( $this->event->getStartDate()->format("Ymd") > date("Ymd") && ! $this->event->getHidden() ) {
 
-                                        $this->flashMessage['WARNING'][] = 'You can not set "Store in Salesforce" anymore! "Store in Hubspot" is now enabled' ;
-                                        $this->event->setStoreInSalesForce(0) ;
-                                        $this->event->setStoreInHubspot(1) ;
-                                        $this->createUpdateEventForSF2019()  ;
+                                            $this->flashMessage['WARNING'][] = 'You can not set "Store in Salesforce" anymore! "Store in Hubspot" is now enabled' ;
+                                            $this->event->setStoreInSalesForce(0) ;
+                                            $this->event->setStoreInHubspot(1) ;
+                                            $this->createUpdateEventForSF2019()  ;
 
 
-                                        // Automatic Migration 2019 : Update registrants that they have to be moved to hubspot
+                                            // Automatic Migration 2019 : Update registrants that they have to be moved to hubspot
 
-                                         /** @var  \JVE\JvEvents\Domain\Repository\RegistrantRepository $registrantRepository */
-                                        $registrantRepository = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\RegistrantRepository');
+                                            /** @var  \JVE\JvEvents\Domain\Repository\RegistrantRepository $registrantRepository */
+                                            $registrantRepository = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\RegistrantRepository');
 
-                                        /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $registrants */
-                                        $registrants = $registrantRepository->findByFilter('' , $this->event->getUid(), 0 , array() , 999 ) ;
-                                        $repairCount = 0 ;
-                                        if ( $registrants->count() > 0 ) {
-                                            /** @var  \JVE\JvEvents\Domain\Model\Registrant $registrant */
-                                            $registrant = $registrants->getFirst() ;
-                                            $pid = $registrant->getPid() ;
-                                            while ( $repairCount < $registrants->count()  ){
-                                                if ( !is_object($registrant)) {
-                                                    break ;
+                                            /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $registrants */
+                                            $registrants = $registrantRepository->findByFilter('' , $this->event->getUid(), 0 , array() , 999 ) ;
+                                            $repairCount = 0 ;
+                                            if ( $registrants->count() > 0 ) {
+                                                /** @var  \JVE\JvEvents\Domain\Model\Registrant $registrant */
+                                                $registrant = $registrants->getFirst() ;
+                                                $pid = $registrant->getPid() ;
+                                                while ( $repairCount < $registrants->count()  ){
+                                                    if ( !is_object($registrant)) {
+                                                        break ;
+                                                    }
+                                                    $repairCount++ ;
+                                                    $registrant->setHubspotResponse("100") ;
+                                                    $registrantRepository->update($registrant ) ;
+                                                    $registrant = $registrants->next() ;
                                                 }
-                                                $repairCount++ ;
-                                                $registrant->setHubspotResponse("100") ;
-                                                $registrantRepository->update($registrant ) ;
-                                                $registrant = $registrants->next() ;
-                                            }
-                                            if( $repairCount ) {
-                                                $this->flashMessage['WARNING'][] = 'We Found ' .  $repairCount . " exisiting Registration(s). Please go to PageID : " . $pid . ", use Module: Event Mngt, filter by Event and send Registration to Hubspot!";
+                                                if( $repairCount ) {
+                                                    $this->flashMessage['WARNING'][] = 'We Found ' .  $repairCount . " exisiting Registration(s). Please go to PageID : " . $pid . ", use Module: Event Mngt, filter by Event and send Registration to Hubspot!";
+                                                }
                                             }
                                         }
-                                    }
 
-                                } else {
-                                    $this->createUpdateEventForSF()  ;
+                                    } else {
+                                        $this->createUpdateEventForSF()  ;
+                                    }
                                 }
                             }
                         }
+
                     }
                 }
 
