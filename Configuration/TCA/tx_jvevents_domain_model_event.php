@@ -1084,7 +1084,7 @@ $returnArray = array(
 				'foreign_table' => 'tx_jvevents_domain_model_tag',
 				//'foreign_table_where' => ' AND tx_jvevents_domain_model_tag.sys_language_uid in (-1, ###REC_FIELD_sys_language_uid###)',
 				'itemsProcFunc' => 'JVE\\JvEvents\\UserFunc\\Flexforms->TranslateMMvalues' ,
-				'foreign_table_where' => ' AND (tx_jvevents_domain_model_tag.sys_language_uid = 0 OR tx_jvevents_domain_model_tag.l10n_parent = 0) ORDER BY tx_jvevents_domain_model_tag.name',
+				'foreign_table_where' => ' AND (tx_jvevents_domain_model_tag.sys_language_uid = 0 OR ( tx_jvevents_domain_model_tag.l10n_parent = 0 AND tx_jvevents_domain_model_tag.sys_language_uid in (-1, ###REC_FIELD_sys_language_uid###) )) ORDER BY tx_jvevents_domain_model_tag.name',
 
 				'MM' => 'tx_jvevents_event_tag_mm',
 				'size' => 10,
