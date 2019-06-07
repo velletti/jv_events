@@ -58,10 +58,17 @@ class EventController extends BaseController
 
 			if ( in_array( $this->request->getArgument('action') , array("show" , "edit" , "update" , "create" , "delete" , "cancel") )) {
 				// user is calling  one of the actions, that requires and event ID.
-			    if (!$this->request->hasArgument('event') && !$this->request->getArgument('action') == "show") {
+
+			    if ( !$this->request->hasArgument('event') && !$this->request->getArgument('action') == "show") {
 			        // if no event with that ID found, redirect to show event. this will show the error message, that no event wit that id exists
 					$this->forward("show") ;
 				}
+                if ( $this->request->hasArgument('event') && !ctype_digit( $this->request->getArgument('event') ) ) {
+                    // if Real URl could not determine the event id and gave back the Name and Date of the Event instead of an ID
+                    //  as this will crash we do the same as above ; this will show the error message, that no event wit that id exists
+                    $this->forward("show" , null , null , array( 'action' => 'show' , 'event' => null )) ;
+                }
+
 			}
 
 		} else {
