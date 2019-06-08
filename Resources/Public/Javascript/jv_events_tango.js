@@ -386,7 +386,7 @@ function jv_events_refreshList(){
 		}
 		if( fCity && fCity.length > 0 ) {
 		    if(  fCity.val().length > 0 ) {
-                if( jQuery(this).data("cityuid")  !== fCity.val() ) {
+                if( decodeURI (jQuery(this).data("cityuid"))  !== fCity.val() ) {
                     jQuery(this).addClass('d-none') ;
                 }
 			}

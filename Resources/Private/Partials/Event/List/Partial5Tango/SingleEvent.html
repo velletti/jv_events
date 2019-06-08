@@ -40,23 +40,23 @@
 
 
                 <div class="col-12 col-sm-6  order-3 order-sm-2 py-3">
-                    <div class="card-block">
-                        <h4 class="card-title"><f:link.action  pageUid="{settings.detailPid}" action="show" arguments="{event : event}" >
+                    <div class="card-block min-height-6-lines">
+                        <h4 class="card-title max-1-line "><f:link.action  pageUid="{settings.detailPid}" action="show" arguments="{event : event}" >
                             {event.name}
                         </f:link.action></h4>
-                        <p><f:format.nl2br>{event.teaser}</f:format.nl2br></p>
+                        <p class="my-2 d-md-block d-sm-none d-xs-block max-3-lines "><f:format.nl2br>{event.teaser}</f:format.nl2br></p>
 
-                        <small class="align-text-bottom">
-                            <f:for each="{event.eventCategory}" as="Category" iteration="iteration">{Category.title}</f:for>
-                            <f:for each="{event.Tags}" as="Tag" iteration="iteration">, {Tag.name}</f:for>
+                        <small class="align-text-bottom position-bottom py-3">
+                            <f:for each="{event.eventCategory}" as="Category" iteration="iteration">{Category.title}, </f:for>
+                            <f:for each="{event.Tags}" as="Tag" iteration="iteration">{Tag.name}<f:if condition="{iteration.isLast}"><f:else>, </f:else></f:if> </f:for>
                         </small>
                     </div>
                 </div>
 
                 <div class="col-6 col-sm-3 text-black-50 bg-gradient-light  order-2 order-sm-3 py-3">
                     {event.location.city}<br>
-                    {event.startTime -> f:format.date(format:"H:i")} - {event.endTime -> f:format.date(format:"H:i")} h<br>
-                    {event.price} {event.currency} <f:if condition="{event.priceReduced}">({event.priceReduced} {event.currency} )</f:if> (<f:translate key="jv_events_model_event.inclusiveVat" />)<br>
+                    {event.startTime -> f:format.date(format:"H:i")}-{event.endTime -> f:format.date(format:"H:i")} h<br>
+                    <span class="d-md-block d-sm-none d-xs-block">{event.price} {event.currency} <f:if condition="{event.priceReduced}">({event.priceReduced} {event.currency} )</f:if> (<f:translate key="jv_events_model_event.inclusiveVat" />)<br></span>
 
                 </div>
             </div>

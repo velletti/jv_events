@@ -83,16 +83,16 @@
                     </fieldset>
                 </f:if>
 
-                <fieldset>
+                <fieldset class="d-flex">
                     <legend><f:translate key="tx_jvevents_event.filter.morefilters" /></legend>
                     <f:if condition="{f:count(subject: eventsFilter.citys)} > 1">
-                        <div class="form-group">
+                        <div class="form-group col-sm-6">
                             <label for="jv_events_filter_citys" class="d-none">Ort:</label>
                             <f:form.select property="citys" class="form-control" id="jv_events_filter_citys" sortByOptionLabel="true" options="{eventsFilter.citys}" prependOptionLabel="{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_event.filter.city' , default:'by City')}" prependOptionValue="" />
                         </div>
                     </f:if>
                     <f:if condition="{f:count(subject: eventsFilter.organizers)} > 1">
-                        <div class="form-group">
+                        <div class="form-group col-sm-6">
                             <label for="jv_events_filter_organizers" class="d-none">Organizer:</label>
                             <f:form.select property="organizers" class="form-control" id="jv_events_filter_organizers" sortByOptionLabel="true" options="{eventsFilter.organizers}"   prependOptionLabel="{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_event.filter.organizer' , default:'by Organizer')}" prependOptionValue=""/>
                         </div>

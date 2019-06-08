@@ -64,9 +64,9 @@ class DataAttribViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
             $orgId  = $event->getOrganizer()->getUid()  ;
         }
 
-        $result = 'data-eventuid="' . $event->getUid() . '" data-eventpid="' .  $event->getPid() .   '" data-orguid="' .  $orgId
-            . '" data-monthuid="' . date("m.Y" , $event->getStartDate()->getTimestamp() )  . '" '
-            . '" data-dayuid="' . date("d.m.Y" , $event->getStartDate()->getTimestamp() )  . '" '
+        $result = 'data-eventuid="' . $event->getUid() . '" data-eventpid="' .  $event->getPid() .   '" data-orguid="' .  $orgId  . '" '
+            . 'data-monthuid="' . date("m.Y" , $event->getStartDate()->getTimestamp() ) . '" '
+            . 'data-dayuid="' . date("d.m.Y" , $event->getStartDate()->getTimestamp() )  . '" '
         ;
 
 	    $locCity = '' ;
@@ -75,7 +75,7 @@ class DataAttribViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
             $result .= 'data-longitude="' . $event->getLocation()->getLng() . '" ' ;
             $result .= 'data-latitude="' . $event->getLocation()->getLat() . '" ' ;
         }
-        $result .= 'data-cityuid="' . $locCity . '" ' ;
+        $result .= 'data-cityuid="' . strip_tags($locCity ) . '" ' ;
         // data-catuids data-taguids
         $catUids = '' ;
         if( is_object($event->getEventCategory() )  ) {
@@ -109,8 +109,7 @@ class DataAttribViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
         }
         $result .= 'data-taguids="' . $tagUids . '" ' ;
 
-
-// <div class="jv-events-singleEvent" data-monthuid="08.2018" data1-cityuid="München" data-uid="&quot;4&quot;">
+// <div class="jv-events-singleEvent" data-monthuid="08.2018" data1-cityuid="M%C3%BCnchen" data-uid="&quot;4&quot;">
 		return $result ;
 	}
 }
