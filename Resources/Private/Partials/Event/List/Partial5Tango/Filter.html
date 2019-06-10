@@ -18,9 +18,17 @@
             <div id="jv-events-filter-sub" class="fieldsets">
                 <div class="col-6">
                     <div class="input-group date">
+                        <f:if condition="{settings.filter.startDate}">
+                            <f:then>
+                                <f:variable name="startDate">{settings.filter.startDate}</f:variable>
+                            </f:then>
+                            <f:else>
+                                <f:variable name="startDate">today</f:variable>
+                            </f:else>
+                        </f:if>
                         <f:form.textfield
                                 name="overruleFilter[startDate]"
-                                value="{f:format.date(format:'d.m.Y', date: '{settings.filter.startDate}')}"
+                                value="{f:format.date(format:'d.m.Y', date: '{startDate}')}"
                                 id="overruleFilterStartDate"
                                 class="form-control datetimepicker clearable"
                                 data="{date-type: 'date', todayBtn: 'linked' , todayHighlight: 'true' , autoclose: 'true' }"
