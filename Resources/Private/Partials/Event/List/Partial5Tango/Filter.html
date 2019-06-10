@@ -20,7 +20,7 @@
                     <div class="input-group date">
                         <f:if condition="{settings.filter.startDate}">
                             <f:then>
-                                <f:variable name="startDate">{settings.filter.startDate}</f:variable>
+                                <f:variable name="startDate">{settings.filter.overruleStartDate}</f:variable>
                             </f:then>
                             <f:else>
                                 <f:variable name="startDate">today</f:variable>

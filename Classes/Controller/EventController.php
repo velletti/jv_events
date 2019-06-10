@@ -102,6 +102,7 @@ class EventController extends BaseController
                     $sdArr = explode("." , $filter['startDate'] ) ;
                     if( $sdArr[0] > 0 && $sdArr[0] < 32 && $sdArr[1] > 0 && $sdArr[1] < 13  && $sdArr[2] > 1970 ) {
                         $this->settings['filter']['startDate'] = mktime(0,0,0, $sdArr[1] , $sdArr[0] , $sdArr[2] ) ;
+                        $this->settings['filter']['overruleStartDate'] = date( "d.m.Y" , $this->settings['filter']['startDate'] ) ;
                     } else {
                         $this->settings['filter']['startDate'] = intval( $filter['startDate'] ) ;
                     }
@@ -115,6 +116,7 @@ class EventController extends BaseController
 
             // https://tango.ddev.local/index.php?id=9&L=0&&tx_jvevents_events[eventsFilter][organizers]=1&tx_jvevents_events[eventsFilter][tags]=5,6,8,7,10,4,1,20,11,14,&tx_jvevents_events[eventsFilter][citys]=undefined&tx_jvevents_events[eventsFilter][months]=undefined&tx_jvevents_events[overruleFilter][category]=true&no_cache=1
         }
+
         /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $events */
         $events = $this->eventRepository->findByFilter(false, false,  $this->settings );
 
