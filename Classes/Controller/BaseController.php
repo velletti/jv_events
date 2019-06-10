@@ -139,7 +139,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     }
 
 
-    public function generateFilter($eventsArray , $filter ) {
+    public function generateFilter(\TYPO3\CMS\Extbase\Persistence\QueryResultInterface $events , $filter ) {
         $locations = array() ;
         $organizers = array() ;
         $citys = array() ;
@@ -148,7 +148,11 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         $categories = array() ;
         $categories2 = array() ;
         $months = array() ;
+
+
         /** @var \JVE\JvEvents\Domain\Model\Event $event */
+        $eventsArray = $events->toArray() ;
+        // while( $event instanceof  \JVE\JvEvents\Domain\Model\Event ) {
         foreach ($eventsArray as $key => $event ) {
             // first fill the Options for the Filters to have only options with Events
 
@@ -200,8 +204,8 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
             $month = $event->getStartDate()->format("m.Y") ;
             $months[$month] = $month ;
-
         }
+
         $sortArray = array();
         foreach($categories2 as $key => $array) {
             if( $this->settings['filter']['sorttags'] == "sorting" ) {
@@ -617,6 +621,15 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             }
         }
 
+    }
+
+    /**
+     * Get floatet microtime
+     * @return float
+     */
+    public function microtime_float() {
+        list($usec, $sec) = explode(' ', microtime());
+        return ((float)$usec + (float)$sec);
     }
 
 }

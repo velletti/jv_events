@@ -15,8 +15,8 @@
 
 
 
-            <div id="jv-events-filter-sub" class="fieldsets">
-                <div class="col-6">
+            <div id="jv-events-filter-sub collapse" class="fieldsets">
+                <div class="col-12 col-sm-6">
                     <div class="input-group date">
                         <f:if condition="{settings.filter.startDate}">
                             <f:then>
@@ -44,12 +44,12 @@
                 </div>
 
                 <f:if condition="{f:count(subject: eventsFilter.tags2)} > 1">
-                    <fieldset id="jv_events_fieldset_tags">
+                    <fieldset id="jv_events_fieldset_tags"  class="row px-0 ">
                         <legend class="d-none"><f:translate key="tx_jvevents_domain_model_event.tags" /></legend>
 
-                        <div class="checkbox" id="jv_events_filter_tags">
+                        <div class="checkbox d-flex row w-100 mx-1" id="jv_events_filter_tags">
                             <f:for each="{eventsFilter.tags2}" as="tag">
-                                <label>
+                                <label class="col-6 col-md-3 col-lg-2">
                                     <input type="checkbox" id="jv_events_filter_tag-{tag.id}" value="{tag.id}">{tag.title}
                                 </label>
                             </f:for>
@@ -57,14 +57,14 @@
                     </fieldset>
                 </f:if>
                 <f:if condition="{f:count(subject: eventsFilter.categories2)} > 1">
-                    <fieldset id="jv_events_fieldset_categories">
+                    <fieldset id="jv_events_fieldset_categories"  class="row px-0 ">
 
                         <legend class="d-none"><f:translate key="tx_jvevents_domain_model_category" /></legend>
 
-                        <div class="checkbox"  id="jv_events_filter_categories">
+                        <div class="checkbox d-flex row w-100 mx-1"  id="jv_events_filter_categories">
 
                             <f:for each="{eventsFilter.categories2}" as="category">
-                                <label>
+                                <label class="col-12 col-sm-6 col-md-3 col-lg-2">
                                     <input type="checkbox" id="jv_events_filter_cat-{category.id}" value="{category.id}">{category.title}
                                     <f:if condition="{category.description}">
                                         <a class="info" href="#" data-toggle="modal" data-target="#jv_events_cat_modal-{category.id}"><span>Info</span></a>
@@ -96,16 +96,16 @@
                     </fieldset>
                 </f:if>
 
-                <fieldset class="d-flex px-0 ">
+                <fieldset class="row px-0 ">
                     <legend><f:translate key="tx_jvevents_event.filter.morefilters" /></legend>
                     <f:if condition="{f:count(subject: eventsFilter.citys)} > 1">
-                        <div class="form-group col-sm-6">
+                        <div class="form-group col-sm-6 col-12">
                             <label for="jv_events_filter_citys" class="d-none">Ort:</label>
                             <f:form.select property="citys" class="form-control" id="jv_events_filter_citys" sortByOptionLabel="true" options="{eventsFilter.citys}" prependOptionLabel="{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_event.filter.city' , default:'by City')}" prependOptionValue="" />
                         </div>
                     </f:if>
                     <f:if condition="{f:count(subject: eventsFilter.organizers)} > 1">
-                        <div class="form-group col-sm-6">
+                        <div class="form-group col-sm-6 col-12">
                             <label for="jv_events_filter_organizers" class="d-none">Organizer:</label>
                             <f:form.select property="organizers" class="form-control" id="jv_events_filter_organizers" sortByOptionLabel="true" options="{eventsFilter.organizers}"   prependOptionLabel="{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_event.filter.organizer' , default:'by Organizer')}" prependOptionValue=""/>
                         </div>

@@ -43,6 +43,16 @@ class EventController extends BaseController
      */
     protected $eventRepository = NULL;
 
+    /**
+     * @var array
+     */
+    public $debugArray ;
+
+
+    /**
+     * @var float
+     */
+    public $timeStart ;
 
 
 	/**
@@ -54,6 +64,9 @@ class EventController extends BaseController
 	protected $staticCountryRepository = NULL;
 
 	public function initializeAction() {
+        $this->timeStart = $this->microtime_float() ;
+
+	    $this->debugArray[] = "Start:" . intval(1000 * $this->timeStart ) . " Line: " . __LINE__ ;
 		if ($this->request->hasArgument('action')) {
 
 			if ( in_array( $this->request->getArgument('action') , array("show" , "edit" , "update" , "create" , "delete" , "cancel") )) {
@@ -89,6 +102,9 @@ class EventController extends BaseController
      */
     public function listAction()
     {
+
+        $this->debugArray[] = "After Init :" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " Line: " . __LINE__ ;
+
         if( $this->request->hasArgument('overruleFilter')) {
 
             $filter = $this->request->getArgument('overruleFilter') ;
@@ -117,17 +133,19 @@ class EventController extends BaseController
             // https://tango.ddev.local/index.php?id=9&L=0&&tx_jvevents_events[eventsFilter][organizers]=1&tx_jvevents_events[eventsFilter][tags]=5,6,8,7,10,4,1,20,11,14,&tx_jvevents_events[eventsFilter][citys]=undefined&tx_jvevents_events[eventsFilter][months]=undefined&tx_jvevents_events[overruleFilter][category]=true&no_cache=1
         }
 
+
         /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $events */
         $events = $this->eventRepository->findByFilter(false, false,  $this->settings );
 
 
-		$this->view->assign('events', $events);
+        $this->view->assign('events', $events);
         // read settings from Flexform .. if not set, take it from typoscript setup
         if( intval( $this->settings['detailPid'] ) < 1 ) {
             $this->settings['detailPid'] = intval( $this->settings['link']['detailPidDefault']) ;
         }
-
-        $eventsFilter = $this->generateFilter( $events->toArray() ,  $this->settings['filter']) ;
+        $this->debugArray[] = "Before generate Filter :" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " Line: " . __LINE__ ;
+        $eventsFilter = $this->generateFilter( $events ,  $this->settings['filter']) ;
+        $this->debugArray[] = "After generate Filter :" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " Line: " . __LINE__ ;
 
         $this->view->assign('eventsFilter', $eventsFilter);
         $this->view->assign('settings', $this->settings );
