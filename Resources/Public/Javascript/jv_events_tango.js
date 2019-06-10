@@ -296,11 +296,9 @@ function jv_events_reloadList() {
         var host = temp[0].split("?");
         var arr = host[1].split("&");
         var newQuery = host[0] + "?" ;
-        console.log("newQuery:" + newQuery ) ;
         var param = ''
         for (var i = 0; i < arr.length; i++) {
             param = arr[i].substr( 0, 999 ) ;
-            console.log("param:" + param ) ;
             if ( param.substr(0,4 ) == "amp;") {
                 param = arr[i].substr( 4, 999 ) ;
             }
@@ -311,25 +309,11 @@ function jv_events_reloadList() {
 
                 newQuery += "&" + param ;
             }
-            console.log("newQuery:" + newQuery ) ;
         }
         newQuery += "&tx_jvevents_events[overruleFilter][startDate]=" + jQuery("#overruleFilterStartDate").val() ;
-        console.log("newQuery:" + newQuery ) ;
-        /*
-        var pos = temp.indexOf("overruleFilter][startDate]=") ;
-        if ( pos > 0 ) {
-            pos = pos + 27 ;
-            var newUrl = temp.substr( 0 , pos ) + jQuery("#overruleFilterStartDate").val() + temp.substr( pos+ 10 , 999 ) ;
-        } else {
-            var newUrl = temp + "&tx_jvevents_events[overruleFilter][startDate]=" + jQuery("#overruleFilterStartDate").val() ;
-        }
-        */
         var cHash = newQuery.hashCode() ;
-        console.log("cHash:" + cHash ) ;
-        console.log("window.location.href:" + newQuery + "&cHash=" + cHash  ) ;
 
         window.location.href =  newQuery + "&cHash=" + cHash ;
-        // console.log("New Url: " + newUrl) ;
     }
 
 
