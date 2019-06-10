@@ -1,11 +1,11 @@
 {namespace jve=JVE\JvEvents\ViewHelpers}
 
 <f:if condition="{aktDate} != {lastDate}">
-    <div class="alert alert-secondary text-black-50 jvevents-newDay"><i class="fas fa-calendar-alt"> </i> {event.startDate -> f:format.date(format:"D d. M. Y")} </div>
+    <div class="alert alert-secondary text-black-50 jv-events-row jvevents-newDay"><i class="fas fa-calendar-alt"> </i> {event.startDate -> f:format.date(format:"D d. M. Y")} </div>
 </f:if>
 
 <f:spaceless>
-    <div class="jv-events-singleEvent" {jve:dataAttrib( event: event )}>
+    <div class="jv-events-singleEvent jv-events-row" {jve:dataAttrib( event: event )}>
 
         <div class="card col-12 my-4 clearfix rounded-bottom">
             <div class="row">

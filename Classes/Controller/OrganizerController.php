@@ -87,9 +87,15 @@ class OrganizerController extends BaseController
     {
 
 
+        $this->settings['filter']['sorttags'] = "sorting" ;
 
         $organizers = $this->organizerRepository->findByFilterAllpages();
+        $orgFilter = $this->generateOrgFilter( $organizers->toArray() ,  $this->settings['filter']) ;
+   //     echo "<pre>";
+    //    var_dump($orgFilter) ;
+// die;
         $this->view->assign('organizers', $organizers);
+        $this->view->assign('orgFilter', $orgFilter);
     }
     
     /**
@@ -216,5 +222,6 @@ class OrganizerController extends BaseController
      //   $this->organizerRepository->remove($organizer);
         $this->redirect('list');
     }
+
 
 }

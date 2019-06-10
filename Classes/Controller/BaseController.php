@@ -235,6 +235,85 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             ) ;
     }
 
+    public function generateOrgFilter($orgArray , $filter )
+    {
+        $tags = array();
+        $tags2 = array();
+        $categories = array();
+        $categories2 = array();
+        $years = array();
+
+
+        /** @var \JVE\JvEvents\Domain\Model\Organizer $organizer */
+        foreach ($orgArray as $key => $organizer ) {
+            // first fill the Options for the Filters to have only options with Organizer
+
+
+            /** @var \JVE\JvEvents\Domain\Model\Tag $obj */
+
+            $objArray =  $organizer->getTags() ;
+            if( is_object( $objArray)) {
+
+                /** @var \JVE\JvEvents\Domain\Model\Tag $obj */
+                foreach ($objArray as $obj ) {
+                    if ( is_object($obj) ) {
+                        $tags[$obj->getUid()] = $obj->getName() ;
+                        $tags2[$obj->getUid()] = array( "id" => $obj->getUid() , "title" => $obj->getName()  ) ;
+                    }
+                }
+            }
+            $objArray =  $organizer->getOrganizerCategory() ;
+
+            if( is_object( $objArray)) {
+                /** @var \JVE\JvEvents\Domain\Model\Category $obj */
+                foreach ($objArray as $obj ) {
+                    if ( is_object($obj) ) {
+                        $categories[$obj->getUid()] = $obj->getTitle() ;
+                        $categories2[$obj->getUid()] = array( "id" => $obj->getUid() , "title" => $obj->getTitle() , "description" => $obj->getDescription() , "sorting" => $obj->getSorting());
+                    }
+                }
+            }
+
+            unset($obj) ;
+            unset($objArray) ;
+
+            $year = date( "Y" , $organizer->getCrdate() ) ;
+            $years[$year] = $year ;
+
+        }
+        $sortArray = array();
+        foreach($categories2 as $key => $array) {
+            if( $this->settings['filter']['sorttags'] == "sorting" ) {
+                $sortArray[$key] = substr( "00000000000" . $array['sorting'], -12 , 12 )  ;
+            } else {
+                $sortArray[$key] = ucfirst ( $array['title']  ) ;
+            }
+        }
+
+        array_multisort($sortArray, SORT_ASC, SORT_STRING , $categories2);
+
+        $sortArray = array();
+        foreach($tags as $key => $value) {
+            $sortArray[$key] = ucfirst ( $value) ;
+        }
+        array_multisort($sortArray, SORT_ASC, SORT_NUMERIC, $tags);
+
+        usort($tags2, function ($a, $b) { return strcmp(ucfirst($a["title"]), ucfirst($b["title"])); });
+
+        ksort($years );
+
+        return array(
+            "tags" => $tags ,
+            "tags2" => $tags2 ,
+            "categories" => $categories ,
+            "categories2" => $categories2 ,
+            "years" => $years ,
+            "category50proz" => intval ( (count($categories2) ) / 2 ) ,
+            "tag50proz" => intval ( (count($tags2) +1) / 2 )
+        ) ;
+
+    }
+
     private function array_msort($array, $cols)
     {
         $colarr = array();
@@ -259,6 +338,9 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         return $ret;
 
     }
+
+
+
     /**
      * @param string $templatePath
      * @param string $templateName

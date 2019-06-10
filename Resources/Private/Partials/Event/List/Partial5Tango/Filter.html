@@ -8,27 +8,32 @@
                 </button>
 
             </p>
-            <p class="text-left d-none" id="filter-reset-events"><a href="#"><span class="fa fa-trash-o mh-sm"></span> <f:translate key="tx_jvevents_event.filter.reset" /></a></p>
-            <div class="col-6">
-                <div class="input-group date">
-                    <f:form.textfield
-                            name="overruleFilter[startDate]"
-                            value="{f:format.date(format:'d.m.Y', date: 'today')}"
-                            id="overruleFilterStartDate"
-                            class="form-control datetimepicker clearable"
-                            data="{date-type: 'date', todayBtn: 'linked' , todayHighlight: 'true' , autoclose: 'true' }"
-                    />
-                </div>
-                <div class="input-group-addon btn btn-default">
-                    <i class="fas fa-calendar-alt"></i>
-                </div>
-            </div>
+            <p class="text-left d-none" id="filter-reset-events"><a href="#"><span class="fa fa-trash mh-sm"></span> <f:translate key="tx_jvevents_event.filter.reset" /></a></p>
+
         </div>
         <form class="clearfix" onsubmit="this.preventDefault();">
 
 
 
             <div id="jv-events-filter-sub" class="fieldsets">
+                <div class="col-6">
+                    <div class="input-group date">
+                        <f:form.textfield
+                                name="overruleFilter[startDate]"
+                                value="{f:format.date(format:'d.m.Y', date: '{settings.filter.startDate}')}"
+                                id="overruleFilterStartDate"
+                                class="form-control datetimepicker clearable"
+                                data="{date-type: 'date', todayBtn: 'linked' , todayHighlight: 'true' , autoclose: 'true' }"
+                        />
+                        <div class="input-group-addon btn btn-default">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-6">
+
+                </div>
 
                 <f:if condition="{f:count(subject: eventsFilter.tags2)} > 1">
                     <fieldset id="jv_events_fieldset_tags">
@@ -83,7 +88,7 @@
                     </fieldset>
                 </f:if>
 
-                <fieldset class="d-flex">
+                <fieldset class="d-flex px-0 ">
                     <legend><f:translate key="tx_jvevents_event.filter.morefilters" /></legend>
                     <f:if condition="{f:count(subject: eventsFilter.citys)} > 1">
                         <div class="form-group col-sm-6">

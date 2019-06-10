@@ -239,7 +239,7 @@ function jv_events_init() {
 	jv_events_initOneFilter('citys') ;
 	jv_events_initOneFilter('tags') ;
 	jv_events_initOneFilter('organizers') ;
-	jv_events_initOneFilter('months') ;
+	/* jv_events_initOneFilter('months') ; */
 	if( jQuery('#jv_events_geo').length > 0 ) {
         if( jQuery('#jv_events_geo').data("askUser" )  == "1") {
             if (navigator.geolocation) {
@@ -252,6 +252,10 @@ function jv_events_init() {
         jv_events_filter_reset() ;
         return false ;
     });
+    jQuery('#overruleFilterStartDate' ).change(function(i) {
+        jv_events_reloadList() ;
+    });
+
 
     // Set the fieldsets to the same height
     if($('.filter').length ){
@@ -283,6 +287,67 @@ function jv_events_init() {
 
 	jv_events_refreshList();
 }
+function jv_events_reloadList() {
+    if ( jQuery("#overruleFilterStartDate") ) {
+
+
+
+        var temp =  window.location.href.split("#")  ;
+        var host = temp[0].split("?");
+        var arr = host[1].split("&");
+        var newQuery = host[0] + "?" ;
+        console.log("newQuery:" + newQuery ) ;
+        var param = ''
+        for (var i = 0; i < arr.length; i++) {
+            param = arr[i].substr( 0, 999 ) ;
+            console.log("param:" + param ) ;
+            if ( param.substr(0,4 ) == "amp;") {
+                param = arr[i].substr( 4, 999 ) ;
+            }
+            if ( param.substr(0,5) == "chash" ) {
+                break ;
+            }
+            if ( !param.substr(0,27) == "tx_jvevents_events[overruleFilter][startDate]=" ) {
+
+                newQuery += "&" + param ;
+            }
+            console.log("newQuery:" + newQuery ) ;
+        }
+        newQuery += "&tx_jvevents_events[overruleFilter][startDate]=" + jQuery("#overruleFilterStartDate").val() ;
+        console.log("newQuery:" + newQuery ) ;
+        /*
+        var pos = temp.indexOf("overruleFilter][startDate]=") ;
+        if ( pos > 0 ) {
+            pos = pos + 27 ;
+            var newUrl = temp.substr( 0 , pos ) + jQuery("#overruleFilterStartDate").val() + temp.substr( pos+ 10 , 999 ) ;
+        } else {
+            var newUrl = temp + "&tx_jvevents_events[overruleFilter][startDate]=" + jQuery("#overruleFilterStartDate").val() ;
+        }
+        */
+        var cHash = newQuery.hashCode() ;
+        console.log("cHash:" + cHash ) ;
+        console.log("window.location.href:" + newQuery + "&cHash=" + cHash  ) ;
+
+        window.location.href =  newQuery + "&cHash=" + cHash ;
+        // console.log("New Url: " + newUrl) ;
+    }
+
+
+}
+
+
+
+String.prototype.hashCode = function() {
+    var hash = 0, i, chr;
+    if (this.length === 0) return hash;
+    for (i = 0; i < this.length; i++) {
+        chr   = this.charCodeAt(i);
+        hash  = ((hash << 5) - hash) + chr;
+        hash |= 0; // Convert to 32bit integer
+    }
+    return hash;
+};
+
 function jv_events_initPosition(position) {
 
 	if( jQuery('#jv_events_geo').length > 0  ) {
@@ -336,13 +401,15 @@ function jv_events_initOneFilter(filterName) {
 
 
 function jv_events_refreshList(){
-	var fMonth= jQuery("SELECT#jv_events_filter_months") ;
+	/* var fMonth= jQuery("SELECT#jv_events_filter_months") ; */
+    var fMonth=false ;
 	var fTag= jQuery("SELECT#jv_events_filter_tags") ;
 	var fCity= jQuery("SELECT#jv_events_filter_citys") ;
 	var fCat= jQuery("SELECT#jv_events_filter_categories") ;
 	var fOrg= jQuery("SELECT#jv_events_filter_organizers") ;
     var cCats= jQuery("#jv_events_filter_categories INPUT[type=checkbox]") ;
     var cTags= jQuery("#jv_events_filter_tags INPUT[type=checkbox]") ;
+    /* var startDate= jQuery("#overruleFilterStartDate") ; */
 
     var cTagChecked = false ;
     jQuery( cTags ).each( function() {
@@ -363,109 +430,125 @@ function jv_events_refreshList(){
     }) ;
     var filterIsActive = false ;
     var needTohide = false ;
-	jQuery('.tx-jv-events DIV.jv-events-singleEvent').each(function (i) {
+    var lastDay = false ;
+    var needTohideDay = true ;
+	jQuery('.tx-jv-events DIV.jv-events-row').each(function (i) {
        // console.log( " ************* event **************** UID: " + jQuery(this).data("eventuid")  ) ;
 		jQuery(this).removeClass('d-none') ;
-
-		if( fMonth && fMonth.val() && fMonth.val().length > 0 ) {
-			if( jQuery(this).data("monthuid")  !== fMonth.val() ) {
-				jQuery(this).addClass('d-none') ;
+        if( jQuery(this).hasClass("jvevents-newDay")) {
+            if( lastDay && needTohideDay ) {
+                jQuery(lastDay).addClass('d-none') ;
             }
-		}
-		if( fTag && fTag.val() > 0 ) {
-			var fTags = jQuery(this).data("taguids") ;
-			if( fTags ) {
-				fTags = fTags.split(",") ;
-				if( fTags.indexOf( fTag.val() ) < 0 ) {
-					jQuery(this).addClass('d-none') ;
-				}
-			} else {
-				jQuery(this).addClass('d-none') ;
-			}
+            needTohideDay = true ;
+            lastDay = this ;
 
-		}
-		if( fCity && fCity.length > 0 ) {
-		    if(  fCity.val().length > 0 ) {
-                if( decodeURI (jQuery(this).data("cityuid"))  !== fCity.val() ) {
+        } else {
+            if( fMonth && fMonth.val() && fMonth.val().length > 0 ) {
+                if( jQuery(this).data("monthuid")  !== fMonth.val() ) {
                     jQuery(this).addClass('d-none') ;
                 }
-			}
-		}
-
-		if( fCat && fCat.val() > 0 ) {
-			var fCats = jQuery(this).data("catuids") ;
-			if( fCats ) {
-				fCats = fCats.split(",") ;
-				if( fCats.indexOf( fCat.val() ) < 0 ) {
-					jQuery(this).addClass('d-none') ;
-				}
-			} else {
-				jQuery(this).addClass('d-none') ;
-			}
-		}
-        if( fOrg && fOrg.val() > 0 ) {
-//            console.log( " data-orguid : " + jQuery(this).data("orguid")  + " Filter: " + fOrg.val() ) ;
-            if( parseInt( jQuery(this).data("orguid"))  !== parseInt( fOrg.val()) ) {
-                jQuery(this).addClass('d-none') ;
             }
-        }
-
-        if( cTagChecked  ) {
-            var sTags = jQuery(this).data("taguids") ;
-           //  console.log( " sTags : " + sTags ) ;
-
-            if( sTags ) {
-                sTags = "," + sTags + "," ;
-                needTohide = true ;
-				jQuery( cTags ).each( function() {
-                   //  console.log( "Tag: " + jQuery(this).val() + "checked ? : " + jQuery(this).prop("checked") ) ;
-					if ( jQuery(this).prop("checked") ) {
-                      //  console.log( "position of " + jQuery(this).val() + " in string " + sTags + " = " + sTags.indexOf( "," + jQuery(this).val()   ) ) ;
-						if( sTags.indexOf( "," + jQuery(this).val() + ","  ) > -1 ) {
-							needTohide = false ;
-							return false ;
-						}
-					}
-
-				}) ;
-
-
-                if( needTohide ) {
-                    jQuery(this).addClass('d-none') ;
-                }
-            } else {
-                jQuery(this).addClass('d-none') ;
-            }
-        }
-
-        if( cCatChecked ) {
-            var sCats = jQuery(this).data("catuids") ;
-            // console.log( " sCats : " + sCats ) ;
-            if( sCats ) {
-                sCats = "," + sCats + "," ;
-                needTohide = true ;
-                jQuery( cCats ).each( function() {
-					// console.log( jQuery(this).prop("checked") ) ;
-                    if ( jQuery(this).prop("checked") ) {
-                      //  console.log( "position: " + sCats.indexOf( jQuery(this).val()  ) ) ;
-                        if( sCats.indexOf( "," + jQuery(this).val() + ","  ) > -1 ) {
-                            needTohide = false ;
-                            return false ;
-                        }
+            if( fTag && fTag.val() > 0 ) {
+                var fTags = jQuery(this).data("taguids") ;
+                if( fTags ) {
+                    fTags = fTags.split(",") ;
+                    if( fTags.indexOf( fTag.val() ) < 0 ) {
+                        jQuery(this).addClass('d-none') ;
                     }
-
-                }) ;
-                if( needTohide ) {
+                } else {
                     jQuery(this).addClass('d-none') ;
                 }
+
+            }
+            if( fCity && fCity.length > 0 ) {
+                if(  fCity.val().length > 0 ) {
+                    if( decodeURI (jQuery(this).data("cityuid"))  !== fCity.val() ) {
+                        jQuery(this).addClass('d-none') ;
+                    }
+                }
+            }
+
+            if( fCat && fCat.val() > 0 ) {
+                var fCats = jQuery(this).data("catuids") ;
+                if( fCats ) {
+                    fCats = fCats.split(",") ;
+                    if( fCats.indexOf( fCat.val() ) < 0 ) {
+                        jQuery(this).addClass('d-none') ;
+                    }
+                } else {
+                    jQuery(this).addClass('d-none') ;
+                }
+            }
+            if( fOrg && fOrg.val() > 0 ) {
+    //            console.log( " data-orguid : " + jQuery(this).data("orguid")  + " Filter: " + fOrg.val() ) ;
+                if( parseInt( jQuery(this).data("orguid"))  !== parseInt( fOrg.val()) ) {
+                    jQuery(this).addClass('d-none') ;
+                }
+            }
+
+            if( cTagChecked  ) {
+                var sTags = jQuery(this).data("taguids") ;
+               //  console.log( " sTags : " + sTags ) ;
+
+                if( sTags ) {
+                    sTags = "," + sTags + "," ;
+                    needTohide = true ;
+                    jQuery( cTags ).each( function() {
+                       //  console.log( "Tag: " + jQuery(this).val() + "checked ? : " + jQuery(this).prop("checked") ) ;
+                        if ( jQuery(this).prop("checked") ) {
+                          //  console.log( "position of " + jQuery(this).val() + " in string " + sTags + " = " + sTags.indexOf( "," + jQuery(this).val()   ) ) ;
+                            if( sTags.indexOf( "," + jQuery(this).val() + ","  ) > -1 ) {
+                                needTohide = false ;
+                                return false ;
+                            }
+                        }
+
+                    }) ;
+
+
+                    if( needTohide ) {
+                        jQuery(this).addClass('d-none') ;
+                    }
+                } else {
+                    jQuery(this).addClass('d-none') ;
+                }
+            }
+
+            if( cCatChecked ) {
+                var sCats = jQuery(this).data("catuids") ;
+                // console.log( " sCats : " + sCats ) ;
+                if( sCats ) {
+                    sCats = "," + sCats + "," ;
+                    needTohide = true ;
+                    jQuery( cCats ).each( function() {
+                        // console.log( jQuery(this).prop("checked") ) ;
+                        if ( jQuery(this).prop("checked") ) {
+                          //  console.log( "position: " + sCats.indexOf( jQuery(this).val()  ) ) ;
+                            if( sCats.indexOf( "," + jQuery(this).val() + ","  ) > -1 ) {
+                                needTohide = false ;
+                                return false ;
+                            }
+                        }
+
+                    }) ;
+                    if( needTohide ) {
+                        jQuery(this).addClass('d-none') ;
+                    }
+                } else {
+                    jQuery(this).addClass('d-none') ;
+                }
+            }
+            if ( jQuery(this).hasClass('d-none')) {
+                filterIsActive = true ;
             } else {
-                jQuery(this).addClass('d-none') ;
+                needTohideDay = false ;
             }
         }
-        if ( jQuery(this).hasClass('d-none')) {
-            filterIsActive = true ;
-		}
+
 	});
+    if( lastDay && needTohideDay ) {
+        jQuery(lastDay).addClass('d-none') ;
+    }
 
 
 	if ( filterIsActive ) {
@@ -513,10 +596,13 @@ function jv_events_refreshList(){
         if( fCity && fCity.val() != ''  ) {
             urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][citys]=" + fCity.val() ;
         }
-        if( fMonth && fMonth.val() != ''  ) {
+        if( fMonth && fMonth.val() != 'undefined'  ) {
             urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][months]=" + fMonth.val() ;
         }
-
+      /*  if( startDate.length && startDate.val() != 'undefined' ) {
+            urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][overruleStartdate]=" + startDate.val() ;
+        }
+    */
         jv_events_pushUrl( urlFilter ) ;
 
 

@@ -24,10 +24,11 @@ Otherwise your changes will be overwritten the next time you save the extension 
 	</f:if>
 	<f:flashMessages />
 
-	<div class="jv_events_{settings.LayoutList} {settings.list.additionalClass}">
+	<div class="jv_events_{layoutList} {settings.list.additionalClass}">
 		<f:if condition="{organizers}">
 			<f:then>
 				<f:render partial="Organizer/List/Partial{layoutList}/Header" arguments="{settings: settings}" />
+				<f:render partial="Organizer/List/Partial{layoutList}/Filter" arguments="{orgFilter: orgFilter, settings: settings}" />
 
 				<f:for each="{organizers}" as="organizer">
 					<f:render partial="Organizer/List/Partial{layoutList}/SingleOrganizer" arguments="{organizer:organizer, settings: settings}" />
