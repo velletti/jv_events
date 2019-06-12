@@ -140,12 +140,15 @@ class EventRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 		// $settings['debug'] = 2 ;
 		if ($settings['debug'] == 2 ) {
             $queryParser = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class);
-            echo "<pre>" ;
+
             $sqlquery = $queryParser->convertQueryToDoctrineQueryBuilder($query)->getSQL() ;
-            var_dump($sqlquery) ;
+            echo "<html><body><div>";
+            echo $sqlquery ;
             echo "<hr>Values: <br>" ;
             $values = ($queryParser->convertQueryToDoctrineQueryBuilder($query)->getParameters()) ;
+            echo "<pre>" ;
             echo var_export($values , true ) ;
+            echo "</pre>" ;
             $from = array() ;
             $to = array() ;
             foreach (array_reverse( $values ) as $key => $value) {
@@ -154,8 +157,8 @@ class EventRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             }
             $sqlFinalQuery = str_replace($from , $to , $sqlquery ) ;
             echo "<hr>Final: <br>" ;
-            echo $sqlFinalQuery ;
-            echo "<br><hr><br>" ;
+            echo str_replace( array( "(" , ")" )  , array("<br>(" , ")<br>" ) , $sqlFinalQuery ) ;
+            echo "<br><hr><br></div></body></html>" ;
 
             die;
         }
@@ -214,7 +217,7 @@ class EventRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 			}
             $startDate->setTime(0,0,0) ;
 
-            $endDate->setTime(0,0,0) ;
+            $endDate->setTime(23,59,59) ;
 
             // Now set  the Date values of the Event when it starts or ends
             $constraints[] = $query->greaterThanOrEqual('start_date', $startDate );

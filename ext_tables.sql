@@ -102,7 +102,8 @@ CREATE TABLE tx_jvevents_domain_model_event (
 	PRIMARY KEY (uid),
 	KEY parent (pid),
 	KEY t3ver_oid (t3ver_oid,t3ver_wsid),
- KEY language (l10n_parent,sys_language_uid)
+	KEY index (start_date, start_time, sorting),
+  KEY language (l10n_parent,sys_language_uid)
 
 );
 
