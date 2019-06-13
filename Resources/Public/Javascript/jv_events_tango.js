@@ -189,16 +189,22 @@ function jv_events_refreshTags() {
 //  ############   generic function for everyone: test if a spezific Parameter is in URL and return its value ###########
 function jv_events_GetURLParameter(sParam) {
 	var sPageURL = window.location.search.substring(1);
+	if ( sPageURL.indexOf("%5B") > 0 || sPageURL.indexOf("%5D") > 0  ) {
+        sPageURL = decodeURI(sPageURL) ;
+    }
 	var sURLVariables = sPageURL.split('&');
 	for (var i = 0; i < sURLVariables.length; i++) {
 		var sParameterName = sURLVariables[i].split('=');
-		if (sParameterName[0] == sParam) {
+		if (sParameterName[0] == sParam || sParameterName[0] == "amp;" + sParam  ) {
 			return  decodeURIComponent(sParameterName[1]);
 		}
 	}
 }
 function jv_events_GetURLnonEventParms( noIdandLang ) {
     var sPageURL = window.location.search.substring(1);
+    if ( sPageURL.indexOf("%5B") > 0 || sPageURL.indexOf("%5D") > 0  ) {
+        sPageURL = decodeURI(sPageURL) ;
+    }
     var sURLVariables = sPageURL.split('&');
     var ret = '' ;
     for (var i = 0; i < sURLVariables.length; i++) {
