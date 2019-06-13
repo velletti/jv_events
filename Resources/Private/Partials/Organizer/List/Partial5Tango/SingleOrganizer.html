@@ -66,8 +66,20 @@
                         {tagnames}
                         <f:if condition="{organizer.organizerCategory}">
                             <br>
-                            <f:for each="{organizer.organizerCategory}" as="Category" iteration="iteration">
-                                <f:render partial="Organizer/Single/Partial5Tango/CategoryIcon" arguments="{uid: Category.uid, text: Category.title}"/>
+                            <f:for each="{organizer.organizerCategory}" as="category" iteration="iteration">
+                                <f:if condition="{category.description}">
+                                    <f:then>
+                                        <a class="info" href="#" data-toggle="modal" data-target="#jv_events_cat_modal-{category.id}">
+                                            <f:render partial="Organizer/Single/Partial5Tango/CategoryIcon" arguments="{uid: category.uid, text: category.title}"/>
+                                        </a>
+
+                                    </f:then>
+                                    <f:else>
+                                        <f:render partial="Organizer/Single/Partial5Tango/CategoryIcon" arguments="{uid: category.uid, text: category.title}"/>
+                                    </f:else>
+                                </f:if>
+
+
                             </f:for>
                         </f:if>
                     </div>

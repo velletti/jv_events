@@ -87,11 +87,22 @@
 	<!-- =============================================================================================================================== -->
 	<hr>
 	<!-- =============================================================================================================================== -->
-	<f:if condition="{event.price}">
+	<f:if condition="{event.price} || {event.priceReducedText}">
 		<div class="row">
 			<div class="col-md-3"><strong><f:translate key="tx_jvevents_domain_model_event.price" />:</strong></div>
 			<div class="col-md-9">
-				<f:format.number decimals="2">{event.price}</f:format.number> €
+				<f:if condition="{event.price}">
+					<f:format.number decimals="2">{event.price}</f:format.number> {event.currency}
+				</f:if>
+
+				<f:if condition="{event.priceReducedText} || event.priceReduced}">
+					<br>
+					<f:if condition="{event.price}">
+						<f:format.number decimals="2">{event.priceReduced}</f:format.number> {event.currency}
+					</f:if>
+					 {event.priceReducedText}
+				</f:if>
+
 			</div>
 		</div>
 	</f:if>
@@ -197,6 +208,7 @@
 		<div class="tab-pane {tabDescActive} p-3" id="jv_events_event">
 			<div class="row">
 				<div class="col-12 col-md-8">
+
 
 					<div class="data clearfix">
 						<f:format.html parseFuncTSPath="lib.jveventsRTE">{event.description}</f:format.html>
@@ -382,6 +394,17 @@
 						</f:else>
 					</f:if>
 					<br />
+					<f:if condition="{event.organizer.organizerCategory}">
+
+						<f:for each="{event.organizer.organizerCategory}" as="category">
+							<f:render partial="Organizer/Single/Partial5Tango/CategoryIcon" arguments="{uid: category.uid, text: category.title}"/>
+							<f:if condition="{category.description}">
+								<a class="info" href="#" data-toggle="modal" data-target="#jv_events_cat_modal-{category.uid}"><span class="fa fa-info-circle mh-sm" title="info"></span></a>
+								<f:render partial="Organizer/Single/Partial5Tango/CategoryModal" arguments="{category: category, id: category.uid}"/>
+							</f:if>
+
+						</f:for>
+					</f:if>
 					<br />
 
 
