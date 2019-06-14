@@ -94,6 +94,7 @@ class EventController extends BaseController
         //  $propertyMappingConfiguration->allowProperties('tags') ;
 
         parent::initializeAction() ;
+        $this->debugArray[] = "Init Done:" . intval(1000 * ($this->microtime_float()  - $this->timeStart ) ) . " Line: " . __LINE__ ;
 	}
     /**
      * action list
@@ -102,7 +103,6 @@ class EventController extends BaseController
      */
     public function listAction()
     {
-
         $this->debugArray[] = "After Init :" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " Line: " . __LINE__ ;
 
         if( $this->request->hasArgument('overruleFilter')) {
@@ -132,12 +132,9 @@ class EventController extends BaseController
 
             // https://tango.ddev.local/index.php?id=9&L=0&&tx_jvevents_events[eventsFilter][organizers]=1&tx_jvevents_events[eventsFilter][tags]=5,6,8,7,10,4,1,20,11,14,&tx_jvevents_events[eventsFilter][citys]=undefined&tx_jvevents_events[eventsFilter][months]=undefined&tx_jvevents_events[overruleFilter][category]=true&no_cache=1
         }
-
-
+        $this->debugArray[] = "Load Events:" . intval(1000 * ($this->microtime_float()  - $this->timeStart ) ) . " Line: " . __LINE__ ;
         /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $events */
         $events = $this->eventRepository->findByFilter(false, false,  $this->settings );
-
-
         $this->view->assign('events', $events);
         // read settings from Flexform .. if not set, take it from typoscript setup
         if( intval( $this->settings['detailPid'] ) < 1 ) {
@@ -149,6 +146,8 @@ class EventController extends BaseController
 
         $this->view->assign('eventsFilter', $eventsFilter);
         $this->view->assign('settings', $this->settings );
+        $this->debugArray[] = "before Render:" . intval(1000 * ($this->microtime_float()  - $this->timeStart ) ) . " Line: " . __LINE__ ;
+        $this->view->assign('debugArray', $this->debugArray );
     }
     
     /**

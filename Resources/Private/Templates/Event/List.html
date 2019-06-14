@@ -4,7 +4,7 @@
 	<f:variable name="lastDate">99.99.9999</f:variable>
 <f:flashMessages />
 
-	<f:render partial="Debug/CheckInstallation" arguments="{modulelist: 'TRUE' , event:event, settings: settings}" />
+	<f:render partial="Debug/CheckInstallation" arguments="{modulelist: 'TRUE' , event:event, settings: settings, debugArray: debugArray}" />
 	<f:if condition="{settings.EmConfiguration.useGeoLocation}">
 		<f:then>
 			<div id="jv_events_geo" class="hidden d-none" data-askUser="1" data-lng="{settings.list.longitude}" data-lat="{settings.list.latitude}">
