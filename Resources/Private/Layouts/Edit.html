@@ -10,6 +10,15 @@
 <script type="text/javascript" src="/typo3conf/ext/jv_events/Resources/Public/Javascript/ckeditor/ckeditor.js"></script>
 
 
+<f:flashMessages as="flashMessages">
+	<f:if condition="{flashMessages}">
+		<div class="alert alert-warning my-3">
+			<f:for each="{flashMessages}" as="flashMessage">
+				<div>{flashMessage.message}</div>
+			</f:for>
+		</div>
+	</f:if>
+</f:flashMessages>
 
 <div class="tx-jv-events">
 	<div class="alert alert-warning js-warning-disabled">Warning: If this message does not disapear automatically, you have javascript diabled (or we have an javascript error). <br>This website does not work properly, if javascript is disabled.</div>

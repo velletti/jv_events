@@ -555,12 +555,10 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
     public function hasUserAccess( $organizer ) {
         if(! is_object( $organizer ) ) {
-
            return false ;
         }
         $feuserUid = intval( $GLOBALS['TSFE']->fe_user->user['uid'] ) ;
         $users = GeneralUtility::trimExplode("," , $organizer->getAccessUsers() , TRUE ) ;
-
         if( in_array( $feuserUid  , $users )) {
             return true  ;
         } else {
