@@ -1,22 +1,19 @@
 
 <f:layout name="Default" />
 
-This Template is responsible for displaying a single view for a domain object
-
-If you modify this template, do not forget to change the overwrite settings
-in /Configuration/ExtensionBuilder/settings.yaml:
-  Resources:
-    Private:
-      Templates:
-        Show.html: keep
-
-Otherwise your changes will be overwritten the next time you save the extension in the extension builder
-
 <f:section name="main">
-<h1>Single View for Organizer</h1>
+
+  <f:if condition="{settings.LayoutList}">
+    <f:then>
+      <f:variable name="layoutList">{settings.LayoutList}</f:variable>
+    </f:then>
+    <f:else>
+      <f:variable name="layoutList">5Tango</f:variable>
+    </f:else>
+  </f:if>
 
 <f:flashMessages />
-<f:render partial="Organizer/Properties" arguments="{organizer:organizer}" />
-<f:link.action action="list">Back to list</f:link.action><br />
-<f:link.action action="new">New Organizer</f:link.action>
+
+  <f:render partial="Organizer/List/Partial{layoutList}/SingleOrganizer" arguments="{organizer:organizer, settings: settings, showDetails: '1' }" />
+
 </f:section>

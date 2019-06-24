@@ -419,7 +419,7 @@ function jv_events_refreshList(){
     var lastDay = false ;
     var needTohideDay = true ;
 	jQuery('.tx-jv-events DIV.jv-events-row').each(function (i) {
-        console.log( " ************* single row **************** UID: " + jQuery(this).data("orguid")  ) ;
+     //   console.log( " ************* single row **************** UID: " + jQuery(this).data("orguid")  ) ;
 		jQuery(this).removeClass('d-none') ;
         if( jQuery(this).hasClass("jvevents-newDay")) {
             if( lastDay && needTohideDay ) {
@@ -470,15 +470,15 @@ function jv_events_refreshList(){
 
             if( cTagChecked  ) {
                 var sTags = jQuery(this).data("taguids") ;
-                 console.log( " sTags : " + sTags ) ;
+            //     console.log( " sTags : " + sTags ) ;
 
                 if( sTags ) {
                     sTags = "," + sTags + "," ;
                     needTohide = true ;
                     jQuery( cTags ).each( function() {
-                        console.log( "Tag: " + jQuery(this).val() + "checked ? : " + jQuery(this).prop("checked") ) ;
+                    //    console.log( "Tag: " + jQuery(this).val() + "checked ? : " + jQuery(this).prop("checked") ) ;
                         if ( jQuery(this).prop("checked") ) {
-                            console.log( "position of " + jQuery(this).val() + " in string " + sTags + " = " + sTags.indexOf( "," + jQuery(this).val()   ) ) ;
+                    //        console.log( "position of " + jQuery(this).val() + " in string " + sTags + " = " + sTags.indexOf( "," + jQuery(this).val()   ) ) ;
                             if( sTags.indexOf( "," + jQuery(this).val() + ","  ) > -1 ) {
                                 needTohide = false ;
                                 return false ;
@@ -518,7 +518,7 @@ function jv_events_refreshList(){
             }
             if ( jQuery(this).hasClass('d-none')) {
                 filterIsActive = true ;
-                console.log(" Event is hidden:" + jQuery(this).data("eventuid")) ;
+              //  console.log(" Event is hidden:" + jQuery(this).data("eventuid")) ;
             } else {
                 needTohideDay = false ;
             }
@@ -531,8 +531,10 @@ function jv_events_refreshList(){
 
 
 	if ( filterIsActive ) {
-		jQuery( "#filter-events BUTTON").addClass('d-none') ;
-		jQuery( "#filter-organizer BUTTON").addClass('d-none') ;
+		jQuery( "#filter-events BUTTON .jv-events-filter-sub-text").addClass('d-none') ;
+		jQuery( "#filter-events BUTTON").addClass('rotate-180') ;
+		jQuery( "#filter-organizer BUTTON .jv-events-filter-sub-text").addClass('d-none') ;
+        jQuery( "#filter-organizer BUTTON SVG").addClass('rotate-180') ;
 		jQuery( "#filter-reset-events").removeClass('d-none') ;
 		jQuery( "#filter-result-hint-events").removeClass('d-none') ;
 
@@ -587,7 +589,10 @@ function jv_events_refreshList(){
 
 
 	} else {
-        jQuery( "#filter-events BUTTON").removeClass('d-none') ;
+        jQuery( "#filter-events BUTTON .jv-events-filter-sub-text").removeClass('d-none') ;
+        jQuery( "#filter-organizer BUTTON .jv-events-filter-sub-text").removeClass('d-none') ;
+        jQuery( "#filter-events BUTTON SVG").removeClass('rotate-180') ;
+        jQuery( "#filter-organizer BUTTON SVG").removeClass('rotate-180') ;
         jQuery( "#filter-reset-events").addClass('d-none') ;
         jQuery( "#filter-result-hint-events").addClass('d-none') ;
       //  jv_events_pushUrl( '' ) ;

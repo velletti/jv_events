@@ -144,6 +144,15 @@ $returnArray = array(
                 'type' => 'passthrough',
             ),
         ),
+        'sorting' => array(
+            'exclude' => 1,
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.sorting',
+            'config' => array(
+                'type' => 'passthrough',
+            ),
+        ),
+
+
 
 		'name' => array(
 			'exclude' => 0,

@@ -65,6 +65,15 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     protected $crdate ;
 
+
+    /**
+     * get Sorting Postion
+     *
+     * @var int
+     */
+    protected $sorting ;
+
+
     /**
      * lastmod Date as timestring
      *
@@ -647,6 +656,38 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function setSalesForceUserOrg($salesForceUserOrg)
     {
         $this->salesForceUserOrg = $salesForceUserOrg;
+    }
+
+    /**
+     * @return int
+     */
+    public function getUid()
+    {
+        return $this->uid;
+    }
+
+    /**
+     * @param int $uid
+     */
+    public function setUid($uid)
+    {
+        $this->uid = $uid;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSorting()
+    {
+        return $this->sorting;
+    }
+
+    /**
+     * @param int $sorting
+     */
+    public function setSorting($sorting)
+    {
+        $this->sorting = $sorting;
     }
 
 

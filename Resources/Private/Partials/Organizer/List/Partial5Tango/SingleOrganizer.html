@@ -92,6 +92,17 @@
 
                     </div>
                 </div>
+                <f:if condition="{showDetails}">
+                    <div class="col-12 order-4 py-2 bg-gradient-light ">
+                        <f:format.html>{organizer.description}</f:format.html>
+                        <f:security.ifHasRole role="adminOrganizer">
+                            <br>
+                            <div class="small">Id: {organizer.uid} - Pos: {organizer.sorting} </div>
+                        </f:security.ifHasRole>
+
+                    </div>
+                </f:if>
+
             </div>
         </div>
     </div>
