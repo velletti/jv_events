@@ -259,8 +259,8 @@ class AjaxController extends BaseController
                 }
 
                 $output['event']['name'] = $event->getName() ;
-                $output['event']['price'] = $event->getPrice();
-                $output['event']['currency'] = $event->getCitrixUid();
+                $output['event']['price'] = round( $event->getPrice() , 2 ) ;
+                $output['event']['currency'] = $event->getCurrency() ;
                 $output['event']['priceReduced'] = $event->getPriceReduced();
                 $output['event']['priceReducedText'] = $event->getPriceReducedText();
 
