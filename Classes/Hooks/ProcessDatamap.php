@@ -365,8 +365,9 @@ class ProcessDatamap {
 
             'EndDate' =>  $endD ,
             'StartDate' =>  $startD   ,
+            'Typo3Id__c' =>  $this->event->getUid()    ,
 
-            'Status' =>  'pending'   ,  // see https://doc.allplan.com/display/SFDOC/Event+Registration+Mapping+Tables
+            'Status' =>  'ongoing'   ,  // see https://doc.allplan.com/display/SFDOC/Event+Registration+Mapping+Tables
             // and https://doc.allplan.com/display/SFDOC/Event+Campaign+Definition maybe  replaced by "ongoing"
 
             'Type' =>  'Outbound - Event'   ,
@@ -426,6 +427,7 @@ class ProcessDatamap {
         }
         if( !$configuration['enableSalesForceLightning']  ) {
             unset( $data['AllplanOrganization__c']) ;
+            unset( $data['Typo3Id__c']) ;
             unset( $data['ListPricePerCampaignMember__c']) ;
             $data['Type'] = "Event" ;
           //  $data['OwnerId']  =    trim( $this->event->getOrganizer()->getSalesForceUserId())  ;
