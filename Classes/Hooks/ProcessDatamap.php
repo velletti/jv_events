@@ -352,7 +352,7 @@ class ProcessDatamap {
 
 
         $SummerTime = new \DateTime( $start->format("Y-M-d" ) . ' Europe/Berlin');
-        $this->flashMessage['NOTICE'][] = "Date Formated : " . $start->format("d-M-Y" ) . ' as NEW Date for SummerTime ! : ' . $SummerTime->format( "d.m.Y H:i:s (I) ") ;
+       // $this->flashMessage['NOTICE'][] = "Date Formated : " . $start->format("d-M-Y" ) . ' as NEW Date for SummerTime ! : ' . $SummerTime->format( "d.m.Y H:i:s (I) ") ;
 
 
 
