@@ -9,8 +9,18 @@
                     <button class="btn btn-outline-primary btn-xs rounded-circle" href="#">
                         <i class="fas fa-edit "></i>
                     </button>
-                    <span class="d-none d-md-inline-block">Event</span>
+                    <span class="d-none d-md-inline-block">edit</span>
                 </f:link.action>
+
+                <f:if condition="{settings.pageIds.addMedia}">
+                    <f:link.page pageUid="{settings.pageIds.addMedia}" noCache="true" class="nav-link  px-1" title="Add Teaser Image to Event" additionalParams="{tx_jvmediaconnector_connector: {action: 'list', controller: 'Media' ,  reference: {id: output.event.eventId, table: 'tx_jvevents_domain_model_event' , fieldname: 'teaser_image' , maxRelations: '1' }}}">
+                        <button class="btn btn-outline-primary btn-xs rounded-circle" href="#">
+                            <i class="fas fa-image"></i>
+                        </button>
+                        <span class="d-none d-md-inline-block">Image</span>
+                    </f:link.page>
+                </f:if>
+
 
                 <f:link.action id="jv-events-cancelEvent-link" absolute="true" noCacheHash="true" pageUid="{settings.pageIds.editEvent}" class="nav-link  px-1" title="Cancel Event" action="cancel" controller="Event" arguments="{event: output.event.eventId}">
                     <input id="jv-events-cancelEvent"   type="checkbox" {f:if(condition: '{output.event.canceled}' , else : 'checked' )} data-onstyle="primary" data-offstyle="secondary" data-toggle="toggle" data-style="ios " data-on="{f:if(condition: '{output.event.canceled}' , else: 'Active' , then: 'activating ..' )}" data-off="{f:if(condition: '{output.event.canceled}' , then:'Canceled!' , else: 'Canceling ...' )}">

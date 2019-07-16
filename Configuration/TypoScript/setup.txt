@@ -131,6 +131,9 @@ plugin.tx_jvevents_events {
 
             # Falback id: if not event list ID is definied, go here :
 			eventList = 0
+
+			# If extension jv Media Connector is installed, add page ID of the plugin Page with List controller
+			addMedia = 0
 		}
 		feEdit {
 		    enabled = 0
