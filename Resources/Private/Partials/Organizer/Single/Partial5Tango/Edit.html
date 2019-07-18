@@ -6,11 +6,35 @@
 <div class="card col-12   jv-events-partial{settings.LayoutSingle}" id="jv-event-edit-data">
     <div class="card-header text-white bg-primary"> <span class="glyphicon glyphicon-edit"></span>
         <span class="fas fa-edit border-primary rounded-circle"></span>
-        <span><f:translate key="tx_jvevents_domain_model_location.Edit">Edit Location</f:translate></span>
+        <span><f:translate key="tx_jvevents_domain_model_organizer.Edit">Edit Organizer</f:translate></span>
     </div>
     <div class="card-body row">
         <div class="col-md-4 equalHeight">
+            <f:variable name="imageButton">Change Image</f:variable>
+            <f:if condition="{organizer.teaserImage}">
+                <f:then>
+                    <f:image src="{organizer.teaserImage.uid}" class="d-block w-100 h-auto img-float rounded shadow-lg" alt="{organizer.teaserImage.alternative}" title="{organizer.teaserImage.title}" width="{settings.list.image.width}c" maxWidth="{settings.list.image.width}" maxHeight="{settings.list.image.height}" treatIdAsReference="true" />
+                </f:then>
+                <f:else>
+                    <f:variable name="imageButton">Add Image</f:variable>
+                    <div class="alert alert-info small">
+                        Teaserimage missing<br>
+                    </div>
+                </f:else>
+            </f:if>
+            <br/>
+
+                <f:link.page pageUid="{settings.pageIds.addMedia}" noCache="true" class="nav-link  px-1" title="Add Teaser Image " additionalParams="{tx_jvmediaconnector_connector: {action: 'list', controller: 'Media' ,  reference: {id: organizer.uid, table: 'tx_jvevents_domain_model_organizer' , fieldname: 'teaser_image' , maxRelations: '1' , returnPid: settings.pageId , returnArray: {tx_jvevents_events: {action: 'edit', organizer: organizer.uid }}}}}">
+                    <button class="btn btn-outline-primary btn-xs rounded-circle" href="#">
+                        <i class="fas fa-image"></i>
+                    </button>
+                    <span class="d-none d-md-inline-block">{imageButton}</span>
+                </f:link.page>
+            <br/>
+
             <f:render partial="FeEditHelp" arguments="{section: 'organizer', object: organizer , settings: settings , user: user}" />
+
+
         </div>
         <div class="col-md-8 equalHeight">
             <f:render partial="HasFormErrors" arguments="{object:organizer, debug: 'false' }" />

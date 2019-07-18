@@ -202,6 +202,7 @@ class AjaxController extends BaseController
         }
         $output = array (
             "requestId" =>  intval( $GLOBALS['TSFE']->id ) ,
+
             "event" => array()  ,
             "events" => array()  ,
             "eventsFilter" => array()  ,
@@ -216,6 +217,10 @@ class AjaxController extends BaseController
             "location" => array() ,
 
         ) ;
+        if( $this->request->hasArgument('returnPid')) {
+            $output['returnPid'] = $this->request->getArgument('returnPid') ;
+        }
+
         $needToStore = FALSE ;
         /* ************************************************************************************************************ */
         /*   Get infos about: EVENT
