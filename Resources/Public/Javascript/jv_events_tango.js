@@ -265,6 +265,9 @@ function jv_events_init() {
     jQuery('#overruleFilterStartDate' ).change(function(i) {
         jv_events_reloadList() ;
     });
+    if( ! jQuery('#jv_events_filter_citys' ).length && ! jQuery('#jv_events_filter_organizers' ).length ) {
+        jQuery( 'legend.jv_events_filter_more').addClass('d-none') ;
+    }
 
     /*
     // Set the fieldsets to the same height

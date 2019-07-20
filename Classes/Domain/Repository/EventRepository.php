@@ -101,6 +101,9 @@ class EventRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         if( $settings['filter']['tags']  ) {
             $constraints = $this->getTagContraints($constraints,  $settings , $configuration , $query );
         }
+        if( $settings['filter']['organizer']  ) {
+            $constraints[] = $query->equals("organizer",  $settings['filter']['organizer'] );
+        }
 
         if( $settings['filter']['citys']  ) {
             $constraints[] = $query->logicalAnd( $query->in("location" , \TYPO3\CMS\CORE\Utility\GeneralUtility::trimExplode( "," , $settings['filter']['citys'])) ) ;

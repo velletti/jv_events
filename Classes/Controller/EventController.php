@@ -129,6 +129,11 @@ class EventController extends BaseController
                   $this->settings['filter']['maxDays'] = intval( $filter['maxDays'] ) ;
                 }
             }
+            if( array_key_exists( "organizer" , $filter )) {
+                if( $filter['organizer']  ) {
+                    $this->settings['filter']['organizer'] = intval( $filter['organizer'] ) ;
+                }
+            }
 
             // https://tango.ddev.local/index.php?id=9&L=0&&tx_jvevents_events[eventsFilter][organizers]=1&tx_jvevents_events[eventsFilter][tags]=5,6,8,7,10,4,1,20,11,14,&tx_jvevents_events[eventsFilter][citys]=undefined&tx_jvevents_events[eventsFilter][months]=undefined&tx_jvevents_events[overruleFilter][category]=true&no_cache=1
         }

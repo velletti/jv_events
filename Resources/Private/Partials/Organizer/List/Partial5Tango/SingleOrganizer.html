@@ -86,7 +86,7 @@
 
 
                     <div class="text-right position-bottom position-right">
-                        <f:link.page class="badge badge-secondary m-2 py-2" pageUid="{settings.pageIds.eventList}" additionalParams="{'tx_jvevents_events' : {'eventsFilter': {'organizers': '{organizer.uid}'},'overruleFilter': {'category' : 'true'}}}">
+                        <f:link.page class="badge badge-secondary m-2 py-2" pageUid="{settings.pageIds.eventList}" additionalParams="{tx_jvevents_events: {overruleFilter: {organizer: '{organizer.uid}', category : 'true' , maxDays: 90}}}">
                             <span class="fas fa-calendar-alt "></span> Termine >>
                         </f:link.page>
 
