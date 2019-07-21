@@ -252,15 +252,17 @@ function jv_events_init() {
 
 	/* jv_events_initOneFilter('months') ; */
 	if( jQuery('#jv_events_geo').length > 0 ) {
-	    console.log("#jv_events_geo').length > 0 ") ;
+	   // console.log("#jv_events_geo').length > 0 ") ;
         if( jQuery('#jv_events_geo').data("askuser" )  == "1") {
-            console.log("#jv_events_geo askuser  == 1  ") ;
+          //  console.log("#jv_events_geo askuser  == 1  ") ;
             if (navigator.geolocation) {
-                console.log("navigator.geolocation ") ;
+            //    console.log("navigator.geolocation ") ;
                 navigator.geolocation.getCurrentPosition(jv_events_initPosition);
 
             }
         }
+        jQuery('#jv_events_geo_disp_sub').removeClass("d-none") ;
+        jQuery('#jv_events_geo_disp .fa-spinner').addClass("d-none") ;
 	}
     jv_events_initOneFilter('distance') ;
     jQuery('#filter-reset-events' ).click(function(i) {
@@ -357,12 +359,9 @@ function jv_events_initPosition(position) {
             jv_events_refreshList() ;
             jQuery('#jv_events_geo').data("allowed" , 1 ) ;
         }
+        jQuery('#jv_events_geo_disp BUTTON').attr( "title" , "Lng: " + position.coords.longitude.toFixed(6) + " / Lat: " +  position.coords.latitude.toFixed(6) )
 
-
-		jQuery('#jv_events_geo_disp_sub').removeClass("d-none") ;
-		jQuery('#jv_events_geo_disp .fa-spinner').addClass("d-none") ;
-		jQuery('#jv_events_geo_disp BUTTON').attr( "title" , "Lng: " + position.coords.longitude.toFixed(6) + " / Lat: " +  position.coords.latitude.toFixed(6) )
-	}
+    }
 }
 
 function jv_events_initOneFilter(filterName) {
