@@ -159,7 +159,7 @@
 					<f:image src="{event.teaserImage.uid}" class="d-block w-100 h-auto img-float rounded shadow-lg" alt="{event.teaserImage.alternative}" title="{event.teaserImage.title}" width="{settings.list.image.width}c" maxWidth="{settings.list.image.width}" maxHeight="{settings.list.image.height}" treatIdAsReference="true" />
 				</f:then>
 				<f:else>
-					<div class="alert alert-info small">Teaserimage missing</div>
+					<div class="alert alert-warning small">Teaserimage missing</div>
 				</f:else>
 			</f:if>
 		</div>
