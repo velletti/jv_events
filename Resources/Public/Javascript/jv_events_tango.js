@@ -259,10 +259,12 @@ function jv_events_init() {
             //    console.log("navigator.geolocation ") ;
                 navigator.geolocation.getCurrentPosition(jv_events_initPosition);
 
+            } else {
+                jQuery('#jv_events_geo_disp_sub').removeClass("d-none") ;
+                jQuery('#jv_events_geo_disp .jv_events_geo_disp_spinner').addClass("d-none") ;
             }
         }
-        jQuery('#jv_events_geo_disp_sub').removeClass("d-none") ;
-        jQuery('#jv_events_geo_disp .fa-spinner').addClass("d-none") ;
+
 	}
     jv_events_initOneFilter('distance') ;
     jQuery('#filter-reset-events' ).click(function(i) {
@@ -360,7 +362,8 @@ function jv_events_initPosition(position) {
             jQuery('#jv_events_geo').data("allowed" , 1 ) ;
         }
         jQuery('#jv_events_geo_disp BUTTON').attr( "title" , "Lng: " + position.coords.longitude.toFixed(6) + " / Lat: " +  position.coords.latitude.toFixed(6) )
-
+        jQuery('#jv_events_geo_disp_sub').removeClass("d-none") ;
+        jQuery('#jv_events_geo_disp .jv_events_geo_disp_spinner').addClass("d-none") ;
     }
 }
 
