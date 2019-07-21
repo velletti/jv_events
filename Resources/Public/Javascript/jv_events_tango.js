@@ -253,7 +253,7 @@ function jv_events_init() {
 	/* jv_events_initOneFilter('months') ; */
 	if( jQuery('#jv_events_geo').length > 0 ) {
 	   // console.log("#jv_events_geo').length > 0 ") ;
-        if( jQuery('#jv_events_geo').data("askuser" )  == "1") {
+        if( jQuery('#jv_events_geo').data("askuser" )  == "1" && location.protocol == "https:") {
           //  console.log("#jv_events_geo askuser  == 1  ") ;
             if (navigator.geolocation) {
             //    console.log("navigator.geolocation ") ;
