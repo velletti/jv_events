@@ -1,15 +1,13 @@
 {namespace JVE=JVE\JvEvents\ViewHelpers}
 
 <f:if condition="{NoGoogleApiKeyDefined}">
-	<div class="alert alert-warning">
-		<strong style="color:red;">No Google Api Key in extension configuration defined!</strong>
-	</div>
+	<strong style="color:red;">No Google Api Key in extension configuration defined!</strong>
 </f:if>
 
 <div id="map" style="height:500px;"></div>
 
 
-<script type="text/javascript" src="/typo3conf/ext/jv_events/Resources/Public/Javascript/googleMaps.js"></script>
+<script type="text/javascript" src="/typo3conf/ext/jv_events/Resources/Public/Javascript/googleMapsTango.js"></script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key={settings.EmConfiguration.googleApiKey}&callback=initMap"></script>
 <script type="text/javascript">
 

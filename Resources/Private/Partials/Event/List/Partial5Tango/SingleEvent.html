@@ -58,8 +58,8 @@
                     {event.startTime -> f:format.date(format:"H:i")}-{event.endTime -> f:format.date(format:"H:i")} h<br>
                     <f:if condition="{event.price} > 0 ">
                         <span class="d-md-block d-sm-none d-xs-block">{event.price} {event.currency} (<f:translate key="jv_events_model_event.inclusiveVat" />)<br></span>
-
                     </f:if>
+                    <div class="jv_events_dist">.</div>
 
                 </div>
             </div>

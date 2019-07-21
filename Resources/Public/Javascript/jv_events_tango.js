@@ -249,14 +249,20 @@ function jv_events_init() {
 	jv_events_initOneFilter('citys') ;
 	jv_events_initOneFilter('tags') ;
 	jv_events_initOneFilter('organizers') ;
+
 	/* jv_events_initOneFilter('months') ; */
 	if( jQuery('#jv_events_geo').length > 0 ) {
-        if( jQuery('#jv_events_geo').data("askUser" )  == "1") {
+	    console.log("#jv_events_geo').length > 0 ") ;
+        if( jQuery('#jv_events_geo').data("askuser" )  == "1") {
+            console.log("#jv_events_geo askuser  == 1  ") ;
             if (navigator.geolocation) {
+                console.log("navigator.geolocation ") ;
                 navigator.geolocation.getCurrentPosition(jv_events_initPosition);
+
             }
         }
 	}
+    jv_events_initOneFilter('distance') ;
     jQuery('#filter-reset-events' ).click(function(i) {
         $(this).preventDefault() ;
         jv_events_filter_reset() ;
@@ -342,10 +348,20 @@ String.prototype.hashCode = function() {
 };
 
 function jv_events_initPosition(position) {
-
+    // console.log( "init Position done store to fields") ;
 	if( jQuery('#jv_events_geo').length > 0  ) {
 		jQuery('#jv_events_geo').data("lng" , position.coords.longitude ) ;
 		jQuery('#jv_events_geo').data("lat" , position.coords.latitude ) ;
+
+		if( jQuery('#jv_events_geo').data("allowed" ) == "0" ) {
+            jv_events_refreshList() ;
+            jQuery('#jv_events_geo').data("allowed" , 1 ) ;
+        }
+
+
+		jQuery('#jv_events_geo_disp_sub').removeClass("d-none") ;
+		jQuery('#jv_events_geo_disp .fa-spinner').addClass("d-none") ;
+		jQuery('#jv_events_geo_disp BUTTON').attr( "title" , "Lng: " + position.coords.longitude.toFixed(6) + " / Lat: " +  position.coords.latitude.toFixed(6) )
 	}
 }
 
@@ -400,6 +416,11 @@ function jv_events_refreshList(){
 	var fCity= jQuery("SELECT#jv_events_filter_citys") ;
 	var fCat= jQuery("SELECT#jv_events_filter_categories") ;
 	var fOrg= jQuery("SELECT#jv_events_filter_organizers") ;
+	var fDist= jQuery("SELECT#jv_events_filter_distance") ;
+	var maxDist = 99999
+    if ( fDist && fDist.val() && fDist.val().length > 0 &&  fDist.val() < 9999 ) {
+        maxDist = fDist.val() ;
+    }
     var cCats= jQuery("#jv_events_filter_categories INPUT[type=checkbox]") ;
     var cTags= jQuery("#jv_events_filter_tags INPUT[type=checkbox]") ;
     /* var startDate= jQuery("#overruleFilterStartDate") ; */
@@ -425,8 +446,13 @@ function jv_events_refreshList(){
     var needTohide = false ;
     var lastDay = false ;
     var needTohideDay = true ;
+
 	jQuery('.tx-jv-events DIV.jv-events-row').each(function (i) {
      //   console.log( " ************* single row **************** UID: " + jQuery(this).data("orguid")  ) ;
+
+        var dist = PythagorasEquirectangular( jQuery('#jv_events_geo').data("lat") , jQuery('#jv_events_geo').data("lng") , jQuery(this).data("latitude") , jQuery(this).data("longitude") ) ;
+        jQuery(this).find(".jv_events_dist").html(dist.toFixed(2) + " km") ;
+
 		jQuery(this).removeClass('d-none') ;
         if( jQuery(this).hasClass("jvevents-newDay")) {
             if( lastDay && needTohideDay ) {
@@ -436,11 +462,15 @@ function jv_events_refreshList(){
             lastDay = this ;
 
         } else {
+            if ( dist > maxDist  ) {
+                jQuery(this).addClass('d-none') ;
+            }
             if( fMonth && fMonth.val() && fMonth.val().length > 0 ) {
                 if( jQuery(this).data("monthuid") && jQuery(this).data("monthuid")  !== fMonth.val() ) {
                     jQuery(this).addClass('d-none') ;
                 }
             }
+
             if( fTag && fTag.val() > 0 ) {
                 var fTags = jQuery(this).data("taguids") ;
                 if( fTags ) {
@@ -577,6 +607,9 @@ function jv_events_refreshList(){
         if( fCat && fCat.val() > 0 ) {
             urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][categories]=" + fCat.val() ;
         }
+        if( fDist && parseInt( fDist.val()) !=  parseInt(fDist.data('default') )) {
+            urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][distance]=" + fDist.val() ;
+        }
 
         if( fTag && fTag.val() > 0 ) {
             urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][tags]=" + fTag.val() ;
@@ -627,6 +660,11 @@ function jv_events_pushUrl( urlFilter ) {
     }
 }
 function jv_events_filter_reset() {
+    var fDist= jQuery("SELECT#jv_events_filter_distance") ;
+    if( fDist) {
+        var fDistDefault = jQuery( fDist).data("default");
+        jQuery( fDist).val( fDistDefault ) ;
+    }
     var fMonth= jQuery("SELECT#jv_events_filter_months") ;
     if( fMonth) {
     	jQuery( fMonth).val("") ;
@@ -736,6 +774,22 @@ function jv_events_submit() {
 		}
 	}
 
+}
+
+function Deg2Rad( deg ) {
+    return deg * Math.PI / 180;
+}
+
+function PythagorasEquirectangular( lat1, lon1, lat2, lon2 ) {
+    lat1 = Deg2Rad(lat1);
+    lat2 = Deg2Rad(lat2);
+    lon1 = Deg2Rad(lon1);
+    lon2 = Deg2Rad(lon2);
+    var R = 6371; // km
+    var x = (lon2-lon1) * Math.cos((lat1+lat2)/2);
+    var y = (lat2-lat1);
+    var d = Math.sqrt(x*x + y*y) * R;
+    return d;
 }
 
 
