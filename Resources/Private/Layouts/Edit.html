@@ -12,11 +12,30 @@
 
 <f:flashMessages as="flashMessages">
 	<f:if condition="{flashMessages}">
-		<div class="alert alert-warning my-3">
+
 			<f:for each="{flashMessages}" as="flashMessage">
-				<div>{flashMessage.message}</div>
+				<f:switch expression="{flashMessage.severity}">
+					<f:case value="-1">
+						<f:variable name="alertClass">alert-info</f:variable>
+					</f:case>
+					<f:case value="0">
+						<f:variable name="alertClass">alert-success</f:variable>
+					</f:case>
+					<f:case value="1">
+						<f:variable name="alertClass">alert-warning</f:variable>
+					</f:case>
+					<f:case value="2">
+						<f:variable name="alertClass">alert-danger</f:variable>
+					</f:case>
+					<f:defaultCase>
+						<f:variable name="alertClass">alert-notice</f:variable>
+					</f:defaultCase>
+				</f:switch>
+				<div class="alert {alertClass} my-3">
+					<div>{flashMessage.message}</div>
+				</div>
 			</f:for>
-		</div>
+
 	</f:if>
 </f:flashMessages>
 
