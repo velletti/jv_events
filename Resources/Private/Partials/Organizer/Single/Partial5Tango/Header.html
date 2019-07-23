@@ -1,0 +1,12 @@
+<div class="py-2">
+
+</div>
+<f:if condition="{organizer.organizerCategory}">
+    <f:for each="{organizer.organizerCategory}" as="category" iteration="iteration">
+        <f:if condition="{category.description}">
+            <f:then>
+                <f:render partial="Organizer/Single/Partial5Tango/CategoryModal" arguments="{category: category , id: category.id}"/>
+            </f:then>
+        </f:if>
+    </f:for>
+</f:if>
