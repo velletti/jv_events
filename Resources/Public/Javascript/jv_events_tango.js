@@ -355,7 +355,15 @@ function jv_events_initPosition(position) {
     // console.log( "init Position done store to fields") ;
 	if( jQuery('#jv_events_geo').length > 0  ) {
 		jQuery('#jv_events_geo').data("lng" , position.coords.longitude ) ;
+
 		jQuery('#jv_events_geo').data("lat" , position.coords.latitude ) ;
+
+        if( jQuery('#lat').length > 0  ) {
+            jQuery('#lat').val(position.coords.latitude);
+        }
+        if( jQuery('#lng').length > 0  ) {
+            jQuery('#lng').val(position.coords.longitude);
+        }
 
 		if( jQuery('#jv_events_geo').data("allowed" ) == "0" ) {
             jv_events_refreshList() ;
@@ -449,11 +457,23 @@ function jv_events_refreshList(){
     var needTohide = false ;
     var lastDay = false ;
     var needTohideDay = true ;
+    if ( jQuery('#jv_events_geo').length ) {
+        var userLat = jQuery('#jv_events_geo').data("lat") ;
+        var userLng = jQuery('#jv_events_geo').data("lng") ;
+
+        if( jQuery('#lat').length > 0  && jQuery('#lat').val() > 5 ) {
+            userLat = jQuery('#lat').val();
+        }
+        if( jQuery('#lng').length > 0  && jQuery('#lng').val() > 5 ) {
+            userLng = jQuery('#lng').val();
+        }
+    }
+
 
 	jQuery('.tx-jv-events DIV.jv-events-row').each(function (i) {
      //   console.log( " ************* single row **************** UID: " + jQuery(this).data("orguid")  ) ;
 
-        var dist = PythagorasEquirectangular( jQuery('#jv_events_geo').data("lat") , jQuery('#jv_events_geo').data("lng") , jQuery(this).data("latitude") , jQuery(this).data("longitude") ) ;
+        var dist = PythagorasEquirectangular( userLat , userLng , jQuery(this).data("latitude") , jQuery(this).data("longitude") ) ;
         jQuery(this).find(".jv_events_dist").html(dist.toFixed(2) + " km") ;
 
 		jQuery(this).removeClass('d-none') ;

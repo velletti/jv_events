@@ -313,6 +313,9 @@
             <trans-unit id="tx_jvevents_domain_model_event.details.tab.map">
                 <source>Map</source>
             </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_event.filter.streetCityCountry">
+                <source>Street,City,DE</source>
+            </trans-unit>
             <trans-unit id="tx_jvevents_domain_model_event.details.tab.contact">
                 <source>Contact</source>
             </trans-unit>

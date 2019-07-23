@@ -10,8 +10,53 @@
             </p>
             <p class="text-left d-none" id="filter-reset-events"><a href="#"><span class="fa fa-trash mh-sm"></span> <f:translate key="tx_jvevents_event.filter.reset" /></a></p>
             <span class="float-right text-right">
-                <span id="jv_events_geo_disp" class="mx-3"><span id="jv_events_geo_disp_spinner"><span class="fa  fa-spinner fa-spin"></span></span> <span id="jv_events_geo_disp_sub" class="d-none"><span class="d-none d-md-inline-block"> Distances calculated from </span><button class="btn btn-outline-secondary mx-2" title="{settings.list.longitude} / {settings.list.latitude}"> <span class="fa fa-map-marked-alt"> </span></button></span></span>
+                <span id="jv_events_geo_disp" class="mx-3">
+                    <span id="jv_events_geo_disp_spinner">
+                        <span class="fa  fa-spinner fa-spin"></span>
+                    </span>
+                    <span id="jv_events_geo_disp_sub" class="d-none">
+                        <span class="d-none d-md-inline-block"> Distances calculated from </span>
+                        <button class="btn btn-outline-secondary mx-2 "  data-toggle="modal" data-target="#jv_events_maps" title="{settings.list.longitude} / {settings.list.latitude}">
+                            <span class="fa fa-map-marked-alt"> </span>
+                        </button>
+                    </span>
+                </span>
             </span>
+
+            <f:comment>
+                /* ********************************************************************************************************************* */
+            </f:comment>
+
+            <div class="modal fade show" id="jv_events_maps" tabindex="-1" role="dialog" aria-labelledby="jv_events_mapsLabel" aria-modal="true" onblur="jv_events_refreshList();">
+                <div class="modal-dialog" role="document" style="max-width: 800px">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="jv_events_mapsLabel">Select Position</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <f:render partial="SingleField/Partial{settings.LayoutList}/FormRowValue"
+                                      arguments="{property:'streetAndNr' , label: 'Street, City, DE' , translationKey: 'tx_jvevents_domain_model_event.filter.streetCityCountry' ,  maxLength: 80 , mandatory: '0' , defaultValue: 'Marienplatz 1, München, DE' }" />
+
+                            <f:render partial="SingleField/Partial{settings.LayoutList}/FormRowGeocoder"
+                                      arguments="{object: 'location' , location: location , updateFunction: 'jv_events_refreshList();' , property:'lng'  ,  property2:'lat', fa-icon: 'fas fa-map-marked-alt' , label: 'Update Map' ,  maxLength: 30 , mandatory: '1' }" />
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <f:comment>
+                /* ********************************************************************************************************************* */
+            </f:comment>
 
         </div>
         <form class="clearfix" onsubmit="this.preventDefault();">

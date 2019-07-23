@@ -1,0 +1,35 @@
+<div class="form-group display-data row">
+
+	<label for="{property}" class="control-label col-sm-4">
+		<f:if condition="{translationKey}">
+			<f:then>
+				<f:translate key="{translationKey}"><f:if condition="{label}"><f:then>{label}</f:then><f:else>{translationKey}</f:else></f:if></f:translate>
+			</f:then>
+			<f:else>
+				{label}
+			</f:else>
+		</f:if>
+	</label>
+	<div class="col-sm-8">
+		<f:if condition="{fa-icon}">
+			<f:then>
+				<div class="input-group">
+					<f:form.textfield class="form-control" id="{property}" value="{defaultValue}" maxlength="{maxLength}" />
+
+					<div class="input-group-addon btn btn-default" {f:if(condition: '{data-toggle}' , then:'data-toggle="{data-toggle}"' )}
+						 {f:if(condition:'{data-target}' , then:'data-target="{data-target}"' )} >
+						<label for="{property}" class="control-label">
+							<i class="{fa-icon}"></i>
+						</label>
+
+					</div>
+				</div>
+
+			</f:then>
+			<f:else>
+				<f:form.textfield class="form-control" id="{property}" name="{property}"  value="{defaultValue}" maxlength="{maxLength}" />
+			</f:else>
+		</f:if>
+
+	</div>
+</div>

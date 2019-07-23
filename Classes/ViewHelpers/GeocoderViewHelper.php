@@ -48,6 +48,8 @@ class GeocoderViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
 
     public function __initialize() {
         $this->registerArgument('location', 'Object', 'Single location', false);
+        $this->registerArgument('formfields', 'array', 'Field Array', false);
+        $this->registerArgument('updateFunction', 'string', 'Name of javaScript function that should run after Update Map', false);
     }
 
 
@@ -56,19 +58,25 @@ class GeocoderViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
      * Render a special sign if the field is required
      *
      * @param \JVE\JvEvents\Domain\Model\Location $location Single location
+     * @param array $formfields array Of FieldNameIds
+     * @param string $updateFunction Name of javaScript function that should run after Update Map
      * @return string
      */
-    public function render($location) {
+    public function render($location, $formfields= NULL, $updateFunction='') {
         /** @var \JVE\JvEvents\Utility\GeocoderUtility $geoCoder */
         $geoCoder = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("JVE\\JvEvents\\Utility\\GeocoderUtility") ;
+        if ($this->hasArgument('formfields')) {
+            $formfieldIds = $this->getArgument('formfields') ;
+        } else {
+            $formfieldIds["address"] = '#streetAndNr' ;
+            $formfieldIds["zip"] = '#zip' ;
+            $formfieldIds["city"] = '#city' ;
+            $formfieldIds["country"] = '#country' ;
 
-        $formfieldIds["address"] = '#streetAndNr' ;
-        $formfieldIds["zip"] = '#zip' ;
-        $formfieldIds["city"] = '#city' ;
-        $formfieldIds["country"] = '#country' ;
+            $formfieldIds["return"]["lat"] = "#lat" ;
+            $formfieldIds["return"]["lng"] = "#lng" ;
+        }
 
-        $formfieldIds["return"]["lat"] = "#lat" ;
-        $formfieldIds["return"]["lng"] = "#lng" ;
         $return = $geoCoder->javascriptCode ;
         if( $location ) {
             $locID = $location->getUid() ;
@@ -76,7 +84,7 @@ class GeocoderViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
             $locID = 0 ;
         }
 
-        $return .= $geoCoder->main(false , $locID ,"jQuery" , $formfieldIds ) ;
+        $return .= $geoCoder->main(false , $locID ,"jQuery" , $formfieldIds , $updateFunction ) ;
 
         return $return ;
     }

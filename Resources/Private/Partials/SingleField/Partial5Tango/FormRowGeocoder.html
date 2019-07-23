@@ -2,10 +2,11 @@
 
 
 <div class="form-group display-data row">
-    <f:variable name="propertyName">{object}.{property}</f:variable>
-    <f:render partial="FormErrorSingle" arguments="{property: errorProperty, field: propertyName}"/>
-    <f:variable name="propertyName2">{object}.{property2}</f:variable>
-    <f:render partial="FormErrorSingle" arguments="{property: errorProperty, field: propertyName2}"/>
+        <f:variable name="propertyName">{object}.{property}</f:variable>
+        <f:render partial="FormErrorSingle" arguments="{property: errorProperty, field: propertyName}"/>
+        <f:variable name="propertyName2">{object}.{property2}</f:variable>
+        <f:render partial="FormErrorSingle" arguments="{property: errorProperty, field: propertyName2}"/>
+
 
 
     <label class="control-label col-sm-4">
@@ -41,6 +42,6 @@
     </div>
 </div>
 <div id="map" style="height:500px;"></div>
-<jve:geocoder location="{location}">
+<jve:geocoder location="{location}" updateFunction="{updateFunction}">
 
 </jve:geocoder>

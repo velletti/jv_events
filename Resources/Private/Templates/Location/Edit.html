@@ -3,5 +3,7 @@
 
 
 <f:section name="main">
-    <f:render partial="Location/Single/Partial{settings.LayoutSingle}/Edit" arguments="{_all}" />
+    <f:if condition="{location}">
+        <f:render partial="Location/Single/Partial{settings.LayoutSingle}/Edit" arguments="{_all}" />
+    </f:if>
 </f:section>

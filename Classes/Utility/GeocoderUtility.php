@@ -70,27 +70,36 @@ class GeocoderUtility {
 	 * @param integer $uid
 	 * @param string $jQueryName
      * @param array $formfieldIds
+     * @param string $updateFunction
 	 * @return string
 	 */
-	protected function getInlineJs($addressData = false , $uid = 0 , $jQueryName = "TYPO3.jQuery" , $formfieldIds= false ){
+	protected function getInlineJs($addressData = false , $uid = 0 , $jQueryName = "TYPO3.jQuery" , $formfieldIds= false , $updateFunction='' ){
 
 		$js = '<script type="text/javascript">';
 
         if ( $addressData ) {
             // get AddressData variables from incomming array add Function to write back to fields
-            $js.= $this->inlineJsFromAddressData($addressData , $jQueryName) ;
+            $js.= $this->inlineJsFromAddressData($addressData , $jQueryName ,  $updateFunction ) ;
         } else {
             if ( $formfieldIds ) {
                 // get AddressData variables from incomming array add Function to write back to fields
-                $js.= $this->inlineJsFromFormfieldIds($formfieldIds , $jQueryName) ;
+                $js.= $this->inlineJsFromFormfieldIds($formfieldIds , $jQueryName  ,  $updateFunction ) ;
             } else {
                 // get AddressData variables from parent.window and add Function to write back to that window
-                $js.= $this->inlineJsFromParentWindow($uid , $jQueryName) ;
+                $js.= $this->inlineJsFromParentWindow($uid , $jQueryName  ,  $updateFunction  ) ;
 
             }
 
         }
-
+        $updateFunctionCode = '' ;
+        if( $updateFunction ) {
+            // $updateFunction should look like: "jv_events_refreshList();"
+            $updateFunctionName = explode("(" , $updateFunction) ;
+            $updateFunctionCode = 'if (typeof ' . $updateFunctionName[0] . ' === "function") {' . "\n" .
+                $updateFunction . "\n"
+            .'}'  . "\n"  . "\n" ;
+        }
+       // $updateFunctionCode = '' ;
 		// We need this here and not in a file, because we don't need this in the head
 		$js.= '
 		
@@ -142,17 +151,21 @@ class GeocoderUtility {
 			function concatAddress() {
                 address = "";
                 address += addressAddress;
-                address += ", ";
-                if (addressZip != ""){
+                
+                if (addressZip && addressZip != ""){
+                    address += ", ";
                     address += addressZip;
                     address += " ";
                 }
                 address += addressCity;
-                address += ", ";
-                address += addressCountry;
+                if (addressCountry && addressCountry != ""){
+                    address += ", ";
+                    address += addressCountry;
+                }
                 
                 // All addressData (without zip) have to be entered, if not, Google will find nothing and an error message is shown
-                if(addressAddress == "" || addressCity == "" || addressCountry == ""){
+                var parts = address.split(",") ;
+                if( parts.length < 2  ){
                     address = "";
                 }
 			    return address ;
@@ -195,7 +208,12 @@ class GeocoderUtility {
 					}
 			
 				});
+				// update eventlist if needed 
 				
+				'
+
+            . $updateFunctionCode .
+				'
 			}
 			
 			/**
@@ -228,11 +246,20 @@ class GeocoderUtility {
 	}
 
     /**
-     * @param $formfieldIds array of Selectors for jQuery
-     * @param $jQueryName
+     * @param array $formfieldIds array of Selectors for jQuery
+     * @param string $jQueryName
      * @return string
      */
-	public function inlineJsFromFormfieldIds($formfieldIds , $jQueryName) {
+	public function inlineJsFromFormfieldIds($formfieldIds , $jQueryName , $updateFunction='') {
+        $updateFunctionCode = '' ;
+        if( $updateFunction ) {
+            // $updateFunction should look like: "jv_events_refreshList();"
+            $updateFunctionName = explode("(" , $updateFunction) ;
+            $updateFunctionCode = 'if (typeof ' . $updateFunctionName[0] . ' === "function") {' . "\n" .
+                $updateFunction . "\n"
+                .'}'  . "\n"  . "\n" ;
+        }
+
 	    return '
 	        var addressAddress = ' . $jQueryName . '("' . $formfieldIds['address'] . '").val() ; 
             var addressZip = '     . $jQueryName . '("' . $formfieldIds['zip'] . '").val() ; 
@@ -258,15 +285,29 @@ class GeocoderUtility {
 			function geoCoderFieldUpdate( location ) {
 			    ' . $jQueryName . '("'. $formfieldIds['return']['lat'] . '").val( roundDataToNumber(location.lat() , 11) );
 				' . $jQueryName . '("'. $formfieldIds['return']['lng'] . '").val( roundDataToNumber(location.lng() , 11) );
+				' . $updateFunctionCode
+               .'
 			}
 	    ' ;
 
     }
 
+    /**
+     * @param array $addressData
+     * @param string $jQueryName
+     * @param string $updateFunction
+     * @return string
+     */
 
-
-    public function inlineJsFromAddressData($addressData , $jQueryName ) {
-
+    public function inlineJsFromAddressData($addressData , $jQueryName , $updateFunction='') {
+        $updateFunctionCode = '' ;
+        if( $updateFunction ) {
+            // $updateFunction should look like: "jv_events_refreshList();"
+            $updateFunctionName = explode("(" , $updateFunction) ;
+            $updateFunctionCode = 'if (typeof ' . $updateFunctionName[0] . ' === "function") {' . "\n" .
+                $updateFunction . "\n"
+                .'}'  . "\n"  . "\n" ;
+        }
         // AddressData from parent.window
         return '
 			
@@ -295,6 +336,8 @@ class GeocoderUtility {
 			function geoCoderFieldUpdate( location ) {
 			    ' . $jQueryName . '("#geosearchlat").val( location.lat() );
 				' . $jQueryName . '("#geosearchlng").val( location.lng() );
+				' . $updateFunctionCode
+            .'
 			}
 			function windowOrModalclose() {
 			   ' .$jQueryName . '("#geoSearchModal").removeClass("in").css("display" , "none") ;
@@ -302,7 +345,13 @@ class GeocoderUtility {
 		';
     }
 
-	public function inlineJsFromParentWindow($uid , $jQueryName ) {
+    /**
+     * @param int $uid
+     * @param string $jQueryName
+     * @param string $updateFunction
+     * @return string
+     */
+	public function inlineJsFromParentWindow($uid , $jQueryName , $updateFunction='' ) {
 
             // AddressData from parent.window
             return '
@@ -383,12 +432,13 @@ class GeocoderUtility {
      * @param integer $uid
      * @param string $jQueryName
      * @param array $formfieldIds
+     * @param string $updateFunction
 	 * @return string
 	 */
-	public function main($addressData = false , $uid = 0 , $jQueryName = "TYPO3.jQuery" , $formfieldIds=false ){
+	public function main($addressData = false , $uid = 0 , $jQueryName = "TYPO3.jQuery" , $formfieldIds=false , $updateFunction=''){
 
 
-		$content = $this->getInlineJs($addressData , $uid , $jQueryName , $formfieldIds );
+		$content = $this->getInlineJs($addressData , $uid , $jQueryName , $formfieldIds , $updateFunction );
 
 		if ( ! $formfieldIds ) {
 
