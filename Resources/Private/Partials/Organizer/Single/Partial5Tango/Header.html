@@ -5,7 +5,7 @@
     <f:for each="{organizer.organizerCategory}" as="category" iteration="iteration">
         <f:if condition="{category.description}">
             <f:then>
-                <f:render partial="Organizer/Single/Partial5Tango/CategoryModal" arguments="{category: category , id: category.id}"/>
+                <f:render partial="Organizer/Single/Partial5Tango/CategoryModal" arguments="{category: category , id: category.uid}"/>
             </f:then>
         </f:if>
     </f:for>
