@@ -1,4 +1,5 @@
 {namespace jve=JVE\JvEvents\ViewHelpers}
+{namespace vhs=JVE\JvEvents\ViewHelpers}
 
 
 <div class="text-right">
@@ -12,13 +13,15 @@
     <f:then>
         <h3>Select one of the existing Locations: </h3>
         <f:for each="{locations}" as="location">
-            <div class="col-xs-12">
-                <f:link.action pageUid="{settings.pageIds.editEvent}" action="new" controller="Event" class="btn btn-default" arguments="{location: '{location.uid}', organizer: '{organizer.uid}'}">
-                    {location.uid} - {location.name}, {location.streetAndNr} - {location.city}
+            <div class="col-12 border border-left-0 my-2"><f:spaceless>
+                <f:link.action pageUid="{settings.pageIds.editEvent}" action="new" controller="Event" class="btn btn-secondary" arguments="{location: '{location.uid}', organizer: '{organizer.uid}'}">
+                    <f:format.padding padLength="6" padString="0" padType="left">{location.uid}</f:format.padding>
                 </f:link.action>
-            </div>
+                <f:link.action pageUid="{settings.pageIds.editEvent}" action="new" title="{location.name}, {location.streetAndNr} - {location.city}" controller="Event" class="btn" arguments="{location: '{location.uid}', organizer: '{organizer.uid}'}">
+                    <f:format.crop maxCharacters="45">{location.name}, {location.streetAndNr} - {location.city}</f:format.crop>
+                </f:link.action>
+            </f:spaceless></div>
 
-             <br>
         </f:for>
     </f:then>
     <f:else>
