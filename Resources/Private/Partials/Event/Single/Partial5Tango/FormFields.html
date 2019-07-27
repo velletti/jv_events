@@ -53,7 +53,7 @@
 <f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowNumber"
 		  arguments="{object: 'event', property:'priceReduced' , euro: 'true', label: '' , translationKey: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.priceReduced' ,  maxLength: 20 ,  mandatory: '0' }" />
 
-<div id="jv-events-edit-price-reduced" class="{f:if( condition: '{event.priceReduced} > 0' , then: 'd-block' , else: 'd-none')} ">
+<div id="jv-events-edit-price-reduced" class="{f:if( condition: '{event.priceReduced} > 0 || {event.priceReducedText}' , then: 'd-block' , else: 'd-none')} ">
 
 	<div>
 		<i>
