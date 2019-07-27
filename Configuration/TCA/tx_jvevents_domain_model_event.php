@@ -904,6 +904,15 @@ $returnArray = array(
 				'eval' => 'int'
 			)
 		),
+        'master_id' => array(
+            'exclude' => 1,
+            'label' => 'Id of Master Event',
+            'config' => array(
+                'type' => 'input',
+                'size' => 11,
+                'eval' => 'int'
+            ),
+        ),
         'subevent' => array(
             'exclude' => 0,
             'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_subevent',

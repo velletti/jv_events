@@ -16,7 +16,7 @@
                     </span>
                     <span id="jv_events_geo_disp_sub" class="d-none">
                         <span class="d-none d-md-inline-block"> Distances calculated from </span>
-                        <button class="btn btn-outline-secondary mx-2 "  data-toggle="modal" data-target="#jv_events_maps" title="{settings.list.longitude} / {settings.list.latitude}">
+                        <button id="jv_events_map" class="btn btn-outline-secondary mx-2 "  data-toggle="modal" data-target="#geoSearchModal" title="{settings.list.longitude} / {settings.list.latitude}">
                             <span class="fa fa-map-marked-alt"> </span>
                         </button>
                     </span>
@@ -27,7 +27,7 @@
                 /* ********************************************************************************************************************* */
             </f:comment>
 
-            <div class="modal fade show" id="jv_events_maps" tabindex="-1" role="dialog" aria-labelledby="jv_events_mapsLabel" aria-modal="true" onblur="jv_events_refreshList();">
+            <div class="modal fade show" id="geoSearchModal" tabindex="-1" role="dialog" aria-labelledby="jv_events_mapsLabel" aria-modal="true" onblur="jv_events_refreshList();">
                 <div class="modal-dialog" role="document" style="max-width: 800px">
                     <div class="modal-content">
                         <div class="modal-header">

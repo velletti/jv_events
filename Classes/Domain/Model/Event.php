@@ -58,6 +58,15 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
 
     /**
+     * event master ID : if event is copied, the copies wil get here the ID of the copy master. Further changes can be copied from all entries with same  master id
+     *
+     * @var int
+     */
+    protected $masterId = 0;
+
+
+
+    /**
 
      * @var int
      */
@@ -2404,6 +2413,22 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function setHidden($hidden)
     {
         $this->hidden = $hidden;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMasterId()
+    {
+        return $this->masterId;
+    }
+
+    /**
+     * @param int $masterId
+     */
+    public function setMasterId($masterId)
+    {
+        $this->masterId = $masterId;
     }
 
 

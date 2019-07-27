@@ -210,11 +210,29 @@ function initMap() {
 				parseFloat(addresses[i].lat),
 				parseFloat(addresses[i].lng)
 			);
+			var draggable = false ;
+			if(document.getElementById('lat')) {
+				draggable = true ;
+			}
 			var marker = new google.maps.Marker({
 				position: point,
 				map: map,
+				draggable: draggable,
 				title: addresses[i].title
 			});
+			if(draggable ) {
+				marker.addListener('drag', updatePostion);
+			}
+
+			function updatePostion() {
+				if(document.getElementById('lat')) {
+					document.getElementById('lat').value =  marker.getPosition().lat() ;
+				}
+				if(document.getElementById('lng')) {
+					document.getElementById('lng').value =  marker.getPosition().lng()  ;
+				}
+			}
+
 
 			// Bound the marker for centering the map
 			bounds.extend(marker.position);
@@ -243,6 +261,9 @@ function initMap() {
 
 
 	$('a[href="#jv_events_map"]').on('click', function() {   // When tab is displayed...
+		refreshIntervalId = setInterval(function () { updateMapTimer(map) }, 300);
+	});
+	$("#jv_events_map").on('click', function() {   // When tab is displayed...
 		refreshIntervalId = setInterval(function () { updateMapTimer(map) }, 300);
 	});
 	$('.nav-tabs a').click(function(event) {   // When tab is displayed...

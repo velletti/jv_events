@@ -5,6 +5,7 @@ CREATE TABLE tx_jvevents_domain_model_event (
 
 	uid int(11) NOT NULL auto_increment,
 	pid int(11) DEFAULT '0' NOT NULL,
+  master_id int(11) unsigned DEFAULT '0' NOT NULL,
 
 	event_type int(11) DEFAULT '0' NOT NULL,
 	name varchar(255) DEFAULT '' NOT NULL,
@@ -84,6 +85,8 @@ CREATE TABLE tx_jvevents_domain_model_event (
 	starttime int(11) unsigned DEFAULT '0' NOT NULL,
 	endtime int(11) unsigned DEFAULT '0' NOT NULL,
 
+
+
 	t3ver_oid int(11) DEFAULT '0' NOT NULL,
 	t3ver_id int(11) DEFAULT '0' NOT NULL,
 	t3ver_wsid int(11) DEFAULT '0' NOT NULL,
@@ -101,6 +104,7 @@ CREATE TABLE tx_jvevents_domain_model_event (
 
 	PRIMARY KEY (uid),
 	KEY parent (pid),
+	KEY master (master_id),
 	KEY t3ver_oid (t3ver_oid,t3ver_wsid),
 	KEY index (start_date, start_time, sorting),
   KEY language (l10n_parent,sys_language_uid)

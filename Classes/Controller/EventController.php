@@ -401,6 +401,12 @@ class EventController extends BaseController
 
             $newEvent->setStartDate($newDate ) ;
 
+            // Does the Copy Master Event already have a masterId? if not, use its uid as new  Master
+            // wthi this master ID we are able to update Changes from one event to all events with the same master Id
+            if( intval( $event->getMasterId() ) < 1 || $event->getMasterId() === null ) {
+                $newEvent->setMasterId( $event->getUid() ) ;
+            }
+
             // ++++ now copy the Categories and tags  ++++
             if( $event->getEventCategory() ) {
                 /** @var \JVE\JvEvents\Domain\Model\Category $category */

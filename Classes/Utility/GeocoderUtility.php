@@ -135,19 +135,24 @@ class GeocoderUtility {
 				// Bounding for centering the map
 				bounds = new google.maps.LatLngBounds();
 			
-				// Marker
-				marker = new google.maps.Marker({map: map});
-		
 		        // console.log(address);	
 				// Find the address
 				findAddress({"address": address});
-				
+				        
 				// Put the address into the search field
 				
 				' . $jQueryName . '("#geosearch input#geosearchbox").val(address);
 			
 			}
 			
+			function updatePostion() {
+				if(document.getElementById("lat")) {
+					document.getElementById("lat").val( marker.getPosition().lat()) ;
+				}
+				if(document.getElementById("lng")) {
+					document.getElementById("lng").val( marker.getPosition().lng()) ;
+				}
+			}
 			function concatAddress() {
                 address = "";
                 address += addressAddress;
@@ -155,9 +160,12 @@ class GeocoderUtility {
                 if (addressZip && addressZip != ""){
                     address += ", ";
                     address += addressZip;
+                    address += ", ";
+                }
+                 if (addressCity && addressCity != ""){
+                    address += addressCity;
                     address += " ";
                 }
-                address += addressCity;
                 if (addressCountry && addressCountry != ""){
                     address += ", ";
                     address += addressCountry;
@@ -174,40 +182,72 @@ class GeocoderUtility {
 			 * Finds the address
 			 */
 			function findAddress(address){
-			
+			    	
 				// Hide error-message (maybe there is one shown)
 				
 				' . $jQueryName . '("#geosearcherrormessage").hide();
-			
-				geocoder.geocode(address, function(results, status) {
-			
-					if (status == google.maps.GeocoderStatus.OK) {
-			
-						// console.log(results);
-			
-						/**
-						 * Create marker at searched position
-						 */
-						marker.setPosition(results[0].geometry.location);
-						marker.setTitle(address.address);
-			
-						/**
-						 * Center map on marker and zoom if needed
-						 */
-						map.panTo(results[0].geometry.location);
-						map.setZoom(15);
-			
-						/**
-						 * Update fields longitude and latitude
-						 */
-						  geoCoderFieldUpdate( results[0].geometry.location ) ;
-						
-			
-					} else {
-						showErrorMessage("' . $this->getLanguageService()->getLL('geocoding.error.geocodingNotSuccessful.part1') . ' " + status + " ' . $this->getLanguageService()->getLL('geocoding.error.geocodingNotSuccessful.part2') . '");
-					}
-			
-				});
+				
+				if ( !geocoder ) {
+				     retryIntervalId = setInterval(function () { findAddress(address) }, 500);
+				} else {
+                    
+                    refreshIntervalId = setInterval(function () { updateMapTimer(map) }, 300);
+                    
+                    geocoder.geocode(address, function(results, status) {
+                
+                        if (status == google.maps.GeocoderStatus.OK) {
+                
+                            // console.log(results);
+                
+                            /**
+                             * Create marker at searched position
+                             */
+                            
+                            var draggable = false ;
+                            
+                            if(document.getElementById("lat")) {
+                                draggable = true ;
+                                address.address += " Double Click to update Position" ;
+                            } 
+                            
+                            var marker = new google.maps.Marker({
+                                    position: results[0].geometry.location,
+                                    map: map,
+                                    title: address.address,
+                                    draggable: draggable
+                                });
+                                
+                            if(draggable ) {
+                                marker.addListener("drag", updatePostion);
+                            }
+                
+                            function updatePostion() {
+                                if(document.getElementById("lat")) {
+                                    document.getElementById("lat").value = marker.getPosition().lat() ;
+                                }
+                                if(document.getElementById("lng")) {
+                                    document.getElementById("lng").value = marker.getPosition().lng() ;
+                                }
+                            }
+                            
+                            /**
+                             * Center map on marker and zoom if needed
+                             */
+                            map.panTo(results[0].geometry.location);
+                            map.setZoom(15);
+                
+                            /**
+                             * Update fields longitude and latitude
+                             */
+                              geoCoderFieldUpdate( results[0].geometry.location ) ;
+                            
+                
+                        } else {
+                            showErrorMessage("' . $this->getLanguageService()->getLL('geocoding.error.geocodingNotSuccessful.part1') . ' " + status + " ' . $this->getLanguageService()->getLL('geocoding.error.geocodingNotSuccessful.part2') . '");
+                        }
+                
+                    });
+                }
 				// update eventlist if needed 
 				
 				'
@@ -236,7 +276,13 @@ class GeocoderUtility {
 				' . $jQueryName . '("#geosearcherrormessage").show();
 				' . $jQueryName . '("#geosearcherrormessage div").text("' . $this->getLanguageService()->getLL('geocoding.error') . ': " + message);
 			}
-
+			
+            function updateMapTimer(map) {
+                clearInterval(refreshIntervalId);
+                var center = map.getCenter() ;
+                google.maps.event.trigger(map, \'resize\');
+                map.setCenter(center) ;
+            }
 		';
 
 		$js.= '</script>';
@@ -276,6 +322,13 @@ class GeocoderUtility {
                 
             }
             
+            function updateMapTimer(map) {
+                clearInterval(refreshIntervalId);
+                var center = map.getCenter() ;
+                google.maps.event.trigger(map, \'resize\');
+                map.setCenter(center) ;
+            }
+
             /**
 		    * updates the fields in search Form 
 		    */
@@ -316,7 +369,12 @@ class GeocoderUtility {
             var addressCity = "' . $addressData['city'] . '";
             var addressCountry = "' . $addressData['country'] . '";
         
-            
+            function updateMapTimer(map) {
+                clearInterval(refreshIntervalId);
+                var center = map.getCenter() ;
+                google.maps.event.trigger(map, \'resize\');
+                map.setCenter(center) ;
+            }
 
 		
 			/**
