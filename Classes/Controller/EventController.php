@@ -327,15 +327,15 @@ class EventController extends BaseController
      * action edit
      *
      * @param \JVE\JvEvents\Domain\Model\Event $event
-     * @param integer|boolean $copy2Date if set, Copy the event to the given DateDiff in DAYS
-     * @param integer|boolean $amount if set, the amount of Copys that shall be created
+     * @param integer $copy2Date if set, Copy the event to the given DateDiff in DAYS
+     * @param integer $amount if set, the amount of Copys that shall be created
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      * @ignorevalidation $event
      * @return void
      */
-    public function editAction(\JVE\JvEvents\Domain\Model\Event $event , $copy2Day=false , $amount=false )
+    public function editAction(\JVE\JvEvents\Domain\Model\Event $event , $copy2Day=0 , $amount=0 )
     {
 
         if($this->isUserOrganizer() ) {
