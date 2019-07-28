@@ -328,8 +328,7 @@ function jv_events_reloadList() {
             if ( param.substr(0,5) == "chash" ) {
                 break ;
             }
-            if ( !param.substr(0,27) == "tx_jvevents_events[overruleFilter][startDate]=" ) {
-
+            if ( param.substr(0,27) != "tx_jvevents_events[overruleFilter][startDate]=" ) {
                 newQuery += "&" + param ;
             }
         }
