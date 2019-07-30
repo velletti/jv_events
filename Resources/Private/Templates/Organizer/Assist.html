@@ -3,7 +3,14 @@
 
 
 <f:section name="main">
-
+    <f:if condition="{settings.LayoutSingle}">
+        <f:then>
+            <f:variable name="layoutList">{settings.LayoutSingle}</f:variable>
+        </f:then>
+        <f:else>
+            <f:variable name="layoutList">5Tango</f:variable>
+        </f:else>
+    </f:if>
 
 
     <div class="card col-12 text-white bg-primary  jv-events-partial{settings.LayoutSingle}" id="my-profile-edit-profiledata">
@@ -14,13 +21,13 @@
         </div>
 
         <div class="card-body text-black-50 bg-white row">
+            <f:security.IfAuthenticated>
+                <f:then>
+                    <div class="col-sm-4 equalHeight">
+                        <f:render partial="FeEditHelp" arguments="{section: 'organizer', object: organizer , settings: settings , user: user}" />
+                    </div>
+                    <div class="col-sm-8 equalHeight">
 
-            <div class="col-sm-4 equalHeight">
-                <f:render partial="FeEditHelp" arguments="{section: 'organizer', object: organizer , settings: settings , user: user}" />
-            </div>
-            <div class="col-sm-8 equalHeight">
-                <f:security.IfAuthenticated>
-                    <f:then>
                         <f:if condition="{count} > 1">
                             <f:then>
                                 <f:render section="moreThanOne" arguments="{_all}"></f:render>
@@ -28,7 +35,15 @@
                             <f:else>
                                 <f:if condition="{count} < 1">
                                     <f:then>
-                                        <f:render section="createButton" arguments="{_all}"></f:render>
+                                        <f:if condition="{isOrganizer}">
+                                            <f:then>
+                                                <f:render section="createButton" arguments="{_all}"></f:render>
+                                            </f:then>
+                                            <f:else>
+                                                <f:render section="notOrganizerYet" arguments="{_all}"></f:render>
+                                            </f:else>
+                                        </f:if>
+
                                     </f:then>
                                     <f:else>
                                         <f:if condition="{organizer.0.hidden}">
@@ -42,65 +57,76 @@
 
                                     </f:else>
                                 </f:if>
-
                             </f:else>
                         </f:if>
-                    </f:then>
-                    <f:else>
-                        <f:render partial="pleaseLogin" arguments="{_all}"></f:render>
+                    </div>
 
-                    </f:else>
+                </f:then>
+                <f:else>
+                    <f:render partial="pleaseLogin" arguments="{_all}"></f:render>
 
-                </f:security.IfAuthenticated>
+                </f:else>
 
-            </div>
+            </f:security.IfAuthenticated>
         </div>
     </div>
+    <f:security.IfAuthenticated>
+        <f:then>
+            <f:if condition="{organizer.0.hidden}">
+                <f:else>
+                    <f:render partial="Organizer/List/Partial{layoutList}/SingleOrganizer" arguments="{organizer:organizer.0, settings: settings, showDetails: '0' , showEditButton: '1' }" />
+                </f:else>
+            </f:if>
+        </f:then>
+    </f:security.IfAuthenticated>
 </f:section>
 
 
 <f:section name="oneOrganizer">
     <div class="alert alert-info">
         <h3>Status: <span class="far fa-check-square"> </span> <span>OK</span></h3>
-        <f:if condition="{organizer.0.organizerCategory}">
-            <f:for each="{organizer.0.organizerCategory}" as="category" iteration="iteration">
-                <f:if condition="{category.description}">
-                    <f:then>
-                        <a class="info" href="#" data-toggle="modal" data-target="#jv_events_cat_modal-{category.uid}">
-                            <f:render partial="Organizer/Single/Partial5Tango/CategoryIcon" arguments="{uid: category.uid, text: category.title}"/>
-                        </a>
-                        <f:render partial="Organizer/Single/Partial5Tango/CategoryModal" arguments="{category: category , id: category.uid}"/>
-                    </f:then>
-                    <f:else>
-                        <f:render partial="Organizer/Single/Partial5Tango/CategoryIcon" arguments="{uid: category.uid, text: category.title}"/>
-                    </f:else>
-                </f:if>
-            </f:for>
-        </f:if>
-
         <p>
-            Your ID: {organizer.0.uid} /P:{organizer.0.pid}<br>
-            Created: <f:format.date format="d. M Y - H:i">@{organizer.0.crdate}</f:format.date><br>
-            Changed: <f:format.date format="d. M Y - H:i">@{organizer.0.tstamp}</f:format.date><br>
+            Your ID: U-{user}-O-{organizer.0.uid}-P-{organizer.0.pid}<br>
+            Position: {organizer.0.sorting}
         </p>
 
         <div class="text-right">
-            <f:link.action pageUid="{settings.pageIds.editOrganizer}" action="edit" controller="Organizer" arguments="{organizer: organizer.0.uid}" class="btn btn-primary">
-                <span class="fas fa-users-cog"> </span> <span class="hidden-xs">{f:translate(key: 'edit', default: 'Edit')}</span>
+            <f:link.action pageUid="{settings.pageIds.editUserAccount}" class="btn btn-primary">
+                <span class="fas fa-users-cog"> </span> <span class="hidden-xs">{f:translate(key: 'edit', default: 'Edit')} {f:translate(key: 'Account', default: 'Account')} </span>
             </f:link.action>
         </div>
+    </div>
+</f:section>
+
+<f:section name="contactWebmaster">
+    <div>
+        Please Contact Webmaster via: <br> <f:link.email class="btn btn-secondary" email="info@tangomuenchen.de">info@tangomuenchen.de</f:link.email>
     </div>
 </f:section>
 
 
 <f:section name="moreThanOne">
     <div class="alert alert-warning">
-        <h2>
-            Sorry, this does not work at the Moment!
-        </h2>
+        <h3>
+            ERROR: More than one ORGANIZER!
+        </h3>
         <p>
-            Your User is connected to more than one ORGANIZER.
-            Please Contact Webmaster.
+            Your User is connected to more than one ORGANIZER. Sorry, but this does not work at the Moment!<br>
+            <f:render section="contactWebmaster" arguments="{settings}"></f:render>
+
+        </p>
+    </div>
+</f:section>
+
+
+<f:section name="notOrganizerYet">
+    <div class="alert alert-warning">
+        <h3>Account Status: <span class="far fa-square"> </span> <span>Pending</span></h3>
+        <p>
+            Sorry, but your User account is not activated by the webmaster yet. So it is not allowed for you, to create your own ORGANIZER account. <br>
+            <br>
+            Normaly this takes less than 2 workdays. If you are waiting for more than 2 days:<br>
+            <f:render section="contactWebmaster" arguments="{settings}"></f:render>
         </p>
     </div>
 </f:section>
@@ -123,14 +149,14 @@
 
 
 
-
-
 <f:section name="stillHidden">
     <div class="alert alert-warning">
-        <h3>Status: <span class="far fa-square"> </span> <span>Pending</span></h3>
+        <h3>Organizer Status: <span class="far fa-square"> </span> <span>Pending</span></h3>
         <p>
             Your Organizer Account is not activated. This may take up to 2 Days.<br>
-            Please Contact Webmaster if it is urgent.
+
+
+            <f:render section="contactWebmaster" arguments="{settings}"></f:render>
 
         </p>
     </div>

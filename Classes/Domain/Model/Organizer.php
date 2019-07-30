@@ -73,6 +73,11 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     protected $sorting ;
 
+    /**
+
+     * @var int
+     */
+    protected $sysLanguageUid ;
 
     /**
      * lastmod Date as timestring
@@ -690,6 +695,20 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         $this->sorting = $sorting;
     }
 
+    /**
+     * @param int $sysLanguageUid
+     */
+    public function setSysLanguageUid($sysLanguageUid)
+    {
+        $this->sysLanguageUid = $sysLanguageUid;
+    }
+    /**
+     * @return int
+     */
+    public function getSysLanguageUid()
+    {
+        return $this->sysLanguageUid ;
+    }
 
 
 }

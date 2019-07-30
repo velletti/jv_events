@@ -9,6 +9,12 @@
 <f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowDefault"
 		  arguments="{object: 'organizer', property:'link' , errorProperty: 'organizer.link' , label: '' , translationKey: 'tx_jvevents_domain_model_organizer.link' ,  maxLength: 80 , mandatory: false }" />
 
+<f:if condition="{tags}">
+	<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowTags"
+			  arguments="{object: 'organizer', property:'tags' , value: '{organizer.tags}', label: '' , translationKey: 'tx_jvevents_domain_model_tag.select' , tags: tags , mandatory: '1' }" />
+	<hr>
+</f:if>
+
 <f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowRte"
 		  arguments="{object: 'organizer', property:'description' , errorProperty: 'organizer.description' , label: '' , translationKey: 'tx_jvevents_domain_model_organizer.description' , mandatory: false }" />
 

@@ -72,11 +72,14 @@ class OrganizerController extends BaseController
     {
         $this->view->assign('user', intval($GLOBALS['TSFE']->fe_user->user['uid'] ) ) ;
         if($this->isUserOrganizer() ) {
-            $organizer = $this->organizerRepository->findByUserAllpages( intval($GLOBALS['TSFE']->fe_user->user['uid'] )  , FALSE , TRUE  );
-            $this->view->assign('count', count( $organizer )) ;
-            $this->view->assign('organizer', $organizer ) ;
-
+            $organizer = $this->organizerRepository->findByUserAllpages(intval($GLOBALS['TSFE']->fe_user->user['uid']), FALSE, TRUE);
+            $this->view->assign('count', count($organizer));
+            $this->view->assign('organizer', $organizer);
+            $this->view->assign('isOrganizer', true);
+        } else {
+            $this->view->assign('isOrganizer', FALSE );
         }
+
     }
     /**
      * action list
@@ -118,8 +121,11 @@ class OrganizerController extends BaseController
     public function newAction(\JVE\JvEvents\Domain\Model\Organizer $organizer = null )
     {
         /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $categories */
-        $categories = $this->categoryRepository->findAllonAllPages( '3' );
+        $tags = $this->tagRepository->findAllonAllPages( '2' );
 
+
+        $organizer = $this->organizerRepository->findByUserAllpages( intval($GLOBALS['TSFE']->fe_user->user['uid'] )  , FALSE , TRUE  );
+        $this->view->assign('count', count( $organizer )) ;
 
         if ( $organizer==null) {
             /** @var \JVE\JvEvents\Domain\Model\Organizer $organizer */
@@ -135,7 +141,7 @@ class OrganizerController extends BaseController
         if($this->isUserOrganizer() ) {
             $this->view->assign('user', intval($GLOBALS['TSFE']->fe_user->user['uid'] ) ) ;
             $this->view->assign('organizer', $organizer );
-            $this->view->assign('categories', $categories);
+            $this->view->assign('tags', $tags);
         }
     }
     
@@ -151,15 +157,25 @@ class OrganizerController extends BaseController
         if ( $GLOBALS['TSFE']->fe_user->user && $GLOBALS['TSFE']->fe_user->user['uid'] > 0 )  {
             $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
 
+            $organizer = $this->cleanOrganizerArguments( $organizer ) ;
+
+            // special needs for tango. maybe we make this configurabale via typoscript
+            $organizer->setHidden(1) ;
+            $organizer->setPid( 13 ) ;
+            $organizer->setSorting( 999999999 ) ;
+            $organizer->setSysLanguageUid(-1 ) ;
+
             $organizer->setAccessUsers(intval($GLOBALS['TSFE']->fe_user->user['uid'] ));
             $organizer->setAccessGroups( $this->settings['feEdit']['adminOrganizerGroudIds'] );
+            // special needs for tango. maybe we make this configurabale via typoscript
 
             $this->organizerRepository->add($organizer);
             $this->cacheService->clearPageCache( array($this->settings['pageIds']['organizerAssist'])  );
             $this->addFlashMessage('The Organizer was created.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
 
-            // toDo add User to FE userGroup Organizer and disable him
+
             // toDo Send Email to Admin with info about new Organizer
+
 
             $this->showNoDomainMxError($organizer->getEmail() ) ;
 
@@ -191,10 +207,15 @@ class OrganizerController extends BaseController
 
             $this->addFlashMessage('No access.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
             $this->view->assign('noAccess', TRUE );
+        } else {
+            /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $categories */
+            $tags = $this->tagRepository->findAllonAllPages( '2' );
+            $this->view->assign('tags', $tags);
+            $this->view->assign('organizer', $organizer);
         }
 
         $this->view->assign('user', intval( $GLOBALS['TSFE']->fe_user->user['uid'] ) );
-        $this->view->assign('organizer', $organizer);
+
     }
     
     /**
@@ -209,9 +230,9 @@ class OrganizerController extends BaseController
     {
         if ( $this->hasUserAccess($organizer )) {
             $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
-
-            $this->addFlashMessage('The object was updated.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+            $organizer = $this->cleanOrganizerArguments( $organizer ) ;
             $this->organizerRepository->update($organizer);
+            $this->addFlashMessage('The object was updated.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
         } else {
             $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
 
@@ -220,7 +241,7 @@ class OrganizerController extends BaseController
 
         $this->showNoDomainMxError($organizer->getEmail() ) ;
 
-		$this->redirect('edit' , NULL, Null , array( "organizer" => $organizer));
+        $this->redirect('assist' , NULL, Null , NULL , $this->settings['pageIds']['organizerAssist']);
     }
     
     /**
@@ -231,9 +252,65 @@ class OrganizerController extends BaseController
      */
     public function deleteAction(\JVE\JvEvents\Domain\Model\Organizer $organizer)
     {
-        $this->addFlashMessage('The object was NOT deleted. this feature is not implemented yet', 'Unfinised Feature', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
+        $this->addFlashMessage('The object was NOT deleted. this feature is not implemented yet', 'Unfinished Feature', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
      //   $this->organizerRepository->remove($organizer);
-        $this->redirect('list');
+        $this->redirect('assist' , NULL, Null , NULL , $this->settings['pageIds']['organizerAssist']);
+    }
+
+
+
+
+    /**
+     * @param \JVE\JvEvents\Domain\Model\Organizer $organizer
+     * @return \JVE\JvEvents\Domain\Model\Organizer
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
+     */
+    public function cleanOrganizerArguments(\JVE\JvEvents\Domain\Model\Organizer  $organizer)
+    {
+        // validation should be done in validatar class so we can ignore issue with wrong format
+
+        $organizerArray = $this->request->getArgument('organizer');
+
+        // Update the Tags
+        if( is_array( $organizerArray) && array_key_exists( 'tagsFE' , $organizerArray )) {
+            $organizerTagUids =  \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode("," , $organizerArray['tagsFE']) ;
+            if( is_array($organizerTagUids) && count($organizerTagUids) > 0  ) {
+                $existingTags = $organizer->getTags() ;
+
+                if ( $existingTags ) {
+                    /** @var  \JVE\JvEvents\Domain\Model\Tag $existingTag */
+                    foreach ( $existingTags as $existingTag ) {
+                        if( !in_array( $existingTag->getUid()  , $organizerTagUids)) {
+                            $organizer->getTags()->detach($existingTag) ;
+                            unset($organizerTagUids[$existingTag->getUid()] ) ;
+                        }
+
+                    }
+                }
+                if( is_array($organizerTagUids) && count($organizerTagUids) > 0  ) {
+                    foreach ($organizerTagUids as $organizerTagUid) {
+                        if( intval( $organizerTagUid ) > 0 ) {
+                            /** @var  \JVE\JvEvents\Domain\Model\Tag $organizerTag */
+                            $organizerTag = $this->tagRepository->findByUid($organizerTagUid) ;
+
+                            if($organizerTag) {
+                                $organizer->addTag($organizerTag) ;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+        if( is_array( $organizerArray) && array_key_exists( 'description' , $organizerArray )) {
+            $desc = str_replace(array("\n", "\r", "\t"), array(" ", "", " "), $organizerArray['description']);
+            $desc = strip_tags($desc, "<p><br><a><i><strong><h2><h3>");
+
+            $organizer->setDescription($desc);
+        }
+
+        return $organizer ;
     }
 
 

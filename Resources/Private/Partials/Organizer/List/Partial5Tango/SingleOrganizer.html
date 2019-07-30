@@ -85,6 +85,12 @@
 
 
                     <div class="text-right position-bottom position-right">
+                        <f:if condition="{showEditButton}">
+                            <f:link.action class="badge badge-primary m-2 py-2" pageUid="{settings.pageIds.editOrganizer}" action="edit" controller="Organizer" arguments="{organizer: organizer.uid}">
+                                <span class="fas fa-users-cog"> </span> <span class="hidden-xs">{f:translate(key: 'edit', default: 'Edit')} {f:translate(key: 'tx_jvevents_domain_model_organizer', default: 'Organizer')} </span>
+                            </f:link.action>
+                        </f:if>
+
                         <f:link.page class="badge badge-secondary m-2 py-2" pageUid="{settings.pageIds.eventList}" additionalParams="{tx_jvevents_events: {overruleFilter: {organizer: '{organizer.uid}', category : 'true' , maxDays: 90}}}">
                             <span class="fas fa-calendar-alt "></span> Termine >>
                         </f:link.page>

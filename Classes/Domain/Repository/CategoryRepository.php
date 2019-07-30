@@ -62,7 +62,7 @@ class CategoryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         // $queryParser = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class);
         // var_dump($queryParser->convertQueryToDoctrineQueryBuilder($query)->getSQL());
         // var_dump($queryParser->convertQueryToDoctrineQueryBuilder($query)->getParameters()) ;
-        // die;
+        //  die;
 
         return $res ;
     }

@@ -113,9 +113,13 @@ plugin.tx_jvevents_events {
 		    # needed during frontend editing
 		    # page with a login FOrm is users session has got invalid
             loginForm = 0
-            # page after susseccful storing an event
 
-         	showEventDetail = 0
+            # page where Edit User Plugin is installed ( f.e. editUserAccount = {$plugin.tx_sfregister.settings.editPid}      )
+             editUserAccount = 0
+
+            # page after susseccful storing an event
+           	showEventDetail = 0
+
          	# pageID with plugin edit Event
 			editEvent =  0
 
