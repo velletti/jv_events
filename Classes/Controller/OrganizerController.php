@@ -122,13 +122,11 @@ class OrganizerController extends BaseController
 
 
         if ( $organizer==null) {
-
-
             /** @var \JVE\JvEvents\Domain\Model\Organizer $organizer */
             $organizer = $this->objectManager->get("JVE\\JvEvents\\Domain\\Model\\Organizer");
             // ToDo find good way to handle ID Default .. maybe a pid per User, per location or other typoscript setting
             $organizer->setPid( 13 ) ;
-            $organizer->setEmail( $GLOBALS['TSFE']->fe_user->user['username'] ) ;
+            $organizer->setEmail( $GLOBALS['TSFE']->fe_user->user['email'] ) ;
 
             // We want to confirm each new Organizer
             $organizer->sethidden( 1 ) ;
@@ -150,16 +148,31 @@ class OrganizerController extends BaseController
      */
     public function createAction(\JVE\JvEvents\Domain\Model\Organizer $organizer)
     {
-        $this->addFlashMessage('The object NewOrganizer was NOT created, because the "create" Action not finished Yet!', 'Uncomplete Function', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
-		// Todo: add needed checks like in updateAction
-        // adding some default Fields
-        // Look via Email into Old Organizer Table and get "tango_veranstler -> created Date  ??
-        // send Email to Admin with Link to add user to Organizer FE User Gorup
+        if ( $GLOBALS['TSFE']->fe_user->user && $GLOBALS['TSFE']->fe_user->user['uid'] > 0 )  {
+            $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
 
-        // create a validator( Name, Email, phone, link tags, and Description
+            $organizer->setAccessUsers(intval($GLOBALS['TSFE']->fe_user->user['uid'] ));
+            $organizer->setAccessGroups( $this->settings['feEdit']['adminOrganizerGroudIds'] );
 
-        $this->organizerRepository->add($organizer);
-		$this->redirect('new' , null, null );
+            $this->organizerRepository->add($organizer);
+            $this->cacheService->clearPageCache( array($this->settings['pageIds']['organizerAssist'])  );
+            $this->addFlashMessage('The Organizer was created.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+
+            // toDo add User to FE userGroup Organizer and disable him
+            // toDo Send Email to Admin with info about new Organizer
+
+            $this->showNoDomainMxError($organizer->getEmail() ) ;
+
+            $this->redirect('assist' , NULL, Null , NULL , $this->settings['pageIds']['organizerAssist']);
+        } else {
+            $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
+
+            $this->addFlashMessage('You do not have access rights to create own Organizer data.'  , '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+        }
+
+        $this->redirect('assist' , NULL, Null , NULL , $this->settings['pageIds']['organizerAssist'] );
+
+
     }
     
     /**

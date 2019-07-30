@@ -505,6 +505,7 @@ class EventController extends BaseController
             try {
                 $this->eventRepository->update($event) ;
 
+
                 // got from EM Settings
                 $clearCachePids = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode("," , $this->settings['EmConfiguration']['clearCachePids']) ;
                 if( is_array($clearCachePids) && count( $clearCachePids) > 0 ) {

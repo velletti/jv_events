@@ -3,6 +3,14 @@
 
 
 <f:section name="main">
+    <f:if condition="{settings.LayoutList}">
+        <f:then>
+            <f:variable name="layoutList">{settings.LayoutList}</f:variable>
+        </f:then>
+        <f:else>
+            <f:variable name="layoutList">5Tango</f:variable>
+        </f:else>
+    </f:if>
     <f:render partial="Organizer/Single/Partial{settings.LayoutSingle}/Edit" arguments="{_all}" />
 
 </f:section>
