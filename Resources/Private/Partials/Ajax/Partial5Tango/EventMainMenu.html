@@ -5,12 +5,12 @@
             <f:then>
                 <!--  ################# the second nav  loaded via AJAX to #jvEventsAjaxMenu  -for users  ##################### //-->
                 <f:if condition="{settings.pageIds.editUserAccount}">
-                    <f:link.action pageUid="{settings.pageIds.editUserAccount}" class="nav-link" title="Edit Account">
+                    <f:link.page pageUid="{settings.pageIds.editUserAccount}" class="nav-link" title="Edit Account">
                         <button class="btn btn-outline-primary btn-xs rounded-circle mx-1" href="#">
                             <i class="fas fa-wrench "></i>
                         </button>
 
-                    </f:link.action>
+                    </f:link.page>
                 </f:if>
 
                 <f:if condition="{settings.pageIds.editLocation}">
