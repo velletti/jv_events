@@ -44,6 +44,13 @@
 		<trans-unit id="extmng.emailFontFamily">
 			<source>set Font Family for Emails Please do NO use ' or &quot; !! </source>
 		</trans-unit>
+		<trans-unit id="extmng.emailImgUrl">
+			<source>Absolute path to a Header Image ( Logo) for emails starting with / </source>
+		</trans-unit>
+		<trans-unit id="extmng.emailImgUrl2">
+			<source>Absolute path to a second Header Image  for emails starting with / </source>
+		</trans-unit>
+
 		<trans-unit id="extmng.enableCitrix">
 			<source>Show Options to store the Event registrants to Citrix (as GoTo Webinar Registrants)</source>
 		</trans-unit>

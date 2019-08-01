@@ -265,12 +265,15 @@ class AjaxController extends BaseController
                 }
 
                 $output['event']['name'] = $event->getName() ;
+                $output['event']['teaserImageUrl'] = GeneralUtility::getIndpEnv("TYPO3_REQUEST_HOST")  ;
                 if (  $event->getTeaserImage() ) {
-                    $output['event']['teaserImageUrl'] = GeneralUtility::getIndpEnv("TYPO3_REQUEST_HOST")  . $event->getTeaserImage()->getOriginalResource() ;
+                    $output['event']['teaserImageUrl'] .=  $event->getTeaserImage()->getOriginalResource() ;
                 } else {
-
-                    $output['event']['teaserImageUrl'] = GeneralUtility::getIndpEnv("TYPO3_REQUEST_HOST") . trim($this->settings['EmConfiguration']['imgUrl']) ;
-                    // $output['event']['teaserImageUrl'] = GeneralUtility::getIndpEnv("TYPO3_REQUEST_HOST") . "/typo3conf/ext/jv_events/Resources/Public/Images/emailLogoAllplan.png" ;
+                    if( $this->settings['EmConfiguration']['imgUrl2'] ) {
+                        $output['event']['teaserImageUrl'] .=  trim($this->settings['EmConfiguration']['imgUrl2']) ;
+                    } else {
+                        $output['event']['teaserImageUrl'] = GeneralUtility::getIndpEnv("TYPO3_REQUEST_HOST") . trim($this->settings['EmConfiguration']['imgUrl']) ;
+                    }
                 }
 
                 $output['event']['price'] = round( $event->getPrice() , 2 ) ;
