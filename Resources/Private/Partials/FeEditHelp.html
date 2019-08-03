@@ -15,16 +15,21 @@
 	<f:variable name="helpModalBody">
 		<f:format.raw>
 			<f:spaceless>
-				nur Geduld .. hier gibt es irgendwann die Hilfe Texte ..
-
-
+				Bevor man Termine eintragen kann, muss man vom Webmaster freigeschaltet werden. <br>
+				Dann kann man als eingloggter einen Veranstalter Datensatz pflegen. <br>
+				Ein derartiger  Veranstalter kann mehrere Locations (Veranstaltungsorte) pflegen.<br>
+				<br>
+				Derzeit gibt es keine Möglichkeit wiederkehrendende Termine einzutragen. Aber man kann recht einfach einen Termin kopieren. auch im voraus für mehrere Wochen.<br>
+				<br>
+				<br>
+				... mehr Hilfe in arbeit....
 			</f:spaceless>
 		</f:format.raw>
 	</f:variable>
 	<f:variable name="helpModalFooter">
 		<f:format.raw>
 			<f:spaceless>
-				Uid: {user} | OrganizerId: {object.uid}<br>
+				Your ID: U-{user}-O-{organizer.0.uid}-P-{organizer.0.pid}
 			</f:spaceless>
 		</f:format.raw>
 	</f:variable>

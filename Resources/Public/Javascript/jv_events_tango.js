@@ -79,15 +79,6 @@ function jv_events_init_AjaxMenu() {
 function jv_events_init_edit_tags() {
     var jvEventsNewTags = '' ;
     var jvEventsTagsSum = 0 ;
-    $("#priceReduced").on('change' , function() {
-        if(  parseInt( $("#priceReduced").val() ) > 0 ) {
-            $("#jv-events-edit-price-reduced").addClass('d-block').removeClass('d-none');
-        } else {
-            $("#jv-events-edit-price-reduced").addClass('d-none').removeClass('d-block');
-        }
-    }) ;
-
-
 
     $(".jv-events-tags-edit").each(function() {
         if ($(this).prop("checked")) {
@@ -184,7 +175,7 @@ function jv_events_refreshTags() {
         }
     }) ;
     $("#jv-events-tags-sum").html(jvEventsTagsSum) ;
-    if ( jvEventsTagsSum > 4 ) {
+    if ( ( parseInt(jvEventsTagsSum ) + 1 )  > parseInt($("#jv-events-tags-sum-max").html( ))) {
         $(".jv-events-tags-edit").each(function() {
             if ( !$(this).prop("checked")) {
                 $(this).parent().addClass("d-none");
@@ -192,6 +183,24 @@ function jv_events_refreshTags() {
         }) ;
     }
     $("#jv-events-tagsFE").val(jvEventsNewTags ) ;
+}
+
+function jv_events_askPosition() {
+   // if( jQuery('#jv_events_geo').data("askuser" )  == "1" && location.protocol == "https:") {
+      console.log("jv_events_askPosition") ;
+    if( location.protocol == "https:") {
+         console.log("location.protocol == \"https:\" ") ;
+        if (navigator.geolocation) {
+         //   console.log("navigator.geolocation ") ;
+            navigator.geolocation.getCurrentPosition(jv_events_initPosition , jv_events_errorPosition);
+            jQuery("#geosearch input#geosearchbox").val('');
+            jQuery("#streetAndNr").val('');
+
+        } else {
+            jQuery('#jv_events_geo_disp_sub').removeClass("d-none") ;
+            jQuery('#jv_events_geo_disp_spinner').addClass("d-none") ;
+        }
+    }
 }
 
 //  ############   generic function for everyone: test if a spezific Parameter is in URL and return its value ###########
@@ -257,7 +266,7 @@ function jv_events_init() {
 	/* jv_events_initOneFilter('months') ; */
 	if( jQuery('#jv_events_geo').length > 0 ) {
 	   // console.log("#jv_events_geo').length > 0 ") ;
-        if( jQuery('#jv_events_geo').data("askuser" )  == "1" && location.protocol == "https:") {
+        if( jQuery('#jv_events_geo').data("askuser" )  == "1" && document.cookie.indexOf("positionAllowed=") >= 0 && location.protocol == "https:") {
           //  console.log("#jv_events_geo askuser  == 1  ") ;
             if (navigator.geolocation) {
             //    console.log("navigator.geolocation ") ;
@@ -267,9 +276,16 @@ function jv_events_init() {
                 jQuery('#jv_events_geo_disp_sub').removeClass("d-none") ;
                 jQuery('#jv_events_geo_disp_spinner').addClass("d-none") ;
             }
+        } else {
+            jQuery('#jv_events_geo_disp_sub').removeClass("d-none") ;
+            jQuery('#jv_events_geo_disp_spinner').addClass("d-none") ;
         }
 
-	}
+    } else {
+        jQuery('#jv_events_geo_disp_sub').removeClass("d-none") ;
+        jQuery('#jv_events_geo_disp_spinner').addClass("d-none") ;
+    }
+
     jv_events_initOneFilter('distance') ;
     jQuery('#filter-reset-events' ).click(function(i) {
         $(this).preventDefault() ;
@@ -361,10 +377,11 @@ function jv_events_errorPosition() {
 
 
 function jv_events_initPosition(position) {
-    // console.log( "init Position done store to fields") ;
-	if( jQuery('#jv_events_geo').length > 0  ) {
+   // console.log( "init Position done, now store to fields") ;
+	if( jQuery('#jv_events_geo').length > 0  || jQuery('#lat').length > 0 ) {
 	    if( position ) {
             if( position.coords ) {
+               // console.log( "Position has coords") ;
                 if( position.coords.longitude ) {
                     jQuery('#jv_events_geo').data("lng" , position.coords.longitude ) ;
 
@@ -376,6 +393,18 @@ function jv_events_initPosition(position) {
                     if( jQuery('#lng').length > 0  ) {
                         jQuery('#lng').val(position.coords.longitude);
                     }
+                    if( map ) {
+                    //    console.log( "Map Object Found, place marker to coords") ;
+                        myPosition = new google.maps.LatLng(position.coords.latitude , position.coords.longitude);
+                      //  console.debug(position.coords)
+                        map.panTo(myPosition) ;
+                     //   map.setCenter( position.coords) ;
+
+                        if( marker ) {
+                            marker.setPosition(myPosition) ;
+                        }
+                    }
+
 
                     if( jQuery('#jv_events_geo').data("allowed" ) == "0" ) {
                         jv_events_refreshList() ;

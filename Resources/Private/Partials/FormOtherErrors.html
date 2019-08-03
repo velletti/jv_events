@@ -8,7 +8,7 @@
 <f:section name="Main">
 	<f:form.validationResults for="{for}">
 		<f:if condition="{validationResults.flattenedErrors}">
-			<div class="alert alert-warning">
+			<div class="alert alert-warning"  data-element-type="partials-formOtherErrors.html">
 					<h3>{f:translate(key: 'register.registration_not_possible_text')}</h3>
 					<ul>
 						<f:for each="{validationResults.flattenedErrors}" key="propertyPath" as="propertyErrors">

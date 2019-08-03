@@ -124,10 +124,14 @@ class OrganizerController extends BaseController
         $tags = $this->tagRepository->findAllonAllPages( '2' );
 
 
-        $organizer = $this->organizerRepository->findByUserAllpages( intval($GLOBALS['TSFE']->fe_user->user['uid'] )  , FALSE , TRUE  );
-        $this->view->assign('count', count( $organizer )) ;
+        $organizers = $this->organizerRepository->findByUserAllpages( intval($GLOBALS['TSFE']->fe_user->user['uid'] )  , FALSE , TRUE  );
+        $this->view->assign('count', count( $organizers )) ;
 
-        if ( $organizer==null) {
+        if ( $organizer) {
+            if( $organizer->getEmail() == '' ) {
+                $organizer->setEmail( $GLOBALS['TSFE']->fe_user->user['email'] ) ;
+            }
+        } else{
             /** @var \JVE\JvEvents\Domain\Model\Organizer $organizer */
             $organizer = $this->objectManager->get("JVE\\JvEvents\\Domain\\Model\\Organizer");
             // ToDo find good way to handle ID Default .. maybe a pid per User, per location or other typoscript setting
@@ -160,9 +164,9 @@ class OrganizerController extends BaseController
             $organizer = $this->cleanOrganizerArguments( $organizer ) ;
 
             // special needs for tango. maybe we make this configurabale via typoscript
-            $organizer->setHidden(1) ;
+            $organizer->setHidden(0) ;
             $organizer->setPid( 13 ) ;
-            $organizer->setSorting( 999999999 ) ;
+            $organizer->setSorting( 99999999 ) ;
             $organizer->setSysLanguageUid(-1 ) ;
 
             $organizer->setAccessUsers(intval($GLOBALS['TSFE']->fe_user->user['uid'] ));

@@ -74,7 +74,7 @@
         <f:then>
             <f:if condition="{organizer.0.hidden}">
                 <f:else>
-                    <f:render partial="Organizer/List/Partial{layoutList}/SingleOrganizer" arguments="{organizer:organizer.0, settings: settings, showDetails: '0' , showEditButton: '1' }" />
+                    <f:render partial="Organizer/List/Partial{layoutList}/SingleOrganizer" arguments="{organizer:organizer.0, settings: settings, showDetails: '0' , showEditButton: '1', hideDefaultImg: '1'}" />
                 </f:else>
             </f:if>
         </f:then>
@@ -84,11 +84,7 @@
 
 <f:section name="oneOrganizer">
     <div class="alert alert-info">
-        <h3>Status: <span class="far fa-check-square"> </span> <span>OK</span></h3>
-        <p>
-            Your ID: U-{user}-O-{organizer.0.uid}-P-{organizer.0.pid}<br>
-            Position: {organizer.0.sorting}
-        </p>
+        <h3>Status: <span class="far fa-check-square"> </span> <span>Aktiv</span></h3>
 
         <div class="text-right">
             <f:link.action pageUid="{settings.pageIds.editUserAccount}" class="btn btn-primary">
@@ -123,7 +119,7 @@
     <div class="alert alert-warning">
         <h3>Account Status: <span class="far fa-square"> </span> <span>Pending</span></h3>
         <p>
-            Sorry, but your User account is not activated by the webmaster yet. So it is not allowed for you, to create your own ORGANIZER account. <br>
+            Dein Account wird derzeit geprüft. Sobald die Freischaltung erfolgt ist, erhälst du eine E-Mail Benachrichtigung. <br>
             <br>
             Normaly this takes less than 2 workdays. If you are waiting for more than 2 days:<br>
             <f:render section="contactWebmaster" arguments="{settings}"></f:render>
@@ -139,7 +135,7 @@
     <h2>{f:translate(key: 'create.organizer.create.Headline', default: 'Want to become an Organizer?')} </h2>
     <p>{f:translate(key: 'create.organizer.create.text', default: 'Just click on this button and fill the Form')} </p>
 
-    <div class="text-right">
+    <div class="text-left">
         <f:link.action pageUid="{settings.pageIds.editOrganizer}" action="new" controller="Organizer" class="btn btn-primary">
             <span class="fas fa-plus-square"> </span> <span class="hidden-xs">{f:translate(key: 'create.organizer', default: 'Create New Organizer')}</span>
         </f:link.action>
@@ -151,9 +147,9 @@
 
 <f:section name="stillHidden">
     <div class="alert alert-warning">
-        <h3>Organizer Status: <span class="far fa-square"> </span> <span>Pending</span></h3>
+        <h3>Organizer Status: <span class="far fa-square"> </span> <span>inactiv</span></h3>
         <p>
-            Your Organizer Account is not activated. This may take up to 2 Days.<br>
+            Your Organizer Account is not activated!<br>
 
 
             <f:render section="contactWebmaster" arguments="{settings}"></f:render>

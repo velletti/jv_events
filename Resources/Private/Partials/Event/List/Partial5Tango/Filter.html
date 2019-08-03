@@ -15,7 +15,7 @@
                         <span class="fa  fa-spinner fa-spin"></span>
                     </span>
                     <span id="jv_events_geo_disp_sub" class="d-none">
-                        <span class="d-none d-md-inline-block"> Distances calculated from </span>
+                        <span class="d-none d-md-inline-block">{f:translate(key: 'select-position', default: 'Position wählen')} </span>
                         <button id="jv_events_map" class="btn btn-outline-secondary mx-2 "  data-toggle="modal" data-target="#geoSearchModal" title="{settings.list.longitude} / {settings.list.latitude}">
                             <span class="fa fa-map-marked-alt"> </span>
                         </button>
@@ -31,17 +31,17 @@
                 <div class="modal-dialog" role="document" style="max-width: 800px">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="jv_events_mapsLabel">Select Position</h5>
+                            <h5 class="modal-title" id="jv_events_mapsLabel">{f:translate(key: 'select-position', default: 'Position wählen')}</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
                             <f:render partial="SingleField/Partial{settings.LayoutList}/FormRowValue"
-                                      arguments="{property:'streetAndNr' , label: 'Street, City, DE' , translationKey: 'tx_jvevents_domain_model_event.filter.streetCityCountry' ,  maxLength: 80 , mandatory: '0' , defaultValue: 'Marienplatz 1, München, DE' }" />
+                                      arguments="{property:'streetAndNr' , label: 'Street, City, DE' , translationKey: 'tx_jvevents_domain_model_event.filter.streetCityCountry' ,  maxLength: 80 , mandatory: '0' , data-target: '#streetAndNr' , data-toggle: 'clearInput' , fa-icon: 'fas fa-times', defaultValue: 'Marienplatz 1, München, DE' }" />
 
                             <f:render partial="SingleField/Partial{settings.LayoutList}/FormRowGeocoder"
-                                      arguments="{object: 'location' , location: location , updateFunction: 'jv_events_refreshList();' , property:'lng'  ,  property2:'lat', fa-icon: 'fas fa-map-marked-alt' , label: 'Update Map' ,  maxLength: 30 , mandatory: '1' }" />
+                                      arguments="{object: 'location' , location: location , updateFunction: 'jv_events_refreshList();' , property:'lng'  ,  property2:'lat', fa-icon: 'fas fa-map-marked-alt' , label: '' ,  maxLength: 30 , mandatory: '1' }" />
 
                         </div>
                         <div class="modal-footer">

@@ -121,7 +121,7 @@ class GeocoderUtility {
 			function initMap() {
 			
 				// Set the center of the map (value not important, because we bound the markers to set the center of the map)
-				var myLatLng = {lat: -25.363, lng: 131.044};
+				var myLatLng = {lat: 11.4712, lng: 48.1148};
 			
 				// Create the map
 				map = new google.maps.Map(document.getElementById(\'map\'), {
@@ -151,6 +151,12 @@ class GeocoderUtility {
 				}
 				if(document.getElementById("lng")) {
 					document.getElementById("lng").val( marker.getPosition().lng()) ;
+				}
+				if(document.getElementById("jvevents-geo-ok")) {
+					document.getElementById("jvevents-geo-ok").style.opacity = "1" ;
+				}
+				if(document.getElementById("jvevents-geo-update")) {
+					document.getElementById("jvevents-geo-update").style.opacity = ".5" ;
 				}
 			}
 			function concatAddress() {
@@ -188,7 +194,7 @@ class GeocoderUtility {
 				' . $jQueryName . '("#geosearcherrormessage").hide();
 				
 				if ( !geocoder ) {
-				     retryIntervalId = setInterval(function () { findAddress(address) }, 500);
+				     retryIntervalId = setInterval(function () { findAddress(address) }, 100);
 				} else {
                     
                     refreshIntervalId = setInterval(function () { updateMapTimer(map) }, 300);
@@ -196,7 +202,6 @@ class GeocoderUtility {
                     geocoder.geocode(address, function(results, status) {
                 
                         if (status == google.maps.GeocoderStatus.OK) {
-                
                             // console.log(results);
                 
                             /**
@@ -209,8 +214,9 @@ class GeocoderUtility {
                                 draggable = true ;
                                 address.address += " Double Click to update Position" ;
                             } 
-                            
-                            var marker = new google.maps.Marker({
+                            // console.log( "geometrie Location") ;
+                            // console.debug( results[0].geometry.location ) ;
+                            marker = new google.maps.Marker({
                                     position: results[0].geometry.location,
                                     map: map,
                                     title: address.address,
@@ -227,6 +233,12 @@ class GeocoderUtility {
                                 }
                                 if(document.getElementById("lng")) {
                                     document.getElementById("lng").value = marker.getPosition().lng() ;
+                                }
+                                if(document.getElementById("jvevents-geo-ok")) {
+                                    document.getElementById("jvevents-geo-ok").style.opacity = "1" ;
+                                }
+                                if(document.getElementById("jvevents-geo-update")) {
+                                    document.getElementById("jvevents-geo-update").style.opacity = ".5" ;
                                 }
                             }
                             
@@ -541,6 +553,8 @@ class GeocoderUtility {
                 
                 
                 <div id="map" style="height:500px;"></div>
+                
+                
             ';
 
         }

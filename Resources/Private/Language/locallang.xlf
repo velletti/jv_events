@@ -6,10 +6,13 @@
 		</header>
 		<body>
             <trans-unit id="error.email.noMxRecord">
-                <source>Please check your email address. No MX Record found for the entered domain %1.</source>
+                <source>Please verify your email address. Is the domain '%1' correct?</source>
             </trans-unit>
             <trans-unit id="error.msg_error_html_code_not_allowed">
                 <source>Please check your input. Looks as it contains unwanted HTML Code</source>
+            </trans-unit>
+            <trans-unit id="error.msg_error_check-input">
+                <source>Please check your input below.</source>
             </trans-unit>
 
             <trans-unit id="jv_events_model_event.currency.label">
@@ -216,7 +219,7 @@
                 <source>Marketing Process Id</source>
             </trans-unit>
             <trans-unit id="tx_jvevents_domain_model_event.name">
-                <source>Name</source>
+                <source>Titel of event</source>
             </trans-unit>
             <trans-unit id="tx_jvevents_domain_model_event.need_to_confirm">
                 <source>Participant needs To Confirm</source>
@@ -348,7 +351,7 @@
                 <source>Location Category</source>
             </trans-unit>
             <trans-unit id="tx_jvevents_domain_model_location.name">
-                <source>Name</source>
+                <source>Name of location</source>
             </trans-unit>
             <trans-unit id="tx_jvevents_domain_model_location.organizer">
                 <source>Organizer</source>
@@ -582,6 +585,16 @@
             </trans-unit>
             <trans-unit id="event.MayBeNoAccess">
                 <source>Maybe you do not have access and need to login.</source>
+            </trans-unit>
+
+             <trans-unit id="select-position">
+                <source>Select Position</source>
+            </trans-unit>
+            <trans-unit id="addImage">
+                <source>Add Image</source>
+            </trans-unit>
+             <trans-unit id="changeImage">
+                <source>Change Image</source>
             </trans-unit>
 
 		</body>

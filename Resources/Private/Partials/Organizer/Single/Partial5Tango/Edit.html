@@ -10,14 +10,14 @@
     </div>
     <div class="card-body row">
         <div class="col-md-4 equalHeight">
-            <f:variable name="imageButton">Change Image</f:variable>
+            <f:variable name="imageButton"><f:translate key="changeImage">Change Image</f:translate></f:variable>
             <f:if condition="{organizer.teaserImage}">
                 <f:then>
                     <f:image src="{organizer.teaserImage.uid}" class="d-block w-100 h-auto img-float rounded shadow-lg" alt="{organizer.teaserImage.alternative}" title="{organizer.teaserImage.title}" width="{settings.list.image.width}c" maxWidth="{settings.list.image.width}" maxHeight="{settings.list.image.height}" treatIdAsReference="true" />
                 </f:then>
                 <f:else>
-                    <f:variable name="imageButton">Add Image</f:variable>
-                    <div class="alert alert-warning small">Teaserimage missing</div>
+                    <f:variable name="imageButton"><f:translate key="addImage">Add Image</f:translate></f:variable>
+
                 </f:else>
             </f:if>
             <br/>

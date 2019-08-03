@@ -9,8 +9,8 @@
 
 
 
-    <label class="control-label col-sm-4">
-        <span class="btn btn-primary" onclick="findAddress({'address': updateAddressFromFields() }); " >
+    <div class="col-sm-4">
+        <span id="jvevents-geo-update" class="btn btn-primary mx-2" onclick="findAddress({'address': updateAddressFromFields() }); " >
             <i class="{fa-icon}"></i>
             <f:if condition="{translationKey}">
                 <f:then>
@@ -21,12 +21,23 @@
                 </f:else>
             </f:if>
         </span>
+        <button id="jvevents-geo-getpos" type="button" class=" btn btn-primary" data-target="#jvevents-geo-getpos-modal" data-toggle="modal">
+                <i class="fas fa-map-pin mx-2"></i>
+        </button>
 
-    </label>
+        <button id="jvevents-geo-ok" type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span class=" btn btn-primary">
+                <i class="fas fa-check mx-2"></i>
+
+            </span>
+
+         </button>
+
+    </div>
     <div class="col-sm-4">
         <div class="input-group " >
             <f:form.textfield class="form-control" readonly="readonly" property="{property}" id="{property}" maxlength="{maxLength}"/>
-            <div class="input-group-addon ">
+            <div class="input-group-addon btn btn-secondary">
                 <i class="fas fa-map-marker"></i>
             </div>
         </div>
@@ -34,14 +45,25 @@
     <div class="col-sm-4">
         <div class="input-group  ">
             <f:form.textfield class="form-control" readonly="readonly" property="{property2}" id="{property2}" maxlength="{maxLength}"/>
-            <div class="input-group-addon ">
+            <div class="input-group-addon  btn btn-secondary">
                 <i class="fas fa-map-marker"></i>
             </div>
         </div>
 
     </div>
 </div>
-<div id="map" style="height:500px;"></div>
+<div id="map" style="height:300px;"></div>
 <jve:geocoder location="{location}" updateFunction="{updateFunction}">
 
 </jve:geocoder>
+<f:variable name="helpModalBody">
+    Wenn du möchtest, kann die Webseite deine aktuelle Position bestimmen und die Karte entsprechend zentrieren. <br>
+    <br>
+    Dazu wirst du, je nach Browser Optionen, noch gefragt, ob du dies erlauben möchstest.<br>
+    <br>
+    <span class="btn btn-outline-primary" onclick="jv_events_askPosition();"  data-dismiss="modal" aria-label="Close">Position bestimmen</span>
+</f:variable>
+<f:render partial="Helper/Bootstrap4/Modal" arguments="{'modalId':  'jvevents-geo-getpos-modal', 'modalTitle': 'My Position', 'modalBody': helpModalBody,'modalFooter': '',  'settings': settings}" />
+
+
+

@@ -4,7 +4,7 @@
 
 <div class="text-right">
     <f:link.action pageUid="{settings.pageIds.editLocation}" action="new" controller="Location" class="btn btn-primary">
-        <span class="fas fa-plus-square"> </span> <span class="hidden-xs">{f:translate(key: 'tx_jvevents_domain_model_location.createNew', default: 'Create New Location')}</span>
+        <span class="fas fa-plus-square"> </span> <span class="hidden-xs">{f:translate(key: 'tx_jvevents_domain_model_location.createNew', default: 'New Location')}</span>
     </f:link.action>
 </div>
 
@@ -14,11 +14,11 @@
         <h3>Select one of the existing Locations: </h3>
         <f:for each="{locations}" as="location">
             <div class="col-12 border border-left-0 my-2"><f:spaceless>
-                <f:link.action pageUid="{settings.pageIds.editEvent}" action="new" controller="Event" class="btn btn-secondary" arguments="{location: '{location.uid}', organizer: '{organizer.uid}'}">
-                    <f:format.padding padLength="6" padString="0" padType="left">{location.uid}</f:format.padding>
+                <f:link.action pageUid="{settings.pageIds.editEvent}" action="new" controller="Event" class="btn btn-secondary" title="{f:format.padding(padLength: '6', padString: '0'. padType'left' , value: '{location.uid}')}" arguments="{location: '{location.uid}', organizer: '{organizer.uid}'}">
+                    <span class="fas fa-home"></span>
                 </f:link.action>
                 <f:link.action pageUid="{settings.pageIds.editEvent}" action="new" title="{location.name}, {location.streetAndNr} - {location.city}" controller="Event" class="btn" arguments="{location: '{location.uid}', organizer: '{organizer.uid}'}">
-                    <f:format.crop maxCharacters="45">{location.name}, {location.streetAndNr} - {location.city}</f:format.crop>
+                    <f:format.crop maxCharacters="75">{location.name}, {location.streetAndNr} - {location.city}</f:format.crop>
                 </f:link.action>
             </f:spaceless></div>
 

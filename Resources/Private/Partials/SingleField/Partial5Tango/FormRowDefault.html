@@ -29,6 +29,7 @@
 		<f:if condition="{fa-icon}">
 			<f:then>
 				<div class="input-group">
+
 					<f:if condition="{object}">
 						<f:then>
 							<f:form.textfield class="form-control" property="{property}" id="{property}" {f:if(condition: '{defaultValue}' , then: 'value="{defaultValue}"' )} maxlength="{maxLength}" />
@@ -39,7 +40,7 @@
 						</f:else>
 					</f:if>
 
-					<div class="input-group-addon btn btn-default" {f:if(condition: '{data-toggle}' , then:'data-toggle="{data-toggle}"' )}
+					<div class="input-group-addon btn btn-secondary" {f:if(condition: '{data-toggle}' , then:'data-toggle="{data-toggle}"' )}
 						 {f:if(condition:'{data-target}' , then:'data-target="{data-target}"' )}
 					>
 						<label for="{property}" class="control-label">

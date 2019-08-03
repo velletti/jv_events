@@ -15,7 +15,8 @@
 		<f:if condition="{mandatory}">
 			<span class="mandatory">*</span>
 		</f:if>
-
+		<br>
+		<span class="small">(max {maxLength})</span>
 	</label>
 	<div class="col-sm-8">
 		<f:form.textarea class="form-control" property="{property}" id="{property}" rows="{rows}" additionalAttributes="{maxlength: '{maxLength}'}"/>
