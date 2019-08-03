@@ -206,6 +206,7 @@ class AjaxController extends BaseController
             "event" => array()  ,
             "events" => array()  ,
             "eventsFilter" => array()  ,
+            "eventsByFilter" => array()  ,
             "mode" => $mode  ,
             "feuser" => array(
                 "uid" => $GLOBALS['TSFE']->fe_user->user['uid'] ,
@@ -264,6 +265,17 @@ class AjaxController extends BaseController
                 }
 
                 $output['event']['name'] = $event->getName() ;
+                $output['event']['teaserImageUrl'] = GeneralUtility::getIndpEnv("TYPO3_REQUEST_HOST")  ;
+                if (  $event->getTeaserImage() ) {
+                    $output['event']['teaserImageUrl'] .=  $event->getTeaserImage()->getOriginalResource() ;
+                } else {
+                    if( $this->settings['EmConfiguration']['imgUrl2'] ) {
+                        $output['event']['teaserImageUrl'] .=  trim($this->settings['EmConfiguration']['imgUrl2']) ;
+                    } else {
+                        $output['event']['teaserImageUrl'] = GeneralUtility::getIndpEnv("TYPO3_REQUEST_HOST") . trim($this->settings['EmConfiguration']['imgUrl']) ;
+                    }
+                }
+
                 $output['event']['price'] = round( $event->getPrice() , 2 ) ;
                 $output['event']['currency'] = $event->getCurrency() ;
                 $output['event']['priceReduced'] = $event->getPriceReduced();
@@ -289,6 +301,30 @@ class AjaxController extends BaseController
                     $location = $event->getLocation() ;
                     $output['event']['locationId'] = $event->getLocation()->getUid() ;
                 }
+                $output['event']['days'] = $event->getSubeventCount() ;
+                if( $event->getSubeventCount() > 0 ) {
+                    $querysettings = new \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings ;
+                    $querysettings->setStoragePageIds(array( $event->getPid() )) ;
+
+                    $this->subeventRepository->setDefaultQuerySettings( $querysettings );
+
+                    $subeventsArr = $this->subeventRepository->findByEventAllpages($event->getUid() , TRUE   ) ;
+                    /** @var \JVE\JvEvents\Domain\Model\Subevent $subevent */
+                    foreach ( $subeventsArr as $subevent) {
+                        if( is_object( $subevent )) {
+                            $temp = [] ;
+                            $temp['date'] = $subevent->getStartDate()->format("d.m.Y") ;
+                            $temp['starttime'] = date( "H:i" ,$subevent->getStartTime() ) ;
+                            $temp['endtime'] = date( "H:i" ,$subevent->getEndTime() ) ;
+                            $output['event']['moreDays'][] = $temp ;
+                            unset($temp) ;
+                        }
+
+                    }
+
+                } else {
+                    $output['event']['moreDays'] = [] ;
+                }
             }
         }
 
@@ -303,6 +339,7 @@ class AjaxController extends BaseController
                 $output['eventsFilter']['citys'] = $output['event']['locationId']  ;
             }
 
+            // $this->settings['debug'] = 2 ;
 
             /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $events */
             $events = $this->eventRepository->findByFilter( $output['eventsFilter'], $limit,  $this->settings );
@@ -316,20 +353,29 @@ class AjaxController extends BaseController
 
                         $this->eventRepository->update($tempEvent);
                         $needToStore = TRUE;
-                    }
-                    $output['events'] = $events ;
-                    /*
+                        $output['events'] = $events ;
+                    } else {
+
+                        $tempEventsArray = $events->toArray() ;
+                        foreach ( $tempEventsArray as $tempEvent ) {
+
+                            $tempEventArray = [] ;
                             $tempEventArray['uid'] = $tempEvent->getUid();
                             $tempEventArray['name'] = $tempEvent->getName();
-                            $tempEventArray['startDate'] = $tempEvent->getStartDate();
+                            $tempEventArray['startDate'] = $tempEvent->getStartDate()->format("d.m.Y");
                             $tempEventArray['teaser'] = $tempEvent->getTeaser();
 
                             if (is_object($tempEvent->getLocation())) {
                                 $tempEventArray['LocationCity'] = $tempEvent->getLocation()->getCity();
                             }
 
-                            $output['events'][] = $tempEventArray;
-                            */
+                            $output['eventsByFilter'][] = $tempEventArray;
+                            unset( $tempEventArray );
+                        }
+
+                    }
+
+
                 }
             }
 
@@ -402,12 +448,19 @@ class AjaxController extends BaseController
     public function eventListAction()
     {
 
-        //  https://www.allplan.com.ddev.local/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=94&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&&tx_jvevents_ajax[rss]=1
+        // https://www.allplan.com.ddev.local/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=94&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[rss]=1
+        // https://www.allplan.com.ddev.local/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=94&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[mode]=onlyValues
+
         // https://www-dev.allplan.com/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=2049&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][sameCity]=&tx_jvevents_ajax[eventsFilter][skipEvent]=2049&tx_jvevents_ajax[eventsFilter][startDate]=1&tx_jvevents_ajax[rss]=1
+        // https://www-dev.allplan.com/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=2049&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][sameCity]=&tx_jvevents_ajax[eventsFilter][skipEvent]=2049&tx_jvevents_ajax[eventsFilter][startDate]=1&tx_jvevents_ajax[mode]=onlyValues
 
         // get all Access infos, Location infos , find similar events etc
         $output = $this->eventsListMenuSub() ;
 
+        if ( $output['mode'] == "onlyValues") {
+            unset( $output['events'] ) ;
+            ShowAsJsonArrayUtility::show(  $output ) ;
+        }
 
 
         /* ************************************************************************************************************ */
@@ -455,6 +508,7 @@ class AjaxController extends BaseController
         // https://www.allplan.com.ddev.local/index.php?uid=82&eID=jv_events&tx_jvevents_ajax[event]=2934&tx_jvevents_ajax[action]=eventMenu&tx_jvevents_ajax[mode]=onlyValues
         $output = $this->eventsListMenuSub() ;
         if ( $output['mode'] == "onlyValues") {
+            unset( $output['events'] ) ;
             ShowAsJsonArrayUtility::show(  $output ) ;
         }
 
