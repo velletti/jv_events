@@ -125,6 +125,7 @@ plugin.tx_jvevents_events {
 
             # pageID with plugin edit Location
 			editLocation = 0
+
 			# After storing Locations and mayby on oter places, rediret to this page
 			editLocationSuccess = 0
 

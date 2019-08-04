@@ -139,10 +139,7 @@ class LocationController extends BaseController
                 $this->persistenceManager->persistAll() ;
 
 
-                $this->addFlashMessage('The object was created.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
-                $pid = $this->settings['pageIds']['editLocationSuccess'] ;
-
-                $action = "list" ;
+                $this->addFlashMessage('The Location was created.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
             } catch ( \Exception $e ) {
                 $this->addFlashMessage($e->getMessage() , 'Error', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
 
@@ -154,13 +151,19 @@ class LocationController extends BaseController
             $this->addFlashMessage('The object was NOT created. You are not logged in as Organizer.' . $location->getUid() , '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
             $this->redirect(null , null , NULL , NULL , $pid );
         }
-        // if PID from TS settings is set: if User is not logged in-> Page with loginForm , on success -> showEventDetail  Page
-        if( $pid < 1) {
-            // else : stay on this page
-            $pid = $GLOBALS['TSFE']->id ;
 
+        $pid = $this->settings['pageIds']['editEvent'] ;
+
+
+        if( $pid < 1) {
+            $pid = $GLOBALS['TSFE']->id ;
+            $controller = NULL ;
+            $action = NULL ;
+        } else {
+            $controller = "Event" ;
+            $action = "new" ;
         }
-        $this->redirect($action , "Event" , NULL , array( 'eventsFilter' => array( 'organizers' => $orgId) ) , $pid );
+        $this->redirect($action , $controller , NULL , array( 'organizer' => $orgId , 'location' => $location->getUid() )  , $pid );
 
     }
     
