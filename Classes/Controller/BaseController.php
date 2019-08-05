@@ -534,7 +534,24 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     /**
      * @return bool
      */
+    public function sendDebugEmail($recipient,$sender ,$subject , $plainMsg ) {
+        /** @var $message \TYPO3\CMS\Core\Mail\MailMessage */
+        $message = $this->objectManager->get('TYPO3\\CMS\\Core\\Mail\\MailMessage');
+        $message->setTo($recipient)
+            ->setFrom($sender)
+            ->setSubject($subject);
 
+        $returnPath = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFromAddress();
+        if ( $returnPath != "no-reply@example.com") {
+            $message->setReturnPath($returnPath);
+        }
+
+        $message->setBody(nl2br( $plainMsg), 'text/html');
+        $message->addPart(strip_tags( $plainMsg ), 'text/plain');
+
+
+        $message->send();
+    }
 
     public function isUserOrganizer() {
         $groups = GeneralUtility::trimExplode("," , $this->settings['feEdit']['organizerGroudIds'] , TRUE ) ;
