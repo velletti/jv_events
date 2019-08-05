@@ -547,6 +547,11 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         return false  ;
     }
 
+    public function hasUserGroup( $groupId) {
+        $feuserGroups = GeneralUtility::trimExplode("," ,  $GLOBALS['TSFE']->fe_user->user['usergroup']  , TRUE ) ;
+        return in_array( $groupId  , $feuserGroups ) ;
+    }
+
     /**
      * @param \JVE\JvEvents\Domain\Model\Organizer | \TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy  $organizer
      * @return bool
