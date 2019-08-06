@@ -537,7 +537,7 @@ class EventController extends BaseController
      */
     public function deleteAction(\JVE\JvEvents\Domain\Model\Event $event)
     {
-
+        $orgId = $event->getOrganizer() ;
         if ( $this->hasUserAccess($event->getOrganizer() )) {
             $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
 
@@ -563,7 +563,9 @@ class EventController extends BaseController
         }
         $this->persistenceManager->persistAll() ;
 
-        $this->redirect('list' , null , null , null, $this->settings['pageIds']['eventList']);
+        $arguments = array ( 'overruleFilter' => array( 'organizer' => $orgId , 'category' => true , 'maxDays' => 90 )) ;
+
+        $this->redirect('list' , null , null , $arguments, $this->settings['pageIds']['eventList']);
     }
     
 

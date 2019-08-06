@@ -11,16 +11,25 @@
 
 <f:if condition="{locations}">
     <f:then>
-        <h3>Select one of the existing Locations: </h3>
+        <div class="clearfix my-2">
+            <br/>
+        </div>
+        <h3 >Select one of the existing Locations: </h3>
         <f:for each="{locations}" as="location">
-            <div class="col-12 border border-left-0 my-2"><f:spaceless>
-                <f:link.action pageUid="{settings.pageIds.editEvent}" action="new" controller="Event" class="btn btn-secondary" title="{f:format.padding(padLength: '6', padString: '0'. padType'left' , value: '{location.uid}')}" arguments="{location: '{location.uid}', organizer: '{organizer.uid}'}">
-                    <span class="fas fa-home"></span>
-                </f:link.action>
-                <f:link.action pageUid="{settings.pageIds.editEvent}" action="new" title="{location.name}, {location.streetAndNr} - {location.city}" controller="Event" class="btn" arguments="{location: '{location.uid}', organizer: '{organizer.uid}'}">
-                    <f:format.crop maxCharacters="75">{location.name}, {location.streetAndNr} - {location.city}</f:format.crop>
-                </f:link.action>
-            </f:spaceless></div>
+            <div class="row w-100 border border-left-0 my-2">
+                <f:spaceless>
+                    <div class="col-1  text-left ml-0 pl-0">
+                        <f:link.action pageUid="{settings.pageIds.editEvent}" action="new" controller="Event" class="btn btn-secondary" title="{f:format.padding(padLength: '6', padString: '0'. padType'left' , value: '{location.uid}')}" arguments="{location: '{location.uid}', organizer: '{organizer.uid}'}">
+                            <span class="fas fa-home"></span>
+                        </f:link.action>
+                    </div>
+                    <div class="col-11  text-left">
+                        <f:link.action pageUid="{settings.pageIds.editEvent}" action="new" title="{location.name}, {location.streetAndNr} - {location.city}" controller="Event" class="btn text-left" arguments="{location: '{location.uid}', organizer: '{organizer.uid}'}">
+                            <f:format.crop maxCharacters="75">{location.name}, {location.streetAndNr} - {location.city}</f:format.crop>
+                        </f:link.action>
+                    </div>
+                </f:spaceless>
+            </div>
 
         </f:for>
     </f:then>
