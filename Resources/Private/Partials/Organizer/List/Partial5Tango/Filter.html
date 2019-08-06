@@ -1,21 +1,19 @@
 <div class="filter organizer" xmlns:f="http://www.w3.org/1999/html">
-        <div class="hints clearfix">
-            <p class="text-left" id="filter-organizer" >
+        <div class="hints clearfix row">
+            <p class="text-left col-auto" id="filter-organizer" >
 
                 <button class="btn btn-secondary" data-target="#jv-events-filter-sub" role="button" data-toggle="collapse">
                     <span class="fa fa-filter mh-sm"></span> <span class="jv-events-filter-sub-text"><f:translate key="tx_jvevents_event.filter.hint" /></span>
                 </button>
 
             </p>
-            <p class="text-left d-none" id="filter-reset-events"><a href="#"><span class="fa fa-trash mh-sm"></span> <f:translate key="tx_jvevents_event.filter.reset" /></a></p>
+            <p class="text-left  col-auto" id="filter-reset-events"><a href="#"><span class="fa fa-trash mh-sm"></span> <span class="d-none d-sm-inline-block"><f:translate key="tx_jvevents_event.filter.reset" /></span></a></p>
 
         </div>
-        <form class="clearfix" onsubmit="this.preventDefault();">
-
-            <div id="jv-events-filter-sub" class="fieldsets">
-
+           <form class="clearfix" onsubmit="this.preventDefault();">
+               <div id="jv-events-filter-sub" class="fieldsets collapse">
                 <f:if condition="{f:count(subject: orgFilter.tags2)} > 1">
-                    <fieldset id="jv_events_fieldset_tags">
+                    <fieldset id="jv_events_fieldset_tags" class="p-0">
                         <legend class="d-none"><f:translate key="tx_jvevents_domain_model_event.tags" /></legend>
 
                         <div class="checkbox" id="jv_events_filter_tags">
@@ -28,7 +26,7 @@
                     </fieldset>
                 </f:if>
                 <f:if condition="{f:count(subject: orgFilter.categories2)} > 1">
-                    <fieldset id="jv_events_fieldset_categories">
+                    <fieldset id="jv_events_fieldset_categories" class="p-0">
 
                         <legend class="d-none"><f:translate key="tx_jvevents_domain_model_category" /></legend>
 
