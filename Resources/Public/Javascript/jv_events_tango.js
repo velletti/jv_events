@@ -187,8 +187,8 @@ function jv_events_refreshTags() {
 
 function jv_events_askPosition() {
    // if( jQuery('#jv_events_geo').data("askuser" )  == "1" && location.protocol == "https:") {
-      console.log("jv_events_askPosition") ;
-      showSpinner() ;
+   //    console.log("jv_events_askPosition") ;
+   //   showSpinner() ;
     if( location.protocol == "https:") {
      //    console.log("location.protocol == \"https:\" ") ;
         if (navigator.geolocation) {
@@ -202,7 +202,7 @@ function jv_events_askPosition() {
             jQuery('#jv_events_geo_disp_spinner').addClass("d-none") ;
         }
     }
-    hideSpinner() ;
+    // hideSpinner() ;
 }
 
 //  ############   generic function for everyone: test if a spezific Parameter is in URL and return its value ###########
