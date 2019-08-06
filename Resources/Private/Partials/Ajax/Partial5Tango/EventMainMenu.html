@@ -14,7 +14,7 @@
                 </f:if>
                 <f:if condition="{settings.pageIds.eventList}">
                     <f:if condition="{output.feuser.organizer.uid}">
-                        <f:link.action pageUid="{settings.pageIds.eventList}" class="nav-link" title="List Events" action="list" controller="Event" additionalParams="{tx_jvevents_events: {overruleFilter: {organizer: output.feuser.organizer.uid , startdate: 1, maxdays:90 , categories:true }}}">
+                        <f:link.action pageUid="{settings.pageIds.eventList}" class="nav-link" title="List Events" action="list" controller="Event" additionalParams="{tx_jvevents_events: {overruleFilter: {organizer: output.feuser.organizer.uid , startDate: 1, maxDays:90 , category:true }}}">
                             <button class="btn btn-outline-primary btn-xs rounded-circle" href="#">
                                 <i class="fas fa-list "></i>
                             </button>
