@@ -218,6 +218,15 @@ class AjaxController extends BaseController
             "location" => array() ,
 
         ) ;
+        if ( $output["feuser"]["isOrganizer"]) {
+            $feuserOrganizer = $this->organizerRepository->findByUserAllpages(intval($GLOBALS['TSFE']->fe_user->user['uid']), FALSE, TRUE);
+            if ( is_object($feuserOrganizer->getFirst())) {
+                $output["feuser"]["organizer"]['uid'] = $feuserOrganizer->getFirst()->getUid() ;
+            }
+
+        }
+
+
         if( $this->request->hasArgument('returnPid')) {
             $output['returnPid'] = $this->request->getArgument('returnPid') ;
         }
