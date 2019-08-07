@@ -156,6 +156,30 @@ class OrganizerRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         }
     }
 
+    /**
+     * @param integer $sorting
+     * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
+     */
+    public function findBySortingAllpages($sorting  )
+    {
+        $query = $this->createQuery();
+        $query->setOrderings($this->defaultOrderings);
+
+        $querySettings = $query->getQuerySettings() ;
+        $querySettings->setRespectStoragePage(false);
+        $querySettings->setRespectSysLanguage(FALSE);
+        $query->setQuerySettings($querySettings) ;
+        $constraint = $query->lessThanOrEqual("sorting" ,  $sorting ) ;
+
+        $query->matching( $constraint) ;
+
+        $res = $query->execute() ;
+
+        return $res ;
+    }
+
+
     function debugQuery($query) {
         // new way to debug typo3 db queries
         $queryParser = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class);
