@@ -57,7 +57,7 @@ class GeocoderUtility {
         $this->getLanguageService()->includeLLFile('EXT:jv_events/Resources/Private/Language/locallang_be.xlf');
 
 		$googleApiKey = \JVE\JvEvents\Utility\EmConfigurationUtility::getGoogleApiKey();
-        $this->javascriptCode = '<script async defer src="https://maps.googleapis.com/maps/api/js?key=' . $googleApiKey . '&callback=initMap"></script>';
+        $this->javascriptCode = '<script async defer src="https://maps.googleapis.com/maps/api/js?key=' . $googleApiKey . '&callback=initGeoCoderMap"></script>';
 
 
 	}
@@ -65,7 +65,7 @@ class GeocoderUtility {
 
 	/**
 	 * Inline Js, attention: we need to write TYPO3.jQuery  here instead of jquery...
-	 * initMap: Resources/Public/JavaScript/googleGeocoderBackend.js
+	 * initGeoCoderMap: Resources/Public/JavaScript/googleGeocoderBackend.js
 	 * @param array $addressData
 	 * @param integer $uid
 	 * @param string $jQueryName
@@ -118,7 +118,7 @@ class GeocoderUtility {
 			 * Creates the google map
 			 * Called by: https://maps.googleapis.com/maps/api/geocode/output?[parameters]
 			 */
-			function initMap() {
+			function initGeoCoderMap() {
 			
 				// Set the center of the map (value not important, because we bound the markers to set the center of the map)
 				var myLatLng = {lat: 11.4712, lng: 48.1148};
@@ -194,10 +194,10 @@ class GeocoderUtility {
 				' . $jQueryName . '("#geosearcherrormessage").hide();
 				
 				if ( !geocoder ) {
-				     retryIntervalId = setInterval(function () { findAddress(address) }, 100);
+				     retryIntervalId = setInterval(function () { initGeocoderMap() }, 1000);
 				} else {
                     
-                    refreshIntervalId = setInterval(function () { updateMapTimer(map) }, 300);
+                    //  refreshIntervalId = setInterval(function () { updateMapTimer(map) }, 300);
                     
                     geocoder.geocode(address, function(results, status) {
                 
@@ -460,7 +460,7 @@ class GeocoderUtility {
 				// console.log(address);
 
 				// Done by API-call
-				// initMap();
+				// initGeoCoderMap();
 
 			}else{
 				showErrorMessage("' . $this->getLanguageService()->getLL('geocoding.error.referenceToParentWindow') . '");

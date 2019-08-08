@@ -266,6 +266,9 @@ function initMap() {
 	$("#jv_events_map").on('click', function() {   // When tab is displayed...
 		refreshIntervalId = setInterval(function () { updateMapTimer(map) }, 300);
 	});
+
+
+
 	$('.nav-tabs a').click(function(event) {   // When tab is displayed...
 		navigationFn.goToSection(event.target.id);
 	});

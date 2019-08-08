@@ -197,11 +197,17 @@ function jv_events_askPosition() {
             jQuery("#geosearch input#geosearchbox").val('');
             jQuery("#streetAndNr").val('');
 
+
         } else {
             jQuery('#jv_events_geo_disp_sub').removeClass("d-none") ;
             jQuery('#jv_events_geo_disp_spinner').addClass("d-none") ;
         }
     }
+    jQuery("#jvevents-geo-getpos").click() ;
+    jQuery("#jvevents-geo-update").addClass('opacity-2') ;
+    jQuery("#jvevents-geo-getpos").addClass('opacity-1') ;
+    jQuery("#jvevents-geo-ok").addClass('opacity-4') ;
+
     // hideSpinner() ;
 }
 
