@@ -1729,7 +1729,21 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         $this->tags->attach($tag);
     }
-    
+
+
+
+    /**
+     * Removes a FileReference
+     *
+     * @param \TYPO3\CMS\Extbase\Domain\Model\FileReference $teaserImage
+     * @return void
+     */
+    public function removeTeaserImage()
+    {
+        $this->teaserImage = null;
+    }
+
+
     /**
      * Removes a Tag
      *

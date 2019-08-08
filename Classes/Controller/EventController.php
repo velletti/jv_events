@@ -421,7 +421,8 @@ class EventController extends BaseController
                     $newEvent->addTag($tag) ;
                 }
             }
-            // ----- end copy the Categories and tags  -----
+
+            // ----- end copy the Categories and tags and now  Teaser image  -----
 
             $this->eventRepository->add($newEvent) ;
             try {
@@ -432,6 +433,41 @@ class EventController extends BaseController
                 $this->addFlashMessage($e->getMessage() , 'Error in action ' . ' - copyEvent -', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
             }
             $eventUid = $newEvent->getUid() ;
+
+            /** @var \TYPO3\CMS\Core\Database\ConnectionPool $connectionPool */
+            $connectionPool = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class);
+
+            /** @var \TYPO3\CMS\Core\Database\Connection $dbConnectionForSysRef */
+            $dbConnectionForSysRef = $connectionPool->getConnectionForTable('sys_file_reference');
+
+            /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
+            $queryBuilder = $dbConnectionForSysRef->createQueryBuilder();
+
+            $affectedRows = $queryBuilder
+                ->select( "uid","uid_local" )
+                ->from('sys_file_reference')
+                ->where(
+                    $queryBuilder->expr()->eq('uid_foreign', $queryBuilder->createNamedParameter( $event->getUid() )),
+                    $queryBuilder->expr()->eq('tablenames', $queryBuilder->createNamedParameter( 'tx_jvevents_domain_model_event' )),
+                    $queryBuilder->expr()->eq('fieldname', $queryBuilder->createNamedParameter( 'teaser_image' ))
+
+                )
+                ->execute();
+
+            $mediaRow = $affectedRows->fetch() ;
+
+            $affectedRows = $queryBuilder
+                ->insert('sys_file_reference')
+                ->values([
+                    'uid_local' => $mediaRow['uid_local'] ,
+                    'table_local' => 'sys_file'  ,
+                    'uid_foreign' => intval( $eventUid ) ,
+                    'tablenames' => 'tx_jvevents_domain_model_event'  ,
+                    'fieldname' => 'teaser_image'  ,
+
+                ])
+                ->execute();
+
             unset( $newEvent ) ;
         }
 
