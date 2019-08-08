@@ -194,10 +194,10 @@ class GeocoderUtility {
 				' . $jQueryName . '("#geosearcherrormessage").hide();
 				
 				if ( !geocoder ) {
-				     retryIntervalId = setInterval(function () { initGeocoderMap() }, 1000);
+				     retryIntervalId = setInterval(function () { initGeoCoderMap() }, 1000);
 				} else {
                     
-                    //  refreshIntervalId = setInterval(function () { updateMapTimer(map) }, 300);
+                    refreshIntervalId = setInterval(function () { updateMapTimer(map) }, 300);
                     
                     geocoder.geocode(address, function(results, status) {
                 
