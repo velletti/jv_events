@@ -4,6 +4,7 @@
 		<f:variable name="propertyName">{object}.{property}</f:variable>
 		<f:render partial="FormErrorSingle" arguments="{property: errorProperty, field: propertyName}"/>
 	</f:if>
+
 	<f:variable name="defaultValueText"></f:variable>
 	<f:if condition="{defaultValue}">
 		<f:variable name="defaultValueText"><f:format.raw> value='{defaultValue}' </f:format.raw></f:variable>
@@ -54,7 +55,7 @@
 			<f:else>
 				<f:if condition="{object}">
 					<f:then>
-						<f:form.textfield class="form-control" property="{property}" id="{property}" maxlength="{maxLength}" />
+						<f:form.textfield class="form-control"property="{property}" id="{property}" maxlength="{maxLength}" />
 					</f:then>
 					<f:else>
 						<f:form.textfield class="form-control" id="{property}" name="{property}" {defaultValueText} maxlength="{maxLength}" />

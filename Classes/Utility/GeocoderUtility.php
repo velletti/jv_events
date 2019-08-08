@@ -179,8 +179,16 @@ class GeocoderUtility {
                 
                 // All addressData (without zip) have to be entered, if not, Google will find nothing and an error message is shown
                 var parts = address.split(",") ;
-                if( parts.length < 2  ){
-                    address = "";
+                if( parts.length < 1  ){
+                    if( jQuery("#streetAndNr").length && jQuery("#streetAndNr").data("default-city") ) {
+                        address += ", " + jQuery("#streetAndNr").data("default-city") ; 
+                    }
+                    if( parts.length < 2  ){
+                        if( jQuery("#streetAndNr").length && jQuery("#streetAndNr").data("default-cntry") ) {
+                            address += ", " + jQuery("#streetAndNr").data("default-cntry") ; 
+                        }
+                        address = "";
+                    }
                 }
 			    return address ;
 			}

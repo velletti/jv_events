@@ -207,6 +207,13 @@ function jv_events_askPosition() {
     jQuery("#jvevents-geo-update").addClass('opacity-2') ;
     jQuery("#jvevents-geo-getpos").addClass('opacity-1') ;
     jQuery("#jvevents-geo-ok").addClass('opacity-4') ;
+    if ( jQuery("#streetAndNr").length) {
+        jQuery("#streetAndNr").keypress( function() {
+            jQuery("#jvevents-geo-update").removeClass('opacity-2') ;
+            jQuery("#jvevents-geo-getpos").removeClass('opacity-1') ;
+            jQuery("#jvevents-geo-ok").removeClass('opacity-4') ;
+        })
+    }
 
     // hideSpinner() ;
 }
