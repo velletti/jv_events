@@ -1,7 +1,7 @@
 {namespace jve=JVE\JvEvents\ViewHelpers}
 
 <f:if condition="{aktDate} != {lastDate}">
-    <div class="alert bg-gradient-dark text-primary jv-events-row jvevents-newDay mt-4"><i class="fas fa-calendar-alt"> </i> {event.startDate -> f:format.date(format:"D d. M. Y")} </div>
+    <div class="alert bg-gradient-dark text-white-50 jv-events-row jvevents-newDay mt-4"><i class="fas fa-calendar-alt"> </i> {event.startDate -> f:format.date(format:"D d. M. Y")} </div>
 </f:if>
 
 <f:spaceless>
@@ -43,7 +43,7 @@
                     <div class="card-block min-height-6-lines jv-events-teaser-div-wrap">
                         <h4 class="card-title max-1-line mb-0">
                             <span class="col-10 col-sm-11 pl-0">
-                                 <f:link.action class="btn btn-outline-secondary btn-sm" pageUid="{settings.detailPid}" action="show" arguments="{event : event}" >
+                                 <f:link.action class="" pageUid="{settings.detailPid}" action="show" arguments="{event : event}" >
                                      {event.name}
                                  </f:link.action>
                             </span>
@@ -78,7 +78,10 @@
                         <span class="d-md-block d-sm-none d-xs-block">{event.price} {event.currency} (<f:translate key="jv_events_model_event.inclusiveVat" />)<br></span>
                     </f:if>
 
-                    <div class="jv_events_dist_wrap" title="{f:translate(key:'Distance_from_position', default: 'Entfernung von der gewählten Postion bzw. Marienplatz in München')}"><span class="fas fa-map-pin"></span> <span class="jv_events_dist ml-3">.</span></div>
+                    <div class="jv_events_dist_wrap" title="{f:translate(key:'Distance_from_position', default: 'Entfernung von der gewählten Postion bzw. Marienplatz in München')}">
+                        <span class="fas fa-map-pin"></span>
+                        <span class="jv_events_dist ml-2">.</span>
+                    </div>
                     <span class="text-right position-bottom position-right">
                         <f:link.action class="btn btn-outline-secondary btn-sm" pageUid="{settings.detailPid}" action="show" arguments="{event : event}" >
                             <span class="fas fa-comment-dots"></span>
