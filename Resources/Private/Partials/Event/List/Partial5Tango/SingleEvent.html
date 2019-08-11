@@ -9,7 +9,7 @@
 
         <div class="card col-12 my-4 clearfix rounded-bottom">
             <div class="row">
-                <div class="col-6  order-2 col-sm-3 px-0">
+                <div class="col-5  order-2 col-sm-3 px-0">
 
                     <f:link.action pageUid="{settings.detailPid}" action="show" arguments="{event : event}">
                         <f:if condition="{event.teaserImage}">
@@ -63,7 +63,7 @@
                     </div>
                 </div>
 
-                <div class="col-6 col-sm-3 text-black-50 bg-gradient-light  order-3 order-sm-3 py-2">
+                <div class="col-7 col-sm-3 text-black-50 bg-gradient-light  order-3 order-sm-3 py-2">
                     {event.location.city}<br>
                     {event.startTime -> f:format.date(format:"H:i")}-{event.endTime -> f:format.date(format:"H:i")} h<br>
                     <f:if condition="{event.price} > 0 ">
