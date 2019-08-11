@@ -10,6 +10,17 @@ jQuery(document).ready(function() {
         jv_events_init_edit_tags() ;
     }
 
+    if ( jQuery("#streetAndNr").length) {
+        jQuery("#streetAndNr").on("keydown" , function( event) {
+            jQuery("#jvevents-geo-update").removeClass('opacity-2') ;
+            jQuery("#jvevents-geo-getpos").removeClass('opacity-1') ;
+            jQuery("#jvevents-geo-ok").removeClass('opacity-4') ;
+            if ( event.which == 13 ) {
+                jQuery("#jvevents-geo-update").click() ;
+            }
+        })
+    }
+
 }) ;
 
 function jv_events_init_AjaxMenu() {
@@ -207,13 +218,7 @@ function jv_events_askPosition() {
     jQuery("#jvevents-geo-update").addClass('opacity-2') ;
     jQuery("#jvevents-geo-getpos").addClass('opacity-1') ;
     jQuery("#jvevents-geo-ok").addClass('opacity-4') ;
-    if ( jQuery("#streetAndNr").length) {
-        jQuery("#streetAndNr").keypress( function() {
-            jQuery("#jvevents-geo-update").removeClass('opacity-2') ;
-            jQuery("#jvevents-geo-getpos").removeClass('opacity-1') ;
-            jQuery("#jvevents-geo-ok").removeClass('opacity-4') ;
-        })
-    }
+
 
     // hideSpinner() ;
 }
@@ -652,7 +657,7 @@ function jv_events_refreshList(){
 
 	if ( filterIsActive ) {
 		jQuery( "#filter-events BUTTON .jv-events-filter-sub-text").addClass('d-none') ;
-		jQuery( "#filter-events BUTTON").addClass('rotate-180') ;
+		// jQuery( "#filter-events BUTTON").addClass('rotate-180') ;
 		jQuery( "#filter-organizer BUTTON .jv-events-filter-sub-text").addClass('d-none') ;
         jQuery( "#filter-organizer BUTTON SVG").addClass('rotate-180') ;
 		jQuery( "#filter-reset-events").removeClass('d-none') ;

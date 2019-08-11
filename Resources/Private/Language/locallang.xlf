@@ -588,7 +588,10 @@
             </trans-unit>
 
              <trans-unit id="select-position">
-                <source>Select Position</source>
+                <source>Select your Position</source>
+            </trans-unit>
+            <trans-unit id="select-position-btn">
+                <source>Locate Position</source>
             </trans-unit>
             <trans-unit id="addImage">
                 <source>Add Image</source>

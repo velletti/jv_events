@@ -8,7 +8,7 @@
 
 
 
-    <div class="col-4">
+    <div class="col-2 col-sm-4">
         <span id="jvevents-geo-update" class="btn btn-primary mx-2" onclick="findAddress({'address': updateAddressFromFields() }); " >
             <i class="{fa-icon}"></i>
             <span class="d-none d-md-inline-block">
@@ -23,20 +23,20 @@
             </span>
         </span>
     </div>
-    <div class="col-4">
-        <button id="jvevents-geo-getpos" type="button" class=" btn btn-primary" data-target="#jvevents-geo-getpos-collapse" data-toggle="collapse">
-            <i class="fas fa-map-marked-alt mr-2"></i>
-            <span class="d-none d-md-inline-block">
-                Deine Position
+    <div class="col-8 col-sm-4 text-center">
+        <button id="jvevents-geo-getpos" type="button" class=" btn btn-outline-primary" data-target="#jvevents-geo-getpos-collapse" data-toggle="collapse">
+            <i class="fas fa-street-view mr-2"></i>
+            <span class="">
+                <f:translate key="select-position-btn">Position bestimmen</f:translate>
             </span>
         </button>
     </div>
-    <div class="col-4">
+    <div class="col-2 col-sm-4">
         <button id="jvevents-geo-ok" type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span class=" btn btn-secondary">
                 <i class="fas fa-check mr-2"></i>
                 <span class="d-none d-md-inline-block">
-                    Close
+                    OK
                 </span>
             </span>
 

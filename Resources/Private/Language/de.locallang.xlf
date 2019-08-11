@@ -744,8 +744,12 @@
             </trans-unit>
 
             <trans-unit id="select-position">
-                <source>Select Position</source>
-                <target>Position wählen</target>
+                <source>Select your Position</source>
+                <target>Wähle deinen Standort</target>
+            </trans-unit>
+            <trans-unit id="select-position-btn">
+                <source>Locate Position</source>
+                <target>Standort bestimmen</target>
             </trans-unit>
              <trans-unit id="error.email.noMxRecord">
                 <source>Please verify your email address. Is the domain @'%1' correct?</source>
