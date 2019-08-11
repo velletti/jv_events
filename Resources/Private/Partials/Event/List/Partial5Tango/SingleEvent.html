@@ -9,7 +9,7 @@
 
         <div class="card col-12 my-4 clearfix rounded-bottom">
             <div class="row">
-                <div class="col-6  order-1 col-sm-3 px-0">
+                <div class="col-6  order-2 col-sm-3 px-0">
 
                     <f:link.action pageUid="{settings.detailPid}" action="show" arguments="{event : event}">
                         <f:if condition="{event.teaserImage}">
@@ -39,31 +39,42 @@
                 </div>
 
 
-                <div class="col-12 col-sm-6  order-3 order-sm-2 py-3">
-                    <div class="card-block min-height-6-lines">
-                        <h4 class="card-title max-1-line "><f:link.action  pageUid="{settings.detailPid}" action="show" arguments="{event : event}" >
-                            {event.name}
-                        </f:link.action></h4>
-                        <p class="my-2 d-md-block d-sm-none d-xs-block max-3-lines "><f:format.nl2br>{event.teaser}</f:format.nl2br></p>
+                <div class="col-12 col-sm-6  order-1 order-sm-2 py-2 ">
+                    <div class="card-block min-height-6-lines jv-events-teaser-div-wrap">
+                        <h4 class="card-title max-1-line mb-0" data-toggle="collapse" data-target="#jv-events-teaser-div-{event.uid}">
+                            {event.name} <span class="position-right px-2 d-sm-none"><span class="far fa-caret-square-down"></span></span>
+                        </h4>
+                        <div class="collapse fade jv-events-teaser-div p-0 m-0" id="jv-events-teaser-div-{event.uid}">
+                            <p class="my-2 d-md-block d-sm-none d-xs-block max-3-lines mb-3 pb-2">
+                                <f:format.nl2br>{event.teaser}</f:format.nl2br>
 
-                        <small class="align-text-bottom position-bottom mb-3 jv-events-tagLine">
-                            <f:variable name="tagLine">
-                                <f:for each="{event.eventCategory}" as="Category" iteration="iteration">{Category.title}, </f:for>
-                                <f:for each="{event.Tags}" as="Tag" iteration="iteration">{Tag.name}<f:if condition="{iteration.isLast}"><f:else>, </f:else></f:if> </f:for>
-                            </f:variable>
-                            {tagLine}
-                        </small>
+
+                            </p>
+
+                            <small class="align-text-bottom position-bottom mb-3 jv-events-tagLine">
+                                <f:variable name="tagLine">
+                                    <f:for each="{event.eventCategory}" as="Category" iteration="iteration">{Category.title}, </f:for>
+                                    <f:for each="{event.Tags}" as="Tag" iteration="iteration">{Tag.name}<f:if condition="{iteration.isLast}"><f:else>, </f:else></f:if> </f:for>
+                                </f:variable>
+                                {tagLine}
+                            </small>
+                        </div>
+
                     </div>
                 </div>
 
-                <div class="col-6 col-sm-3 text-black-50 bg-gradient-light  order-2 order-sm-3 py-3">
+                <div class="col-6 col-sm-3 text-black-50 bg-gradient-light  order-3 order-sm-3 py-2">
                     {event.location.city}<br>
                     {event.startTime -> f:format.date(format:"H:i")}-{event.endTime -> f:format.date(format:"H:i")} h<br>
                     <f:if condition="{event.price} > 0 ">
                         <span class="d-md-block d-sm-none d-xs-block">{event.price} {event.currency} (<f:translate key="jv_events_model_event.inclusiveVat" />)<br></span>
                     </f:if>
-                    <div class="jv_events_dist">.</div>
-
+                    <div class="jv_events_dist_wrap" title="{f:translate(key:'Distance_from_position', default: 'Entfernung von der gewählten Postion bzw. Marienplatz in München')}"><span class="fas fa-map-pin"></span> <span class="jv_events_dist ml-3">.</span></div>
+                    <span class="text-right position-bottom position-right">
+                        <f:link.action class="btn btn-outline-secondary btn-sm" pageUid="{settings.detailPid}" action="show" arguments="{event : event}" >
+                            <span class="fas fa-comment-dots"></span>
+                        </f:link.action>
+                    </span>
                 </div>
             </div>
         </div>
