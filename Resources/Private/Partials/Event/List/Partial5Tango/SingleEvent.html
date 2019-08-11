@@ -41,8 +41,15 @@
 
                 <div class="col-12 col-sm-6  order-1 order-sm-2 py-2 ">
                     <div class="card-block min-height-6-lines jv-events-teaser-div-wrap">
-                        <h4 class="card-title max-1-line mb-0" data-toggle="collapse" data-target="#jv-events-teaser-div-{event.uid}">
-                            <span class="col-10 col-sm-11 pl-0">{event.name}</span> <span class="position-right position-top p-2 d-sm-none"><span class="far fa-caret-square-down"></span></span>
+                        <h4 class="card-title max-1-line mb-0">
+                            <span class="col-10 col-sm-11 pl-0">
+                                 <f:link.action class="btn btn-outline-secondary btn-sm" pageUid="{settings.detailPid}" action="show" arguments="{event : event}" >
+                                     {event.name}
+                                 </f:link.action>
+                            </span>
+                            <span class="position-right position-top p-2 d-sm-none"  data-toggle="collapse" data-target="#jv-events-teaser-div-{event.uid}">
+                                <span class="far fa-caret-square-down"></span>
+                            </span>
                         </h4>
                         <div class="collapse fade jv-events-teaser-div p-0 m-0" id="jv-events-teaser-div-{event.uid}">
                             <p class="my-2 d-md-block d-sm-none d-xs-block max-3-lines mb-3 pb-2">
