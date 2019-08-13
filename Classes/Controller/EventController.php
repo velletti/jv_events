@@ -231,7 +231,9 @@ class EventController extends BaseController
             $event = $this->objectManager->get("JVE\\JvEvents\\Domain\\Model\\Event");
         }
         if ( $event->getUid() < 1 ) {
-            $event->setStartDate( new \DateTime ) ;
+            $today = new \DateTime ;
+            $today->setTime(0,0,0 , 0) ;
+            $event->setStartDate( $today ) ;
 
             /** @var \JVE\JvEvents\Domain\Model\Organizer $organizer */
             $organizer = $this->getOrganizer() ;
