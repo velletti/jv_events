@@ -691,6 +691,7 @@ class EventController extends BaseController
         }
 
         $stD = \DateTime::createFromFormat('d.m.Y', $eventArray['startDateFE']  );
+        $stD->setTime(0,0,0,0 ) ;
         $event->setStartDate( $stD ) ;
 
         $startT =  ( intval( substr( $eventArray['startTimeFE']  , 0,2 ) ) * 3600 )

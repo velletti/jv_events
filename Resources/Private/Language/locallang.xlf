@@ -9,7 +9,7 @@
                 <source>Please verify your email address. Is the domain '%1' correct?</source>
             </trans-unit>
             <trans-unit id="error.msg_error_html_code_not_allowed">
-                <source>Please check your input. Looks as it contains unwanted HTML Code</source>
+                <source>Please check your input. Looks as it contains unwanted HTML Code. In most cases the Server can repair this, if you retry to save your input.</source>
             </trans-unit>
             <trans-unit id="error.msg_error_check-input">
                 <source>Please check your input below.</source>

@@ -17,7 +17,7 @@
                     <span id="jv_events_geo_disp_sub" class="d-none">
                         <span class="d-none d-md-inline-block">{f:translate(key: 'select-position', default: 'Position wählen')} </span>
                         <button id="jv_events_map" class="btn btn-outline-secondary mx-2 "  data-toggle="modal" data-target="#geoSearchModal" title="{settings.list.longitude} / {settings.list.latitude}">
-                            <span class="fa fa-map-marked-alt"> </span>
+                            <span class="fa fa-street-view"> </span>
                         </button>
                     </span>
                 </span>
@@ -68,7 +68,7 @@
             <div id="jv-events-filter-sub" class="fieldsets collapse">
                 <div class="row">
 
-                    <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="col-12 col-sm-6 col-lg-3 col-xl-6">
                         <div class="input-group date col-10 p-0">
                             <f:if condition="{settings.filter.startDate}">
                                 <f:then>
@@ -92,16 +92,20 @@
 
                     </div>
 
-                    <div class="col-11 col-sm-6 col-lg-3 my-4 my-md-0 ">
-                        <span class="jv_events_filter_distance"><f:translate key="tx_jvevents_event.filter.distance" default="Entfernung zu der gewählten Position" /></span>
-                        <f:form.select property="distance" class="form-control col-9 ml-3 position-left" id="jv_events_filter_distance" data="{default: '{settings.filter.distance.default}'}" value="{settings.filter.distance.default}" options="{3: '3 km',10: '10 km' , 25: '25 km' , 50: '50 km', 100: '100 km', 250: '250 km', 500: '500 km', 0: '9999 km'}" ></f:form.select>
+                    <div class="col-12 col-sm-6 col-lg-3 my-4 my-md-0 ">
+                        <f:form.select property="distance" class="form-control col-11 ml-3 position-left" id="jv_events_filter_distance" data="{default: '{settings.filter.distance.default}'}" value="{settings.filter.distance.default}" options="{3: '3 km',10: '10 km' , 25: '25 km' , 50: '50 km', 100: '100 km', 250: '250 km', 500: '500 km', 9999: '9999 km'}" ></f:form.select>
+
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-6 col-xl-4 my-4 my-md-0 ">
+                        <span class="jv_events_filter_distance"><f:translate key="tx_jvevents_event.filter.distance" default="max. Entfernung zur gewählten Position" /></span>
                         <span class="position-right mr-3">
-                             <button id="jv_events_map2" class="btn btn-outline-secondary mx-2 "  data-toggle="modal" data-target="#geoSearchModal" title="{settings.list.longitude} / {settings.list.latitude}">
+                             <span id="jv_events_map2" class="btn btn-outline-secondary mx-2 "  data-toggle="modal" data-target="#geoSearchModal" title="{settings.list.longitude} / {settings.list.latitude}">
                             <span class="fa fa-street-view"> </span>
-                        </button>
+                        </span>
                         </span>
 
                     </div>
+
                 </div>
 
 

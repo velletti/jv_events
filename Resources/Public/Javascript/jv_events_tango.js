@@ -347,6 +347,15 @@ function jv_events_init() {
 
     }
     */
+
+    $('#jv-events-filter-sub').on('resize' , function () {
+        if( $("#jv-events-filter-sub").hasClass('show')) {
+            $("#jv_events_geo_disp").addClass("d-none") ;
+        } else {
+            $("#jv_events_geo_disp").removeClass("d-none") ;
+        }
+    });
+
 	jv_events_refreshList();
 }
 function jv_events_reloadList() {
@@ -494,7 +503,7 @@ function jv_events_refreshList(){
 	var fOrg= jQuery("SELECT#jv_events_filter_organizers") ;
 	var fDist= jQuery("SELECT#jv_events_filter_distance") ;
 	var maxDist = 99999
-    if ( fDist && fDist.val() && fDist.val().length > 0 &&  fDist.val() < 9999 ) {
+    if ( fDist && fDist.val() && fDist.val().length > 0 &&  fDist.val() < 10000 ) {
         maxDist = fDist.val() ;
     }
     var cCats= jQuery("#jv_events_filter_categories INPUT[type=checkbox]") ;
