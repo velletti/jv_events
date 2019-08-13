@@ -71,6 +71,7 @@ class OrganizerController extends BaseController
     public function assistAction()
     {
         $this->view->assign('user', intval($GLOBALS['TSFE']->fe_user->user['uid'] ) ) ;
+        $this->view->assign('userData', $GLOBALS['TSFE']->fe_user->user ) ;
         if($this->isUserOrganizer() ) {
             $organizer = $this->organizerRepository->findByUserAllpages(intval($GLOBALS['TSFE']->fe_user->user['uid']), FALSE, TRUE);
             $this->view->assign('count', count($organizer));

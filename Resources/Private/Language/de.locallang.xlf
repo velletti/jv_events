@@ -756,13 +756,30 @@
                  <target>Stimmt die email address wirklich? Ist das @'%1' korrekt?</target>
             </trans-unit>
              <trans-unit id="error.msg_error_html_code_not_allowed">
-                            <source>Please check your input. Looks as it contains unwanted HTML Code</source>
-                             <target>Bitte prüfen Sie Ihre Eingaben. Es sieht so aus, als dort HTML Code eingefügt wurde. In vielen Fällen kann der Server den Fehelr automatisch bereinigen. Dazu bitte einfach noch mal speichern. </target>
-                        </trans-unit>
-                        <trans-unit id="error.msg_error_check-input">
-                            <source>Please check your input below.</source>
-                             <target>Es ist ein Fehler aufgetreten. Bitte prüfen Sie ihre Eingaben in den nachfolgenden Feldern auf fehlende Angaben.</target>
-                        </trans-unit>
+                <source>Please check your input. Looks as it contains unwanted HTML Code</source>
+                 <target>Bitte prüfen Sie Ihre Eingaben. Es sieht so aus, als dort HTML Code eingefügt wurde. In vielen Fällen kann der Server den Fehelr automatisch bereinigen. Dazu bitte einfach noch mal speichern. </target>
+            </trans-unit>
+            <trans-unit id="error.msg_error_check-input">
+                <source>Please check your input below.</source>
+                 <target>Es ist ein Fehler aufgetreten. Bitte prüfen Sie ihre Eingaben in den nachfolgenden Feldern auf fehlende Angaben.</target>
+            </trans-unit>
+
+            <trans-unit id="create.organizer.create.Headline">
+                <source>Want to become an Organizer?</source>
+                <target>Du möchtest Veranstalter werden?</target>
+            </trans-unit>
+            <trans-unit id="create.organizer.create.text">
+                    <source>If you want to become a NEW Organizer, just click on this button and fill the Form</source>
+                <target>Um deine Veranstlatungen als NEUER Veranstalter einzutragen, einfach den nachfolgenden Button anklicken und das Formular ausfüllen</target>
+            </trans-unit>
+            <trans-unit id="create.organizer.AddUser.Headline">
+                <source>Want to manage an existing Organizer?</source>
+                <target>Bereits eingetragenen Veranstalter ändern?</target>
+            </trans-unit>
+            <trans-unit id="create.organizer.AddUser.text">
+                <source>You have just registered as new user but need to manage the events and data of an EXISTING Organizer?</source>
+                <target>Du bist neu registriert, möchstest aber die beireits eingetragene Veranstaltungen und Daten eines EXISTIERENDEN Veranstalters iändern? </target>
+            </trans-unit>
 
 		</body>
 	</file>

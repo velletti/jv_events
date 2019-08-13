@@ -600,6 +600,20 @@
                 <source>Change Image</source>
             </trans-unit>
 
+            <trans-unit id="create.organizer.create.Headline">
+                <source>Want to become an Organizer?</source>
+            </trans-unit>
+            <trans-unit id="create.organizer.create.text">
+                <source>If you want to become a NEW Organizer, just click on this button and fill the Form</source>
+            </trans-unit>
+            <trans-unit id="create.organizer.AddUser.Headline">
+                <source>Want to manage an existing Organizer?</source>
+            </trans-unit>
+            <trans-unit id="create.organizer.AddUser.text">
+                <source>You have just registered as new user but need to manage the events and data of an EXISTING Organizer?</source>
+            </trans-unit>
+
+
 		</body>
 	</file>
 </xliff>
