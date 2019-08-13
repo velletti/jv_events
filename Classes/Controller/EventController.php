@@ -454,19 +454,22 @@ class EventController extends BaseController
                 )
                 ->execute();
 
+
             $mediaRow = $affectedRows->fetch() ;
+            if ( is_array( $mediaRow)) {
+                $affectedRows = $queryBuilder
+                    ->insert('sys_file_reference')
+                    ->values([
+                        'uid_local' => $mediaRow['uid_local'] ,
+                        'table_local' => 'sys_file'  ,
+                        'uid_foreign' => intval( $eventUid ) ,
+                        'tablenames' => 'tx_jvevents_domain_model_event'  ,
+                        'fieldname' => 'teaser_image'  ,
 
-            $affectedRows = $queryBuilder
-                ->insert('sys_file_reference')
-                ->values([
-                    'uid_local' => $mediaRow['uid_local'] ,
-                    'table_local' => 'sys_file'  ,
-                    'uid_foreign' => intval( $eventUid ) ,
-                    'tablenames' => 'tx_jvevents_domain_model_event'  ,
-                    'fieldname' => 'teaser_image'  ,
+                    ])
+                    ->execute();
+            }
 
-                ])
-                ->execute();
 
             unset( $newEvent ) ;
         }
