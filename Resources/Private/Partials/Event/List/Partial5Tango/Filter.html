@@ -42,7 +42,7 @@
                                       arguments="{property:'streetAndNr' ,  data: '{default-cntry: \'DE\' , default-city: \'München\'}' , label: '' , translationKey: '' ,  maxLength: 80 , mandatory: '0' , data-target: '#streetAndNr' , data-toggle: 'clearInput' , fa-icon: 'fas fa-times', defaultValue: 'Marienplatz 1, München, DE' }" />
 
                             <f:render partial="SingleField/Partial{settings.LayoutList}/FormRowGeocoder"
-                                      arguments="{object: 'location' , location: location , updateFunction: 'jv_events_refreshList();' , property:'lng'  ,  property2:'lat', fa-icon: 'fas fa-search-location  mr-2' , label: 'Adresse suchen' ,  maxLength: 30 , mandatory: '1' }" />
+                                      arguments="{object: 'location' , location: location , updateFunction: 'jv_events_refreshList();' ,  buttonSetPosition: '1' , property:'lng'  ,  property2:'lat', fa-icon: 'fas fa-search-location  mr-2' , label: 'Adresse suchen' ,  maxLength: 30 , mandatory: '1' }" />
 
                         </div>
                         <div class="modal-footer">
