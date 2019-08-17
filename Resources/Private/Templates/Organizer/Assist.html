@@ -74,7 +74,7 @@
         <f:then>
             <f:if condition="{organizer.0.hidden}">
                 <f:else>
-                    <f:if condition="{organizer}">
+                    <f:if condition="{organizer0.uid}">
                         <h2>
                             <f:translate key="tx_jvevents_domain_model_event.organizer">Organizer</f:translate>
                         </h2>
@@ -124,7 +124,7 @@
     <div class="alert alert-warning">
         <h3>Account Status: <span class="far fa-square"> </span> <span>Pending</span></h3>
         <p>
-            Dein Account wird derzeit geprüft. Sobald die Freischaltung erfolgt ist, erhälst du eine E-Mail Benachrichtigung. <br>
+            Dein Account wird derzeit geprüft. Sobald die Freischaltung erfolgt ist, bekommst du eine E-Mail Benachrichtigung. <br>
             <br>
             Normaly this takes less than 2 workdays. If you are waiting for more than 2 days:<br>
             <f:render section="contactWebmaster" arguments="{settings}"></f:render>
@@ -145,8 +145,9 @@
             <span class="fas fa-plus-square"> </span> <span class="hidden-xs">{f:translate(key: 'create.organizer', default: 'Create New Organizer')}</span>
         </f:link.action>
     </div>
-    <h2>{f:translate(key: 'create.organizer.AddUser.Headline', default: 'Want to manage an existing Organizer?')} </h2>
-    <p>{f:translate(key: 'create.organizer.AddUser.text', default: 'Neu registriert und möchtest die Daten einen bestehenen Veranstalters ändern?')} </p>
+    <br/>
+    <h3>{f:translate(key: 'create.organizer.AddUser.Headline', default: 'Want to manage an existing Organizer?')} </h3>
+    <p>{f:translate(key: 'create.organizer.AddUser.text', default: 'Neu registriert und möchtest die Daten eines bestehenen Veranstalters ändern?')} </p>
     <f:render section="contactWebmaster" arguments="{settings}"></f:render>
 </f:section>
 
@@ -157,7 +158,7 @@
     <div class="alert alert-warning">
         <h3>Organizer Status: <span class="far fa-square"> </span> <span>inactiv</span></h3>
         <p>
-            Your Organizer Account is not activated!<br>
+            Your Account is not activated!<br>
 
 
             <f:render section="contactWebmaster" arguments="{settings}"></f:render>
