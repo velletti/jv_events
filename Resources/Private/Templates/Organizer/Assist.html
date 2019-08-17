@@ -74,10 +74,12 @@
         <f:then>
             <f:if condition="{organizer.0.hidden}">
                 <f:else>
-                    <h2>
-                        <f:translate key="tx_jvevents_domain_model_event.organizer">Organizer</f:translate>
-                    </h2>
-                    <f:render partial="Organizer/List/Partial{layoutList}/SingleOrganizer" arguments="{organizer:organizer.0, settings: settings, showDetails: '0' , showEditButton: '1', hideDefaultImg: '1'}" />
+                    <f:if condition="{organizer}">
+                        <h2>
+                            <f:translate key="tx_jvevents_domain_model_event.organizer">Organizer</f:translate>
+                        </h2>
+                        <f:render partial="Organizer/List/Partial{layoutList}/SingleOrganizer" arguments="{organizer:organizer.0, settings: settings, showDetails: '0' , showEditButton: '1', hideDefaultImg: '1'}" />
+                    </f:if>
                 </f:else>
             </f:if>
         </f:then>
