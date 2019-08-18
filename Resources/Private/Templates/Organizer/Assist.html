@@ -72,15 +72,11 @@
     </div>
     <f:security.IfAuthenticated>
         <f:then>
-            <f:if condition="{organizer.0.hidden}">
-                <f:else>
-                    <f:if condition="{organizer.0.uid}">
-                        <h2>
-                            <f:translate key="tx_jvevents_domain_model_event.organizer">Organizer</f:translate>
-                        </h2>
-                        <f:render partial="Organizer/List/Partial{layoutList}/SingleOrganizer" arguments="{organizer:organizer.0, settings: settings, showDetails: '0' , showEditButton: '1', hideDefaultImg: '1'}" />
-                    </f:if>
-                </f:else>
+            <f:if condition="{organizer.0.uid}">
+                <h2>
+                    <f:translate key="tx_jvevents_domain_model_event.organizer">Organizer</f:translate>
+                </h2>
+                <f:render partial="Organizer/List/Partial{layoutList}/SingleOrganizer" arguments="{organizer:organizer.0, settings: settings, showDetails: '0' , showEditButton: '1', hideDefaultImg: '1'}" />
             </f:if>
         </f:then>
     </f:security.IfAuthenticated>
@@ -101,7 +97,8 @@
 
 <f:section name="contactWebmaster">
     <div>
-        Please Contact Webmaster via: <br> <f:link.email class="btn btn-secondary" email="info@tangomuenchen.de">info@tangomuenchen.de</f:link.email>
+        Please Contact Webmaster via: <br> <br>
+        <f:link.email class="btn btn-secondary" email="info@tangomuenchen.de?subject=[TANGO] [ID:U-{user}-O-{organizer.uid}-P-{organizer.pid}] Anfrage">info [at] tangomuenchen.de</f:link.email>
     </div>
 </f:section>
 
@@ -113,7 +110,7 @@
         </h3>
         <p>
             Your User is connected to more than one ORGANIZER. Sorry, but this does not work at the Moment!<br>
-            <f:render section="contactWebmaster" arguments="{settings}"></f:render>
+            <f:render section="contactWebmaster" arguments="{organizer: organizer.0 , settings: settings , user: user}"></f:render>
 
         </p>
     </div>
@@ -124,10 +121,11 @@
     <div class="alert alert-warning">
         <h3>Account Status: <span class="far fa-square"> </span> <span>Pending</span></h3>
         <p>
-            Dein Account wird derzeit geprüft. Sobald die Freischaltung erfolgt ist, bekommst du eine E-Mail Benachrichtigung. <br>
+            Dein User Account ist noch nicht als Veranstalter freigeschaltet. <br>
+
             <br>
-            Normaly this takes less than 2 workdays. If you are waiting for more than 2 days:<br>
-            <f:render section="contactWebmaster" arguments="{settings}"></f:render>
+            <f:render section="createButton" arguments="{_all}"></f:render>
+
         </p>
     </div>
 </f:section>
@@ -137,18 +135,51 @@
 
 
 <f:section name="createButton">
-    <h2>{f:translate(key: 'create.organizer.create.Headline', default: 'Want to become an Organizer?')} </h2>
-    <p>{f:translate(key: 'create.organizer.create.text', default: 'Just click on this button and fill the Form')} </p>
+    <div class="card-group">
+        <div class="card col-sm-6 px-0 mx-2">
+            <div class="card-header">
+                <b>{f:translate(key: 'create.organizer.create.Headline', default: 'Want to become an Organizer?')} </b>
 
-    <div class="text-left">
-        <f:link.action pageUid="{settings.pageIds.editOrganizer}" action="new" controller="Organizer" class="btn btn-primary">
-            <span class="fas fa-plus-square"> </span> <span class="hidden-xs">{f:translate(key: 'create.organizer', default: 'Create New Organizer')}</span>
-        </f:link.action>
+            </div>
+            <div class="card-body">
+                <p>{f:translate(key: 'create.organizer.create.text', default: 'Just click on this button and fill the Form')} </p>
+
+            </div>
+            <div class="card-footer">
+                <div class="float-right">
+                    <div>
+                        Es entstehen keine Kosten!
+                        <br>
+                        <br>
+                        <f:link.action pageUid="{settings.pageIds.editOrganizer}" action="new" controller="Organizer" class="btn btn-primary">
+                            <span class="fas fa-plus-square"> </span> <span class="hidden-xs">{f:translate(key: 'create.organizer', default: 'Create New Organizer')}</span>
+                        </f:link.action>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card  col-sm-6 px-0 mx-2">
+            <div class="card-header">
+                <b>{f:translate(key: 'create.organizer.AddUser.Headline', default: 'Manage an existing Organizer?')} </b>
+
+            </div>
+            <div class="card-body">
+                <p>{f:translate(key: 'create.organizer.AddUser.text', default: 'Neu registriert und möchtest die Daten eines bestehenen Veranstalters ändern?')} </p>
+
+
+            </div>
+            <div class="card-footer">
+                <div class="float-right">
+                    <f:render section="contactWebmaster" arguments="{organizer: organizer.0 , settings: settings , user: user}"></f:render>
+                </div>
+            </div>
+        </div>
     </div>
+
+
     <br/>
-    <h3>{f:translate(key: 'create.organizer.AddUser.Headline', default: 'Want to manage an existing Organizer?')} </h3>
-    <p>{f:translate(key: 'create.organizer.AddUser.text', default: 'Neu registriert und möchtest die Daten eines bestehenen Veranstalters ändern?')} </p>
-    <f:render section="contactWebmaster" arguments="{settings}"></f:render>
+
+
 </f:section>
 
 
@@ -159,9 +190,12 @@
         <h3>Organizer Status: <span class="far fa-square"> </span> <span>inactiv</span></h3>
         <p>
             Your Account is not activated!<br>
+            <br>
+            <b>Bevor Du Termine eintragen, muss Dein Account freigeschaltet werden.</b><br><br>
+            Die Prüfung und Freischaltung dauert bin der Regel bis maximal 2 Tage. Wenn es mal länger dauert, ist deine Anfrage evt. untergegangen. <br>
+            Um die Freischaltung zu beschleunigen:<br>
 
-
-            <f:render section="contactWebmaster" arguments="{settings}"></f:render>
+            <f:render section="contactWebmaster" arguments="{organizer: organizer.0 , settings: settings , user: user}"></f:render>
 
         </p>
     </div>

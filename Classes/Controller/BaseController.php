@@ -532,6 +532,10 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
     }
     /**
+     * @param string $recipient Who shall get the debug Email
+     * @param string $sender debug Email $sender
+     * @param string $subject use a Subject that can be filtered like: [EVENT][ERROR] ...
+     * @param string $plainMsg the message it self. Newlines will be splittet to br. Tcan be formated a litte bit
      * @return bool
      */
     public function sendDebugEmail($recipient,$sender ,$subject , $plainMsg ) {

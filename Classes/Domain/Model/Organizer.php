@@ -701,6 +701,7 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function setSysLanguageUid($sysLanguageUid)
     {
         $this->sysLanguageUid = $sysLanguageUid;
+        $this->_languageUid = $sysLanguageUid;
     }
     /**
      * @return int
@@ -708,6 +709,7 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function getSysLanguageUid()
     {
         return $this->sysLanguageUid ;
+        return $this->_languageUid ;
     }
 
 

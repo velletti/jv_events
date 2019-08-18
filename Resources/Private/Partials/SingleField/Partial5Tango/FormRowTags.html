@@ -1,7 +1,13 @@
 
 
 <div class="form-group display-data row">
-
+    <f:variable name="countTags"><f:count>{tags}</f:count></f:variable>
+    <f:variable name="maxTags">
+        <f:if condition="{countTags} > {settings.EmConfiguration.MaxTagsPerEvent} ">
+            <f:then>{settings.EmConfiguration.MaxTagsPerEvent}</f:then>
+            <f:else>{countTags}</f:else>
+        </f:if>
+    </f:variable>
     <f:render partial="FormErrorSingle" arguments="{property: errorProperty, field: 'event.tagsFE'}"/>
     <label  class="control-label col-sm-4">
         <f:if condition="{translationKey}">
@@ -16,7 +22,7 @@
         <f:if condition="{mandatory}">
             <span class="mandatory">*</span>
         </f:if>
-        <br><span class="small font-weight-light">(<span id="jv-events-tags-sum"><f:count>{value}</f:count></span> / <span id="jv-events-tags-sum-max">{settings.EmConfiguration.MaxTagsPerEvent}</span>)</span>
+        <br><span class="small font-weight-light">(<span id="jv-events-tags-sum"><f:count>{value}</f:count></span> / <span id="jv-events-tags-sum-max">{maxTags}</span>)</span>
     </label>
     <div class="col-sm-8 row">
         <f:variable name="oldTags"></f:variable>

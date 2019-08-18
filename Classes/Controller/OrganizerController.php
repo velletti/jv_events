@@ -72,14 +72,10 @@ class OrganizerController extends BaseController
     {
         $this->view->assign('user', intval($GLOBALS['TSFE']->fe_user->user['uid'] ) ) ;
         $this->view->assign('userData', $GLOBALS['TSFE']->fe_user->user ) ;
-        if($this->isUserOrganizer() ) {
-            $organizer = $this->organizerRepository->findByUserAllpages(intval($GLOBALS['TSFE']->fe_user->user['uid']), FALSE, TRUE);
-            $this->view->assign('count', count($organizer));
-            $this->view->assign('organizer', $organizer);
-            $this->view->assign('isOrganizer', true);
-        } else {
-            $this->view->assign('isOrganizer', FALSE );
-        }
+        $organizer = $this->organizerRepository->findByUserAllpages(intval($GLOBALS['TSFE']->fe_user->user['uid']), FALSE, TRUE);
+        $this->view->assign('count', count($organizer));
+        $this->view->assign('organizer', $organizer);
+        $this->view->assign('isOrganizer', $this->isUserOrganizer());
 
     }
     /**
@@ -138,16 +134,17 @@ class OrganizerController extends BaseController
             // ToDo find good way to handle ID Default .. maybe a pid per User, per location or other typoscript setting
             $organizer->setPid( 13 ) ;
             $organizer->setEmail( $GLOBALS['TSFE']->fe_user->user['email'] ) ;
+            $organizer->setName( $GLOBALS['TSFE']->fe_user->user['first_name'] . " " . $GLOBALS['TSFE']->fe_user->user['last_name'] ) ;
+            $organizer->setPhone( $GLOBALS['TSFE']->fe_user->user['phone'] ) ;
 
             // We want to confirm each new Organizer
             $organizer->sethidden( 1 ) ;
 
         }
-        if($this->isUserOrganizer() ) {
-            $this->view->assign('user', intval($GLOBALS['TSFE']->fe_user->user['uid'] ) ) ;
-            $this->view->assign('organizer', $organizer );
-            $this->view->assign('tags', $tags);
-        }
+        $this->view->assign('user', intval($GLOBALS['TSFE']->fe_user->user['uid'] ) ) ;
+
+        $this->view->assign('organizer', $organizer );
+        $this->view->assign('tags', $tags);
     }
     
     /**
@@ -165,7 +162,7 @@ class OrganizerController extends BaseController
             $organizer = $this->cleanOrganizerArguments( $organizer ) ;
 
             // special needs for tango. maybe we make this configurabale via typoscript
-            $organizer->setHidden(0) ;
+            $organizer->setHidden(1) ;
             $organizer->setPid( 13 ) ;
             $organizer->setSorting( 99999999 ) ;
             $organizer->setSysLanguageUid(-1 ) ;
@@ -179,7 +176,13 @@ class OrganizerController extends BaseController
             $this->addFlashMessage('The Organizer was created.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
 
 
-            // toDo Send Email to Admin with info about new Organizer
+
+            $msg = "// toDo set Up a better Email to Admin with info about new Organizer, a link to active etc" ;
+            $msg .= "\n" . "Name: " . $organizer->getName() ;
+            $msg .= "\n" . "Email: " . $organizer->getEmail() ;
+            $msg .= "\n" . "Phone: " . $organizer->getPhone() ;
+            $msg .= "\n" . "Link: " . $organizer->getLink() ;
+            $this->sendDebugEmail( "tango@velletti.de" ,"info@tangomuenchen.de", "[TANGO][NewOrganizer] - " . $organizer->getEmail() , $msg) ;
 
 
             $this->showNoDomainMxError($organizer->getEmail() ) ;
