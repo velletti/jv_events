@@ -189,3 +189,195 @@
 
     </div>
 </f:if>
+<f:if condition="{settings.ShowFilter}==3">
+
+    <div class="filter events">
+        <div class="hints clearfix">
+            <p class="text-left" id="filter-events" >
+
+                <button class="btn btn-secondary" data-target="#jv-events-filter-sub" role="button" data-toggle="collapse">
+                    <span class="fa fa-filter mh-sm"></span> <span class="jv-events-filter-sub-text"><f:translate key="tx_jvevents_event.filter.hint" /></span>
+                </button>
+
+            </p>
+            <p class="text-left d-none" id="filter-reset-events"><a href="#"><span class="fa fa-trash mh-sm"></span> <f:translate key="tx_jvevents_event.filter.reset" /></a></p>
+            <span class="float-right text-right">
+                <span id="jv_events_geo_disp" class="mx-3">
+                    <span id="jv_events_geo_disp_spinner">
+                        <span class="fa  fa-spinner fa-spin"></span>
+                    </span>
+                    <span id="jv_events_geo_disp_sub" class="d-none">
+                        <span class="d-none d-md-inline-block">{f:translate(key: 'select-position', default: 'Position wählen')} </span>
+                        <button id="jv_events_map" class="btn btn-outline-secondary mx-2 "  data-toggle="modal" data-target="#geoSearchModal" title="{settings.list.longitude} / {settings.list.latitude}">
+                            <span class="fa fa-street-view"> </span>
+                        </button>
+                    </span>
+                </span>
+            </span>
+
+            <f:comment>
+                /* ********************************************************************************************************************* */
+            </f:comment>
+
+            <div class="modal fade show" id="geoSearchModal" tabindex="-1" role="dialog" aria-labelledby="jv_events_mapsLabel" aria-modal="true" onblur="jv_events_refreshList();">
+                <div class="modal-dialog" role="document" style="max-width: 800px">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="jv_events_mapsLabel">{f:translate(key: 'select-position', default: 'Wähle deine Position')}</h5>
+
+                        </div>
+                        <div class="modal-body">
+                            <div>
+                                {f:translate(key: 'select-position-help', default: 'Gib eine Adresse ein, um Veranstaltungen in der Nähe zu finden oder lass deinen Standort bestimmen')}
+                            </div>
+                            <f:render partial="SingleField/Partial{settings.LayoutList}/FormRowValue"
+                                      arguments="{property:'streetAndNr' ,  data: '{default-cntry: \'DE\' , default-city: \'München\'}' , label: '' , translationKey: '' ,  maxLength: 80 , mandatory: '0' , data-target: '#streetAndNr' , data-toggle: 'clearInput' , fa-icon: 'fas fa-times', defaultValue: 'Marienplatz 1, München, DE' }" />
+
+                            <f:render partial="SingleField/Partial{settings.LayoutList}/FormRowGeocoder"
+                                      arguments="{object: 'location' , location: location , updateFunction: 'jv_events_refreshList();' ,  buttonSetPosition: '1' , property:'lng'  ,  property2:'lat', fa-icon: 'fas fa-search-location  mr-2' , label: 'Adresse suchen' ,  maxLength: 30 , mandatory: '1' }" />
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <f:comment>
+                /* ********************************************************************************************************************* */
+            </f:comment>
+
+        </div>
+        <form class="clearfix" onsubmit="this.preventDefault();">
+
+
+            <div id="jv-events-filter-sub" class="fieldsets">
+                <div class="row">
+
+                    <div class="col-12 col-sm-6 col-lg-3 col-xl-6">
+                        <div class="input-group date col-10 p-0">
+                            <f:if condition="{settings.filter.startDate}">
+                                <f:then>
+                                    <f:variable name="startDate">{settings.filter.overruleStartDate}</f:variable>
+                                </f:then>
+                                <f:else>
+                                    <f:variable name="startDate">today</f:variable>
+                                </f:else>
+                            </f:if>
+                            <f:form.textfield
+                                    name="overruleFilter[startDate]"
+                                    value="{f:format.date(format:'d.m.Y', date: '{startDate}')}"
+                                    id="overruleFilterStartDate"
+                                    class="form-control datetimepicker clearable"
+                                    data="{date-type: 'date', todayBtn: 'linked' , todayHighlight: 'true' , autoclose: 'true' }"
+                            />
+                            <div class="input-group-addon btn btn-default">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-lg-3 my-4 my-md-0 ">
+                        <f:form.select property="distance" class="form-control col-11 ml-3 position-left" id="jv_events_filter_distance" data="{default: '{settings.filter.distance.default}'}" value="{settings.filter.distance.default}" options="{3: '3 km',10: '10 km' , 25: '25 km' , 50: '50 km', 100: '100 km', 250: '250 km', 500: '500 km', 9999: '9999 km'}" ></f:form.select>
+
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-6 col-xl-4 my-4 my-md-0 ">
+                        <span class="jv_events_filter_distance"><f:translate key="tx_jvevents_event.filter.distance" default="max. Entfernung zur gewählten Position" /></span>
+                        <span class="position-right mr-3">
+                             <span id="jv_events_map2" class="btn btn-outline-secondary mx-2 "  data-toggle="modal" data-target="#geoSearchModal" title="{settings.list.longitude} / {settings.list.latitude}">
+                            <span class="fa fa-street-view"> </span>
+                        </span>
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <f:if condition="{f:count(subject: eventsFilter.tags2)} > 1">
+                    <fieldset id="jv_events_fieldset_tags"  class="row px-0 ">
+                        <legend class="d-none"><f:translate key="tx_jvevents_domain_model_event.tags" /></legend>
+
+                        <div class="checkbox d-flex row w-100 mx-1" id="jv_events_filter_tags">
+                            <f:for each="{eventsFilter.tags2}" as="tag">
+                                <label class="col-6 col-md-4 col-lg-3 mx-0">
+                                    <input type="checkbox" id="jv_events_filter_tag-{tag.id}" value="{tag.id}">{tag.title}
+                                </label>
+                            </f:for>
+                        </div>
+                    </fieldset>
+                </f:if>
+                <f:if condition="{f:count(subject: eventsFilter.categories2)} > 1">
+                    <fieldset id="jv_events_fieldset_categories"  class="row px-0 ">
+
+                        <legend class="d-none"><f:translate key="tx_jvevents_domain_model_category" /></legend>
+
+                        <div class="checkbox d-flex row w-100 mx-1"  id="jv_events_filter_categories">
+
+                            <f:for each="{eventsFilter.categories2}" as="category">
+                                <label class="col-12 col-sm-6 col-md-4 col-lg-3 mx-0">
+                                    <input type="checkbox" id="jv_events_filter_cat-{category.id}" value="{category.id}">{category.title}
+                                    <f:if condition="{category.description}">
+                                        <a class="info" href="#" data-toggle="modal" data-target="#jv_events_cat_modal-{category.id}"><span>Info</span></a>
+                                    </f:if>
+                                </label>
+
+                                <f:if condition="{category.description}">
+                                    <div id="jv_events_cat_modal-{category.id}" class="modal fade" role="dialog">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                                                    <h4>{category.title}</h4>
+                                                </div>
+
+                                                <div class="modal-body">
+                                                    <f:format.nl2br>{category.description}</f:format.nl2br>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </f:if>
+                            </f:for>
+
+                        </div>
+
+
+                    </fieldset>
+                </f:if>
+
+                <fieldset class="row px-0 ">
+                    <legend class="jv_events_filter_more"><f:translate key="tx_jvevents_event.filter.morefilters" /></legend>
+                    <f:if condition="{f:count(subject: eventsFilter.citys)} > 1">
+                        <div class="form-group col-sm-6 col-12">
+                            <label for="jv_events_filter_citys" class="d-none">Ort:</label>
+                            <f:form.select property="citys" class="form-control" id="jv_events_filter_citys" sortByOptionLabel="true" options="{eventsFilter.citys}" prependOptionLabel="{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_event.filter.city' , default:'by City')}" prependOptionValue="" />
+                        </div>
+                    </f:if>
+                    <f:if condition="{f:count(subject: eventsFilter.organizers)} > 1">
+                        <div class="form-group col-sm-6 col-12">
+                            <label for="jv_events_filter_organizers" class="d-none">Organizer:</label>
+                            <f:form.select property="organizers" class="form-control" id="jv_events_filter_organizers" sortByOptionLabel="true" options="{eventsFilter.organizers}"   prependOptionLabel="{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_event.filter.organizer' , default:'by Organizer')}" prependOptionValue=""/>
+                        </div>
+                    </f:if>
+                </fieldset>
+
+            </div>
+
+        </form>
+
+        <p class="filter-result-hint text-center hide" id="filter-result-hint-events">
+            <f:translate key="tx_jvevents_event.filter.resulthint" />
+            <span class="arrow"></span>
+        </p>
+
+    </div>
+</f:if>

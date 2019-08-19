@@ -1,0 +1,50 @@
+<div class="form-group display-data row">
+	<f:render partial="FormErrorSingle" arguments="{property: property}"/>
+	<label for="{property}" class="col-12 text-left">
+		<f:if condition="{translationKey}">
+			<f:then>
+				<f:translate key="{translationKey}">{translationKey}</f:translate>
+			</f:then>
+			<f:else>
+				{label}
+			</f:else>
+		</f:if>
+
+		<f:if condition="{mandatory}">
+			<span class="mandatory">*</span>
+		</f:if>
+
+	</label>
+	<div class="col-12">
+		<f:form.textarea class="form-control" property="{property}" id="{property}" cols="40" rows="15" />
+	</div>
+</div>
+
+
+
+		<script>
+            var FIELDID = '{property}';
+			<f:format.raw>
+                if ( CKEDITOR.env.ie && CKEDITOR.env.version < 9 )
+                    CKEDITOR.tools.enableHtml5Elements( document );
+
+                	// The trick to keep the editor in the sample quite small
+                	// unless user specified own height.
+					CKEDITOR.config.height = 300;
+					CKEDITOR.config.width = 'auto';
+					CKEDITOR.config.contentsCss = [ '/typo3conf/ext/jve_template/Resources/Public/Css/Www/rte.min.css'
+						,  '/typo3conf/ext/jv_events/Resources/Public/Javascript/ckeditor/contents.css'
+						,  '/typo3conf/ext/jv_events/Resources/Public/Css/ckeditor_contents_addon.css' ] ;
+					CKEDITOR.config.customConfig =  '/typo3conf/ext/jv_events/Resources/Public/Javascript/ckeditor_config.js'   ;
+
+					var initSample = ( function() {
+                    return function() {
+                        CKEDITOR.replace( FIELDID );
+                    };
+                } )();
+                initSample();
+			</f:format.raw>
+		</script>
+
+
+

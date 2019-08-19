@@ -1,0 +1,62 @@
+
+
+<div class="form-group display-data row">
+    <f:variable name="countTags"><f:count>{tags}</f:count></f:variable>
+    <f:variable name="maxTags">
+        <f:if condition="{countTags} > {settings.EmConfiguration.MaxTagsPerEvent} ">
+            <f:then>{settings.EmConfiguration.MaxTagsPerEvent}</f:then>
+            <f:else>{countTags}</f:else>
+        </f:if>
+    </f:variable>
+    <f:render partial="FormErrorSingle" arguments="{property: errorProperty, field: 'event.tagsFE'}"/>
+    <label  class="control-label col-sm-4">
+        <f:if condition="{translationKey}">
+            <f:then>
+                <f:translate key="{translationKey}">{translationKey}</f:translate>
+            </f:then>
+            <f:else>
+                {label}
+            </f:else>
+        </f:if>
+
+        <f:if condition="{mandatory}">
+            <span class="mandatory">*</span>
+        </f:if>
+        <br><span class="small font-weight-light">(<span id="jv-events-tags-sum"><f:count>{value}</f:count></span> / <span id="jv-events-tags-sum-max">{maxTags}</span>)</span>
+    </label>
+    <div class="col-sm-8 row">
+        <f:variable name="oldTags"></f:variable>
+
+        <f:for each="{tags}" as="Tag" iteration="iteration">
+            <f:variable name="checked"></f:variable>
+            <f:variable name="checkedCss"></f:variable>
+            <f:variable name="tagCategories"></f:variable>
+            <f:if condition="{Tag.tagCategory}">
+                <f:for each="{Tag.tagCategory}" as="category">
+                    <f:variable name="tagCategories">{tagCategories},{category.uid}</f:variable>
+                </f:for>
+            </f:if>
+
+
+            <f:for each="{value}" as="existingTag">
+
+                <f:if condition="{Tag.uid} == {existingTag.uid}">
+                    <f:variable name="checked">checked</f:variable>
+                    <f:variable name="checkedCss">event-checked</f:variable>
+                    <f:variable name="oldTags" >{existingTag.uid},{oldTags}</f:variable>
+                </f:if>
+            </f:for>
+
+            <div class="col-12 col-sm-6 ">
+                <div class="jv-events-tags-div cursor-pointer px-1 text-center {checkedCss}" data-parent="{tagCategories}" title="{tagCategories}">
+                    <f:form.checkbox name="tag[{Tag.uid}]"  value="{Tag.uid}" checked="{checked}" class="jv-events-tags-edit"/>
+                    <span for="tx_jvevents_events[{object}][tags][{Tag.uid}]" class="control-label " title="{Tag.name}">
+                        <f:format.crop maxCharacters="24">{Tag.name}</f:format.crop></span>
+                </div>
+            </div>
+        </f:for>
+        <br>
+        <br>
+        <f:form.textfield class="d-none" property="tagsFE" id="jv-events-tagsFE" value="{oldTags}" maxlength="200"/>
+    </div>
+</div>

@@ -166,7 +166,9 @@
 		<trans-unit id="plugin.filter.ShowFilter.AdvancedFilter">
             <source>Use Advanced Filter with Multi Select</source>
         </trans-unit>
-
+		<trans-unit id="plugin.filter.ShowFilter.AdvancedFilterWithPosition">
+			<source>Use Advanced Filter with Multi Select and Position</source>
+		</trans-unit>
 
 		<trans-unit id="plugin.filter.Tags">
 			<source>Show Only Events with these Tags</source>
