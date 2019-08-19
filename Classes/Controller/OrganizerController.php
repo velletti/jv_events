@@ -1,6 +1,8 @@
 <?php
 namespace JVE\JvEvents\Controller;
 
+use Allplan\AllplanTtAddressExtended\Utility\GeneralUtility;
+
 /***************************************************************
  *
  *  Copyright notice
@@ -25,6 +27,8 @@ namespace JVE\JvEvents\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+
 
 /**
  * OrganizerController
@@ -172,16 +176,43 @@ class OrganizerController extends BaseController
             // special needs for tango. maybe we make this configurabale via typoscript
 
             $this->organizerRepository->add($organizer);
+            $this->persistenceManager->persistAll() ;
+
             $this->cacheService->clearPageCache( array($this->settings['pageIds']['organizerAssist'])  );
-            $this->addFlashMessage('The Organizer was created.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+            if( $organizer->getUid()) {
+                $this->addFlashMessage('The Organizer was created with ID:' . $organizer->getUid() , '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+
+            } else {
+                $this->addFlashMessage('Error: Organizer did not get an ID:' , '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+            }
 
 
 
-            $msg = "// toDo set Up a better Email to Admin with info about new Organizer, a link to active etc" ;
+
+            // https://www.allplan.com.ddev.local/index.php?uid=82&eID=jv_events&tx_jvevents_ajax[organizerUid]=111&tx_jvevents_ajax[action]=activate&tx_jvevents_ajax[userUid]=1&tx_jvevents_ajax[hmac]=hmac1234&&tx_jvevents_ajax[rnd]=11234
+
+            $organizerUid = intval( $organizer->getUid()) ;
+            $userUid = intval($GLOBALS['TSFE']->fe_user->user['uid']) ;
+            $rnd = time() ;
+            $hmac = "";
+            $tokenStr = "activateOrg" . "-" . $organizerUid . "-" . $GLOBALS['TSFE']->fe_user->user['crdate'] ."-". $userUid .  "-". $rnd ;
+            $tokenId = \TYPO3\CMS\Core\Utility\GeneralUtility::hmac( $tokenStr );
+
+            $url  = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST') ;
+            $url .= "/index.php?uid=82&eID=jv_events&tx_jvevents_ajax[action]=activate" ;
+
+            $url .= "&tx_jvevents_ajax[organizerUid]=" . $organizerUid ;
+            $url .= "&tx_jvevents_ajax[userUid]=" . $userUid ;
+            $url .= "&tx_jvevents_ajax[rnd]=" . $rnd ;
+            $url .= "&tx_jvevents_ajax[hmac]=" . $hmac ;
+
+                $msg = "// toDo set Up a better Email to Admin with info about new Organizer, a link to active etc" ;
             $msg .= "\n" . "Name: " . $organizer->getName() ;
             $msg .= "\n" . "Email: " . $organizer->getEmail() ;
             $msg .= "\n" . "Phone: " . $organizer->getPhone() ;
             $msg .= "\n" . "Link: " . $organizer->getLink() ;
+            $msg .= "\n" ;
+            $msg .= "\n" . "Klick to Enable: \n" . $url ;
             $this->sendDebugEmail( "tango@velletti.de" ,"info@tangomuenchen.de", "[TANGO][NewOrganizer] - " . $organizer->getEmail() , $msg) ;
 
 
