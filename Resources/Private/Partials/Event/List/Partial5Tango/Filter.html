@@ -92,12 +92,12 @@
 
                     </div>
 
-                    <div class="col-12 col-sm-6 col-lg-3 my-4 my-md-0 ">
+                    <div class="col-12 col-sm-6 col-lg-3 col-xl-2 my-4 my-md-0 ">
                         <f:form.select property="distance" class="form-control col-11 ml-3 position-left" id="jv_events_filter_distance" data="{default: '{settings.filter.distance.default}'}" value="{settings.filter.distance.default}" options="{3: '3 km',10: '10 km' , 25: '25 km' , 50: '50 km', 100: '100 km', 250: '250 km', 500: '500 km', 9999: '9999 km'}" ></f:form.select>
 
                     </div>
                     <div class="col-12 col-sm-6 col-lg-6 col-xl-4 my-4 my-md-0 ">
-                        <span class="jv_events_filter_distance"><f:translate key="tx_jvevents_event.filter.distance" default="max. Entfernung zur gewählten Position" /></span>
+                        <span class="jv_events_filter_distance"><f:translate key="tx_jvevents_event.filter.distance" default="zur gewählten Position" /></span>
                         <span class="position-right mr-3">
                              <span id="jv_events_map2" class="btn btn-outline-secondary mx-2 "  data-toggle="modal" data-target="#geoSearchModal" title="{settings.list.longitude} / {settings.list.latitude}">
                             <span class="fa fa-street-view"> </span>
