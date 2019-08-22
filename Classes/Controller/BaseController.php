@@ -138,6 +138,53 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         $this->persistenceManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
     }
 
+    public function generateFilterAll( $filter )
+    {
+        $organizers = array();
+        $tags2 = array();
+        $categories2 = array();
+
+        $filterTags = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $filter['tags'], true);
+        if( is_array($filterTags)) {
+            foreach ($filterTags as $Id ) {
+                $tag = $this->tagRepository->findByUid($Id) ;
+                $tags2[] = array( "id" => $Id , "title" => $tag->getName()  ) ;
+            }
+        }
+
+        $filterCats = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $filter['categories'], true);
+        if( is_array($filterCats)) {
+            foreach ($filterCats as $Id ) {
+                $cat = $this->categoryRepository->findByUid($Id) ;
+                $categories2[] = array( "id" => $Id , "title" => $cat->getTitle()  , "description" => $cat->getDescription() , "sorting" => $cat->getSorting() ) ;
+            }
+        }
+        $sortArray = array();
+        foreach($categories2 as $key => $array) {
+            if( $this->settings['filter']['sorttags'] == "sorting" ) {
+                $sortArray[$key] = substr( "00000000000" . $array['sorting'], -12 , 12 )  ;
+            } else {
+                $sortArray[$key] = ucfirst ( $array['title']  ) ;
+            }
+        }
+
+        array_multisort($sortArray, SORT_ASC, SORT_STRING , $categories2);
+
+        $orgArr = $this->organizerRepository->findByFilterAllpages( FALSE , TRUE , FALSE , FALSE )  ;
+        if( $orgArr ) {
+            foreach ( $orgArr as $organizer ) {
+                $organizers[$organizer->getUid() ] = $organizer->getName() ;
+            }
+        }
+
+        return array(
+            "organizers" => $organizers ,
+            "tags2" => $tags2 ,
+            "categories2" => $categories2 ,
+            "category50proz" => intval ( (count($categories2) ) / 2 ) ,
+            "tag50proz" => intval ( (count($tags2) +1) / 2 )
+        ) ;
+    }
 
     public function generateFilter(\TYPO3\CMS\Extbase\Persistence\QueryResultInterface $events , $filter ) {
         $locations = array() ;

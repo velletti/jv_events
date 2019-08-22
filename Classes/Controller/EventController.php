@@ -146,8 +146,15 @@ class EventController extends BaseController
             $this->settings['detailPid'] = intval( $this->settings['link']['detailPidDefault']) ;
         }
         $this->debugArray[] = "Before generate Filter :" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " Line: " . __LINE__ ;
-        $eventsFilter = $this->generateFilter( $events ,  $this->settings['filter']) ;
-        $this->debugArray[] = "After generate Filter :" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " Line: " . __LINE__ ;
+        $eventsFilter = array() ;
+        if (  $this->settings['ShowFilter'] > 0 ) {
+            if (  $this->settings['ShowFilter'] == 3) {
+                $eventsFilter = $this->generateFilterAll( $this->settings['filter']) ;
+            } else {
+                $eventsFilter = $this->generateFilter( $events ,  $this->settings['filter']) ;
+            }
+            $this->debugArray[] = "After generate Filter :" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " Line: " . __LINE__ ;
+        }
 
         $this->view->assign('eventsFilter', $eventsFilter);
         $this->view->assign('settings', $this->settings );

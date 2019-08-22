@@ -1,0 +1,34 @@
+
+
+<div class="form-group display-data row">
+    <f:variable name="propertyName">{object}.{property}</f:variable>
+    <f:render partial="FormErrorSingle" arguments="{property: errorProperty, field: propertyName}"/>
+    <label class="control-label col-sm-4">
+        <f:if condition="{translationKey}">
+            <f:then>
+                <f:translate key="{translationKey}">{translationKey}</f:translate>
+            </f:then>
+            <f:else>
+                {label}
+            </f:else>
+
+        </f:if>
+
+        <f:if condition="{mandatory}">
+            <span class="mandatory">*</span>
+        </f:if>
+        <br><span class="small font-weight-light">(max 1)</span>
+    </label>
+    <div class="col-sm-8 jv-events-cats-div row ">
+
+        <f:for each="{categories}" as="Category" iteration="iteration">
+            <div class="col-6 ">
+                <div class="px-1 jv-events-cats-div-div cursor-pointer text-center {f:if(condition:'{Category.uid} == {value}' , then:'event-checked' , else:'')}">
+                    <f:form.radio id="{property}-{Category.uid}" property="{property}" value="{Category.uid}" checked="{f:if(condition:'{Category.uid} == {value}' , then:'checked' )}"/>
+                    <label for="{property}-{Category.uid}" class="control-label"> {Category.title} </label>
+                </div>
+            </div>
+        </f:for>
+
+    </div>
+</div>

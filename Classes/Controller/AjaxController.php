@@ -96,7 +96,7 @@ class AjaxController extends BaseController
         /*
         * check if action is allowed
         */
-        if ( !in_array( $ajax['action'] , array("eventMenu" , "eventList" , "locationList") ) ) {
+        if ( !in_array( $ajax['action'] , array("eventMenu" , "eventList" , "locationList" , "activate") ) ) {
             $ajax['action'] = "eventMenu" ;
         }
 
@@ -626,6 +626,107 @@ class AjaxController extends BaseController
 
 
         return $output ;
+    }
+
+    /**
+     * @param int $organizerUid
+     * @param int $userUid
+     * @param string $hmac
+     * @param int $rnd
+     *
+     */
+    public function activateAction($organizerUid=0 , $userUid=0 , $hmac='invalid' , $rnd = 0 ) {
+
+        // https://www.allplan.com.ddev.local/index.php?uid=82&eID=jv_events&tx_jvevents_ajax[organizerUid]=111&tx_jvevents_ajax[action]=activate&tx_jvevents_ajax[userUid]=1&tx_jvevents_ajax[hmac]=hmac1234&&tx_jvevents_ajax[rnd]=11234
+
+        $organizerUid = intval($organizerUid) ;
+        $userUid = intval($userUid) ;
+        $rnd = intval($rnd) ;
+        if($rnd == 0 ||  $rnd < ( time() - (60*60*24*30)) ) {
+            // if rnd is not set, take actual time so the value will be invalid  . same it rnd is older than 30 days
+            $rnd = time() ;
+        }
+        $hmac = trim($hmac) ;
+
+        /** @var \JVE\JvEvents\Domain\Model\Organizer $organizer */
+        $organizer = $this->organizerRepository->findByUidAllpages($organizerUid, FALSE, TRUE);
+
+        $querysettings = new \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
+        $querysettings->setIgnoreEnableFields(TRUE) ;
+        $querysettings->setRespectStoragePage(FALSE) ;
+        $querysettings->setRespectSysLanguage(FALSE) ;
+
+        /** @var \JVE\JvEvents\Domain\Repository\FrontendUserRepository $userRepository */
+        $userRepository = $this->objectManager->get("JVE\\JvEvents\\Domain\\Repository\\FrontendUserRepository") ;
+        $userRepository->setDefaultQuerySettings($querysettings) ;
+        /** @var \JVE\JvEvents\Domain\Model\FrontendUser $user */
+        $user = $userRepository->findByUid($userUid) ;
+
+        if( !$organizer  ) {
+            $this->addFlashMessage("Organizer not found by ID : " . $organizerUid , "" , \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING) ;
+            $this->redirect('assist' , NULL, Null , NULL , $this->settings['pageIds']['organizerAssist'] );
+        }
+        if( !$user ) {
+            $this->addFlashMessage("User not found by ID : " . $userUid , "" , \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING) ;
+            $this->redirect('assist' , NULL, Null , NULL , $this->settings['pageIds']['organizerAssist'] );
+        }
+        $tokenStr = "activateOrg" . "-" . $organizerUid . "-" . $user->getCrdate() ."-". $userUid .  "-". $rnd ;
+        $tokenId = GeneralUtility::hmac( $tokenStr );
+
+
+        if( $hmac != $tokenId ) {
+            if ( 1==2 ) {
+                echo "Got hmac: " . $hmac ;
+                echo "<br>Got token: " . $tokenStr ;
+                echo "<br>Gives: " . $tokenId ;
+                die;
+            }
+            $this->addFlashMessage("Hmac does not fit to: " . $tokenStr , "ERROR" , \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR) ;
+            $this->redirect('assist' , NULL, Null , NULL , $this->settings['pageIds']['organizerAssist'] );
+
+        }
+        $groups =  $user->getUsergroup()->toArray() ;
+        $groupsMissing = array( 2 => TRUE , 7 => TRUE ) ;
+
+        if(is_array( $groups)) {
+            /** @var \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup $group */
+            foreach ($groups as $group) {
+                foreach ($groupsMissing as $key => $item) {
+                    if ( $group->getUid() == $key ) {
+
+                        $groupsMissing[$key] = FALSE ;
+                    }
+                }
+            }
+        }
+        $msg = '' ;
+        foreach ($groupsMissing as $key => $item) {
+            if ( $item  ) {
+                /** @var \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserGroupRepository $userGroupRepository */
+                $userGroupRepository = $this->objectManager->get("TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserGroupRepository") ;
+                $newGroup = $userGroupRepository->findByUid($key) ;
+                if( $newGroup ) {
+                    if ( $msg == '' ) {
+                        $msg .= " Added Group: " . $newGroup->getUId() ;
+                    } else {
+                        $msg .= ", " . $newGroup->getUId() ;
+                    }
+
+                    $user->addUsergroup($newGroup) ;
+                }
+            }
+
+        }
+        $user->setDisable(0) ;
+        $userRepository->update( $user ) ;
+
+        $organizer->setHidden(0) ;
+        $this->organizerRepository->update( $organizer) ;
+        $this->persistenceManager->persistAll() ;
+        $this->addFlashMessage("User : " . $userUid . " (" . $user->getEmail() . ") enabled | " . $msg . "  " , "Success" , \TYPO3\CMS\Core\Messaging\AbstractMessage::OK) ;
+        $this->addFlashMessage("Organizer : " . $organizerUid . " (" . $organizer->getName() . ")  enabled " , \TYPO3\CMS\Core\Messaging\AbstractMessage::OK) ;
+        $this->redirect('assist' , NULL, Null , NULL , $this->settings['pageIds']['organizerAssist'] );
+
     }
 
     // ########################################   functions ##################################
