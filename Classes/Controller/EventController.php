@@ -299,6 +299,7 @@ class EventController extends BaseController
 
             try {
                 $this->eventRepository->add($event);
+                $this->updateLatestEvent( $event , $event->getStartDate() ) ;
                 $this->persistenceManager->persistAll() ;
 
                 // got from EM Settings
@@ -552,7 +553,7 @@ class EventController extends BaseController
 
             try {
                 $this->eventRepository->update($event) ;
-
+                $this->updateLatestEvent($event , $event->getStartDate()) ;
 
                 // got from EM Settings
                 $clearCachePids = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode("," , $this->settings['EmConfiguration']['clearCachePids']) ;
@@ -715,6 +716,33 @@ class EventController extends BaseController
         $event->setDescription( $desc ) ;
 
         return $event ;
+    }
+
+    /**
+     * @param \JVE\JvEvents\Domain\Model\Event $event   The Event nneded to get Location and Organizer
+     * @param \DateTime|null $date  Will used to set The Latest Events Date
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
+     */
+    public function updateLatestEvent( \JVE\JvEvents\Domain\Model\Event $event , \DateTime $date = NULL ) {
+        if( $date == NULL ) {
+            $date = new \DateTime('now' ) ;
+            // Idea : : get latest Date from any other event of this organizer ?
+        }
+        $organizer = $event->getOrganizer() ;
+        if( is_object( $organizer )) {
+            if ( $organizer->getUid() > 0 ) {
+                $organizer->setLatestEvent( $date ) ;
+                $this->organizerRepository->update($organizer ) ;
+            }
+        }
+        $location = $event->getLocation() ;
+        if( is_object( $location )) {
+            if ( $location->getUid() > 0 ) {
+                $location->setLatestEvent( $date) ;
+                $this->locationRepository->update($location ) ;
+            }
+        }
     }
 
 }

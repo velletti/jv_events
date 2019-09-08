@@ -76,7 +76,18 @@ class OrganizerController extends BaseController
     {
         $this->view->assign('user', intval($GLOBALS['TSFE']->fe_user->user['uid'] ) ) ;
         $this->view->assign('userData', $GLOBALS['TSFE']->fe_user->user ) ;
-        $organizer = $this->organizerRepository->findByUserAllpages(intval($GLOBALS['TSFE']->fe_user->user['uid']), FALSE, TRUE);
+        $organizer = $this->organizerRepository->findByUserAllpages(intval($GLOBALS['TSFE']->fe_user->user['uid']), true, TRUE);
+        if( is_array( $organizer)  && is_object( $organizer[0]) ) {
+            $locations= $this->locationRepository->findByOrganizersAllpages( array(0 => $organizer[0]->getUid()) , FALSE, FALSE ) ;
+            $this->view->assign('locations', $locations );
+
+            $oldDefaultLocation = $this->locationRepository->findByOrganizersAllpages( array(0 => $organizer[0]->getUid()) , FALSE, FALSE , TRUE )->getFirst() ;
+            if($oldDefaultLocation) {
+                $this->view->assign('defaultLocation', $oldDefaultLocation->getUid() );
+            }
+        }
+
+
         $this->view->assign('count', count($organizer));
         $this->view->assign('organizer', $organizer);
         $this->view->assign('isOrganizer', $this->isUserOrganizer());

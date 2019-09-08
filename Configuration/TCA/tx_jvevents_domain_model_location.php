@@ -28,7 +28,7 @@ $return = array(
 		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, street_and_nr, zip, city, country,lat, lng,  link, email, phone, description, organizer, location_category',
 	),
 	'types' => array(
-		'1' => array('showitem' => 'sys_language_uid, l10n_parent,l10n_diffsource,hidden,--palette--;;1,name,street_and_nr,zip,city,country,--palette--;;geo,teaser_image,link,email,phone,description,organizer,location_category,--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,starttime,endtime'),
+		'1' => array('showitem' => 'sys_language_uid, l10n_parent,l10n_diffsource,hidden,--palette--;;1,name,street_and_nr,zip,city,country,--palette--;;geo,teaser_image,link,email,phone,description,organizer,location_category,--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,starttime,endtime,default_location'),
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),
@@ -268,6 +268,25 @@ $return = array(
 				'maxitems' => 1,
 			),
 		),
+        'latest_event' => array(
+            'exclude' => 1,
+            'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_loacation.latest_event',
+            'config' => array(
+                'type' => 'input',
+                'renderType' => 'inputDateTime',
+                'size' => 7,
+                'eval' => 'date',
+                'checkbox' => 1,
+                'default' => time()
+            ),
+        ),
+        'default_location' => array(
+            'exclude' => 1,
+            'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_location.default_location',
+            'config' => array(
+                'type' => 'check',
+            ),
+        ),
 		'location_category' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_location.location_category',

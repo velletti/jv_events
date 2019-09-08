@@ -11,7 +11,7 @@ $_EXTKEY = "jv_events" ;
 	array(
 		'Event' => 'list, show, new, create, edit, update, delete, register, confirm, search,copy,cancel',
 		'Organizer' => 'list, show, new, create, edit, update, delete,assist',
-		'Location' => 'list, show, new, create, edit, update, delete',
+		'Location' => 'list, show, new, create, edit, update, delete,setDefault',
 		'Registrant' => 'list, show,new,create,delete,confirm',
 		'Tag' => 'list',
 		
@@ -21,7 +21,7 @@ $_EXTKEY = "jv_events" ;
 		'Event' => 'show, search, new, create, edit, update, register, confirm, delete,copy,cancel',
         'Organizer' => 'show, new, create, edit, update, delete,assist',
 		'Registrant' => 'list,new,create,delete,confirm',
-		'Location' => 'new, create, edit, update, delete',
+		'Location' => 'new, create, edit, update, delete,setDefault',
 		
 	)
 );

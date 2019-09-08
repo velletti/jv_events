@@ -77,6 +77,11 @@
                     <f:translate key="tx_jvevents_domain_model_event.organizer">Organizer</f:translate>
                 </h2>
                 <f:render partial="Organizer/List/Partial{layoutList}/SingleOrganizer" arguments="{organizer:organizer.0, settings: settings, showDetails: '0' , showEditButton: '1', hideDefaultImg: '1'}" />
+                <hr>
+                <f:form class="form-horizontal"  action="new" name="event" object="{event}" id="event_new">
+                    <f:render partial="Location/SelectDefaultLocation" arguments="{_all}" />
+                </f:form>
+
             </f:if>
         </f:then>
     </f:security.IfAuthenticated>
@@ -92,7 +97,10 @@
                 <span class="fas fa-users-cog"> </span> <span class="hidden-xs">{f:translate(key: 'edit', default: 'Edit')} {f:translate(key: 'Account', default: 'Account')} </span>
             </f:link.action>
         </div>
+
     </div>
+
+
 </f:section>
 
 <f:section name="contactWebmaster">

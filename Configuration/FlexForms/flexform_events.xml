@@ -28,7 +28,7 @@
 									</numIndex>
 									<numIndex index="3">
 										<numIndex index="0">Edit / Create Locations</numIndex>
-										<numIndex index="1">Location->list;Location->show;Location->new;Location->create;Location->edit;Location->update;Location->delete;</numIndex>
+										<numIndex index="1">Location->list;Location->show;Location->new;Location->create;Location->edit;Location->update;Location->delete;Location->setDefault</numIndex>
 									</numIndex>
 									<numIndex index="4">
 										<numIndex index="0">Organizers (List/Edit/Create ...)</numIndex>

@@ -16,6 +16,9 @@
             </trans-unit>
 
 
+            <trans-unit id="tx_jvevents_domain_model_organizer.latest_event">
+                <source>Latest Event</source>
+            </trans-unit>
 
             <trans-unit id="tx_jvevents_domain_model_category.type">
                 <source>Type</source>
@@ -256,6 +259,12 @@
             </trans-unit>
             <trans-unit id="tx_jvevents_domain_model_location.lng">
                 <source>Longitude</source>
+            </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_location.latest_event">
+                <source>Latest Event</source>
+            </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_location.default_location">
+                <source>Default Location</source>
             </trans-unit>
             <trans-unit id="tx_jvevents_domain_model_location.location_category">
                 <source>Location Category</source>

@@ -155,6 +155,27 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     protected $registrationInfo = '';
 
+    /**
+     * Longitude of this location use the Wizard to set this
+     *
+     * @var string
+     */
+    protected $lng = '';
+
+    /**
+     * Latitude of this location use the Wizard to set this
+     *
+     * @var string
+     */
+    protected $lat = '';
+
+    /**
+     * latest Event  of any event in this location. Calculated
+     *
+     * @var \DateTime
+     */
+    protected $latestEvent = null;
+
 
     /**
      * hidden
@@ -701,7 +722,7 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function setSysLanguageUid($sysLanguageUid)
     {
         $this->sysLanguageUid = $sysLanguageUid;
-        $this->_languageUid = $sysLanguageUid;
+     //   $this->_languageUid = $sysLanguageUid;
     }
     /**
      * @return int
@@ -709,8 +730,59 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function getSysLanguageUid()
     {
         return $this->sysLanguageUid ;
-        return $this->_languageUid ;
+      //  return $this->_languageUid ;
     }
+
+    /**
+     * @return string
+     */
+    public function getLng()
+    {
+        return $this->lng;
+    }
+
+    /**
+     * @param string $lng
+     */
+    public function setLng($lng)
+    {
+        $this->lng = $lng;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLat()
+    {
+        return $this->lat;
+    }
+
+    /**
+     * @param string $lat
+     */
+    public function setLat($lat)
+    {
+        $this->lat = $lat;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getLatestEvent()
+    {
+        return $this->latestEvent;
+    }
+
+    /**
+     * @param \DateTime $latestEvent
+     */
+    public function setLatestEvent($latestEvent)
+    {
+        if( $latestEvent > $this->latestEvent ) {
+            $this->latestEvent = $latestEvent;
+        }
+    }
+
 
 
 }

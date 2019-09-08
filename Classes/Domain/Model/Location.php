@@ -82,7 +82,14 @@ class Location extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @var string
      */
     protected $lat = '';
-    
+
+    /**
+     * latest Event  of any event in this location. Calculated
+     *
+     * @var \DateTime
+     */
+    protected $latestEvent = null;
+
     /**
      * URL should start with http://
      *
@@ -131,7 +138,14 @@ class Location extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Category>
      */
     protected $locationCategory = null;
-    
+
+    /**
+     *
+     *
+     * @var bool
+     */
+    protected $defaultLocation = false ;
+
     /**
      * Returns the name
      *
@@ -512,6 +526,41 @@ class Location extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         $this->pid = $pid;
     }
+
+    /**
+     * @return \DateTime
+     */
+    public function getLatestEvent()
+    {
+        return $this->latestEvent;
+    }
+
+    /**
+     * @param \DateTime $latestEvent
+     */
+    public function setLatestEvent($latestEvent)
+    {
+        if( $latestEvent > $this->latestEvent ) {
+            $this->latestEvent = $latestEvent;
+        }
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDefaultLocation()
+    {
+        return $this->defaultLocation;
+    }
+
+    /**
+     * @param bool $defaultLocation
+     */
+    public function setDefaultLocation($defaultLocation)
+    {
+        $this->defaultLocation = $defaultLocation;
+    }
+
 
 
 }

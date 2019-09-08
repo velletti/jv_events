@@ -181,6 +181,51 @@ $returnArray = array(
                 'eval' => 'trim'
             ),
         ),
+        'lat' => array(
+            'exclude' => 1,
+            'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_location.lat',
+            'config' => array(
+                'type' => 'input',
+                'size' => 30,
+                'eval' => 'trim' ,
+
+            ),
+        ),
+        'lng' => array(
+            'exclude' => 1,
+            'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_location.lng',
+            'config' => array(
+                'type' => 'input',
+                'size' => 30,
+                'eval' => 'trim' ,
+                'wizards' => array(
+                    'jv_events_wizard_geocoder' => array(
+                        'type' => 'popup',
+                        'title' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:jv_events_model_location.geocoder.title',
+                        'icon' => 'EXT:jv_events/Resources/Public/Icons/wizard_geocoder.png',
+                        'module' => array(
+                            'name' => 'jv_events_wizard_geocoder',
+                        ),
+                        'params' => array(
+                            'mode' => 'point',
+                        ),
+                        'JSopenParams' => 'height=600,width=800,status=0,menubar=0,scrollbars=yes',
+                    )
+                ),
+            ),
+        ),
+        'latest_event' => array(
+            'exclude' => 1,
+            'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_organizer.latest_event',
+            'config' => array(
+                'type' => 'input',
+                'renderType' => 'inputDateTime',
+                'size' => 7,
+                'eval' => 'date',
+                'checkbox' => 1,
+                'default' => time()
+            ),
+        ),
         'link' => array(
             'exclude' => 0,
             'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_organizer.link',

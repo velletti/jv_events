@@ -71,10 +71,11 @@ class LocationRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      * @param array $organizers
      * @param bool $toArray
      * @param bool $ignoreEnableFields
+     * @param bool $onlyDefault
      * @return array|object
      */
 
-    public function findByOrganizersAllpages($organizers , $toArray=TRUE , $ignoreEnableFields = TRUE )
+    public function findByOrganizersAllpages($organizers , $toArray=TRUE , $ignoreEnableFields = TRUE , $onlyDefault = FALSE )
     {
         $query = $this->createQuery();
         $querySettings = $query->getQuerySettings() ;
@@ -84,8 +85,14 @@ class LocationRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         $query->setQuerySettings($querySettings) ;
 
         // $query->setLimit($limit) ;
+        if ( $onlyDefault ) {
+            $constraints[] = $query->in('organizer.uid', $organizers ) ;
+            $constraints[] = $query->equals('default_location', 1 ) ;
+            $query->matching( $query->logicalAnd( $constraints ) ) ;
+        } else {
+            $query->matching( $query->in('organizer.uid', $organizers ) ) ;
+        }
 
-        $query->matching( $query->in('organizer.uid', $organizers ) ) ;
         $res = $query->execute() ;
 
         // new way to debug typo3 db queries

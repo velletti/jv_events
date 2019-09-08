@@ -166,7 +166,37 @@ class LocationController extends BaseController
         $this->redirect($action , $controller , NULL , array( 'organizer' => $orgId , 'location' => $location->getUid() )  , $pid );
 
     }
-    
+
+    /**
+     * action new
+     * @param \JVE\JvEvents\Domain\Model\Location $location
+     * @param \JVE\JvEvents\Domain\Model\Organizer $organizer
+     * @param integer $oldDefault
+     * @ignorevalidation $location
+     * @return void
+     */
+    public function setDefaultAction(\JVE\JvEvents\Domain\Model\Location $location , \JVE\JvEvents\Domain\Model\Organizer $organizer ,  $oldDefault= 0) {
+        if ( $this->hasUserAccess($location->getOrganizer() )) {
+            $location->setDefaultLocation( TRUE ) ;
+            $this->locationRepository->update($location) ;
+            $organizer->setLat( $location->getLat() ) ;
+            $organizer->setLng( $location->getLng() ) ;
+            $this->organizerRepository->update($organizer) ;
+        }
+        if ( $oldDefault > 0 ) {
+            $location= $this->locationRepository->findByUidAllpages($oldDefault , FALSE , TRUE) ;
+            if( is_object($location)) {
+                if ( $this->hasUserAccess($location->getOrganizer() )) {
+                    $location->setDefaultLocation( FALSE ) ;
+                    $this->locationRepository->update($location) ;
+                }
+            }
+
+        }
+        $this->redirect('assist' , 'Organizer', Null , NULL , $this->settings['pageIds']['organizerAssist'] );
+
+    }
+
     /**
      * action edit
      *
