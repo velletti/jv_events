@@ -145,6 +145,9 @@ class RegisterHubspotSignal {
         $data['is_hidden']  =   $registrant->getHidden() ;
         $data['is_confirmed']  =   $registrant->getConfirmed() ;
 
+        // see ticket:  https://jira.allplan.com/browse/TYPO3-291
+        $data['event_flag']  =   true ;
+
         $hubspotutk      = $_COOKIE['hubspotutk']; //grab the cookie from the visitors browser.
         $ip_addr         = $_SERVER['REMOTE_ADDR']; //IP address too.
         $hs_context      = array(
