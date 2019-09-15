@@ -16,13 +16,13 @@
 </f:if>
 
 <f:spaceless>
-    <div {f:if(condition: '{showDetails}', then: ' id="jv-events-dataids"' )} class="jv-events-singleOrganizer jv-events-row" data-orguid="{organizer.uid}" data-taguids="{tagids}" data-catuids="{catids}">
+    <div {f:if(condition: '{showDetails}', then: ' id="jv-events-details"' )} class="jv-events-singleOrganizer jv-events-row" data-orguid="{organizer.uid}" data-taguids="{tagids}" data-catuids="{catids}">
 
         <div class="card col-12 my-4 clearfix rounded-bottom">
             <div class="row">
                 <div class="col-4  order-1 col-sm-3 px-0">
 
-                    <f:link.action pageUid="{settings.pageIds.organizerAssist}" action="show" arguments="{organizer : organizer}">
+                    <f:link.action action="show" arguments="{organizer : organizer}">
                             <f:if condition="{organizer.teaserImage}">
                                 <f:then>
                                     <f:image src="{organizer.teaserImage.uid}" class="d-block w-100 h-auto img-float rounded shadow-lg" alt="{organizer.teaserImage.alternative}" title="{organizer.teaserImage.title}" width="{settings.list.image.width}c" maxWidth="{settings.list.image.width}" maxHeight="{settings.list.image.height}" treatIdAsReference="true" />
