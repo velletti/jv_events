@@ -422,6 +422,17 @@ function jv_events_initPosition(position) {
                     if( jQuery('#lng').length > 0  ) {
                         jQuery('#lng').val(position.coords.longitude);
                     }
+                    // Set cookie for 365 days
+                    var d = new Date();
+                    d.setTime(d.getTime() + ( 24*60*60*1000 * 365));
+                    var expires = 'expires=' + d.toUTCString();
+                    if ( getCookie('tx_events_lng') == "1") {
+                        document.cookie = 'tx_events_lat=' + position.coords.latitude + "; " + expires + ';path=/';
+                        document.cookie = 'tx_events_lng=' + position.coords.longitude + "; " + expires + ';path=/';
+                    }
+
+
+
                     if( map ) {
                     //    console.log( "Map Object Found, place marker to coords") ;
                         myPosition = new google.maps.LatLng(position.coords.latitude , position.coords.longitude);
@@ -532,8 +543,19 @@ function jv_events_refreshList(){
     var lastDay = false ;
     var needTohideDay = true ;
     if ( jQuery('#jv_events_geo').length ) {
-        var userLat = jQuery('#jv_events_geo').data("lat") ;
-        var userLng = jQuery('#jv_events_geo').data("lng") ;
+        var userLat = getCookie('tx_events_lat' ) ;
+        if ( userLat )   {
+            jQuery('#jv_events_geo').data("lat" , userLat)
+        } else {
+            userLat = jQuery('#jv_events_geo').data("lat") ;
+        }
+        var userLng = getCookie('tx_events_lng' ) ;
+        if ( userLng )   {
+            jQuery('#jv_events_geo').data("lng" , userLng)
+        } else {
+            userLng = jQuery('#jv_events_geo').data("lng") ;
+        }
+
 
         if( jQuery('#lat').length > 0  && jQuery('#lat').val() > 5 ) {
             userLat = jQuery('#lat').val();
@@ -738,6 +760,11 @@ function jv_events_refreshList(){
 
 
 }
+function getCookie(name) {
+    var v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+    return v ? v[2] : null;
+}
+
 function jv_events_pushUrl( urlFilter ) {
     if( jQuery(".tx-jv-events .filter").length > 0 || jQuery(".tx-jv-events .jv_events_filter").length > 0 ) {
 
