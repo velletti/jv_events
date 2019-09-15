@@ -426,7 +426,8 @@ function jv_events_initPosition(position) {
                     var d = new Date();
                     d.setTime(d.getTime() + ( 24*60*60*1000 * 365));
                     var expires = 'expires=' + d.toUTCString();
-                    if ( getCookie('tx_events_lng') == "1") {
+
+                    if ( getCookie('tx_cookies_accepted') == "1") {
                         document.cookie = 'tx_events_lat=' + position.coords.latitude + "; " + expires + ';path=/';
                         document.cookie = 'tx_events_lng=' + position.coords.longitude + "; " + expires + ';path=/';
                     }
