@@ -193,11 +193,11 @@ class EventRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 					break;
 				case '-1':
                     $startDate = new \DateTime( 'NOW -1 Days', $DateTimeZone) ;
-                    $endDate = new \DateTime( 'NOW +' . (intval ($settings['filter']['maxDays']) -1 ). ' Days', $DateTimeZone) ;
+                    $endDate = new \DateTime( 'NOW +' . (intval ($settings['filter']['maxDays'])  ). ' Days', $DateTimeZone) ;
 					break;
 				case '+1':
                     $startDate = new \DateTime( 'NOW +1 Days', $DateTimeZone) ;
-                    $endDate = new \DateTime( 'NOW +' . (intval ($settings['filter']['maxDays']) +1 ). ' Days', $DateTimeZone) ;
+                    $endDate = new \DateTime( 'NOW +' . (intval ($settings['filter']['maxDays']) ). ' Days', $DateTimeZone) ;
 					break;
 				default:
 					if( intval( $settings['filter']['startDate'] ) > 9999 ) {
@@ -205,14 +205,14 @@ class EventRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
                         $startDate->setTimestamp($settings['filter']['startDate']) ;
                         $endDate = new \DateTime( 'now' , $DateTimeZone) ;
                         $endDate->setTimestamp($settings['filter']['startDate']) ;
-                        $endDate->modify("+" . intval( $settings['filter']['maxDays']) . " Days" ) ;
+                        $endDate->modify("+" . intval( $settings['filter']['maxDays']-1) . " Days" ) ;
 
 					} else {
 
                         $startDate = new \DateTime( 'NOW ' . $settings['filter']['startDate'] . ' Days' , $DateTimeZone) ;
                         $endDate = new \DateTime( 'NOW +' . (intval ($settings['filter']['maxDays']) + $settings['filter']['startDate'] ). ' Days' , $DateTimeZone) ;
 
-                        $endDate->modify("+" . intval( $settings['filter']['maxDays']) . " Days" ) ;
+                        $endDate->modify("+" . intval( $settings['filter']['maxDays'] -1) . " Days" ) ;
 
 					}
 
