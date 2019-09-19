@@ -50,6 +50,13 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $hidden ;
 
     /**
+     * hidden or not that is the question
+     *
+     * @var int
+     */
+    protected $changeFutureEvents ;
+
+    /**
      * event Viewed in single View (ajax Call requiered)
      *
      * @var int
@@ -2443,6 +2450,22 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function setMasterId($masterId)
     {
         $this->masterId = $masterId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getChangeFutureEvents()
+    {
+        return $this->changeFutureEvents;
+    }
+
+    /**
+     * @param int $changeFutureEvents
+     */
+    public function setChangeFutureEvents($changeFutureEvents)
+    {
+        $this->changeFutureEvents = $changeFutureEvents;
     }
 
 

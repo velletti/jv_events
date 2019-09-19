@@ -90,8 +90,8 @@ class EventController extends BaseController
             $this->forward("list") ;
         }
         /** @var \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration $propertyMappingConfiguration */
-        //  $propertyMappingConfiguration = $this->arguments['event']->getPropertyMappingConfiguration();
-        //  $propertyMappingConfiguration->allowProperties('tags') ;
+         $propertyMappingConfiguration = $this->arguments['event']->getPropertyMappingConfiguration();
+         $propertyMappingConfiguration->allowProperties('changeFutureEvents') ;
 
         parent::initializeAction() ;
         $this->debugArray[] = "Init Done:" . intval(1000 * ($this->microtime_float()  - $this->timeStart ) ) . " Line: " . __LINE__ ;
@@ -390,7 +390,12 @@ class EventController extends BaseController
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      */
     private function copyEvent(\JVE\JvEvents\Domain\Model\Event $event, $copy2Day= 0, $amount= 1){
-
+        // Does the Copy Master Event already have a masterId? if not, use its uid as new  Master
+        // wthi this master ID we are able to update Changes from one event to all events with the same master Id
+        if ( intval( $event->getMasterId() ) < 1 || $event->getMasterId() === null ) {
+            $event->setMasterId( $event->getUid() ) ;
+            $this->eventRepository->update($event) ;
+        }
         for ( $i=1 ;$i<= $amount ; $i++) {
             /** @var \JVE\JvEvents\Domain\Model\Event $newEvent */
 
@@ -410,12 +415,6 @@ class EventController extends BaseController
             $newDate->add( $diff) ;
 
             $newEvent->setStartDate($newDate ) ;
-
-            // Does the Copy Master Event already have a masterId? if not, use its uid as new  Master
-            // wthi this master ID we are able to update Changes from one event to all events with the same master Id
-            if( intval( $event->getMasterId() ) < 1 || $event->getMasterId() === null ) {
-                $newEvent->setMasterId( $event->getUid() ) ;
-            }
 
             // ++++ now copy the Categories and tags  ++++
             if( $event->getEventCategory() ) {
@@ -480,10 +479,11 @@ class EventController extends BaseController
                     ->execute();
             }
 
-
+            if (  $i == $amount ) {
+                $this->updateLatestEvent($newEvent , $newEvent->getStartDate()) ;
+            }
             unset( $newEvent ) ;
         }
-
 
 
        $this->redirect("edit" , null , null , array( "event" => $eventUid  )) ;
@@ -543,9 +543,9 @@ class EventController extends BaseController
      */
     public function updateAction(\JVE\JvEvents\Domain\Model\Event $event)
     {
+
         if( $this->request->hasArgument('event')) {
             $event = $this->cleanEventArguments( $event) ;
-
         }
 
         if ( $this->hasUserAccess($event->getOrganizer() )) {
@@ -553,6 +553,35 @@ class EventController extends BaseController
 
             try {
                 $this->eventRepository->update($event) ;
+                if( $event->getChangeFutureEvents() && $event->getMasterId() > 0 ) {
+                    $filter['startDate'] = $event->getStartDate()->getTimestamp() ;
+                    $filter['maxDays'] = 999 ;
+                    $filter['skipEvent'] = $event->getUid() ;
+                    $filter['masterId'] = $event->getMasterId() ;
+
+                    $otherEvents = $this->eventRepository->findByFilter($filter ) ;
+                    /** @var \JVE\JvEvents\Domain\Model\Event $otherEvent */
+                    if ( count($otherEvents) > 0 ) {
+                        $otherDaysText = " " ;
+                        foreach ( $otherEvents as $otherEvent ) {
+                            $otherDaysText .= $otherEvent->getStartDate()->format("d.M-Y") .  " (Id:" . $otherEvent->getUid() ."), " ;
+                            $otherEvent->setName( $event->getName() ) ;
+                            $otherEvent->setTeaser( $event->getTeaser() ) ;
+                            $otherEvent->setDescription( $event->getDescription() ) ;
+                            $otherEvent->setPrice( $event->getPrice() ) ;
+                            $otherEvent->setStartTime( $event->getStartTime() ) ;
+                            $otherEvent->setEndTime( $event->getEndTime() ) ;
+                            $otherEvent->setEntryTime( $event->getEntryTime() ) ;
+                            $otherEvent->setPriceReduced( $event->getPriceReduced() ) ;
+                            $otherEvent->setPriceReducedText( $event->getPriceReducedText() ) ;
+
+                            $this->eventRepository->update($otherEvent) ;
+                        }
+                        $this->addFlashMessage('The following Events : ' . $otherEvent->getStartDate()->format("d.M-Y") . ' were also updated.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+
+                    }
+                }
+
                 $this->updateLatestEvent($event , $event->getStartDate()) ;
 
                 // got from EM Settings
@@ -574,7 +603,7 @@ class EventController extends BaseController
         }
         $this->persistenceManager->persistAll() ;
 
-        $this->redirect('edit' , NULL, Null , array( "event" => $event));
+        $this->redirect('show' , NULL, Null , array( "event" => $event) );
 
     }
     
@@ -714,7 +743,7 @@ class EventController extends BaseController
         $desc = strip_tags($desc , "<p><br><a><i><strong><h2><h3>") ;
 
         $event->setDescription( $desc ) ;
-
+        $event->setChangeFutureEvents( $eventArray['changeFutureEvents'] ) ;
         return $event ;
     }
 

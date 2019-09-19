@@ -98,6 +98,9 @@ class EventRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 		if( $settings['filter']['categories']  ) {
 			$constraints = $this->getCatContraints($constraints,  $settings , $configuration , $query );
 		}
+        if( $settings['filter']['masterId']  ) {
+            $constraints[] = $query->equals("masterId",  $settings['filter']['masterId'] );
+        }
         if( $settings['filter']['tags']  ) {
             $constraints = $this->getTagContraints($constraints,  $settings , $configuration , $query );
         }
@@ -118,7 +121,7 @@ class EventRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         $DTZ = $DTZ == '' ? 'UTC' : $DTZ ;
         $DateTimeZone = new \DateTimeZone($DTZ)  ;
 
-		if( intval( $settings['filter']['startDate'] ) > -9999  || intval( $settings['filter']['maxDays'] ) > 0  )  {
+		if( array_key_exists( 'startDate' ,  $settings['filter'] ) && ( intval( $settings['filter']['startDate'] ) > -9999  || intval( $settings['filter']['maxDays'] ) > 0  ))  {
 			$constraints = $this->getDateContraints($constraints,  $settings , $configuration , $query  , $DateTimeZone);
 		}
         // and the normal visibility contrains , including date Time
@@ -181,7 +184,6 @@ class EventRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 	private function getDateContraints($constraints, $settings , $configuration , $query , $DateTimeZone )
 	{
 		if( intval( $settings['filter']['startDate'] ) > -9999 ) {
-
 
 			/** @var \DateTime $startDate */
 			/** @var \DateTime $endDate */

@@ -322,6 +322,16 @@
             <trans-unit id="tx_jvevents_domain_model_event.details.tab.contact">
                 <source>Contact</source>
             </trans-unit>
+           <trans-unit id="tx_jvevents_domain_model_event.edit.repeating.headline">
+                <source>Repeating Event</source>
+            </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_event.edit.repeating.text">
+                <source>This is a repeating, copied Event. Shall we change also all other future Events with the same ID?</source>
+            </trans-unit>
+             <trans-unit id="tx_jvevents_domain_model_event.edit.repeating.uebernehmen">
+                <source>Change them also</source>
+            </trans-unit>
+
 
             <trans-unit id="tx_jvevents_domain_model_location">
                 <source>Location</source>

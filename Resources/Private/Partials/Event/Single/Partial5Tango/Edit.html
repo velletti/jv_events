@@ -40,10 +40,31 @@
 
 
                         <f:render partial="Event/Single/Partial{settings.LayoutSingle}/FormFields" arguments="{_all}" />
+                        <f:if condition="{event.masterId}">
+                            <f:then>
+                                <div class="text-right">
+                                    <span class="btn btn-primary" onclick="this.style.display ='none';" data-toggle="collapse" data-target="#jv_events_edit_save_button">{f:translate(key: 'form.save', default: 'Save')}</span>
+                                </div>
+                                <div id="jv_events_edit_save_button" class="alert alert-secondary collapse">
+                                    <h3><f:translate key="tx_jvevents_domain_model_event.edit.repeating.headline">Regelmäßiger Termin</f:translate></h3>
+                                    <p><f:translate key="tx_jvevents_domain_model_event.edit.repeating.text">Dies ist ein regelmäßiger Termin. Sollen die obigen Änderungen für alle zukünftigen Termine mit der gleichen ID übernommen werden?</f:translate></p>
+                                    <p><f:translate key="tx_jvevents_domain_model_event.edit.repeating.textNot">Gilt aktuell noch nicht für Kategorien und Schlagworte!</f:translate></p>
+                                    <f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowCheckbox"
+                                              arguments="{object: '', property: 'changeFutureEvents' , onText: 'YES', offText: 'no' ,name:'tx_jvevents_events[changeFutureEvents]' , checked: 'false' , label: '' , translationKey: 'tx_jvevents_domain_model_event.edit.repeating.uebernehmen' ,  mandatory: '' }" />
 
-                        <div class="text-right">
-                            <f:form.submit class="btn btn-primary" value="{f:translate(key: 'form.save', default: 'Save')}" />
-                        </div>
+                                    <div class="text-right">
+                                        <f:form.submit class="btn btn-primary" value="{f:translate(key: 'form.save', default: 'Save')}" />
+                                    </div>
+                                </div>
+
+                            </f:then>
+                            <f:else>
+                                <div class="text-right">
+                                    <f:form.submit class="btn btn-primary" value="{f:translate(key: 'form.save', default: 'Save')}" />
+                                </div>
+                            </f:else>
+                        </f:if>
+
                     </f:form>
 
                 </div>

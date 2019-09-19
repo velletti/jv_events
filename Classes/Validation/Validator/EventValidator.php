@@ -41,7 +41,13 @@ class EventValidator extends BaseValidator {
         $isValid = $this->securityChecks( $event->getPriceReduced() , 'priceReduced' , $isValid ) ;
         $isValid = $this->securityChecks( $event->getPriceReducedText() , 'priceReducedText' , $isValid ) ;
 
-        $isValid = $this->isNumeric( $event->getEventCategory() , 'eventCategory' , $isValid ) ;
+        $isValid = $this->isNumeric( $event->getEventCategory() , 'eventCategory' , $isValid , "No Category selected") ;
+
+
+        $eventArray = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST("tx_jvevents_events") ;
+        $eventCatUid = intval($eventArray['event']['eventCategory']) ;
+        $isValid = $this->isNumeric( $eventCatUid , 'eventCategory' , $isValid , "No Category selected") ;
+
         if( intval( $event->getPrice()) != 0  ) {
             $isValid = $this->isNumeric( $event->getPrice() , 'price' , $isValid ) ;
         }

@@ -264,13 +264,14 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
      * @param mixed $value The value that should be validated
      * @param string $propertyName The propertyName that should be validated
      * @param boolean $default ( result of tests run before )
+     * @param string $errorString The given subject was not a valid integer as default
      * @return boolean TRUE if the value is valid, FALSE if an error occured
      */
-    protected function isNumeric($value , $propertyName , $default = true) {
+    protected function isNumeric($value , $propertyName , $default = true , $errorString = 'The given subject was not a valid integer or lower than 1.') {
 
         if (intval($value) > 0 ) return $default;
         /** @var \TYPO3\CMS\Extbase\Error\Error $error */
-        $error = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error','The given subject was not a valid integer .', time());
+        $error = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error',$errorString , time());
         $this->result->forProperty($propertyName)->addError($error);
 
         return FALSE;

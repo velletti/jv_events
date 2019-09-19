@@ -1,0 +1,44 @@
+<div class="form-group display-data row">
+	<f:variable name="propertyName"></f:variable>
+	<f:if condition="{object}">
+		<f:variable name="propertyName">{object}.{property}</f:variable>
+		<f:render partial="FormErrorSingle" arguments="{property: errorProperty, field: propertyName}"/>
+	</f:if>
+
+	<f:variable name="defaultValueText"></f:variable>
+	<f:if condition="{defaultValue}">
+		<f:variable name="defaultValueText"><f:format.raw> value='{defaultValue}' </f:format.raw></f:variable>
+	</f:if>
+
+
+	<label for="{property}" class="control-label col-sm-4">
+		<f:if condition="{translationKey}">
+			<f:then>
+				<f:translate key="{translationKey}"><f:if condition="{label}"><f:then>{label}</f:then><f:else>{translationKey}</f:else></f:if></f:translate>
+			</f:then>
+			<f:else>
+				{label}
+			</f:else>
+		</f:if>
+
+		<f:if condition="{mandatory}">
+			<span class="mandatory">*</span>
+		</f:if>
+
+	</label>
+	<div class="col-sm-8">
+
+			<f:if condition="{object}">
+				<f:then>
+					<input type="checkbox" id="{property}" property="{property}" {f:if(condition: '{checked}' , then: 'checked')} id="{property}" value="1" data-onstyle="primary" data-offstyle="secondary" data-toggle="toggle" data-style="ios " data-on="{f:if(condition: '{checked}' , else: 'YES' , then: 'no' )}" data-off="{f:if(condition: '{checked}' , then:'YES!' , else: 'no' )}"/>
+					<input type="checkbox" id="{property}" name="{name}" {f:if(condition: '{checked}' , then: 'checked')} id="{property}" value="1" data-onstyle="primary" data-offstyle="secondary" data-toggle="toggle" data-style="ios " data-on="{f:if(condition: '{checked}' , else: 'YES' , then: 'no' )}" data-off="{f:if(condition: '{checked}' , then:'YES!' , else: 'no' )}"/>
+				</f:then>
+				<f:else>
+					<f:form.checkbox property="{property}"  value="1" data="{onstyle: 'primary' , offstyle:'secondary' , toggle: 'toggle', style:'ios', on:'{onText}', off: '{offText}'}"/>
+
+				</f:else>
+			</f:if>
+
+
+	</div>
+</div>
