@@ -190,6 +190,12 @@ class GeocoderUtility {
                         address = "";
                     }
                 }
+                if ( address == "" ) {
+                    if(document.getElementById("lat") && document.getElementById("lng") ) {
+					   address = document.getElementById("lat").val() + "," +document.getElementById("lng").val();
+				    }
+				}
+				
 			    return address ;
 			}
 			/**
