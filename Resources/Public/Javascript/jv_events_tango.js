@@ -361,22 +361,31 @@ function jv_events_init() {
 function jv_events_reloadList() {
     if ( jQuery("#overruleFilterStartDate") ) {
         var temp =  window.location.href.split("#")  ;
-        var host = temp[0].split("?");
-        var arr = host[1].split("&");
-        var newQuery = host[0] + "?" ;
-        var param = ''
-        for (var i = 0; i < arr.length; i++) {
-            param = arr[i].substr( 0, 999 ) ;
-            if ( param.substr(0,4 ) == "amp;") {
-                param = arr[i].substr( 4, 999 ) ;
-            }
-            if ( param.substr(0,5) == "chash" ) {
-                break ;
-            }
-            if ( param.substr(0,27) != "tx_jvevents_events[overruleFilter][startDate]=" ) {
-                newQuery += "&" + param ;
-            }
+        if ( Array.isArray(temp) ) {
+            var host = temp[0].split("?");
+        } else {
+            var host = window.location.href.split("?");
         }
+        if ( Array.isArray(host) ) {
+            var arr = host[1].split("&");
+            var newQuery = host[0] + "?" ;
+            var param = ''
+            for (var i = 0; i < arr.length; i++) {
+                param = arr[i].substr( 0, 999 ) ;
+                if ( param.substr(0,4 ) == "amp;") {
+                    param = arr[i].substr( 4, 999 ) ;
+                }
+                if ( param.substr(0,5) == "chash" ) {
+                    break ;
+                }
+                if ( param.substr(0,27) != "tx_jvevents_events[overruleFilter][startDate]=" ) {
+                    newQuery += "&" + param ;
+                }
+            }
+        } else {
+            var newQuery = window.location.href + "?" ;
+        }
+
         newQuery += "&tx_jvevents_events[overruleFilter][startDate]=" + jQuery("#overruleFilterStartDate").val() ;
         var cHash = newQuery.hashCode() ;
 
