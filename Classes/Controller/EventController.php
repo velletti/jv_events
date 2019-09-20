@@ -90,9 +90,12 @@ class EventController extends BaseController
             $this->forward("list") ;
         }
         if ( $this->request->hasArgument('event')) {
+            if ( array_key_exists("event" , $this->arguments)) {
                 /** @var \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration $propertyMappingConfiguration */
-             $propertyMappingConfiguration = $this->arguments['event']->getPropertyMappingConfiguration();
-             $propertyMappingConfiguration->allowProperties('changeFutureEvents') ;
+                $propertyMappingConfiguration = $this->arguments['event']->getPropertyMappingConfiguration();
+                $propertyMappingConfiguration->allowProperties('changeFutureEvents') ;
+            }
+
         }
 
         parent::initializeAction() ;
