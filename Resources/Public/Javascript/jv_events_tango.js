@@ -361,12 +361,12 @@ function jv_events_init() {
 function jv_events_reloadList() {
     if ( jQuery("#overruleFilterStartDate") ) {
         var temp =  window.location.href.split("#")  ;
-        if ( Array.isArray(temp) ) {
+        if ( Array.isArray(temp) && temp.length > 1) {
             var host = temp[0].split("?");
         } else {
             var host = window.location.href.split("?");
         }
-        if ( Array.isArray(host) ) {
+        if ( Array.isArray(host) && host.length > 1 ) {
             var arr = host[1].split("&");
             var newQuery = host[0] + "?" ;
             var param = ''
