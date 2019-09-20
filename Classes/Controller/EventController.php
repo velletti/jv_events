@@ -89,9 +89,11 @@ class EventController extends BaseController
 		    $this->request->setArgument('action', 'list') ;
             $this->forward("list") ;
         }
-        /** @var \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration $propertyMappingConfiguration */
-         $propertyMappingConfiguration = $this->arguments['event']->getPropertyMappingConfiguration();
-         $propertyMappingConfiguration->allowProperties('changeFutureEvents') ;
+        if ( $this->request->hasArgument('event')) {
+                /** @var \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration $propertyMappingConfiguration */
+             $propertyMappingConfiguration = $this->arguments['event']->getPropertyMappingConfiguration();
+             $propertyMappingConfiguration->allowProperties('changeFutureEvents') ;
+        }
 
         parent::initializeAction() ;
         $this->debugArray[] = "Init Done:" . intval(1000 * ($this->microtime_float()  - $this->timeStart ) ) . " Line: " . __LINE__ ;
