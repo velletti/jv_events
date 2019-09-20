@@ -34,14 +34,11 @@
 
                             <f:for each="{orgFilter.categories2}" as="category">
                                 <label>
-
                                     <input type="checkbox" id="jv_events_filter_cat-{category.id}" value="{category.id}"><f:render partial="Organizer/Single/Partial5Tango/CategoryIcon" arguments="{uid: category.id, text: category.title}"/>
                                     <f:if condition="{category.description}">
                                         <a class="info" href="#" data-toggle="modal" data-target="#jv_events_cat_modal-{category.id}"><span class="fa fa-info-circle mh-sm" title="info"></span></a>
                                     </f:if>
                                 </label>
-
-                                <f:render partial="Organizer/Single/Partial5Tango/CategoryModal" arguments="{category: category , id: category.id}"/>
                             </f:for>
                         </div>
                     </fieldset>
@@ -53,5 +50,8 @@
             <f:translate key="tx_jvevents_event.filter.resulthint" />
             <span class="arrow"></span>
         </p>
+        <f:for each="{orgFilter.categories2}" as="category">
+            <f:render partial="Organizer/Single/Partial5Tango/CategoryModal" arguments="{category: category , id: category.id}"/>
+        </f:for>
 
     </div>
