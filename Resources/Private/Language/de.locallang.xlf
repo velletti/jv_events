@@ -414,6 +414,10 @@
                 <source>Contact</source>
                 <target>Kontakt</target>
             </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_event.details.canceled">
+                <source>Canceled!</source>
+                <target>Entfällt!</target>
+            </trans-unit>
 
             <trans-unit id="tx_jvevents_domain_model_event.edit.repeating.headline">
                 <source>Repeating Event</source>

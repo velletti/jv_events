@@ -25,144 +25,162 @@
 <div class="eventdata">
 
 	<div class="row">
-		<div class="col-md-9">
-			<div class="row">
-
-				<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_event.date" />:</strong></div>
-				<div class="col-md-8">{event.startDate -> f:format.date(format:"d.m.Y")}
-					<f:if condition="{event.startDate < event.endDate}">
-						<f:comment>- {event.endDate -> f:format.date(format:"d.m.Y")}</f:comment>
-					</f:if>
-				</div>
-
-			</div>
-
-			<f:if condition="{event.allDay}">
-				<f:else>
+		<f:if condition="{event.canceled}">
+			<f:then>
+				<div class="col-md-9">
 					<div class="row">
-						<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_event.time" />:</strong></div>
-						<div class="col-md-8">{event.startTime -> event:format.date( format:"H:i")}<f:if condition="{event.endTime}"> - {event.endTime -> event:format.date( format:"H:i")}</f:if></div>
-					</div>
-				</f:else>
-			</f:if>
 
-			<f:if condition="{subevents}">
-				<f:then>
-					<div class="row">
-						<div class="col-md-4"><strong>{subeventcount} <f:translate key="days" /></strong></div>
-						<div class="col-md-8">
-							<f:for each="{subevents}" as="subevent" iteration="i">
-								{subevent.startDate -> f:format.date(format:"d.m.Y")}
-								<f:if condition="{event.allDay}">
-									<f:else> : {subevent.startTime -> event:format.date( format:"H:i")}<f:if condition="{subevent.endTime}"> - {subevent.endTime -> event:format.date( format:"H:i")}</f:if>
-									</f:else>
-								</f:if>
-								<br />
-							</f:for>
+						<div class="col-md-4">
+							<strong><f:translate key="tx_jvevents_domain_model_event.details.canceled" />Entfällt!!</strong>
+						</div>
+						<div class="col-md-8">{event.startDate -> f:format.date(format:"d.m.Y")}
+
 						</div>
 					</div>
-				</f:then>
-			</f:if>
-			<!-- =============================================================================================================================== -->
-			<hr>
-			<!-- =============================================================================================================================== -->
-
-			<f:if condition="{event.location.name}">
-				<div class="row">
-					<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_location.name" />:</strong></div>
-					<div class="col-md-8">{event.location.name}</div>
 				</div>
-			</f:if>
+			</f:then>
+			<f:else>
+				<div class="col-md-9">
+					<div class="row">
 
-			<f:if condition="{event.location.city}">
-				<div class="row">
-					<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_location.street_and_nr" />:</strong></div>
-					<div class="col-md-8">
-						<f:if condition="{event.location.streetAndNr}">
-							{event.location.streetAndNr}<br>
-						</f:if>
-						<f:if condition="{event.location.city}">
-							{event.location.zip} {event.location.city}
-						</f:if>
-					</div>
-				</div>
-			</f:if>
-
-			<!-- =============================================================================================================================== -->
-			<hr>
-			<!-- =============================================================================================================================== -->
-			<f:if condition="{event.price} || {event.priceReducedText}">
-				<div class="row">
-					<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_event.price" />:</strong></div>
-					<div class="col-md-8">
-						<f:if condition="{event.price}">
-							<f:format.number decimals="2">{event.price}</f:format.number> {event.currency}
-						</f:if>
-
-						<f:if condition="{event.priceReducedText} || event.priceReduced}">
-							<br>
-							<f:if condition="{event.price}">
-								<f:format.number decimals="2">{event.priceReduced}</f:format.number> {event.currency}
+						<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_event.date" />:</strong></div>
+						<div class="col-md-8">{event.startDate -> f:format.date(format:"d.m.Y")}
+							<f:if condition="{event.startDate < event.endDate}">
+								<f:comment>- {event.endDate -> f:format.date(format:"d.m.Y")}</f:comment>
 							</f:if>
-							 {event.priceReducedText}
-						</f:if>
+						</div>
 
 					</div>
-				</div>
-			</f:if>
-			<f:if condition="{event.EventCategory}">
-				<div class="row">
-					<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_category" />:</strong></div>
-					<div class="col-md-8">
-						<f:for each="{event.EventCategory}" as="EventCategory" iteration="iteration"><f:if condition="{iteration.index} > 0 ">, </f:if>{EventCategory.title}</f:for>
-					</div>
-				</div>
-			</f:if>
 
-			<f:if condition="{event.Tags}">
-				<div class="row">
-					<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_event.tags" />:</strong></div>
-					<div class="col-md-8">
-						<f:for each="{event.Tags}" as="Tag" iteration="iteration"><f:if condition="{iteration.index} > 0 ">, </f:if>{Tag.name}</f:for>
-					</div>
-				</div>
-			</f:if>
+					<f:if condition="{event.allDay}">
+						<f:else>
+							<div class="row">
+								<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_event.time" />:</strong></div>
+								<div class="col-md-8">{event.startTime -> event:format.date( format:"H:i")}<f:if condition="{event.endTime}"> - {event.endTime -> event:format.date( format:"H:i")}</f:if></div>
+							</div>
+						</f:else>
+					</f:if>
 
-			<f:if condition="{event.isRegistrationConfigured}">
-				<f:if condition="{event.isRegistrationPossible}">
-					<f:then>
-						<jve:regLink event="{event}" settings="{settings}" uriOnly="0" class="button-orange-filled">
-							{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:list.register.button.subscribe' , default:'Anmelden')}
-						</jve:regLink>
-					</f:then>
-					<f:else>
-						<f:if condition="{event.isNoFreeSeats}">
+					<f:if condition="{subevents}">
+						<f:then>
+							<div class="row">
+								<div class="col-md-4"><strong>{subeventcount} <f:translate key="days" /></strong></div>
+								<div class="col-md-8">
+									<f:for each="{subevents}" as="subevent" iteration="i">
+										{subevent.startDate -> f:format.date(format:"d.m.Y")}
+										<f:if condition="{event.allDay}">
+											<f:else> : {subevent.startTime -> event:format.date( format:"H:i")}<f:if condition="{subevent.endTime}"> - {subevent.endTime -> event:format.date( format:"H:i")}</f:if>
+											</f:else>
+										</f:if>
+										<br />
+									</f:for>
+								</div>
+							</div>
+						</f:then>
+					</f:if>
+					<!-- =============================================================================================================================== -->
+					<hr>
+					<!-- =============================================================================================================================== -->
+
+					<f:if condition="{event.location.name}">
+						<div class="row">
+							<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_location.name" />:</strong></div>
+							<div class="col-md-8">{event.location.name}</div>
+						</div>
+					</f:if>
+
+					<f:if condition="{event.location.city}">
+						<div class="row">
+							<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_location.street_and_nr" />:</strong></div>
+							<div class="col-md-8">
+								<f:if condition="{event.location.streetAndNr}">
+									{event.location.streetAndNr}<br>
+								</f:if>
+								<f:if condition="{event.location.city}">
+									{event.location.zip} {event.location.city}
+								</f:if>
+							</div>
+						</div>
+					</f:if>
+
+					<!-- =============================================================================================================================== -->
+					<hr>
+					<!-- =============================================================================================================================== -->
+					<f:if condition="{event.price} || {event.priceReducedText}">
+						<div class="row">
+							<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_event.price" />:</strong></div>
+							<div class="col-md-8">
+								<f:if condition="{event.price}">
+									<f:format.number decimals="2">{event.price}</f:format.number> {event.currency}
+								</f:if>
+
+								<f:if condition="{event.priceReducedText} || event.priceReduced}">
+									<br>
+									<f:if condition="{event.price}">
+										<f:format.number decimals="2">{event.priceReduced}</f:format.number> {event.currency}
+									</f:if>
+									{event.priceReducedText}
+								</f:if>
+
+							</div>
+						</div>
+					</f:if>
+					<f:if condition="{event.EventCategory}">
+						<div class="row">
+							<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_category" />:</strong></div>
+							<div class="col-md-8">
+								<f:for each="{event.EventCategory}" as="EventCategory" iteration="iteration"><f:if condition="{iteration.index} > 0 ">, </f:if>{EventCategory.title}</f:for>
+							</div>
+						</div>
+					</f:if>
+
+					<f:if condition="{event.Tags}">
+						<div class="row">
+							<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_event.tags" />:</strong></div>
+							<div class="col-md-8">
+								<f:for each="{event.Tags}" as="Tag" iteration="iteration"><f:if condition="{iteration.index} > 0 ">, </f:if>{Tag.name}</f:for>
+							</div>
+						</div>
+					</f:if>
+
+					<f:if condition="{event.isRegistrationConfigured}">
+						<f:if condition="{event.isRegistrationPossible}">
 							<f:then>
-								<h4>{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:register.overbooked' , default:'overbooked')}</h4>
-								<p>{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:register.overbooked_text' , default:'no free seats available')}</p>
+								<jve:regLink event="{event}" settings="{settings}" uriOnly="0" class="button-orange-filled">
+									{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:list.register.button.subscribe' , default:'Anmelden')}
+								</jve:regLink>
 							</f:then>
 							<f:else>
-								<h4>{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:register.registration_not_possible_text' , default:'Error')}</h4>
-								<p>{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:register.deadline_expired_text' , default:'Registration deadline has expired ')}</p>
+								<f:if condition="{event.isNoFreeSeats}">
+									<f:then>
+										<h4>{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:register.overbooked' , default:'overbooked')}</h4>
+										<p>{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:register.overbooked_text' , default:'no free seats available')}</p>
+									</f:then>
+									<f:else>
+										<h4>{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:register.registration_not_possible_text' , default:'Error')}</h4>
+										<p>{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:register.deadline_expired_text' , default:'Registration deadline has expired ')}</p>
+
+									</f:else>
+
+								</f:if>
 
 							</f:else>
-
 						</f:if>
+					</f:if>
+				</div>
+				<div class="col-md-3">
+					<f:if condition="{event.teaserImage}">
+						<f:then>
+							<f:image src="{event.teaserImage.uid}" class="d-block w-100 h-auto img-float rounded shadow-lg" alt="{event.teaserImage.alternative}" title="{event.teaserImage.title}" width="{settings.list.image.width}c" maxWidth="{settings.list.image.width}" maxHeight="{settings.list.image.height}" treatIdAsReference="true" />
+						</f:then>
+						<f:else>
+							<div class="showToOrganizer alert alert-warning small d-none">Please add a picture to your event. use the IMAGE Button in the Top navigation</div>
+						</f:else>
+					</f:if>
+				</div>
+			</f:else>
+		</f:if>
 
-					</f:else>
-				</f:if>
-			</f:if>
-		</div>
-		<div class="col-md-3">
-			<f:if condition="{event.teaserImage}">
-				<f:then>
-					<f:image src="{event.teaserImage.uid}" class="d-block w-100 h-auto img-float rounded shadow-lg" alt="{event.teaserImage.alternative}" title="{event.teaserImage.title}" width="{settings.list.image.width}c" maxWidth="{settings.list.image.width}" maxHeight="{settings.list.image.height}" treatIdAsReference="true" />
-				</f:then>
-				<f:else>
-					<div class="showToOrganizer alert alert-warning small d-none">Please add a picture to your event. use the IMAGE Button in the Top navigation</div>
-				</f:else>
-			</f:if>
-		</div>
 	</div>
 
 	<!-- =============================================================================================================================== -->
@@ -189,15 +207,19 @@
 				<a class="active mx-3" href="#jv_events_event" data-toggle="tab"><f:translate key="tx_jvevents_domain_model_event.details.tab.details" /></a>
 			</li>
 		</f:if>
-		<f:if condition="{event.location.lng}">
-			<f:if condition="{tabDescActive}">
-				<f:else>
-					<f:variable name="tabMapActive">active</f:variable>
-				</f:else>
-			</f:if>
-			<li class="nav-item">
-				<a class="{tabMapActive} mx-3" role="presentation" href="#jv_events_map" data-toggle="tab"><f:translate key="tx_jvevents_domain_model_event.details.tab.map" /></a>
-			</li>
+		<f:if condition="{event.canceled}">
+			<f:else>
+				<f:if condition="{event.location.lng}">
+					<f:if condition="{tabDescActive}">
+						<f:else>
+							<f:variable name="tabMapActive">active</f:variable>
+						</f:else>
+					</f:if>
+					<li class="nav-item">
+						<a class="{tabMapActive} mx-3" role="presentation" href="#jv_events_map" data-toggle="tab"><f:translate key="tx_jvevents_domain_model_event.details.tab.map" /></a>
+					</li>
+				</f:if>
+			</f:else>
 		</f:if>
 		<f:if condition="{event.organizer}">
 			<f:if condition="{tabMapActive} || {tabDescActive} ">

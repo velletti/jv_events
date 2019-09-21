@@ -322,6 +322,9 @@
             <trans-unit id="tx_jvevents_domain_model_event.details.tab.contact">
                 <source>Contact</source>
             </trans-unit>
+           <trans-unit id="tx_jvevents_domain_model_event.details.canceled">
+                <source>Canceled!</source>
+            </trans-unit>
            <trans-unit id="tx_jvevents_domain_model_event.edit.repeating.headline">
                 <source>Repeating Event</source>
             </trans-unit>
