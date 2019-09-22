@@ -431,6 +431,7 @@
              <trans-unit id="event_copy_intro2">
                 <source>
                     If you want to create a diffent kind of event (other times or different kind of class / workshop) it could be better not to use the copy funktion. Create a new event.
+                </source>
                 <target>
                     Inhaltlich unterschiedliche Termine (z.b. verschiedene Kursarten oder Uhrzeiten) sollten deshalb besser nicht durch kopieren erstellt werden. Erstelle dann besser einen neuen Termin.
                 </target>
