@@ -81,22 +81,24 @@
                 <div class="col-8 col-sm-3 text-black-50 bg-gradient-light  order-2 order-sm-3 py-3">
                     <div class="small">
                         {tagnames}
-                        <f:if condition="{organizer.organizerCategory}">
-                            <br>
-                            <f:for each="{organizer.organizerCategory}" as="category" iteration="iteration">
-                                <f:if condition="{category.description}">
-                                    <f:then>
-                                        <a class="info" href="#" data-toggle="modal" data-target="#jv_events_cat_modal-{category.uid}">
+                        <f:if condition="{organizer.sorting} < 10500">
+                            <f:if condition="{organizer.organizerCategory}">
+                                <br>
+                                <f:for each="{organizer.organizerCategory}" as="category" iteration="iteration">
+                                    <f:if condition="{category.description}">
+                                        <f:then>
+                                            <a class="info" href="#" data-toggle="modal" data-target="#jv_events_cat_modal-{category.uid}">
+                                                <f:render partial="Organizer/Single/Partial5Tango/CategoryIcon" arguments="{uid: category.uid, text: category.title}"/>
+                                            </a>
+                                        </f:then>
+                                        <f:else>
                                             <f:render partial="Organizer/Single/Partial5Tango/CategoryIcon" arguments="{uid: category.uid, text: category.title}"/>
-                                        </a>
-                                    </f:then>
-                                    <f:else>
-                                        <f:render partial="Organizer/Single/Partial5Tango/CategoryIcon" arguments="{uid: category.uid, text: category.title}"/>
-                                    </f:else>
-                                </f:if>
+                                        </f:else>
+                                    </f:if>
 
 
-                            </f:for>
+                                </f:for>
+                            </f:if>
                         </f:if>
                     </div>
 
@@ -108,7 +110,7 @@
                             </f:link.action>
                         </f:if>
 
-                        <f:link.page class="badge badge-secondary m-2 py-2" pageUid="{settings.pageIds.eventList}" additionalParams="{tx_jvevents_events: {overruleFilter: {organizer: '{organizer.uid}', category : 'true' , maxDays: 90}}}">
+                        <f:link.page class="badge badge-primary m-2 py-2" pageUid="{settings.pageIds.eventList}" additionalParams="{tx_jvevents_events: {overruleFilter: {organizer: '{organizer.uid}', category : 'true' , maxDays: 90}}}">
                             <span class="fas fa-calendar-alt "></span> Termine >>
                         </f:link.page>
 
