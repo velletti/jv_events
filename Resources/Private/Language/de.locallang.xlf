@@ -428,6 +428,13 @@
                     Wenn du einen Termin kopierst, können Änderungen auch automatisch an dem/den anderen Termin(en) übernommen werden. Damit kann man somit regelmäßig stattfindende Termine einfach pflegen. Inhaltlich unterschiedliche Termine (z.b. verschiedene Kursarten oder Uhrzeiten) sollten deshalb nicht unbedingt durch kopieren erstellt werden.
                 </target>
             </trans-unit>
+             <trans-unit id="event_copy_intro2">
+                <source>
+                    If you want to create a diffent kind of event (other times or different kind of class / workshop) it could be better not to use the copy funktion. Create a new event.
+                <target>
+                    Inhaltlich unterschiedliche Termine (z.b. verschiedene Kursarten oder Uhrzeiten) sollten deshalb besser nicht durch kopieren erstellt werden. Erstelle dann besser einen neuen Termin.
+                </target>
+            </trans-unit>
            <trans-unit id="event_copy_one">
                <source>Create one Copy</source>
                <target>Einzelne Kopie</target>

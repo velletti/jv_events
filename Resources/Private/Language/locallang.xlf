@@ -327,7 +327,12 @@
             </trans-unit>
             <trans-unit id="event_copy_intro">
                 <source>
-                    If you copy an event, changes on this copy can easily made also to the copy. This way you can make changes to repeating events very fast. if you want to create a diffent kind of event (other starttime or different kind of class / workshop) i could be better not to use the copy funktion.
+                    If you copy an event, changes on this copy can easily made also to the copy. This way you can make changes to repeating events very fast.
+                </source>
+            </trans-unit>
+             <trans-unit id="event_copy_intro2">
+                <source>
+                    If you want to create a diffent kind of event (other times or different kind of class / workshop) it could be better not to use the copy funktion. Create a new event.
                 </source>
             </trans-unit>
            <trans-unit id="event_copy_one">
