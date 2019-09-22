@@ -325,6 +325,31 @@
            <trans-unit id="tx_jvevents_domain_model_event.details.canceled">
                 <source>Canceled!</source>
             </trans-unit>
+            <trans-unit id="event_copy_intro">
+                <source>
+                    If you copy an event, changes on this copy can easily made also to the copy. This way you can make changes to repeating events very fast. if you want to create a diffent kind of event (other starttime or different kind of class / workshop) i could be better not to use the copy funktion.
+                </source>
+            </trans-unit>
+           <trans-unit id="event_copy_one">
+               <source>Create one Copy</source>
+           </trans-unit>
+            <trans-unit id="event_copy_multi">
+                  <source>Copy multiple weekly</source>
+            </trans-unit>
+             <trans-unit id="event_copy_multi2weeks">
+                 <source>Copy multiple every 14 days</source>
+             </trans-unit>
+             <trans-unit id="event_delete_question">
+                <source>This will delete the event without info.</source>
+             </trans-unit>
+            <trans-unit id="event_delete_are_you_sure">
+                <source>Are you sure?</source>
+            </trans-unit>
+            <trans-unit id="event_delete_realy_button">
+                <source>Really delete!</source>
+            </trans-unit>
+
+
            <trans-unit id="tx_jvevents_domain_model_event.edit.repeating.headline">
                 <source>Repeating Event</source>
             </trans-unit>

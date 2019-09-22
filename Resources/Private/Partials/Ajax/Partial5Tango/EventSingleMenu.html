@@ -45,26 +45,34 @@
                          <f:spaceless>
 
                              <div class="row">
+                                 <div class="col-12">
+                                     <f:translate key="event_copy_intro">
+                                         Wenn du einen Termin kopierst, können Änderungen auch automatisch an dem/den anderen Termin(en) übernommen werden. Damit kann man somit regelmäßig stattfindende Termine einfach pflegen. Inhaltlich unterschiedliche Termine (z.b. verschiedene Kursarten oder Uhrzeiten) sollten deshalb nicht unbedingt durch kopieren erstellt werden.
+                                     </f:translate>
+                                 </div>
                                  <div class="col-6">
-                                     Create one Copy  <br>
+                                     <f:translate key="event_copy_one">Create one Copy</f:translate>  <br>
                                      <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '1', msgtext: 'Next Day'}" />
                                      <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '2', msgtext: 'In 2 Days'}" />
                                      <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '7', msgtext: 'In 7 Days'}" />
                                      <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '14', msgtext: 'In 14 Days'}" />
                                      <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '21', msgtext: 'In 21 Days'}" />
                                      <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '28', msgtext: 'In 28 Days'}" />
+                                     <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '35', msgtext: 'In 35 Days'}" />
 
 
                                  </div>
                                   <div class="col-6">
-                                     Copy multiple weekly<br>
+                                      <f:translate key="event_copy_multi">Copy multiple weekly</f:translate>
+                                     <br>
                                      <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '7', amount: '3' , msgtext: '3 copies'}" />
                                      <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '7', amount: '4' , msgtext: '4 copies'}" />
                                      <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '7', amount: '5' , msgtext: '5 copies'}" />
                                      <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '7', amount: '6' , msgtext: '6 copies'}" />
-                                      Copy multiple every 14 Days<br>
+                                      <f:translate key="event_copy_multi2weeks">Copy multiple every 14 days</f:translate><br>
                                      <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '14', amount: '2' , msgtext: '2 copies '}" />
                                      <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '14', amount: '4' , msgtext: '4 copies '}" />
+                                     <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '14', amount: '6' , msgtext: '6 copies '}" />
 
                                  </div>
                              </div>
@@ -88,8 +96,12 @@
                 <f:variable name="deleteModalBody">
                      <f:format.raw>
                          <f:spaceless>
-                             This will delete the event without info. <br>
-                             Are you sure?<br>
+                             <f:translate key="event_delete_question">
+                                 This will delete the event without info.
+                             </f:translate><br>
+                             <f:translate key="event_delete_are_you_sure">
+                                 Are you sure?
+                             </f:translate><br>
                         </f:spaceless>
                     </f:format.raw>
                 </f:variable>
@@ -98,7 +110,9 @@
                         <f:spaceless>
                             <f:link.action pageUid="{settings.pageIds.editEvent}" class="nav-link" title="delete Event" action="delete" controller="Event" arguments="{event: output.event.eventId}">
                                 <button class="btn btn-primary btn-xs " href="#">
-                                    <i class="fas fa-trash "></i> <span class="mx-1">Delete really!</span>
+                                    <i class="fas fa-trash "></i> <span class="mx-1"><f:translate key="event_delete_really_button">
+                                 Delete really!
+                             </f:translate></span>
                                 </button>
                             </f:link.action>
                         </f:spaceless>

@@ -419,6 +419,40 @@
                 <target>Entfällt!</target>
             </trans-unit>
 
+
+            <trans-unit id="event_copy_intro">
+                <source>
+                    If you copy an event, changes on this copy can easily made also to the copy. This way you can make changes to repeating events very fast. if you want to create a diffent kind of event (other starttime or different kind of class / workshop) i could be better not to use the copy funktion.
+                </source>
+                <target>
+                    Wenn du einen Termin kopierst, können Änderungen auch automatisch an dem/den anderen Termin(en) übernommen werden. Damit kann man somit regelmäßig stattfindende Termine einfach pflegen. Inhaltlich unterschiedliche Termine (z.b. verschiedene Kursarten oder Uhrzeiten) sollten deshalb nicht unbedingt durch kopieren erstellt werden.
+                </target>
+            </trans-unit>
+           <trans-unit id="event_copy_one">
+               <source>Create one Copy</source>
+               <target>Einzelne Kopie</target>
+           </trans-unit>
+            <trans-unit id="event_copy_multi">
+                  <source>Copy multiple weekly</source>
+                  <target>Mehrere Wochen</target>
+            </trans-unit>
+             <trans-unit id="event_copy_multi2weeks">
+                 <source>Copy multiple every 14 days</source>
+                 <target>Kopie alle 14 Tage</target>
+             </trans-unit>
+             <trans-unit id="event_delete_question">
+                <source>This will delete the event without info.</source>
+                <target>Dies löscht den Termin ohne Weitere Information.</target>
+             </trans-unit>
+            <trans-unit id="event_delete_are_you_sure">
+                <source>Are you sure?</source>
+                <target>Bist du sicher?</target>
+            </trans-unit>
+            <trans-unit id="event_delete_really_button">
+                <source>Really delete!</source>
+                <target>Wirklich löschen!</target>
+            </trans-unit>
+
             <trans-unit id="tx_jvevents_domain_model_event.edit.repeating.headline">
                 <source>Repeating Event</source>
                 <target>Regelmäßiger Termin</target>
