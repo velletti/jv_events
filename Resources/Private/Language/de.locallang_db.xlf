@@ -15,7 +15,7 @@
 			</trans-unit>
 			<trans-unit id="tx_jvevents_domain_model_event.priceReducedText">
 				<source>Grund für eine Reduzierung</source>
-				<target>Grund für eine Reduzierung</source>
+				<target>Grund für eine Reduzierung</target>
 			</trans-unit>
             <trans-unit id="tx_jvevents_domain_model_event.priceReducedTextLabel">
                 <source>Reduction when</source>
