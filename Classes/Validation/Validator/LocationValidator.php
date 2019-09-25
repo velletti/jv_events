@@ -29,7 +29,7 @@ class LocationValidator extends BaseValidator {
         'phone'				=> 50,
         'link'				=> 30,
 
-		'name'				=> 50,
+		'name'				=> 60,
 		'streetAndNr'		=> 50,
 		'zip'		        => 10,
 		'city'		        => 30,

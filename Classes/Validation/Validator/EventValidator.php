@@ -7,7 +7,7 @@ class EventValidator extends BaseValidator {
 	 * @var array
 	 */
 	protected $maxLength = array(
-		'name'				=> 80,
+		'name'				=> 60,
 		'link'				=> 80,
 		'teaser'			=> 200,
 	);
