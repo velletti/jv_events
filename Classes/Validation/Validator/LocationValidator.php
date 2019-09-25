@@ -26,11 +26,11 @@ class LocationValidator extends BaseValidator {
 	 */
 	protected $maxLength = array(
 		'email'				=> 80,
-        'phone'				=> 30,
+        'phone'				=> 50,
         'link'				=> 30,
 
-		'name'				=> 40,
-		'streetAndNr'		=> 30,
+		'name'				=> 50,
+		'streetAndNr'		=> 50,
 		'zip'		        => 10,
 		'city'		        => 30,
 		'country'		    => 2,

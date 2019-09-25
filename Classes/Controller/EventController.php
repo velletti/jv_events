@@ -692,7 +692,7 @@ class EventController extends BaseController
         // validation should be done in validatar class so we can ignore issue with wrong format
 
         $eventArray = $this->request->getArgument('event');
-        // Update the Categories
+        // Update the Category
         $eventCatUid = intval($eventArray['eventCategory']) ;
         /** @var \JVE\JvEvents\Domain\Model\Category $eventCat */
         $eventCat = $this->categoryRepository->findByUid($eventCatUid) ;
@@ -703,27 +703,32 @@ class EventController extends BaseController
             }
             $event->addEventCategory($eventCat) ;
         }
-        // Update the Categories
-        $eventTagUids =  $tagArray= \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode("," , $eventArray['tagsFE']) ;
+        // Update the Tags
+        $eventTagUids = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode("," , $eventArray['tagsFE'] , true ) ;
         if( is_array($eventTagUids) && count($eventTagUids) > 0  ) {
             $existingTags = $event->getTags() ;
-
+            $existingTagsArray = array() ;
+            $notexistingTagsArray = array() ;
             if ( $existingTags ) {
                 /** @var  \JVE\JvEvents\Domain\Model\Tag $existingTag */
                 foreach ( $existingTags as $existingTag ) {
-                    if( !in_array( $existingTag->getUid()  , $eventTagUids)) {
-                        $event->getTags()->detach($existingTag) ;
-                        unset($eventTagUids[$existingTag->getUid()] ) ;
+                    if( !in_array( $existingTag->getUid()  , $eventTagUids , false)) {
+                        $notexistingTagsArray[] = $existingTag ;
+                    } else {
+                        $existingTagsArray[] = $existingTag->getUid() ;
                     }
-
+                }
+                if ( count( $notexistingTagsArray) > 0 ) {
+                    foreach ( $notexistingTagsArray as $notexistingTag ) {
+                        $event->removeTag( $notexistingTag) ;
+                    }
                 }
             }
             if( is_array($eventTagUids) && count($eventTagUids) > 0  ) {
                 foreach ($eventTagUids as $eventTagUid) {
-                    if( intval( $eventTagUid ) > 0 ) {
+                    if( intval( $eventTagUid ) > 0 && !in_array( $eventTagUid , $existingTagsArray , false )) {
                         /** @var  \JVE\JvEvents\Domain\Model\Tag $eventTag */
                         $eventTag = $this->tagRepository->findByUid($eventTagUid) ;
-
                         if($eventTag) {
                             $event->addTag($eventTag) ;
                         }
@@ -731,7 +736,6 @@ class EventController extends BaseController
                 }
             }
         }
-
         $stD = \DateTime::createFromFormat('d.m.Y', $eventArray['startDateFE']  );
         $stD->setTime(0,0,0,0 ) ;
         $event->setStartDate( $stD ) ;

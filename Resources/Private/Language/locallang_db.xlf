@@ -53,6 +53,9 @@
             <trans-unit id="tx_jvevents_domain_model_event.priceReducedText">
                <source>Text after Reduced Price</source>
             </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_event.priceReducedTextLabel">
+                <source>Reduction when</source>
+            </trans-unit>
             <trans-unit id="tx_jvevents_domain_model_event.priceReducedHeader">
                <source>If You want to show a reduced price, you need to add a text that explains the reduced price. F.e.: 'for students' / or 'early bird price' </source>
             </trans-unit>
