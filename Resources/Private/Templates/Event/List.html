@@ -33,6 +33,7 @@
 					<f:render partial="Event/List/Partial{settings.LayoutList}/SingleEvent" arguments="{event:event, settings: settings, aktDate: aktDate, lastDate: lastDate}" />
 					<f:variable name="lastDate">{event.startDate -> f:format.date(format:"d.m.Y")}</f:variable>
 				</f:for>
+				<f:render section="navigation" arguments="{settings: settings, id: 'bottom'}"></f:render>
 
 				<f:if condition="{settings.withMicroFormat}">
 					<f:then>
@@ -49,4 +50,26 @@
 	</div>
 
 
+</f:section>
+
+<f:section name="navigation">
+	<f:if condition="{settings.filter.maxDays} > 0">
+		<div class="row jv_events_list_browser" id="jv_events_list_browser_{id}">
+			<div class="col-6 text-left">
+				<f:if condition="{settings.navigationDates.prevDate}">
+					<span class="btn btn-outline-secondary jv_events_list_browser_prev jv_events_list_browser_button" data-date="{f:format.date(format:'d.m.Y' , date: settings.navigationDates.prevDate )}">
+						&lt;&lt; {f:format.date(format:'d.m.Y' , date: settings.navigationDates.prevDate )}
+					</span>
+
+				</f:if>
+			</div>
+			<div class="col-6 text-right">
+				<f:if condition="{settings.navigationDates.nextDate}">
+					<span class="btn btn-outline-secondary jv_events_list_browser_next jv_events_list_browser_button" data-date="{f:format.date(format:'d.m.Y' , date: settings.navigationDates.nextDate )}">
+						<f:format.date format="d.m.Y">{settings.navigationDates.nextDate}</f:format.date> &gt;&gt;
+					</span>
+				</f:if>
+			</div>
+		</div>
+	</f:if>
 </f:section>

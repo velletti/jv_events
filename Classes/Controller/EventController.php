@@ -161,10 +161,16 @@ class EventController extends BaseController
             $this->debugArray[] = "After generate Filter :" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " Line: " . __LINE__ ;
         }
 
+        $dtz = $this->eventRepository->getDateTimeZone() ;
+        $this->settings['navigationDates'] = $this->eventRepository->getDateArray($this->settings , $dtz ) ;
+
         $this->view->assign('eventsFilter', $eventsFilter);
         $this->view->assign('settings', $this->settings );
         $this->debugArray[] = "before Render:" . intval(1000 * ($this->microtime_float()  - $this->timeStart ) ) . " Line: " . __LINE__ ;
         $this->view->assign('debugArray', $this->debugArray );
+
+        // overruleFilterStartDate Nnext
+
     }
     
     /**

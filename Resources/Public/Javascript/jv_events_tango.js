@@ -318,35 +318,46 @@ function jv_events_init() {
     if( ! jQuery('#jv_events_filter_citys' ).length && ! jQuery('#jv_events_filter_organizers' ).length ) {
         jQuery( 'legend.jv_events_filter_more').addClass('d-none') ;
     }
+    if( jQuery('#overruleFilterStartDate' ).length && jQuery('.jv_events_list_browser_button' ).length ) {
 
-    /*
-    // Set the fieldsets to the same height
-    if($('.filter').length ){
-        if( $('body').hasClass('lg') ) {
-            $('.filter').each(function(){
+        jQuery(".jv_events_list_browser_button").on("click" , function () {
+            jQuery('#overruleFilterStartDate' ).val( jQuery(this).data('date')) ;
+            jv_events_reloadList() ;
+        });
 
-                var heightBiggestElement = 0;
-
-                $(this).find('fieldset').each(function(){
-                    if($(this).height() > heightBiggestElement) {
-                        heightBiggestElement = $(this).height();
-                    }
-                });
-                $(this).find('fieldset').each(function(){
-                    $(this).css("min-height" , heightBiggestElement);
-                });
-
-            });
-        } else {
-            if($('.filter fieldset').length ){
-                $('.filter fieldset').each(function(){
-                    $(this).width('100%') ;
-                });
-            }
-        }
 
     }
-    */
+
+
+
+        /*
+        // Set the fieldsets to the same height
+        if($('.filter').length ){
+            if( $('body').hasClass('lg') ) {
+                $('.filter').each(function(){
+
+                    var heightBiggestElement = 0;
+
+                    $(this).find('fieldset').each(function(){
+                        if($(this).height() > heightBiggestElement) {
+                            heightBiggestElement = $(this).height();
+                        }
+                    });
+                    $(this).find('fieldset').each(function(){
+                        $(this).css("min-height" , heightBiggestElement);
+                    });
+
+                });
+            } else {
+                if($('.filter fieldset').length ){
+                    $('.filter fieldset').each(function(){
+                        $(this).width('100%') ;
+                    });
+                }
+            }
+
+        }
+        */
 
     $('#jv-events-filter-sub').on('resize' , function () {
         if( $("#jv-events-filter-sub").hasClass('show')) {
