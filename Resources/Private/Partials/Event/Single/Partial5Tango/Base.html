@@ -453,9 +453,9 @@
 				</div>
 				<div class="col-12 col-md-4 logo">
 
-					<f:if condition="{event.teaserImage}">
+					<f:if condition="{event.organizer.teaserImage}">
 						<f:then>
-							<f:image src="{event.teaserImage.uid}"  class="d-block w-100 h-auto img-float rounded shadow-lg" alt="{event.teaserImage.alternative}" title="{event.teaserImage.title}" maxWidth="300" maxHeight="220" treatIdAsReference="true" />
+							<f:image src="{event.organizer.teaserImage.uid}"  class="d-block w-100 h-auto img-float rounded shadow-lg" alt="{event.organizer.teaserImage.alternative}" title="{event.organizer.teaserImage.title}" maxWidth="300" maxHeight="220" treatIdAsReference="true" />
 						</f:then>
 						<f:else>
 							<jve:l10nFalImg event="{event}" tableFieldName="teaser_image">
