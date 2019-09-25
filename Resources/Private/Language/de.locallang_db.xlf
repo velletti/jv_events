@@ -13,8 +13,12 @@
 				<source>Reduced Price</source>
 				<target>Ermäßigter Preis</target>
 			</trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_event.priceReducedHeader">
+               <source>If You want to show a reduced price, you need to add a text that explains the reduced price. F.e.: 'for students' / or 'early bird price' </source>
+               <source>Um einen reduzierten Preis anzuzeigen, bitte einen Grund angeben. Z.b:  'für Studenten' / oder 'bei Anmeldung bis xx.yy' </source>
+            </trans-unit>
 			<trans-unit id="tx_jvevents_domain_model_event.priceReducedText">
-				<source>Grund für eine Reduzierung</source>
+				<source>Text after Reduced Price</source>
 				<target>Grund für eine Reduzierung</target>
 			</trans-unit>
             <trans-unit id="tx_jvevents_domain_model_event.priceReducedTextLabel">
