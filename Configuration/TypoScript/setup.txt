@@ -70,6 +70,10 @@ plugin.tx_jvevents_events {
 				#height = 330
 			}
 		}
+		security.filter {
+		    maxDays = 90
+		}
+
 		register {
             layouts {
                 1Allplan = Normal Event Registration

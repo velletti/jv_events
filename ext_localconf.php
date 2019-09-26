@@ -14,7 +14,6 @@ $_EXTKEY = "jv_events" ;
 		'Location' => 'list, show, new, create, edit, update, delete,setDefault',
 		'Registrant' => 'list, show,new,create,delete,confirm',
 		'Tag' => 'list',
-		
 	),
 	// non-cacheable actions
 	array(
@@ -37,7 +36,16 @@ $_EXTKEY = "jv_events" ;
     )
 );
 
-
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+    'JVE.' .$_EXTKEY,
+    'search',
+    array(
+        'Search'  => 'search',
+    ),
+    // non-cacheable actions
+    array(
+    )
+);
 
 /**
  * Register Hook on delete/copy/move record ( event) - unset registrations and so on

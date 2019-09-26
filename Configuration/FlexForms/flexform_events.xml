@@ -34,6 +34,10 @@
 										<numIndex index="0">Organizers (List/Edit/Create ...)</numIndex>
 										<numIndex index="1">Organizer->assist;Organizer->list;Organizer->show;Organizer->new;Organizer->create;Organizer->edit;Organizer->update;Organizer->delete;</numIndex>
 									</numIndex>
+									<numIndex index="5">
+										<numIndex index="0">Search Form</numIndex>
+										<numIndex index="1">Search->search;</numIndex>
+									</numIndex>
 								</items>
 							</config>
 						</TCEforms>
