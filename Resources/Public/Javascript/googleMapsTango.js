@@ -276,7 +276,7 @@ function initMap() {
 
 	var navigationFn = {
 		goToSection: function(id) {
-			if ( id && id.length > 4 ) {
+			if ( id && id.length > 4 && $("#" + id).length  ) {
 				$('html, body').animate({
 					scrollTop: $("#" + id).offset().top
 				}, 10);

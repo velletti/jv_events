@@ -62,6 +62,13 @@ plugin.tx_jvevents_events {
 			}
 			# Addional class for your single wrapper
 			additionalClass =
+
+			headerImage {
+				# Fallback Image for event single or with complete path /fileadmin/user_upload/..
+				#defaultImage = /typo3conf/ext/jv_events/Resources/Public/Images/defaultHeaderImage.jpg
+				#width = 1110
+				#height = 330
+			}
 		}
 		register {
             layouts {
