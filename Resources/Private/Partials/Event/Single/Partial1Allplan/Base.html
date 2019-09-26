@@ -9,9 +9,9 @@
 	<f:if condition="{event.images} && {event.images.0.uid}">
 		<f:then>
 			<vhs:media.picture src="{event.images.0}" title="{event.images.0.title}" alt="{event.images.0.alternative}">
-				<vhs:media.source media="(min-width: 993px) AND (max-width: 1200px)" width="1200c" height="680" />
-				<vhs:media.source media="(min-width: 501px) AND (max-width: 992px)" width="992c" height="680" />
-				<vhs:media.source media="(max-width: 500px)" width="500c" height="680" />
+				<vhs:media.source media="(min-width: 993px) AND (max-width: 1200px)" width="1200c"  />
+				<vhs:media.source media="(min-width: 501px) AND (max-width: 992px)" width="992c"  />
+				<vhs:media.source media="(max-width: 500px)" width="500c" />
 				<vhs:media.source width="1440" />
 			</vhs:media.picture>
 		</f:then>
@@ -225,12 +225,18 @@
 			<f:if condition="{event.images}">
 
 				<f:then>
-					<h3><f:translate key="tx_jvevents_domain_model_event.images" /></h3>
+					<f:if condition="{event.images -> f:count()} > 1">
+						<h3><f:translate key="tx_jvevents_domain_model_event.images" /></h3>
+					</f:if>
 					<ul class="images clearfix">
-						<f:for each="{event.images}" as="image" >
-							<li>
-								<f:image src="{image.uid}" maxWidth="300" maxHeight="220" alt="{image.alternative}" title="{image.title}" treatIdAsReference="true" />
-							</li>
+						<f:for each="{event.images}" as="image"  iteration="iteration">
+							<f:if condition="{iteration.isFirst}">
+								<f:else>
+									<li>
+										<f:image src="{image.uid}" maxWidth="300" maxHeight="220" alt="{image.alternative}" title="{image.title}" treatIdAsReference="true" />
+									</li>
+								</f:else>
+							</f:if>
 						</f:for>
 					</ul>
 				</f:then>
