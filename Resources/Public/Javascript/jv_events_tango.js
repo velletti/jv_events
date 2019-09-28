@@ -381,9 +381,9 @@ function jv_events_reloadList() {
             var arr = host[1].split("&");
 
             var baseHref = jQuery('#jv-events-filter-baseUrl') ;
-            console.log( "baseHref") ;
-            console.log( baseHref) ;
-            console.log( baseHref.attr('href')) ;
+            // console.log( "baseHref") ;
+            // console.log( baseHref) ;
+            // console.log( baseHref.attr('href')) ;
 
             if ( baseHref.length && baseHref.attr('href') != undefined ) {
                 var newQuery = baseHref.attr('href') + "?" ;
@@ -411,8 +411,8 @@ function jv_events_reloadList() {
 
         newQuery += "&tx_jvevents_events[overruleFilter][startDate]=" + jQuery("#overruleFilterStartDate").val() ;
         var cHash = newQuery.hashCode() ;
-        console.log( newQuery) ;
-        // window.location.href =  newQuery + "&cHash=" + cHash ;
+        // console.log( newQuery) ;
+        window.location.href =  newQuery + "&cHash=" + cHash ;
     }
 
 
