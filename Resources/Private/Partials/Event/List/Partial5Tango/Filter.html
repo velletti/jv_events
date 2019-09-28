@@ -374,10 +374,89 @@
 
         </form>
 
-        <p class="filter-result-hint text-center hide" id="filter-result-hint-events">
-            <f:translate key="tx_jvevents_event.filter.resulthint" />
-            <span class="arrow"></span>
-        </p>
+
 
     </div>
+</f:if>
+<f:if condition="{settings.ShowFilter}==5">
+    <div class="filter events">
+        <form class="clearfix" onsubmit="this.preventDefault();">
+
+            <div id="jv-events-filter-sub" class="fieldsets">
+                <div class="row">
+
+                    <div class="col-12 col-sm-6 col-lg-3 my-2 px-4">
+                        <div class="input-group date col-10 p-0">
+                            <f:if condition="{settings.filter.startDate}">
+                                <f:then>
+                                    <f:variable name="startDate">{settings.filter.overruleStartDate}</f:variable>
+                                </f:then>
+                                <f:else>
+                                    <f:variable name="startDate">today</f:variable>
+                                </f:else>
+                            </f:if>
+                            <f:form.textfield
+                                    name="overruleFilter[startDate]"
+                                    value="{f:format.date(format:'d.m.Y', date: '{startDate}')}"
+                                    id="overruleFilterStartDate"
+                                    class="form-control datetimepicker clearable"
+                                    data="{date-type: 'date', todayBtn: 'linked' , todayHighlight: 'true' , autoclose: 'true' }"
+                            />
+                            <div class="input-group-addon btn btn-default">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-lg-3 my-2 px-4">
+                        <f:form.select property="distance" class="form-control col-11" id="jv_events_filter_distance" data="{default: '{settings.filter.distance.default}'}" value="{settings.filter.distance.default}" options="{3: '3 km',10: '10 km' , 25: '25 km' , 50: '50 km', 100: '100 km', 250: '250 km', 500: '500 km', 9999: '9999 km'}" ></f:form.select>
+
+                    </div>
+                    <div class="col-12 col-sm-12 col-lg-6 my-2 px-4">
+                        <span class="mr-3">
+                             <span id="jv_events_map2" class="btn btn-outline-secondary mx-2 "  data-toggle="modal" data-target="#geoSearchModal" title="{settings.list.longitude} / {settings.list.latitude}">
+                                <span class="fa fa-street-view"> </span>
+                            </span>
+                        </span>
+                        <span class="jv_events_filter_distance"><f:translate key="tx_jvevents_event.filter.distance" default="max. Entfernung zur gewählten Position" /></span>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+    <div class="modal fade show" id="geoSearchModal" tabindex="-1" role="dialog" aria-labelledby="jv_events_mapsLabel" aria-modal="true" onblur="jv_events_refreshList();">
+        <div class="modal-dialog" role="document" style="max-width: 800px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="jv_events_mapsLabel">{f:translate(key: 'select-position', default: 'Wähle deine Position')}</h5>
+
+                </div>
+                <div class="modal-body">
+                    <div>
+                        {f:translate(key: 'select-position-help', default: 'Gib eine Adresse ein, um Veranstaltungen in der Nähe zu finden oder lass deinen Standort bestimmen')}
+                    </div>
+                    <f:render partial="SingleField/Partial{settings.LayoutList}/FormRowValue"
+                              arguments="{property:'streetAndNr' ,  data: '{default-cntry: \'DE\' , default-city: \'München\'}' , label: '' , translationKey: '' ,  maxLength: 80 , mandatory: '0' , data-target: '#streetAndNr' , data-toggle: 'clearInput' , fa-icon: 'fas fa-times', defaultValue: 'Marienplatz 1, München, DE' }" />
+
+                    <f:render partial="SingleField/Partial{settings.LayoutList}/FormRowGeocoder"
+                              arguments="{object: 'location' , location: location , updateFunction: 'jv_events_refreshList();' ,  buttonSetPosition: '1' , property:'lng'  ,  property2:'lat', fa-icon: 'fas fa-search-location  mr-2' , label: 'Adresse suchen' ,  maxLength: 30 , mandatory: '1' }" />
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </f:if>

@@ -169,6 +169,14 @@
 		<trans-unit id="plugin.filter.ShowFilter.AdvancedFilterWithPosition">
 			<source>Use Advanced Filter with Multi Select and Position</source>
 		</trans-unit>
+		<trans-unit id="plugin.filter.ShowFilter.SimpleDateFilter">
+            <source>Simple Filter only with Date</source>
+        </trans-unit>
+
+        <trans-unit id="plugin.filter.ShowFilter.SimpleDateFilterWithPosition">
+            <source>Simple Filter only with Date and Position and distance</source>
+        </trans-unit>
+
 
 		<trans-unit id="plugin.filter.Tags">
 			<source>Show Only Events with these Tags</source>
