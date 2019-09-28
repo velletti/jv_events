@@ -87,7 +87,13 @@ class EventRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 
         $constraints = array();
 		$query->getQuerySettings()->setRespectStoragePage(false);
-       // $query->getQuerySettings()->setIgnoreEnableFields(FALSE) ;
+
+		if ( $configuration['doNotRespectSyslanguage'] == 1 ) {
+            $query->getQuerySettings()->setRespectSysLanguage(FALSE);
+        }
+
+
+        // $query->getQuerySettings()->setIgnoreEnableFields(FALSE) ;
 		if( $settings['filter']['skipEvent'] > 0 ) {
 			$constraints[] = $query->logicalNot( $query->equals("uid" , $settings['filter']['skipEvent'])) ;
 			

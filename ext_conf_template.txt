@@ -27,10 +27,11 @@ minFormSeconds = 10
 # cat=General/enable/6; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.hideEndEdate;description=If you do not use Requring events and do not have Events more than 1 Day, ativate ths
 hideEndDate = 1
 
-# cat=General/enable/6; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.hideAllLanguages;description=If you have different, localized Events , activate this. Will Protect to Create unwanted Events with language -1
+# cat=General/enable/8; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.hideAllLanguages;description=If you have different, localized Events , activate this. Will Protect to Create unwanted Events with language -1
 hideAllLanguages = 0
 
-
+# cat=General/enable/8; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.doNotRespectSyslanguage;description=If you do not have different, localized Events , activate this. Will load Languages also with Language -1
+doNotRespectSyslanguage = 0
 
 # Default Values
 ###########################

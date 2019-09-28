@@ -379,7 +379,19 @@ function jv_events_reloadList() {
         }
         if ( Array.isArray(host) && host.length > 1 ) {
             var arr = host[1].split("&");
-            var newQuery = host[0] + "?" ;
+
+            var baseHref = jQuery('#jv-events-filter-baseUrl') ;
+            console.log( "baseHref") ;
+            console.log( baseHref) ;
+            console.log( baseHref.attr('href')) ;
+
+            if ( baseHref.length && baseHref.attr('href') != undefined ) {
+                var newQuery = baseHref.attr('href') + "?" ;
+            } else {
+                var newQuery = host[0] + "?" ;
+            }
+
+
             var param = ''
             for (var i = 0; i < arr.length; i++) {
                 param = arr[i].substr( 0, 999 ) ;
@@ -399,8 +411,8 @@ function jv_events_reloadList() {
 
         newQuery += "&tx_jvevents_events[overruleFilter][startDate]=" + jQuery("#overruleFilterStartDate").val() ;
         var cHash = newQuery.hashCode() ;
-
-        window.location.href =  newQuery + "&cHash=" + cHash ;
+        console.log( newQuery) ;
+        // window.location.href =  newQuery + "&cHash=" + cHash ;
     }
 
 
@@ -755,7 +767,7 @@ function jv_events_refreshList(){
             urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][tags]=" + fTag.val() ;
         }
 
-        if( fCity && fCity.val() != ''  ) {
+        if( fCity && fCity.val() != ''  && fCity.val() != 'undefined' ) {
             urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][citys]=" + fCity.val() ;
         }
         if( fMonth && fMonth.val() != 'undefined'  ) {

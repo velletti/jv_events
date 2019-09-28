@@ -72,6 +72,10 @@
         <trans-unit id="extmng.hideAllLanguages">
             <source>Do not show the Option All Languages in Event Creation</source>
         </trans-unit>
+        <trans-unit id="extmng.doNotRespectSyslanguage">
+            <source>set setRespectSysLanguage in Repository to false to show filtered events with lang -1 in all Languages </source>
+        </trans-unit>
+
 
 		<trans-unit id="extmng.showImporter">
 			<source>Show Importer From CAL : This is just a plan and actually doing nothing !</source>

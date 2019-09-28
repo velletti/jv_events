@@ -380,6 +380,9 @@
 </f:if>
 <f:if condition="{settings.ShowFilter}==5">
     <div class="filter events">
+
+        <f:link.page id="jv-events-filter-baseUrl" class="d-none" pageUid="{settings.pageIds.eventList}">-</f:link.page>
+
         <form class="clearfix" onsubmit="this.preventDefault();">
 
             <div id="jv-events-filter-sub" class="fieldsets">
@@ -419,7 +422,7 @@
                                 <span class="fa fa-street-view"> </span>
                             </span>
                         </span>
-                        <span class="jv_events_filter_distance"><f:translate key="tx_jvevents_event.filter.distance" default="max. Entfernung zur gewählten Position" /></span>
+                        <span class="jv_events_filter_distance" data-selectedPostion="{f:translate(key: 'tx_jvevents_event.filter.distance')}"><f:translate key="tx_jvevents_event.filter.distance" default="max. Entfernung zur gewählten Position" /></span>
 
 
                     </div>
