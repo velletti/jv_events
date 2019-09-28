@@ -25,7 +25,10 @@
                         </div>
                     </fieldset>
                 </f:if>
-                <f:if condition="{f:count(subject: orgFilter.categories2)} > 1">
+                   <f:comment>
+                       ********************   actually do not show categorys basic Silver etc as Filter .. ****************
+                   </f:comment>
+                <f:if condition="{f:count(subject: orgFilter.categories2)} > 9999">
                     <fieldset id="jv_events_fieldset_categories" class="p-0">
 
                         <legend class="d-none"><f:translate key="tx_jvevents_domain_model_category" /></legend>
