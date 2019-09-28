@@ -2266,6 +2266,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function setSysLanguageUid($sysLanguageUid)
     {
         $this->sysLanguageUid = $sysLanguageUid;
+        $this->_languageUid = $sysLanguageUid;
     }
 
     /**
