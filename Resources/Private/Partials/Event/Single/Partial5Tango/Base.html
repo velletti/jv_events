@@ -116,7 +116,7 @@
 
 								<f:if condition="{event.priceReducedText} || event.priceReduced}">
 									<br>
-									<f:if condition="{event.price}">
+									<f:if condition="{event.priceReduced}">
 										<f:format.number decimals="2">{event.priceReduced}</f:format.number> {event.currency}
 									</f:if>
 									{event.priceReducedText}
