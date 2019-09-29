@@ -406,10 +406,12 @@ class EventController extends BaseController
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      */
-    private function copyEvent(\JVE\JvEvents\Domain\Model\Event $event, $copy2Day= 0, $amount= 1){
+    private function copyEvent(\JVE\JvEvents\Domain\Model\Event $event, $copy2Day= 0, $amount= 0){
         // Does the Copy Master Event already have a masterId? if not, use its uid as new  Master
-        // wthi this master ID we are able to update Changes from one event to all events with the same master Id
-        if ( intval( $event->getMasterId() ) < 1 || $event->getMasterId() === null ) {
+        // with this master ID we are able to update Changes from one event to all events with the same master Id
+        // if we just do ONE Copy, do not set master ID
+
+        if ( ( intval( $event->getMasterId() ) < 1 || $event->getMasterId() === null ) && $amount > 1 ) {
             $event->setMasterId( $event->getUid() ) ;
             $this->eventRepository->update($event) ;
         }
@@ -424,6 +426,10 @@ class EventController extends BaseController
             // copy  most properties
             foreach ($properties as $key => $value ) {
                 $newEvent->_setProperty( $key , $value ) ;
+            }
+            // if we just do ONE Copy, do not set master ID
+            if ( $amount == 1 ) {
+                $newEvent->setMasterId( 0 ) ;
             }
             // now set the new Date
             $newDate = $event->getStartDate() ;
@@ -755,9 +761,13 @@ class EventController extends BaseController
         $startT =  ( intval( substr( $eventArray['startTimeFE']  , 0,2 ) ) * 3600 )
                     + ( intval( substr( $eventArray['startTimeFE']  , 3,2 ) ) * 60 ) ;
         $event->setStartTime( $startT ) ;
+        if ( trim($eventArray['endTimeFE'] == "00:00")) {
+            $endT = ((3600 * 23)  + (59*60)) ;
+        } else {
+            $endT =  ( intval( substr( $eventArray['endTimeFE']  , 0,2 ) ) * 3600 )
+                + ( intval( substr( $eventArray['endTimeFE']  , 3,2 ) ) * 60  ) ;
+        }
 
-        $endT =  ( intval( substr( $eventArray['endTimeFE']  , 0,2 ) ) * 3600 )
-            + ( intval( substr( $eventArray['endTimeFE']  , 3,2 ) ) * 60  ) ;
         $event->setEndTime( $endT ) ;
 
         $desc = str_replace( array( "\n" , "\r" , "\t" ), array(" " , "" , " " ), $eventArray['description'] ) ;

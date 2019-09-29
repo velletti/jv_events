@@ -269,6 +269,9 @@
             <trans-unit id="tx_jvevents_domain_model_event.entry_time">
                 <source>Entry starting at</source>
             </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_event.openEnd">
+                <source>Open end</source>
+            </trans-unit>
 
             <trans-unit id="tx_jvevents_domain_model_event.time">
                 <source>Time</source>
@@ -325,6 +328,9 @@
            <trans-unit id="tx_jvevents_domain_model_event.details.canceled">
                 <source>Canceled!</source>
             </trans-unit>
+           <trans-unit id="event_copy_eventseries">
+                <source>Event series (regularly)!</source>
+            </trans-unit>
             <trans-unit id="event_copy_intro">
                 <source>
                     If you copy an event, changes on this copy can easily made also to the copy. This way you can make changes to repeating events very fast.
@@ -332,12 +338,16 @@
             </trans-unit>
              <trans-unit id="event_copy_intro2">
                 <source>
-                    If you want to create a diffent kind of event (other times or different kind of class / workshop) it could be better not to use the copy funktion. Create a new event.
+                    If you want to create a diffent kind of event (other times or different kind of class / workshop) it is be better to use the single copy function on top.
                 </source>
             </trans-unit>
            <trans-unit id="event_copy_one">
-               <source>Create one Copy</source>
+               <source>Create one Copy (unlinked)</source>
            </trans-unit>
+            <trans-unit id="general_see_help">
+              <source>See help Pages</source>
+          </trans-unit>
+
             <trans-unit id="event_copy_multi">
                   <source>Copy multiple weekly</source>
             </trans-unit>

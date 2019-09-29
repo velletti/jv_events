@@ -56,7 +56,7 @@
 						<f:else>
 							<div class="row">
 								<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_event.time" />:</strong></div>
-								<div class="col-md-8">{event.startTime -> event:format.date( format:"H:i")}<f:if condition="{event.endTime}"> - {event.endTime -> event:format.date( format:"H:i")}</f:if></div>
+								<div class="col-md-8">{event.startTime -> event:format.date( format:"H:i")}<f:if condition="{event.endTime}"><f:then> - {event.endTime -> event:format.date( format:"H:i")}</f:then><f:else> - <f:translate key="tx_jvevents_domain_model_event.openEnd">Open End</f:translate></f:else></f:if></div>
 							</div>
 						</f:else>
 					</f:if>
@@ -69,7 +69,7 @@
 									<f:for each="{subevents}" as="subevent" iteration="i">
 										{subevent.startDate -> f:format.date(format:"d.m.Y")}
 										<f:if condition="{event.allDay}">
-											<f:else> : {subevent.startTime -> event:format.date( format:"H:i")}<f:if condition="{subevent.endTime}"> - {subevent.endTime -> event:format.date( format:"H:i")}</f:if>
+											<f:else> : {subevent.startTime -> event:format.date( format:"H:i")}<f:if condition="{subevent.endTime}"><f:then> - {subevent.endTime -> event:format.date( format:"H:i")}</f:then><f:else><f:translate key="tx_jvevents_domain_model_event.openEnd">Open End</f:translate></f:else></f:if>
 											</f:else>
 										</f:if>
 										<br />

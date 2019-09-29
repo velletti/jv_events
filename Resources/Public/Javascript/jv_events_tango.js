@@ -767,7 +767,7 @@ function jv_events_refreshList(){
             urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][tags]=" + fTag.val() ;
         }
 
-        if( fCity && fCity.val() != ''  && fCity.val() != 'undefined' ) {
+        if( fCity && fCity.val() != ''  && fCity.val() != undefined ) {
             urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][citys]=" + fCity.val() ;
         }
         if( fMonth && fMonth.val() != 'undefined'  ) {

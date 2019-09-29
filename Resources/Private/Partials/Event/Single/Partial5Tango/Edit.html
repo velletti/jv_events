@@ -20,12 +20,10 @@
                     <f:render partial="HasFormErrors" arguments="{object:event, debug: 'true' }" />
 
                     <f:form class="form-horizontal"  action="update" name="event" object="{event}" id="event_edit">
-                        <div class="text-right">
-                            <f:form.submit class="btn btn-primary" value="{f:translate(key: 'form.save', default: 'Save')}" />
-                        </div>
+
+                        <f:render section="saveButton" arguments="{event: event, settings: settings, showOptions: '0'}" />
 
                         <div class="col-xs-12 " xmlns:f="http://www.w3.org/1999/html">
-
                             <h4 class="text-left">
                                 <f:link.action pageUid="{settings.detailPageId}" action="show" controller="Event" class="btn  btn-outline-primary left rounded-circle" arguments="{event: '{event.uid}'}">
                                     <i class="fas fa-eye " title="show"></i>
@@ -40,30 +38,8 @@
 
 
                         <f:render partial="Event/Single/Partial{settings.LayoutSingle}/FormFields" arguments="{_all}" />
-                        <f:if condition="{event.masterId}">
-                            <f:then>
-                                <div class="text-right">
-                                    <span class="btn btn-primary" onclick="this.style.display ='none';" data-toggle="collapse" data-target="#jv_events_edit_save_button">{f:translate(key: 'form.save', default: 'Save')}</span>
-                                </div>
-                                <div id="jv_events_edit_save_button" class="alert alert-secondary collapse">
-                                    <h3><f:translate key="tx_jvevents_domain_model_event.edit.repeating.headline">Regelmäßiger Termin</f:translate></h3>
-                                    <p><f:translate key="tx_jvevents_domain_model_event.edit.repeating.text">Dies ist ein regelmäßiger Termin. Sollen die obigen Änderungen für alle zukünftigen Termine mit der gleichen ID übernommen werden?</f:translate></p>
-                                    <p><f:translate key="tx_jvevents_domain_model_event.edit.repeating.textNot">Gilt aktuell noch nicht für Kategorien und Schlagworte!</f:translate></p>
-                                    <f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowCheckbox"
-                                              arguments="{object: '', property: 'changeFutureEvents' , onText: 'YES', offText: 'no' ,name:'tx_jvevents_events[changeFutureEvents]' , checked: 'false' , label: '' , translationKey: 'tx_jvevents_domain_model_event.edit.repeating.uebernehmen' ,  mandatory: '' }" />
 
-                                    <div class="text-right">
-                                        <f:form.submit class="btn btn-primary" value="{f:translate(key: 'form.save', default: 'Save')}" />
-                                    </div>
-                                </div>
-
-                            </f:then>
-                            <f:else>
-                                <div class="text-right">
-                                    <f:form.submit class="btn btn-primary" value="{f:translate(key: 'form.save', default: 'Save')}" />
-                                </div>
-                            </f:else>
-                        </f:if>
+                        <f:render section="saveButton" arguments="{event: event, settings: settings, showOptions: '1'}" />
 
                     </f:form>
 
@@ -74,3 +50,34 @@
     </f:then>
 
 </f:if>
+
+<f:section name="saveButton">
+    <f:if condition="{event.masterId}">
+        <f:then>
+            <div class="text-right">
+                <span class="btn btn-primary hideOnClick" onclick="scrollToId('#jv_events_edit_save_button_scroll'); $('.hideOnClick').hide() ; " data-toggle="collapse" data-target="#jv_events_edit_save_button">{f:translate(key: 'form.save', default: 'Save')}</span>
+            </div>
+            <f:if condition="{showOptions}">
+                <div id="jv_events_edit_save_button_scroll" class=""></div>
+                <div id="jv_events_edit_save_button" class="alert alert-secondary collapse">
+                    <h3><f:translate key="tx_jvevents_domain_model_event.edit.repeating.headline">Regelmäßiger Termin</f:translate></h3>
+                    <p><f:translate key="tx_jvevents_domain_model_event.edit.repeating.text">Dies ist ein regelmäßiger Termin. Sollen die obigen Änderungen für alle zukünftigen Termine mit der gleichen ID übernommen werden?</f:translate></p>
+                    <p><f:translate key="tx_jvevents_domain_model_event.edit.repeating.textNot">Gilt aktuell noch nicht für Bilder, Kategorien und Schlagworte!</f:translate></p>
+                    <f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowCheckbox"
+                              arguments="{object: '', property: 'changeFutureEvents' , onText: 'YES', offText: 'no' ,name:'tx_jvevents_events[changeFutureEvents]' , checked: 'false' , label: '' , translationKey: 'tx_jvevents_domain_model_event.edit.repeating.uebernehmen' ,  mandatory: '' }" />
+
+                    <div class="text-right">
+                        <f:form.submit class="btn btn-primary" value="{f:translate(key: 'form.save', default: 'Save')}" />
+                    </div>
+                </div>
+            </f:if>
+
+
+        </f:then>
+        <f:else>
+            <div class="text-right">
+                <f:form.submit class="btn btn-primary" value="{f:translate(key: 'form.save', default: 'Save')}" />
+            </div>
+        </f:else>
+    </f:if>
+</f:section>

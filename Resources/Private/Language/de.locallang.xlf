@@ -419,7 +419,10 @@
                 <target>Entfällt!</target>
             </trans-unit>
 
-
+          <trans-unit id="event_copy_eventseries">
+                <source>Event series (regularly)!</source>
+                <target>Regelmäßige Termine</target>
+            </trans-unit>
             <trans-unit id="event_copy_intro">
                 <source>
                     If you copy an event, changes on this copy can easily made also to the copy. This way you can make changes to repeating events very fast.
@@ -433,13 +436,18 @@
                     If you want to create a diffent kind of event (other times or different kind of class / workshop) it could be better not to use the copy funktion. Create a new event.
                 </source>
                 <target>
-                    Inhaltlich unterschiedliche Termine (z.b. verschiedene Kursarten oder Uhrzeiten) sollten deshalb besser nicht durch kopieren erstellt werden. Erstelle dann besser einen neuen Termin.
+                    Inhaltlich unterschiedliche Termine (z.b. verschiedene Kursarten oder Uhrzeiten) sollten deshalb nicht durch die nachfolgenden Buttons erstellt werden. Nutze die dann die den Button 'beliebiges Datum'.
                 </target>
             </trans-unit>
            <trans-unit id="event_copy_one">
-               <source>Create one Copy</source>
-               <target>Einzelne Kopie</target>
+               <source>Create one Copy (unlinked)</source>
+               <target>Einzelne Kopie (nicht verbunden)</target>
            </trans-unit>
+
+            <trans-unit id="general_see_help">
+                 <source>See help Pages</source>
+                 <target>Siehe Hilfeseiten</target>
+             </trans-unit>
             <trans-unit id="event_copy_multi">
                   <source>Copy multiple weekly</source>
                   <target>Mehrere Wochen</target>
