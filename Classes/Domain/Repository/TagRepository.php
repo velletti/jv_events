@@ -42,7 +42,7 @@ class TagRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 
     /**
      * @param int $type default -1 means all Types
-     *                  1 = events 2 locations 3 = Organizer
+     *                  0 = events 1 locations 2 = Organizer
      *                  see TCA of event model
      *
      * @return array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
@@ -52,20 +52,36 @@ class TagRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         $query = $this->createQuery();
         $querySettings = $query->getQuerySettings() ;
         $querySettings->setRespectStoragePage(false);
+     //   $querySettings->setRespectSysLanguage(false);
         if( ($type > -1 )) {
             $query->matching( $query->equals('type', $type) ) ;
         }
         // $querySettings->setRespectSysLanguage(FALSE);
         $query->setQuerySettings($querySettings) ;
         $res = $query->execute() ;
-
-        // new way to debug typo3 db queries
-        // $queryParser = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class);
-        // var_dump($queryParser->convertQueryToDoctrineQueryBuilder($query)->getSQL());
-        // var_dump($queryParser->convertQueryToDoctrineQueryBuilder($query)->getParameters()) ;
-        // die;
+        // $this->debugQuery($query) ;
 
         return $res ;
+    }
+
+    function debugQuery($query) {
+        // new way to debug typo3 db queries
+        $queryParser = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class);
+        $querystr = $queryParser->convertQueryToDoctrineQueryBuilder($query)->getSQL() ;
+        echo $querystr ;
+        echo "<hr>" ;
+        $queryParams = $queryParser->convertQueryToDoctrineQueryBuilder($query)->getParameters() ;
+        var_dump($queryParams);
+        echo "<hr>" ;
+
+        foreach ($queryParams as $key => $value ) {
+            $search[] = ":" . $key ;
+            $replace[] = "'$value'" ;
+
+        }
+        echo str_replace( $search , $replace , $querystr ) ;
+
+        die;
     }
 
     

@@ -108,6 +108,18 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      */
     protected $tagRepository = NULL;
 
+
+    /**
+     * @var array
+     */
+    public $debugArray ;
+
+
+    /**
+     * @var float
+     */
+    public $timeStart ;
+
     /**
      * action list
      *
@@ -364,6 +376,34 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         ) ;
 
     }
+
+    public function generateOrgFilterFast( $filter )
+    {
+        $tags = array();
+        $tags2 = array();
+
+        $allTags = $this->tagRepository->findAllonAllPages(2) ;
+        foreach ($allTags as $obj) {
+            $tags[$obj->getUid()] = $obj->getName() ;
+            $tags2[$obj->getUid()] = array( "id" => $obj->getUid() , "title" => $obj->getName()  ) ;
+        }
+
+        $sortArray = array();
+        foreach($tags as $key => $value) {
+            $sortArray[$key] = ucfirst ( $value) ;
+        }
+        array_multisort($sortArray, SORT_ASC, SORT_NUMERIC, $tags);
+        usort($tags2, function ($a, $b) { return strcmp(ucfirst($a["title"]), ucfirst($b["title"])); });
+
+
+
+        return array(
+            "tags" => $tags ,
+            "tags2" => $tags2
+        ) ;
+
+    }
+
 
     private function array_msort($array, $cols)
     {

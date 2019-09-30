@@ -46,6 +46,8 @@ class OrganizerController extends BaseController
      */
     public function initializeAction()
     {
+        $this->timeStart = $this->microtime_float() ;
+        $this->debugArray[] = "Start:" . intval(1000 * $this->timeStart ) . " Line: " . __LINE__ ;
         parent::initializeAction() ;
         if ($this->request->hasArgument('action')) {
         // Todo some checks if all params exists ..
@@ -54,6 +56,7 @@ class OrganizerController extends BaseController
             $this->forward( $this->settings['defaultOrganizerAction'],null,null, array('action' => $this->settings['defaultOrganizerAction'] )  ) ;
         }
 
+        $this->debugArray[] = "after Init:" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " Line: " . __LINE__ ;
 
 
     }
@@ -103,14 +106,29 @@ class OrganizerController extends BaseController
 
 
         $this->settings['filter']['sorttags'] = "sorting" ;
+        $this->debugArray[] = "Before DB Load:" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " Line: " . __LINE__ ;
 
         $organizers = $this->organizerRepository->findByFilterAllpages();
-        $orgFilter = $this->generateOrgFilter( $organizers->toArray() ,  $this->settings['filter']) ;
-   //     echo "<pre>";
-    //    var_dump($orgFilter) ;
-// die;
+        $this->debugArray[] = "Before Generate Array:" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " Line: " . __LINE__ ;
+
+
+        /*  slow version ...
+            $orgs = $organizers->toArray() ;
+            $this->debugArray[] = "Before Generate Filter:" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " Line: " . __LINE__ ;
+
+            $orgFilter = $this->generateOrgFilter( $orgs ,  $this->settings['filter']) ;
+           //     echo "<pre>";
+            //    var_dump($orgFilter) ;
+        // die;
+        */
+        $orgFilter = $this->generateOrgFilterFast(  $this->settings['filter']) ;
         $this->view->assign('organizers', $organizers);
         $this->view->assign('orgFilter', $orgFilter);
+        $this->debugArray[] = "Finished:". intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " Line: " . __LINE__ ;
+
+       // echo "<pre>" ;
+       // var_dump( $this->debugArray) ;
+       // die;
     }
     
     /**

@@ -43,17 +43,6 @@ class EventController extends BaseController
      */
     protected $eventRepository = NULL;
 
-    /**
-     * @var array
-     */
-    public $debugArray ;
-
-
-    /**
-     * @var float
-     */
-    public $timeStart ;
-
 
 	/**
 	 * staticCountryRepository
@@ -136,6 +125,8 @@ class EventController extends BaseController
                     if( $this->settings['security']['filter']['maxDays'] > 0 &&  $this->settings['filter']['maxDays'] >  $this->settings['security']['filter']['maxDays'] ) {
                         $this->settings['filter']['maxDays'] = $this->settings['security']['filter']['maxDays'] ;
                     }
+                    $this->settings['filter']['distance']['default'] = 9999 ;
+
                 }
             }
             if( array_key_exists( "organizer" , $filter )) {
