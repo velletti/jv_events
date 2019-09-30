@@ -50,7 +50,7 @@
                                      <f:translate key="event_copy_one">Create one Copy</f:translate>
                                  </div>
                                  <div class="col-6">
-                                     <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '1', amount: '1' , msgtext: 'beliebiges Datum'}" />
+                                     <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '0', amount: '1' , msgtext: 'beliebiges Datum'}" />
                                  </div>
                                  <hr />
                                  <h3 class="mx-3 mt-4"><f:translate key="event_copy_eventseries" default="Regelmäßige Termine"/></h3>
@@ -63,25 +63,31 @@
                                          Inhaltlich unterschiedliche Termine (z.b. verschiedene Kursarten oder Uhrzeiten) sollten deshalb nicht durch die unten Buttons erstellt werden.
                                      </f:translate>
                                  </div>
-
                                  <div class="col-6">
+                                     <f:translate key="event_copy_one_linked">Single Copy (linked)</f:translate>
+                                 </div>
+                                 <div class="col-6">
+                                     <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '1', amount: '1' , msgtext: '1 Copy'}" />
+                                 </div>
+                                 <div class="col-12">
                                      <b><f:translate key="event_copy_multi">Copy multiple weekly</f:translate></b>
                                      <br>
-                                     <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '7', amount: '2' , msgtext: '2 copies'}" />
-                                     <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '7', amount: '3' , msgtext: '3 copies'}" />
-                                     <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '7', amount: '4' , msgtext: '4 copies'}" />
-                                     <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '7', amount: '5' , msgtext: '5 copies'}" />
-                                     <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '7', amount: '6' , msgtext: '6 copies'}" />
+                                     <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '7', amount: '2' , msgtext: '2'}" />
+                                     <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '7', amount: '3' , msgtext: '3'}" />
+                                     <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '7', amount: '4' , msgtext: '4'}" />
+                                     <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '7', amount: '5' , msgtext: '5'}" />
+                                     <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '7', amount: '6' , msgtext: '6'}" />
 
                                  </div>
-                                  <div class="col-6">
+                                  <div class="col-12">
+                                      <br>
                                       <b><f:translate key="event_copy_multi2weeks">Copy multiple every 14 days</f:translate></b>
                                       <br>
-                                     <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '14', amount: '2' , msgtext: '2 copies '}" />
-                                     <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '14', amount: '4' , msgtext: '4 copies '}" />
-                                     <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '14', amount: '6' , msgtext: '6 copies '}" />
-                                     <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '14', amount: '8' , msgtext: '8 copies '}" />
-
+                                     <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '14', amount: '2' , msgtext: '2'}" />
+                                     <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '14', amount: '3' , msgtext: '3'}" />
+                                     <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '14', amount: '4' , msgtext: '4'}" />
+                                      <br>
+                                      Jeden 3. Donnerstag / 1. Sonntag im Monat etc Funktion ist geplant ..
                                  </div>
                              </div>
 
@@ -137,7 +143,7 @@
 
 
 <f:section name="renderCopyLink">
-    <f:link.action pageUid="{settings.pageIds.editEvent}" class="nav-link" title="copy Event" action="edit" controller="Event" arguments="{event: eventId, copy2Day: copy2Day, amount: amount}">
+    <f:link.action pageUid="{settings.pageIds.editEvent}" class="mr-2" title="copy Event" action="edit" controller="Event" arguments="{event: eventId, copy2Day: copy2Day, amount: amount}">
         <button class="btn btn-primary btn-xs " href="#">
             <i class="fas fa-copy "></i> <span class="mx-1">{msgtext}</span>
         </button>

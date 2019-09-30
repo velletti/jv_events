@@ -1,3 +1,5 @@
+{namespace jve=JVE\JvEvents\ViewHelpers}
+
 <f:if condition="{event}">
     <f:else>
         <div class="alert alert-warning my-4">
@@ -6,7 +8,6 @@
         </div>
     </f:else>
     <f:then>
-
         <div class="card col-12 text-white bg-primary  jv-events-partial{settings.LayoutSingle}" id="jv-event-edit-data">
             <div class="card-header"> <span class="glyphicon glyphicon-edit"></span>
                 <span class="fas fa-edit border-primary rounded-circle"></span>
@@ -21,7 +22,7 @@
 
                     <f:form class="form-horizontal"  action="update" name="event" object="{event}" id="event_edit">
 
-                        <f:render section="saveButton" arguments="{event: event, settings: settings, showOptions: '0'}" />
+                        <f:render section="saveButton" arguments="{event: event, settings: settings, showOptions: '0' , relatedEvents: relatedEvents}" />
 
                         <div class="col-xs-12 " xmlns:f="http://www.w3.org/1999/html">
                             <h4 class="text-left">
@@ -39,7 +40,7 @@
 
                         <f:render partial="Event/Single/Partial{settings.LayoutSingle}/FormFields" arguments="{_all}" />
 
-                        <f:render section="saveButton" arguments="{event: event, settings: settings, showOptions: '1'}" />
+                        <f:render section="saveButton" arguments="{event: event, settings: settings, showOptions: '1' , relatedEvents: relatedEvents}" />
 
                     </f:form>
 
@@ -52,7 +53,7 @@
 </f:if>
 
 <f:section name="saveButton">
-    <f:if condition="{event.masterId}">
+    <f:if condition="{event.masterId} && {relatedEvents}">
         <f:then>
             <div class="text-right">
                 <span class="btn btn-primary hideOnClick" onclick="scrollToId('#jv_events_edit_save_button_scroll'); $('.hideOnClick').hide() ; " data-toggle="collapse" data-target="#jv_events_edit_save_button">{f:translate(key: 'form.save', default: 'Save')}</span>
@@ -66,6 +67,23 @@
                     <f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowCheckbox"
                               arguments="{object: '', property: 'changeFutureEvents' , onText: 'YES', offText: 'no' ,name:'tx_jvevents_events[changeFutureEvents]' , checked: 'false' , label: '' , translationKey: 'tx_jvevents_domain_model_event.edit.repeating.uebernehmen' ,  mandatory: '' }" />
 
+                    <f:if condition="{relatedEvents}">
+                        <div class="alert alert-dismissible bg-white">
+                            <p>
+                                <f:translate key="tx_jvevents_domain_model_event.edit.repeating.effected">Betroffene Termine</f:translate>:
+                            </p>
+
+                            <f:for each="{relatedEvents}" as="relatedEvent">
+                              <p>
+                                  <f:link.action pageUid="{settings.pageIds.editEvent}" class="pr-1" title="Edit Event" target="_blank" action="edit" controller="Event" arguments="{event: relatedEvent.uid}">
+                                      <span class="btn btn-outline-primary btn-xs rounded-circle" href="#">
+                                          <i class="fas fa-edit "></i>
+                                      </span>
+                                  </f:link.action> {relatedEvent.startDate -> jve:format.date( format:"d.m.")} | {relatedEvent.startTime -> jve:format.date( format:"H:i")} : {relatedEvent.name}
+                              </p>
+                            </f:for>
+                        </div>
+                    </f:if>
                     <div class="text-right">
                         <f:form.submit class="btn btn-primary" value="{f:translate(key: 'form.save', default: 'Save')}" />
                     </div>

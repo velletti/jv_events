@@ -96,7 +96,7 @@ class AjaxController extends BaseController
         /*
         * check if action is allowed
         */
-        if ( !in_array( $ajax['action'] , array("eventMenu" , "eventList" , "locationList" , "activate") ) ) {
+        if ( !in_array( $ajax['action'] , array("eventMenu" , "eventList" , "locationList" , "activate" , "unlink") ) ) {
             $ajax['action'] = "eventMenu" ;
         }
 
@@ -726,6 +726,21 @@ class AjaxController extends BaseController
         $this->addFlashMessage("User : " . $userUid . " (" . $user->getEmail() . ") enabled | " . $msg . "  " , "Success" , \TYPO3\CMS\Core\Messaging\AbstractMessage::OK) ;
         $this->addFlashMessage("Organizer : " . $organizerUid . " (" . $organizer->getName() . ")  enabled " , \TYPO3\CMS\Core\Messaging\AbstractMessage::OK) ;
         $this->redirect('assist' , NULL, Null , NULL , $this->settings['pageIds']['organizerAssist'] );
+
+    }
+
+
+    /**
+     * @param int $organizerUid
+     * @param int $userUid
+     * @param string $hmac
+     * @param int $rnd
+     *
+     */
+    public function eventUnlinkAction($event=0  ) {
+
+
+
 
     }
 

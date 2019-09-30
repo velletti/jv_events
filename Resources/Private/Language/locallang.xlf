@@ -375,6 +375,11 @@
                 <source>Change them also</source>
             </trans-unit>
 
+             <trans-unit id="x_jvevents_domain_model_event.edit.repeating.effected">
+                <source>Effected Events</source>
+            </trans-unit>
+            t
+
 
             <trans-unit id="tx_jvevents_domain_model_location">
                 <source>Location</source>

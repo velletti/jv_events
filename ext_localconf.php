@@ -29,10 +29,10 @@ $_EXTKEY = "jv_events" ;
     'JVE.' .$_EXTKEY,
     'Ajax',
     array(
-        'Ajax'  => 'eventMenu,locationList,organizerList,eventList,eventDisable',
+        'Ajax'  => 'eventMenu,locationList,organizerList,eventList,eventDisable,eventUnlink',
     ),
     array(
-        'Ajax'  => 'eventMenu,locationList,organizerList,eventList,eventDisable',
+        'Ajax'  => 'eventMenu,locationList,organizerList,eventList,eventDisable,eventUnlink',
     )
 );
 

@@ -367,7 +367,7 @@ class EventController extends BaseController
                     }
                     // ammount must be not more than max 8 / min 1
                     $amount = min ( max ( $amount , 1) , 8 ) ;
-                    if( $copy2Day != 0 ) {
+                    if( $amount != 0 ) {
                         $this->copyEvent($event , intval( $copy2Day ) , $amount ) ;
                    }
                 }
@@ -381,6 +381,15 @@ class EventController extends BaseController
                 $this->view->assign('event', $event);
                 $this->view->assign('categories', $categories);
                 $this->view->assign('tags', $tags);
+
+
+                $filter['startDate'] = $event->getStartDate()->getTimestamp() ;
+                $filter['maxDays'] = 999 ;
+                $filter['skipEvent'] = $event->getUid() ;
+                $filter['masterId'] = $event->getMasterId() ;
+
+                $relatedEvents = $this->eventRepository->findByFilter($filter ) ;
+                $this->view->assign('relatedEvents', $relatedEvents );
             } else {
                 $this->view->assign('event', FALSE );
             }
@@ -397,12 +406,12 @@ class EventController extends BaseController
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      */
-    private function copyEvent(\JVE\JvEvents\Domain\Model\Event $event, $copy2Day= 0, $amount= 0){
+    private function copyEvent(\JVE\JvEvents\Domain\Model\Event $event, $copy2Day= 0, $amount= 0 ){
         // Does the Copy Master Event already have a masterId? if not, use its uid as new  Master
         // with this master ID we are able to update Changes from one event to all events with the same master Id
         // if we just do ONE Copy, do not set master ID
 
-        if ( ( intval( $event->getMasterId() ) < 1 || $event->getMasterId() === null ) && $amount > 1 ) {
+        if ( ( intval( $event->getMasterId() ) < 1 || $event->getMasterId() === null ) && $copy2Day > 0 ) {
             $event->setMasterId( $event->getUid() ) ;
             $this->eventRepository->update($event) ;
         }
@@ -419,7 +428,7 @@ class EventController extends BaseController
                 $newEvent->_setProperty( $key , $value ) ;
             }
             // if we just do ONE Copy, do not set master ID
-            if ( $amount == 1 ) {
+            if ( $copy2Day == 0 ) {
                 $newEvent->setMasterId( 0 ) ;
             }
             // now set the new Date
@@ -566,6 +575,20 @@ class EventController extends BaseController
             $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
 
             try {
+                /** @var \TYPO3\CMS\Core\Database\ConnectionPool $connection */
+                /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
+                $connection = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class);
+                $queryBuilder = $connection->getQueryBuilderForTable('tx_jvevents_domain_model_event');
+                $oldEventRows = $queryBuilder->select('*' )
+                    ->from('tx_jvevents_domain_model_event')
+                    ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($event->getUid(), \PDO::PARAM_INT)) )
+                    ->execute()
+                    ->fetchAll();
+
+                if ( count($oldEventRows ) > 0 ) {
+                    $oldEventRow = $oldEventRows[0] ;
+                } ;
+
                 $this->eventRepository->update($event) ;
                 if( $event->getChangeFutureEvents() && $event->getMasterId() > 0 ) {
                     $filter['startDate'] = $event->getStartDate()->getTimestamp() ;
@@ -579,19 +602,38 @@ class EventController extends BaseController
                         $otherDaysText = " " ;
                         foreach ( $otherEvents as $otherEvent ) {
                             $otherDaysText .= $otherEvent->getStartDate()->format("d.M-Y") .  " (Id:" . $otherEvent->getUid() ."), " ;
-                            $otherEvent->setName( $event->getName() ) ;
-                            $otherEvent->setTeaser( $event->getTeaser() ) ;
-                            $otherEvent->setDescription( $event->getDescription() ) ;
-                            $otherEvent->setPrice( $event->getPrice() ) ;
-                            $otherEvent->setStartTime( $event->getStartTime() ) ;
-                            $otherEvent->setEndTime( $event->getEndTime() ) ;
-                            $otherEvent->setEntryTime( $event->getEntryTime() ) ;
-                            $otherEvent->setPriceReduced( $event->getPriceReduced() ) ;
-                            $otherEvent->setPriceReducedText( $event->getPriceReducedText() ) ;
+                            if( $oldEventRow['name'] != $event->getName() ) {
+                                $otherEvent->setName( $event->getName() ) ;
+                            }
+                            if( $oldEventRow['teaser'] != $event->getTeaser() ) {
+                                $otherEvent->setTeaser( $event->getTeaser() ) ;
+                            }
+                            if( $oldEventRow['description'] != $event->getDescription() ) {
+                                $otherEvent->setDescription( $event->getDescription() ) ;
+                            }
+                            if( $oldEventRow['price'] != $event->getPrice() ) {
+                                $otherEvent->setPrice( $event->getPrice() ) ;
+                            }
+                            if( $oldEventRow['start_time'] != $event->getStartTime() ) {
+                                $otherEvent->setStartTime( $event->getStartTime() ) ;
+                            }
+                            if( $oldEventRow['end_time'] != $event->getEndTime() ) {
+                                $otherEvent->setEndTime( $event->getEndTime() ) ;
+                            }
+                            if( $oldEventRow['entry_time'] != $event->getEntryTime() ) {
+                                $otherEvent->setEntryTime( $event->getEntryTime() ) ;
+                            }
+                            if( $oldEventRow['price_reduced'] != $event->getPriceReduced() ) {
+                                $otherEvent->setPriceReduced( $event->getPriceReduced() ) ;
+                            }
+                            if( $oldEventRow['price_reduced_text'] != $event->getPriceReducedText() ) {
+                                $otherEvent->setPriceReducedText( $event->getPriceReducedText() ) ;
+                            }
+
 
                             $this->eventRepository->update($otherEvent) ;
                         }
-                        $this->addFlashMessage('The following Events : ' . $otherEvent->getStartDate()->format("d.M-Y") . ' were also updated.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+                        $this->addFlashMessage('The following Events : ' . $otherDaysText . ' were also updated.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
 
                     }
                 }
