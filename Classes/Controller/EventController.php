@@ -415,6 +415,12 @@ class EventController extends BaseController
             $event->setMasterId( $event->getUid() ) ;
             $this->eventRepository->update($event) ;
         }
+        /** @var \DateTime $accessStart */
+        $newDate = new \DateTime(  ) ;
+        $newDate->setTimestamp($event->getStartDate()->getTimestamp()) ;
+        $addDays = intval( $copy2Day  ) ;
+        $diff= date_interval_create_from_date_string( $addDays  . " days") ;
+
         for ( $i=1 ;$i<= $amount ; $i++) {
             /** @var \JVE\JvEvents\Domain\Model\Event $newEvent */
 
@@ -431,10 +437,6 @@ class EventController extends BaseController
             if ( $copy2Day == 0 ) {
                 $newEvent->setMasterId( 0 ) ;
             }
-            // now set the new Date
-            $newDate = $event->getStartDate() ;
-            $addDays = intval( $copy2Day  ) ;
-            $diff= date_interval_create_from_date_string( $addDays  . " days") ;
             $newDate->add( $diff) ;
 
             $newEvent->setStartDate($newDate ) ;
