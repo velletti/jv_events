@@ -96,7 +96,7 @@ class AjaxController extends BaseController
         /*
         * check if action is allowed
         */
-        if ( !in_array( $ajax['action'] , array("eventMenu" , "eventList" , "locationList" , "activate" , "unlink") ) ) {
+        if ( !in_array( $ajax['action'] , array("eventMenu" , "eventList" , "locationList" , "activate" , "eventUnlink") ) ) {
             $ajax['action'] = "eventMenu" ;
         }
 
@@ -731,17 +731,45 @@ class AjaxController extends BaseController
 
 
     /**
-     * @param int $organizerUid
-     * @param int $userUid
-     * @param string $hmac
-     * @param int $rnd
      *
      */
-    public function eventUnlinkAction($event=0  ) {
+    public function eventUnlinkAction(  ) {
 
+        // https:/tango.ddev.local/index.php?uid=82&eID=jv_events&tx_jvevents_ajax[event]=2264&tx_jvevents_ajax[action]=eventUnlink&
+        $output['success'] = false ;
+        $output['msg'] = 'Starting unLink';
+        if( $this->request->hasArgument('event')) {
+            $output['event']['requestId'] =  intval( $this->request->getArgument('event') ) ;
+            $output['msg'] = 'got Event';
+            if ( intval( $GLOBALS['TSFE']->fe_user->user['uid'] ) > 0 ) {
+                $output['event']['user'] =  intval( $GLOBALS['TSFE']->fe_user->user['uid'] ) ;
+                $output['msg'] = 'got Event and user is logged in';
+                /** @var \JVE\JvEvents\Domain\Model\Event $event */
+                $event = $this->eventRepository->findByUidAllpages( $output['event']['requestId'] , FALSE  , TRUE );
+                if( is_object($event )) {
+                    $output['msg'] = 'Found Event and user is logged in';
+                //    $output['event']['Id'] = $event->getUid() ;
+                    $organizer = $event->getOrganizer() ;
+                    if( is_object( $organizer )) {
+                        $output['msg'] = 'got Event and has organizer';
+                   //     $output['event']['organizer'] = $organizer->getUid();
+                        if ($this->hasUserAccess($organizer)) {
+                            $output['msg'] = 'user has access';
+                            $output['event']['hasAccess'] = true ;
+                            $event->setMasterId(0) ;
+                            $this->eventRepository->update($event) ;
+                            $this->persistenceManager->persistAll() ;
+                            $output['success'] = true ;
+                            $output['msg'] = '';
+                        }
+                    }
 
+                }
+            }
 
-
+        }
+        ShowAsJsonArrayUtility::show(  $output ) ;
+        exit ;
     }
 
     // ########################################   functions ##################################

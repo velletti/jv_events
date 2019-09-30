@@ -73,13 +73,30 @@
                                 <f:translate key="tx_jvevents_domain_model_event.edit.repeating.effected">Betroffene Termine</f:translate>:
                             </p>
 
-                            <f:for each="{relatedEvents}" as="relatedEvent">
-                              <p>
+                            <f:for each="{relatedEvents}" as="relatedEvent" iteration="index">
+                              <p class="jv_events_unlink_event-{index.index}">
+
                                   <f:link.action pageUid="{settings.pageIds.editEvent}" class="pr-1" title="Edit Event" target="_blank" action="edit" controller="Event" arguments="{event: relatedEvent.uid}">
                                       <span class="btn btn-outline-primary btn-xs rounded-circle" href="#">
                                           <i class="fas fa-edit "></i>
                                       </span>
-                                  </f:link.action> {relatedEvent.startDate -> jve:format.date( format:"d.m.")} | {relatedEvent.startTime -> jve:format.date( format:"H:i")} : {relatedEvent.name}
+                                  </f:link.action>
+                                  <span >
+                                      {relatedEvent.startDate -> jve:format.date( format:"d.m.")} | {relatedEvent.startTime -> jve:format.date( format:"H:i")} : {relatedEvent.name}
+                                  </span>
+                                 <span title="{f:translate(key: 'event_remove_relation' , default: 'Verbindung Trennen')}" class="btn btn-outline-primary btn-xs rounded-circle position-right jv_events_unlink_event" data-eventUid="{relatedEvent.uid}" data-index="jv_events_unlink_event-{index.index}" href="#">
+
+                                      <span class="iconLink">
+                                          <i class="fas fa-unlink "></i>
+                                      </span>
+                                      <span class="iconWait d-none">
+                                          <i class="fas fa-spinner fa-spin"></i>
+                                      </span>
+                                      <span class="iconError d-none">
+                                          <i class="fas fa-stop"></i>
+                                      </span>
+
+                                  </span>
                               </p>
                             </f:for>
                         </div>

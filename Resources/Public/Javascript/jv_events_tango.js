@@ -42,6 +42,32 @@ function jv_events_init_AjaxMenu() {
             addOrgId = '&tx_jvevents_ajax[organizer]=' + parseInt( $("#jv-events-dataids").data("orguid"));
         }
     }
+    if ( $(".jv_events_unlink_event").length) {
+        $(".jv_events_unlink_event").on('click', function () {
+            var eventId = $(this).data("eventuid") ;
+            var index = $(this).data("index") ;
+            $(this).find('.iconLink').addClass('d-none');
+            $(this).find('.iconWait').removeClass('d-none'); ;
+            $('.' + index).find('span').addClass('d-none'); ;
+            $.ajax({
+
+                url: '/index.php',
+                data: 'uid=' + ajaxCurrentPageUid + '&eID=jv_events&L=0&tx_jvevents_ajax[event]=' + eventId + '&tx_jvevents_ajax[action]=eventUnlink&tx_jvevents_ajax[controller]=Ajax&',
+
+                before: function () {
+                    spinner.removeClass('d-none');
+                },
+                success: function (response) {
+                    $('.jv_events_unlink_event .iconWait').addClass('d-none');
+                    $('.' + index).addClass('d-none'); ;
+
+                },
+                error: function (response) {
+                    alert("Error " + response.msg ) ;
+                }
+            });
+        });
+    }
     if ( $("#jvEventsAjaxMenu").length) {
         $.ajax( {
             url: '/index.php' ,
