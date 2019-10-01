@@ -83,7 +83,8 @@
                         </f:then>
                         <f:else>
                             {event.location.city}<br>
-                            {event.startTime -> f:format.date(format:"H:i")}-{event.endTime -> f:format.date(format:"H:i")} h<br>
+                            {event.startTime -> f:format.date(format:"H:i")}-<f:if condition="{event.endTime}"><f:then> - {event.endTime -> event:format.date( format:"H:i")}</f:then><f:else> - <f:translate key="tx_jvevents_domain_model_event.openEnd">Open End</f:translate></f:else></f:if> h<br>
+
 
                             <f:if condition="{event.price} > 0">
                                 <span class="d-md-block d-none">{event.price} {event.currency} (<f:translate key="jv_events_model_event.inclusiveVat" />)<br></span>
