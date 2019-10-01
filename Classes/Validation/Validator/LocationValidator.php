@@ -25,9 +25,9 @@ class LocationValidator extends BaseValidator {
 	 * @var array
 	 */
 	protected $maxLength = array(
-		'email'				=> 30,
+		'email'				=> 80,
         'phone'				=> 50,
-        'link'				=> 50,
+        'link'				=> 80,
 
 		'name'				=> 60,
 		'streetAndNr'		=> 50,
