@@ -275,8 +275,8 @@ class AjaxController extends BaseController
 
                 $output['event']['name'] = $event->getName() ;
                 $output['event']['teaserImageUrl'] = GeneralUtility::getIndpEnv("TYPO3_REQUEST_HOST")  ;
-                if (  $event->getTeaserImage() ) {
-                    $output['event']['teaserImageUrl'] .=  $event->getTeaserImage()->getOriginalResource()->getPublicUrl() ;
+                if (  $event->getTeaserImage() && is_object( $event->getTeaserImage()->getOriginalResource()) ) {
+                        $output['event']['teaserImageUrl'] .=  $event->getTeaserImage()->getOriginalResource()->getPublicUrl() ;
                 } else {
                     if( $this->settings['EmConfiguration']['imgUrl2'] ) {
                         $output['event']['teaserImageUrl'] .=  trim($this->settings['EmConfiguration']['imgUrl2']) ;
