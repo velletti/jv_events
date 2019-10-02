@@ -47,7 +47,7 @@ class FrontendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\Fronte
         $querysettings->setRespectStoragePage(FALSE) ;
         $querysettings->setRespectSysLanguage(FALSE) ;
 
-        $this->setDefaultQuerySettings($querySettings);
+        $this->setDefaultQuerySettings($querysettings);
     }
 
     /**
