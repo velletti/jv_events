@@ -240,8 +240,12 @@ class OrganizerController extends BaseController
             $msg .= "\n" . "Phone: " . $organizer->getPhone() ;
             $msg .= "\n" . "Link: " . $organizer->getLink() ;
             $msg .= "\n" ;
+
+            $html = nl2br($msg) ;
+            $html .= "<a href=\"" . $url . "\"> Klick To Enable  </a>" ;
+
             $msg .= "\n" . "Klick to Enable: \n" . $url ;
-            $this->sendDebugEmail( "tango@velletti.de" ,"info@tangomuenchen.de", "[TANGO][NewOrganizer] - " . $organizer->getEmail() , $msg) ;
+            $this->sendDebugEmail( "tango@velletti.de" ,"info@tangomuenchen.de", "[TANGO][NewOrganizer] - " . $organizer->getEmail() , $msg , $html) ;
 
 
             $this->showNoDomainMxError($organizer->getEmail() ) ;

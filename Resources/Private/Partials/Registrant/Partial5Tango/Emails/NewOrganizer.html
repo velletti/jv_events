@@ -1,0 +1,25 @@
+{namespace event=JVE\JvEvents\ViewHelpers}
+<f:if condition="{html}">
+	<f:then>
+		<h2 style="font-size: 22px; font-family: '{emConf.fontFamily}'; line-height: 1.25; margin: 0 0 20px; padding: 0;">
+			New Organizer ID: |
+
+		</h2>
+
+		<f:link.action  absolute="true" action="list" class="btn btn-primary" arguments="{event : event.uid, hash: settings.hash, export: 1}"> CSV Export </f:link.action>
+
+
+
+	</f:then>
+	<f:else>
+New Registrierung Organizer
+
+*********************************
+{signature.plain}
+
+	</f:else>
+</f:if>
+
+
+
+

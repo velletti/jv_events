@@ -486,7 +486,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      * @return boolean
      */
 
-    public function sendEmail(\JVE\JvEvents\Domain\Model\Event $event = NULL, \JVE\JvEvents\Domain\Model\Registrant $registrant = NULL , $partialName , $recipient , $otherEvents)
+    public function sendEmail(\JVE\JvEvents\Domain\Model\Event $event = NULL, \JVE\JvEvents\Domain\Model\Registrant $registrant = NULL , $partialName ='', $recipient=array() , $otherEvents=false)
     {
         if (!\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($this->settings['register']['senderEmail'])) {
             throw new \Exception('plugin.jv_events.settings.register.senderEmail is not a valid Email Address. Is needed as Sender E-mail');
@@ -516,11 +516,14 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             }
 
         }
-        $querysettings = new \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings ;
-        $querysettings->setStoragePageIds(array( $event->getPid() )) ;
+        if( $event ) {
+            $querysettings = new \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings ;
+            $querysettings->setStoragePageIds(array( $event->getPid() )) ;
 
-        $this->subeventRepository->setDefaultQuerySettings( $querysettings );
-        $subevents = $this->subeventRepository->findByEventAllpages($event->getUid() , FALSE ) ;
+            $this->subeventRepository->setDefaultQuerySettings( $querysettings );
+            $subevents = $this->subeventRepository->findByEventAllpages($event->getUid() , FALSE ) ;
+        }
+
 
         /** @var \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
         $renderer = $this->getEmailRenderer($templatePath = '', '/Registrant/Email/' . $this->settings['LayoutRegister']);
@@ -623,9 +626,10 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      * @param string $sender debug Email $sender
      * @param string $subject use a Subject that can be filtered like: [EVENT][ERROR] ...
      * @param string $plainMsg the message it self. Newlines will be splittet to br. Tcan be formated a litte bit
+     * @param string $htmlMsg the message it self.
      * @return bool
      */
-    public function sendDebugEmail($recipient,$sender ,$subject , $plainMsg ) {
+    public function sendDebugEmail($recipient,$sender ,$subject , $plainMsg , $htmlMsg = '') {
         /** @var $message \TYPO3\CMS\Core\Mail\MailMessage */
         $message = $this->objectManager->get('TYPO3\\CMS\\Core\\Mail\\MailMessage');
         $message->setTo($recipient)
@@ -637,8 +641,11 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             $message->setReturnPath($returnPath);
         }
 
-        $message->setBody(nl2br( $plainMsg), 'text/html');
-        $message->addPart(strip_tags( $plainMsg ), 'text/plain');
+        $message->setBody(strip_tags( $plainMsg ), 'text/plain');
+        if ( $htmlMsg ) {
+            $htmlMsg = nl2br( $plainMsg) ;
+        }
+        $message->addPart(strip_tags( $htmlMsg ), 'text/html');
 
 
         $message->send();
