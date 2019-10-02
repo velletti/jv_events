@@ -41,10 +41,11 @@ namespace JVE\JvEvents\Domain\Repository;
 class FrontendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository {
 
     public function initializeObject() {
-        $querySettings = $this->defaultQuerySettings ;
-        $querySettings->setIgnoreEnableFields(TRUE) ;
-        $querySettings->setRespectStoragePage(FALSE) ;
-        $querySettings->setRespectSysLanguage(FALSE) ;
+
+        $querysettings = new \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
+        $querysettings->setIgnoreEnableFields(TRUE) ;
+        $querysettings->setRespectStoragePage(FALSE) ;
+        $querysettings->setRespectSysLanguage(FALSE) ;
 
         $this->setDefaultQuerySettings($querySettings);
     }

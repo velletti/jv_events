@@ -651,14 +651,10 @@ class AjaxController extends BaseController
         /** @var \JVE\JvEvents\Domain\Model\Organizer $organizer */
         $organizer = $this->organizerRepository->findByUidAllpages($organizerUid, FALSE, TRUE);
 
-        //  $querysettings = new \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
-        // $querysettings->setIgnoreEnableFields(TRUE) ;
-        // $querysettings->setRespectStoragePage(FALSE) ;
-        // $querysettings->setRespectSysLanguage(FALSE) ;
+
 
         /** @var \JVE\JvEvents\Domain\Repository\FrontendUserRepository $userRepository */
         $userRepository = $this->objectManager->get("JVE\\JvEvents\\Domain\\Repository\\FrontendUserRepository") ;
-       // $userRepository->setDefaultQuerySettings($querysettings) ;
         /** @var \JVE\JvEvents\Domain\Model\FrontendUser $user */
         $user = $userRepository->findByUid($userUid) ;
 
