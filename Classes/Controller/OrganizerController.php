@@ -223,9 +223,8 @@ class OrganizerController extends BaseController
             $organizerUid = intval( $organizer->getUid()) ;
             $userUid = intval($GLOBALS['TSFE']->fe_user->user['uid']) ;
             $rnd = time() ;
-            $hmac = "";
             $tokenStr = "activateOrg" . "-" . $organizerUid . "-" . $GLOBALS['TSFE']->fe_user->user['crdate'] ."-". $userUid .  "-". $rnd ;
-            $tokenId = \TYPO3\CMS\Core\Utility\GeneralUtility::hmac( $tokenStr );
+            $hmac = \TYPO3\CMS\Core\Utility\GeneralUtility::hmac( $tokenStr );
 
             $url  = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST') ;
             $url .= "/index.php?uid=82&eID=jv_events&tx_jvevents_ajax[action]=activate" ;
