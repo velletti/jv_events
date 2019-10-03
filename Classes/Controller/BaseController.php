@@ -642,7 +642,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         }
 
         $message->setBody(strip_tags( $plainMsg ), 'text/plain');
-        if ( $htmlMsg ) {
+        if ( !$htmlMsg || $htmlMsg == '' ) {
             $htmlMsg = nl2br( $plainMsg) ;
         }
         $message->addPart(strip_tags( $htmlMsg ), 'text/html');
