@@ -153,7 +153,11 @@
 
 
 <f:section name="createButton">
-    <div class="card-group">
+    <div class="progress">
+        <div class="progress-bar bg-success" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"><f:translate key="LLL:EXT:jve_template/Resources/Private/Language/locallang.xlf:step" /> 4 / 5 </div>
+    </div>
+
+    <div class="card-group mt-4">
         <div class="card col-sm-6 px-0 mx-2">
             <div class="card-header">
                 <b>{f:translate(key: 'create.organizer.create.Headline', default: 'Want to become an Organizer?')} </b>
@@ -204,7 +208,10 @@
 
 
 <f:section name="stillHidden">
-    <div class="alert alert-warning">
+    <div class="progress">
+        <div class="progress-bar bg-success" role="progressbar" style="width: 95%" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"><f:translate key="LLL:EXT:jve_template/Resources/Private/Language/locallang.xlf:step" /> 5 / 5 </div>
+    </div>
+    <div class="alert alert-warning mt-4 ">
         <h3>Organizer Status: <span class="far fa-square"> </span> <span>inactiv</span></h3>
         <p>
             Your Account is not activated!<br>

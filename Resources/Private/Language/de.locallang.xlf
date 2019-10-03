@@ -833,16 +833,16 @@
             </trans-unit>
 
             <trans-unit id="create.organizer.create.Headline">
-                <source>Want to become an Organizer?</source>
-                <target>Du möchtest Veranstalter werden?</target>
+                <source>Want to have a NEW entry in Organizer list?</source>
+                <target>Du möchtest in der Veranstalterliste erscheinen?</target>
             </trans-unit>
             <trans-unit id="create.organizer.create.text">
                     <source>If you want to become a NEW Organizer, just click on this button and fill the Form</source>
                 <target>Um deine Veranstaltungen als NEUER Veranstalter einzutragen, einfach den nachfolgenden Button anklicken und das Formular ausfüllen</target>
             </trans-unit>
             <trans-unit id="create.organizer.AddUser.Headline">
-                <source>Want to manage an existing Organizer?</source>
-                <target>Bereits eingetragenen Veranstalter ändern?</target>
+                <source>Want to manage an existing entry in the Organizer list?</source>
+                <target>Du möchstest einen existierenden Veranstaltereintrag ändern?</target>
             </trans-unit>
             <trans-unit id="create.organizer.AddUser.text">
                 <source>You have just registered as new user but need to manage the events and data of an EXISTING Organizer?</source>
