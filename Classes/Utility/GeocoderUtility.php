@@ -192,7 +192,7 @@ class GeocoderUtility {
                 }
                 if ( address == "" ) {
                     if(document.getElementById("lat") && document.getElementById("lng") ) {
-					   address = document.getElementById("lat").val() + "," +document.getElementById("lng").val();
+					   address = document.getElementById("lat").value + "," +document.getElementById("lng").value;
 				    }
 				}
 				

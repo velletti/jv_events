@@ -225,14 +225,14 @@ function jv_events_refreshTags() {
 function jv_events_askPosition() {
    // if( jQuery('#jv_events_geo').data("askuser" )  == "1" && location.protocol == "https:") {
    //    console.log("jv_events_askPosition") ;
-   //   showSpinner() ;
+
     if( location.protocol == "https:") {
      //    console.log("location.protocol == \"https:\" ") ;
         if (navigator.geolocation) {
          //   console.log("navigator.geolocation ") ;
             navigator.geolocation.getCurrentPosition(jv_events_initPosition , jv_events_errorPosition);
-            jQuery("#geosearch input#geosearchbox").val('');
-            jQuery("#streetAndNr").val('');
+           // jQuery("#geosearch input#geosearchbox").val('');
+           // jQuery("#streetAndNr").val('');
 
 
         } else {
@@ -246,7 +246,6 @@ function jv_events_askPosition() {
     jQuery("#jvevents-geo-ok").addClass('opacity-4') ;
 
 
-    // hideSpinner() ;
 }
 
 //  ############   generic function for everyone: test if a spezific Parameter is in URL and return its value ###########
@@ -466,6 +465,7 @@ function jv_events_errorPosition() {
 function jv_events_initPosition(position) {
    // console.log( "init Position done, now store to fields") ;
 	if( jQuery('#jv_events_geo').length > 0  || jQuery('#lat').length > 0 ) {
+        showSpinner() ;
 	    if( position ) {
             if( position.coords ) {
                // console.log( "Position has coords") ;
@@ -480,6 +480,9 @@ function jv_events_initPosition(position) {
                     if( jQuery('#lng').length > 0  ) {
                         jQuery('#lng').val(position.coords.longitude);
                     }
+                    jQuery("#geosearch input#geosearchbox").val(position.coords.latitude + "," + position.coords.longitude);
+                    jQuery("#streetAndNr").val(position.coords.latitude + "," + position.coords.longitude);
+
                     // Set cookie for 365 days
                     var d = new Date();
                     d.setTime(d.getTime() + ( 24*60*60*1000 * 365));
@@ -501,7 +504,10 @@ function jv_events_initPosition(position) {
 
                         if( marker ) {
                             marker.setPosition(myPosition) ;
+                            hideSpinner() ;
                         }
+                    } else {
+                        hideSpinner() ;
                     }
 
 
@@ -513,8 +519,13 @@ function jv_events_initPosition(position) {
 
                     jQuery('#jv_events_geo_disp BUTTON').removeClass('btn-outline-secondary').addClass('btn-outline-primary')
                 }
+            } else {
+                hideSpinner();
             }
+        } else {
+            hideSpinner() ;
         }
+
         jQuery('#jv_events_geo_disp_sub').removeClass("d-none") ;
         jQuery('#jv_events_geo_disp_spinner').addClass("d-none") ;
     }
