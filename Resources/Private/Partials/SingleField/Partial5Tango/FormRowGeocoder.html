@@ -66,11 +66,16 @@
 </div>
 <div class="collapse" id="jvevents-geo-getpos-collapse">
     <div class="alert alert-secondary">
-        Wenn du möchtest, kann die Webseite deine aktuelle Position bestimmen und die Karte entsprechend zentrieren. <br>
+        <f:translate key="aks_for_position_intro">
+            Wenn du möchtest, kann die Webseite deine aktuelle Position bestimmen und die Entfernungen zu den Veranstaltungen entsprechend berechnen.
+        </f:translate> <br>
         <br>
-        Dazu wirst du, je nach Browser Optionen, noch gefragt, ob du dies erlauben möchstest.<br>
+        <f:translate key="aks_for_position_browser_and_cookie">
+            Dazu wirst du, je nach Browser Optionen, noch gefragt, ob du dies erlauben möchstest. Diese Koordinaten werden dann in deinem Bowser als Cookie gespeichert. Die Webseite selber wertet diese Eingaben nicht aus. Es erfolgt kein User Tracking! Ehrlich!
+        </f:translate>
         <br>
-        <span class="btn btn-outline-primary" onclick="jv_events_askPosition();">Position bestimmen</span>
+        <br>
+        <span class="btn btn-outline-primary" onclick="jv_events_askPosition();"><f:translate key="select-position-btn">Position bestimmen  </f:translate></span>
     </div>
 </div>
 <div id="map" style="height:300px;"></div>

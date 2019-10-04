@@ -849,6 +849,14 @@
                 <target>Du bist neu registriert, möchstest aber die bereits eingetragene(n) Veranstaltung(en) und Daten eines EXISTIERENDEN Veranstalters ändern? </target>
             </trans-unit>
 
+            <trans-unit id="aks_for_position_intro">
+                <source>If you like, you can give the browser access to you actual position to compute the distance to the tango locations.</source>
+                <target>Wenn du möchtest, kann die Webseite deine aktuelle Position bestimmen und die Entfernungen zu den Veranstaltungen entsprechend berechnen.</target>
+            </trans-unit>
+            <trans-unit id="aks_for_position_browser_and_cookie">
+                <source>If you do so, the browser will ask you to get access. If you confirm this, the browser will store the geo position as Cookie on your computer. the  tangomuenchen.de and tangobayern.de itself does not store this and also will not track you by the position. Really! We do NO User tracking!</source>
+                <target>Dazu wirst du, je nach Browser Optionen, noch gefragt, ob du dies erlauben möchstest. Diese Koordinaten werden dann in deinem Bowser als Cookie gespeichert. tangomuenchen.de und tangobayern.de wertet diese Eingaben nicht aus. Es erfolgt kein User Tracking! Ehrlich!</target>
+            </trans-unit>
 		</body>
 	</file>
 </xliff>

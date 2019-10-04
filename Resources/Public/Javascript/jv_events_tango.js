@@ -601,16 +601,19 @@ function jv_events_refreshList(){
     var needTohide = false ;
     var lastDay = false ;
     var needTohideDay = true ;
+    var streetNrString = false ;
     if ( jQuery('#jv_events_geo').length ) {
         var userLat = getCookie('tx_events_lat' ) ;
         if ( userLat )   {
             jQuery('#jv_events_geo').data("lat" , userLat)
+            streetNrString = userLat + "," ;
         } else {
             userLat = jQuery('#jv_events_geo').data("lat") ;
         }
         var userLng = getCookie('tx_events_lng' ) ;
         if ( userLng )   {
             jQuery('#jv_events_geo').data("lng" , userLng)
+            streetNrString = streetNrString + userLng ;
         } else {
             userLng = jQuery('#jv_events_geo').data("lng") ;
         }
@@ -618,9 +621,13 @@ function jv_events_refreshList(){
 
         if( jQuery('#lat').length > 0  && jQuery('#lat').val() > 5 ) {
             userLat = jQuery('#lat').val();
+
         }
         if( jQuery('#lng').length > 0  && jQuery('#lng').val() > 5 ) {
             userLng = jQuery('#lng').val();
+        }
+        if ( !streetAndNr === false && jQuery('#streetAndNr').length > 0 ) {
+            jQuery('#streetAndNr').val(streetNrString) ;
         }
     }
 
