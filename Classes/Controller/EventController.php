@@ -699,7 +699,7 @@ class EventController extends BaseController
         }
         $this->persistenceManager->persistAll() ;
 
-        $arguments = array ( 'overruleFilter' => array( 'organizer' => $orgId , 'category' => true , 'maxDays' => 90 )) ;
+        $arguments = array ( 'overruleFilter' => array( 'organizer' => $orgId , 'category' => 'true' , 'maxDays' => 90 )) ;
 
         $this->redirect('list' , null , null , $arguments, $this->settings['pageIds']['eventList']);
     }
