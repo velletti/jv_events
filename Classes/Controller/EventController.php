@@ -742,10 +742,10 @@ class EventController extends BaseController
      */
 	public function cleanEventArguments(\JVE\JvEvents\Domain\Model\Event  $event)
     {
-        // validation should be done in validatar class so we can ignore issue with wrong format
-
+        // Type validation should be done in validator class so we can ignore issue with wrong format
         $eventArray = $this->request->getArgument('event');
-        // Update the Category
+
+        /*   +******  Update the Category  ************* */
         $eventCatUid = intval($eventArray['eventCategory']) ;
         /** @var \JVE\JvEvents\Domain\Model\Category $eventCat */
         $eventCat = $this->categoryRepository->findByUid($eventCatUid) ;
@@ -756,6 +756,8 @@ class EventController extends BaseController
             }
             $event->addEventCategory($eventCat) ;
         }
+
+
         // Update the Tags
         $eventTagUids = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode("," , $eventArray['tagsFE'] , true ) ;
         if( is_array($eventTagUids) && count($eventTagUids) > 0  ) {
