@@ -632,9 +632,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     public function sendDebugEmail($recipient,$sender ,$subject , $plainMsg , $htmlMsg = '') {
         /** @var $message \TYPO3\CMS\Core\Mail\MailMessage */
         $message = $this->objectManager->get('TYPO3\\CMS\\Core\\Mail\\MailMessage');
-        $message->setTo($recipient)
-            ->setFrom($sender)
-            ->setSubject($subject);
+
 
         $returnPath = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFromAddress();
         if ( $returnPath != "no-reply@example.com") {
@@ -643,11 +641,15 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
         $message->setBody(strip_tags( $plainMsg ), 'text/plain');
         if ( !$htmlMsg || $htmlMsg == '' ) {
-            $htmlMsg =  $plainMsg ;
+            $htmlMsg =  nl2br( $plainMsg );
+            $subject .= " - converted" ;
         }
-        $htmlMsg = nl2br( $htmlMsg) ;
-        $message->addPart(strip_tags( $htmlMsg ), 'text/html');
 
+        $message->addPart( $htmlMsg , 'text/html');
+
+        $message->setTo($recipient)
+            ->setFrom($sender)
+            ->setSubject($subject);
 
         $message->send();
     }

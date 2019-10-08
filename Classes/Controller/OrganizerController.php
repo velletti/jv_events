@@ -234,17 +234,18 @@ class OrganizerController extends BaseController
             $url .= "&tx_jvevents_ajax[rnd]=" . $rnd ;
             $url .= "&tx_jvevents_ajax[hmac]=" . $hmac ;
 
-                $msg = "// toDo set Up a better Email to Admin with info about new Organizer, a link to active etc" ;
-            $msg .= "\n" . "Name: " . $organizer->getName() ;
+            $msg = "A new organizer has registered:" ;
+            $msg .= "\n\n" . "Name: " . $organizer->getName() ;
             $msg .= "\n" . "Email: " . $organizer->getEmail() ;
             $msg .= "\n" . "Phone: " . $organizer->getPhone() ;
             $msg .= "\n" . "Link: " . $organizer->getLink() ;
+            $msg .= "\n\n\n" . "Description: " . $organizer->getDescription() ;
             $msg .= "\n" ;
 
             $html = nl2br($msg) ;
-            $html .= "\n" . "\n" . "<a href=\"" . $url . "\"> Klick To Enable  </a>" ;
+            $html .= "<br>" . "<hr><br>" . '<a href="' . $url . '"> Klick To Enable  </a>' ."\n" . "\n" . $url ;
 
-            $msg .= "\n" . "Klick to Enable: \n" . $url ;
+            $msg .= "\n\n" . "Klick to Enable: \n \n" . $url ;
             $this->sendDebugEmail( "tango@velletti.de" ,"info@tangomuenchen.de", "[TANGO][NewOrganizer] - " . $organizer->getEmail() , $msg , $html) ;
 
 
