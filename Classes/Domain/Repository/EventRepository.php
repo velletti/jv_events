@@ -38,7 +38,7 @@ class EventRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 	protected $defaultOrderings = array(
 		'start_date' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING ,
 		'start_time' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING ,
-        'sorting' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
+        'tstamp' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING
 	);
 
     public function findByUidAllpages($uid , $toArray=TRUE , $ignoreEnableFields = TRUE )
