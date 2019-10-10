@@ -113,6 +113,17 @@
                              <f:translate key="event_delete_question">
                                  This will delete the event without info.
                              </f:translate><br>
+                             <f:if condition="{output.event.masterId}">
+                                 <b>
+                                     <f:translate key="event_delete_question_SameMaster" arguments="{0: output.event.sameMasterId}">
+                                         <br>
+                                         Also delete the {output.event.sameMasterId} following copies of this event?
+
+                                     </f:translate>
+                                     <f:form.checkbox class="ml-3" name="jv_events_deleteFutureEvents"  value="1" onclick="$('#jv_events_delete_btn').toggle();$('#jv_events_delete_btn_all').toggle();"/><br><br>
+
+                                 </b>
+                             </f:if>
                              <f:translate key="event_delete_are_you_sure">
                                  Are you sure?
                              </f:translate><br>
@@ -122,9 +133,17 @@
                 <f:variable name="deleteModalFooter">
                     <f:format.raw>
                         <f:spaceless>
-                            <f:link.action pageUid="{settings.pageIds.editEvent}" class="nav-link" title="delete Event" action="delete" controller="Event" arguments="{event: output.event.eventId}">
+                            <f:link.action id="jv_events_delete_btn" pageUid="{settings.pageIds.editEvent}"  noCacheHash="true" class="nav-link" title="delete Event" action="delete" controller="Event" arguments="{event: output.event.eventId , deleteFutureEvents: 0}">
                                 <button class="btn btn-primary btn-xs " href="#">
-                                    <i class="fas fa-trash "></i> <span class="mx-1"><f:translate key="event_delete_really_button">
+                                    <i class="fas fa-trash "></i> <span class="mx-1">
+                                    <f:translate key="event_delete_really_button">
+                                        Delete really!
+                                    </f:translate></span>
+                                </button>
+                            </f:link.action>
+                            <f:link.action id="jv_events_delete_btn_all" pageUid="{settings.pageIds.editEvent}" style="display:none;" noCacheHash="true" class="nav-link" title="delete Event" action="delete" controller="Event" arguments="{event: output.event.eventId , deleteFutureEvents: 1}">
+                                <button class="btn btn-primary btn-xs " href="#">
+                                    <i class="fas fa-trash "></i> {output.event.sameMasterId}x <span class="mx-1"><f:translate key="event_delete_really_button">
                                  Delete really!
                              </f:translate></span>
                                 </button>

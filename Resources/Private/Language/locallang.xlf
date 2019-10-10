@@ -366,12 +366,19 @@
              <trans-unit id="event_delete_question">
                 <source>This will delete the event without info.</source>
              </trans-unit>
+              <trans-unit id="event_delete_question_SameMaster">
+                 <source>Also delete the %1s following copies of this event?</source>
+              </trans-unit>
+
+
+
             <trans-unit id="event_delete_are_you_sure">
                 <source>Are you sure?</source>
             </trans-unit>
             <trans-unit id="event_delete_realy_button">
                 <source>Really delete!</source>
             </trans-unit>
+
 
 
            <trans-unit id="tx_jvevents_domain_model_event.edit.repeating.headline">

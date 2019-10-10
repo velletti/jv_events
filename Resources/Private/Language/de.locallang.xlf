@@ -460,6 +460,11 @@
                 <source>This will delete the event without info.</source>
                 <target>Dies löscht den Termin ohne Weitere Information.</target>
              </trans-unit>
+              <trans-unit id="event_delete_question_SameMaster">
+                  <source>Also delete the %1s following copies of this event?</source>
+                  <target>Auch die %1s folgenden Kopien nach diesen Termin löschen?</target>
+               </trans-unit>
+
             <trans-unit id="event_delete_are_you_sure">
                 <source>Are you sure?</source>
                 <target>Bist du sicher?</target>

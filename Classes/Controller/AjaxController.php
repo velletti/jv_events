@@ -334,6 +334,24 @@ class AjaxController extends BaseController
                 } else {
                     $output['event']['moreDays'] = [] ;
                 }
+                if( $event->getMasterId() > 0 ) {
+                    $querysettings = new \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings ;
+                    $querysettings->setStoragePageIds(array( $event->getPid() )) ;
+
+                    $this->eventRepository->setDefaultQuerySettings( $querysettings );
+                    $filter = array() ;
+                    $filter['startDate'] = $event->getStartDate()->getTimestamp() ;
+                    $filter['maxDays'] = 999 ;
+                    $filter['skipEvent'] = $event->getUid() ;
+                    $filter['masterId']  = $event->getMasterId() ;
+
+                    $sameMaster = $this->eventRepository->findByFilter($filter ) ;
+                    $output['event']['masterId'] =  $event->getMasterId() ;
+                    $output['event']['sameMasterId'] =  $sameMaster->count()  ;
+
+                } else {
+                    $output['event']['masterId'] = false ;
+                }
             }
         }
 

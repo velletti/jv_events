@@ -669,16 +669,48 @@ class EventController extends BaseController
      * action delete
      *
      * @param \JVE\JvEvents\Domain\Model\Event $event
+     * @param integer $deleteFutureEvents
      * @return void
      */
-    public function deleteAction(\JVE\JvEvents\Domain\Model\Event $event)
+    public function deleteAction(\JVE\JvEvents\Domain\Model\Event $event , $deleteFutureEvents = 0)
     {
+
+        if($this->request->hasArgument('deleteFutureEvents') ) {
+            $deleteFutureEvents = $this->request->getArgument('deleteFutureEvents') ;
+        }
         $orgId = $event->getOrganizer() ;
         if ( $this->hasUserAccess($event->getOrganizer() )) {
             $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
 
             try {
+                $masterId = $event->getMasterId() ;
+
                 $this->eventRepository->remove($event) ;
+
+                if( $masterId && $deleteFutureEvents) {
+                    $querysettings = new \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings ;
+                    $querysettings->setStoragePageIds(array( $event->getPid() )) ;
+
+                    $this->eventRepository->setDefaultQuerySettings( $querysettings );
+                    $filter = array() ;
+                    $filter['startDate'] = $event->getStartDate()->getTimestamp() ;
+                    $filter['maxDays'] = 999 ;
+                    $filter['skipEvent'] = $event->getUid() ;
+                    $filter['masterId']  = $event->getMasterId() ;
+
+                    $otherEvents = $this->eventRepository->findByFilter($filter ) ;
+                    /** @var \JVE\JvEvents\Domain\Model\Event $otherEvent */
+                    if ( count($otherEvents) > 0 ) {
+                        $otherDaysText = count($otherEvents) . " Copies: "  ;
+                        foreach ( $otherEvents as $otherEvent ) {
+                            if( $otherEvent) {
+                                $otherDaysText .= $otherEvent->getStartDate()->format("d.M-Y") .  " (Id:" . $otherEvent->getUid() ."), " ;
+                                $this->eventRepository->remove($otherEvent) ;
+                            }
+                        }
+                        $otherDaysText .= " also deleted." ;
+                    }
+                }
 
                 // got from EM Settings
                 $clearCachePids = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode("," , $this->settings['EmConfiguration']['clearCachePids']) ;
@@ -687,6 +719,9 @@ class EventController extends BaseController
                     $this->addFlashMessage('The object was successfully deleted and Cache of following pages are cleared: ' . implode("," , $clearCachePids), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
                 } else {
                     $this->addFlashMessage('The Event was deleted.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+                }
+                if( $otherDaysText ) {
+                    $this->addFlashMessage($otherDaysText, '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
                 }
 
             } catch ( \Exception $e ) {
