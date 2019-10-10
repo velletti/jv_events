@@ -89,21 +89,28 @@ class RegistrantRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 
         $query = $this->createQuery();
         // $query->getQuerySettings()->setReturnRawQueryResult(TRUE);
-        if ( $pid > 0 ) {
+        $pageIds = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode( "," , $settings['storagePids'], true)  ;
 
-            $pageIds = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode( "," , $settings['storagePids'], true)  ;
+        if ( $pid > 0  || count($pageIds) > 0 ) {
+
+
             if ( count($pageIds) > 0 ) {
                 $additionalWhere = ' AND find_in_set( pid , "' .  $settings['storagePids'] . '" ) '  ;
             } else {
                 $additionalWhere = ' AND pid = ' . $pid  ;
             }
+            if ( $settings['filter']['startDate'] < -20 ) {
 
+                $additionalWhere .= ' AND tstamp > ' . mktime( 0 , 0 , 0 , date("m") , intval( date("d") + $settings['filter']['startDate'] ) , date("y") ) ;
+            }
         } else {
+            if ( $settings['filter']['startDate'] < -20 ) {
 
-            $additionalWhere = ' AND crdate > ' . mktime( 0 , 0 , 0 , date("m") , intval( date("d") + $settings['filter']['startDate'] ) , date("y") ) ;
+                $additionalWhere = ' AND tstamp > ' . mktime( 0 , 0 , 0 , date("m") , intval( date("d") + $settings['filter']['startDate'] ) , date("y") ) ;
+            }
         }
-
-
+       // echo $additionalWhere ;
+       // die;
         $query->statement('SELECT event from tx_jvevents_domain_model_registrant where deleted = 0 ' . $additionalWhere . ' Group By event ');
         $regevents = $query->execute(true) ;
         // var_dump($regevents) ;
@@ -157,6 +164,9 @@ class RegistrantRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 
         if($eventID > 0 ) {
             $constraints[] = $query->equals("event", $eventID);
+        }
+        if ( $settings['filter']['startDate'] < -1 ) {
+            $constraints[] = $query->greaterThan("crdate", time() + ( 60*60*24 ) * intval($settings['filter']['startDate'] ));
         }
 
         if(count($constraints) > 0 ) {
