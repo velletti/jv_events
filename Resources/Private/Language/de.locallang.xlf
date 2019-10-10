@@ -462,7 +462,7 @@
              </trans-unit>
               <trans-unit id="event_delete_question_SameMaster">
                   <source>Also delete the %1s following copies of this event?</source>
-                  <target>Auch die %1s folgenden Kopien nach diesen Termin löschen?</target>
+                  <target>Sowie die %1s folgenden Kopien dieses Termins</target>
                </trans-unit>
 
             <trans-unit id="event_delete_are_you_sure">
