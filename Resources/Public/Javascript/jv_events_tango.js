@@ -354,36 +354,6 @@ function jv_events_init() {
     }
 
 
-
-        /*
-        // Set the fieldsets to the same height
-        if($('.filter').length ){
-            if( $('body').hasClass('lg') ) {
-                $('.filter').each(function(){
-
-                    var heightBiggestElement = 0;
-
-                    $(this).find('fieldset').each(function(){
-                        if($(this).height() > heightBiggestElement) {
-                            heightBiggestElement = $(this).height();
-                        }
-                    });
-                    $(this).find('fieldset').each(function(){
-                        $(this).css("min-height" , heightBiggestElement);
-                    });
-
-                });
-            } else {
-                if($('.filter fieldset').length ){
-                    $('.filter fieldset').each(function(){
-                        $(this).width('100%') ;
-                    });
-                }
-            }
-
-        }
-        */
-
     $('#jv-events-filter-sub').on('resize' , function () {
         if( $("#jv-events-filter-sub").hasClass('show')) {
             $("#jv_events_geo_disp").addClass("d-none") ;
@@ -567,8 +537,9 @@ function jv_events_initOneFilter(filterName) {
                 });
             }
         } else {
+            // default No Tag is selected
             jQuery('#jv_events_filter_' + filterName + ' input[type=checkbox]').each(function(i) {
-                jQuery(this).prop("checked", true);
+                jQuery(this).prop("checked", false);
             });
         }
     }
