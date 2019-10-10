@@ -99,8 +99,15 @@ class RegistrantRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             } else {
                 $additionalWhere = ' AND pid = ' . $pid  ;
             }
+            if ( $settings['filter']['startDate'] < -20 ) {
+
+                $additionalWhere .= ' AND tstamp > ' . mktime( 0 , 0 , 0 , date("m") , intval( date("d") + $settings['filter']['startDate'] ) , date("y") ) ;
+            }
         } else {
-            $additionalWhere = ' AND crdate > ' . mktime( 0 , 0 , 0 , date("m") , intval( date("d") + $settings['filter']['startDate'] ) , date("y") ) ;
+            if ( $settings['filter']['startDate'] < -20 ) {
+
+                $additionalWhere = ' AND tstamp > ' . mktime( 0 , 0 , 0 , date("m") , intval( date("d") + $settings['filter']['startDate'] ) , date("y") ) ;
+            }
         }
        // echo $additionalWhere ;
        // die;

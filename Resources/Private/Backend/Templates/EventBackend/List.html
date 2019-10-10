@@ -57,7 +57,7 @@
 	</div>
 
 
-<h2><f:count>{registrants}</f:count> Registrations</h2>
+<h2><f:count>{registrants}</f:count> Registrations {f:if( condition: '{onlyActual}' , then: 'in the last {onlyActual} Days' )} </h2>
 	<f:if condition="events">
 		<f:if condition="{settings.directmail}">
 			<div>
@@ -72,7 +72,7 @@
 			<input type="hidden" name="uid" value="{plugin.uid}" /><f:form.hidden name="pluginUid" value="{plugin.uid}" />
 			<f:form.select name="event" value="{event}" additionalAttributes="{onchange: 'document.getElementById(\'jveventFilterForm\').submit();'}" id="jvevents" property="event" options="{events}" optionLabelField="name" sortByOptionLabel="TRUE" prependOptionLabel="-" prependOptionValue="0"></f:form.select>
 			<br><f:form.checkbox name="recursive" id="recursive" property="recursive"  value="1" checked="{recursive} == 1" additionalAttributes="{onchange: 'document.getElementById(\'jveventFilterForm\').submit();'}" /> Search also subpages of Page ID: {pageId}
-			<br><f:form.checkbox name="onlyActual" id="onlyActual" property="onlyActual"  value="-30" checked="{onlyActual} == -30" additionalAttributes="{onchange: 'document.getElementById(\'jveventFilterForm\').submit();'}" /> not older than 30 Days
+			<br><f:form.checkbox name="onlyActual" id="onlyActual" property="onlyActual"  value="-90" checked="{onlyActual} == -90" additionalAttributes="{onchange: 'document.getElementById(\'jveventFilterForm\').submit();'}" /> not older than 90 Days
 		</f:form>
 
 	</f:if>
