@@ -124,7 +124,13 @@ class EventRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             }
         }
 
+        if( $settings['filter']['masterId']  ) {
+            $constraints[] = $query->equals("masterId",  $settings['filter']['masterId'] );
+        }
 
+        if( $settings['filter']['organizer']  ) {
+            $constraints[] = $query->equals("organizer",  $settings['filter']['organizer'] );
+        }
 
         // $query->getQuerySettings()->setIgnoreEnableFields(FALSE) ;
 		if( $settings['filter']['skipEvent'] > 0 ) {
