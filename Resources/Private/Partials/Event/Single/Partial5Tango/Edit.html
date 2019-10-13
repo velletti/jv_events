@@ -1,4 +1,5 @@
 {namespace jve=JVE\JvEvents\ViewHelpers}
+{namespace vhs=FluidTYPO3\Vhs\ViewHelpers\Page}
 
 <f:if condition="{event}">
     <f:else>
@@ -8,6 +9,7 @@
         </div>
     </f:else>
     <f:then>
+        <f:variable name="uri"><vhs:absoluteUrl></vhs:absoluteUrl></f:variable>
         <div class="card col-12 text-white bg-primary  jv-events-partial{settings.LayoutSingle}" id="jv-event-edit-data">
             <div class="card-header"> <span class="glyphicon glyphicon-edit"></span>
                 <span class="fas fa-edit border-primary rounded-circle"></span>
@@ -16,6 +18,11 @@
             <div class="card-body text-black-50 bg-white row">
                 <div class="col-md-4 equalHeight">
                     <f:render partial="FeEditHelp" arguments="{section: 'event', object: event , settings: settings , user: user}" />
+                    <br>
+                    <br>
+                    <f:render partial="Helper/Bootstrap4/Share"  arguments="{object: 'event', event: event, uri: uri, uids: 'User: {user} | Event: {object.uid} | LocationId: {object.location.uid}', settings: settings}"></f:render>
+
+                    <div id="jvEventsCopyUrl{event.uid}" class="small text-white-50">{uri}</div>
                 </div>
                 <div class="col-md-8 equalHeight">
                     <f:render partial="HasFormErrors" arguments="{object:event, debug: 'true' }" />
