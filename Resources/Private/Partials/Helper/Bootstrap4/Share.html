@@ -7,8 +7,10 @@
 
     <a style="font-size: 1.5em;" class="m-2 btn btn-outline-primary" href="mailto://?subject={date}:%20{event.name}&body=Siehe %0D%0A %0D%0A {uri} {f:if(condition: uids , then '%0D%0A %0D%0A {uids}')}' %0D%0A %0D%0A {event.teaser -> f:format.urlencode()} %0D%0A %0D%0A"><i class="fa fa-envelope"></i> </a>
     <button onclick="alert('copied to clipboard. use STRG-V ');" style="font-size: 1.5em;" class="copy2clip m-2 btn btn-outline-primary" data-clipboard-action="copy" data-clipboard-target="#jvEventsCopyUrl{event.uid}"><i class="fa fa-copy"> </i> </button>
-
-    <div class="d-sm-none ">
+    <a  style="font-size: 1.5em; color: #00acee;" class="m-2 btn btn-outline-info" href="https://twitter.com/intent/tweet?hashtags=tango_muc&poriginal_refererurl={uri}&text={date -> f:format.urlencode()}%20{event.name -> f:format.urlencode()}%20{uri -> f:format.urlencode()}">
+        <i class="fab  fa-twitter"></i>
+    </a>
+    <span class="d-sm-none ">
         <a style="font-size: 1.5em; color: #25D366;" class="m-2 btn btn-outline-success" href="whatsapp://send?text={date}:%20{event.name}%20{uri -> f:format.urlencode()}">
             <i class="fab fa-whatsapp"></i>
         </a>
@@ -20,11 +22,9 @@
         <a style="font-size: 1.5em; color: #0088cc;" class="m-2 btn btn-outline-secondary" href="tg://share?url={uri}?t=12&text={date -> f:format.urlencode()}%20{event.name -> f:format.urlencode()}">
             <i class="fab  fa-telegram"></i>
         </a>
-    </div>
+    </span>
 
-    <a  style="font-size: 1.5em; color: #00acee;" class="m-2 btn btn-outline-info" href="https://twitter.com/intent/tweet?hashtags=tango_muc&poriginal_refererurl={uri}&text={date -> f:format.urlencode()}%20{event.name -> f:format.urlencode()}%20{uri -> f:format.urlencode()}">
-        <i class="fab  fa-twitter"></i>
-    </a>
+
     <f:comment>
         <a class="m-2 btn btn-outline-secondary" href="">
             <i class="fab  fa-facebook"></i>

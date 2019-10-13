@@ -1,5 +1,5 @@
-
-
+{namespace vhs=FluidTYPO3\Vhs\ViewHelpers\Page}
+{namespace jve=JVE\JvEvents\ViewHelpers}
 
 	<button data-toggle="modal" data-target="#HelpModal" class="btn btn-primary btn-xs " href="#">
 		<i class="fas fa-question-circle "> </i> <span class="d-md-inline">Hilfe</span>
@@ -74,11 +74,12 @@
 </f:section>
 
 <f:section name="event">
-
+	<f:variable name="uri"><vhs:absoluteUrl></vhs:absoluteUrl></f:variable>
 	<f:variable name="helpModalBody">
 		<f:format.raw>
 			<f:spaceless>
 				nur Geduld .. hier gibt es irgendwann die Hilfe Texte ..<br>
+				<f:render partial="Helper/Bootstrap4/Share"  arguments="{object: 'event', event: event, uri: uri, uids: 'User: {user} | Event: {object.uid} | LocationId: {object.location.uid}', settings: settings}"></f:render>
 
 			</f:spaceless>
 		</f:format.raw>
