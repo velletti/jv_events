@@ -283,6 +283,31 @@
 						</TCEforms>
 					</settings.filter.tags>
 
+					<settings.filter.topEvents>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.topEvents</label>
+							<config>
+								<type>select</type>
+								<items type="array">
+									<numIndex index="0" type="array">
+										<numIndex index="0">LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.topEvents.all</numIndex>
+										<numIndex index="1">0</numIndex>
+									</numIndex>
+									<numIndex index="1" type="array">
+										<numIndex index="0">LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.topEvents.only</numIndex>
+										<numIndex index="1">1</numIndex>
+									</numIndex>
+									<numIndex index="2" type="array">
+										<numIndex index="0">LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.topEvents.also</numIndex>
+										<numIndex index="1">2</numIndex>
+									</numIndex>
+
+								</items>
+
+							</config>
+						</TCEforms>
+					</settings.filter.topEvents>
+
 				</el>
 
 			</ROOT>

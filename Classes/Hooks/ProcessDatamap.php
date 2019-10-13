@@ -358,12 +358,7 @@ class ProcessDatamap {
             'StartDate' =>  $startD   ,
             'Typo3Id__c' =>  $this->event->getUid()    ,
 
-            'Status' =>  'ongoing'   ,  // see https://doc.allplan.com/display/SFDOC/Event+Registration+Mapping+Tables
-            // and https://doc.allplan.com/display/SFDOC/Event+Campaign+Definition maybe  replaced by "ongoing"
-
-            'Type' =>  'Outbound - Event'   ,
             'AllplanOrganization__c' =>  '300'   , // will be overwritten later
-            'ListPricePerCampaignMember__c' =>  $this->event->getPrice() ,
 
         ) ;
 
@@ -456,6 +451,14 @@ class ProcessDatamap {
 
         } else {
             // Insert
+
+            $data['Status']  =  'ongoing'   ;  // see https://doc.allplan.com/display/SFDOC/Event+Registration+Mapping+Tables
+            // and https://doc.allplan.com/display/SFDOC/Event+Campaign+Definition maybe  replaced by "ongoing"
+
+            $data['Type'] =  'Outbound - Event'   ;
+            $data['ListPricePerCampaignMember__c'] =  $this->event->getPrice() ;
+
+
             $url = $settings['SFREST']['instance_url'] . "/services/data/v30.0/sobjects/Campaign/" ;
             $sfResponse = $this->sfConnect->getCurl($url , $settings['SFREST']['access_token'] , "201" ,  $data , false , false )  ;
             $this->flashMessage['NOTICE'][] = 'Store Campaign in Salesforce: ' .var_export( $sfResponse , true )  ;

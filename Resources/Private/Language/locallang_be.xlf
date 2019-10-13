@@ -151,6 +151,18 @@
 			<trans-unit id="plugin.filter.combineTags">
 				<source>Combine Selected Tags in Filter with AND </source>
 			</trans-unit>
+			<trans-unit id="plugin.filter.topEvents">
+				<source>Show Events based on the TopEvent Field value </source>
+			</trans-unit>
+			<trans-unit id="plugin.filter.topEvents.all">
+				<source>0 - ignore Top Event Filter (default) </source>
+			</trans-unit>
+			<trans-unit id="plugin.filter.topEvents.only">
+				<source>1 - All other Filters must fit AND Event must be marked as Top Event</source>
+			</trans-unit>
+			<trans-unit id="plugin.filter.topEvents.also">
+				<source>2 - If Event is marked as Top Event it will be listed, even other filters does not fit</source>
+			</trans-unit>
 
 		<trans-unit id="plugin.filter.ShowAllCategories" xml:space="preserve">
 			<source>All Categories (If you select also this Option, the Event must have All of the other selected  Category filters)</source>

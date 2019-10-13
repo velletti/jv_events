@@ -93,6 +93,45 @@ class EventRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         }
 
 
+        $constraintsTagsCat = array() ;
+        if( $settings['filter']['categories']  ) {
+            $constraintsTagsCat = $this->getCatContraints($constraintsTagsCat,  $settings , $configuration , $query );
+        }
+        if( $settings['filter']['tags']  ) {
+            $constraintsTagsCat = $this->getTagContraints($constraintsTagsCat,  $settings , $configuration , $query );
+        }
+
+        // Add filter for AND event is marked as TOP Event
+        if( $settings['filter']['topEvents'] == 1 ) {
+            $constraintsTagsCat[] = $query->equals("top_event",  1);
+            $constraints[] = $query->logicalAnd($constraintsTagsCat) ;
+        } else {
+
+            // Add filter for OR event is marked as TOP Event
+            // all other TAG or Cat Contraints should be resolved before !!
+            if( $settings['filter']['topEvents'] == 2 ) {
+                if( count($constraintsTagsCat) > 0 ) {
+                    $constraintsTop[] = $query->logicalAnd($constraintsTagsCat);
+                    $constraintsTop[] = $query->equals("top_event", 1);
+                    $constraints[] = $query->logicalOr($constraintsTop);
+                } else {
+                    $constraints[] = $query->equals("top_event", 1);
+                }
+            } else {
+                if( count($constraintsTagsCat) > 0 ) {
+                    $constraints[] = $query->logicalAnd($constraintsTagsCat) ;
+                }
+            }
+        }
+
+        if( $settings['filter']['masterId']  ) {
+            $constraints[] = $query->equals("masterId",  $settings['filter']['masterId'] );
+        }
+
+        if( $settings['filter']['organizer']  ) {
+            $constraints[] = $query->equals("organizer",  $settings['filter']['organizer'] );
+        }
+
         // $query->getQuerySettings()->setIgnoreEnableFields(FALSE) ;
 		if( $settings['filter']['skipEvent'] > 0 ) {
 			$constraints[] = $query->logicalNot( $query->equals("uid" , $settings['filter']['skipEvent'])) ;
@@ -101,18 +140,8 @@ class EventRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 		if( $settings['storagePid'] > 0 ) {
 			$constraints = $this->getPidContraints($constraints,  $settings , $configuration , $query );
 		}
-		if( $settings['filter']['categories']  ) {
-			$constraints = $this->getCatContraints($constraints,  $settings , $configuration , $query );
-		}
-        if( $settings['filter']['masterId']  ) {
-            $constraints[] = $query->equals("masterId",  $settings['filter']['masterId'] );
-        }
-        if( $settings['filter']['tags']  ) {
-            $constraints = $this->getTagContraints($constraints,  $settings , $configuration , $query );
-        }
-        if( $settings['filter']['organizer']  ) {
-            $constraints[] = $query->equals("organizer",  $settings['filter']['organizer'] );
-        }
+
+
 
         if( $settings['filter']['citys']  ) {
             $constraints[] = $query->logicalAnd( $query->in("location" , \TYPO3\CMS\CORE\Utility\GeneralUtility::trimExplode( "," , $settings['filter']['citys'])) ) ;
@@ -134,9 +163,14 @@ class EventRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         $constraints[] = $query->logicalOr($subconstraints) ;
         $constraints[] = $query->lessThanOrEqual('starttime', $actualTime );
 
-        if (count($constraints) >  0) {
+
+
+
+
+        if (count($constraints) >  0 ) {
             $query->matching($query->logicalAnd($constraints));
         }
+
 
 		if( intval( $settings['filter']['maxEvents'] ) > 0 )  {
 			$query->setLimit( intval( $settings['filter']['maxEvents'])) ;
@@ -147,6 +181,7 @@ class EventRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         $result = $query->execute();
 		// $settings['debug'] = 2 ;
 		if ($settings['debug'] == 2 ) {
+
             $queryParser = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class);
 
             $sqlquery = $queryParser->convertQueryToDoctrineQueryBuilder($query)->getSQL() ;
