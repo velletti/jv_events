@@ -1,9 +1,9 @@
 
-
+{namespace jve=JVE\JvEvents\ViewHelpers}
 
 <f:if condition="{object = 'event'}">
 
-    <f:variable name="date">{event.startDate -> f:format.date(format:"d.m.Y")} - {event.startTime -> event:format.date( format:"H:i")}</f:variable>
+    <f:variable name="date">{event.startDate -> f:format.date(format:"d.m.Y")} - {event.startTime -> jve:format.date( format:"H:i")}</f:variable>
 
     <a style="font-size: 1.5em;" class="m-2 btn btn-outline-primary" href="mailto://?subject={date}:%20{event.name}&body=Siehe %0D%0A %0D%0A {uri} {f:if(condition: uids , then '%0D%0A %0D%0A {uids}')}' %0D%0A %0D%0A {event.teaser -> f:format.urlencode()} %0D%0A %0D%0A"><i class="fa fa-envelope"></i> </a>
     <button onclick="alert('copied to clipboard. use STRG-V ');" style="font-size: 1.5em;" class="copy2clip m-2 btn btn-outline-primary" data-clipboard-action="copy" data-clipboard-target="#jvEventsCopyUrl{event.uid}"><i class="fa fa-copy"> </i> </button>
