@@ -142,8 +142,9 @@ class RegisterHubspotSignal {
         }
 
         $data['language']  =   $settings['lang'] ;
-        $data['is_hidden']  =   $registrant->getHidden() ;
-        $data['is_confirmed']  =   $registrant->getConfirmed() ;
+
+        $data['is_hidden']  =   $registrant->getHidden() ? 'true' : 'false' ;
+        $data['is_confirmed']  =   $registrant->getConfirmed() ? 'true' : 'false' ;
 
         // see ticket:  https://jira.allplan.com/browse/TYPO3-291
         $data['event_flag']  =   true ;
