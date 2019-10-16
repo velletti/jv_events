@@ -505,11 +505,17 @@
 				<div class="col-3 col-sm-6 text-right py-2 pr-2">
 					<h3>&nbsp;</h3>
 
-					<f:render partial="Helper/Bootstrap4/Share"  arguments="{object: 'event', event: event, uri: uri, settings: settings}"></f:render>
+					<f:render partial="Helper/Bootstrap4/Share"  arguments="{object: 'event', jvEventsCopyTarget: 'jvEventsCopyUrl{event.uid}' , event: event, uri: uri, settings: settings}"></f:render>
 
 				</div>
 			</div>
-			<div id="jvEventsCopyUrl{event.uid}" class="small text-white-50">{uri}</div>
+			<div id="jvEventsCopyUrl{event.uid}" class="small text-white-50" style="line-height: 0px;height:0px; overflow: hidden;">Siehe:<br>
+				{event.startDate -> f:format.date(format:"d.m.Y")}: {event.name}<br>
+				{event.teaser}<br>
+				<br>
+				{uri}
+			</div>
+
         </div>
 
 	</div>

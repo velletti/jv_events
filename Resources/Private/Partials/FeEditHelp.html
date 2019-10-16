@@ -78,8 +78,11 @@
 	<f:variable name="helpModalBody">
 		<f:format.raw>
 			<f:spaceless>
-				nur Geduld .. hier gibt es irgendwann die Hilfe Texte ..<br>
-				<f:render partial="Helper/Bootstrap4/Share"  arguments="{object: 'event', event: event, uri: uri, uids: 'User: {user} | Event: {object.uid} | LocationId: {object.location.uid}', settings: settings}"></f:render>
+				Nur Geduld .. hier gibt es irgendwann die Hilfe Texte ..<br>
+				<br>
+				Du willst einen Banner schalten? <br>Nutze die Share Buttons, um mir die notwendigen Infos zu senden! <br>
+				<br>
+				<f:render partial="Helper/Bootstrap4/Share"  arguments="{object: 'event', event: event, emailTo: 'help@tangomuenchen.de', uri: uri, uids: 'User: {user} | Event: {object.uid} | LocationId: {object.location.uid}', settings: settings}"></f:render>
 
 			</f:spaceless>
 		</f:format.raw>
