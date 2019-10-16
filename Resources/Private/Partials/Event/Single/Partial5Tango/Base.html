@@ -509,11 +509,13 @@
 
 				</div>
 			</div>
-			<div id="jvEventsCopyUrl{event.uid}" class="small text-white-50" style="line-height: 0px;height:0px; overflow: hidden;">Siehe:<br>
-				{event.startDate -> f:format.date(format:"d.m.Y")}: {event.name}<br>
-				{event.teaser}<br>
-				<br>
-				{uri}
+			<div style="line-height: 0px;height:0px; overflow: hidden;">
+				<div id="jvEventsCopyUrl{event.uid}" class="small">Siehe:<br>
+					{event.startDate -> f:format.date(format:"d.m.Y")}: {event.name}<br>
+					{event.teaser}<br>
+					<br>
+					{uri}
+				</div>
 			</div>
 
         </div>
