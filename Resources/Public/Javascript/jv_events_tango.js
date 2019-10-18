@@ -608,7 +608,7 @@ function jv_events_refreshList(){
         if( jQuery('#lng').length > 0  && jQuery('#lng').val() > 5 ) {
             userLng = jQuery('#lng').val();
         }
-        if ( !streetAndNr === false && jQuery('#streetAndNr').length > 0 ) {
+        if ( !streetNrString === false && jQuery('#streetAndNr').length > 0 ) {
             jQuery('#streetAndNr').val(streetNrString) ;
         }
     }

@@ -35,15 +35,18 @@
 
     </div>
     <div class="col-2 col-sm-4">
-        <button id="jvevents-geo-ok" type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span class=" btn btn-secondary">
-                <i class="fas fa-check mr-2"></i>
-                <span class="d-none d-md-inline-block">
-                    OK
-                </span>
-            </span>
-
-         </button>
+        <f:if condition="{hideOkButton}">
+            <f:else>
+                <button id="jvevents-geo-ok" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span class=" btn btn-secondary">
+                        <i class="fas fa-check mr-2"></i>
+                        <span class="d-none d-md-inline-block">
+                            OK
+                        </span>
+                    </span>
+                </button>
+            </f:else>
+        </f:if>
     </div>
 
     <div class="d-none">

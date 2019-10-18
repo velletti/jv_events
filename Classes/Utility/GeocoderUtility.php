@@ -102,8 +102,11 @@ class GeocoderUtility {
        // $updateFunctionCode = '' ;
 		// We need this here and not in a file, because we don't need this in the head
 		$js.= '
-		
-		    var address = concatAddress();
+		   var address = concatAddress();
+		   if ( getCookies("tx_events_lat") && getCookies("tx_events_lng") ) {
+		       address = getCookies("tx_events_lat") + "," + getCookies("tx_events_lng") ;
+		   }
+		   
             // console.log(address);
 
             
@@ -113,6 +116,11 @@ class GeocoderUtility {
             var marker = null;
             
 			
+			function getCookies(name) {
+                var v = document.cookie.match("(^|;) ?" + name + "=([^;]*)(;|$)");
+                return v ? v[2] : null;
+            }
+
             // Done by API-call
 			/**
 			 * Creates the google map
@@ -158,6 +166,15 @@ class GeocoderUtility {
 				if(document.getElementById("jvevents-geo-update")) {
 					document.getElementById("jvevents-geo-update").style.opacity = ".5" ;
 				}
+		
+                if ( getCookies("tx_cookies_accepted") == "1") {
+                   // Set cookie for 365 days
+                    var d = new Date();
+                    d.setTime(d.getTime() + ( 24*60*60*1000 * 365));
+                    var expires = "expires=" + d.toUTCString();
+                    document.cookie = "tx_events_lat=" + marker.getPosition().lat() + "; " + expires + ";path=/";
+                    document.cookie = "tx_events_lng=" + marker.getPosition().lng() + "; " + expires + ";path=/";
+                }
 			}
 			function concatAddress() {
                 address = "";
@@ -255,8 +272,19 @@ class GeocoderUtility {
                                 if(document.getElementById("jvevents-geo-update")) {
                                     document.getElementById("jvevents-geo-update").style.opacity = ".5" ;
                                 }
+                                if ( getCookies("tx_cookies_accepted") == "1") {
+                                   // Set cookie for 365 days
+                                    var d = new Date();
+                                    d.setTime(d.getTime() + ( 24*60*60*1000 * 365));
+                                    var expires = "expires=" + d.toUTCString();
+                                    document.cookie = "tx_events_lat=" + marker.getPosition().lat() + "; " + expires + ";path=/";
+                                    document.cookie = "tx_events_lng=" + marker.getPosition().lng() + "; " + expires + ";path=/";
+                                }
                             }
-                            
+                            function getCookies(name) {
+                                var v = document.cookie.match("(^|;) ?" + name + "=([^;]*)(;|$)");
+                                return v ? v[2] : null;
+                            }
                             /**
                              * Center map on marker and zoom if needed
                              */
@@ -363,11 +391,23 @@ class GeocoderUtility {
 		    * updates the fields in search Form if available
 		    */
 			function geoCoderFieldUpdate( location ) {
+			    if ( getCookies("tx_cookies_accepted") == "1") {
+			        // Set cookie for 365 days
+                    var d = new Date();
+                    d.setTime(d.getTime() + ( 24*60*60*1000 * 365));
+                    var expires = "expires=" + d.toUTCString();
+                    document.cookie = "tx_events_lat=" + location.lat() + "; " + expires + ";path=/";
+                    document.cookie = "tx_events_lng=" + location.lng() + "; " + expires + ";path=/";
+                }
 			    ' . $jQueryName . '("'. $formfieldIds['return']['lat'] . '").val( roundDataToNumber(location.lat() , 11) );
 				' . $jQueryName . '("'. $formfieldIds['return']['lng'] . '").val( roundDataToNumber(location.lng() , 11) );
 				' . $updateFunctionCode
                .'
 			}
+			function getCookies(name) {
+                var v = document.cookie.match("(^|;) ?" + name + "=([^;]*)(;|$)");
+                return v ? v[2] : null;
+            }
 	    ' ;
 
     }
