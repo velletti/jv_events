@@ -103,10 +103,6 @@ class GeocoderUtility {
 		// We need this here and not in a file, because we don't need this in the head
 		$js.= '
 		   var address = concatAddress();
-		   if ( getCookies("tx_events_lat") && getCookies("tx_events_lng") ) {
-		       address = getCookies("tx_events_lat") + "," + getCookies("tx_events_lng") ;
-		   }
-		   
             // console.log(address);
 
             
@@ -179,19 +175,26 @@ class GeocoderUtility {
 			function concatAddress() {
                 address = "";
                 address += addressAddress;
-                
+                var notFullAddress = true ;
                 if (addressZip && addressZip != ""){
                     address += ", ";
                     address += addressZip;
                     address += ", ";
+                    notFullAddress = false ;
                 }
                  if (addressCity && addressCity != ""){
                     address += addressCity;
                     address += " ";
+                    notFullAddress = false ;
                 }
                 if (addressCountry && addressCountry != ""){
                     address += ", ";
                     address += addressCountry;
+                    notFullAddress = false ;
+                }
+                
+                if ( getCookies("tx_events_lat") && getCookies("tx_events_lng")  && notFullAddress ) {
+                   return getCookies("tx_events_lat") + "," + getCookies("tx_events_lng") ;
                 }
                 
                 // All addressData (without zip) have to be entered, if not, Google will find nothing and an error message is shown
