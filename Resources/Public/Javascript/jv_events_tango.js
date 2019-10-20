@@ -428,7 +428,7 @@ function jv_events_setDistance() {
     if( distance ) {
         // hide the helper text for the filter
 
-       if ( ! $('#jv_events_filter_distance').data('donotoverrule')) {
+       if ( $('#jv_events_filter_distance').data('donotoverrule') === 'true') {
            $('#jv_events_filter_distance').val( parseInt( distance )) ;
 
        }
