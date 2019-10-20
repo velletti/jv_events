@@ -16,7 +16,7 @@
 				<div class="input-group">
 					<f:form.textfield class="form-control" id="{property}" value="{defaultValue}" maxlength="{maxLength}" />
 
-					<div class="input-group-addon btn btn-default" {f:if(condition: '{data-toggle}' , then:'data-toggle="{data-toggle}"' )}
+					<div class="input-group-addon btn btn-default {f:if(condition: '{data-toggle}' , then:'toggle-{data-toggle}')}" {f:if(condition: '{data-toggle}' , then:'data-toggle="{data-toggle}"' )}
 						 {f:if(condition:'{data-target}' , then:'data-target="{data-target}"' )} >
 						<label for="{property}" class="control-label">
 							<i class="{fa-icon}"></i>

@@ -364,6 +364,11 @@ function jv_events_init() {
 
 	jv_events_refreshList();
 
+    $('.toggle-clearToogle').bind('click' , function(e) {
+        var clearTarget = $('.toggle-clearInput').data("target") ;
+        $(clearTarget).val() ;
+    }) ;
+
 	// finaly
     $('#jv_events_filter_distance').bind("change", function() {
         $('#jv_events_filter_distance').data('donotoverrule' , false ) ;
@@ -420,7 +425,6 @@ function jv_events_reloadList() {
 }
 function jv_events_setDistance() {
     var distance = getCookie('tx_events_default_dist') ;
-    console.log( " Dist Cookie: " + distance ) ;
     if( distance ) {
         // hide the helper text for the filter
 
@@ -647,7 +651,7 @@ function jv_events_refreshList(){
             userLng = jQuery('#lng').val();
         }
         if ( !streetNrString === false && jQuery('#streetAndNr').length > 0 ) {
-            jQuery('#streetAndNr').val(streetNrString) ;
+             jQuery('#streetAndNr').val(streetNrString) ;
         }
     }
 

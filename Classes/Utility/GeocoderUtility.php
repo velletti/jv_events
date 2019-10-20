@@ -194,7 +194,7 @@ class GeocoderUtility {
                 }
                 
                 if ( getCookies("tx_events_lat") && getCookies("tx_events_lng")  && notFullAddress ) {
-                   return getCookies("tx_events_lat") + "," + getCookies("tx_events_lng") ;
+                //   return getCookies("tx_events_lat") + "," + getCookies("tx_events_lng") ;
                 }
                 
                 // All addressData (without zip) have to be entered, if not, Google will find nothing and an error message is shown
@@ -224,7 +224,8 @@ class GeocoderUtility {
 			function findAddress(address){
 			    	
 				// Hide error-message (maybe there is one shown)
-				
+				document.cookie = "tx_events_lat=\'\'; -1000;path=/";
+				document.cookie = "tx_events_lng=\'\'; -1000;path=/";
 				' . $jQueryName . '("#geosearcherrormessage").hide();
 				
 				if ( !geocoder ) {
