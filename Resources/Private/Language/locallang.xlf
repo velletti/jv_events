@@ -607,6 +607,33 @@
             <trans-unit id="tx_jvevents_event.filter.morefilters">
                 <source>More filters</source>
             </trans-unit>
+            <trans-unit id="tx_jvevents_event.filter.distance">
+                <source>Set Position</source>
+            </trans-unit>
+            <trans-unit id="tx_jvevents_event.filter.configure.headline">
+                <source>Configure the search result</source>
+            </trans-unit>
+            <trans-unit id="tx_jvevents_event.filter.configure.text_reason">
+                <source>Before you can use the lists on this website, you should configure the search filter. </source>
+            </trans-unit>
+            <trans-unit id="tx_jvevents_event.filter.configure.text_setposition">
+                <source>First set the position of the center of the Map. You can do this by using your GPS positon or just enter the Name of your city or optional the street.</source>
+            </trans-unit>
+            <trans-unit id="tx_jvevents_event.filter.configure.text_selectDist">
+                <source>As second step, select the wanted distance you want to search events, locations and teachers.</source>
+            </trans-unit>
+            <trans-unit id="tx_jvevents_event.filter.configure.text_saveButton">
+                <source>If you use the save button after the Distance selector, your settings will be stored as a cookie in your browser and this text will disapear.</source>
+            </trans-unit>
+            <trans-unit id="tx_jvevents_event.filter.configure.text_changeLater">
+                <source>But you can always change it afterwards in the filter.</source>
+            </trans-unit>
+           <trans-unit id="tx_jvevents_event.filter.configure.text_default">
+                <source>Without this settings, resultlists will only show hits that are 50 (or 250km on tangobayern.de) away from Marienplatz in Munich.</source>
+            </trans-unit>
+
+
+
             <trans-unit id="tx_jvevents_event.list.no_events_found">
                 <source>No Events found with this search values</source>
             </trans-unit>

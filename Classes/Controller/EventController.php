@@ -126,6 +126,7 @@ class EventController extends BaseController
                         $this->settings['filter']['maxDays'] = $this->settings['security']['filter']['maxDays'] ;
                     }
                     $this->settings['filter']['distance']['default'] = 9999 ;
+                    $this->settings['filter']['distance']['doNotOverrule'] = true ;
 
                 }
             }

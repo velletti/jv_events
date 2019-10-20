@@ -747,6 +747,37 @@
                 <source>Reset filter</source>
                 <target>Filter zurücksetzen</target>
             </trans-unit>
+             <trans-unit id="tx_jvevents_event.filter.distance">
+                <source>Set Position</source>
+                <target>Setze Position</target>
+            </trans-unit>
+
+             <trans-unit id="tx_jvevents_event.filter.configure.headline">
+                <source>Configure the search result</source>
+                <target>Suchergebnis konfigurieren</target>
+            </trans-unit>
+            <trans-unit id="tx_jvevents_event.filter.configure.text_reason">
+                <source>Before you can use the lists on this website, you should configure the search filter. </source>
+                <target>Bevor Du die Listen auf dieser Webseite sinnvoll nutzen kannst, solltest du den Suchfilter oberhalb dieses Hinweises einstellen. </target>
+            </trans-unit>
+            <trans-unit id="tx_jvevents_event.filter.configure.text_setposition">
+                <source>First set the position of the center of the Map. You can do this by using your GPS positon or just enter the Name of your city or optional the street.</source>
+                <target>Zuerst gilt es die Position festzulegen, von der ausgesucht werden soll. Dies kann auf Wunsch automatisch über die GPS Daten / Deine Positon erfolgen oder indem dort der Name einer Stadt (optional mit einer Straße) eingetragen wird.</target>
+            </trans-unit>
+            <trans-unit id="tx_jvevents_event.filter.configure.text_selectDist">
+                <source>As second step, select the wanted distance you want to search events, locations and teachers.</source>
+                <target>Im zweiten Schritt wähle bitte die gewünschte maximale Entfernung in der Veranstaltungen, Orte oder Lehrer gesucht werden sollen.</target>
+            </trans-unit>
+            <trans-unit id="tx_jvevents_event.filter.configure.text_saveButton">
+                <source>if you use the save button after the Distance selector, your settings will be stored as a cookie in your browser and text will disapear.</source>
+                <target>Wenn du auf das 'Speichern' Icon hinter der Auswahl der Entfernung nutzt, werden deine Einstellungen als Cookie in deinem Browser gespeichert und dieser Text verschwindet.</target>
+            </trans-unit>
+              <trans-unit id="tx_jvevents_event.filter.configure.text_default">
+                 <source>Without this settings, resultlists will only show hits that are 50 (or 250km on tangobayern.de) away from Marienplatz in Munich.</source>
+                <target>Ohne diese Einstellungen wird im Umkreis von 50 (bzw. 250km auf tangobayern.de) um den Marienplatz in München gesucht.</target>
+            </trans-unit>
+
+
             <trans-unit id="tx_jvevents_event.filter.resulthint" approved="yes">
                 <source>The following content was modified pursuant to your filter settings</source>
                 <target>Die folgenden Inhalte wurden entsprechend Ihrer Auswahl angepasst</target>

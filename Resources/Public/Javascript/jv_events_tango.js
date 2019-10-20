@@ -301,7 +301,7 @@ function jv_events_init() {
     // https://allplan.local/index.php?id=110&L=1&no_cache=1&tx_jvevents_events[eventsFilter][categories]=4&tx_jvevents_events[eventsFilter][citys]=Ratingen
 
     $(".js-warning-disabled").hide() ;
-
+    jv_events_setDistance() ;
     jv_events_initOneFilter('categories') ;
 	jv_events_initOneFilter('locations') ;
 	jv_events_initOneFilter('citys') ;
@@ -363,6 +363,12 @@ function jv_events_init() {
     });
 
 	jv_events_refreshList();
+
+	// finaly
+    $('#jv_events_filter_distance').bind("change", function() {
+        $('#jv_events_filter_distance').data('donotoverrule' , false ) ;
+    });
+
 }
 function jv_events_reloadList() {
     if ( jQuery("#overruleFilterStartDate") ) {
@@ -411,6 +417,38 @@ function jv_events_reloadList() {
     }
 
 
+}
+function jv_events_setDistance() {
+    var distance = getCookie('tx_events_default_dist') ;
+    console.log( " Dist Cookie: " + distance ) ;
+    if( distance ) {
+        // hide the helper text for the filter
+
+       if ( ! $('#jv_events_filter_distance').data('donotoverrule')) {
+           $('#jv_events_filter_distance').val( parseInt( distance )) ;
+
+       }
+        $('#jv_events_filter_config').hide() ;
+       // set select Filter to cookie value only if no other reason to overwrite
+
+    }
+
+
+    $('#jv_events_filter_save_distance_button').bind("click", function() {
+        if ( $('#jv_events_filter_distance').val() ) {
+            $('#jv_events_filter_config').hide() ;
+
+            // Set cookie for 365 days
+            var d = new Date();
+            d.setTime(d.getTime() + ( 24*60*60*1000 * 365));
+            var expires = 'expires=' + d.toUTCString();
+
+            if ( getCookie('tx_cookies_accepted') == "1") {
+                document.cookie = 'tx_events_default_dist=' + $('#jv_events_filter_distance').val()  + "; " + expires + ';path=/';
+            }
+        }
+
+    });
 }
 
 
