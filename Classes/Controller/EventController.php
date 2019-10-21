@@ -99,6 +99,8 @@ class EventController extends BaseController
     {
         $this->debugArray[] = "After Init :" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " Line: " . __LINE__ ;
 
+        $this->settings['filter']['distance']['doNotOverrule'] = "false" ;
+
         if( $this->request->hasArgument('overruleFilter')) {
 
             $filter = $this->request->getArgument('overruleFilter') ;
@@ -126,7 +128,7 @@ class EventController extends BaseController
                         $this->settings['filter']['maxDays'] = $this->settings['security']['filter']['maxDays'] ;
                     }
                     $this->settings['filter']['distance']['default'] = 9999 ;
-                    $this->settings['filter']['distance']['doNotOverrule'] = true ;
+                    $this->settings['filter']['distance']['doNotOverrule'] = "true" ;
 
                 }
             }

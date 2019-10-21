@@ -371,7 +371,7 @@ function jv_events_init() {
 
 	// finaly
     $('#jv_events_filter_distance').bind("change", function() {
-        $('#jv_events_filter_distance').data('donotoverrule' , false ) ;
+        $('#jv_events_filter_distance').data('donotoverrule' , 'false' ) ;
     });
 
 }
@@ -425,11 +425,13 @@ function jv_events_reloadList() {
 }
 function jv_events_setDistance() {
     var distance = getCookie('tx_events_default_dist') ;
+    console.log(" Cookie: " + distance ) ;
     if( distance ) {
         // hide the helper text for the filter
-
-       if ( $('#jv_events_filter_distance').data('donotoverrule') === 'true') {
+        console.log("data:" + $('#jv_events_filter_distance').data('donotoverrule')) ;
+       if ( $('#jv_events_filter_distance').data('donotoverrule') != 'true') {
            $('#jv_events_filter_distance').val( parseInt( distance )) ;
+           $('#jv_events_filter_save_distance_button').parent().removeClass('btn-secondary').addClass('btn-success') ;
 
        }
         $('#jv_events_filter_config').hide() ;
@@ -439,7 +441,9 @@ function jv_events_setDistance() {
 
 
     $('#jv_events_filter_save_distance_button').bind("click", function() {
+        console.log(" button clied: "  ) ;
         if ( $('#jv_events_filter_distance').val() ) {
+            console.log(" jv_events_filter_distance: " + $('#jv_events_filter_distance').val() ) ;
             $('#jv_events_filter_config').hide() ;
 
             // Set cookie for 365 days
@@ -448,7 +452,9 @@ function jv_events_setDistance() {
             var expires = 'expires=' + d.toUTCString();
 
             if ( getCookie('tx_cookies_accepted') == "1") {
+                console.log(" tx_cookies_accepted: " ) ;
                 document.cookie = 'tx_events_default_dist=' + $('#jv_events_filter_distance').val()  + "; " + expires + ';path=/';
+                $('#jv_events_filter_save_distance_button').parent().removeClass('btn-secondary').addClass('btn-success') ;
             }
         }
 
