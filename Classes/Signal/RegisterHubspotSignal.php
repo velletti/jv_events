@@ -147,7 +147,10 @@ class RegisterHubspotSignal {
         $data['is_confirmed']  =   $registrant->getConfirmed() ? 'true' : 'false' ;
 
         // see ticket:  https://jira.allplan.com/browse/TYPO3-291
-        $data['event_flag']  =   true ;
+        $data['event_flag']  =   'true' ;
+
+        // 2019 language Key ... ggf aber auch constants die "locale_all"
+        // $data['doi_language']  =   strtoupper( $settings['language'] ) ;
 
         $hubspotutk      = $_COOKIE['hubspotutk']; //grab the cookie from the visitors browser.
         $ip_addr         = $_SERVER['REMOTE_ADDR']; //IP address too.

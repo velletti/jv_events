@@ -294,6 +294,8 @@ class AjaxController extends BaseController
                 $output['event']['registration']['noFreeSeats'] = $event->isIsNoFreeSeats() ;
                 $output['event']['registration']['freeSeats'] = $event->getAvailableSeats() ;
                 $output['event']['registration']['sfCampaignId'] = $event->getSalesForceCampaignId() ;
+                $output['event']['notification']['waitinglist'] = $event->getIntrotextRegistrant() ;
+                $output['event']['notification']['confirmed'] = $event->getIntrotextRegistrantConfirmed() ;
 
                 if( is_object( $event->getOrganizer() )) {
                     $organizer = $event->getOrganizer() ;
