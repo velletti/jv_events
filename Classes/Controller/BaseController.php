@@ -695,7 +695,14 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         }
         return false  ;
     }
-    public function getOrganizer() {
+
+    /**
+     * @param bool $checkAccess
+     * @return array|bool|\JVE\JvEvents\Domain\Model\Organizer|object
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
+     */
+    public function getOrganizer($doNotCheckAccess=true) {
         if (intval($GLOBALS['TSFE']->fe_user->user['uid']) < 1 ) {
             return false ;
         }
@@ -707,7 +714,9 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             $organizer = $this->organizerRepository->findByUidAllpages($id , FALSE);
         }
         if ($organizer instanceof \JVE\JvEvents\Domain\Model\Organizer) {
-            return $organizer ;
+            if( $doNotCheckAccess || $this->hasUserAccess($organizer) ) {
+                return $organizer ;
+            }
         }
 
         // TODo : think about a better solution how to manage that a user can be linked to more than one Organizer

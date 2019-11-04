@@ -119,9 +119,13 @@
                 <f:if condition="{showDetails}">
                     <div class="col-12 order-4 py-2 bg-gradient-light ">
                         <f:format.html>{organizer.description}</f:format.html>
+
                         <f:security.ifHasRole role="adminOrganizer">
-                            <br>
-                            <div class="small">Id: {organizer.uid} - Pos: {organizer.sorting} </div>
+                            <hr>
+                            <div><f:link.page class="btn btn-outline-primary m-2 py-0" pageUid="{settings.pageIds.rankingModul}" additionalParams="{tx_jvranking_pi1: {organizer: '{organizer.uid}'}}">
+                                <span class="fas fa-chart-bar "></span>
+                            </f:link.page> <span class="small">Id: {organizer.uid} - Pos: {organizer.sorting} </span>
+                            </div>
                         </f:security.ifHasRole>
 
                     </div>

@@ -150,6 +150,9 @@ plugin.tx_jvevents_events {
 
 			# If extension jv Media Connector is installed, add page ID of the plugin Page with List controller
 			addMedia = 0
+
+			# if extension jv ranking is installed, add apge ID pf the Page with the ranking plugin
+			rankingModul = 0
 		}
 		feEdit {
 		    enabled = 0
