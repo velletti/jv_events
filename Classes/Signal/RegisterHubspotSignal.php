@@ -266,17 +266,14 @@ class RegisterHubspotSignal {
         $jsonArray['zip'] = trim($registrant->getZip() ) ;
         $jsonArray['city'] = trim($registrant->getCity() ) ;
         $jsonArray['laenderkennzeichen__c'] = trim($registrant->getCountry() ) ;
-        $jsonArray['country'] = '' ;
-        /** @var \SJBR\StaticInfoTables\Domain\Repository\CountryRepository $countries */
-        $countries = GeneralUtility::makeInstance("SJBR\\StaticInfoTables\\Domain\\Repository\\CountryRepository");
 
-        $cn_short_en = $countries->findOneByIsoCodeA2( $registrant->getCountry()  ) ;
-        if( is_array($cn_short_en) && count( $cn_short_en) > 0 && array_key_exists("cn_short_en" , $cn_short_en[0])) {
-            $jsonArray['country'] = $cn_short_en[0]['cn_short_en'] ;
-        } else {
-            if( is_array($cn_short_en) && count( $cn_short_en) > 0 && array_key_exists("cn_short_en" , $cn_short_en)) {
-                $jsonArray['country'] = $cn_short_en['cn_short_en'] ;
-            }
+        $objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+        /** @var \SJBR\StaticInfoTables\Domain\Repository\CountryRepository $countries */
+        $countries = $objectManager->get('SJBR\\StaticInfoTables\\Domain\\Repository\\CountryRepository');
+        /** @var \SJBR\StaticInfoTables\Domain\Model\Country $cn_short_en */
+        $cn_short_en = $countries->findOneByIsoCodeA2( trim($registrant->getCountry() ) ) ;
+        if( is_object($cn_short_en) ) {
+            $jsonArray['country']  = $cn_short_en->getShortNameEn() ;
         }
 
         $jsonArray['phone'] = trim($registrant->getPhone() ) ;
