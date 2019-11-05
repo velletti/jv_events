@@ -148,6 +148,7 @@ class RegisterHubspotSignal {
 
         // see ticket:  https://jira.allplan.com/browse/TYPO3-291
         $data['event_flag']  =   'true' ;
+        $data['form_type']  =   'Event' ;
 
         // 2019 language Key ... ggf aber auch constants die "locale_all"
         // $data['doi_language']  =   strtoupper( $settings['language'] ) ;
@@ -265,6 +266,19 @@ class RegisterHubspotSignal {
         $jsonArray['zip'] = trim($registrant->getZip() ) ;
         $jsonArray['city'] = trim($registrant->getCity() ) ;
         $jsonArray['laenderkennzeichen__c'] = trim($registrant->getCountry() ) ;
+        $jsonArray['country'] = '' ;
+        /** @var \SJBR\StaticInfoTables\Domain\Repository\CountryRepository $countries */
+        $countries = GeneralUtility::makeInstance("SJBR\\StaticInfoTables\\Domain\\Repository\\CountryRepository");
+
+        $cn_short_en = $countries->findOneByIsoCodeA2( $registrant->getCountry()  ) ;
+        if( is_array($cn_short_en) && count( $cn_short_en) > 0 && array_key_exists("cn_short_en" , $cn_short_en[0])) {
+            $jsonArray['country'] = $cn_short_en[0]['cn_short_en'] ;
+        } else {
+            if( is_array($cn_short_en) && count( $cn_short_en) > 0 && array_key_exists("cn_short_en" , $cn_short_en)) {
+                $jsonArray['country'] = $cn_short_en['cn_short_en'] ;
+            }
+        }
+
         $jsonArray['phone'] = trim($registrant->getPhone() ) ;
         $jsonArray['email'] = trim($registrant->getEmail() ) ;
         $jsonArray['invoice_company_name'] = trim($registrant->getCompany2() ) ;
