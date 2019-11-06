@@ -29,7 +29,7 @@ namespace JVE\JvEvents\Domain\Repository;
 /**
  * The repository for Locations
  */
-class LocationRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+class LocationRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
 {
 
     /**

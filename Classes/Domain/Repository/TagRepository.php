@@ -30,7 +30,7 @@ namespace JVE\JvEvents\Domain\Repository;
 /**
  * The repository for Tags
  */
-class TagRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+class TagRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
 {
 
     /**
@@ -64,25 +64,7 @@ class TagRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         return $res ;
     }
 
-    function debugQuery($query) {
-        // new way to debug typo3 db queries
-        $queryParser = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class);
-        $querystr = $queryParser->convertQueryToDoctrineQueryBuilder($query)->getSQL() ;
-        echo $querystr ;
-        echo "<hr>" ;
-        $queryParams = $queryParser->convertQueryToDoctrineQueryBuilder($query)->getParameters() ;
-        var_dump($queryParams);
-        echo "<hr>" ;
 
-        foreach ($queryParams as $key => $value ) {
-            $search[] = ":" . $key ;
-            $replace[] = "'$value'" ;
-
-        }
-        echo str_replace( $search , $replace , $querystr ) ;
-
-        die;
-    }
 
     
 }

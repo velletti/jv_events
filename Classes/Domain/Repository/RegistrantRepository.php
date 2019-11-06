@@ -29,7 +29,7 @@ namespace JVE\JvEvents\Domain\Repository;
 /**
  * The repository for Registrants
  */
-class RegistrantRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+class RegistrantRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
 {
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface
@@ -68,7 +68,7 @@ class RegistrantRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     /**
      * @param int $id
      *
-     * @return array|bool|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+     * @return mixed
      */
     public function getOneById($id) {
 
@@ -82,10 +82,11 @@ class RegistrantRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 
     /**
      * @param string $email
-     * @param uid $event
+     * @param int $pid
+     * @param array $settings
      * @return array
      */
-    public function findEventsByFilter($email = '', $pid = 0 , $settings  ) {
+    public function findEventsByFilter($email = '', $pid = 0 , $settings = array() ) {
 
         $query = $this->createQuery();
         // $query->getQuerySettings()->setReturnRawQueryResult(TRUE);
@@ -169,16 +170,12 @@ class RegistrantRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             $constraints[] = $query->greaterThan("crdate", time() + ( 60*60*24 ) * intval($settings['filter']['startDate'] ));
         }
 
+        $query->setLimit($limit);
         if(count($constraints) > 0 ) {
             $query->matching($query->logicalAnd($constraints));
         }
         // new way to debug typo3 db queries
-         // $queryParser = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class);
-        //   var_dump($queryParser->convertQueryToDoctrineQueryBuilder($query)->getSQL());
-        //  var_dump($queryParser->convertQueryToDoctrineQueryBuilder($query)->getParameters()) ;
-        //  die;
-
-        $query->setLimit($limit);
+        //  $this->debugQuery($query) ;
         $result = $query->execute();
         return $result;
     }

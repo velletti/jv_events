@@ -26,7 +26,7 @@ namespace JVE\JvEvents\Domain\Repository;
 /**
  * A repository for static info tables country
  */
-class StaticCountryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
+class StaticCountryRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository {
 	/**
 	 * Find all countries despecting the storage page
 	 *

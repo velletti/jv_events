@@ -95,6 +95,12 @@
             <trans-unit id="register_mandatory_email_error">
                 <source>This E-Mail Address is not valid!</source>
             </trans-unit>
+            <trans-unit id="register_email_registered_same_event">
+                <source>Please register with a different E-Mail Address. This E-Mail Address is already registered to this Event!</source>
+            </trans-unit>
+
+
+
             <trans-unit id="register_mandatory_error">
                 <source>This is a required field!</source>
             </trans-unit>

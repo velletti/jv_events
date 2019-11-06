@@ -12,7 +12,7 @@
 			<f:for each="{validationResults.flattenedErrors}" key="propertyPath" as="propertyErrors">
 				<f:if condition="{propertyPath}=={field}">
 					<f:for each="{propertyErrors}" as="propertyError">
-						<div class="error errorMessage errorField field{field -> f:cObject(typoscriptObjectPath: 'plugin.tx_sfregister.fieldError')}"  data-element-type="partials-fieldError.html">
+						<div class="error errorMessage errorField field{field}"  data-element-type="partials-fieldError.html">
 							{propertyError.message -> f:format.printf(arguments: {field: '{f:translate(key: \'{propertyPath}\')}'})}
 						</div>
 					</f:for>

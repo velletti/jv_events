@@ -106,6 +106,9 @@ plugin.tx_jvevents_events {
 				}
 
 			}
+			# If set, a user just can register only ONCE for an event with the same Email Address
+			doNotallowSameEmail = 0
+
 			allowedCountrys =	{$plugin.tx_jvevents_events.settings.register.allowedCountrys}
 			defaultCountry =	{$plugin.tx_jvevents_events.settings.register.defaultCountry}
 

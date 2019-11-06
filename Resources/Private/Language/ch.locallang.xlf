@@ -92,6 +92,10 @@
 			<source>This E-Mail Address is not valid!</source>
 			<target>Diese E-Mail Adresse ist nicht gültig!</target>
 		</trans-unit>
+		<trans-unit id="register_email_registered_same_event">
+			<source>Please register with a different E-Mail Address. This E-Mail Address is already registered to this Event!</source>
+			<target>Bitte nutzen Sie eine andere E-Mail Adresse. Mit dieser E-Mail Adresse sind Sie bereits für diesen Termin angemeldet!</target>
+		</trans-unit>
 		<trans-unit id="register_mandatory_error" approved="yes">
 			<source>This is a required field!</source>
 			<target>Dies ist ein Plichtfeld!</target>

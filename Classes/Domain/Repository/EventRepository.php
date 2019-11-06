@@ -29,7 +29,7 @@ namespace JVE\JvEvents\Domain\Repository;
 /**
  * The repository for Events
  */
-class EventRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+class EventRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
 {
 
 	/**
