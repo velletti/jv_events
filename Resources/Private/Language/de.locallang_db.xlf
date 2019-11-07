@@ -195,9 +195,14 @@
 			<source>Sales Force Session Id</source>
 			<target>Sales Force Session Id</target>
 		</trans-unit>
-		<trans-unit id="tx_jvevents_domain_model_event.sotre_in_citrix" approved="yes">
+		<trans-unit id="tx_jvevents_domain_model_event.store_in_citrix" approved="yes">
 			<source>Store In Citrix</source>
-			<target>In Citrix speichern</target>
+			<target>Anmeldungen in Citrix (goToWebinar) speichern </target>
+		</trans-unit>
+
+		<trans-unit id="tx_jvevents_domain_model_event.store_in_hubspot">
+			<source>Send Registrations to SalesForce (via Hubspot)</source>
+			<target>Übertragung Eventanmeldungen nach Salesforce</target>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.start_date" approved="yes">
 			<source>Start Date</source>
@@ -216,13 +221,9 @@
             <source>Just put a time to this field, if your participants should or may come before the official start time</source>
             <target>Diese Uhrzeit nur ausfüllen, wenn ein Einlass vor der eigentlichen Startzeit möglich oder gar gewünscht ist</target>
         </trans-unit>
-		<trans-unit id="tx_jvevents_domain_model_event.store_in_citrix" approved="yes">
-			<source>Store In Citrix</source>
-			<target>Store In Citrix</target>
-		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.store_in_sales_force" approved="yes">
 			<source>Store In Sales Force</source>
-			<target>Store In Sales Force</target>
+			<target>Store In Sales Force (old process)</target>
 		</trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.subject_organizer" approved="yes">
 			<source>Subject Organizer</source>

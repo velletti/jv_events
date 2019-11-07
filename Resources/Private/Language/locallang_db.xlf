@@ -187,10 +187,10 @@
                 <source>Just put a time to this field, if your participants should or may come before the official start time</source>
             </trans-unit>
             <trans-unit id="tx_jvevents_domain_model_event.store_in_citrix">
-                <source>Store In Citrix</source>
+                <source>Store In Citrix (goToWebinar)</source>
             </trans-unit>
             <trans-unit id="tx_jvevents_domain_model_event.store_in_hubspot">
-                <source>Store In Hubspot</source>
+                <source>Send Registrations to SalesForce (via Hubspot)</source>
             </trans-unit>
             <trans-unit id="tx_jvevents_domain_model_event.sales_force_campaign_id">
                 <source>Salesforce Campaign ID (automatic created)</source>
@@ -198,7 +198,7 @@
 
 
             <trans-unit id="tx_jvevents_domain_model_event.store_in_sales_force">
-                <source>Store In Sales Force</source>
+                <source>Store In Sales Force (old process)</source>
             </trans-unit>
             <trans-unit id="tx_jvevents_domain_model_event.subject_organizer">
                 <source>Subject Organizer</source>
