@@ -305,7 +305,7 @@ class ProcessDatamap {
                     }
                 }
                 if ( $configuration['enableHubspot'] && ! $this->event->getStoreInHubspot() && $this->event->getWithRegistration() ) {
-                    $this->flashMessage['WARNING'][] = 'You should activate:  ' . \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tx_jvevents_domain_model_event.store_in_hubspot', 'JvEvents', NULL);;
+                    $this->flashMessage['WARNING'][] = 'You should activate:  ' . \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tx_jvevents_domain_model_event.store_in_hubspot', 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:', NULL);;
                 }
 
 
