@@ -77,7 +77,7 @@
                     </f:if>
                 </f:if>
                 <f:if condition="{settings.pageIds.loginForm}">
-                    <f:link.page pageUid="{settings.pageIds.loginForm}" class="nav-link" title="Logout" additionalParams="{'tx_felogin_pi1': {'norediret' : '0' },'logintype' : 'logout' , 'submit' : 'Logout'}">
+                    <f:link.page pageUid="{settings.pageIds.loginForm}" class="nav-link" title="Logout" additionalParams="{'tx_felogin_pi1': {'noredirect' : '0' },'logintype' : 'logout' , 'submit' : 'Logout'}">
                         <button class="btn btn-outline-danger btn-xs rounded-circle" >
                             <i class="fas fa-sign-out-alt "></i>
                         </button>
