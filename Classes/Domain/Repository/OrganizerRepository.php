@@ -29,7 +29,7 @@ namespace JVE\JvEvents\Domain\Repository;
 /**
  * The repository for Organizers
  */
-class OrganizerRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+class OrganizerRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
 {
 
     /**
@@ -175,23 +175,5 @@ class OrganizerRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     }
 
 
-    function debugQuery($query) {
-        // new way to debug typo3 db queries
-        $queryParser = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class);
-        $querystr = $queryParser->convertQueryToDoctrineQueryBuilder($query)->getSQL() ;
-        echo $querystr ;
-        echo "<hr>" ;
-        $queryParams = $queryParser->convertQueryToDoctrineQueryBuilder($query)->getParameters() ;
-        var_dump($queryParams);
-        echo "<hr>" ;
 
-        foreach ($queryParams as $key => $value ) {
-            $search[] = ":" . $key ;
-            $replace[] = "'$value'" ;
-
-        }
-        echo str_replace( $search , $replace , $querystr ) ;
-
-        die;
-    }
 }

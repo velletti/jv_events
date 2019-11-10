@@ -74,7 +74,8 @@ class RegisterHubspotSignal {
        // echo $debugmail ;
        // die;
 
-        if ( $settings['EmConfiguration']['enableHubspot'] < 1  || !is_object( $event->getOrganizer() ) || $event->getStoreInHubspot() < 1 )  {
+        if ( $settings['EmConfiguration']['enableHubspot'] < 1  || !is_object( $event->getOrganizer() )
+            || $event->getStoreInHubspot() < 1 || strlen( $event->getSalesForceCampaignId() < 2) )  {
             $this->logToFile( "\n\n ### ERROR ### In RegisterHubspotSignal - Registrant : " . $registrant->getEmail()
                 . "\n EmConf Enable enableHubspot: " . $settings['EmConfiguration']['enableHubspot']
                 . "\n Event: " . $event->getUid() . " - Store in Hubspot: " . $event->getStoreInHubspot() );

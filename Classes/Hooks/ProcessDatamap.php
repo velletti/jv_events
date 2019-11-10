@@ -79,6 +79,8 @@ class ProcessDatamap {
 			$this->event = $this->eventRepository->findByUidAllpages(intval($this->id), FALSE ) ;
 
 			$allowedError = 0 ;
+            $configuration = \JVE\JvEvents\Utility\EmConfigurationUtility::getEmConf();
+           // $this->flashMessage['INFO'][] = 'config:  !' . var_export( $configuration , true ) ;
 
 			if( is_object( $this->event ) ) {
 			    // remove unwanted Chars from Text Initial we start with removign ETX = end of text
@@ -148,6 +150,9 @@ class ProcessDatamap {
                     }
 
                     if ($this->event->getWithRegistration()   ) {
+
+                        /* ++++++++++++++++++    Part One : Test Registration Dates / Time +++++++++++++++++++++++++++++  */
+
                         if (! $this->event->getRegistrationUntil() || is_integer( $this->event->getRegistrationUntil()) ) {
                             $this->flashMessage['ERROR'][] = 'Registration Until date is not set! ' ;
                             $this->event->setWithRegistration(0) ;
@@ -191,6 +196,7 @@ class ProcessDatamap {
                                 }
                             }
                         }
+                        /* ++++++++++++++++++    Part One V2 : Test Registration Dates / Time +++++++++++++++++++++++++++++  */
 
                         if ($this->event->getRegistrationUntil()  >  ( $ST )) {
                             if( $this->event->getRegistrationUntil() && $this->event->getStartDate() ) {
@@ -206,6 +212,10 @@ class ProcessDatamap {
                     // IMPORTANT: without this modification startDate  will have still added the start time !
                     $ST = $ST->modify( "-" . intval($this->event->getStartTime() ) . " second" ) ;
                     unset($ST) ;
+
+
+
+                    /* ++++++++++++++++++    Part TWO : Test if important fields are filled  +++++++++++++++++++++++++++++  */
 
                     if( !$this->event->getOrganizer()) {
                         $this->flashMessage['ERROR'][] = 'No organizer selected in Tab Relations!' ;
@@ -245,8 +255,10 @@ class ProcessDatamap {
                                     $this->event->setStoreInSalesForce(0) ;
                                     $allowedError ++ ;
                                 } else {
-                                    $configuration = \JVE\JvEvents\Utility\EmConfigurationUtility::getEmConf();
+
+
                                     if( $configuration['enableSalesForceLightning'] == 1 ) {
+
                                         if( $this->event->getStartDate()->format("Ymd") > date("Ymd") && ! $this->event->getHidden() ) {
 
                                             $this->flashMessage['WARNING'][] = 'You can not set "Store in Salesforce" anymore! "Store in Hubspot" is now enabled' ;
@@ -284,6 +296,7 @@ class ProcessDatamap {
 
                                     } else {
                                         $this->createUpdateEventForSF()  ;
+
                                     }
                                 }
                             }
@@ -291,6 +304,10 @@ class ProcessDatamap {
 
                     }
                 }
+                if ( $configuration['enableHubspot'] && ! $this->event->getStoreInHubspot() && $this->event->getWithRegistration() ) {
+                    $this->flashMessage['WARNING'][] = 'You should activate:  ' . \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.store_in_hubspot', 'JvEvents', NULL);;
+                }
+
 
 
 

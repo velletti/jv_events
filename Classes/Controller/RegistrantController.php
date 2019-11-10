@@ -377,13 +377,22 @@ class RegistrantController extends BaseController
 			if( is_object( $oldReg ) ) {
 				// solve it by setting .. : allow Double registrations ...
 				// $this->settings['alreadyRegistered'] = TRUE ;
+                if( $this->settings['register']['doNotallowSameEmail'] ) {
+                    // this case should be blocked in validator .. !
+                } else {
+                    $this->settings['alreadyRegistered'] = TRUE ;
+
+                }
 			}
 		}
 		// set Status 0 unconfirmed || 1 Confirmed by Partizipant || 2 Confirmed by Organizer
 
 		if( $this->settings['alreadyRegistered'] ) {
-			$this->registrantRepository->update($oldReg) ;
-			// ToDO : decide what we do
+            if( ! $this->settings['register']['doNotallowSameEmail'] ) {
+                $this->registrantRepository->update($oldReg) ;
+            }
+
+
 		} else {
 			// ToDo Availble Seats or Waintig seats dann ?
 			if (intval($event->getAvailableSeats()) > (intval($event->getRegisteredSeats()) + intval($event->getUnconfirmedSeats()))) {

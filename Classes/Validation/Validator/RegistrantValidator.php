@@ -1,6 +1,8 @@
 <?php
 namespace JVE\JvEvents\Validation\Validator;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Validator for $registrant
  *
@@ -24,7 +26,7 @@ class RegistrantValidator extends \JVE\JvEvents\Validation\Validator\BaseValidat
 		 */
 
 		// ##### First  test for Token , reg Form Fill Speed and Fingerprint against last registration
-		$form= \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('tx_jvevents_events') ;
+		$form= GeneralUtility::_POST('tx_jvevents_events') ;
 
 		$formToken = $form['formToken'] ;
 		$generatedTokenBase = ( "P" . $this->settings['pageId'] . "-L" .$this->settings['sys_language_uid'] . "-E" . $form['event'] );
@@ -32,7 +34,7 @@ class RegistrantValidator extends \JVE\JvEvents\Validation\Validator\BaseValidat
 
 
        	if (! $formToken==$generatedToken ) {
-			$error = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error',
+			$error = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error',
 				$this->translate('register_mandatory_error_fingerprint'), time());
 			$this->result->forProperty('fingerprint')->addError($error);
 			$isValid = false ;
@@ -52,7 +54,7 @@ class RegistrantValidator extends \JVE\JvEvents\Validation\Validator\BaseValidat
 				if($otherReg->getCrdate() > ( time() - $this->emConf['minFormSeconds'])  ) {
 					// ToDo why is $otherReg->getCrdate() and $otherReg->getCreated() Empty ??
 					// look to DB -> registrant with event ID and  Fingerprint
-					$error = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error',
+					$error = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error',
 						$this->translate('register_mandatory_error_fingerprint'), time());
 					$this->result->forProperty('fingerprint')->addError($error);
 					$isValid = false ;
@@ -65,7 +67,7 @@ class RegistrantValidator extends \JVE\JvEvents\Validation\Validator\BaseValidat
 		$diff = time() - $registrant->getStartReg()  ;
 		if ( $diff < $this->emConf['minFormSeconds']  ) {
 
-			$error = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error',
+			$error = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error',
 				$this->translate('register_mandatory_error_too_fast'), time());
 			$this->result->forProperty('fingerprint')->addError($error);
 			$isValid = false ;
@@ -78,7 +80,7 @@ class RegistrantValidator extends \JVE\JvEvents\Validation\Validator\BaseValidat
 
 			$layout = $registrant->getLayoutRegister() ;
 
-			$requiredFields = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode( "," , $this->settings['register']['requiredFields'][$layout] ) ;
+			$requiredFields = GeneralUtility::trimExplode( "," , $this->settings['register']['requiredFields'][$layout] ) ;
 
 			foreach ($requiredFields as $field ) {
 				$getter = "get" . trim(ucfirst($field)) ;
@@ -88,26 +90,26 @@ class RegistrantValidator extends \JVE\JvEvents\Validation\Validator\BaseValidat
 						// Field HotPrice is the honey Pot Field. Should be in every Form and should be empty .. Invisible by Css
 						case 'getHotprice':
 							if( trim($value) <> '' ) {
-								$error = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error',$this->translate('register_mandatory_error_honeypot'), time());
+								$error = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error',$this->translate('register_mandatory_error_honeypot'), time());
 								$this->result->forProperty($field)->addError($error);
 								$isValid = false ;
 							}
 							break;
 						case 'getGender':
 							if( $value < 1 ) {
-								$error = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error',$this->translate('register_mandatory_error'), time());
+								$error = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error',$this->translate('register_mandatory_error'), time());
 								$this->result->forProperty($field)->addError($error);
 								$isValid = false ;
 							}
 							break;
 						case 'getEmail':
 							if(strlen(trim($value)) < 1 ) {
-								$error = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error',$this->translate('register_mandatory_error'), time());
+								$error = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error',$this->translate('register_mandatory_error'), time());
 								$this->result->forProperty($field)->addError($error);
 								$isValid = false ;
 							}
-							if( ! \TYPO3\CMS\Core\Utility\GeneralUtility::validEmail( $value )) {
-								$error = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error',$this->translate('register_mandatory_email_error'), time());
+							if( ! GeneralUtility::validEmail( $value )) {
+								$error = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error',$this->translate('register_mandatory_email_error'), time());
 								$this->result->forProperty($field)->addError($error);
 								$isValid = false ;
 							}
@@ -115,14 +117,14 @@ class RegistrantValidator extends \JVE\JvEvents\Validation\Validator\BaseValidat
 
 						case 'getPrivacy':
 							if( !$value ) {
-								$error = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error',$this->translate('register_mandatory_error'), time());
+								$error = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error',$this->translate('register_mandatory_error'), time());
 								$this->result->forProperty($field)->addError($error);
 								$isValid = false ;
 							}
 							break;
 						default:
 							if(strlen(trim($value)) < 1 ) {
-								$error = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error',$this->translate('register_mandatory_error'), time());
+								$error = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error',$this->translate('register_mandatory_error'), time());
 								$this->result->forProperty($field)->addError($error);
 								$isValid = false ;
 							}
@@ -133,7 +135,7 @@ class RegistrantValidator extends \JVE\JvEvents\Validation\Validator\BaseValidat
 
 
 				} else {
-					$error = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error',"TypoScript error : Required Fieldname : '" . $getter . "' is not Function in  object Registrant " , time());
+					$error = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error',"TypoScript error : Required Fieldname : '" . $getter . "' is not Function in  object Registrant " , time());
 					$this->result->forProperty($getter)->addError($error);
 					$isValid = false ;
 				}
@@ -147,7 +149,16 @@ class RegistrantValidator extends \JVE\JvEvents\Validation\Validator\BaseValidat
 		// ######### darf man sich überhaupt noch anmelden .. ggf. ist inzwischen der letzte Platz weg oder frist abgelaufen ?
 		if ( $isValid ) {
 			// ToDo : check if enough Seats ...
+            if ($this->settings['register']['doNotallowSameEmail']) {
+                /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $otherReg */
+                $otherReg = $this->registrantRepository->findByFilter(trim($registrant->getEmail() ), $registrant->getEvent() ,  0 , array('filter' => array( 'startDate' => 9999999999 ))  ) ;
 
+                if (  $otherReg && is_object( $otherReg->getFirst()) && $otherReg->getFirst()->getUid()  ) {
+                    $error = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error',$this->translate('register_email_registered_same_event') , time());
+                    $this->result->forProperty('email')->addError($error);
+                    $isValid = false ;
+                }
+            }
 		}
 
 

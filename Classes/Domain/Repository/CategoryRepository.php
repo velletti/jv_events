@@ -30,7 +30,7 @@ namespace JVE\JvEvents\Domain\Repository;
 /**
  * The repository for Categories
  */
-class CategoryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+class CategoryRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
 {
 
     /**
