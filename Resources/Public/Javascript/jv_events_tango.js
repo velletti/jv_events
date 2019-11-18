@@ -59,7 +59,10 @@ function jv_events_init_AjaxMenu() {
                 },
                 success: function (response) {
                     $('.jv_events_unlink_event .iconWait').addClass('d-none');
-                    $('.' + index).addClass('d-none'); ;
+                    $('.' + index).addClass('d-none');
+                    if ( index == 'jv_events_unlink_event-9999' ) {
+                        $('.jv_events_save_related_events').addClass('d-none');
+                    }
 
                 },
                 error: function (response) {
