@@ -67,46 +67,67 @@
             <f:if condition="{showOptions}">
                 <div id="jv_events_edit_save_button_scroll" class=""></div>
                 <div id="jv_events_edit_save_button" class="alert alert-secondary collapse">
-                    <h3><f:translate key="tx_jvevents_domain_model_event.edit.repeating.headline">Regelmäßiger Termin</f:translate></h3>
-                    <p><f:translate key="tx_jvevents_domain_model_event.edit.repeating.text">Dies ist ein regelmäßiger Termin. Sollen die obigen Änderungen für alle zukünftigen Termine mit der gleichen ID übernommen werden?</f:translate></p>
-                    <p><f:translate key="tx_jvevents_domain_model_event.edit.repeating.textNot">Gilt aktuell noch nicht für Bilder, Kategorien und Schlagworte!</f:translate></p>
-                    <f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowCheckbox"
-                              arguments="{object: '', property: 'changeFutureEvents' , onText: 'YES', offText: 'no' ,name:'tx_jvevents_events[changeFutureEvents]' , checked: 'false' , label: '' , translationKey: 'tx_jvevents_domain_model_event.edit.repeating.uebernehmen' ,  mandatory: '' }" />
+                    <div class="jv_events_save_related_events">
+                        <h3><f:translate key="tx_jvevents_domain_model_event.edit.repeating.headline">Regelmäßiger Termin</f:translate></h3>
+                        <p><f:translate key="tx_jvevents_domain_model_event.edit.repeating.text">Dies ist ein regelmäßiger Termin. Sollen die obigen Änderungen für alle zukünftigen Termine mit der gleichen ID übernommen werden?</f:translate></p>
+                        <p><f:translate key="tx_jvevents_domain_model_event.edit.repeating.textNot">Gilt aktuell noch nicht für Bilder, Kategorien und Schlagworte!</f:translate></p>
+                        <div class="clearfix">
+                            <p class="jv_events_unlink_event-9999">
+                                    {f:translate(key: 'event_remove_relation' , default: 'Verbindung Trennen')}:
+                                    <span title="{f:translate(key: 'event_remove_relation' , default: 'Verbindung Trennen')}" class="btn btn-outline-primary btn-xs rounded-circle jv_events_unlink_event" data-eventUid="{event.uid}" data-index="jv_events_unlink_event-9999" href="#">
+                                          <span class="iconLink">
+                                              <i class="fas fa-unlink "></i>
+                                          </span>
+                                          <span class="iconWait d-none">
+                                              <i class="fas fa-spinner fa-spin"></i>
+                                          </span>
+                                          <span class="iconError d-none">
+                                              <i class="fas fa-stop"></i>
+                                          </span>
+                                    </span>
 
+                            </p>
+                        </div>
+                    </div>
                     <f:if condition="{relatedEvents}">
-                        <div class="alert alert-dismissible bg-white">
+
+                        <div class="jv_events_save_related_events alert alert-dismissible bg-white">
+                            <f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowCheckbox"
+                                      arguments="{object: '', property: 'changeFutureEvents' , onText: 'YES', offText: 'no' ,name:'tx_jvevents_events[changeFutureEvents]' , checked: 'false' , label: '' , translationKey: 'tx_jvevents_domain_model_event.edit.repeating.uebernehmen' ,  mandatory: '' }" />
+
                             <p>
                                 <f:translate key="tx_jvevents_domain_model_event.edit.repeating.effected">Betroffene Termine</f:translate>:
                             </p>
 
                             <f:for each="{relatedEvents}" as="relatedEvent" iteration="index">
-                              <p class="jv_events_unlink_event-{index.index}">
+                                <p class="jv_events_unlink_event-{index.index}">
 
-                                  <f:link.action pageUid="{settings.pageIds.editEvent}" class="pr-1" title="Edit Event" target="_blank" action="edit" controller="Event" arguments="{event: relatedEvent.uid}">
-                                      <span class="btn btn-outline-primary btn-xs rounded-circle" href="#">
-                                          <i class="fas fa-edit "></i>
+                                    <f:link.action pageUid="{settings.pageIds.editEvent}" class="pr-1" title="Edit Event" target="_blank" action="edit" controller="Event" arguments="{event: relatedEvent.uid}">
+                                          <span class="btn btn-outline-primary btn-xs rounded-circle" href="#">
+                                              <i class="fas fa-edit "></i>
+                                          </span>
+                                    </f:link.action>
+                                    <span >
+                                          {relatedEvent.startDate -> jve:format.date( format:"d.m.")} | {relatedEvent.startTime -> jve:format.date( format:"H:i")} : {relatedEvent.name}
                                       </span>
-                                  </f:link.action>
-                                  <span >
-                                      {relatedEvent.startDate -> jve:format.date( format:"d.m.")} | {relatedEvent.startTime -> jve:format.date( format:"H:i")} : {relatedEvent.name}
-                                  </span>
-                                 <span title="{f:translate(key: 'event_remove_relation' , default: 'Verbindung Trennen')}" class="btn btn-outline-primary btn-xs rounded-circle position-right jv_events_unlink_event" data-eventUid="{relatedEvent.uid}" data-index="jv_events_unlink_event-{index.index}" href="#">
+                                    <span title="{f:translate(key: 'event_remove_relation' , default: 'Verbindung Trennen')}" class="btn btn-outline-primary btn-xs rounded-circle position-right jv_events_unlink_event" data-eventUid="{relatedEvent.uid}" data-index="jv_events_unlink_event-{index.index}" href="#">
 
-                                      <span class="iconLink">
-                                          <i class="fas fa-unlink "></i>
-                                      </span>
-                                      <span class="iconWait d-none">
-                                          <i class="fas fa-spinner fa-spin"></i>
-                                      </span>
-                                      <span class="iconError d-none">
-                                          <i class="fas fa-stop"></i>
-                                      </span>
+                                          <span class="iconLink">
+                                              <i class="fas fa-unlink "></i>
+                                          </span>
+                                          <span class="iconWait d-none">
+                                              <i class="fas fa-spinner fa-spin"></i>
+                                          </span>
+                                          <span class="iconError d-none">
+                                              <i class="fas fa-stop"></i>
+                                          </span>
 
-                                  </span>
-                              </p>
+                                      </span>
+                                </p>
                             </f:for>
                         </div>
                     </f:if>
+
                     <div class="text-right">
                         <f:form.submit class="btn btn-primary" value="{f:translate(key: 'form.save', default: 'Save')}" />
                     </div>
