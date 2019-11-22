@@ -791,6 +791,11 @@
                 <source>More filters</source>
                 <target>Weitere Filter</target>
             </trans-unit>
+            <trans-unit id="tx_jvevents_event.list.event_details">
+                <source>Event details</source>
+                <target>Veranstaltungsdetails</target>
+            </trans-unit>
+
             <trans-unit id="tx_jvevents_event.list.no_events_found" approved="yes">
                 <source>No Events found with this search values</source>
                 <target>Keine Veranstaltungen mit diesen Kriterien gefunden</target>

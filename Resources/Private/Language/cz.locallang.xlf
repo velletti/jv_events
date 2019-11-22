@@ -655,6 +655,10 @@
 			<source>More filters</source>
 			<target>Další filtry</target>
 		</trans-unit>
+		<trans-unit id="tx_jvevents_event.list.event_details">
+			<source>Event details</source>
+			<target>Podrobnosti události</target>
+		</trans-unit>
 		<trans-unit id="tx_jvevents_event.list.no_events_found" approved="yes">
 			<source>No Events found with this search values</source>
 			<target>U těchto hodnot vyhledávání nebyly nalezeny žádné události</target>

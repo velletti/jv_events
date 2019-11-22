@@ -234,7 +234,7 @@
                 <source>Marketing Process Id</source>
             </trans-unit>
             <trans-unit id="tx_jvevents_domain_model_event.name">
-                <source>Titel of event</source>
+                <source>Title of event</source>
             </trans-unit>
             <trans-unit id="tx_jvevents_domain_model_event.need_to_confirm">
                 <source>Participant needs To Confirm</source>
@@ -639,7 +639,9 @@
             </trans-unit>
 
 
-
+            <trans-unit id="tx_jvevents_event.list.event_details">
+                <source>Event details</source>
+            </trans-unit>
             <trans-unit id="tx_jvevents_event.list.no_events_found">
                 <source>No Events found with this search values</source>
             </trans-unit>
