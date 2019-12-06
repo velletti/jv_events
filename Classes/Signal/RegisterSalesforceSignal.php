@@ -227,6 +227,7 @@ class RegisterSalesforceSignal {
             curl_setopt($ch, CURLOPT_HTTPHEADER, array( 'Expect:' ) );
 
             curl_setopt($ch, CURLOPT_VERBOSE, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
             $result = curl_exec ($ch);
             curl_close ($ch);

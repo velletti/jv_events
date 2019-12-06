@@ -125,6 +125,7 @@ class RegisterCitrixSignal {
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true ); // don't give anything back (important in TYPO3!)
             curl_setopt($ch, CURLOPT_HEADER, TRUE );  // leider muss ich das komplett zurÃ¼ck holen, weil ich sonst nicht den HTTP response Code ( Fehler / OK ) zurÃ¼ck bekomme ..
             curl_setopt($ch, CURLOPT_VERBOSE, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false );
             curl_setopt($ch, CURLOPT_HTTPHEADER, $jsonheader );
 
 
