@@ -46,7 +46,7 @@
                     <f:if condition="{output.organizer.hasAccess}">
                         <f:if condition="{settings.pageIds.rankingModul}">
                             <f:security.ifHasRole role="adminOrganizer">
-                                <f:link.page class="nav-link" pageUid="{settings.pageIds.rankingModul}" title="showRanging Settings" additionalParams="{tx_jvranking_pi1: {organizer: '{organizer.uid}'}}">
+                                <f:link.page class="nav-link" pageUid="{settings.pageIds.rankingModul}" title="showRanging Settings" additionalParams="{tx_jvranking_pi1: {organizer: '{output.organizer.organizerId}'}}">
                                     <button class="btn btn-outline-primary btn-xs rounded-circle" href="#">
                                         <i class="fas fa-chart-bar "></i>
                                     </button>
