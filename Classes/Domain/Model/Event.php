@@ -1889,7 +1889,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @return boolean
      */
-    public function isRegistrationConfigured()
+    public function isIsRegistrationConfigured()
     {
 
         // first Text if internal or external registration is set.
