@@ -1,5 +1,5 @@
 <f:security.ifHasRole role="adminOrganizer">
-	<f:variable name="showErrorDetails">
+	<f:variable name="showErrorDetails"><br></f:variable>
 	<f:form.validationResults for="{for}">
 		<f:if condition="{validationResults.flattenedErrors}">
 			<f:for each="{validationResults.flattenedErrors}" key="propertyPath" as="propertyErrors">
