@@ -3,7 +3,7 @@
     <f:if condition="{validationResults.flattenedErrors}">
         <f:for each="{validationResults.flattenedErrors}" key="propertyPath" as="propertyErrors">
             <f:for each="{propertyErrors}" as="propertyError">
-                <f:variable name="showErrorDetails">{showErrorDetails}<br>({propertyPath}  -> ({propertyError.message})</f:variable>
+                <f:variable name="showErrorDetails">{showErrorDetails}({propertyPath}  -> ({propertyError.message})<br></f:variable>
                 <f:variable name="showError">true</f:variable>
             </f:for>
         </f:for>
@@ -14,7 +14,7 @@
 
 <f:if condition="{showError}">
 	<f:then>
-		<div class="">
+		<div class="mb-2">
 			<button class="btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#collapseError" aria-expanded="false" aria-controls="collapseExample">
                 <span class="fa fa-info-circle mr-2"> </span> Show error details
 			</button>
