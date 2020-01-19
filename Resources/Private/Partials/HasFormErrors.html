@@ -14,12 +14,12 @@
 
 <f:if condition="{showError}">
 	<f:then>
-		<div class="alert alert-warning">
-			<button class="btn btn-outline-secondary" type="button" data-toggle="collapse" data-target="#collapseError" aria-expanded="false" aria-controls="collapseExample">
-				Show Error details
+		<div class="">
+			<button class="btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#collapseError" aria-expanded="false" aria-controls="collapseExample">
+                <span class="fa fa-info-circle mr-2"> </span> Show error details
 			</button>
 
-			<div class="collapse" id="collapseError">
+			<div class="collapse alert alert-warning" id="collapseError">
 				<f:format.raw>
 					{showErrorDetails}
 				</f:format.raw>
