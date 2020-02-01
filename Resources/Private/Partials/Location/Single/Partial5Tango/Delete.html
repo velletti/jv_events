@@ -1,0 +1,30 @@
+
+
+{namespace jve=JVE\JvEvents\ViewHelpers}
+<f:layout name="Edit" />
+
+
+<div class="card col-12   jv-events-partial{settings.LayoutSingle}" id="jv-event-edit-data">
+    <div class="card-header text-white bg-primary"> <span class="fa fa-trash"></span>
+        <span class="fas fa-edit border-primary rounded-circle"></span>
+        <span><f:translate key="tx_jvevents_domain_model_location.Delete">Delete Location</f:translate></span>
+    </div>
+    <div class="card-body">
+        <f:translate key="tx_jvevents_domain_model_location.DeleteReally"> Wollen sie dien Ort wirklich löschen? </f:translate>
+          <br>
+        <h3>{location.name}</h3>
+        {location.zip} {location.city} <br>
+        {location.street_and_nr} <br>
+
+        <f:if condition="{eventCount}">
+            <br>
+            <f:translate key="tx_jvevents_domain_model_location.DeleteEvents"> Damit werden auch Veranstaltungen gelöscht: </f:translate>
+
+            <span class="big">{eventCount}</span>
+        </f:if>
+        <br>
+        <br>
+        <f:link.action class="btn btn-danger" action="delete" arguments="{location: location.uid, delete: 1, eventCount: '{eventCount}'}"><f:translate key="event_delete_really_button" >Wirklich Löschen!</f:translate></f:link.action>
+
+    </div>
+</div>

@@ -349,7 +349,12 @@
 
 				</div>
 			</div>
-
+			<f:if condition="{event.location.description}">
+				<div class="data clearfix border-top pt-3">
+					<h4><f:translate key="tx_jvevents_domain_model_location" /></h4>
+					<f:format.html parseFuncTSPath="lib.jveventsRTE">{event.location.description}</f:format.html>
+				</div>
+			</f:if>
 
 
 

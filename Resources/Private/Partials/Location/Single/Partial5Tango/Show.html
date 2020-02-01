@@ -1,0 +1,35 @@
+
+
+{namespace jve=JVE\JvEvents\ViewHelpers}
+<f:layout name="Edit" />
+
+
+<div class="card col-12   jv-events-partial{settings.LayoutSingle}" id="jv-event-edit-data">
+    <div class="card-header text-white bg-primary">
+        <span class="fas fa-eye border-primary rounded-circle"></span>
+        <span>{location.name}</span>
+    </div>
+    <div class="card-body">
+        {location.zip} {location.city} <br>
+        {location.streetAndNr} <br>
+        <br>
+        <f:if condition="{location.phone}" >
+            {location.phone}<br>
+        </f:if>
+        <f:if condition="{location.email}">
+            {location.email}<br>
+        </f:if>
+        <f:if condition="{location.phone}">
+            {location.phone}<br>
+        </f:if>
+        <f:if condition="{location.link}">
+            <f:link.external uri="{location.link}" target="_blank">{location.link}</f:link.external><br>
+        </f:if>
+        <br>
+        <div class="alert alert-secondary">
+            <f:format.html parseFuncTSPath="lib.jveventsRTE">{location.description}</f:format.html>
+        </div>
+        <br>
+        <f:render partial="GoogleMapsTango" arguments="{addresses: {0:location}, settings:settings}" />
+    </div>
+</div>

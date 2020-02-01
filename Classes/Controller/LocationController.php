@@ -244,9 +244,44 @@ class LocationController extends BaseController
      */
     public function deleteAction(\JVE\JvEvents\Domain\Model\Location $location)
     {
-        $this->addFlashMessage('The object was deleted. Please be aware that this action is publicly accessible unless you implement an access check. See http://wiki.typo3.org/T3Doc/Extension_Builder/Using_the_Extension_Builder#1._Model_the_domain', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
-		//   $this->locationRepository->remove($location);
-		//   $this->redirect('list');
+        $delete = false ;
+        $events = $this->eventRepository->findByLocation( $location->getUid() ) ;
+        if( $this->request->hasArgument('delete')) {
+            $delete = $this->request->getArgument('delete');
+            if( $this->request->hasArgument('eventCount')) {
+                $eventCount = $this->request->getArgument('eventCount');
+            }
+
+            if ( $delete &&  $events->count() == $eventCount) {
+
+                if ( $this->hasUserAccess($location->getOrganizer() )) {
+                    $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
+                    if ( $events->count() > 0 ) {
+                        $eventIds = "Ids: " ;
+                        /** @var \JVE\JvEvents\Domain\Model\Event $event */
+                        foreach ( $events as $event) {
+                            $eventIds .= $event->getUid() . ", " ;
+                            $this->eventRepository->remove($event) ;
+                        }
+                        $this->addFlashMessage('The following Events are deleted: ' . $eventIds, '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+                    }
+
+                    $this->locationRepository->remove($location);
+                    $this->addFlashMessage('The Location was deleted.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+
+
+                } else {
+                    $this->addFlashMessage('You do not have access rights to change this data.' . $location->getUid() , '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+                }
+
+
+                $this->redirect('assist' , 'Organizer', Null , NULL , $this->settings['pageIds']['organizerAssist'] );
+            }
+        }
+        $this->view->assign('location', $location);
+        $this->view->assign('eventCount', $events->count() );
+        $this->view->assign('settings', $this->settings );
+
     }
 
     /**

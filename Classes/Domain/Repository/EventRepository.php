@@ -208,6 +208,57 @@ class EventRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
         return $result;
     }
 
+
+    /**
+     * @param array|boolean $filter
+     * @param integer|boolean $limit
+     * @param array|boolean $settings
+     * @return array|\TYPO3\CMS\Extbase\Persistence\QueryInterface $query
+     */
+    public function findByLocation($uid )
+    {
+        $query = $this->createQuery();
+
+        $constraints = array();
+        $query->getQuerySettings()->setRespectStoragePage(false);
+
+        $query->getQuerySettings()->setRespectSysLanguage(FALSE);
+
+
+        $constraints[] = $query->equals("location",  $uid );
+            $query->matching($query->logicalAnd($constraints));
+
+        $result = $query->execute();
+        //  $settings['debug'] = 2 ;
+        if ($settings['debug'] == 2 ) {
+
+            $queryParser = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class);
+
+            $sqlquery = $queryParser->convertQueryToDoctrineQueryBuilder($query)->getSQL() ;
+            echo "<html><body><div>";
+            echo $sqlquery ;
+            echo "<hr>Values: <br>" ;
+            $values = ($queryParser->convertQueryToDoctrineQueryBuilder($query)->getParameters()) ;
+            echo "<pre>" ;
+            echo var_export($values , true ) ;
+            echo "</pre>" ;
+            $from = array() ;
+            $to = array() ;
+            foreach (array_reverse( $values ) as $key => $value) {
+                $from[] = ":" .$key ;
+                $to[] = $value ;
+            }
+            $sqlFinalQuery = str_replace($from , $to , $sqlquery ) ;
+            echo "<hr>Final: <br>" ;
+            echo str_replace( array( "(" , ")" )  , array("<br>(" , ")<br>" ) , $sqlFinalQuery ) ;
+            echo "<br><hr><br></div></body></html>" ;
+
+            die;
+        }
+        return $result;
+    }
+
+
     /**
      * @param array $settings
      * @param \DateTimeZone $DateTimeZone

@@ -1,0 +1,18 @@
+
+<f:layout name="Edit" />
+
+{namespace jve=JVE\JvEvents\ViewHelpers}
+<f:layout name="Edit" />
+
+
+<f:section name="main">
+    <f:if condition="{settings.LayoutSingle}">
+        <f:then>
+            <f:variable name="LayoutSingle">{settings.LayoutSingle}</f:variable>
+        </f:then>
+        <f:else>
+            <f:variable name="LayoutSingle">5Tango</f:variable>
+        </f:else>
+    </f:if>
+    <f:render partial="Location/Single/Partial{LayoutSingle}/Delete" arguments="{_all}" />
+</f:section>

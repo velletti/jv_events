@@ -36,19 +36,20 @@
                         </f:link.action>
                     </div>
                     <div class="col-1  text-left ml-0 pl-0">
+                        <f:link.action pageUid="{settings.pageIds.editLocation}" action="show" controller="Location" class="btn btn-primary" title="{location.uid}" arguments="{location: '{location.uid}', organizer: '{organizer.0.uid}'}">
+                            <span class="fa fa-eye"></span>
+                        </f:link.action>
+                    </div>
+                    <div class="col-1  text-left ml-0 pl-0">
                         <f:link.action pageUid="{settings.pageIds.editLocation}" action="edit" controller="Location" class="btn btn-{f:if(condition: '{location.defaultLocation}' , then: 'primary', else: 'secondary')}" title="{location.uid}" arguments="{location: '{location.uid}', organizer: '{organizer.0.uid}' , oldDefault: '{defaultLocation}'}">
                             <span class="fa fa-edit"></span>
                         </f:link.action>
                     </div>
                     <div class="col-1  text-left ml-0 pl-0">
-                        <f:if condition="{location.hidden}">
-                            <f:then>
-                                inactive
-                            </f:then>
-                            <f:else>
+                        <f:link.action pageUid="{settings.pageIds.editLocation}" action="delete" controller="Location" class="btn btn-secondary" title="{location.uid}" arguments="{location: '{location.uid}', organizer: '{organizer.0.uid}'}">
+                            <span class="fa fa-trash"></span>
+                        </f:link.action>
 
-                            </f:else>
-                        </f:if>
                     </div>
                 </f:spaceless>
             </div>
