@@ -36,6 +36,12 @@
 		<trans-unit id="files.description">
 			<source>Upload files, visible to all who may see the event. Depending on your layout if in List view or/and Detail view</source>
 		</trans-unit>
+		<trans-unit id="filesAfterReg.description">
+			<source>Upload files, visible to had registered to the event. Depending on your layout if in List view or/and Detail view. or maybe only in a registration email notification</source>
+		</trans-unit>
+		<trans-unit id="filesAfterEvent.description">
+			<source>Upload files, visible AFTER the event. Depending on your layout and definied workflow or maybe  only in an notification email after the event to the attendees </source>
+		</trans-unit>
 		<trans-unit id="freq_exception.description">
 			<source>Fe. If Weekly, select if every thursday or only every second week.</source>
 		</trans-unit>

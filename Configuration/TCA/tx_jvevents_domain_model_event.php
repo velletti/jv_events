@@ -30,7 +30,7 @@ $returnArray = array(
 		'iconfile' => 'EXT:jv_events/Resources/Public/Icons/tx_jvevents_domain_model_event.gif'
 	),
 	'interface' => array(
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, event_type, teaser, description, images, files, all_day, start_date, start_time, end_date, end_time, access, with_registration, registration_until, registration_access, store_in_citrix, sales_force_campaign_id, store_in_hubspot, citrix_uid, store_in_sales_force, marketing_process_id, sales_force_record_type, sales_force_event_id, sales_force_session_id, available_seats,available_waiting_seats, registered_seats, unconfirmed_seats, notify_organizer, notify_registrant, subject_organizer, text_organizer, subject_registrant,introtext_registrant, text_registrant, need_to_confirm, is_recurring, frequency, freq_exception, is_exception_for, organizer, location, registrant, event_category, tags, url,price,',
+		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, event_type, teaser, description, images, files, files_after_reg, files_after_event,all_day, start_date, start_time, end_date, end_time, access, with_registration, registration_until, registration_access, store_in_citrix, sales_force_campaign_id, store_in_hubspot, citrix_uid, store_in_sales_force, marketing_process_id, sales_force_record_type, sales_force_event_id, sales_force_session_id, available_seats,available_waiting_seats, registered_seats, unconfirmed_seats, notify_organizer, notify_registrant, subject_organizer, text_organizer, subject_registrant,introtext_registrant, text_registrant, need_to_confirm, is_recurring, frequency, freq_exception, is_exception_for, organizer, location, registrant, event_category, tags, url,price,',
 	),
 	'types' => array(
 		'0' => array('showitem' => 'event_type,url,--palette--;;dates,--palette--;LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.entry_time_help;entryTime,
@@ -38,14 +38,14 @@ $returnArray = array(
 		--div--;Advanced, --palette--;;language, --palette--;;advanced, --palette--;;frequent, 
 		   price,currency,--linebreak--,--palette--;LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.priceReducedHeader;priceReduced,
 		--div--;Relations, --palette--;;relations,
-		--div--;Files, teaser_image, files,
+		--div--;Files, teaser_image, files, files_after_reg, files_after_event,
 		--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, --palette--;;access,'),
 		'2' => array('showitem' => 'event_type,--palette--;;dates,--palette--;LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.entry_time_help;entryTime,
 		   --palette--;;infos,description,
 		--div--;Advanced, --palette--;;language, --palette--;;advanced, --palette--;;frequent,
 		  price,currency,--linebreak--,--palette--;LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.priceReducedHeader;priceReduced,
 		--div--;Relations, --palette--;;relations,
-		--div--;Files, teaser_image,images, files,
+		--div--;Files, teaser_image,images, files,files_after_reg, files_after_event,
 		--div--;Registration, --palette--;;register,
 		--div--;Notifications, --palette--;;notification, --palette--;Email;notifyOrg, --palette--;Email;notifyReg,
 		--div--;Old, --palette--;;old,
@@ -431,9 +431,101 @@ $returnArray = array(
 					),
 					'maxitems' => 10
 				) ,
-				'pdf'
+				'pdf,zip,jpeg,jpg,mp4,doc,docx,ppt'
 			),
 		),
+        'files_after_reg' => array(
+            'exclude' => 1,
+            'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.filesAfterReg',
+            'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
+                'files_after_reg',
+                array(
+                    'appearance' => array(
+                        'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.addFileReference'
+                    ),
+                    'foreign_types' => array(
+                        '0' => array(
+                            'showitem' => '
+							--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+							--palette--;;filePalette'
+                        ),
+                        \TYPO3\CMS\Core\Resource\File::FILETYPE_TEXT => array(
+                            'showitem' => '
+							--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+							--palette--;;filePalette'
+                        ),
+                        \TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => array(
+                            'showitem' => '
+							--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+							--palette--;;filePalette'
+                        ),
+                        \TYPO3\CMS\Core\Resource\File::FILETYPE_AUDIO => array(
+                            'showitem' => '
+							--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+							--palette--;;filePalette'
+                        ),
+                        \TYPO3\CMS\Core\Resource\File::FILETYPE_VIDEO => array(
+                            'showitem' => '
+							--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+							--palette--;;filePalette'
+                        ),
+                        \TYPO3\CMS\Core\Resource\File::FILETYPE_APPLICATION => array(
+                            'showitem' => '
+							--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+							--palette--;;filePalette'
+                        )
+                    ),
+                    'maxitems' => 10
+                ) ,
+                'pdf,zip,jpeg,jpg,mp4,doc,docx,ppt'
+            ),
+        ),
+        'files_after_event' => array(
+            'exclude' => 1,
+            'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.filesAfterEvent',
+            'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
+                'files_after_event',
+                array(
+                    'appearance' => array(
+                        'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.addFileReference'
+                    ),
+                    'foreign_types' => array(
+                        '0' => array(
+                            'showitem' => '
+							--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+							--palette--;;filePalette'
+                        ),
+                        \TYPO3\CMS\Core\Resource\File::FILETYPE_TEXT => array(
+                            'showitem' => '
+							--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+							--palette--;;filePalette'
+                        ),
+                        \TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => array(
+                            'showitem' => '
+							--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+							--palette--;;filePalette'
+                        ),
+                        \TYPO3\CMS\Core\Resource\File::FILETYPE_AUDIO => array(
+                            'showitem' => '
+							--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+							--palette--;;filePalette'
+                        ),
+                        \TYPO3\CMS\Core\Resource\File::FILETYPE_VIDEO => array(
+                            'showitem' => '
+							--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+							--palette--;;filePalette'
+                        ),
+                        \TYPO3\CMS\Core\Resource\File::FILETYPE_APPLICATION => array(
+                            'showitem' => '
+							--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+							--palette--;;filePalette'
+                        )
+                    ),
+                    'maxitems' => 10
+                ) ,
+                'pdf,zip,jpeg,jpg,mp4,doc,docx,ppt'
+            ),
+        ),
 		'all_day' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.all_day',

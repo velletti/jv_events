@@ -161,6 +161,21 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FileReference>
      */
     protected $files = null;
+
+    /**
+     * Files that may be useful for this event
+     *
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FileReference>
+     */
+    protected $filesAfterReg = null;
+
+    /**
+     * Files that may be useful for this event
+     *
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FileReference>
+     */
+    protected $filesAfterEvent = null;
+
     
     /**
      * Is this an event with out start / Endtime?
@@ -802,25 +817,77 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 	}
 
 	/**
-	 * Returns the files
-	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FileReference> $files
-	 */
-	public function getFiles()
-	{
-		return $this->files;
-	}
+ * Returns the files
+ *
+ * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FileReference> $files
+ */
+    public function getFiles()
+    {
+        return $this->files;
+    }
 
-	/**
-	 * Sets the files
-	 *
-	 * @param \TYPO3\CMS\Extbase\Domain\Model\FileReference $files
-	 * @return void
-	 */
-	public function setFiles(\TYPO3\CMS\Extbase\Domain\Model\FileReference $files)
-	{
-		$this->files = $files;
-	}
+
+
+    /**
+     * Sets the files
+     *
+     * @param \TYPO3\CMS\Extbase\Domain\Model\FileReference $files
+     * @return void
+     */
+    public function setFiles(\TYPO3\CMS\Extbase\Domain\Model\FileReference $files)
+    {
+        $this->files = $files;
+    }
+
+
+
+    /**
+     * Returns the filesAfterReg
+     *
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FileReference> $files
+     */
+    public function getFilesAfterReg()
+    {
+        return $this->filesAfterReg;
+    }
+
+
+
+    /**
+     * Sets the files
+     *
+     * @param \TYPO3\CMS\Extbase\Domain\Model\FileReference $files
+     * @return void
+     */
+    public function setFilesAfterReg(\TYPO3\CMS\Extbase\Domain\Model\FileReference $files)
+    {
+        $this->filesAfterReg = $files;
+    }
+
+    /**
+     * Returns the filesAfterEvent
+     *
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FileReference> $files
+     */
+    public function getFilesAfterEvent()
+    {
+        return $this->filesAfterEvent;
+    }
+
+
+
+    /**
+     * Sets the filesAfterEvent
+     *
+     * @param \TYPO3\CMS\Extbase\Domain\Model\FileReference $files
+     * @return void
+     */
+    public function setFilesAfter(\TYPO3\CMS\Extbase\Domain\Model\FileReference $files)
+    {
+        $this->filesAfterEvent = $files;
+    }
+
+
 
 	/**
      * Returns the startDate

@@ -258,6 +258,8 @@ class AjaxController extends BaseController
                 $output['event']['endTime'] = date( "H:i" , $event->getEndTime()) ;
                 $output['event']['creationTime'] = date( "d.m.Y H:i" , $event->getCrdate() ) ;
                 $output['event']['noNotification'] = $event->getNotifyRegistrant() ;
+
+
                 if( $event->getNotifyRegistrant() == 0  ) {
                     $reminder2 = new \DateInterval("P1D") ;
                     $reminderDate2 =  new \DateTime($event->getStartDate()->format("c")) ;
@@ -274,6 +276,8 @@ class AjaxController extends BaseController
                 }
 
                 $output['event']['name'] = $event->getName() ;
+                $output['event']['teasterText'] = $event->getTeaser();
+
                 $output['event']['teaserImageUrl'] = GeneralUtility::getIndpEnv("TYPO3_REQUEST_HOST")  ;
                 if (  $event->getTeaserImage() && is_object( $event->getTeaserImage()->getOriginalResource()) ) {
                         $output['event']['teaserImageUrl'] .=  $event->getTeaserImage()->getOriginalResource()->getPublicUrl() ;
@@ -284,6 +288,10 @@ class AjaxController extends BaseController
                         $output['event']['teaserImageUrl'] = GeneralUtility::getIndpEnv("TYPO3_REQUEST_HOST") . trim($this->settings['EmConfiguration']['imgUrl']) ;
                     }
                 }
+                $output['event']['filesAfterReg'] = $this->getFilesArray( $event->getFilesAfterReg() )  ;
+                $output['event']['filesAfterEvent'] = $this->getFilesArray( $event->getFilesAfterEvent() )  ;
+
+
 
                 $output['event']['price'] = round( $event->getPrice() , 2 ) ;
                 $output['event']['currency'] = $event->getCurrency() ;
@@ -477,6 +485,9 @@ class AjaxController extends BaseController
     public function eventListAction()
     {
 
+        // 6.2.2020 with teaserText and files
+        // https://www.allplan.com.ddev.local/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=4308&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[mode]=onlyValues
+
         // https://www.allplan.com.ddev.local/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=94&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[rss]=1
         // https://www.allplan.com.ddev.local/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=94&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[mode]=onlyValues
 
@@ -653,7 +664,10 @@ class AjaxController extends BaseController
      * @param int $userUid
      * @param string $hmac
      * @param int $rnd
-     *
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
      */
     public function activateAction($organizerUid=0 , $userUid=0 , $hmac='invalid' , $rnd = 0 ) {
 
@@ -804,5 +818,41 @@ class AjaxController extends BaseController
 		);
 
 	}
+
+    /**
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $resource
+     * @return array
+     *
+     */
+	public function getFilesArray( \TYPO3\CMS\Extbase\Persistence\ObjectStorage $resource ) {
+        /** @var \TYPO3\CMS\Extbase\Domain\Model\FileReference $tempFile */
+        $return = array() ;
+        if(is_object($resource) && $resource->count() > 0 ) {
+            foreach ($resource as $tempFile) {
+
+                try {
+                    $single = array() ;
+                    if( is_object($tempFile) && $tempFile->getOriginalResource() ) {
+                        $single['url'] =  GeneralUtility::getIndpEnv("TYPO3_REQUEST_HOST") . $tempFile->getOriginalResource()->getPublicUrl() ;
+                        $single['filename'] =  $tempFile->getOriginalResource()->getName() ;
+                        $single['title'] =  $tempFile->getOriginalResource()->getTitle() ;
+                        if(!$single['title'] ) {
+                            $single['title']  =  str_replace( "_" , " " , $tempFile->getOriginalResource()->getNameWithoutExtension() ) ;
+                        }
+                        $single['ext'] =  $tempFile->getOriginalResource()->getExtension() ;
+                        $single['mimeType'] =  $tempFile->getOriginalResource()->getMimeType() ;
+                        $single['width'] =  $tempFile->getOriginalResource()->getProperties()['width'];
+                        $single['height'] =  $tempFile->getOriginalResource()->getProperties()['height'];
+                        $single['size'] =  $tempFile->getOriginalResource()->getSize() ;
+                    }
+                    $return[] = $single ;
+                } catch(\Exception $e) {
+
+                }
+
+            }
+        }
+        return $return ;
+    }
 
 }

@@ -17,6 +17,8 @@ CREATE TABLE tx_jvevents_domain_model_event (
 	price_reduced_text varchar(255) DEFAULT '' NOT NULL,
 	images int(11) unsigned NOT NULL default '0',
 	files int(11) unsigned NOT NULL default '0',
+	files_after_reg int(11) unsigned NOT NULL default '0',
+	files_after_event int(11) unsigned NOT NULL default '0',
 	teaser_image int(11) unsigned NOT NULL default '0',
 	all_day tinyint(1) unsigned DEFAULT '0' NOT NULL,
 	top_event tinyint(1) unsigned DEFAULT '0' NOT NULL,

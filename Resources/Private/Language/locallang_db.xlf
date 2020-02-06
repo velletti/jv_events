@@ -99,7 +99,13 @@
                 <source>Internal / external page shows event details</source>
             </trans-unit>
             <trans-unit id="tx_jvevents_domain_model_event.files">
-                <source>Files</source>
+                <source>Files (always visible)</source>
+            </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_event.filesAfterReg">
+                <source>Files for users registered to the event</source>
+            </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_event.filesAfterEvent">
+                <source>Files after the event</source>
             </trans-unit>
             <trans-unit id="tx_jvevents_domain_model_event.freq_exception">
                 <source>Freq Exception</source>
