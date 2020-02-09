@@ -22,11 +22,27 @@
                 </f:if>
 
                 <span class="nav-link d-inline-block px-1" title="copy Event" >
-                    <button data-toggle="modal" data-target="#eventCopyModal-{output.event.uid}" class="btn btn-outline-primary btn-xs rounded-circle" href="#">
+                    <button data-toggle="modal" data-target="#eventCopyModal-{output.event.eventId}" class="btn btn-outline-primary btn-xs rounded-circle" href="#">
                         <i class="fas fa-copy "></i>
                     </button>
                     <span class="d-none d-md-inline-block">copy Event</span>
                 </span>
+
+                <f:security.ifHasRole role="adminOrganizer">
+                    <f:then>
+                        <f:link.page pageUid="{output.returnPid}" noCache="true" class="nav-link  px-1" title="Add Banner for Event"
+                                     additionalParams="{tx_jvbanners_connector: {action: 'create', controller: 'Connector' ,  event: '{output.event.eventId}' , returnPid: '{output.returnPid}'}}">
+                            <button class="btn btn-outline-primary btn-xs rounded-circle" href="#">
+                                <i class="fas fa-star"></i>
+                            </button>
+                            <span class="d-none d-md-inline-block">Banner</span>
+                        </f:link.page>
+                    </f:then>
+
+                </f:security.ifHasRole>
+
+
+
 
                 <f:link.action id="jv-events-cancelEvent-link" absolute="true" noCacheHash="true" pageUid="{settings.pageIds.editEvent}" class="nav-link  px-1" title="Cancel Event" action="cancel" controller="Event" arguments="{event: output.event.eventId}">
                     <input id="jv-events-cancelEvent"   type="checkbox" {f:if(condition: '{output.event.canceled}' , else : 'checked' )} data-onstyle="primary" data-offstyle="secondary" data-toggle="toggle" data-style="ios " data-on="{f:if(condition: '{output.event.canceled}' , else: 'Active' , then: 'activating ..' )}" data-off="{f:if(condition: '{output.event.canceled}' , then:'Canceled!' , else: 'Canceling ...' )}">
@@ -104,7 +120,7 @@
 
 
 
-                <f:render partial="Helper/Bootstrap4/Modal" arguments="{'modalId':  'eventCopyModal-{output.event.uid}', 'modalTitle': 'Copy Event', 'modalBody': copyModalBody,'modalFooter': copyModalFooter,  'settings': settings}" />
+                <f:render partial="Helper/Bootstrap4/Modal" arguments="{'modalId':  'eventCopyModal-{output.event.eventId}', 'modalTitle': 'Copy Event', 'modalBody': copyModalBody,'modalFooter': copyModalFooter,  'settings': settings}" />
 
 
                 <f:variable name="deleteModalBody">
