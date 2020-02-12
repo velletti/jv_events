@@ -294,6 +294,8 @@ class LocationController extends BaseController
         $desc = strip_tags($desc , "<p><br><a><i><strong><h2><h3>") ;
 
         $location->setDescription( $desc ) ;
+        $location->setLink( trim($location->getLink())) ;
+        $location->setEmail( trim($location->setEmail())) ;
 
         $location->setLanguageUid(-1) ;
         return $location ;
