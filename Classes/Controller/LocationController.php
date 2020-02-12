@@ -295,7 +295,7 @@ class LocationController extends BaseController
 
         $location->setDescription( $desc ) ;
         $location->setLink( trim($location->getLink())) ;
-        $location->setEmail( trim($location->setEmail())) ;
+        $location->setEmail( trim($location->getEmail())) ;
 
         $location->setLanguageUid(-1) ;
         return $location ;

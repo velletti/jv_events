@@ -382,7 +382,7 @@ class OrganizerController extends BaseController
             $organizer->setDescription($desc);
         }
         $organizer->setLink( trim($organizer->getLink())) ;
-        $organizer->setEmail( trim($organizer->setEmail())) ;
+        $organizer->setEmail( trim($organizer->getEmail())) ;
         return $organizer ;
     }
 
