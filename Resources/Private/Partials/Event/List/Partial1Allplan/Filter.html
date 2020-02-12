@@ -1,3 +1,5 @@
+{namespace vhs=FluidTYPO3\Vhs\ViewHelpers}
+
 <f:if condition="{settings.ShowFilter}==0">
     <div class="filter events" style="display:none; height: 0; padding:0; margin:0 ">
 
@@ -15,11 +17,28 @@
                         <legend><f:translate key="tx_jvevents_domain_model_event.tags" /></legend>
 
                         <div class="checkbox" id="jv_events_filter_tags" data-combinetags="{settings.filter.combinetags}">
-                            <f:for each="{eventsFilter.tags2}" as="tag">
-                                <label>
-                                    <input type="checkbox" id="jv_events_filter_tag-{tag.id}" value="{tag.id}">{tag.title}
-                                </label>
-                            </f:for>
+                            <f:if condition="{settings.filter.combinetags}">
+                                <f:then>
+                                    
+                                    <f:variable name="allowedTags"><vhs:iterator.explode glue="," content="{settings.filter.tags}" /></f:variable>
+                                    <f:for each="{eventsFilter.tags2}" as="tag">
+                                        <vhs:condition.iterator.contains needle="{tag.id}" haystack="{allowedTags}" >
+                                            <label>
+                                                <input type="checkbox" id="jv_events_filter_tag-{tag.id}" checked value="{tag.id}">{tag.title}
+                                            </label>
+                                        </vhs:condition.iterator.contains>
+
+                                    </f:for>
+                                </f:then>
+                                <f:else>
+                                    <f:for each="{eventsFilter.tags2}" as="tag">
+                                        <label>
+                                            <input type="checkbox" id="jv_events_filter_tag-{tag.id}" value="{tag.id}">{tag.title}
+                                        </label>
+                                    </f:for>
+                                </f:else>
+                            </f:if>
+
                         </div>
                     </fieldset>
                 </f:if>

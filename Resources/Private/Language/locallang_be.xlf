@@ -197,6 +197,9 @@
 		<trans-unit id="plugin.filter.Tags">
 			<source>Show Only Events with these Tags</source>
 		</trans-unit>
+		<trans-unit id="plugin.filter.notAllowedtags">
+			<source>Show NO Events with ONE of these Tags</source>
+		</trans-unit>
 		<trans-unit id="plugin.filter.maxDays">
 			<source>Show max Days Only if StartDate has Restrictions , enter 0 for no limitations) </source>
 		</trans-unit>

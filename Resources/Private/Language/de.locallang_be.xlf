@@ -137,6 +137,12 @@
 			<source>Show Only Events with these Tags</source>
 			<target>zeige nur Veranstaltungen mit diesen Schlagworten</target>
 		</trans-unit>
+
+		<trans-unit id="plugin.filter.notAllowedtags">
+			<source>Show NO Events with ONE of these Tags</source>
+			<target>Zeige KEINE Veranstaltungen mit EINEM dieser Schlagworten</target>
+		</trans-unit>
+
 		<trans-unit id="plugin.filter.maxDays" approved="yes">
 			<source>Show max Days Only if StartDate has Restrictions , enter 0 for no limitations) </source>
 			<target>zeige maximal x Tage (nur sinnvoll, wenn die Option Startdatum einen Wert enthält) 0 für keine Beschränkung</target>

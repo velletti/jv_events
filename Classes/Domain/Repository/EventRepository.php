@@ -109,6 +109,10 @@ class EventRepository extends BaseRepository
             $constraintsTagsCat = $this->getTagContraints($constraintsTagsCat,  $settings ,  $query );
         }
 
+        if( $settings['filter']['notAllowedtags']  ) {
+            $constraintsTagsCat = $this->getNotAllowedTagContraints($constraintsTagsCat,  $settings ,  $query );
+        }
+
         // Add filter for AND event is marked as TOP Event
         if( $settings['filter']['topEvents'] == 1 ) {
             $constraintsTagsCat[] = $query->equals("top_event",  1);
@@ -188,7 +192,7 @@ class EventRepository extends BaseRepository
         }
 
         $result = $query->execute();
-       //    $this->debugQuery($query) ;
+         //  $this->debugQuery($query) ;
 
         return $result;
     }
@@ -386,6 +390,8 @@ class EventRepository extends BaseRepository
 		return $constraints;
 	}
 
+
+
     /**
      * @param array $constraints
      * @param array $settings
@@ -411,6 +417,36 @@ class EventRepository extends BaseRepository
                 }
             }
             $constraints[] = $query->logicalOr( $tagConstraints ) ;
+        }
+
+        return $constraints;
+    }
+
+    /**
+     * @param array $constraints
+     * @param array $settings
+     * @param QueryInterface $query
+     *
+     * @return array
+     */
+    private function getNotAllowedTagContraints($constraints, $settings ,  $query)
+    {
+        $tagList = GeneralUtility::intExplode(',', $settings['filter']['notAllowedtags'], true);
+        if( count($tagList) < 1 ) {
+            return $constraints ;
+        }
+
+        if (count($tagList) == 1) {
+            $constraints[] = $query->logicalNot($query->contains('tags', $tagList[0] )) ;
+        } else {
+            $tagConstraints = array() ;
+
+            foreach ( $tagList as $tagUid ) {
+                if ( $tagUid > 0 ) {
+                    $tagConstraints[] = $query->logicalNot($query->contains('tags', $tagUid ));
+                }
+            }
+            $constraints[] = $query->logicalAnd( $tagConstraints ) ;
         }
 
         return $constraints;

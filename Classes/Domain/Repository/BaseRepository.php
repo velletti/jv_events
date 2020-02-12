@@ -62,7 +62,7 @@ class BaseRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         $querystr = $queryParser->convertQueryToDoctrineQueryBuilder($query)->getSQL() ;
         echo $querystr ;
         echo "<hr>" ;
-        $queryParams = $queryParser->convertQueryToDoctrineQueryBuilder($query)->getParameters() ;
+        $queryParams = array_reverse ( $queryParser->convertQueryToDoctrineQueryBuilder($query)->getParameters()) ;
         var_dump($queryParams);
         echo "<hr>" ;
 
