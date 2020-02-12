@@ -37,13 +37,13 @@ class OrganizerValidator extends BaseValidator {
         $isValid = $this->securityChecks( $organizer->getPhone() , 'phone' , $isValid ) ;
         $isValid = $this->securityChecks( $organizer->getPhone() , 'link' , $isValid ) ;
 
-        $isValid = $this->emailIsValid( $organizer->getEmail() , 'email' , false , $isValid ) ;
+        $isValid = $this->emailIsValid( trim($organizer->getEmail()) , 'email' , false , $isValid ) ;
         $isValid = $this->stringLengthIsValid($this->minLength['name'] , $this->maxLength['name'] , $organizer->getName() , 'name' , NULL , $isValid ) ;
         $isValid = $this->stringLengthIsValid($this->minLength['phone'] , $this->maxLength['phone'] , $organizer->getPhone() , 'phone' , NULL , $isValid ) ;
         $isValid = $this->stringLengthIsValid($this->minLength['link'] , $this->maxLength['link'] , $organizer->getLink() , 'link' , NULL , $isValid ) ;
 
         if( $organizer->getLink() ) {
-            $isValid = $this->urlIsValid( $organizer->getLink() , 'link' , NULL , $isValid ) ;
+            $isValid = $this->urlIsValid( trim($organizer->getLink()) , 'link' , NULL , $isValid ) ;
         }
         $isValid = $this->isHasUnwantedHtmlCodeValue( $organizer->getDescription() , 'description' , $isValid ) ;
 

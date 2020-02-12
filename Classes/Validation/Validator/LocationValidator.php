@@ -61,7 +61,7 @@ class LocationValidator extends BaseValidator {
 
         $isValid = $this->securityChecks( $location->getLink() , 'link' , $isValid ) ;
         if( $location->getLink() ) {
-            $isValid = $this->urlIsValid( $location->getLink() , 'link' , NULL , $isValid ) ;
+            $isValid = $this->urlIsValid( trim($location->getLink()) , 'link' , NULL , $isValid ) ;
         }
 
 
@@ -69,7 +69,7 @@ class LocationValidator extends BaseValidator {
 
         if( $location->getEmail() ) {
             $isValid = $this->securityChecks( $location->getEmail() , 'email' , $isValid ) ;
-            $isValid = $this->emailIsValid( $location->getEmail() , 'email' , false , $isValid ) ;
+            $isValid = $this->emailIsValid( trim($location->getEmail()) , 'email' , false , $isValid ) ;
         }
 
         $isValid = $this->stringLengthIsValid($this->minLength['name'] , $this->maxLength['name'] , $location->getName() , 'name' , NULL , $isValid ) ;
