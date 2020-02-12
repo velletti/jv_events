@@ -285,7 +285,7 @@
 
 					<settings.filter.notAllowedtags>
 						<TCEforms>
-							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.notAllowedTags</label>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.notAllowedtags</label>
 							<displayCond>FIELD:sDEF.switchableControllerActions:=:Event->list;Event->search</displayCond>
 							<config>
 								<type>select</type>
