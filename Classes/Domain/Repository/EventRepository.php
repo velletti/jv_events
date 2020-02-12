@@ -447,7 +447,17 @@ class EventRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
                     $tagConstraints[] = $query->equals('tags.uid', $tagUid );
                 }
             }
-            $constraints[] = $query->logicalOr( $tagConstraints ) ;
+            if ( $settings['filter']['combinetags'] ) {
+                if ( $settings['ShowFilter'] == 0 ) {
+                    $constraints[] = $query->logicalAnd( $tagConstraints ) ;
+                } else {
+                    $constraints[] = $query->logicalOr( $tagConstraints ) ;
+                }
+            } else {
+                $constraints[] = $query->logicalOr( $tagConstraints ) ;
+            }
+
+
         }
 
         return $constraints;
