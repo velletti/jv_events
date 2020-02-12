@@ -188,7 +188,7 @@ class EventRepository extends BaseRepository
         }
 
         $result = $query->execute();
-        //    $this->debugQuery($query) ;
+       //    $this->debugQuery($query) ;
 
         return $result;
     }
@@ -410,17 +410,7 @@ class EventRepository extends BaseRepository
                     $tagConstraints[] = $query->equals('tags.uid', $tagUid );
                 }
             }
-            if ( $settings['filter']['combinetags'] ) {
-                if ( $settings['ShowFilter'] == 0 ) {
-                    $constraints[] = $query->logicalAnd( $tagConstraints ) ;
-                } else {
-                    $constraints[] = $query->logicalOr( $tagConstraints ) ;
-                }
-            } else {
-                $constraints[] = $query->logicalOr( $tagConstraints ) ;
-            }
-
-
+            $constraints[] = $query->logicalOr( $tagConstraints ) ;
         }
 
         return $constraints;
