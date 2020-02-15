@@ -198,7 +198,7 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
             $this->result->forProperty($propertyName)->addError($error);
         } else {
             $file_headers = @get_headers($propertyValue);
-            if(!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
+            if( $file_headers && $file_headers[0] == 'HTTP/1.1 404 Not Found') {
                 /**
                  * @var \TYPO3\CMS\Extbase\Error\Error $error
                  */
@@ -206,7 +206,7 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
                 $error = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error',  $errorMessage , time());
 
                 $this->result->forProperty($propertyName)->addError($error);
-
+                $isValid = false;
             }
         }
 
