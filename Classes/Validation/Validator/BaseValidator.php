@@ -190,12 +190,23 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
 
         if(! filter_var($propertyValue, FILTER_VALIDATE_URL) || ! substr( strtolower($propertyValue), 0 , 4) == "http" ) {
             $isValid = false;
+            /**
+             * @var \TYPO3\CMS\Extbase\Error\Error $error
+             */
+            $error = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error',  $errorMessage , time());
+
             $this->result->forProperty($propertyName)->addError($error);
         } else {
             $file_headers = @get_headers($propertyValue);
             if(!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
+                /**
+                 * @var \TYPO3\CMS\Extbase\Error\Error $error
+                 */
+                $errorMessage = "URL is not reachable. Shure it is Correct ? if it is correct, your server is configured very strictly" ;
+                $error = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error',  $errorMessage , time());
+
                 $this->result->forProperty($propertyName)->addError($error);
-                $isValid = false;
+
             }
         }
 
