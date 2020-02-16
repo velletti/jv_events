@@ -6,7 +6,7 @@
             <f:if condition="{settings.pageIds.editEvent}">
 
                 <f:link.action pageUid="{settings.pageIds.editEvent}" class="nav-link  px-1" title="Edit Event" action="edit" controller="Event" arguments="{event: output.event.eventId}">
-                    <button class="btn btn-outline-primary btn-xs rounded-circle" href="#">
+                    <button class="btn btn-outline-primary btn-sm rounded-circle" href="#">
                         <i class="fas fa-edit "></i>
                     </button>
                     <span class="d-none d-md-inline-block">edit</span>
@@ -14,7 +14,7 @@
 
                 <f:if condition="{settings.pageIds.addMedia}">
                     <f:link.page pageUid="{settings.pageIds.addMedia}" noCache="true" class="nav-link  px-1" title="Add Teaser Image to Event" additionalParams="{tx_jvmediaconnector_connector: {action: 'list', controller: 'Media' ,  reference: {id: output.event.eventId, table: 'tx_jvevents_domain_model_event' , fieldname: 'teaser_image' , maxRelations: '1' , returnPid: output.returnPid , returnArray: {tx_jvevents_events: {action: 'show', event: output.event.eventId }}}}}">
-                        <button class="btn btn-outline-primary btn-xs rounded-circle" href="#">
+                        <button class="btn btn-outline-primary btn-sm rounded-circle" href="#">
                             <i class="fas fa-image"></i>
                         </button>
                         <span class="d-none d-md-inline-block">Image</span>
@@ -22,7 +22,7 @@
                 </f:if>
 
                 <span class="nav-link d-inline-block px-1" title="copy Event" >
-                    <button data-toggle="modal" data-target="#eventCopyModal-{output.event.eventId}" class="btn btn-outline-primary btn-xs rounded-circle" href="#">
+                    <button data-toggle="modal" data-target="#eventCopyModal-{output.event.eventId}" class="btn btn-outline-primary btn-sm rounded-circle" href="#">
                         <i class="fas fa-copy "></i>
                     </button>
                     <span class="d-none d-md-inline-block">copy Event</span>
@@ -30,9 +30,9 @@
 
                 <f:security.ifHasRole role="adminOrganizer">
                     <f:then>
-                        <f:link.page pageUid="{settings.pageIds.addMedia}" noCache="true" class="nav-link  px-1" title="Add Banner for Event"
+                        <f:link.page pageUid="{settings.pageIds.bannerModul}" noCache="true" class="nav-link  px-1" title="Add Banner for Event"
                                      additionalParams="{tx_jvbanners_connector: {action: 'create', controller: 'Connector' ,  event: '{output.event.eventId}' , returnPid: '{output.returnPid}'}}">
-                            <button class="btn btn-outline-primary btn-xs rounded-circle" href="#">
+                            <button class="btn btn-outline-primary btn-sm rounded-circle" href="#">
                                 <i class="fas fa-star"></i>
                             </button>
                             <span class="d-none d-md-inline-block">Banner</span>
@@ -45,11 +45,11 @@
 
 
                 <f:link.action id="jv-events-cancelEvent-link" absolute="true" noCacheHash="true" pageUid="{settings.pageIds.editEvent}" class="nav-link  px-1" title="Cancel Event" action="cancel" controller="Event" arguments="{event: output.event.eventId}">
-                    <input id="jv-events-cancelEvent"   type="checkbox" {f:if(condition: '{output.event.canceled}' , else : 'checked' )} data-onstyle="primary" data-offstyle="secondary" data-toggle="toggle" data-style="ios " data-on="{f:if(condition: '{output.event.canceled}' , else: '1' , then: 'activating ..' )}" data-off="{f:if(condition: '{output.event.canceled}' , then:'0' , else: 'Canceling ...' )}">
+                    <input id="jv-events-cancelEvent"   type="checkbox" {f:if(condition: '{output.event.canceled}' , else : 'checked' )} data-size="small" data-onstyle="primary" data-offstyle="secondary" data-toggle="toggle" data-style="ios " data-on="{f:if(condition: '{output.event.canceled}' , else: 'ON' , then: '..' )}" data-off="{f:if(condition: '{output.event.canceled}' , then:'Off' , else: '..' )}">
                 </f:link.action>
 
                 <span class="nav-link d-inline-block px-1" title="delete Event" >
-                    <button data-toggle="modal" data-target="#eventDeleteModal-{output.event.uid}" class="btn btn-outline-primary btn-xs rounded-circle" href="#">
+                    <button data-toggle="modal" data-target="#eventDeleteModal-{output.event.uid}" class="btn btn-outline-primary btn-sm rounded-circle" href="#">
                         <i class="fas fa-trash "></i>
                     </button>
                     <span class="d-none d-md-inline-block">delete</span>
@@ -150,7 +150,7 @@
                     <f:format.raw>
                         <f:spaceless>
                             <f:link.action id="jv_events_delete_btn" pageUid="{settings.pageIds.editEvent}"  noCacheHash="true" class="nav-link" title="delete Event" action="delete" controller="Event" arguments="{event: output.event.eventId , deleteFutureEvents: 0}">
-                                <button class="btn btn-primary btn-xs " href="#">
+                                <button class="btn btn-primary btn-sm " href="#">
                                     <i class="fas fa-trash "></i> <span class="mx-1">
                                     <f:translate key="event_delete_really_button">
                                         Delete really!
@@ -158,7 +158,7 @@
                                 </button>
                             </f:link.action>
                             <f:link.action id="jv_events_delete_btn_all" pageUid="{settings.pageIds.editEvent}" style="display:none;" noCacheHash="true" class="nav-link" title="delete Event" action="delete" controller="Event" arguments="{event: output.event.eventId , deleteFutureEvents: 1}">
-                                <button class="btn btn-primary btn-xs " href="#">
+                                <button class="btn btn-primary btn-sm " href="#">
                                     <i class="fas fa-trash "></i> {output.event.sameMasterId}x <span class="mx-1"><f:translate key="event_delete_really_button">
                                  Delete really!
                              </f:translate></span>
@@ -179,7 +179,7 @@
 
 <f:section name="renderCopyLink">
     <f:link.action pageUid="{settings.pageIds.editEvent}" class="mr-2" title="copy Event" action="edit" controller="Event" arguments="{event: eventId, copy2Day: copy2Day, amount: amount}">
-        <button class="btn btn-primary btn-xs " href="#">
+        <button class="btn btn-primary btn-sm " href="#">
             <i class="fas fa-copy "></i> <span class="mx-1">{msgtext}</span>
         </button>
     </f:link.action>
