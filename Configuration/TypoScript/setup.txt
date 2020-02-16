@@ -156,6 +156,10 @@ plugin.tx_jvevents_events {
 
 			# if extension jv ranking is installed, add apge ID pf the Page with the ranking plugin
 			rankingModul = 0
+
+			# if extension jv banners is installed, add page ID pf the Page with the bannerModul plugin
+            bannerModul = 0
+
 		}
 		feEdit {
 		    enabled = 0

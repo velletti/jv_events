@@ -30,7 +30,7 @@
 
                 <f:security.ifHasRole role="adminOrganizer">
                     <f:then>
-                        <f:link.page pageUid="{output.returnPid}" noCache="true" class="nav-link  px-1" title="Add Banner for Event"
+                        <f:link.page pageUid="{settings.pageIds.addMedia}" noCache="true" class="nav-link  px-1" title="Add Banner for Event"
                                      additionalParams="{tx_jvbanners_connector: {action: 'create', controller: 'Connector' ,  event: '{output.event.eventId}' , returnPid: '{output.returnPid}'}}">
                             <button class="btn btn-outline-primary btn-xs rounded-circle" href="#">
                                 <i class="fas fa-star"></i>
@@ -45,7 +45,7 @@
 
 
                 <f:link.action id="jv-events-cancelEvent-link" absolute="true" noCacheHash="true" pageUid="{settings.pageIds.editEvent}" class="nav-link  px-1" title="Cancel Event" action="cancel" controller="Event" arguments="{event: output.event.eventId}">
-                    <input id="jv-events-cancelEvent"   type="checkbox" {f:if(condition: '{output.event.canceled}' , else : 'checked' )} data-onstyle="primary" data-offstyle="secondary" data-toggle="toggle" data-style="ios " data-on="{f:if(condition: '{output.event.canceled}' , else: 'Active' , then: 'activating ..' )}" data-off="{f:if(condition: '{output.event.canceled}' , then:'Canceled!' , else: 'Canceling ...' )}">
+                    <input id="jv-events-cancelEvent"   type="checkbox" {f:if(condition: '{output.event.canceled}' , else : 'checked' )} data-onstyle="primary" data-offstyle="secondary" data-toggle="toggle" data-style="ios " data-on="{f:if(condition: '{output.event.canceled}' , else: '1' , then: 'activating ..' )}" data-off="{f:if(condition: '{output.event.canceled}' , then:'0' , else: 'Canceling ...' )}">
                 </f:link.action>
 
                 <span class="nav-link d-inline-block px-1" title="delete Event" >
