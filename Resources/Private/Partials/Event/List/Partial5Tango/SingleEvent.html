@@ -7,7 +7,7 @@
 <f:spaceless>
     <div class="jv-events-singleEvent jv-events-row" {jve:dataAttrib( event: event )}>
 
-        <div class="card col-12 my-4 clearfix rounded-bottom">
+        <div class="card col-12 my-4 clearfix rounded-bottom {f:if( condition: {event.canceled}, then: 'canceled' )}">
             <div class="row">
                 <div class="col-4  order-2 col-sm-3 px-0">
 
