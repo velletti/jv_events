@@ -22,7 +22,7 @@
             <div class="row">
                 <div class="col-4  order-1 col-sm-3 px-0">
 
-                    <f:link.action action="show" arguments="{organizer : organizer}">
+                    <f:link.action action="show" arguments="{organizer : organizer.uid, event: '-'}">
                             <f:if condition="{organizer.teaserImage}">
                                 <f:then>
                                     <f:image src="{organizer.teaserImage.uid}" class="d-block w-100 h-auto img-float rounded shadow-lg" alt="{organizer.teaserImage.alternative}" title="{organizer.teaserImage.title}" width="{settings.list.image.width}c" maxWidth="{settings.list.image.width}" maxHeight="{settings.list.image.height}" treatIdAsReference="true" />
@@ -55,7 +55,7 @@
 
                 <div class="col-12 col-sm-6  order-3 order-sm-2 py-2">
                     <div class="card-block">
-                        <h4 class="card-title"><f:link.action  action="show" arguments="{organizer : organizer}" >
+                        <h4 class="card-title"><f:link.action  action="show" arguments="{organizer : organizer.uid, event: '-'}" >
                             {organizer.name}
                         </f:link.action></h4>
                         <f:if condition="{organizer.email}">
