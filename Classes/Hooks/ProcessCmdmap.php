@@ -121,6 +121,8 @@ class ProcessCmdmap {
 									}
 								}
 							}
+							$this->event->setHidden(1) ;
+
 							$this->eventRepository->update($this->event) ;
 							$this->persistenceManager->persistAll() ;
 						}
