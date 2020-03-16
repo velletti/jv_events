@@ -211,14 +211,18 @@
 		<f:if condition="{event.canceled}">
 			<f:else>
 				<f:if condition="{event.location.lng}">
-					<f:if condition="{tabDescActive}">
+					<f:if condition="{event.location.name} == 'Online'">
 						<f:else>
-							<f:variable name="tabMapActive">active</f:variable>
+							<f:if condition="{tabDescActive}">
+								<f:else>
+									<f:variable name="tabMapActive">active</f:variable>
+								</f:else>
+							</f:if>
+							<li class="nav-item">
+								<a class="{tabMapActive} mx-3" role="presentation" href="#jv_events_map" data-toggle="tab"><f:translate key="tx_jvevents_domain_model_event.details.tab.map" /></a>
+							</li>
 						</f:else>
 					</f:if>
-					<li class="nav-item">
-						<a class="{tabMapActive} mx-3" role="presentation" href="#jv_events_map" data-toggle="tab"><f:translate key="tx_jvevents_domain_model_event.details.tab.map" /></a>
-					</li>
 				</f:if>
 			</f:else>
 		</f:if>
