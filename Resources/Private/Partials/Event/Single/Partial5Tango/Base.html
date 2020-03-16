@@ -368,9 +368,14 @@
 			<!-- =========================================================================================================================== -->
 		</f:comment>
 		<f:if condition="{event.location.lng}">
-			<div class="tab-pane {tabMapActive} p-0" id="jv_events_map" >
-				<f:render partial="GoogleMapsTango" arguments="{addresses: {0:event.location}, settings:settings}" />
-			</div>
+			<f:if condition="{event.location.name} == 'Online'">
+				<f:else>
+					<div class="tab-pane {tabMapActive} p-0" id="jv_events_map" >
+						<f:render partial="GoogleMapsTango" arguments="{addresses: {0:event.location}, settings:settings}" />
+					</div>
+				</f:else>
+
+			</f:if>
 		</f:if>
 
 
