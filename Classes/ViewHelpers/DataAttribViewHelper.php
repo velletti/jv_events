@@ -32,7 +32,7 @@ namespace JVE\JvEvents\ViewHelpers;
  * <register:form.required fieldName="'username"/>
  * </code>
  */
-class DataAttribViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper   {
+class DataAttribViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper   {
 
     /**
      * @var bool
@@ -47,7 +47,7 @@ class DataAttribViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
     protected $escapeChildren = false;
 
 	public function __initialize() {
-		$this->registerArgument('event', 'Object', 'Single Event', false);
+		$this->registerArgument('event', '\JVE\JvEvents\Domain\Model\Event', 'Single Event', false);
 	}
 
 
@@ -55,10 +55,13 @@ class DataAttribViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
 	/**
 	 * Render a special sign if the field is required
 	 *
-	 * @param \JVE\JvEvents\Domain\Model\Event $event Single Event
 	 * @return string
 	 */
-	public function render($event) {
+	public function render() {
+        $event = $this->arguments['event'] ;
+        if( !is_object ( $event )) {
+            return " " ;
+        }
         $orgId = '' ;
 	    if( is_object ( $event->getOrganizer() )) {
             $orgId  = $event->getOrganizer()->getUid()  ;

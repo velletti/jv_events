@@ -32,7 +32,7 @@ namespace JVE\JvEvents\ViewHelpers;
  * <register:form.required fieldName="'username"/>
  * </code>
  */
-class GeocoderViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper   {
+class GeocoderViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper   {
 
     /**
      * @var bool
@@ -48,8 +48,8 @@ class GeocoderViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
 
     public function __initialize() {
         $this->registerArgument('location', 'Object', 'Single location', false);
-        $this->registerArgument('formfields', 'array', 'Field Array', false);
-        $this->registerArgument('updateFunction', 'string', 'Name of javaScript function that should run after Update Map', false);
+        $this->registerArgument('formfields', 'array', 'Field Array', false , NULL );
+        $this->registerArgument('updateFunction', 'string', 'Name of javaScript function that should run after Update Map', false , '' );
     }
 
 
@@ -63,11 +63,14 @@ class GeocoderViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
      * @return string
      */
     public function render($location, $formfields= NULL, $updateFunction='') {
+
+        $location = $this->arguments['location'] ;
+        $updateFunction = $this->arguments['updateFunction'] ;
+        $formfieldIds = $this->arguments['formfields'] ;
+
         /** @var \JVE\JvEvents\Utility\GeocoderUtility $geoCoder */
         $geoCoder = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("JVE\\JvEvents\\Utility\\GeocoderUtility") ;
-        if ($this->hasArgument('formfields')) {
-            $formfieldIds = $this->getArgument('formfields') ;
-        } else {
+        if ( ! $formfieldIds ) {
             $formfieldIds["address"] = '#streetAndNr' ;
             $formfieldIds["zip"] = '#zip' ;
             $formfieldIds["city"] = '#city' ;

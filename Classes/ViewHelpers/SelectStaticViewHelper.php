@@ -37,7 +37,7 @@ class SelectStaticViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectVie
 	/**
 	 * Render the option tags.
 	 *
-	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
+	 * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
 	 * @return array an associative array of options
 	 * @todo testen
 	 */
@@ -55,7 +55,7 @@ class SelectStaticViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectVie
 						if (method_exists($key, '__toString')) {
 							$key = (string) $key;
 						} else {
-							throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception(
+							throw new \TYPO3Fluid\Fluid\Core\ViewHelper\Exception(
 								'Identifying value for object of class "' . get_class($value) . '" was an object.', 1247827428
 							);
 						}
@@ -66,7 +66,7 @@ class SelectStaticViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectVie
 				} elseif (method_exists($value, '__toString')) {
 					$key = (string) $value;
 				} else {
-					throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception(
+					throw new \TYPO3Fluid\Fluid\Core\ViewHelper\Exception(
 						'No identifying value for object of class "' . get_class($value) . '" found.', 1247826696
 					);
 				}
@@ -76,7 +76,7 @@ class SelectStaticViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectVie
 						if (method_exists($value, '__toString')) {
 							$value = (string) $value;
 						} else {
-							throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception(
+							throw new \TYPO3Fluid\Fluid\Core\ViewHelper\Exception(
 								'Label value for object of class "' . get_class($value) . '" was an object without a __toString() method.', 1247827553
 							);
 						}

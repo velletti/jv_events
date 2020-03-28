@@ -2,7 +2,9 @@
 namespace JVE\JvEvents\ViewHelpers;
 
 
-class CleanJsStringViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+
+class CleanJsStringViewHelper extends AbstractViewHelper {
 
 	/**
 	 * Cleans a string for javascript (has to be quoted with ')

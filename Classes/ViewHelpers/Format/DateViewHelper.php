@@ -15,8 +15,8 @@ namespace JVE\JvEvents\ViewHelpers\Format;
  */
 
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
@@ -168,68 +168,4 @@ class DateViewHelper extends AbstractViewHelper
         return $date->format($format);
     }
 
-
-
-    /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
-     *
-     * @return string
-     * @throws Exception
-     */
-    public static function renderStaticOLD(array $arguments, \Closure $renderChildrenClosure, \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface $renderingContext)
-    {
-        $date = $arguments['date'];
-        $format = $arguments['format'];
-        $base = $arguments['base'] === null ? time() : $arguments['base'];
-
-        $timeZone = $arguments['timeZone'] === null ? trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['phpTimeZone'])  : $arguments['timeZone'];
-        if( ! in_array($timeZone, timezone_identifiers_list()) ) {
-            $timeZone = date_default_timezone_get() ;
-        }
-        if( ! in_array($timeZone, timezone_identifiers_list()) ) {
-            $timeZone = 'UTC' ;
-        }
-
-        if (is_string($base)) {
-            $base = trim($base);
-        }
-
-        if ($format === '') {
-            $format = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] ?: 'Y-m-d';
-        }
-
-        if ($date === null) {
-            $date = $renderChildrenClosure();
-            if ($date === null) {
-                return '';
-            }
-        }
-
-        if (is_string($date)) {
-            $date = trim($date);
-        }
-
-        if ($date === '') {
-            $date = 'now';
-        }
-
-        if (!$date instanceof \DateTimeInterface) {
-            try {
-                $base = $base instanceof \DateTimeInterface ? $base->format('U') : strtotime((MathUtility::canBeInterpretedAsInteger($base) ? '@' : '') . $base);
-                $dateTimestamp = strtotime((MathUtility::canBeInterpretedAsInteger($date) ? '@' : '') . $date, $base);
-                $date = new \DateTime('@' . $dateTimestamp);
-                $date->setTimezone(new \DateTimeZone($timeZone));
-            } catch (\Exception $exception) {
-                throw new Exception('"' . $date . '" could not be parsed by \DateTime constructor. More Infos: Format was "' . $format . '" | base: "' . $base . '" -' . $exception->getMessage(), 1241722579);
-            }
-        }
-
-        if (strpos($format, '%') !== false) {
-            return strftime($format, $date->format('U'));
-        } else {
-            return $date->format($format);
-        }
-    }
 }

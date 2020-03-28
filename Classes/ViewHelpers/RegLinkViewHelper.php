@@ -49,7 +49,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  * </output>
  *
  */
-class RegLinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper
+class RegLinkViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper
 {
 
     /**
@@ -63,6 +63,12 @@ class RegLinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBase
     {
         $this->registerUniversalTagAttributes();
         $this->registerTagAttribute('section', 'string', 'Anchor for links', false);
+        $this->registerArgument('event', '\JVE\JvEvents\Domain\Model\Event', 'Event', false);
+        $this->registerArgument('settings', 'array', 'settings Array', false , array() );
+        $this->registerArgument('configuration', 'array', 'configuration Array', false , array() );
+        $this->registerArgument('content', 'string', ' the content', false ,'' );
+        $this->registerArgument('uriOnly', 'boolean', ' render only the uri ', false ,false );
+        $this->registerArgument('withProtocol', 'boolean', ' render withProtocol https or http etc ', false ,false );
     }
 
     /**
@@ -76,16 +82,15 @@ class RegLinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBase
      * @param string $content optional content which is linked
      * @return string link
      */
-    public function render(
-        \JVE\JvEvents\Domain\Model\Event $event,
-        array $settings = [],
-        $uriOnly = false,
-        $withProtocol = false,
-        $configuration = [],
-        $content = ''
-    ) {
-        $configuration = array() ;
+    public function render() {
+        $configuration = $this->arguments['configuration'] ;
         $this->init();
+        $event = $this->arguments['event'] ;
+        $settings = $this->arguments['settings'] ;
+        $uriOnly = $this->arguments['uriOnly'] ;
+        $withProtocol = $this->arguments['withProtocol'] ;
+
+        $content = $this->arguments['content'] ;
 
        if( $event->getWithRegistration() ) {
 
@@ -157,7 +162,7 @@ class RegLinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBase
             $configuration['parameter'] = $detailPid;
         }
 
-        $configuration['useCacheHash'] = $GLOBALS['TSFE']->sys_page->versioningPreview ? 0 : 1;
+        // $configuration['useCacheHash'] = $GLOBALS['TSFE']->sys_page->versioningPreview ? 0 : 1;
         if( $settings['link']['doNotuseCacheHash'] ) {
             $configuration['useCacheHash'] = 0 ;
         }
