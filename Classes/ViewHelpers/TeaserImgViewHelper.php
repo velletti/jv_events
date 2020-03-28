@@ -49,7 +49,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  * </output>
  *
  */
-class TeaserImgLinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper
+class TeaserImgLinkViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper
 {
 
     /**
@@ -62,26 +62,24 @@ class TeaserImgLinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractT
     public function initializeArguments()
     {
         $this->registerUniversalTagAttributes();
+
+        $this->registerArgument('event', '\JVE\JvEvents\Domain\Model\Event', 'Event', false);
+        $this->registerArgument('settings', 'array', 'settings Array', false , array() );
+        $this->registerArgument('configuration', 'array', 'configuration Array', false , array() );
+        $this->registerArgument('withProtocol', 'boolean', ' render withProtocol https or http etc ', false ,false );
+
     }
 
     /**
      * Render link to event item or internal/external pages
      *
-     * @param \JVE\JvEvents\Domain\Model\Event $event current Event object
-     * @param array $settings
-     * @param bool $uriOnly return only the url without the a-tag
-     * @param bool $withProtocol return only the url without the a-tag
-     * @param array $configuration optional typolink configuration
-     * @param string $content optional content which is linked
      * @return string link
      */
-    public function render(
-        \JVE\JvEvents\Domain\Model\Event $event,
-        array $settings = [],
-        $withProtocol = false,
-        $configuration = []
-    ) {
-
+    public function render() {
+        $configuration = $this->arguments['configuration'] ;
+        $event = $this->arguments['event'] ;
+        $settings = $this->arguments['settings'] ;
+        $withProtocol = $this->arguments['withProtocol'] ;
 
         $this->tag->addAttribute('class', "jv_events-teaser-img");
 

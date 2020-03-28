@@ -57,12 +57,9 @@ class GeocoderViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewH
     /**
      * Render a special sign if the field is required
      *
-     * @param \JVE\JvEvents\Domain\Model\Location $location Single location
-     * @param array $formfields array Of FieldNameIds
-     * @param string $updateFunction Name of javaScript function that should run after Update Map
      * @return string
      */
-    public function render($location, $formfields= NULL, $updateFunction='') {
+    public function render() {
 
         $location = $this->arguments['location'] ;
         $updateFunction = $this->arguments['updateFunction'] ;

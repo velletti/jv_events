@@ -74,12 +74,6 @@ class RegLinkViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBas
     /**
      * Render link to event item or internal/external pages
      *
-     * @param \JVE\JvEvents\Domain\Model\Event $event current Event object
-     * @param array $settings
-     * @param bool $uriOnly return only the url without the a-tag
-     * @param bool $withProtocol return only the url without the a-tag
-     * @param array $configuration optional typolink configuration
-     * @param string $content optional content which is linked
      * @return string link
      */
     public function render() {
