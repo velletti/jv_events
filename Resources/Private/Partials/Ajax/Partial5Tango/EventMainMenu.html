@@ -54,7 +54,7 @@
 
                             </f:security.ifHasRole>
                         </f:if>
-                        <f:link.action pageUid="{settings.pageIds.editOrganizer}" class="nav-link" title="Edit organizer" action="edit" controller="Organizer" arguments="{organizer: output.organizer.organizerId}">
+                        <f:link.action pageUid="{settings.pageIds.editOrganizer}" class="nav-link" title="Edit organizer" action="edit" controller="Organizer" arguments="{organizer: output.organizer.organizerId, event: '-'}">
                             <button class="btn btn-outline-primary btn-sm rounded-circle" href="#">
                                 <i class="fas fa-user "></i>
                             </button>

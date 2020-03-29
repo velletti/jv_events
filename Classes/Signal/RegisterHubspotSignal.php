@@ -237,8 +237,13 @@ class RegisterHubspotSignal {
             "message" => $text ,
 
         ) ;
+        /** @var \TYPO3\CMS\Core\Database\ConnectionPool $connectionPool */
+        $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
 
-        $GLOBALS['TYPO3_DB']->exec_INSERTquery("sys_log" , $insertFields ) ;
+        /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
+        $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_log') ;
+
+        $queryBuilder->insert('sys_log')->values($insertFields)->execute()  ;
 
     }
     /** convertToString

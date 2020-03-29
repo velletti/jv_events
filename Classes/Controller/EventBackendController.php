@@ -25,6 +25,10 @@ namespace JVE\JvEvents\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
 
 /**
@@ -561,7 +565,14 @@ class EventBackendController extends BaseController
 	    $dgroup['csv'] =  0 ;
 	    $dgroup['query'] = serialize($query) ;
 
-        return $GLOBALS['TYPO3_DB']->exec_INSERTquery( "sys_dmail_group" ,  $dgroup) ;
+        /** @var \TYPO3\CMS\Core\Database\ConnectionPool $connectionPool */
+        $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
+
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_dmail_group') ;
+
+        return $queryBuilder->insert('sys_dmail_group')->values($dgroup)->execute() ;
+
     }
 
 }

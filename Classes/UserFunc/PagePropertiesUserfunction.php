@@ -2,6 +2,11 @@
 namespace JVE\JvEvents\UserFunc;
 
 
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 class PageProperties{
 
 	/**
@@ -145,39 +150,22 @@ class PageProperties{
 	 */
 	private function getEventTitleFromDb($eventUid){
 
-		/**
-		 * @var $db \TYPO3\CMS\Core\Database\DatabaseConnection
-		 */
-		$db = $GLOBALS['TYPO3_DB'];
 
-		// $GLOBALS['TYPO3_DB']->debugOutput = true;
-		// $GLOBALS['TYPO3_DB']->store_lastBuiltQuery = true;
+        /** @var ConnectionPool $connectionPool */
+        $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = $connectionPool->getConnectionForTable('tx_jvevents_domain_model_event')->createQueryBuilder();
+        $queryBuilder->select('name','start_date') ->from('tx_jvevents_domain_model_event') ;
+        $expr = $queryBuilder->expr();
+        $queryBuilder->where( $expr->eq('uid', $queryBuilder->createNamedParameter(intval($eventUid), Connection::PARAM_INT)) ) ;
+        $result  = $queryBuilder->execute()->fetch();
 
-		// $result = $db->exec_SELECTgetSingleRow('name', 'tx_jvevents_domain_model_event', 'uid=' . intval($eventUid));
-		$result = $db->exec_SELECTgetSingleRow("CONCAT (name, ' - ', DATE_FORMAT(FROM_UNIXTIME(start_date), '%d.%m.%Y')) AS `title`", 'tx_jvevents_domain_model_event', 'uid=' . intval($eventUid));
+        if( $result) {
+            return $result['title'] . " - " . date( "d.m.Y", $result['start_date']);
+        } else {
+            return "No Event with  ID: " . $eventUid ;
+        }
 
-		// Categories
-		$resultCategories = $db->exec_SELECTquery(
-			'c.title',
-			'tx_jvevents_event_category_mm mm LEFT JOIN tx_jvevents_domain_model_category c ON mm.uid_foreign = c.uid',
-			'mm.uid_local = ' . intval($eventUid)
-		);
-
-		// echo $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery;
-
-		$categories = '';
-		$categoriesArray = array();
-		while($row = $db->sql_fetch_assoc($resultCategories)){
-			$categoriesArray[] = $row['title'];
-		}
-		$categories = implode(', ', $categoriesArray);
-
-		$title = $result['title'];
-		if(!empty($categories)){
-			$title.= ' (' . $categories . ')';
-		}
-
-		return $title;
 
 	}
 
@@ -188,13 +176,20 @@ class PageProperties{
 	 */
 	private function getEventDescriptionFromDb($eventUid){
 
-		/**
-		 * @var $db \TYPO3\CMS\Core\Database\DatabaseConnection
-		 */
-		$db = $GLOBALS['TYPO3_DB'];
+        /** @var ConnectionPool $connectionPool */
+        $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = $connectionPool->getConnectionForTable('tx_jvevents_domain_model_event')->createQueryBuilder();
+        $queryBuilder->select('teaser') ->from('tx_jvevents_domain_model_event') ;
+        $expr = $queryBuilder->expr();
+        $queryBuilder->where( $expr->eq('uid', $queryBuilder->createNamedParameter(intval($eventUid), Connection::PARAM_INT)) ) ;
+        $result  = $queryBuilder->execute()->fetch();
 
-		$result = $db->exec_SELECTgetSingleRow('teaser', 'tx_jvevents_domain_model_event', 'uid=' . intval($eventUid));
-		return $result['teaser'];
+        if( $result) {
+            return $result['teaser'] ;
+        } else {
+            return "No Event with  ID: " . $eventUid ;
+        }
 
 	}
 

@@ -281,16 +281,14 @@ class RegisterSalesforceSignal {
 
         ) ;
 
-        $GLOBALS['TYPO3_DB']->exec_INSERTquery("sys_log" , $insertFields ) ;
+        /** @var \TYPO3\CMS\Core\Database\ConnectionPool $connectionPool */
+        $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
 
+        /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
+        $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_log') ;
 
-        // disable/enable next line if needed
-        return ;
-        $fh = fopen( "../jvents_sf.log" , "w+" ) ;
-        if ($fh) {
-            fputs($fh, $text  , 9999 ) ;
-        }
-        fclose($fh) ;
+        $queryBuilder->insert('sys_log')->values($insertFields)->execute()  ;
+
     }
      /** convertToString
      *
