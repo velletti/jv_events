@@ -1,0 +1,22 @@
+{
+    "name": "jve/jv-events",
+    "type": "typo3-cms-extension",
+    "description": "List and show Events with filters. Including registration",
+    "authors": [],
+    "require": {
+        "typo3/cms-core": "^8.7.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "JVE\\JvEvents\\": "Classes"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+        }
+    },
+    "replace": {
+        "jv_events": "self.version",
+        "typo3-ter/jv-events": "self.version"
+    }
+}
