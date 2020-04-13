@@ -88,6 +88,7 @@ class AjaxController extends BaseController
         $ajax = array();
         $ajax['arguments']	= $_gp;
         $ajax['vendor'] 	= 'JVE';
+        $ajax['vendorName'] 	= 'JVE';
         $ajax['extensionName'] 	= 'JvEvents';
         $ajax['pluginName'] 	= 'Events';
         $ajax['controller'] 	= 'Ajax';
@@ -152,6 +153,7 @@ class AjaxController extends BaseController
          */
         $bootstrapConf['extensionName'] = $ajax['extensionName'];
         $bootstrapConf['pluginName']	= $ajax['pluginName'];
+        $bootstrapConf['vendorName']	= $ajax['vendorName'];
 
         $bootstrap = new \TYPO3\CMS\Extbase\Core\Bootstrap();
         $bootstrap->initialize($bootstrapConf);

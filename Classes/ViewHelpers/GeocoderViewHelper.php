@@ -46,10 +46,11 @@ class GeocoderViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewH
      */
     protected $escapeChildren = false;
 
-    public function __initialize() {
-        $this->registerArgument('location', 'Object', 'Single location', false);
+    public function initializeArguments() {
+        $this->registerArgument('location', '\JVE\JvEvents\Domain\Model\Location', 'Single location', false , NULL);
         $this->registerArgument('formfields', 'array', 'Field Array', false , NULL );
         $this->registerArgument('updateFunction', 'string', 'Name of javaScript function that should run after Update Map', false , '' );
+        parent::initializeArguments() ;
     }
 
 

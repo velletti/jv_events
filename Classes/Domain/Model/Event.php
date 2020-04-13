@@ -267,7 +267,6 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Access Start Time of this event (default TYP3 Field )
      * @ignorevalidation
-     * @dontvalidate
      * @var int
      */
     protected $starttime ;
@@ -275,7 +274,6 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Access End Time of this event (default TYP3 Field )
      * @ignorevalidation
-     * @dontvalidate
      * @var int
      */
     protected $endtime ;
@@ -577,7 +575,6 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * organizer
      *
      * @var \JVE\JvEvents\Domain\Model\Organizer
-     * @lazy
      */
     protected $organizer = null;
 
@@ -587,7 +584,6 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Subevent>
      * @cascade remove
-     * @lazy
      */
     protected $subevent = null;
 
@@ -595,7 +591,6 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * location
      *
      * @var \JVE\JvEvents\Domain\Model\Location
-     * @lazy
      */
     protected $location = null;
     
@@ -604,7 +599,6 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Registrant>
      * @cascade remove
-     * @lazy
      */
     protected $registrant = null;
     

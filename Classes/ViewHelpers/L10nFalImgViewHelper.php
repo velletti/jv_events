@@ -44,18 +44,33 @@ namespace JVE\JvEvents\ViewHelpers;
  *
  *
  */
+
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 
 class L10nFalImgViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
-	/**
-	 * @param \JVE\JvEvents\Domain\Model\Event $event
-	 * @param string $tableFieldName
-	 * @return mixed
-	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException
-	 */
-	public function render($event, $tableFieldName) {
 
+    public function initializeArguments()
+    {
+        $this->registerArgument('event', '\JVE\JvEvents\Domain\Model\Event', 'Event', true);
+        $this->registerArgument('tableFieldName', 'string', ' the tableFieldName', true  );
+        parent::initializeArguments() ;
+    }
+
+
+	/**
+	 * @return mixed
+	 * @throws InvalidVariableException
+	 */
+	public function render() {
+        $event = $this->arguments['event'] ;
+        $tableFieldName = $this->arguments['tableFieldName'] ;
 		$allowedTableFieldNames = [
 			'teaser_image',
 			'files',
@@ -67,25 +82,42 @@ class L10nFalImgViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
 		}
 
 
-		$where = 'hidden=0 AND deleted=0 AND tablenames="tx_jvevents_domain_model_event" AND fieldname="' . $tableFieldName . '" AND uid_foreign=' . (int)$event->_getProperty('_localizedUid');
-		$where .= ' ' . \TYPO3\CMS\Backend\Utility\BackendUtility::getWorkspaceWhereClause('sys_file_reference');
-
 		/**
-		 * @var $db \TYPO3\CMS\Core\Database\DatabaseConnection
-		 * @var $sysPage \TYPO3\CMS\Frontend\Page\PageRepository
-		 * @var $obj \TYPO3\CMS\Core\Resource\FileReference
+		 * @var $sysPage PageRepository
+		 * @var $obj FileReference
 		 */
-		$db = $GLOBALS['TYPO3_DB'];
 		$sysPage = $GLOBALS['TSFE']->sys_page;
 
 
-		$records = $db->exec_SELECTgetRows('*', 'sys_file_reference', $where);
+
+
+        /** @var \TYPO3\CMS\Core\Database\ConnectionPool $connectionPool */
+        $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
+
+        $connection = $connectionPool->getConnectionForTable('tx_jvchat_room') ;
+
+
+
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_file_reference') ;
+        $records = $queryBuilder->select('*' ) ->from('sys_file_reference')
+            ->where( $queryBuilder->expr()->eq('tablenames', $queryBuilder->createNamedParameter("tx_jvevents_domain_model_event" , Connection::PARAM_STR)) )
+            ->andWhere( $queryBuilder->expr()->eq('fieldname', $queryBuilder->createNamedParameter($tableFieldName , Connection::PARAM_STR)) )
+            ->andWhere( $queryBuilder->expr()->eq('uid_foreign', $queryBuilder->createNamedParameter((int)$event->_getProperty('_localizedUid') , Connection::PARAM_INT )) )
+            ->execute()
+            ->fetchAll();
+
+
 		$outArray = array() ;
 		foreach ($records as &$r) {
 			$sysPage->versionOL('sys_file_reference', $r);
-			$fileReferenceData = $db->exec_SELECTgetSingleRow('*', 'sys_file_reference', 'uid=' . $r['uid'] . ' AND deleted=0');
+            $queryBuilder2 = $connectionPool->getQueryBuilderForTable('sys_file_reference') ;
+            $fileReferenceData = $queryBuilder2->select('*' ) ->from('sys_file_reference')
+                ->where( $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($r['uid'] , Connection::PARAM_INT)) )
+                ->execute()
+                ->fetch();
 
-			/** @var \TYPO3\CMS\Core\Resource\FileReference $obj */
+			/** @var FileReference $obj */
 			$obj =  GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileReference', $fileReferenceData);
 
 			// Next line is obsolete! you can not access to non Public Properties of this OBJ
