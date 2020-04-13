@@ -696,11 +696,11 @@ class AjaxController extends BaseController
 
         if( !$organizer  ) {
             $this->addFlashMessage("Organizer not found by ID : " . $organizerUid , "" , \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING) ;
-            $this->redirect('assist' , NULL, Null , NULL , $this->settings['pageIds']['organizerAssist'] );
+            $this->redirect('assist' , "Organizer", Null , NULL , $this->settings['pageIds']['organizerAssist'] );
         }
         if( !$user ) {
             $this->addFlashMessage("User not found by ID : " . $userUid , "" , \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING) ;
-            $this->redirect('assist' , NULL, Null , NULL , $this->settings['pageIds']['organizerAssist'] );
+            $this->redirect('assist' , "Organizer", Null , NULL , $this->settings['pageIds']['organizerAssist'] );
         }
         $tokenStr = "activateOrg" . "-" . $organizerUid . "-" . $user->getCrdate() ."-". $userUid .  "-". $rnd ;
         $tokenId = GeneralUtility::hmac( $tokenStr );
@@ -714,7 +714,7 @@ class AjaxController extends BaseController
                 die;
             }
             $this->addFlashMessage("Hmac does not fit to: " . $tokenStr , "ERROR" , \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR) ;
-            $this->redirect('assist' , NULL, Null , NULL , $this->settings['pageIds']['organizerAssist'] );
+            $this->redirect('assist' , "Organizer", Null , NULL , $this->settings['pageIds']['organizerAssist'] );
 
         }
         $groups =  $user->getUsergroup()->toArray() ;
@@ -757,7 +757,7 @@ class AjaxController extends BaseController
         $this->persistenceManager->persistAll() ;
         $this->addFlashMessage("User : " . $userUid . " (" . $user->getEmail() . ") enabled | " . $msg . "  " , "Success" , \TYPO3\CMS\Core\Messaging\AbstractMessage::OK) ;
         $this->addFlashMessage("Organizer : " . $organizerUid . " (" . $organizer->getName() . ")  enabled " , \TYPO3\CMS\Core\Messaging\AbstractMessage::OK) ;
-        $this->redirect('assist' , NULL, Null , NULL , $this->settings['pageIds']['organizerAssist'] );
+        $this->redirect('assist' , "Organizer", Null , NULL , $this->settings['pageIds']['organizerAssist'] );
 
     }
 
