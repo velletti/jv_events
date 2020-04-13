@@ -240,10 +240,18 @@ class OrganizerController extends BaseController
             $msg .= "\n" . "Phone: " . $organizer->getPhone() ;
             $msg .= "\n" . "Link: " . $organizer->getLink() ;
             $msg .= "\n\n\n" . "Description: " . $organizer->getDescription() ;
+            $msg .= "\n *********************************************** " ;
+            $msg .= "\n Der  Veranstalter Account auf tangomumchen.de wurde freigeschaltet." ;
             $msg .= "\n" ;
+            $msg .= "\n Nun können Veranstaltungsorte und Termine erstellt werden." ;
+            $msg .= "\n WICHTIG: Bitte neu einloggen, damit die neuen Zugriffsrechte als Veranstalter wirksam sind." ;
+            $msg .= "\n" ;
+            $msg .= "\n Bei Fragen, ist ein Blick in den Hilfebereich sicher hilfreich. " ;
+            $msg .= "\n" ;
+            $msg .= "\n ***********************************************" ;
 
             $html = nl2br($msg) ;
-            $html .= "<br>" . "<hr><br>" . '<a href="' . $url . '"> Klick To Enable  </a>' ."\n" . "\n" . $url ;
+            $html .= "<br>" . "<hr><br>" . '<a href="' . $url . '"> Klick To Enable  </a>' ."\n" . "\n"  ;
 
             $msg .= "\n\n" . "Klick to Enable: \n \n" . $url ;
             $this->sendDebugEmail( "tango@velletti.de" ,"info@tangomuenchen.de", "[TANGO][NewOrganizer] - " . $organizer->getEmail() , $msg , $html) ;
