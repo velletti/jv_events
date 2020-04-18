@@ -1,6 +1,8 @@
 <?php
 namespace JVE\JvEvents\Controller;
 
+use JVE\JvEvents\Utility\SlugUtility;
+
 /***************************************************************
  *
  *  Copyright notice
@@ -226,6 +228,7 @@ class LocationController extends BaseController
     public function updateAction(\JVE\JvEvents\Domain\Model\Location $location)
     {
         if ( $this->hasUserAccess($location->getOrganizer() )) {
+            $location = $this->cleanLocationArguments( $location) ;
             $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
             $this->addFlashMessage('The object was updated.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
             $this->locationRepository->update($location);
@@ -298,6 +301,19 @@ class LocationController extends BaseController
         $location->setEmail( trim($location->getEmail())) ;
 
         $location->setLanguageUid(-1) ;
+
+        if( intval( TYPO3_branch ) > 8 ) {
+            $row['name'] =  $location->getName() ;
+            $row['pid'] =  $location->getPid() ;
+            $row['parentpid'] =  1 ;
+            $row['uid'] =  $location->getUid() ;
+            $row['sys_language_uid'] =  $location->getLanguageUid() ;
+            $row['slug'] =  $location->getSlug() ;
+            $slug = SlugUtility::getSlug("tx_jvevents_domain_model_location", "slug", $row )  ;
+            $location->setSlug( $slug ) ;
+        }
+
+
         return $location ;
     }
 

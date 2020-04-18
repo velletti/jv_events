@@ -95,7 +95,14 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @validate NotEmpty
      */
     protected $name = '';
-    
+
+    /**
+     * generated from Short Title and startdate of this event. Used as URL
+     *
+     * @var string
+     */
+    protected $slug = '';
+
     /**
      * Short description of this event. Used in listings
      *
@@ -2528,6 +2535,22 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function setChangeFutureEvents($changeFutureEvents)
     {
         $this->changeFutureEvents = $changeFutureEvents;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param string $slug
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
     }
 
 

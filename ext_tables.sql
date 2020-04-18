@@ -9,6 +9,7 @@ CREATE TABLE tx_jvevents_domain_model_event (
 
 	event_type int(11) DEFAULT '0' NOT NULL,
 	name varchar(255) DEFAULT '' NOT NULL,
+	slug varchar(2048),
 	teaser varchar(255) DEFAULT '' NOT NULL,
 	description text NOT NULL,
 	price double default '0' NOT NULL ,
@@ -99,7 +100,6 @@ CREATE TABLE tx_jvevents_domain_model_event (
 	t3ver_tstamp int(11) DEFAULT '0' NOT NULL,
 	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
 	sorting int(11) DEFAULT '0' NOT NULL,
-
 	sys_language_uid int(11) DEFAULT '0' NOT NULL,
 	l10n_parent int(11) DEFAULT '0' NOT NULL,
 	l10n_diffsource mediumblob,
@@ -107,6 +107,7 @@ CREATE TABLE tx_jvevents_domain_model_event (
 	PRIMARY KEY (uid),
 	KEY parent (pid),
 	KEY master (master_id),
+	 KEY slug (slug(750)),
 	KEY t3ver_oid (t3ver_oid,t3ver_wsid),
 	KEY index (start_date, start_time, sorting),
   KEY language (l10n_parent,sys_language_uid)
@@ -170,6 +171,7 @@ CREATE TABLE tx_jvevents_domain_model_organizer (
 	pid int(11) DEFAULT '0' NOT NULL,
 
 	name varchar(255) DEFAULT '' NOT NULL,
+	slug varchar(2048),
 	email varchar(255) DEFAULT '' NOT NULL,
 	email_cc varchar(255) DEFAULT '' NOT NULL,
 	link varchar(255) DEFAULT '' NOT NULL,
@@ -215,6 +217,7 @@ CREATE TABLE tx_jvevents_domain_model_organizer (
 
 	PRIMARY KEY (uid),
 	KEY parent (pid),
+	 KEY slug (slug(750)),
 	KEY t3ver_oid (t3ver_oid,t3ver_wsid),
  KEY language (l10n_parent,sys_language_uid)
 
@@ -229,6 +232,7 @@ CREATE TABLE tx_jvevents_domain_model_location (
 	pid int(11) DEFAULT '0' NOT NULL,
 
 	name varchar(255) DEFAULT '' NOT NULL,
+	slug varchar(2048),
 	teaser_image int(11) unsigned NOT NULL default '0',
 	street_and_nr varchar(255) DEFAULT '' NOT NULL,
 	zip varchar(255) DEFAULT '' NOT NULL,
@@ -270,6 +274,7 @@ CREATE TABLE tx_jvevents_domain_model_location (
 
 	PRIMARY KEY (uid),
 	KEY parent (pid),
+	 KEY slug (slug(750)),
 	KEY t3ver_oid (t3ver_oid,t3ver_wsid),
  KEY language (l10n_parent,sys_language_uid)
 
@@ -369,6 +374,7 @@ CREATE TABLE tx_jvevents_domain_model_category (
 
 	title varchar(255) DEFAULT '' NOT NULL,
 	description text NOT NULL,
+	slug varchar(2048),
 	type int(11) DEFAULT '0' NOT NULL,
 	block_registration tinyint(1) unsigned DEFAULT '0' NOT NULL,
 
@@ -395,6 +401,7 @@ CREATE TABLE tx_jvevents_domain_model_category (
 
 	PRIMARY KEY (uid),
 	KEY parent (pid),
+	 KEY slug (slug(750)),
 	KEY t3ver_oid (t3ver_oid,t3ver_wsid),
  KEY language (l10n_parent,sys_language_uid)
 

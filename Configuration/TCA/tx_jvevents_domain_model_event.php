@@ -26,7 +26,7 @@ $returnArray = array(
 			'disabled' => 'hidden',
 			'fe_group' => 'access' ,
 		),
-		'searchFields' => 'event_type,name,teaser,description,images,files,start_date,start_time,end_date,marketing_process_id,sales_force_record_type,sales_force_campaign_id,sales_force_event_id,sales_force_session_id,subject_organizer,text_organizer,subject_registrant,introtext_registrant,text_registrant,organizer,location,',
+		'searchFields' => 'event_type,name,teaser,description,images,files,start_date,start_time,end_date,marketing_process_id,sales_force_record_type,sales_force_campaign_id,sales_force_event_id,sales_force_session_id,subject_organizer,text_organizer,subject_registrant,introtext_registrant,text_registrant,organizer,location,slug,',
 		'iconfile' => 'EXT:jv_events/Resources/Public/Icons/tx_jvevents_domain_model_event.gif'
 	),
 	'interface' => array(
@@ -60,7 +60,7 @@ $returnArray = array(
 		'relations' => array('showitem' => 'organizer, --linebreak--, location, --linebreak--,event_category, --linebreak--,tags '),
 		'frequent' => array('showitem' => 'is_recurring, --linebreak--, frequency, freq_exception, --linebreak--, is_exception_for,  '),
 		'language' => array('showitem' => 'sys_language_uid, ,l10n_parent,--linebreak--,l10n_diffsource,' ),
-		'advanced' => array('showitem' => 'top_event,' ),
+		'advanced' => array('showitem' => 'top_event, --linebreak--,slug,' ),
 		'old' => array('showitem' => 'store_in_citrix, citrix_uid, --linebreak--,store_in_sales_force, --linebreak--,marketing_process_id, sales_force_record_type, sales_force_event_id, sales_force_session_id' ),
 
 		'access' =>  array('showitem' =>  'hidden,--palette--;;1,canceled,--linebreak--,access,--linebreak--,starttime,endtime' ),
@@ -1304,5 +1304,26 @@ if ( $configuration['Registrationid'] > 0 ) {
 }
 
 
+if( intval( TYPO3_branch ) > 8 ) {
+    $returnArray['columns']['slug']  = [
+        'exclude' => true,
+        'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:pages.slug',
+        'config' => [
+            'type' => 'slug',
+            'size' => 50,
+            'generatorOptions' => [
+                'fields' => [['name'],['start_date']],
+                'fieldSeparator' => '-',
 
+                'replacements' => [
+                    '/' => '-'
+                ],
+            ],
+            'prependSlash' => false,
+            'fallbackCharacter' => '-',
+            'eval' => 'uniqueInPid',
+            'default' => 'event'
+        ]
+    ] ;
+}
 return $returnArray ;

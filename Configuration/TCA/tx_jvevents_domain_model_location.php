@@ -21,14 +21,14 @@ $return = array(
 			'starttime' => 'starttime',
 			'endtime' => 'endtime',
 		),
-		'searchFields' => 'name,street_and_nr,zip,city,country,lat,lng,link,email,phone,description,organizer,location_category,',
+		'searchFields' => 'name,street_and_nr,zip,city,country,lat,lng,link,email,phone,description,organizer,location_category,slug,',
 		'iconfile' => 'EXT:jv_events/Resources/Public/Icons/tx_jvevents_domain_model_location.gif'
 	),
 	'interface' => array(
 		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, street_and_nr, zip, city, country,lat, lng,  link, email, phone, description, organizer, location_category',
 	),
 	'types' => array(
-		'1' => array('showitem' => 'sys_language_uid, l10n_parent,l10n_diffsource,hidden,--palette--;;1,name,street_and_nr,zip,city,country,--palette--;;geo,teaser_image,link,email,phone,description,organizer,location_category,--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,starttime,endtime,default_location'),
+		'1' => array('showitem' => 'sys_language_uid, l10n_parent,l10n_diffsource,hidden,--palette--;;1,name,slug,street_and_nr,zip,city,country,--palette--;;geo,teaser_image,link,email,phone,description,organizer,location_category,--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,starttime,endtime,default_location'),
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),
@@ -406,4 +406,26 @@ if( class_exists('\SJBR\StaticInfoTables\Hook\Backend\Form\FormDataProvider\TcaS
 
 }
 
+if( intval( TYPO3_branch ) > 8 ) {
+    $return['columns']['slug']  = [
+        'exclude' => true,
+        'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:pages.slug',
+        'config' => [
+            'type' => 'slug',
+            'size' => 50,
+            'generatorOptions' => [
+                'fields' => ['name'],
+                'fieldSeparator' => '-',
+
+                'replacements' => [
+                    '/' => '-'
+                ],
+            ],
+            'prependSlash' => false,
+            'fallbackCharacter' => '-',
+            'eval' => 'uniqueInPid',
+            'default' => 'location'
+        ]
+    ] ;
+}
 return $return ;

@@ -26,6 +26,7 @@ namespace JVE\JvEvents\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use JVE\JvEvents\Utility\SlugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
 
@@ -304,6 +305,7 @@ class EventController extends BaseController
         if( $this->request->hasArgument('event')) {
             $event = $this->cleanEventArguments( $event) ;
         }
+
         $action = "edit" ;
         if($this->isUserOrganizer() ) {
             $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
@@ -444,6 +446,7 @@ class EventController extends BaseController
             $newDate->add( $diff) ;
 
             $newEvent->setStartDate($newDate ) ;
+            $newEvent->setSysLanguageUid(-1 ) ;
 
             // ++++ now copy the Categories and tags  ++++
             if( $event->getEventCategory() ) {
@@ -784,6 +787,8 @@ class EventController extends BaseController
         // Type validation should be done in validator class so we can ignore issue with wrong format
         $eventArray = $this->request->getArgument('event');
 
+
+
         /*   +******  Update the Category  ************* */
         $eventCatUid = intval($eventArray['eventCategory']) ;
         /** @var \JVE\JvEvents\Domain\Model\Category $eventCat */
@@ -851,6 +856,19 @@ class EventController extends BaseController
 
         $event->setDescription( $desc ) ;
         $event->setChangeFutureEvents( $eventArray['changeFutureEvents'] ) ;
+
+        if( intval( TYPO3_branch ) > 8 ) {
+            $row['name'] =  $event->getName() ;
+            $row['pid'] =  $event->getPid() ;
+            $row['parentpid'] =  1 ;
+            $row['uid'] =  $event->getUid() ;
+            $row['sys_language_uid'] =  $event->getSysLanguageUid() ;
+            $row['slug'] =  $event->getSlug() ;
+            $row['start_date'] =  $event->getStartDate()->format("d-m-Y") ;
+            $slug = SlugUtility::getSlug("tx_jvevents_domain_model_event", "slug", $row  )  ;
+            $event->setSlug( $slug ) ;
+        }
+
         return $event ;
     }
 

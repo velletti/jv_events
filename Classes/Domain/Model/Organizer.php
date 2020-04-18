@@ -39,7 +39,14 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @validate NotEmpty
      */
     protected $name = '';
-    
+
+    /**
+     * slug Name of the Location
+     *
+     * @var string
+     */
+    protected $slug = '';
+
     /**
      * Please enter a valid Email Address. Needed if you activate the option: send
      * email to organizer on new registrations
@@ -781,6 +788,21 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         if( $latestEvent > $this->latestEvent ) {
             $this->latestEvent = $latestEvent;
         }
+    }
+    /**
+     * @return string
+     */
+    public function getSlug(): string
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param string $slug
+     */
+    public function setSlug(string $slug)
+    {
+        $this->slug = $slug;
     }
 
 

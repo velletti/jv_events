@@ -19,7 +19,7 @@ $returnArray = array(
 			'starttime' => 'starttime',
 			'endtime' => 'endtime',
 		),
-		'searchFields' => 'name,email,email_cc,phone,sales_force_user_id,sales_force_user_id2,images,description,organizer_category,registration_info,',
+		'searchFields' => 'name,email,email_cc,phone,sales_force_user_id,sales_force_user_id2,images,description,organizer_category,registration_info,slug,',
 		'iconfile' =>  'EXT:jv_events/Resources/Public/Icons/tx_jvevents_domain_model_organizer.gif'
 	),
 	'interface' => array(
@@ -29,7 +29,7 @@ $returnArray = array(
 		'1' => array('showitem' => '--palette--;;data, --div--;Relations, --palette--;;relations, --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, --palette--;;access,'),
 	),
 	'palettes' => array(
-		'data' => array('showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, --linebreak--,name, --linebreak--,email, --linebreak--,email_cc,--linebreak--,link, --linebreak--,phone, --linebreak--,sales_force_user_id,  --linebreak--, sales_force_user_id2, sales_force_user_org,--linebreak--,description,--linebreak--,registration_info,'),
+		'data' => array('showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, --linebreak--,name, --linebreak--,slug, --linebreak--,email, --linebreak--,email_cc,--linebreak--,link, --linebreak--,phone, --linebreak--,sales_force_user_id,  --linebreak--, sales_force_user_id2, sales_force_user_org,--linebreak--,description,--linebreak--,registration_info,'),
 		'relations' => array('showitem' => 'teaser_image, --linebreak--,images, --linebreak--,organizer_category, --linebreak--, tags,'),
 	    'access' => array('showitem' => ' starttime, endtime, --linebreak--,access_users,--linebreak--, access_groups,')
     ),
@@ -545,6 +545,28 @@ $returnArray = array(
 );
 
 
+if( intval( TYPO3_branch ) > 8 ) {
+    $returnArray['columns']['slug']  = [
+        'exclude' => true,
+        'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:pages.slug',
+        'displayCond' => 'USER:' . \TYPO3\CMS\Core\Compatibility\PseudoSiteTcaDisplayCondition::class . '->isInPseudoSite:pages:false',
+        'config' => [
+            'type' => 'slug',
+            'size' => 50,
+            'generatorOptions' => [
+                'fields' => ['name'],
+                'fieldSeparator' => '-',
+                'replacements' => [
+                    '/' => '-'
+                ],
+            ],
+            'prependSlash' => false,
+            'fallbackCharacter' => '-',
+            'eval' => 'uniqueInPid',
+            'default' => 'organizer'
+        ]
+    ] ;
+}
 
 $configuration = \JVE\JvEvents\Utility\EmConfigurationUtility::getEmConf();
 
