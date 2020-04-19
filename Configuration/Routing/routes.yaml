@@ -1,0 +1,41 @@
+routeEnhancers:
+  PageTypeSuffix:
+    map:
+      'uploadFile.json': 1386871773
+      'deleteFile.json': 1386871774
+      'cropImage.json': 44900073
+
+  jveventPlugin:
+    type: Extbase
+    extension: JvEvents
+    plugin: Events
+    requirements:
+      organizer_slug: '[0-9]{1..16}'
+      location_slug: '[0-9]{1..16}'
+      event_slug: '[0-9]{1..16}'
+    routes:
+      - routePath: '/event/event/show/{event_slug}'
+        _controller: 'Event::show'
+        _arguments:
+          event_slug: event
+      - routePath: '/event/organizer/show/{organizer_slug}'
+        _controller: 'Organizer::show'
+        _arguments:
+          organizer_slug: organizer
+      - routePath: '/event/location/show/{location_slug}'
+        _controller: 'Location::show'
+        _arguments:
+          location_slug: location
+    aspects:
+      organizer_slug:
+        type: PersistedAliasMapper
+        tableName: tx_jvevents_domain_model_organizer
+        routeFieldName: slug
+      location_slug:
+        type: PersistedAliasMapper
+        tableName: tx_jvevents_domain_model_location
+        routeFieldName: slug
+      event_slug:
+        type: PersistedAliasMapper
+        tableName: tx_jvevents_domain_model_event
+        routeFieldName: slug
