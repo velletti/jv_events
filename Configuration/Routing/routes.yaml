@@ -13,6 +13,7 @@ routeEnhancers:
       organizer_slug: '[0-9]{1..16}'
       location_slug: '[0-9]{1..16}'
       event_slug: '[0-9]{1..16}'
+      org_id: '[0-9]{1..16}'
     routes:
       - routePath: '/event/event/show/{event_slug}'
         _controller: 'Event::show'
