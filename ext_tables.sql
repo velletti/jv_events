@@ -107,7 +107,7 @@ CREATE TABLE tx_jvevents_domain_model_event (
 	PRIMARY KEY (uid),
 	KEY parent (pid),
 	KEY master (master_id),
-	 KEY slug (slug(750)),
+	 KEY slug (slug(250)),
 	KEY t3ver_oid (t3ver_oid,t3ver_wsid),
 	KEY index (start_date, start_time, sorting),
   KEY language (l10n_parent,sys_language_uid)
@@ -217,7 +217,7 @@ CREATE TABLE tx_jvevents_domain_model_organizer (
 
 	PRIMARY KEY (uid),
 	KEY parent (pid),
-	 KEY slug (slug(750)),
+	 KEY slug (slug(250)),
 	KEY t3ver_oid (t3ver_oid,t3ver_wsid),
  KEY language (l10n_parent,sys_language_uid)
 
@@ -274,7 +274,7 @@ CREATE TABLE tx_jvevents_domain_model_location (
 
 	PRIMARY KEY (uid),
 	KEY parent (pid),
-	 KEY slug (slug(750)),
+	 KEY slug (slug(250)),
 	KEY t3ver_oid (t3ver_oid,t3ver_wsid),
  KEY language (l10n_parent,sys_language_uid)
 
@@ -401,7 +401,7 @@ CREATE TABLE tx_jvevents_domain_model_category (
 
 	PRIMARY KEY (uid),
 	KEY parent (pid),
-	 KEY slug (slug(750)),
+	 KEY slug (slug(250)),
 	KEY t3ver_oid (t3ver_oid,t3ver_wsid),
  KEY language (l10n_parent,sys_language_uid)
 
