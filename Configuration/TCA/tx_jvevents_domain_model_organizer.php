@@ -554,7 +554,7 @@ if( intval( TYPO3_branch ) > 8 ) {
             'type' => 'slug',
             'size' => 50,
             'generatorOptions' => [
-                'fields' => ['name'],
+                'fields' => [['name'],['uid']],
                 'fieldSeparator' => '-',
                 'replacements' => [
                     '/' => '-'
