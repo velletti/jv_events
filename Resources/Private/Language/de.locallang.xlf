@@ -905,7 +905,7 @@
             </trans-unit>
             <trans-unit id="donate">
                 <source>Donate</source>
-                <target>Spenden</source>
+                <target>Spenden</target>
             </trans-unit>
 		</body>
 	</file>
