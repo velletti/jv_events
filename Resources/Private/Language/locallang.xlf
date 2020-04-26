@@ -424,6 +424,9 @@
             <trans-unit id="tx_jvevents_domain_model_location.link">
                 <source>Link</source>
             </trans-unit>
+
+
+
             <trans-unit id="tx_jvevents_domain_model_location.lng">
                 <source>Lng</source>
             </trans-unit>
@@ -445,6 +448,8 @@
             <trans-unit id="tx_jvevents_domain_model_location.zip">
                 <source>Zip</source>
             </trans-unit>
+
+
             <trans-unit id="tx_jvevents_domain_model_organizer">
                 <source>Organizer</source>
             </trans-unit>
@@ -457,6 +462,13 @@
             <trans-unit id="tx_jvevents_domain_model_organizer.link">
                 <source>Link</source>
             </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_organizer.charity_link">
+                <source>Charity Link</source>
+            </trans-unit>
+             <trans-unit id="tx_jvevents_domain_model_organizer.youtube_link">
+                <source>Youtube Link</source>
+            </trans-unit>
+
             <trans-unit id="tx_jvevents_domain_model_organizer.images">
                 <source>Images</source>
             </trans-unit>
@@ -721,7 +733,9 @@
             <trans-unit id="create.organizer.AddUser.text">
                 <source>You have just registered as new user but need to manage the events and data of an EXISTING Organizer?</source>
             </trans-unit>
-
+          <trans-unit id="donate">
+                <source>Donate</source>
+            </trans-unit>
 
 		</body>
 	</file>

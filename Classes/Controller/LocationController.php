@@ -58,7 +58,12 @@ class LocationController extends BaseController
      */
     public function listAction()
     {
-        $locations = $this->locationRepository->findAll();
+        $filter = false ;
+        if( array_key_exists( 'filterlocation' , $this->settings) && array_key_exists( "categories", $this->settings['filterlocation']))  {
+            $filter = ["category.uid" => \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode( "," , $this->settings['filterlocation']['categories'] ) ]  ;
+        }
+
+        $locations = $this->locationRepository->findByFilterAllpages($filter);
         $this->view->assign('locations', $locations);
     }
     

@@ -1,21 +1,27 @@
 
 <f:layout name="Default" />
 
-This Template is responsible for creating a table of domain objects.
-
-
-If you modify this template, do not forget to change the overwrite settings
-in /Configuration/ExtensionBuilder/settings.yaml:
-  Resources:
-    Private:
-      Templates:
-        List.html: keep
-
-Otherwise your changes will be overwritten the next time you save the extension in the extension builder
 
 <f:section name="main">
-<h1>Listing for Location</h1>
+    <f:if condition="{settings.LayoutList}">
+        <f:then>
+            <f:variable name="layoutList">{settings.LayoutList}</f:variable>
+        </f:then>
+        <f:else>
+            <f:variable name="layoutList">5Tango</f:variable>
+        </f:else>
+    </f:if>
+    <f:flashMessages />
+    <div class="jv_events_{layoutList} {settings.list.additionalClass}">
+        <f:if condition="{locations}">
+            <f:then>
+                <f:render partial="Location/List/Partial{layoutList}/Header" arguments="{settings: settings}" />
+                <f:render partial="Location/List/Partial{layoutList}/Filter" arguments="{locFilter: locFilter, settings: settings}" />
 
-<f:flashMessages />
-
-   not implemented yet !!!
+                <f:for each="{locations}" as="location">
+                    <f:render partial="Location/List/Partial{layoutList}/SingleLocation" arguments="{location:location, settings: settings}" />
+                </f:for>
+            </f:then>
+        </f:if>
+    </div>
+</f:section>

@@ -175,6 +175,10 @@ CREATE TABLE tx_jvevents_domain_model_organizer (
 	email varchar(255) DEFAULT '' NOT NULL,
 	email_cc varchar(255) DEFAULT '' NOT NULL,
 	link varchar(255) DEFAULT '' NOT NULL,
+
+	charity_link varchar(255) DEFAULT '' NOT NULL,
+	youtube_link varchar(255) DEFAULT '' NOT NULL,
+
 	phone varchar(255) DEFAULT '' NOT NULL,
 	sales_force_user_id varchar(255) DEFAULT '' NOT NULL,
 	sales_force_user_id2 varchar(255) DEFAULT '' NOT NULL,

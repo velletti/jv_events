@@ -102,12 +102,30 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $phone = '';
 
     /**
+ * Link of this organizer. Shown in Emails and as  Contact info in the event
+ * details
+ *
+ * @var string
+ */
+    protected $charityLink = '';
+
+    /**
+     * Link of this organizer. Shown in Emails and as  Contact info in the event
+     * details
+     *
+     * @var string
+     */
+    protected $youtubeLink = '';
+
+    /**
      * Link of this organizer. Shown in Emails and as  Contact info in the event
      * details
      *
      * @var string
      */
     protected $link = '';
+
+
     
     /**
      * if you use SalesForce to store eventsregistrations, we use this uid to store the
@@ -803,6 +821,38 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function setSlug(string $slug)
     {
         $this->slug = $slug;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCharityLink(): string
+    {
+        return $this->charityLink;
+    }
+
+    /**
+     * @param string $charityLink
+     */
+    public function setCharityLink(string $charityLink)
+    {
+        $this->charityLink = $charityLink;
+    }
+
+    /**
+     * @return string
+     */
+    public function getYoutubeLink(): string
+    {
+        return $this->youtubeLink;
+    }
+
+    /**
+     * @param string $youtubeLink
+     */
+    public function setYoutubeLink(string $youtubeLink)
+    {
+        $this->youtubeLink = $youtubeLink;
     }
 
 

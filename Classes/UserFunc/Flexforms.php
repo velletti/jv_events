@@ -93,11 +93,11 @@ class Flexforms {
 
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $connectionPool->getConnectionForTable($table)->createQueryBuilder();
-        $queryBuilder->select('l18n_parent','uid',$nameField) ->from($table) ;
+        $queryBuilder->select('l10n_parent','uid',$nameField) ->from($table) ;
         $expr = $queryBuilder->expr();
         $queryBuilder->where( $expr->eq('sys_language_uid',
             $queryBuilder->createNamedParameter( $lngField , Connection::PARAM_INT))
         ) ;
-        return  $queryBuilder->andWhere($expr->eq('l18n_parent', intval($uid )))->execute()->fetch() ;
+        return  $queryBuilder->andWhere($expr->eq('l10n_parent', intval($uid )))->execute()->fetch() ;
     }
 }

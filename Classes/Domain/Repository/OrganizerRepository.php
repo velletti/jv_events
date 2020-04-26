@@ -119,14 +119,19 @@ class OrganizerRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
         $constraints = array() ;
         if ( $filter ) {
             foreach ( $filter as $field => $value) {
-                $constraints[] = $query->equals($field ,  $value ) ;
+                if( is_array( $value ) ) {
+                    $constraints[] = $query->in($field ,  $value ) ;
+                } else {
+                    $constraints[] = $query->equals($field ,  $value ) ;
+                }
+
             }
         }
 
         // and the normal visibility contrains , including date Time
         /** @var \DateTime $actualTime */
         $actualTime = new \DateTime('now' ) ;
-        $actualTime->modify('-3 YEAR') ;
+        $actualTime->modify('-1 YEAR') ;
         $constraints[] = $query->greaterThanOrEqual('tstamp', $actualTime );
 
 

@@ -1,0 +1,132 @@
+{namespace jve=JVE\JvEvents\ViewHelpers}
+<f:variable name="tagnames"></f:variable>
+<f:variable name="tagids"></f:variable>
+<f:variable name="catids"></f:variable>
+<f:if condition="{location.Tags}">
+
+    <f:for each="{location.Tags}" as="Tag" iteration="iteration">
+        <f:variable name="tagids">{Tag.uid},{tagids}</f:variable>
+        <f:variable name="tagnames">{Tag.name}, {tagnames}</f:variable>
+    </f:for>
+</f:if>
+<f:if condition="{location.locationCategory}">
+    <f:for each="{location.locationCategory}" as="locationCategory" iteration="iteration">
+        <f:variable name="catids">{locationCategory.uid},{catids}</f:variable>
+    </f:for>
+</f:if>
+
+<f:spaceless>
+    <div {f:if(condition: '{showDetails}', then: ' id="jv-events-details"' )} class="jv-events-singleLocation jv-events-row" data-orguid="{location.uid}" data-taguids="{tagids}" data-catuids="{catids}">
+
+        <div class="card col-12 my-4 clearfix rounded-bottom">
+            <div class="row">
+                <div class="col-4  order-1 col-sm-3 px-0">
+
+                    <f:link.action action="show" arguments="{location : location.uid}">
+                            <f:if condition="{location.teaserImage}">
+                                <f:then>
+                                    <f:image src="{location.teaserImage.uid}" class="d-block w-100 h-auto img-float rounded shadow-lg" alt="{location.teaserImage.alternative}" title="{location.teaserImage.title}" width="{settings.list.image.width}c" maxWidth="{settings.list.image.width}" maxHeight="{settings.list.image.height}" treatIdAsReference="true" />
+                                </f:then>
+                                <f:else>
+                                    <f:if condition="{hideDefaultImg}">
+                                        <f:then>
+                                            <f:security.ifHasRole role="7">
+                                                <div class="alert alert-secondary h-100">
+                                                    <f:link.page pageUid="{settings.pageIds.addMedia}" noCache="true" class="nav-link  px-1" title="Add Teaser Image " additionalParams="{tx_jvmediaconnector_connector: {action: 'list', controller: 'Media' ,  reference: {id: location.uid, table: 'tx_jvevents_domain_model_location' , fieldname: 'teaser_image' , maxRelations: '1' , returnPid: settings.pageId , returnArray: {tx_jvevents_events: {action: 'edit', location: location.uid }}}}}">
+                                                        <button class="btn btn-outline-primary btn-xs rounded-circle" href="#">
+                                                            <i class="fas fa-image"></i>
+                                                        </button>
+                                                        <span class="d-none d-md-inline-block mx-2"> <f:translate key="addImage">Add Image</f:translate></span>
+                                                    </f:link.page>
+                                                </div>
+                                            </f:security.ifHasRole>
+                                        </f:then>
+                                        <f:else>
+                                            <f:image src="{settings.list.image.defaultImage}" class="d-block w-100 h-auto img-float rounded shadow-lg" alt="img" title="Settings: {settings.list.image.defaultImage}" width="{settings.list.image.width}c" maxWidth="{settings.list.image.width}" maxHeight="{settings.list.image.height}" treatIdAsReference="false" />
+
+                                        </f:else>
+                                    </f:if>
+                                </f:else>
+                            </f:if>
+
+                    </f:link.action>
+                </div>
+
+
+                <div class="col-12 col-sm-6  order-3 order-sm-2 py-2">
+                    <div class="card-block">
+                        <h4 class="card-title"><f:link.action  action="show" arguments="{location : location.uid}" >
+                            {location.name}
+                        </f:link.action></h4>
+                        <f:if condition="{location.email}">
+                            <span class="fa fa-envelope mh-sm"></span> <f:link.email email="{location.email}">{location.email}</f:link.email><br>
+                        </f:if>
+                        <f:if condition="{location.phone}">
+                            <span class="fa fa-phone mh-sm"></span> <f:link.external uri="{location.phone}" defaultScheme="tel">{location.phone}</f:link.external><br>
+                        </f:if>
+                        <f:if condition="{location.link}">
+                            <span class="fa fa-link mh-sm"></span> <f:link.external uri="{location.link}" >{location.link}</f:link.external><br>
+                        </f:if>
+                        <br>
+                        <div class="d-none d-sm-block">
+                            <small>
+                                <span class="fa fa-folder mh-sm"></span> Registered since: <f:format.date format="d.m.Y">{location.crdate}</f:format.date><br>
+                                <span class="fa fa-edit mh-sm"></span> Last Update: <f:format.date format="d.m.Y">{location.tstamp}</f:format.date><br>
+                            </small>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-8 col-sm-3 text-black-50 bg-gradient-light  order-2 order-sm-3 py-3">
+                    <div class="small">
+                        {tagnames}
+                            <f:if condition="{location.locationCategory}">
+                                <br>
+                                <f:for each="{location.locationCategory}" as="category" iteration="iteration">
+                                    <f:if condition="{category.description}">
+                                        <f:then>
+                                            <a class="info" href="#" data-toggle="modal" data-target="#jv_events_cat_modal-{category.uid}">
+                                                <f:render partial="Location/Single/Partial5Tango/CategoryIcon" arguments="{uid: category.uid, text: category.title}"/>
+                                            </a>
+                                        </f:then>
+                                        <f:else>
+                                            <f:render partial="Location/Single/Partial5Tango/CategoryIcon" arguments="{uid: category.uid, text: category.title}"/>
+                                        </f:else>
+                                    </f:if>
+
+
+                                </f:for>
+                        </f:if>
+                    </div>
+
+
+                    <div class="text-right position-bottom position-right">
+                        <f:if condition="{showEditButton}">
+                            <f:link.action class="badge badge-primary m-2 py-2" pageUid="{settings.pageIds.editLocation}" action="edit" controller="Location" arguments="{location: location.uid}">
+                                <span class="fas fa-users-cog"> </span> <span class="hidden-xs">{f:translate(key: 'edit', default: 'Edit')} {f:translate(key: 'tx_jvevents_domain_model_location', default: 'Location')} </span>
+                            </f:link.action>
+                        </f:if>
+
+
+
+                        <f:if condition="{location.latestEvent -> f:format.date(format: 'Y-m-d')} > {f:format.date(date: 'now' , format: 'Y-m-d')}">
+                            <f:link.page class="badge badge-primary m-2 py-2" pageUid="{settings.pageIds.eventList}" additionalParams="{tx_jvevents_events: {overruleFilter: {location: '{location.uid}', category : 'true' , maxDays: 90}}}">
+                                <span class="fas fa-calendar-alt "></span> {f:translate(key: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.EventListView', default: 'Termine')} >>
+                            </f:link.page>
+                        </f:if>
+
+
+                    </div>
+                </div>
+                <f:if condition="{showDetails}">
+                    <div class="col-12 order-4 py-2 bg-gradient-light ">
+                        <f:format.html>{location.description}</f:format.html>
+
+                    </div>
+                </f:if>
+
+            </div>
+        </div>
+    </div>
+</f:spaceless>

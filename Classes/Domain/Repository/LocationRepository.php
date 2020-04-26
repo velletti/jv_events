@@ -109,4 +109,55 @@ class LocationRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
             return $res ;
         }
     }
+
+    public function findByFilterAllpages($filter=FALSE , $toArray=FALSE , $ignoreEnableFields = FALSE , $limit=FALSE)
+    {
+        $query = $this->createQuery();
+        $querySettings = $query->getQuerySettings() ;
+        $querySettings->setRespectStoragePage(false);
+        $querySettings->setRespectSysLanguage(FALSE);
+        $querySettings->setIgnoreEnableFields($ignoreEnableFields) ;
+        $query->setQuerySettings($querySettings) ;
+
+        $constraints = array() ;
+        if ( $filter ) {
+            foreach ( $filter as $field => $value) {
+                if( is_array( $value ) ) {
+                    $constraints[] = $query->in($field ,  $value ) ;
+                } else {
+                    $constraints[] = $query->equals($field ,  $value ) ;
+                }
+
+            }
+        }
+
+        // and the normal visibility contrains , including date Time
+        /** @var \DateTime $actualTime */
+        $actualTime = new \DateTime('now' ) ;
+        $actualTime->modify('-1 YEAR') ;
+        $constraints[] = $query->greaterThanOrEqual('latest_event', $actualTime );
+        if( $limit) {
+            $query->setLimit(intval($limit));
+        }
+
+        if ( $ignoreEnableFields ) {
+            $constraints[] =  $query->equals('deleted',  0 )  ;
+        }
+        $query->matching( $query->logicalAnd($constraints)) ;
+        $res = $query->execute() ;
+
+        // new way to debug typo3 db queries
+        $debug = false ;
+        if ( $debug == true ) {
+            $queryParser = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class);
+            var_dump($queryParser->convertQueryToDoctrineQueryBuilder($query)->getSQL());
+            var_dump($queryParser->convertQueryToDoctrineQueryBuilder($query)->getParameters()) ;
+            die;
+        }
+        if( $toArray === TRUE ) {
+            return $res->toArray();
+        } else {
+            return $res ;
+        }
+    }
 }

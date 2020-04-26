@@ -109,7 +109,12 @@ class OrganizerController extends BaseController
         $this->settings['filter']['sorttags'] = "sorting" ;
         $this->debugArray[] = "Before DB Load:" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " Line: " . __LINE__ ;
 
-        $organizers = $this->organizerRepository->findByFilterAllpages();
+
+        $filter = false ;
+        if( array_key_exists( 'filterorganizer' , $this->settings) && array_key_exists( "tags", $this->settings['filterorganizer']))  {
+            $filter = ["tags.uid" => \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode( "," , $this->settings['filterorganizer']['tags'] ) ]  ;
+        }
+        $organizers = $this->organizerRepository->findByFilterAllpages($filter);
         $this->debugArray[] = "Before Generate Array:" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " Line: " . __LINE__ ;
 
 

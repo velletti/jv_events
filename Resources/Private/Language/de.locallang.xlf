@@ -903,6 +903,10 @@
                 <source>If you do so, the browser will ask you to get access. If you confirm this, the browser will store the geo position as Cookie on your computer. the  tangomuenchen.de and tangobayern.de itself does not store this and also will not track you by the position. Really! We do NO User tracking!</source>
                 <target>Dazu wirst du, je nach Browser Optionen, noch gefragt, ob du dies erlauben möchstest. Diese Koordinaten werden dann in deinem Bowser als Cookie gespeichert. tangomuenchen.de und tangobayern.de wertet diese Eingaben nicht aus. Es erfolgt kein User Tracking! Ehrlich!</target>
             </trans-unit>
+            <trans-unit id="donate">
+                <source>Donate</source>
+                <target>Spenden</source>
+            </trans-unit>
 		</body>
 	</file>
 </xliff>

@@ -23,14 +23,14 @@ $returnArray = array(
 		'iconfile' =>  'EXT:jv_events/Resources/Public/Icons/tx_jvevents_domain_model_organizer.gif'
 	),
 	'interface' => array(
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, email, email_cc, link, phone, sales_force_user_id,sales_force_user_id2, sales_force_user_org,images, description, organizer_category, tags,registration_info,',
+		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, email, email_cc, link, phone, sales_force_user_id,sales_force_user_id2, sales_force_user_org,images, description, organizer_category, tags,registration_info,charity_link,slug, youtube_link',
 	),
 	'types' => array(
 		'1' => array('showitem' => '--palette--;;data, --div--;Relations, --palette--;;relations, --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, --palette--;;access,'),
 	),
 	'palettes' => array(
-		'data' => array('showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, --linebreak--,name, --linebreak--,slug, --linebreak--,email, --linebreak--,email_cc,--linebreak--,link, --linebreak--,phone, --linebreak--,sales_force_user_id,  --linebreak--, sales_force_user_id2, sales_force_user_org,--linebreak--,description,--linebreak--,registration_info,'),
-		'relations' => array('showitem' => 'teaser_image, --linebreak--,images, --linebreak--,organizer_category, --linebreak--, tags,'),
+		'data' => array('showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, --linebreak--,name, --linebreak--,slug, --linebreak--,email, --linebreak--,email_cc,--linebreak--,link, --linebreak--,charity_link, --linebreak--,phone, --linebreak--,sales_force_user_id,  --linebreak--, sales_force_user_id2, sales_force_user_org,--linebreak--,description,--linebreak--,registration_info,'),
+		'relations' => array('showitem' => 'teaser_image, --linebreak--,images,  --linebreak--,youtube_link , --linebreak--,organizer_category, --linebreak--, tags,'),
 	    'access' => array('showitem' => ' starttime, endtime, --linebreak--,access_users,--linebreak--, access_groups,')
     ),
 	'columns' => array(
@@ -241,7 +241,7 @@ $returnArray = array(
                     'linkPopup' => array(
                         'options' => array(
                             'blindLinkOptions' => 'mail,file,spec,folder' ,
-                            'title' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_location.link' ,
+                            'title' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_organizer.link' ,
                             'windowOpenParameters' => 'height=300,width=500,status=0,menubar=0,scrollbars=1' ,
                         ),
 
@@ -250,6 +250,56 @@ $returnArray = array(
             ) ,
 
         ),
+        'charity_link' => array(
+            'exclude' => 1,
+            'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_domain_model_organizer.charity_link',
+            'config' => array(
+                'type' => 'input',
+                'eval' => 'trim',
+                'size' => '30',
+                'max' => '255',
+                'softref' => 'typolink,url',
+                'renderType' => 'inputLink' ,
+
+                'fieldControl' => array(
+                    'linkPopup' => array(
+                        'options' => array(
+                            'blindLinkOptions' => 'mail,file,spec,folder' ,
+                            'title' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_domain_model_organizer.charity_link' ,
+                            'windowOpenParameters' => 'height=300,width=500,status=0,menubar=0,scrollbars=1' ,
+                        ),
+
+                    ),
+                ) ,
+            ) ,
+
+        ),
+
+        'youtube_link' => array(
+            'exclude' => 1,
+            'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_domain_model_organizer.youtube_link',
+            'config' => array(
+                'type' => 'input',
+                'eval' => 'trim',
+                'size' => '30',
+                'max' => '255',
+                'softref' => 'typolink,url',
+                'renderType' => 'inputLink' ,
+
+                'fieldControl' => array(
+                    'linkPopup' => array(
+                        'options' => array(
+                            'blindLinkOptions' => 'mail,file,spec,folder' ,
+                            'title' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_domain_model_organizer.youtube_link' ,
+                            'windowOpenParameters' => 'height=300,width=500,status=0,menubar=0,scrollbars=1' ,
+                        ),
+
+                    ),
+                ) ,
+            ) ,
+
+        ),
+
 		'phone' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_organizer.phone',
@@ -547,9 +597,8 @@ $returnArray = array(
 
 if( intval( TYPO3_branch ) > 8 ) {
     $returnArray['columns']['slug']  = [
-        'exclude' => true,
+        'exclude' => 1,
         'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:pages.slug',
-        'displayCond' => 'USER:' . \TYPO3\CMS\Core\Compatibility\PseudoSiteTcaDisplayCondition::class . '->isInPseudoSite:pages:false',
         'config' => [
             'type' => 'slug',
             'size' => 50,
@@ -574,8 +623,11 @@ if ( ! $configuration['hasLoginUser'] == 1 ) {
     unset($returnArray['columns']['access'] ) ;
     unset($returnArray['columns']['registration_access'] ) ;
 }
+
 if ( ! $configuration['enableSalesForce'] == 1 ) {
     unset($returnArray['columns']['sales_force_user_id'] ) ;
+    unset($returnArray['columns']['sales_force_user_id2'] ) ;
+    unset($returnArray['columns']['sales_force_user_org'] ) ;
 }
 
 return $returnArray ;
