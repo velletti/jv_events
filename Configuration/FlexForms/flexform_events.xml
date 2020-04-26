@@ -66,8 +66,6 @@
 					<settings.LayoutList>
 						<TCEforms>
 							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms_additional.layout</label>
-							<displayCond>FIELD:sDEF.switchableControllerActions:=:Event->list;Event->search</displayCond>
-
 							<config>
 								<type>user</type>
 								<size>30</size>
@@ -400,7 +398,9 @@
 			<ROOT>
 				<TCEforms>
 					<sheetTitle>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.EventDetailView</sheetTitle>
-				</TCEforms>
+                    <displayCond>FIELD:sDEF.switchableControllerActions:=:Event->show;Event->new;Event->create;Event->edit;Event->update;Event->register;Event->confirm;Event->delete;Registrant->new;Registrant->create;Registrant->list;Registrant->show;Registrant->confirm;Registrant->delete</displayCond>
+
+                </TCEforms>
 				<type>array</type>
 				<el>
 
@@ -426,14 +426,15 @@
 			<ROOT>
 				<TCEforms>
 					<sheetTitle>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.RegistrationView</sheetTitle>
-				</TCEforms>
+                    <displayCond>FIELD:sDEF.switchableControllerActions:=:Event->show;Event->new;Event->create;Event->edit;Event->update;Event->register;Event->confirm;Event->delete;Registrant->new;Registrant->create;Registrant->list;Registrant->show;Registrant->confirm;Registrant->delete</displayCond>
+
+                </TCEforms>
 				<type>array</type>
 				<el>
 
 					<settings.LayoutRegister>
 						<TCEforms>
 							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms_additional.layout</label>
-							<displayCond>FIELD:sDEF.switchableControllerActions:=:Event->show;Event->new;Event->create;Event->edit;Event->update;Event->register;Event->confirm;Event->delete;Registrant->new;Registrant->create;Registrant->list;Registrant->show;Registrant->confirm;Registrant->delete</displayCond>
 
 							<config>
 								<type>user</type>
