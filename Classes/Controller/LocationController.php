@@ -60,7 +60,7 @@ class LocationController extends BaseController
     {
         $filter = false ;
         if( array_key_exists( 'filterlocation' , $this->settings) && array_key_exists( "categories", $this->settings['filterlocation']))  {
-            $filter = ["category.uid" => \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode( "," , $this->settings['filterlocation']['categories'] ) ]  ;
+            $filter = ["locationCategory.uid" => \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode( "," , $this->settings['filterlocation']['categories'] ) ]  ;
         }
 
         $locations = $this->locationRepository->findByFilterAllpages($filter);
