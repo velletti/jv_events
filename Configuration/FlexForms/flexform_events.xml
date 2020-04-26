@@ -98,7 +98,7 @@
 					<settings.ShowFilter>
 						<TCEforms>
 							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.ShowFilter</label>
-							<displayCond>FIELD:sDEF.switchableControllerActions:=:Event->list;Event->search</displayCond>
+
 							<config>
 								<type>select</type>
 								<items type="array">
