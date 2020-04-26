@@ -10,26 +10,69 @@
         <span>{location.name}</span>
     </div>
     <div class="card-body">
+        <b>{location.organizer.name}</b><br><br>
+
         {location.zip} {location.city} <br>
         {location.streetAndNr} <br>
         <br>
-        <f:if condition="{location.phone}" >
-            {location.phone}<br>
-        </f:if>
+
+
         <f:if condition="{location.email}">
-            {location.email}<br>
+            <f:then>
+                <span class="fa fa-envelope mh-sm"></span> <f:link.email email="{location.email}">{location.email}</f:link.email><br>
+            </f:then>
+            <f:else>
+                <f:if condition="{location.organizer.email}">
+                    <f:then>
+                        <span class="fa fa-envelope mh-sm"></span> <f:link.external uri="{location.organizer.email}">{location.organizer.email}</f:link.external><br>
+                    </f:then>
+                </f:if>
+            </f:else>
+
         </f:if>
         <f:if condition="{location.phone}">
-            {location.phone}<br>
+            <f:then>
+                <span class="fa fa-phone mh-sm"></span> <f:link.external uri="{location.phone}" defaultScheme="tel">{location.phone}</f:link.external><br>
+            </f:then>
+            <f:else>
+                <f:if condition="{location.organizer.phone}">
+                    <f:then>
+                        <span class="fa fa-phone mh-sm"></span> <f:link.external uri="{location.organizer.phone}" defaultScheme="tel">{location.organizer.phone}</f:link.external><br>
+                    </f:then>
+                </f:if>
+            </f:else>
         </f:if>
         <f:if condition="{location.link}">
-            <f:link.external uri="{location.link}" target="_blank">{location.link}</f:link.external><br>
+            <f:then>
+                <span class="fa fa-link mh-sm"></span> <f:link.external uri="{location.link}" >{location.link}</f:link.external><br>
+            </f:then>
+            <f:else>
+                <f:if condition="{location.organizer.link}">
+                    <f:then>
+                        <span class="fa fa-link mh-sm"></span> <f:link.external uri="{location.organizer.link}" >{location.organizer.link}</f:link.external><br>
+                    </f:then>
+                </f:if>
+            </f:else>
+        </f:if>
+
+        <f:if condition="{location.description}">
+            <br>
+            <div class="alert alert-secondary">
+                <f:format.html parseFuncTSPath="lib.jveventsRTE">{location.description}</f:format.html>
+            </div>
         </f:if>
         <br>
-        <div class="alert alert-secondary">
-            <f:format.html parseFuncTSPath="lib.jveventsRTE">{location.description}</f:format.html>
-        </div>
-        <br>
-        <f:render partial="GoogleMapsTango" arguments="{addresses: {0:location}, settings:settings}" />
+        <f:if condition="{location.locationCategory.0.title} == 'Online' || {location.locationCategory.1.title} == 'Online' || {location.locationCategory.2.title} == 'Online'">
+            <f:then>
+
+            </f:then>
+            <f:else>
+                <f:if condition="{location.lng}">
+                    <br>
+                    <f:render partial="GoogleMapsTango" arguments="{addresses: {0:location}, settings:settings}" />
+                </f:if>
+            </f:else>
+
+        </f:if>
     </div>
 </div>

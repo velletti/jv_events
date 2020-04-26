@@ -35,7 +35,13 @@ $return = array(
 		'geo' => array('showitem' => 'lat,lng'),
 	),
 	'columns' => array(
-	
+        'tstamp' => array(
+            'exclude' => 1,
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.tstamp',
+            'config' => array(
+                'type' => 'passthrough',
+            ),
+        ),
 		'sys_language_uid' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.language',

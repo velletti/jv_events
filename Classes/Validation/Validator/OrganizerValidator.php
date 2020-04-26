@@ -10,7 +10,8 @@ class OrganizerValidator extends BaseValidator {
 		'email'				=> 80,
 		'name'				=> 40,
 		'phone'				=> 30,
-		'link'				=> 80,
+		'link'				=> 120,
+		'charityLink'		=> 120,
 	);
 
     /**
@@ -21,6 +22,7 @@ class OrganizerValidator extends BaseValidator {
         'name'				=> 3,
         'phone'				=> 8,
         'link'				=> -1,
+        'charityLink'		=> -1,
     );
 
 	/**
@@ -36,14 +38,19 @@ class OrganizerValidator extends BaseValidator {
         $isValid = $this->securityChecks( $organizer->getName() , 'name' , $isValid ) ;
         $isValid = $this->securityChecks( $organizer->getPhone() , 'phone' , $isValid ) ;
         $isValid = $this->securityChecks( $organizer->getPhone() , 'link' , $isValid ) ;
+        $isValid = $this->securityChecks( $organizer->getPhone() , 'charityLink' , $isValid ) ;
 
         $isValid = $this->emailIsValid( trim($organizer->getEmail()) , 'email' , false , $isValid ) ;
         $isValid = $this->stringLengthIsValid($this->minLength['name'] , $this->maxLength['name'] , $organizer->getName() , 'name' , NULL , $isValid ) ;
         $isValid = $this->stringLengthIsValid($this->minLength['phone'] , $this->maxLength['phone'] , $organizer->getPhone() , 'phone' , NULL , $isValid ) ;
         $isValid = $this->stringLengthIsValid($this->minLength['link'] , $this->maxLength['link'] , $organizer->getLink() , 'link' , NULL , $isValid ) ;
+        $isValid = $this->stringLengthIsValid($this->minLength['charityLink'] , $this->maxLength['charityLink'] , $organizer->getCharityLink() , 'charityLink' , NULL , $isValid ) ;
 
         if( $organizer->getLink() ) {
             $isValid = $this->urlIsValid( trim($organizer->getLink()) , 'link' , NULL , $isValid ) ;
+        }
+        if( $organizer->getCharityLink() ) {
+            $isValid = $this->urlIsValid( trim($organizer->getCharityLink()) , 'charityLink' , NULL , $isValid ) ;
         }
         $isValid = $this->isHasUnwantedHtmlCodeValue( $organizer->getDescription() , 'description' , $isValid ) ;
 

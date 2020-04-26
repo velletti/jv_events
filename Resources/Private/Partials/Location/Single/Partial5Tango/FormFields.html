@@ -32,7 +32,11 @@
 <f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowDefault"
 		  arguments="{object: 'location', property:'phone' , label: '' , translationKey: 'tx_jvevents_domain_model_location.phone' ,  maxLength: 50 , mandatory: '' }" />
 <hr>
-
+<f:if condition="{categories}">
+	<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowCategories"
+			  arguments="{object: 'location', property:'locationCategory' , value: '{location.locationCategory}', label: '' , translationKey: 'tx_jvevents_domain_model_category.select' , categories: categories , mandatory: '0' }" />
+	<hr>
+</f:if>
 <f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowRte"
 		  arguments="{object: 'location', property:'description' , label: '' , translationKey: 'tx_jvevents_domain_model_organizer.description' , mandatory: false }" />
 

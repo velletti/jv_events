@@ -104,6 +104,9 @@
 		<trans-unit id="flexforms.EventListView">
 			<source>Event List</source>
 		</trans-unit>
+		<trans-unit id="flexforms.HideEventListLink">
+            <source>Hide Event List Link</source>
+        </trans-unit>
 		<trans-unit id="flexforms.Function">
 			<source>Function</source>
 		</trans-unit>

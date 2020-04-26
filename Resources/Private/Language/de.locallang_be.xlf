@@ -93,6 +93,10 @@
 			<source>Event List</source>
 			<target>Veranstaltungsliste</target>
 		</trans-unit>
+		<trans-unit id="flexforms.HideEventListLink">
+            <source>Hide Event List Link</source>
+            <target>Link Veranstaltungsliste verbergen</target>
+        </trans-unit>
 		<trans-unit id="flexforms.Function" approved="yes">
 			<source>Function</source>
 			<target>Funktion</target>

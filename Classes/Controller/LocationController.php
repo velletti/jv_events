@@ -213,10 +213,13 @@ class LocationController extends BaseController
      */
     public function editAction(\JVE\JvEvents\Domain\Model\Location $location)
     {
+        /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $categories */
+        $categories = $this->categoryRepository->findAllonAllPages( '1' );
 
         if ( $this->hasUserAccess($location->getOrganizer() )) {
             $this->view->assign('user', intval( $GLOBALS['TSFE']->fe_user->user['uid'] ) );
             $this->view->assign('location', $location);
+            $this->view->assign('categories', $categories);
         } else {
             $this->addFlashMessage('You do not have access rights to change this data.' , 'Error', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
             $this->addFlashMessage('ID: ' . $location->getUid(), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);

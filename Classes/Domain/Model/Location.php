@@ -96,6 +96,15 @@ class Location extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     protected $latestEvent = null;
 
+
+    /**
+     * lastmod Date as timestring
+     *
+     * @var int
+     */
+    protected $tstamp ;
+
+
     /**
      * URL should start with http://
      *
@@ -581,6 +590,22 @@ class Location extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function setSlug(string $slug)
     {
         $this->slug = $slug;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTstamp(): int
+    {
+        return $this->tstamp;
+    }
+
+    /**
+     * @param int $tstamp
+     */
+    public function setTstamp(int $tstamp)
+    {
+        $this->tstamp = $tstamp;
     }
 
 

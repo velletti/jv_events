@@ -12,6 +12,7 @@
 <f:if condition="{location.locationCategory}">
     <f:for each="{location.locationCategory}" as="locationCategory" iteration="iteration">
         <f:variable name="catids">{locationCategory.uid},{catids}</f:variable>
+        <f:variable name="catnames">{locationCategory.title}, {catnames}</f:variable>
     </f:for>
 </f:if>
 
@@ -55,65 +56,80 @@
 
                 <div class="col-12 col-sm-6  order-3 order-sm-2 py-2">
                     <div class="card-block">
-                        <h4 class="card-title"><f:link.action  action="show" arguments="{location : location.uid}" >
+                        <h4 class="card-title pb-0 mb-0"><f:link.action  action="show" arguments="{location : location.uid}" >
                             {location.name}
                         </f:link.action></h4>
+                        <b>{location.organizer.name}</b><br><br>
                         <f:if condition="{location.email}">
-                            <span class="fa fa-envelope mh-sm"></span> <f:link.email email="{location.email}">{location.email}</f:link.email><br>
+                            <f:then>
+                                <span class="fa fa-envelope mh-sm"></span> <f:link.email email="{location.email}">{location.email}</f:link.email><br>
+                            </f:then>
+                            <f:else>
+                                <f:if condition="{location.organizer.email}">
+                                    <f:then>
+                                        <span class="fa fa-envelope mh-sm"></span> <f:link.external uri="{location.organizer.email}">{location.organizer.email}</f:link.external><br>
+                                    </f:then>
+                                </f:if>
+                            </f:else>
+
                         </f:if>
                         <f:if condition="{location.phone}">
-                            <span class="fa fa-phone mh-sm"></span> <f:link.external uri="{location.phone}" defaultScheme="tel">{location.phone}</f:link.external><br>
+                            <f:then>
+                                <span class="fa fa-phone mh-sm"></span> <f:link.external uri="{location.phone}" defaultScheme="tel">{location.phone}</f:link.external><br>
+                            </f:then>
+                            <f:else>
+                                <f:if condition="{location.organizer.phone}">
+                                    <f:then>
+                                        <span class="fa fa-phone mh-sm"></span> <f:link.external uri="{location.organizer.phone}" defaultScheme="tel">{location.organizer.phone}</f:link.external><br>
+                                    </f:then>
+                                </f:if>
+                            </f:else>
                         </f:if>
                         <f:if condition="{location.link}">
-                            <span class="fa fa-link mh-sm"></span> <f:link.external uri="{location.link}" >{location.link}</f:link.external><br>
+                            <f:then>
+                                <span class="fa fa-link mh-sm"></span> <f:link.external uri="{location.link}" >{location.link}</f:link.external>
+                            </f:then>
+                            <f:else>
+                                <f:if condition="{location.organizer.link}">
+                                    <f:then>
+                                        <span class="fa fa-link mh-sm"></span> <f:link.external uri="{location.organizer.link}" >{location.organizer.link}</f:link.external>
+                                    </f:then>
+                                </f:if>
+                            </f:else>
                         </f:if>
-                        <br>
-                        <div class="d-none d-sm-block">
-                            <small>
-                                <span class="fa fa-folder mh-sm"></span> Registered since: <f:format.date format="d.m.Y">{location.crdate}</f:format.date><br>
-                                <span class="fa fa-edit mh-sm"></span> Last Update: <f:format.date format="d.m.Y">{location.tstamp}</f:format.date><br>
-                            </small>
-                        </div>
-
                     </div>
                 </div>
 
                 <div class="col-8 col-sm-3 text-black-50 bg-gradient-light  order-2 order-sm-3 py-3">
                     <div class="small">
-                        {tagnames}
-                            <f:if condition="{location.locationCategory}">
-                                <br>
-                                <f:for each="{location.locationCategory}" as="category" iteration="iteration">
-                                    <f:if condition="{category.description}">
-                                        <f:then>
-                                            <a class="info" href="#" data-toggle="modal" data-target="#jv_events_cat_modal-{category.uid}">
-                                                <f:render partial="Location/Single/Partial5Tango/CategoryIcon" arguments="{uid: category.uid, text: category.title}"/>
-                                            </a>
-                                        </f:then>
-                                        <f:else>
-                                            <f:render partial="Location/Single/Partial5Tango/CategoryIcon" arguments="{uid: category.uid, text: category.title}"/>
-                                        </f:else>
-                                    </f:if>
-
-
-                                </f:for>
-                        </f:if>
+                        {catnames}
                     </div>
 
 
                     <div class="text-right position-bottom position-right">
                         <f:if condition="{showEditButton}">
                             <f:link.action class="badge badge-primary m-2 py-2" pageUid="{settings.pageIds.editLocation}" action="edit" controller="Location" arguments="{location: location.uid}">
-                                <span class="fas fa-users-cog"> </span> <span class="hidden-xs">{f:translate(key: 'edit', default: 'Edit')} {f:translate(key: 'tx_jvevents_domain_model_location', default: 'Location')} </span>
+                                <span class="fas fa-users-cog"> </span> <span class="d-none d-sm-inline-block">{f:translate(key: 'edit', default: 'Edit')} {f:translate(key: 'tx_jvevents_domain_model_location', default: 'Location')} </span>
                             </f:link.action>
                         </f:if>
 
-
-
-                        <f:if condition="{location.latestEvent -> f:format.date(format: 'Y-m-d')} > {f:format.date(date: 'now' , format: 'Y-m-d')}">
-                            <f:link.page class="badge badge-primary m-2 py-2" pageUid="{settings.pageIds.eventList}" additionalParams="{tx_jvevents_events: {overruleFilter: {location: '{location.uid}', category : 'true' , maxDays: 90}}}">
-                                <span class="fas fa-calendar-alt "></span> {f:translate(key: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.EventListView', default: 'Termine')} >>
-                            </f:link.page>
+                        <f:if condition="{settings.HideEventListLink} ">
+                            <f:then>
+                                <f:if condition="{location.tstamp} > 0 ">
+                                    <div class="d-none d-sm-block text-right">
+                                        <small>
+                                            <span class="fa fa-edit mh-sm"></span> <f:format.date format="d.m.Y">{location.tstamp}</f:format.date><br>
+                                        </small>
+                                    </div>
+                                </f:if>
+                            </f:then>
+                            <f:else>
+                                <f:if condition="{location.latestEvent -> f:format.date(format: 'Y-m-d')} > {f:format.date(date: 'now' , format: 'Y-m-d')}">
+                                    <f:link.page class="badge badge-primary m-2 py-2" pageUid="{settings.pageIds.eventList}" additionalParams="{tx_jvevents_events: {overruleFilter: {location: '{location.uid}', category : 'true' , maxDays: 90}}}">
+                                        <span class="fas fa-calendar-alt mx-1"></span> <span class="d-none d-sm-inline-block">{f:translate(key: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.EventListView', default: 'Termine')} >></span>
+                                    </f:link.page>
+                                </f:if>
+                            </f:else>
                         </f:if>
 
 
