@@ -1,8 +1,8 @@
 <?php
 namespace JVE\JvEvents\Controller;
 
-use Allplan\AllplanTtAddressExtended\Utility\GeneralUtility;
 use JVE\JvEvents\Utility\SlugUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
  *
@@ -112,7 +112,9 @@ class OrganizerController extends BaseController
 
         $filter = false ;
         if( array_key_exists( 'filterorganizer' , $this->settings) && array_key_exists( "tags", $this->settings['filterorganizer']))  {
-            $filter = ["tags.uid" => \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode( "," , $this->settings['filterorganizer']['tags'] ) ]  ;
+            if( count(GeneralUtility::trimExplode( "," , $this->settings['filterorganizer']['tags']) ) > 0 ) {
+                $filter = ["tags.uid" => GeneralUtility::trimExplode( "," , $this->settings['filterorganizer']['tags'] ) ]  ;
+            }
         }
         $organizers = $this->organizerRepository->findByFilterAllpages($filter);
         $this->debugArray[] = "Before Generate Array:" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " Line: " . __LINE__ ;
