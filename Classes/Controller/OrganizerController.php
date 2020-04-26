@@ -112,8 +112,8 @@ class OrganizerController extends BaseController
 
         $filter = false ;
         if( array_key_exists( 'filterorganizer' , $this->settings) && array_key_exists( "tags", $this->settings['filterorganizer']))  {
-            if( count(GeneralUtility::trimExplode( "," , $this->settings['filterorganizer']['tags']) ) > 0 ) {
-                $filter = ["tags.uid" => GeneralUtility::trimExplode( "," , $this->settings['filterorganizer']['tags'] ) ]  ;
+            if( count(GeneralUtility::trimExplode( "," , $this->settings['filterorganizer']['tags'] , true)  ) > 0 ) {
+                $filter = ["tags.uid" => GeneralUtility::trimExplode( "," , $this->settings['filterorganizer']['tags'] , true ) ]  ;
             }
         }
         $organizers = $this->organizerRepository->findByFilterAllpages($filter);

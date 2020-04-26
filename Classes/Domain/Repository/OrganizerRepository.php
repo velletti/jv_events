@@ -147,7 +147,7 @@ class OrganizerRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
         }
 
         $res = $query->execute() ;
-        // $this->debugQuery($query) ;
+         // $this->debugQuery($query) ;
 
         if( $toArray === TRUE ) {
             return $res->toArray();
