@@ -2,6 +2,7 @@
 namespace JVE\JvEvents\Controller;
 
 use JVE\JvEvents\Utility\SlugUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
  *
@@ -146,7 +147,7 @@ class LocationController extends BaseController
                 $this->persistenceManager->persistAll() ;
 
 
-                $this->addFlashMessage('The Location was created.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+                $this->addFlashMessage('The Location was created.  It may take up some hours before it is visible', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
             } catch ( \Exception $e ) {
                 $this->addFlashMessage($e->getMessage() , 'Error', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
 
@@ -238,7 +239,7 @@ class LocationController extends BaseController
         if ( $this->hasUserAccess($location->getOrganizer() )) {
             $location = $this->cleanLocationArguments( $location) ;
             $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
-            $this->addFlashMessage('The object was updated.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+            $this->addFlashMessage('The object was updated. It may take some hours before it is visible', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
             $this->locationRepository->update($location);
         } else {
             $this->addFlashMessage('You do not have access rights to change this data.' . $location->getUid() , '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
@@ -307,6 +308,23 @@ class LocationController extends BaseController
         $location->setDescription( $desc ) ;
         $location->setLink( trim($location->getLink())) ;
         $location->setEmail( trim($location->getEmail())) ;
+        $location->setTstamp( time() ) ;
+
+        // Type validation should be done in validator class so we can ignore issue with wrong format
+        $locationArray = $this->request->getArgument('location');
+        /*   +******  Update the Category  ************* */
+        $locationCatUid = intval( $locationArray['locationCategory'] ) ;
+        /** @var \JVE\JvEvents\Domain\Model\Category $locationCat */
+        $locationCat = $this->categoryRepository->findByUid($locationCatUid) ;
+
+
+        if($locationCat ) {
+            if( $location->getLocationCategory() ){
+                $location->getLocationCategory()->removeAll($location->getLocationCategory()) ;
+            }
+            $location->addLocationCategory($locationCat) ;
+        }
+
 
         $location->setLanguageUid(-1) ;
 

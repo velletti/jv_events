@@ -20,7 +20,6 @@
         <br><span class="small font-weight-light">(max 1)</span>
     </label>
     <div class="col-sm-8 jv-events-cats-div row ">
-
         <f:for each="{categories}" as="Category" iteration="iteration">
             <div class="col-6 ">
                 <div class="px-1 jv-events-cats-div-div cursor-pointer text-center {f:if(condition:'{Category.uid} == {value}' , then:'event-checked' , else:'')}">

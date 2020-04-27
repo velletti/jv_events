@@ -1,42 +1,49 @@
 {namespace jve=JVE\JvEvents\ViewHelpers}
+<f:if condition="{settings.LayoutSingle}">
+	<f:then>
+		<f:variable name="layout">{settings.LayoutSingle}</f:variable>
+	</f:then>
+	<f:else>
+		<f:variable name="layout">{settings.LayoutSingle}</f:variable>
+	</f:else>
+</f:if>
 
 
-
-<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowDefault"
+<f:render partial="SingleField/Partial{layout}/FormRowDefault"
 		  arguments="{object: 'location', property:'name' , label: '' , translationKey: 'tx_jvevents_domain_model_location.name' , maxLength: 60 , mandatory: '1' }" />
 
-<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowDefault"
+<f:render partial="SingleField/Partial{layout}/FormRowDefault"
 		  arguments="{object: 'location', property:'streetAndNr' , label: '' , translationKey: 'tx_jvevents_domain_model_location.street_and_nr' ,  maxLength: 30 , mandatory: '1' }" />
-<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowDefault"
+<f:render partial="SingleField/Partial{layout}/FormRowDefault"
 		  arguments="{object: 'location', property:'zip' , label: '' , translationKey: 'tx_jvevents_domain_model_location.zip' ,  maxLength: 10 , mandatory: '' }" />
 
-<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowDefault"
+<f:render partial="SingleField/Partial{layout}/FormRowDefault"
 		  arguments="{object: 'location', property:'city' , label: '' , translationKey: 'tx_jvevents_domain_model_location.city' ,  maxLength: 30 , mandatory: '1' }" />
-<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowDefault"
+<f:render partial="SingleField/Partial{layout}/FormRowDefault"
 		  arguments="{object: 'location', property:'country' , label: '' , translationKey: 'tx_jvevents_domain_model_location.country' ,  maxLength: 30 , mandatory: '1' }" />
 
 <hr>
 
-<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowGeocoder"
+<f:render partial="SingleField/Partial{layout}/FormRowGeocoder"
 		  arguments="{object: 'location', location: location, property:'lng' ,  buttonSetPosition: '0' ,  property2:'lat', fa-icon: 'fas fa-sync-alt' , label: '' ,  maxLength: 30 , mandatory: '1' , hideOkButton: '1'}" />
 
 <hr>
 <div class="alert alert-info">
 	Need a different contact info for this location? if not leave the next 3 fields empty
 </div>
-<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowDefault"
+<f:render partial="SingleField/Partial{layout}/FormRowDefault"
 		  arguments="{object: 'location', property:'link' , label: '' , translationKey: 'tx_jvevents_domain_model_location.link' ,  maxLength: 50 , mandatory: '' }" />
 
-<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowDefault"
+<f:render partial="SingleField/Partial{layout}/FormRowDefault"
 		  arguments="{object: 'location', property:'email' , label: '' , translationKey: 'tx_jvevents_domain_model_location.email' ,  maxLength: 30 , mandatory: '' }" />
-<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowDefault"
+<f:render partial="SingleField/Partial{layout}/FormRowDefault"
 		  arguments="{object: 'location', property:'phone' , label: '' , translationKey: 'tx_jvevents_domain_model_location.phone' ,  maxLength: 50 , mandatory: '' }" />
 <hr>
 <f:if condition="{categories}">
-	<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowCategories"
-			  arguments="{object: 'location', property:'locationCategory' , value: '{location.locationCategory}', label: '' , translationKey: 'tx_jvevents_domain_model_category.select' , categories: categories , mandatory: '0' }" />
+	<f:render partial="SingleField/Partial{layout}/FormRowCategories"
+			  arguments="{object: 'location', property:'locationCategory' , value: '{location.locationCategory.0.uid}', label: '' , translationKey: 'tx_jvevents_domain_model_category.select' , categories: categories , mandatory: '0' }" />
 	<hr>
 </f:if>
-<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowRte"
+<f:render partial="SingleField/Partial{layout}/FormRowRte"
 		  arguments="{object: 'location', property:'description' , label: '' , translationKey: 'tx_jvevents_domain_model_organizer.description' , mandatory: false }" />
 

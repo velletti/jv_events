@@ -21,7 +21,7 @@
 
         <div class="card col-12 my-4 clearfix rounded-bottom">
             <div class="row">
-                <div class="col-4  order-1 col-sm-3 px-0">
+                <div class="col-4  order-1 col-md-3 px-0">
 
                     <f:link.action action="show" arguments="{location : location.uid}">
                             <f:if condition="{location.teaserImage}">
@@ -54,12 +54,22 @@
                 </div>
 
 
-                <div class="col-12 col-sm-6  order-3 order-sm-2 py-2">
+                <div class="col-12 col-md-6  order-3 order-md-2 py-2">
                     <div class="card-block">
                         <h4 class="card-title pb-0 mb-0"><f:link.action  action="show" arguments="{location : location.uid}" >
                             {location.name}
                         </f:link.action></h4>
                         <b>{location.organizer.name}</b><br><br>
+                        <f:format.crop maxCharacters="200">
+                            <f:format.stripTags>
+                                {location.description}
+                            </f:format.stripTags>
+                        </f:format.crop>
+                    </div>
+                </div>
+
+                <div class="col-8 col-md-3 text-black-50 bg-gradient-light  order-2 order-md-3 py-3">
+                    <div class="small">
                         <f:if condition="{location.email}">
                             <f:then>
                                 <span class="fa fa-envelope mh-sm"></span> <f:link.email email="{location.email}">{location.email}</f:link.email><br>
@@ -97,12 +107,8 @@
                                 </f:if>
                             </f:else>
                         </f:if>
-                    </div>
-                </div>
-
-                <div class="col-8 col-sm-3 text-black-50 bg-gradient-light  order-2 order-sm-3 py-3">
-                    <div class="small">
-                        {catnames}
+                        <br>
+                        <span class="d-none d-md-inline-block"> <span class="fa fa-info-circle mh-sm"></span>  {catnames}</span>
                     </div>
 
 

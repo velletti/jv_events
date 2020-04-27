@@ -135,7 +135,11 @@ class LocationRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
         /** @var \DateTime $actualTime */
         $actualTime = new \DateTime('now' ) ;
         $actualTime->modify('-1 YEAR') ;
-        $constraints[] = $query->greaterThanOrEqual('latest_event', $actualTime );
+        $constraints[] = $query->logicalOr( [
+                                                $query->greaterThanOrEqual('tstamp', $actualTime ),
+                                                $query->greaterThanOrEqual('latest_event', $actualTime )
+                                            ]
+        );
         if( $limit) {
             $query->setLimit(intval($limit));
         }

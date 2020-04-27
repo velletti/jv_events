@@ -398,6 +398,7 @@ class OrganizerController extends BaseController
             $organizer->setDescription($desc);
         }
         $organizer->setLink( trim($organizer->getLink())) ;
+        $organizer->setCharityLink( trim($organizer->getCharityLink())) ;
         $organizer->setEmail( trim($organizer->getEmail())) ;
 
         if( intval( TYPO3_branch ) > 8 ) {
