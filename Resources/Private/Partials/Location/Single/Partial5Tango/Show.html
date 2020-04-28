@@ -4,60 +4,81 @@
 <f:layout name="Edit" />
 
 
-<div class="card col-12   jv-events-partial{settings.LayoutSingle}" id="jv-event-edit-data">
+<div class="card col-12   jv-events-partial{settings.LayoutSingle}" data-locationuid="{location.uid}" data-orguid="{location.organizer.uid}" id="jv-events-dataids">
     <div class="card-header text-white bg-primary">
         <span class="fas fa-eye border-primary rounded-circle"></span>
         <span>{location.name}</span>
     </div>
     <div class="card-body">
-        <b>{location.organizer.name}</b><br><br>
-
-        {location.zip} {location.city} <br>
-        {location.streetAndNr} <br>
-        <br>
-
-
-        <f:if condition="{location.email}">
-            <f:then>
-                <span class="fa fa-envelope mh-sm"></span> <f:link.email email="{location.email}">{location.email}</f:link.email><br>
-            </f:then>
-            <f:else>
-                <f:if condition="{location.organizer.email}">
+        <div class="row">
+            <div class="col-12  order-2 order-md-2 col-md-3 px-0">
+                <f:if condition="{location.teaserImage}">
                     <f:then>
-                        <span class="fa fa-envelope mh-sm"></span> <f:link.external uri="{location.organizer.email}">{location.organizer.email}</f:link.external><br>
+                        <f:image src="{location.teaserImage.uid}" class="d-block w-100 h-auto img-float rounded shadow-lg" alt="{location.teaserImage.alternative}" title="{location.teaserImage.title}" width="{settings.list.image.width}c" maxWidth="{settings.list.image.width}" maxHeight="{settings.list.image.height}" treatIdAsReference="true" />
                     </f:then>
-                </f:if>
-            </f:else>
+                    <f:else>
+                        <f:if condition="{location.organizer.teaserImage}">
+                            <f:then>
+                                <f:image src="{location.organizer.teaserImage.uid}" class="d-block w-100 h-auto img-float rounded shadow-lg" alt="{location.organizer.teaserImage.alternative}" title="{location.organizer.teaserImage.title}" width="{settings.list.image.width}c" maxWidth="{settings.list.image.width}" maxHeight="{settings.list.image.height}" treatIdAsReference="true" />
+                            </f:then>
+                            <f:else>
+                                <f:image src="{settings.list.image.defaultImage}" class="d-block w-100 h-auto img-float rounded shadow-lg" alt="img" title="Settings: {settings.list.image.defaultImage}" width="{settings.list.image.width}c" maxWidth="{settings.list.image.width}" maxHeight="{settings.list.image.height}" treatIdAsReference="false" />
 
-        </f:if>
-        <f:if condition="{location.phone}">
-            <f:then>
-                <span class="fa fa-phone mh-sm"></span> <f:link.external uri="{location.phone}" defaultScheme="tel">{location.phone}</f:link.external><br>
-            </f:then>
-            <f:else>
-                <f:if condition="{location.organizer.phone}">
-                    <f:then>
-                        <span class="fa fa-phone mh-sm"></span> <f:link.external uri="{location.organizer.phone}" defaultScheme="tel">{location.organizer.phone}</f:link.external><br>
-                    </f:then>
+                            </f:else>
+                        </f:if>
+                    </f:else>
                 </f:if>
-            </f:else>
-        </f:if>
-        <f:if condition="{location.link}">
-            <f:then>
-                <span class="fa fa-link mh-sm"></span> <f:link.external uri="{location.link}" >{location.link}</f:link.external><br>
-            </f:then>
-            <f:else>
-                <f:if condition="{location.organizer.link}">
-                    <f:then>
-                        <span class="fa fa-link mh-sm"></span> <f:link.external uri="{location.organizer.link}" >{location.organizer.link}</f:link.external><br>
-                    </f:then>
-                </f:if>
-            </f:else>
-        </f:if>
+            </div>
+            <div class="col-12 col-md-9  order-1 order-md-1 py-2">
+                <b>{location.organizer.name}</b><br><br>
 
+                {location.zip} {location.city} <br>
+                {location.streetAndNr} <br>
+                <br>
+
+
+                <f:if condition="{location.email}">
+                    <f:then>
+                        <span class="fa fa-envelope mh-sm"></span> <f:link.email email="{location.email}">{location.email}</f:link.email><br>
+                    </f:then>
+                    <f:else>
+                        <f:if condition="{location.organizer.email}">
+                            <f:then>
+                                <span class="fa fa-envelope mh-sm"></span> <f:link.external uri="{location.organizer.email}">{location.organizer.email}</f:link.external><br>
+                            </f:then>
+                        </f:if>
+                    </f:else>
+
+                </f:if>
+                <f:if condition="{location.phone}">
+                    <f:then>
+                        <span class="fa fa-phone mh-sm"></span> <f:link.external uri="{location.phone}" defaultScheme="tel">{location.phone}</f:link.external><br>
+                    </f:then>
+                    <f:else>
+                        <f:if condition="{location.organizer.phone}">
+                            <f:then>
+                                <span class="fa fa-phone mh-sm"></span> <f:link.external uri="{location.organizer.phone}" defaultScheme="tel">{location.organizer.phone}</f:link.external><br>
+                            </f:then>
+                        </f:if>
+                    </f:else>
+                </f:if>
+                <f:if condition="{location.link}">
+                    <f:then>
+                        <span class="fa fa-link mh-sm"></span> <f:link.external uri="{location.link}" >{location.link}</f:link.external><br>
+                    </f:then>
+                    <f:else>
+                        <f:if condition="{location.organizer.link}">
+                            <f:then>
+                                <span class="fa fa-link mh-sm"></span> <f:link.external uri="{location.organizer.link}" >{location.organizer.link}</f:link.external><br>
+                            </f:then>
+                        </f:if>
+                    </f:else>
+                </f:if>
+            </div>
+        </div>
         <f:if condition="{location.description}">
-            <br>
-            <div class="alert alert-secondary">
+            <hr>
+            <div class="col-12">
                 <f:format.html parseFuncTSPath="lib.jveventsRTE">{location.description}</f:format.html>
             </div>
         </f:if>
