@@ -856,6 +856,10 @@ class EventController extends BaseController
 
         $event->setDescription( $desc ) ;
         $event->setChangeFutureEvents( $eventArray['changeFutureEvents'] ) ;
+        if ( $event->getPid() < 1 ) {
+            // ToDo find good way to handle ID Default .. maybe a pid per User, per location or other typoscript setting
+            $event->setPid( 12 ) ;
+        }
 
         if( intval( TYPO3_branch ) > 8 ) {
             $row['name'] =  $event->getName() ;

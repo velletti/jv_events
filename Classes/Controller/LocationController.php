@@ -324,6 +324,10 @@ class LocationController extends BaseController
             }
             $location->addLocationCategory($locationCat) ;
         }
+        if( $location->getPid() < 1) {
+            // ToDo find good way to handle ID Default .. maybe a pid per User, per location or other typoscript setting
+            $location->setPid( 14 ) ;
+        }
 
 
         $location->setLanguageUid(-1) ;

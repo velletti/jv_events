@@ -401,6 +401,10 @@ class OrganizerController extends BaseController
         $organizer->setCharityLink( trim($organizer->getCharityLink())) ;
         $organizer->setEmail( trim($organizer->getEmail())) ;
 
+        if ($organizer->getPid() < 1 ) {
+            // ToDo find good way to handle ID Default .. maybe a pid per User, per location or other typoscript setting
+            $organizer->setPid( 13 ) ;
+        }
         if( intval( TYPO3_branch ) > 8 ) {
             $row['name'] =  $organizer->getName() ;
             $row['pid'] =  $organizer->getPid() ;
