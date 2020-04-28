@@ -135,12 +135,15 @@ class OrganizerRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
         $constraints[] = $query->greaterThanOrEqual('tstamp', $actualTime );
 
 
+
+
         if( $limit) {
             $query->setLimit(intval($limit));
         }
 
         if ( $ignoreEnableFields ) {
             $constraints[] =  $query->equals('deleted',  0 )  ;
+
         }
         if( count($constraints) > 0) {
             $query->matching( $query->logicalAnd($constraints)) ;

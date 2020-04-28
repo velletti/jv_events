@@ -113,6 +113,8 @@ class LocationRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
     public function findByFilterAllpages($filter=FALSE , $toArray=FALSE , $ignoreEnableFields = FALSE , $limit=FALSE)
     {
         $query = $this->createQuery();
+        $query->setOrderings( [ 'organizer.sorting' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING ] );
+
         $querySettings = $query->getQuerySettings() ;
         $querySettings->setRespectStoragePage(false);
         $querySettings->setRespectSysLanguage(FALSE);
@@ -135,6 +137,9 @@ class LocationRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
         /** @var \DateTime $actualTime */
         $actualTime = new \DateTime('now' ) ;
         $actualTime->modify('-1 YEAR') ;
+        $constraints[] = $query->equals('organizer.hidden', 0 );
+        $constraints[] = $query->equals('organizer.deleted', 0 );
+
         $constraints[] = $query->logicalOr( [
                                                 $query->greaterThanOrEqual('tstamp', $actualTime ),
                                                 $query->greaterThanOrEqual('latest_event', $actualTime )
