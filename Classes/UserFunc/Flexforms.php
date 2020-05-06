@@ -76,10 +76,13 @@ class Flexforms {
 
         foreach ( $config['items'] as $key => $item ) {
             $uid = $item[1] ;
-
             $row = $this->getRow($table , $nameField , $config['row']['sys_language_uid'][0] , $uid ) ;
             if( is_array(  $row ) ) {
-                $config['items'][$key][0] = $config['items'][$key][0] . " (" . $row[ $nameField ]  . ")" ;
+                if( $row['uid' ]  <> $uid ) {
+                    $config['items'][$key][0] = $config['items'][$key][0] . " (" . $row[ $nameField ]  . ")" ;
+                } else {
+                    $config['items'][$key][0] = $config['items'][$key][0] . " (L:" . $row['sys_language_uid' ]  . ")" ;
+                }
             } else {
                 $row = $this->getRow($table , $nameField , -1 , $uid ) ;
                 if( !is_array(  $row ) ) {
@@ -109,8 +112,16 @@ class Flexforms {
             $queryBuilder->createNamedParameter( $lngField , Connection::PARAM_INT))
         ) ;
         if( $lngField > 0 ) {
-            $queryBuilder->andWhere($expr->eq('l10n_parent', intval($uid ))) ;
-        //    $queryBuilder->orWhere($expr->eq('uid', intval($uid ))) ;
+            $queryBuilder->andWhere(
+            $queryBuilder->expr()->orX(
+                $expr->eq('l10n_parent', intval($uid ))  ,
+                $queryBuilder->expr()->andX(
+                    $expr->eq('l10n_parent', 0 ) ,
+                    $expr->eq('uid', intval($uid ) )
+                )
+            ) )
+            ;
+
         } elseif ($lngField < 0 ) {
             $queryBuilder->andWhere($expr->eq('uid', intval($uid ))) ;
         }
