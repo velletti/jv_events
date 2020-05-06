@@ -1,3 +1,5 @@
+{namespace jve=JVE\JvEvents\ViewHelpers}
+
 <div class="form-group display-data row">
 	<f:variable name="propertyName"></f:variable>
 	<f:if condition="{object}">
@@ -7,7 +9,12 @@
 
 	<f:variable name="defaultValueText"></f:variable>
 	<f:if condition="{defaultValue}">
-		<f:variable name="defaultValueText"><f:format.raw> value='{defaultValue}' </f:format.raw></f:variable>
+		<f:variable name="defaultValueText">value='{defaultValue}'</f:variable>
+	</f:if>
+
+	<f:variable name="allowedCountrys"></f:variable>
+	<f:if condition="{settings.location.allowedCountrys}">
+		<f:variable name="allowedCountrys">{settings.location.allowedCountrys}</f:variable>
 	</f:if>
 
 
@@ -33,11 +40,13 @@
 
 					<f:if condition="{object}">
 						<f:then>
-							<f:form.textfield class="form-control" property="{property}" id="{property}" {f:if(condition: '{defaultValue}' , then: 'value="{defaultValue}"' )} maxlength="{maxLength}" />
+							<jve:SelectStaticCountries class="form-control jv-events-req-{required}" property="{property}" id="jv_events_{property}"
+															allowedCountries="{allowedCountrys}" optionLabelField="cnShortLocal" sortByOptionLabel="TRUE"/>
 
 						</f:then>
 						<f:else>
-							<f:form.textfield class="form-control" id="{property}" {defaultValueText} maxlength="{maxLength}" />
+							<jve:SelectStaticCountries class="form-control jv-events-req-{required}"  id="{property}" {defaultValueText}
+															allowedCountries="{allowedCountrys}" optionLabelField="cnShortLocal" sortByOptionLabel="TRUE"/>
 						</f:else>
 					</f:if>
 
@@ -55,10 +64,13 @@
 			<f:else>
 				<f:if condition="{object}">
 					<f:then>
-						<f:form.textfield class="form-control"property="{property}" id="{property}" maxlength="{maxLength}" />
+						<jve:SelectStaticCountries class="form-control jv-events-req-{required}" property="{property}" id="jv_events_{property}"
+												   allowedCountries="{allowedCountrys}" optionLabelField="cnShortLocal" sortByOptionLabel="TRUE"/>
+
 					</f:then>
 					<f:else>
-						<f:form.textfield class="form-control" id="{property}" name="{property}" {defaultValueText} maxlength="{maxLength}" />
+						<jve:SelectStaticCountries class="form-control jv-events-req-{required}"  id="{property}" {defaultValueText}
+												   allowedCountries="{allowedCountrys}" optionLabelField="cnShortLocal" sortByOptionLabel="TRUE"/>
 					</f:else>
 				</f:if>
 			</f:else>

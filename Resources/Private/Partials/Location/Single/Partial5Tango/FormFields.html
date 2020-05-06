@@ -19,8 +19,8 @@
 
 <f:render partial="SingleField/Partial{layout}/FormRowDefault"
 		  arguments="{object: 'location', property:'city' , label: '' , translationKey: 'tx_jvevents_domain_model_location.city' ,  maxLength: 30 , mandatory: '1' }" />
-<f:render partial="SingleField/Partial{layout}/FormRowDefault"
-		  arguments="{object: 'location', property:'country' , label: '' , translationKey: 'tx_jvevents_domain_model_location.country' ,  maxLength: 30 , mandatory: '1' }" />
+<f:render partial="SingleField/Partial{layout}/FormRowCountry"
+		  arguments="{object: 'location', property:'country' , label: '' , defaultValue: 'DE' , translationKey: 'tx_jvevents_domain_model_location.country' ,  maxLength: 2 , mandatory: '1' }" />
 
 <hr>
 
