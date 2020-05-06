@@ -1145,7 +1145,7 @@ $returnArray = array(
 				'foreign_table' => 'tx_jvevents_domain_model_category',
 
 				// 'foreign_table_where' => ' AND tx_jvevents_domain_model_category.type = 0 AND tx_jvevents_domain_model_category.sys_language_uid in (-1, 0)',
-				'foreign_table_where' => ' AND tx_jvevents_domain_model_category.l10n_parent = 0 AND tx_jvevents_domain_model_category.sys_language_uid = in (-1, 0 , ###REC_FIELD_sys_language_uid###  ORDER BY tx_jvevents_domain_model_category.title',
+				'foreign_table_where' => ' AND ( tx_jvevents_domain_model_category.l10n_parent = 0 AND tx_jvevents_domain_model_category.sys_language_uid = in (-1, 0 , ###REC_FIELD_sys_language_uid### )) ORDER BY tx_jvevents_domain_model_category.title',
                 // nicht übersetzte Datensätze in default spräche werden in der function TranslateMMvalues gelöscht..
                 'itemsProcFunc' => 'JVE\\JvEvents\\UserFunc\\Flexforms->TranslateMMvalues' ,
 
