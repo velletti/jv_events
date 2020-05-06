@@ -11,7 +11,7 @@ class OrganizerValidator extends BaseValidator {
 		'name'				=> 40,
 		'phone'				=> 30,
 		'link'				=> 120,
-		'charityLink'		=> 120,
+		'charityLink'		=> 240,
 	);
 
     /**
