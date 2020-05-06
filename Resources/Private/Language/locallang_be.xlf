@@ -154,9 +154,23 @@
 			<trans-unit id="plugin.filter.combineTags">
 				<source>Combine Selected Tags in Filter with AND </source>
 			</trans-unit>
+
+
+			<trans-unit id="plugin.filter.hideCityDropdown">
+				<source>Hide Dropdown City, even if there is more than one Cities</source>
+			</trans-unit>
+			<trans-unit id="plugin.filter.hideMonthDropdown">
+                <source>Hide Dropdown Month, even if there is more than one Month</source>
+            </trans-unit>
+            <trans-unit id="plugin.filter.hideOrganizerDropdown">
+                <source>Hide Dropdown Organizer, even if there is more than one Organizer</source>
+            </trans-unit>
+
 			<trans-unit id="plugin.filter.topEvents">
 				<source>Show Events based on the TopEvent Field value </source>
 			</trans-unit>
+
+
 			<trans-unit id="plugin.filter.topEvents.all">
 				<source>0 - ignore Top Event Filter (default) </source>
 			</trans-unit>

@@ -1145,7 +1145,8 @@ $returnArray = array(
 				'foreign_table' => 'tx_jvevents_domain_model_category',
 
 				// 'foreign_table_where' => ' AND tx_jvevents_domain_model_category.type = 0 AND tx_jvevents_domain_model_category.sys_language_uid in (-1, 0)',
-				'foreign_table_where' => ' AND tx_jvevents_domain_model_category.type = 0 AND (tx_jvevents_domain_model_category.sys_language_uid = 0 OR tx_jvevents_domain_model_category.l10n_parent = 0) ORDER BY tx_jvevents_domain_model_category.title',
+				'foreign_table_where' => ' AND tx_jvevents_domain_model_category.l10n_parent = 0 AND tx_jvevents_domain_model_category.sys_language_uid = in (-1, 0 , ###REC_FIELD_sys_language_uid###  ORDER BY tx_jvevents_domain_model_category.title',
+                // nicht übersetzte Datensätze in default spräche werden in der function TranslateMMvalues gelöscht..
                 'itemsProcFunc' => 'JVE\\JvEvents\\UserFunc\\Flexforms->TranslateMMvalues' ,
 
 				'MM' => 'tx_jvevents_event_category_mm',
@@ -1185,9 +1186,9 @@ $returnArray = array(
 				'type' => 'select',
 				'renderType' => 'selectMultipleSideBySide',
 				'foreign_table' => 'tx_jvevents_domain_model_tag',
-				//'foreign_table_where' => ' AND tx_jvevents_domain_model_tag.sys_language_uid in (-1, ###REC_FIELD_sys_language_uid###)',
-				'itemsProcFunc' => 'JVE\\JvEvents\\UserFunc\\Flexforms->TranslateMMvalues' ,
-				'foreign_table_where' => ' AND (tx_jvevents_domain_model_tag.sys_language_uid = 0 OR ( tx_jvevents_domain_model_tag.l10n_parent = 0 AND tx_jvevents_domain_model_tag.sys_language_uid in (-1, ###REC_FIELD_sys_language_uid###) )) ORDER BY tx_jvevents_domain_model_tag.name',
+                'itemsProcFunc' => 'JVE\\JvEvents\\UserFunc\\Flexforms->TranslateMMvalues' ,
+                //'foreign_table_where' => ' hole alle default, non translated oder alle für alle Sprachen. die nicht lokalsiereten englischen werden in der Translate Function gelöscht!',
+                'foreign_table_where' => ' AND (tx_jvevents_domain_model_tag.l10n_parent = 0 AND tx_jvevents_domain_model_tag.sys_language_uid in (-1, 0, ###REC_FIELD_sys_language_uid###) ) ORDER BY tx_jvevents_domain_model_tag.name',
 
 				'MM' => 'tx_jvevents_event_tag_mm',
 				'size' => 10,

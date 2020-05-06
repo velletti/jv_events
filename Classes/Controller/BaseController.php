@@ -215,21 +215,27 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         foreach ($eventsArray as $key => $event ) {
             // first fill the Options for the Filters to have only options with Events
 
-            /** @var \JVE\JvEvents\Domain\Model\Location $obj */
-            $obj =  $event->getLocation() ;
-            if ( is_object($obj) ) {
-                $locations[$obj->getUid()] = $obj->getName() ;
+            if( ! $this->settings['filter']['hideCityDropdown']) {
+                /** @var \JVE\JvEvents\Domain\Model\Location $obj */
+                $obj =  $event->getLocation() ;
+                if ( is_object($obj) ) {
+                    $locations[$obj->getUid()] = $obj->getName() ;
 
-                if(! in_array($obj->getCity() , $citys )) {
-                    $citys[$obj->getCity()] = $obj->getCity() ;
+                    if(! in_array($obj->getCity() , $citys )) {
+                        $citys[$obj->getCity()] = $obj->getCity() ;
+                    }
                 }
             }
-          
-            /** @var \JVE\JvEvents\Domain\Model\Tag $obj */
-            $obj =  $event->getOrganizer() ;
-            if ( is_object($obj) ) {
-                $organizers[$obj->getUid()] = $obj->getName() ;
+
+
+            if( ! $this->settings['filter']['hideOrganizerDropdown']) {
+                /** @var \JVE\JvEvents\Domain\Model\Tag $obj */
+                $obj = $event->getOrganizer();
+                if (is_object($obj)) {
+                    $organizers[$obj->getUid()] = $obj->getName();
+                }
             }
+
 
             $objArray =  $event->getTags() ;
             if( is_object( $objArray)) {
@@ -261,8 +267,10 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             unset($obj) ;
             unset($objArray) ;
 
-            $month = $event->getStartDate()->format("m.Y") ;
-            $months[$month] = $month ;
+            if( ! $this->settings['filter']['hideMonthDropdown']) {
+                $month = $event->getStartDate()->format("m.Y");
+                $months[$month] = $month;
+            }
         }
 
         $sortArray = array();

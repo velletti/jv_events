@@ -72,32 +72,50 @@ class Flexforms {
             return $config ;
         }
 
-
+        $newItems = [] ;
 
         foreach ( $config['items'] as $key => $item ) {
             $uid = $item[1] ;
 
             $row = $this->getRow($table , $nameField , $config['row']['sys_language_uid'][0] , $uid ) ;
             if( is_array(  $row ) ) {
-                $config['items'][$key][0] = $config['items'][$key][0] . " (" . $row[ $nameField ] . ")" ;
+                $config['items'][$key][0] = $config['items'][$key][0] . " (" . $row[ $nameField ]  . ")" ;
+            } else {
+                $row = $this->getRow($table , $nameField , -1 , $uid ) ;
+                if( !is_array(  $row ) ) {
+                    $uid = false ;
+                }
             }
+            // remove untranslated Items so olny items for all languages or selected languages are left
+            if ( $uid) {
+                $newItems[] =  array ( 0 => "[" . $uid . "] " . $config['items'][$key][0] , 1 => $uid ) ;
+            }
+
             // $config['items'][$key][0] = "[" . $config['items'][$key][0] = $config['items'][$key][1] . "] ". $config['items'][$key][0] ;
 
         }
-
+        $config['items'] = $newItems ;
         return $config ;
     }
     private function getRow($table , $nameField , $lngField , $uid ) {
         /** @var ConnectionPool $connectionPool */
         $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
-
+        $lngField = intval($lngField ) ;
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $connectionPool->getConnectionForTable($table)->createQueryBuilder();
-        $queryBuilder->select('l10n_parent','uid',$nameField) ->from($table) ;
+        $queryBuilder->select('pid' , 'l10n_parent', 'sys_language_uid','uid',$nameField) ->from($table) ;
         $expr = $queryBuilder->expr();
         $queryBuilder->where( $expr->eq('sys_language_uid',
             $queryBuilder->createNamedParameter( $lngField , Connection::PARAM_INT))
         ) ;
-        return  $queryBuilder->andWhere($expr->eq('l10n_parent', intval($uid )))->execute()->fetch() ;
+        if( $lngField > 0 ) {
+            $queryBuilder->andWhere($expr->eq('l10n_parent', intval($uid ))) ;
+        //    $queryBuilder->orWhere($expr->eq('uid', intval($uid ))) ;
+        } elseif ($lngField < 0 ) {
+            $queryBuilder->andWhere($expr->eq('uid', intval($uid ))) ;
+        }
+
+
+        return  $queryBuilder->execute()->fetch() ;
     }
 }

@@ -335,6 +335,34 @@
 						</TCEforms>
 					</settings.filter.topEvents>
 
+					<settings.filter.hideCityDropdown>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.hideCityDropdown</label>
+							<config>
+								<type>check</type>
+							</config>
+
+						</TCEforms>
+					</settings.filter.hideCityDropdown>
+					<settings.filter.hideMonthDropdown>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.hideMonthDropdown</label>
+							<config>
+								<type>check</type>
+							</config>
+
+						</TCEforms>
+					</settings.filter.hideMonthDropdown>
+					<settings.filter.hideOrganizerDropdown>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.hideOrganizerDropdown</label>
+							<config>
+								<type>check</type>
+							</config>
+
+						</TCEforms>
+					</settings.filter.hideOrganizerDropdown>
+
 				</el>
 
 			</ROOT>
