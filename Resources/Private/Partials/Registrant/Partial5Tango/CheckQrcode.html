@@ -6,12 +6,16 @@
 	<f:then>
 		<div class="alert alert-success">
 			<div class="alert-heading ">
-				{f:translate(key: 'Qrcode_is_valid' , default:'Your registration ist valid')}
+				<b>{f:translate(key: 'Qrcode_is_valid_for' , default:'Registration ist valid for')}:</b>
 			</div>
 			<div class="alert-body">
-				{registrant.first_name} {registrant.last_name} <br>
-				{registrant.more2} {registrant.more2} <br>
-
+				{registrant.firstname} {registrant.lastname} <br>
+				{registrant.more2} {registrant.more3} <br>
+				<f:if condition="{registrant.more2} || {registrant.more3}">
+					<f:then>
+						<b>2 Personen</b>
+					</f:then>
+				</f:if>
 			</div>
 		</div>
 	</f:then>
