@@ -1,0 +1,23 @@
+
+<f:layout name="Default" />
+
+
+<f:section name="main">
+
+	<f:if condition="{settings.LayoutSingle}">
+		<f:then>
+			<f:variable name="Layout">{settings.LayoutSingle}</f:variable>
+		</f:then>
+		<f:else>
+			<f:variable name="Layout">5Tango</f:variable>
+		</f:else>
+	</f:if>
+	<f:flashMessages />
+	<f:render partial="Debug/CheckInstallation" arguments="{modulelist: 'FALSE' , event: event, settings: settings}" />
+
+	<f:comment> Check Qr Code for user Registration </f:comment>
+	<div class="jv_vents_{Layout}"	>
+	<f:render partial="Registrant/Partial{Layout}/CheckQrcode"
+		arguments="{event: event, registrant: registrant, hash: hash, settings: settings}"/>
+	</div>
+</f:section>

@@ -1,31 +1,43 @@
+{namespace jvt=Jve\JveTemplate\ViewHelpers}
+{namespace jve=Jve\JvEvents\ViewHelpers}
+
 <f:render partial="Event/Single/Partial{settings.LayoutSingle}/Minimal"	arguments="{event: event, settings: settings}"/>
 
 <f:if condition="{settings.regErrorMsg}">
 	<f:then>
-		<div class="panel panel-danger">
-			<div class="panel-heading">
+		<div class="alert alert-danger">
+			<div class="alert-heading">
 				{f:translate(key: 'register_was_not_stored' , default:'ERROR: Your registration was NOT stored')}
 			</div>
-			<div class="panel-body">
+			<div class="alert-body">
 				{settings.regErrorMsg}
 			</div>
 		</div>
 	</f:then>
 	<f:else>
-		<div class="panel panel-success">
-			<div class="panel-heading ">
+		<div class="alert alert-success">
+			<div class="alert-heading ">
 				{f:translate(key: 'register_was_stored' , default:'Your registration was stored')}
 			</div>
-			<div class="panel-body">
+			<div class="alert-body">
 				<f:if condition="{settings.success}">
 					<f:then>
 						<div class="hidden">ID: {settings.pageId}-L-{settings.sys_language_uid}-E-{event.uid}-R-{registrant.uid}<br></div>
 						<f:if condition="{settings.successMsg}">
 							{f:translate(key: '{settings.successMsg}')}
 						</f:if>
+
 					</f:then>
 				</f:if>
 			</div>
 		</div>
+		<f:if condition="{settings.success}">
+			<br>
+			<f:variable name="qrstring">https://tangomuenchen.de/index.php?id={settings.pageId}&tx_jvevents_events[controller]=Registrant&tx_jvevents_events[action]=CheckQrcode&tx_jvevents_events[registrant]={registrant.uid}&tx_jvevents_events[event]={event.uid}&tx_jvevents_events[hash]={registrant.fingerprint}</f:variable>
+
+			<img src="data:image/png;base64,{jve:qrcode(string: '{qrstring}')}" height="180" width="180" alt="qrcode" />
+            <hr>
+            <f:link.action pageUid="{settings.pageId}" controller="Registrant" action="checkQrcode" arguments="{registrant: '{registrant.uid}' , event: '{event.uid}' , hash: '{registrant.fingerprint}'}" class="btn btn-secondary-outline">Check Qrcode</f:link.action>
+		</f:if>
 	</f:else>
 </f:if>

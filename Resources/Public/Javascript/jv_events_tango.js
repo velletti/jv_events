@@ -974,7 +974,7 @@ function jv_events_submit() {
 
 
 	if( error) {
-		jQuery('#jv_events_js_error').removeClass('hidden') ;
+		jQuery('#jv_events_js_error').removeClass('d-none') ;
 		alert( jQuery('#jv_events_js_error DIV.alert').html().trim()  ) ;
 	} else {
 		var retVal = 1 ;

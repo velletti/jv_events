@@ -1,14 +1,14 @@
 <div class="{cols}">
-	<label for="jv_events_gender">
+	<label for="jv_events_{FieldName}">
 		<f:translate key="{label}" />
 		<f:if condition="{required}">
 			<span class="required">*</span>
 		</f:if>
 	</label>
-	<f:form.select id="jv_events_gender" class="form-control jv-events-req-{required}" property="gender" options="{
+	<f:form.select id="jv_events_{FieldName}" class="form-control jv-events-req-{required}" property="{FieldName}" options="{
 							0: '{f:translate(key: \'register_please_select\')}',
 							1: '{f:translate(key: \'register_gender_male\')}',
 							2: '{f:translate(key: \'register_gender_female\')}'
 						}" />
-	<f:render partial="FieldError" section="Main" arguments="{for: 'registrant', field: '{fieldName}'}" />
+	<f:render partial="FieldError" section="Main" arguments="{for: 'registrant', field: '{FieldName}'}" />
 </div>

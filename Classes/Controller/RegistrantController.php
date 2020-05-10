@@ -1,6 +1,8 @@
 <?php
 namespace JVE\JvEvents\Controller;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /***************************************************************
  *
  *  Copyright notice
@@ -113,8 +115,9 @@ class RegistrantController extends BaseController
 
             $this->view->assign('registrants', $registrants);
             $this->view->assign('hash', $hash);
-
+            $error = false ;
         } else {
+            $error = true ;
             $this->addFlashMessage("Error - wrong hash : " . $hash ) ;
         }
         $this->view->assign('error', $error);
@@ -385,9 +388,51 @@ class RegistrantController extends BaseController
                 }
 			}
 		}
-		// set Status 0 unconfirmed || 1 Confirmed by Partizipant || 2 Confirmed by Organizer
 
-		if( $this->settings['alreadyRegistered'] ) {
+		// noraml each registration is only one Person but we can configure a second Person. if fields like more1, more2 are set
+        // the registration is for 2 Persons (or maybe more)
+
+		$totalPersonCount = 1 ;
+        if( array_key_exists('secondPerson' , $this->settings['register'] )) {
+            // variant 1 : used for tango münchen: we allow only registration of a second person and gender / first/ lastname
+            // fields should be filled. So $totalPersonCount may rise t o2
+
+            if ( array_key_exists( 'fieldNames', $this->settings['register']['secondPerson']) )  {
+                $secondPersonFields = GeneralUtility::trimExplode( "," ,$this->settings['register']['secondPerson']['fieldNames'] ) ;
+                if (is_array( $secondPersonFields) && count($secondPersonFields) > 0 ) {
+                    $secondPerson = [] ;
+                    foreach ($secondPersonFields as $field) {
+                        $func = "get" . ucfirst($field) ;
+                        if(method_exists ($registrant , $func)) {
+                            $secondPerson[] = $registrant->$func() ;
+                        }
+                    }
+                    if( count($secondPerson) > 1) {
+                        // at least first and Lastname , or gender and lastname is set ..
+                        $totalPersonCount = 2 ;
+                    }
+                }
+            }
+            // variant 2 :: we have A FIELD that contains the total number of persons in this registaion.
+            if( array_key_exists( 'fieldNameAmount', $this->settings['register']['secondPerson']) )  {
+                $field = $this->settings['register']['secondPerson']['fieldNameAmount'] ;
+                $func = "get" . ucfirst($field) ;
+                if(method_exists ($registrant , $func)) {
+                    $totalPersonCount = intval( $registrant->$func()) ;
+                }
+                if( array_key_exists( ['maxAmount'], $this->settings['register']['secondPerson']) )  {
+                    $totalPersonCount = min ( $totalPersonCount , $this->settings['register']['secondPerson']['maxAmount']) ;
+                }
+
+            }
+            // Finally: minium 1 registration but maybe 2 or more up to maxAmount
+            $totalPersonCount = max( 1 , $totalPersonCount ) ;
+        }
+
+
+        // set Status 0 unconfirmed || 1 Confirmed by Partizipant || 2 Confirmed by Organizer
+
+        if( $this->settings['alreadyRegistered'] ) {
             if( ! $this->settings['register']['doNotallowSameEmail'] ) {
                 $this->registrantRepository->update($oldReg) ;
             }
@@ -409,10 +454,10 @@ class RegistrantController extends BaseController
 				$registrant->setHidden(1);
 				$this->settings['success'] = TRUE ;
 				$this->settings['successMsg'] = "register_need_to_confirm" ;
-				$event->setUnconfirmedSeats($event->getUnconfirmedSeats() + 1);
+				$event->setUnconfirmedSeats($event->getUnconfirmedSeats() + $totalPersonCount);
 				// TODo : send Email to partizipant with LINK
 			} else {
-				$event->setRegisteredSeats($event->getRegisteredSeats() + 1);
+				$event->setRegisteredSeats($event->getRegisteredSeats() + $totalPersonCount);
 			}
 			$registrant->setCrdate(time() ) ;
 
@@ -444,10 +489,10 @@ class RegistrantController extends BaseController
 					}
 
 					if ($otherEvent->getNeedToConfirm() == 1) {
-						$otherEvent->setUnconfirmedSeats($otherEvent->getUnconfirmedSeats() + 1);
+						$otherEvent->setUnconfirmedSeats($otherEvent->getUnconfirmedSeats() + $totalPersonCount);
 
 					} else {
-						$otherEvent->setRegisteredSeats($otherEvent->getRegisteredSeats() + 1);
+						$otherEvent->setRegisteredSeats($otherEvent->getRegisteredSeats() + $totalPersonCount);
 					}
 
 					if (intval($otherEvent->getAvailableSeats()) > (intval($otherEvent->getRegisteredSeats()) + intval($otherEvent->getUnconfirmedSeats()))) {
@@ -462,10 +507,12 @@ class RegistrantController extends BaseController
 						$newregistrant->setHidden(1);
 						$this->settings['success'] = TRUE ;
 						$this->settings['successMsg'] = "register_need_to_confirm" ;
-						$otherEvent->setUnconfirmedSeats($otherEvent->getUnconfirmedSeats() + 1);
+						$otherEvent->setUnconfirmedSeats($otherEvent->getUnconfirmedSeats() + $totalPersonCount);
 						// TODo : send Email to partizipant with LINK
+                        // User needs to confirm  is not in use in the moment.. !!
+
 					} else {
-						$event->setRegisteredSeats($otherEvent->getRegisteredSeats() + 1);
+						$event->setRegisteredSeats($otherEvent->getRegisteredSeats() + $totalPersonCount);
 					}
 
 					if ($otherEvent->getRegistrationPid() > 0) {
@@ -486,11 +533,9 @@ class RegistrantController extends BaseController
 
 
 			$this->eventRepository->update($event);
-
-			$this->persistenceManager->persistAll();
-
 		}
-		
+        $this->persistenceManager->persistAll();
+
 		if( $registrant->getHidden() == 0  ) {
 			$this->settings['success'] = TRUE ;
 
@@ -552,6 +597,25 @@ class RegistrantController extends BaseController
     {
         $this->view->assign('registrant', $registrant);
     }
+
+    /**
+     * action checkQrcodeAction
+     *
+     * @param \JVE\JvEvents\Domain\Model\Registrant|null $registrant
+     * @param \JVE\JvEvents\Domain\Model\Event|null $eventUid
+     * @param string $hash
+     * @return void
+     */
+    public function checkQrcodeAction(\JVE\JvEvents\Domain\Model\Registrant $registrant=null ,  \JVE\JvEvents\Domain\Model\Event $event=null , string $hash='')
+    {
+        $args = $this->request->getArguments() ;
+        $this->view->assign('registrant', $registrant);
+        $this->view->assign('event', $event);
+        $this->view->assign('hash', $hash);
+
+    }
+
+
 
     /**
      * action deleteAction

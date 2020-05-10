@@ -40,9 +40,12 @@ class RegisterHubspotSignal {
      */
     public function __construct()
     {
+        if( !is_array($_SERVER) || !array_key_exists("NEM_HUBSPOT" , $_SERVER ) || !array_key_exists("env" , $_SERVER["NEM_HUBSPOT"] )) {
+            return ;
+        }
         $env = $_SERVER['NEM_HUBSPOT']['env'] ;
         $config = $_SERVER['NEM_HUBSPOT'][$env] ;
-        if( !array_key_exists( "portalID" , $config) || !array_key_exists( "formID" , $config) || !array_key_exists( "hapikey" , $config) || !array_key_exists( "uri" , $config)  ) {
+        if( !is_array($config) || !array_key_exists( "portalID" , $config) || !array_key_exists( "formID" , $config) || !array_key_exists( "hapikey" , $config) || !array_key_exists( "uri" , $config)  ) {
             $this->logToFile( " \n no hapikey,  portalID, FirmID or URI set ! See : ../conf/AllplanHubspotConfiguration.php OR Typoscript Settings -> register -> hubspot: " . var_export( $config , true ))  ;
             return ;
         }

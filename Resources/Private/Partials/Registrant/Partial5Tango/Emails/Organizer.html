@@ -1,4 +1,6 @@
 {namespace event=JVE\JvEvents\ViewHelpers}
+{namespace jvt=Jve\JveTemplate\ViewHelpers}
+
 <f:if condition="{html}">
 	<f:then>
 		<h2 style="font-size: 22px; font-family: '{emConf.fontFamily}'; line-height: 1.25; margin: 0 0 20px; padding: 0;">
@@ -24,45 +26,48 @@
 		</f:if>
 		<h3 style="font-size: 22px; font-family: '{emConf.fontFamily}'; line-height: 1.25; margin: 0 0 20px; padding: 0;">
 			{f:translate(key: 'register_head_participant_data' , default:'Participants Data')}<br/>
-			ID: {registrant.uid} | <f:format.date format="d.m.Y">{registrant.created}</f:format.date>
+			ID: E-{event.uid}-R-{registrant.uid}-<f:format.date format="H-i-s">{registrant.created}</f:format.date>
 		</h3>
 
 		<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
-			{f:translate(key: 'tx_jvevents_domain_model_registrant.gender')}:
 			<f:if condition="{registrant.gender}==1">{f:translate(key: 'register_gender_male')}</f:if>
 			<f:if condition="{registrant.gender}==2">{f:translate(key: 'register_gender_female')}</f:if>
 			<br/>
-			{f:translate(key: 'tx_jvevents_domain_model_registrant.title')}: {registrant.title} <br/>
-			{f:translate(key: 'tx_jvevents_domain_model_registrant.first_name')}: {registrant.firstname} <br/>
-			{f:translate(key: 'tx_jvevents_domain_model_registrant.last_name')}: {registrant.lastname} <br/>
+			{registrant.firstname}  {registrant.lastname} <br/><br/>
 			{f:translate(key: 'tx_jvevents_domain_model_registrant.email')}: {registrant.email} <br/>
 			{f:translate(key: 'tx_jvevents_domain_model_registrant.phone')}: {registrant.phone} <br/>
-			{f:translate(key: 'tx_jvevents_domain_model_registrant.profession')}: {registrant.profession} <br/>
-			{f:translate(key: 'tx_jvevents_domain_model_registrant.contact_id')}: {registrant.contactId} <br/>
+			<f:if condition="{registrant.streetAndNr}">
+				{f:translate(key: 'tx_jvevents_domain_model_registrant.street_and_nr')}: {registrant.streetAndNr} <br/>
+			</f:if>
+			<f:if condition="{registrant.zip}">
+				<f:then>
+					{f:translate(key: 'tx_jvevents_domain_model_registrant.zip')}: {registrant.city}
+					<f:if condition="{registrant.city}">
+						{f:translate(key: 'tx_jvevents_domain_model_registrant.city')}: {registrant.city}
+					</f:if>
+					<br>
+				</f:then>
+				<f:else>
+					<f:if condition="{registrant.city}">
+						{f:translate(key: 'tx_jvevents_domain_model_registrant.city')}: {registrant.city}<br>
+					</f:if>
+				</f:else>
+
+			</f:if>
+			<f:if condition="{registrant.county}">
+				{f:translate(key: 'tx_jvevents_domain_model_registrant.county')}: {registrant.county} <br/>
+			</f:if>
 		</p>
-		<h3 style="font-size: 22px; font-family: '{emConf.fontFamily}'; line-height: 1.25; margin: 0 0 20px; padding: 0;">
-			{f:translate(key: 'register_head_company_data_simple' , default:'Company Data / Invoice Address')}
-		</h3>
-		<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
-			{f:translate(key: 'tx_jvevents_domain_model_registrant.company')}: {registrant.company} <br/>
-			{f:translate(key: 'tx_jvevents_domain_model_registrant.customer_id')}: {registrant.customerId} <br/>
-			{f:translate(key: 'tx_jvevents_domain_model_registrant.department')}: {registrant.department} <br/>
-			{f:translate(key: 'tx_jvevents_domain_model_registrant.street_and_nr')}: {registrant.streetAndNr} <br/>
-			{f:translate(key: 'tx_jvevents_domain_model_registrant.zip')}: {registrant.zip} <br/>
-			{f:translate(key: 'tx_jvevents_domain_model_registrant.city')}: {registrant.city} <br/>
-			{f:translate(key: 'tx_jvevents_domain_model_registrant.country')}: {registrant.country} <br/>
-		</p>
-		<f:if condition="{registrant.company2}">
-			<h3 style="font-size: 22px; font-family: '{emConf.fontFamily}'; line-height: 1.25; margin: 0 0 20px; padding: 0;">
-				Abweichende Rechnungsanschrift
+		<f:if condition="{registrant.more1} || {registrant.more3}">
+			<h3 style="font-size: 22px; font-family: '{emConf.fontFamily}'; line-height: 1.25; margin: 0 0 0px; padding: 0;">
+				Second Person
 			</h3>
 			<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
-				{f:translate(key: 'tx_jvevents_domain_model_registrant.company')}: {registrant.company2} <br/>
-				{f:translate(key: 'tx_jvevents_domain_model_registrant.department')}: {registrant.department2} <br/>
-				{f:translate(key: 'tx_jvevents_domain_model_registrant.street_and_nr')}: {registrant.streetAndNr2} <br/>
-				{f:translate(key: 'tx_jvevents_domain_model_registrant.zip')}: {registrant.zip2} <br/>
-				{f:translate(key: 'tx_jvevents_domain_model_registrant.city')}: {registrant.city2} <br/>
-				{f:translate(key: 'tx_jvevents_domain_model_registrant.country')}: {registrant.country2} <br/>
+
+				<f:if condition="{registrant.more1}==1">{f:translate(key: 'register_gender_male')}</f:if>
+				<f:if condition="{registrant.more1}==2">{f:translate(key: 'register_gender_female')}</f:if>
+				<br/>
+				 {registrant.more2}  {registrant.more2} <br/>
 			</p>
 		</f:if>
 		<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
@@ -89,31 +94,18 @@ ID: {registrant.uid} | <f:format.date format="d.m.Y">{registrant.created}</f:for
 *********************************
 {f:translate(key: 'tx_jvevents_domain_model_registrant.gender')}: 		<f:if condition="{registrant.gender}==1">{f:translate(key: 'register_gender_male')}</f:if><f:if condition="{registrant.gender}==2">{f:translate(key: 'register_gender_female')}</f:if>
 
-{f:translate(key: 'tx_jvevents_domain_model_registrant.title')}: {registrant.title}
 {f:translate(key: 'tx_jvevents_domain_model_registrant.first_name')}: {registrant.firstname}
 {f:translate(key: 'tx_jvevents_domain_model_registrant.last_name')}: {registrant.lastname}
 {f:translate(key: 'tx_jvevents_domain_model_registrant.email')}: {registrant.email}
 {f:translate(key: 'tx_jvevents_domain_model_registrant.phone')}: {registrant.phone}
-{f:translate(key: 'tx_jvevents_domain_model_registrant.profession')}: {registrant.profession}
-{f:translate(key: 'tx_jvevents_domain_model_registrant.contact_id')}: {registrant.contactId}
 *********************************
-{f:translate(key: 'register_head_company_data_simple' , default:'Company Data / Invoice Address')}
-{f:translate(key: 'tx_jvevents_domain_model_registrant.company')}: {registrant.company}
-{f:translate(key: 'tx_jvevents_domain_model_registrant.customer_id')}: {registrant.customerId}
-{f:translate(key: 'tx_jvevents_domain_model_registrant.department')}: {registrant.department}
-{f:translate(key: 'tx_jvevents_domain_model_registrant.street_and_nr')}: {registrant.streetAndNr}
-{f:translate(key: 'tx_jvevents_domain_model_registrant.zip')}: {registrant.zip}
-{f:translate(key: 'tx_jvevents_domain_model_registrant.city')}: {registrant.city}
-{f:translate(key: 'tx_jvevents_domain_model_registrant.country')}: {registrant.country}
 
-<f:if condition="{registrant.company2}">
-	*********************************
-	{f:translate(key: 'tx_jvevents_domain_model_registrant.company')}: {registrant.company2} <br/>
-	{f:translate(key: 'tx_jvevents_domain_model_registrant.department')}: {registrant.department2} <br/>
-	{f:translate(key: 'tx_jvevents_domain_model_registrant.street_and_nr')}: {registrant.streetAndNr2} <br/>
-	{f:translate(key: 'tx_jvevents_domain_model_registrant.zip')}: {registrant.zip2} <br/>
-	{f:translate(key: 'tx_jvevents_domain_model_registrant.city')}: {registrant.city2} <br/>
-	{f:translate(key: 'tx_jvevents_domain_model_registrant.country')}: {registrant.country2} <br/>
+<f:if condition="{registrant.more2} || {registrant.more3}">
+*********************************
+{f:translate(key: 'tx_jvevents_domain_model_registrant.gender')}: 		<f:if condition="{registrant.more1}==1">{f:translate(key: 'register_gender_male')}</f:if><f:if condition="{registrant.more1}==2">{f:translate(key: 'register_gender_female')}</f:if>
+
+{f:translate(key: 'tx_jvevents_domain_model_registrant.first_name')}: {registrant.more2} <br/>
+{f:translate(key: 'tx_jvevents_domain_model_registrant.last_name')}: {registrant.more3} <br/>
 </f:if>
 
 *********************************

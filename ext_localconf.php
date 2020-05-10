@@ -12,14 +12,14 @@ $_EXTKEY = "jv_events" ;
 		'Event' => 'list, show, new, create, edit, update, delete, register, confirm, search,copy,cancel',
 		'Organizer' => 'list, show, new, create, edit, update, delete,assist',
 		'Location' => 'list, show, new, create, edit, update, delete,setDefault',
-		'Registrant' => 'list, show,new,create,delete,confirm',
+		'Registrant' => 'list, show,new,create,delete,confirm,checkQrcode',
 		'Tag' => 'list',
 	),
 	// non-cacheable actions
 	array(
 		'Event' => 'show, search, new, create, edit, update, register, confirm, delete,copy,cancel',
         'Organizer' => 'show, new, create, edit, update, delete,assist',
-		'Registrant' => 'list,new,create,delete,confirm',
+		'Registrant' => 'list,new,create,delete,confirm,checkQrcode',
 		'Location' => 'new, create, edit, update, delete,setDefault',
 		
 	)

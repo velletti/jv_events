@@ -71,6 +71,13 @@ plugin.tx_jvevents_events {
 				# if you set this to 1 the field more6int is shown and the following files are sent
 				enabled = 0
 			}
+			secondPerson {
+			    # if set, the following 'fieldNames' are added to mandatory fields
+			    mandatory = 0
+			    # Example used in template 5Tango : if set and one of the fields contain values, registered persons are counted as couple
+			    # fieldNames = more1,more2,more3
+			    fieldNames =
+			}
 		}
 
 	}

@@ -20,7 +20,7 @@
 									</numIndex>
 									<numIndex index="1">
 										<numIndex index="0">EventSingle</numIndex>
-										<numIndex index="1">Event->show;Event->new;Event->create;Event->edit;Event->update;Event->register;Event->confirm;Event->delete;Registrant->new;Registrant->create;Registrant->list;Registrant->show;Registrant->confirm;Registrant->delete</numIndex>
+										<numIndex index="1">Event->show;Event->new;Event->create;Event->edit;Event->update;Event->register;Event->confirm;Event->delete;Registrant->new;Registrant->create;Registrant->list;Registrant->show;Registrant->confirm;Registrant->delete;Registrant->checkQrcode</numIndex>
 									</numIndex>
 									<numIndex index="2">
 										<numIndex index="0">Edit / Create Events</numIndex>

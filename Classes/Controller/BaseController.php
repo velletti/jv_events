@@ -25,6 +25,8 @@ namespace JVE\JvEvents\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
 use \TYPO3\CMS\Core\Messaging\AbstractMessage ;
@@ -443,44 +445,61 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     /**
      * @param string $templatePath
      * @param string $templateName
+     * @param string $format  default html
      *
      * @return \TYPO3\CMS\Fluid\View\StandaloneView object
      */
-    public function getEmailRenderer($templatePath = '' , $templateName = 'default') {
+    public function getEmailRenderer($templatePath = '' , $templateName = 'default' , $format='html') {
         // create another instance of Fluid
         /** @var \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
         $renderer = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
-        
+
+
+
         // set the controller context
         $controllerContext = $this->buildControllerContext();
-        $controllerContext->setRequest($this->request);
-        $renderer->setControllerContext($controllerContext);
-        
-        if ( $templatePath == '') {
-            // override the template path with individual settings in TypoScript
-            $extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 
-			if (isset($extbaseFrameworkConfiguration['view']['partialRootPaths']) && strlen($extbaseFrameworkConfiguration['view']['partialFilesRootPaths']) > 0) {
-				$partialFiles = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['view']['partialFilesRootPaths']);
-			} else {
-				$partialFiles = array( 0 => \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName( "typo3conf/ext/jv_events/Resources/Private/Partials" ) ) ;
-			}
+        $controllerContext->setRequest($this->request);
+       // $controllerContext->getRequest()->setControllerActionName("Create") ;
+        $renderer->setControllerContext($controllerContext);
+
+        // override the template path with individual settings in TypoScript
+        $extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+
+        if (isset($extbaseFrameworkConfiguration['view']['partialRootPaths']) && is_array($extbaseFrameworkConfiguration['view']['partialFilesRootPaths']) ) {
+            $partialPaths = $extbaseFrameworkConfiguration['view']['partialFilesRootPaths'];
+        } else {
+            $partialPaths = array( 0 => \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName( "typo3conf/ext/jv_events/Resources/Private/Partials" ) ) ;
+        }
+        if (isset($extbaseFrameworkConfiguration['view']['layoutRootPaths']) && is_array($extbaseFrameworkConfiguration['view']['layoutRootPaths'])) {
+
+            $layoutPaths = $extbaseFrameworkConfiguration['view']['layoutRootPaths'];
+        } else {
+            $layoutPaths =  array( 0 => \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName( "typo3conf/ext/jv_events/Resources/Private/Layouts" )) ;
+        }
+
+        if ( $templatePath == '') {
 
 			if (isset($extbaseFrameworkConfiguration['view']['templateRootPath']) && strlen($extbaseFrameworkConfiguration['view']['templateRootPath']) > 0) {
-				$templatePath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['view']['templateRootPath']);
+				$templatePath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['view']['templateRootPath'][0]);
             } else {
-                $templatePath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName( "typo3conf/ext/jv_events/Resources/Private/Templates" ) ;
+                $templatePath =   \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName( "typo3conf/ext/jv_events/Resources/Private/Templates" );
             }
         }
-        
+
+
         $templateFile = $templatePath . $templateName . '.html';
 
         // set the e-mail template
+        $renderer->setLayoutRootPaths( $layoutPaths);
         $renderer->setTemplatePathAndFilename($templateFile);
-        $renderer->setPartialRootPaths($partialFiles);
+        $renderer->setPartialRootPaths($partialPaths);
+        $renderer->setFormat($format) ;
         // and return the new Fluid instance
         return $renderer;
     }
+
+
     
     /**
      * function sendEmail
@@ -532,9 +551,8 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             $subevents = $this->subeventRepository->findByEventAllpages($event->getUid() , FALSE ) ;
         }
 
-
         /** @var \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
-        $renderer = $this->getEmailRenderer($templatePath = '', '/Registrant/Email/' . $this->settings['LayoutRegister']);
+        $renderer = $this->getEmailRenderer( '' ,  '/Registrant/Email/' . $this->settings['LayoutRegister']);
 
 
         if ( ! is_object( $subevents ) ) {
@@ -543,26 +561,23 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         } else {
             $renderer->assign('subevents', $subevents);
             $renderer->assign('subeventcount', $subevents->count() + 1 );
-
         }
-
-
 
         $renderer->assign('signature', $signature);
         $renderer->assign('registrant', $registrant);
         $renderer->assign('event', $event);
         $renderer->assign('otherEvents', $otherEvents);
-
         $renderer->assign('partial', "Registrant/Partial" . $this->settings['LayoutRegister'] . "/Emails/" . $partialName);
         $renderer->assign('settings', $this->settings);
 
-        $layoutPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName("typo3conf/ext/jv_events/Resources/Private/Layouts/");
-        $renderer->setLayoutRootPaths(array(0 => $layoutPath));
-
-        $renderer->assign('layoutName', 'EmailSubject' . $partialName);
 
         // read Colors and font settings from EmConfigurationUtility as object
         $renderer->assign('emConf', \JVE\JvEvents\Utility\EmConfigurationUtility::getEmConf(TRUE));
+        $renderer->assign('registrant', $registrant);
+
+        $renderer->assign('event', $event);
+        $renderer->assign('registrant', $registrant);
+        $renderer->assign('layoutName', 'EmailSubject' . $partialName);
 
         // and do the rendering magic
         $subject = str_replace("\r", "", $renderer->render());
@@ -582,12 +597,12 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             }
         }
 
-        $renderer->assign('registrant', $registrant);
+
         $renderer->assign('layoutName', 'EmailPlain');
         $plainMsg = $renderer->render();
-
         $renderer->assign('layoutName', 'EmailHtml');
         $emailBody = $renderer->render();
+
         /** @var $message \TYPO3\CMS\Core\Mail\MailMessage */
         $message = $this->objectManager->get('TYPO3\\CMS\\Core\\Mail\\MailMessage');
         $message->setTo($recipient)

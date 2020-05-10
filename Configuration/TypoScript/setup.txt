@@ -106,6 +106,15 @@ plugin.tx_jvevents_events {
 				}
 
 			}
+			secondPerson {
+                # if set, the following 'fieldNames' are added to mandatory fields
+                mandatory = {$plugin.tx_jvevents_events.settings.register.secondPerson.mandatory}
+                # Example used in template 5Tango : if set and one of the fields contain values, registered persons are counted as couple
+                # fieldNames = more1,more2,more3
+                fieldNames = {$plugin.tx_jvevents_events.settings.register.secondPerson.fieldNames}
+            }
+
+
 			# If set, a user just can register only ONCE for an event with the same Email Address
 			doNotallowSameEmail = 0
 

@@ -1,0 +1,46 @@
+{namespace jvt=Jve\JveTemplate\ViewHelpers}
+
+<f:render partial="Event/Single/Partial{settings.LayoutSingle}/Minimal"	arguments="{event: event, settings: settings}"/>
+
+<f:if condition="{registrant} && {registrant.fingerprint} == {hash} && {registrant.event} == {event.uid}">
+	<f:then>
+		<div class="alert alert-success">
+			<div class="alert-heading ">
+				{f:translate(key: 'Qrcode_is_valid' , default:'Your registration ist valid')}
+			</div>
+			<div class="alert-body">
+				{registrant.first_name} {registrant.last_name} <br>
+				{registrant.more2} {registrant.more2} <br>
+
+			</div>
+		</div>
+	</f:then>
+	<f:else>
+		<div class="alert alert-danger">
+			<div class="alert-heading">
+				{f:translate(key: 'qrcode_not_valid' , default:'ERROR: Your registration Qrcode is not valid')}
+			</div>
+			<div class="alert-body">
+				<f:if condition="{registrant}">
+					<f:else>
+						{f:translate(key: 'registration_not_found' , default:'Registration could not be found')}
+					</f:else>
+				</f:if>
+				<f:if condition="{registrant.fingerprint} == {hash}">
+					<f:else>
+						FP: '{registrant.fingerprint}' != H: '{hash}' <br>
+					</f:else>
+
+				</f:if>
+				<f:if condition="{registrant.event} != {event.uid}">
+					<f:else>
+						RE: '{registrant.event}' != E: '{event.uid}' <br>
+					</f:else>
+
+				</f:if>
+
+			</div>
+		</div>
+
+	</f:else>
+</f:if>

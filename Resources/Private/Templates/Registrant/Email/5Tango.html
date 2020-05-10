@@ -1,6 +1,6 @@
 
 <!-- DO NOT CHANGE the next LINE //-->
-
+<f:layout name="{layoutName}"/>
 
 This is the Email Subject sent to the organizer do
 <!-- DO NOT CHANGE the next LINE //-->
@@ -11,7 +11,7 @@ This is the Email Subject sent to the organizer do
 
 <!-- DO NOT CHANGE the next LINE //-->
 <f:section name="subjectRegistrant">
-	{f:translate(key: 'tx_jvevents_domain_model_event.your_registration' , default: 'Your Registration')}: <f:format.date format="d.m.Y">{event.startDate}</f:format.date> -  {event.name}  )}
+	{f:translate(key: 'tx_jvevents_domain_model_event.your_registration' , default: 'Your Registration')}: <f:format.date format="d.m.Y">{event.startDate}</f:format.date> -  {event.name}
 </f:section>
 
 Next part renders the Inner text of the email format HTML
@@ -78,7 +78,7 @@ https://github.com/derekpunsalan/responsive-email/blob/master/README.md
 Next part renders the Inner text of the email format plainText
 <!-- DO NOT CHANGE the next LINE //-->
 <f:section name="plaintext">
-<f:render partial="{partial}" arguments="{html: '0', event: event, subevents: subevents, subeventcount:subeventcount ,registrant: registrant, settings: settings, emConf: emConf, LayoutName: layoutName, otherEvents: otherEvents, signature: signature}"/>
+	<f:render partial="{partial}" arguments="{html: '0', event: event, subevents: subevents, subeventcount:subeventcount ,registrant: registrant, settings: settings, emConf: emConf, LayoutName: layoutName, otherEvents: otherEvents, signature: signature}"/>
 </f:section>
 
 

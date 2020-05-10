@@ -24,8 +24,12 @@ Eventmanagement
 
 	:Description:
 		List and Show Events with filters. Including registration for a single Event.
-		Store Registrations to External target via Rest (f.e. SalesForce or Citrix)
+		Store Registrations to External target via Rest (f.e. SalesForce or Citrix or hubspot )
 		Send Email Notifications
+
+        Registrations with Qr Code : composer require endroid/qr-code
+
+
 
 	:Keywords:
 		events,tango,list,event registration,salesforce,gotowebinar,citrix,seminars,register
@@ -37,7 +41,7 @@ Eventmanagement
 		Jörg Velletti
 
 	:Email:
-		jVelletti@allplan.com
+		typo3@velletti.de
 
 	:License:
 		This document is published under the Open Content License

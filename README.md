@@ -38,7 +38,7 @@ Then you can IDE Controls for each repository separate
  Actually there is only events-dev: (in the future it will be 'events-stable' or "events-someNewFeature" )
  
  git fetch
- git checkout events-dev
+ git checkout TYPO3-8-LTS
  
  if you want to push changes, you need to get write Access to the events repository or you need to create your own fork
  and then Create Pull requests  that your changes get merged
@@ -48,6 +48,10 @@ Then you can IDE Controls for each repository separate
  or in the outside repository:
  
  git submodule update --recursive
+ 
+ ### QR Codes .. if you want to use QR Codes:
+ 
+      composer require endroid/qr-code
 
   
  
