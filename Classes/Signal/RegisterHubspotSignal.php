@@ -63,7 +63,7 @@ class RegisterHubspotSignal {
      */
     public function createAction($registrant, $event ,  $settings)
     {
-
+        $error = 0 ;
         if ( !is_object( $event ))  {
             $this->logToFile( "\n\n ### ERROR ### In RegisterHubspotSignal - event is not an Object!: " . var_export($event , true )  );
             return;
@@ -132,7 +132,7 @@ class RegisterHubspotSignal {
         if( strlen($data['comment'] )  > 800 ) {
             $debugmail .= "\n \n ###### ERROR !!! ##### Field Additional Info is more than 800 chars !!" ;
             $data['comment']  = substr( $data['comment']  , 0 , 900 ) ;
-            $error = true ;
+            $error = 1 ;
         }
 
         // $data['00N20000003aeMQ'] = 'commercial';
