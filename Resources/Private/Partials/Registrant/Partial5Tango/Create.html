@@ -33,7 +33,7 @@
 		</div>
 		<f:if condition="{settings.success}">
 			<br>
-			<f:variable name="qrstring">https://www.tangomuenchen.de/index.php?id={settings.pageId}&tx_jvevents_events[action]=checkQrcode&tx_jvevents_events[controller]=Registrant&tx_jvevents_events[event]={event.uid}&tx_jvevents_events[hash]={registrant.fingerprint}&tx_jvevents_events[registrant]={registrant.uid}</f:variable>
+			<f:variable name="qrstring">https://www.tangomuenchen.de/index.php?id={settings.pageId}&amp;tx_jvevents_events%5Baction%5D=checkQrcode&amp;tx_jvevents_events%5Bcontroller%5D=Registrant&amp;tx_jvevents_events%5Bevent%5D={event.uid}&amp;tx_jvevents_events%5Bhash%5D={registrant.fingerprint}&amp;tx_jvevents_events%5Bregistrant%5D={registrant.uid}</f:variable>
 			<img src="data:image/png;base64,{jve:qrcode(string: '{qrstring}')}" height="180" width="180" alt="qrcode" />
             <hr>
             <f:link.action pageUid="{settings.pageId}" controller="Registrant" action="checkQrcode" arguments="{registrant: '{registrant.uid}' , event: '{event.uid}' , hash: '{registrant.fingerprint}'}" class="btn btn-secondary-outline" title="{qrstring}">Check Qrcode</f:link.action>
