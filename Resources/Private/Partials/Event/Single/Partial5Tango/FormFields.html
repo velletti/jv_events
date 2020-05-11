@@ -52,6 +52,7 @@
 		  arguments="{object: 'event', property:'priceReduced' , euro: 'true', label: '' , translationKey: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.priceReduced' ,  maxLength: 20 ,  mandatory: '0' }" />
 
 
+
 <div>
 	<i>
 		 (<f:translate key="jv_events_model_event.inclusiveVat" />)<br>
@@ -60,6 +61,19 @@
 </div>
 <f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowDefault"
 		  arguments="{object: 'event', property:'priceReducedText' , label: '' , translationKey: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.priceReducedTextLabel' ,  maxLength: 100 ,  mandatory: '0' }" />
+
+<f:security.ifHasRole role="adminOrganizer">
+	<hr>
+	<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowCheckbox"
+			  arguments="{object: '', property:'withRegistration' , euro: 'false', label: '' , translationKey: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.with_registration' ,  maxLength: 20 ,  mandatory: '0' }" />
+
+	<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowNumber"
+			  arguments="{object: 'event', property:'availableSeats' , euro: 'false', label: '' , translationKey: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.available_seats' ,  maxLength: 20 ,  mandatory: '0' }" />
+
+	<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowNumber"
+			  arguments="{object: 'event', property:'availableWaitingSeats' , euro: 'false', label: '' , translationKey: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.available_waiting_seats' ,  maxLength: 20 ,  mandatory: '0' }" />
+
+</f:security.ifHasRole>
 
 
 <f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowRte"

@@ -856,6 +856,20 @@ class EventController extends BaseController
 
         $event->setDescription( $desc ) ;
         $event->setChangeFutureEvents( $eventArray['changeFutureEvents'] ) ;
+        $event->setAvailableSeats(intval($event->getAvailableSeats()));
+        $event->setAvailableWaitingSeats(intval($event->getAvailableWaitingSeats()));
+        $event->setWithRegistration(intval($event->getWithRegistration()));
+        if( intval($event->getWithRegistration()) == 1 ) {
+            $event->setRegistrationUntil($event->getStartDate() );
+            $event->setNotifyOrganizer($this->settings['EmConfiguration']['notifyOrganier']);
+            $event->setNotifyRegistrant($this->settings['EmConfiguration']['notifyRegistrant']);
+
+            $event->setRegistrationFormPid($this->settings['EmConfiguration']['RegistrationFormPid']);
+            $event->setRegistrationPid($this->settings['EmConfiguration']['RegistrationPid']);
+        }
+
+
+
         if ( $event->getPid() < 1 ) {
             // ToDo find good way to handle ID Default .. maybe a pid per User, per location or other typoscript setting
             $event->setPid( 12 ) ;
