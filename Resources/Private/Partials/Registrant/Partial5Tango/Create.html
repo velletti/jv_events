@@ -34,10 +34,9 @@
 		<f:if condition="{settings.success}">
 			<br>
 			<f:variable name="qrstring">https://www.tangomuenchen.de/index.php?id={settings.pageId}&tx_jvevents_events[action]=checkQrcode&tx_jvevents_events[controller]=Registrant&tx_jvevents_events[event]={event.uid}&tx_jvevents_events[hash]={registrant.fingerprint}&tx_jvevents_events[registrant]={registrant.uid}</f:variable>
-
 			<img src="data:image/png;base64,{jve:qrcode(string: '{qrstring}')}" height="180" width="180" alt="qrcode" />
             <hr>
-            <f:link.action pageUid="{settings.pageId}" controller="Registrant" action="checkQrcode" arguments="{registrant: '{registrant.uid}' , event: '{event.uid}' , hash: '{registrant.fingerprint}'}" class="btn btn-secondary-outline">Check Qrcode</f:link.action>
+            <f:link.action pageUid="{settings.pageId}" controller="Registrant" action="checkQrcode" arguments="{registrant: '{registrant.uid}' , event: '{event.uid}' , hash: '{registrant.fingerprint}'}" class="btn btn-secondary-outline" title="{qrstring}">Check Qrcode</f:link.action>
 		</f:if>
 	</f:else>
 </f:if>
