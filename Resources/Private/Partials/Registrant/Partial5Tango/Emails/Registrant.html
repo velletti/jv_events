@@ -1,6 +1,6 @@
 {namespace event=JVE\JvEvents\ViewHelpers}
 {namespace jvt=Jve\JveTemplate\ViewHelpers}
-<f:variable name="qrstring">https://tangomuenchen.de/index.php?id={settings.pageId}&tx_jvevents_events[controller]=Registrant&tx_jvevents_events[action]=CheckQrcode&tx_jvevents_events[registration]={registrant.uid}&tx_jvevents_events[event]={event.uid}&tx_jvevents_events[hash]={registrant.fingerprint}</f:variable>
+<f:variable name="qrstring">https://tangomuenchen.de/index.php?id={settings.pageId}&tx_jvevents_events[controller]=Registrant&tx_jvevents_events[action]=checkQrcode&tx_jvevents_events[registrant]={registrant.uid}&tx_jvevents_events[event]={event.uid}&tx_jvevents_events[hash]={registrant.fingerprint}</f:variable>
 
 
 <f:if condition="{html}">
