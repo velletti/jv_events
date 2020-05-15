@@ -134,6 +134,11 @@
                 <source>Register</source>
                 <target>Anmelden</target>
             </trans-unit>
+             <trans-unit id="registrations">
+                <source>registrations</source>
+                <target>Anmeldungen</target>
+            </trans-unit>
+
             <trans-unit id="register_send_error" approved="yes">
                 <source>You forgot to fill some of the required fields!</source>
                 <target>Ein oder mehrere Pflichtfelder wurden nicht ausgefüllt!</target>

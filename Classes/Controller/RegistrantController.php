@@ -118,7 +118,7 @@ class RegistrantController extends BaseController
             $error = false ;
         } else {
             $error = true ;
-            $this->addFlashMessage("Error - wrong hash : " . $hash ) ;
+            $this->addFlashMessage("Error - Got wrong hash Code: " . $hash ) ;
         }
         $this->view->assign('error', $error);
         $this->view->assign('event', $event);
@@ -143,6 +143,9 @@ class RegistrantController extends BaseController
         $return .= $d  . $t . "address2" . $t  ;
         $return .= $d  . $t . "zip2" . $t  . $d  . $t . "city2" . $t  ;
         $return .= $d  . $t . "Country2" . $t ;
+        $return .= $d  . $t . "More" . $t ;
+        $return .= $d  . $t . "More2" . $t ;
+        $return .= $d  . $t . "More3" . $t ;
         $return .= $d  . $t . "Additional Info" . $t ;
 
         return $return . $eol ;
@@ -185,6 +188,9 @@ class RegistrantController extends BaseController
         $return .= $d  . $t . $this->cleanString($registrant->getStreetAndNr2(), $t , $d) . $t   ;
         $return .= $d  . $t . $this->cleanString(" " . $registrant->getZip2(), $t , $d) . $t . $d  . $t . $this->cleanString($registrant->getCity2(), $t , $d) . $t  ;
         $return .= $d  . $t . $this->cleanString($registrant->getCountry2(), $t , $d). $t  ;
+        $return .= $d  . $t . $this->cleanString($registrant->getMore1(), $t , $d). $t  ;
+        $return .= $d  . $t . $this->cleanString($registrant->getMore2(), $t , $d). $t  ;
+        $return .= $d  . $t . $this->cleanString($registrant->getMore3(), $t , $d). $t  ;
         $return .= $d  . $t . $this->cleanString($registrant->getAdditionalInfo(), $t , $d). $t  ;
 
         return $return . $eol ;

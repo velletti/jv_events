@@ -6,7 +6,7 @@
 	<f:then>
 		<div class="alert alert-success">
 			<div class="alert-heading ">
-				<b>{f:translate(key: 'Qrcode_is_valid_for' , default:'Registration ist valid for')}:</b>
+				<b><f:format.date format="d.m.Y H:i">{registrant.crdate}</f:format.date>: {f:translate(key: 'Qrcode_is_valid_for' , default:'Registration ist Gültig für')}:</b>
 			</div>
 			<div class="alert-body">
 				{registrant.firstname} {registrant.lastname} <br>

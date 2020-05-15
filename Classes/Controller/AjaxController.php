@@ -259,6 +259,7 @@ class AjaxController extends BaseController
                 $output['event']['startTime'] = date( "H:i" , $event->getStartTime()) ;
                 $output['event']['endTime'] = date( "H:i" , $event->getEndTime()) ;
                 $output['event']['creationTime'] = date( "d.m.Y H:i" , $event->getCrdate() ) ;
+                $output['event']['crdate'] =  $event->getCrdate()  ;
                 $output['event']['noNotification'] = $event->getNotifyRegistrant() ;
 
 
@@ -303,6 +304,10 @@ class AjaxController extends BaseController
                 $output['event']['registration']['possible'] = $event->isIsRegistrationPossible() ;
                 $output['event']['registration']['noFreeSeats'] = $event->isIsNoFreeSeats() ;
                 $output['event']['registration']['freeSeats'] = $event->getAvailableSeats() ;
+                $output['event']['registration']['freeSeatsWaitinglist'] = $event->getAvailableWaitingSeats();
+                $output['event']['registration']['registeredSeats'] = $event->getRegisteredSeats();
+                $output['event']['registration']['unconfirmedSeats'] = $event->getUnconfirmedSeats();
+
                 $output['event']['registration']['sfCampaignId'] = $event->getSalesForceCampaignId() ;
                 $output['event']['notification']['waitinglist'] = $event->getIntrotextRegistrant() ;
                 $output['event']['notification']['confirmed'] = $event->getIntrotextRegistrantConfirmed() ;
@@ -566,6 +571,9 @@ class AjaxController extends BaseController
         if( ! $this->settings['LayoutSingle'] ) {
             $this->settings['LayoutSingle'] = '5Tango' ;
         }
+        $checkString = $_SERVER["SERVER_NAME"] . "-" . $output['event']['eventId'] . "-" . $output['event']['crdate'];
+        $checkHash = hash("sha256", $checkString);
+        $this->settings['hash'] =  $checkHash ;
 
         $renderer->setLayoutRootPaths(array(0 => $layoutPath));
 

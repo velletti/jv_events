@@ -131,7 +131,7 @@ class RegistrantRepository extends \JVE\JvEvents\Domain\Repository\BaseRepositor
      * @param array $orderings
      * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array
      */
-    public function findByFilter($email = '', $eventID = 0, $pid = 0 , $settings , $limit=1 , $orderings = array(
+    public function findByFilter($email = '', $eventID = 0, $pid = 0 , $settings=array() , $limit=1 , $orderings = array(
         'uid' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING
     ) ) {
         $query = $this->createQuery();
@@ -139,6 +139,9 @@ class RegistrantRepository extends \JVE\JvEvents\Domain\Repository\BaseRepositor
 
         $pageIds = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode( "," , $settings['storagePids'], true)  ;
         if ( count($pageIds) > 0 ) {
+            if($pid > 0 ) {
+                $pageIds[] = intval( $pid);
+            }
             $query->getQuerySettings()->setRespectStoragePage(TRUE);
             $query->getQuerySettings()->setStoragePageIds($pageIds) ;
         } else {

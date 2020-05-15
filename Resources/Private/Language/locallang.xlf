@@ -125,6 +125,9 @@
             <trans-unit id="register_send">
                 <source>Register</source>
             </trans-unit>
+            <trans-unit id="registrations">
+                <source>registrations</source>
+            </trans-unit>
             <trans-unit id="register_send_error">
                 <source>You forgot to fill some of the required fields!</source>
             </trans-unit>

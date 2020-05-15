@@ -53,7 +53,7 @@ Otherwise your changes will be overwritten the next time you save the extension 
 		<th> </th>
 	</tr>
 
-	<f:for each="{registrants}" as="registrant">
+	<f:for each="{registrants}" as="-Undefined-And-unfinished">
 		<tr>
 			<td><f:link.action action="show" arguments="{registrant : registrant}"> {registrant.firstName}</f:link.action></td>
 			<td><f:link.action action="show" arguments="{registrant : registrant}"> {registrant.lastName}</f:link.action></td>
@@ -89,6 +89,3 @@ Otherwise your changes will be overwritten the next time you save the extension 
 		</tr>
 	</f:for>
 </table>
-
-<f:link.action action="new">New Registrant</f:link.action>
-</f:section>

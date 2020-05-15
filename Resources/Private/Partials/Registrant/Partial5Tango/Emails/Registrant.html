@@ -60,16 +60,35 @@
 
 		<f:if condition="{registrant.confirmed}==1">
 			<f:if condition="{event.introtextRegistrantConfirmed}">
-				<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
-					<f:format.nl2br>{event.introtextRegistrantConfirmed}</f:format.nl2br>
-				</p>
+				<f:then>
+					<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
+						<f:format.nl2br>{event.introtextRegistrantConfirmed}</f:format.nl2br>
+					</p>
+				</f:then>
+				<f:else>
+					<f:if condition="{settings.register.introtext_registrant_confirmed}">
+						<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
+							<f:format.nl2br>{settings.register.introtext_registrant_confirmed}</f:format.nl2br>
+						</p>
+					</f:if>
+				</f:else>
+
 			</f:if>
 		</f:if>
 		<f:if condition="{registrant.confirmed}==0">
 			<f:if condition="{event.introtextRegistrant}">
-				<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0; border-bottom: 1px solid #dddddd">
-					<f:format.nl2br>{event.introtextRegistrant}</f:format.nl2br>
-				</p>
+				<f:then>
+					<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0; border-bottom: 1px solid #dddddd">
+						<f:format.nl2br>{event.introtextRegistrant}</f:format.nl2br>
+					</p>
+				</f:then>
+				<f:else>
+					<f:if condition="{settings.register.introtext_registrant}">
+						<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
+							<f:format.nl2br>{settings.register.introtext_registrant}</f:format.nl2br>
+						</p>
+					</f:if>
+				</f:else>
 			</f:if>
 		</f:if>
 
@@ -90,7 +109,7 @@
 		</p>
 		<f:if condition="{registrant.more2}|| {registrant.more3}">
 			<h3 style="font-size: 22px; font-family: '{emConf.fontFamily}'; line-height: 1.25; margin: 0 0 20px; padding: 0;">
-				Second Person
+				2. Person
 			</h3>
 			<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
 				{registrant.more1}
@@ -101,13 +120,14 @@
 			</p>
 		</f:if>
 		<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
-			{registrant.additionalInfo}
+			{f:translate(key: 'registration.qrcode.verified' , default: 'Mit dem nachfolgenden QR Code kann die Anmeldung verifiziert werden:')}
 		</p>
 		<hr>
-
-		<img src="data:image/png;base64,{event:qrcode(string: '{qrstring}')}" height="180" width="180" alt="qrcode" />
-		<br>
-		<a href="{qrstring}"> {qrstring} </a>
+		<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0; max-width: 400px; overflow: hidden;">
+			<a href="{qrstring}" >
+				<img src="data:image/png;base64,{event:qrcode(string: '{qrstring}')}" height="180" width="180" alt="qrcode" />
+			</a>
+		</p>
 
 
 

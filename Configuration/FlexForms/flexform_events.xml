@@ -20,7 +20,7 @@
 									</numIndex>
 									<numIndex index="1">
 										<numIndex index="0">EventSingle</numIndex>
-										<numIndex index="1">Event->show;Event->new;Event->create;Event->edit;Event->update;Event->register;Event->confirm;Event->delete;Registrant->new;Registrant->create;Registrant->list;Registrant->show;Registrant->confirm;Registrant->delete;Registrant->checkQrcode</numIndex>
+										<numIndex index="1">Event->show;Event->new;Event->create;Event->edit;Event->update;Event->register;Event->confirm;Event->delete;Registrant->new;Registrant->create;Registrant->list;Registrant->show;Registrant->confirm;Registrant->delete;Registrant->checkQrcode;Registrant->checkQrcode</numIndex>
 									</numIndex>
 									<numIndex index="2">
 										<numIndex index="0">Edit / Create Events</numIndex>
@@ -434,7 +434,7 @@
 			<ROOT>
 				<TCEforms>
 					<sheetTitle>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.EventDetailView</sheetTitle>
-                    <displayCond>FIELD:sDEF.switchableControllerActions:=:Event->show;Event->new;Event->create;Event->edit;Event->update;Event->register;Event->confirm;Event->delete;Registrant->new;Registrant->create;Registrant->list;Registrant->show;Registrant->confirm;Registrant->delete</displayCond>
+                    <displayCond>FIELD:sDEF.switchableControllerActions:=:Event->show;Event->new;Event->create;Event->edit;Event->update;Event->register;Event->confirm;Event->delete;Registrant->new;Registrant->create;Registrant->list;Registrant->show;Registrant->confirm;Registrant->delete;Registrant->checkQrcode;Registrant->checkQrcode</displayCond>
 
                 </TCEforms>
 				<type>array</type>
@@ -462,7 +462,7 @@
 			<ROOT>
 				<TCEforms>
 					<sheetTitle>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.RegistrationView</sheetTitle>
-                    <displayCond>FIELD:sDEF.switchableControllerActions:=:Event->show;Event->new;Event->create;Event->edit;Event->update;Event->register;Event->confirm;Event->delete;Registrant->new;Registrant->create;Registrant->list;Registrant->show;Registrant->confirm;Registrant->delete</displayCond>
+                    <displayCond>FIELD:sDEF.switchableControllerActions:=:Event->show;Event->new;Event->create;Event->edit;Event->update;Event->register;Event->confirm;Event->delete;Registrant->new;Registrant->create;Registrant->list;Registrant->show;Registrant->confirm;Registrant->delete;Registrant->checkQrcode;Registrant->checkQrcode</displayCond>
 
                 </TCEforms>
 				<type>array</type>
@@ -507,6 +507,28 @@
 							</config>
 						</TCEforms>
 					</settings.RegisterHubSpotFormId>
+					<setttings.Register.introtext_registrant>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.introtext_registrant</label>
+							<config>
+								<type>text</type>
+								<cols>30</cols>
+								<rows>5</rows>
+								<exclude>1</exclude>
+							</config>
+						</TCEforms>
+					</setttings.Register.introtext_registrant>
+					<setttings.Register.introtext_registrant_confirmed>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.introtext_registrant_confirmed</label>
+							<config>
+								<type>text</type>
+								<cols>30</cols>
+								<rows>5</rows>
+								<exclude>1</exclude>
+							</config>
+						</TCEforms>
+					</setttings.Register.introtext_registrant_confirmed>
 				</el>
 
 			</ROOT>

@@ -226,6 +226,7 @@ class EventController extends BaseController
 
             }
             $this->view->assign('hash', $checkHash);
+
         }
         $this->view->assign('settings', $this->settings);
 		$this->view->assign('event', $event);

@@ -28,18 +28,7 @@
                     <span class="d-none d-md-inline-block">copy Event</span>
                 </span>
 
-                <f:security.ifHasRole role="adminOrganizer">
-                    <f:then>
-                        <f:link.page pageUid="{settings.pageIds.bannerModul}" noCache="true" class="nav-link  px-1" title="Add Banner for Event"
-                                     additionalParams="{tx_jvbanners_connector: {action: 'create', controller: 'Connector' ,  event: '{output.event.eventId}' , returnPid: '{output.returnPid}'}}">
-                            <button class="btn btn-outline-primary btn-sm rounded-circle" href="#">
-                                <i class="fas fa-star"></i>
-                            </button>
-                            <span class="d-none d-md-inline-block">Banner</span>
-                        </f:link.page>
-                    </f:then>
 
-                </f:security.ifHasRole>
 
 
 
@@ -53,6 +42,13 @@
                         <i class="fas fa-trash "></i>
                     </button>
                     <span class="d-none d-md-inline-block">delete</span>
+                </span>
+
+                <span class="nav-link d-inline-block px-1" title="more" >
+                    <button data-toggle="modal" data-target="#eventMoreModal-{output.event.uid}" class="btn btn-outline-primary btn-sm rounded-circle" href="#">
+                        <i class="fas fa-bars "></i>
+                    </button>
+
                 </span>
 
 
@@ -171,6 +167,64 @@
 
 
                 <f:render partial="Helper/Bootstrap4/Modal" arguments="{'modalId':  'eventDeleteModal-{output.event.uid}', 'modalTitle': 'Delete Event', 'modalBody': deleteModalBody,'modalFooter': deleteModalFooter,  'settings': settings}" />
+
+                <f:variable name="moreModalBody">
+                    <f:format.raw>
+                        <f:spaceless>
+
+                            <div class="row">
+
+
+                                <div class="col-12">
+
+                                    <f:link.page pageUid="{settings.pageIds.showEventDetail}" title="Registations for Event" noCache="true" noCacheHash="true" class="btn btn-outline-primary x-1"
+                                                 additionalParams="{tx_jvevents_events: {action: 'list', controller: 'Registrant' ,  event: '{output.event.eventId}', hash: '{settings.hash}' , export: '0'}}">
+                                        <button class="btn btn-outline-primary btn-sm rounded-circle mr-2" href="#">
+                                            <i class="fas fa-users"></i>
+                                        </button>
+                                        <span class="">{output.event.registration.registeredSeats}<f:if condition="{output.event.registration.unconfirmedSeats}"> <span title="{f:translate(key:'tx_jvevents_domain_model_event.available_waiting_seats' , default:'')}">+({output.event.registration.unconfirmedSeats})</span></f:if> <f:translate key="registrations" default="Anmeldungen"/></span>
+                                     </f:link.page>
+                                </div>
+                                <div class="col-12">
+                                     PageViews: {output.event.viewed}
+                                </div>
+                                <div class="col-12">
+                                    &nbsp;<br>
+                                </div>
+                                <div class="col-12">
+                                    <f:security.ifHasRole role="adminOrganizer">
+                                        <f:then>
+                                            <f:link.page pageUid="{settings.pageIds.bannerModul}" noCache="true" class="px-1" title="Add Banner for Event"
+                                                         additionalParams="{tx_jvbanners_connector: {action: 'create', controller: 'Connector' ,  event: '{output.event.eventId}' , returnPid: '{output.returnPid}'}}">
+                                                <button class="btn btn-outline-primary btn-sm rounded-circle mx-2" href="#">
+                                                    <i class="fas fa-star"></i>
+                                                </button>
+                                                <span class="">Banner</span>
+                                            </f:link.page>
+                                        </f:then>
+                                        <f:else>
+                                            Ask for a Banner:<hr>
+                                            <f:render partial="Helper/Bootstrap4/Share"  arguments="{object: 'event', event: event, emailTo: 'info@tangomuenchen.de', uri: uri, uids: 'User: {user} | Event: {object.uid} | LocationId: {object.location.uid}', settings: settings}"></f:render>
+
+                                        </f:else>
+                                    </f:security.ifHasRole>
+                                </div>
+                            </div>
+
+
+                        </f:spaceless>
+                    </f:format.raw>
+                </f:variable>
+                <f:variable name="moreModalFooter">
+                    <f:format.raw>
+                        <f:spaceless>
+
+
+                        </f:spaceless>
+                    </f:format.raw>
+                </f:variable>
+                <f:render partial="Helper/Bootstrap4/Modal" arguments="{'modalId':  'eventMoreModal-{output.event.uid}', 'modalTitle': 'More Options', 'modalBody': moreModalBody,'modalFooter': moreModalFooter,  'settings': settings}" />
+
 
             </f:if>
         </f:if>
