@@ -69,9 +69,17 @@
 
 	<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowNumber"
 			  arguments="{object: 'event', property:'availableSeats' , euro: 'false', label: '' , translationKey: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.available_seats' ,  maxLength: 20 ,  mandatory: '0' }" />
+	<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowTextfield"
+			  arguments="{object: 'event', property:'introtextRegistrantConfirmed' , label: '' , translationKey: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.introtext_registrant_confirmed' ,  maxLength: 1000 , rows: 5, mandatory: '0' }" />
+	<hr>
+
 
 	<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowNumber"
 			  arguments="{object: 'event', property:'availableWaitingSeats' , euro: 'false', label: '' , translationKey: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.available_waiting_seats' ,  maxLength: 20 ,  mandatory: '0' }" />
+	<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowTextfield"
+			  arguments="{object: 'event', property:'introtextRegistrant' , label: '' , translationKey: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.introtext_registrant' ,  maxLength: 1000 , rows: 5, mandatory: '0' }" />
+
+	<hr>
 
 </f:security.ifHasRole>
 

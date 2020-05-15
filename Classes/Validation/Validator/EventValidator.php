@@ -10,12 +10,16 @@ class EventValidator extends BaseValidator {
 		'name'				=> 60,
 		'link'				=> 80,
 		'teaser'			=> 200,
+		'introtextRegistrant'			=> 1000,
+		'introtextRegistrantConfirmed'			=> 1000,
 	);
 
     /**
      * @var array
      */
     protected $minLength = array(
+        'introtextRegistrant'			=> 0,
+        'introtextRegistrantConfirmed'			=> 0,
         'teaser'			=> 5,
         'name'				=> 3,
         'link'				=> -1,
@@ -33,6 +37,8 @@ class EventValidator extends BaseValidator {
 
         $isValid = $this->securityChecks( $event->getName() , 'name' , $isValid ) ;
         $isValid = $this->securityChecks( $event->getTeaser() , 'teaser' , $isValid ) ;
+        $isValid = $this->securityChecks( $event->getIntrotextRegistrant() , 'introtextRegistrant' , $isValid ) ;
+        $isValid = $this->securityChecks( $event->getIntrotextRegistrantConfirmed() , 'introtextRegistrantConfirmed' , $isValid ) ;
         $isValid = $this->securityChecks( $event->getStartDateFE() , 'startDateFE' , $isValid ) ;
         $isValid = $this->securityChecks( $event->getStartTimeFE() , 'startTimeFE' , $isValid ) ;
         $isValid = $this->securityChecks( $event->getEndTimeFE() , 'endTimeFE' , $isValid ) ;
@@ -68,6 +74,8 @@ class EventValidator extends BaseValidator {
         }
         $isValid = $this->stringLengthIsValid($this->minLength['name'] , $this->maxLength['name'] , $event->getName() , 'name' , NULL , $isValid ) ;
         $isValid = $this->stringLengthIsValid($this->minLength['teaser'] , $this->maxLength['teaser'] , $event->getTeaser() , 'teaser' , NULL , $isValid ) ;
+        $isValid = $this->stringLengthIsValid($this->minLength['introtextRegistrant'] , $this->maxLength['introtextRegistrant'] , $event->getIntrotextRegistrant() , 'introtextRegistrant' , NULL , $isValid ) ;
+        $isValid = $this->stringLengthIsValid($this->minLength['introtextRegistrantConfirmed'] , $this->maxLength['introtextRegistrantConfirmed'] , $event->getIntrotextRegistrantConfirmed() , 'introtextRegistrantConfirmed' , NULL , $isValid ) ;
 
         $isValid = $this->isHasUnwantedHtmlCodeValue( $event->getDescription() , 'description' , $isValid ) ;
 

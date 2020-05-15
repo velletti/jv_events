@@ -280,6 +280,8 @@ class EventController extends BaseController
             }
 
             $event->setEventType( 2 ) ;
+            $event->setIntrotextRegistrant( $this->settings['register']['introtext_registrant'] ) ;
+            $event->setIntrotextRegistrantConfirmed( $this->settings['register']['introtext_registrant_confirmed'] ) ;
 
             // ToDo find good way to handle ID Default .. maybe a pid per User, per location or other typoscript setting
             $event->setPid( 12 ) ;
@@ -856,6 +858,14 @@ class EventController extends BaseController
         $desc = strip_tags($desc , "<p><br><a><i><strong><h2><h3>") ;
 
         $event->setDescription( $desc ) ;
+        $desc = str_replace( array( "\n" , "\r" , "\t" ), array(" " , "" , " " ), $eventArray['introtextRegistrant'] ) ;
+        $desc = strip_tags($desc , "<b>") ;
+        $event->setIntrotextRegistrant( $desc ) ;
+
+        $desc = str_replace( array( "\n" , "\r" , "\t" ), array(" " , "" , " " ), $eventArray['introtextRegistrantConfirmed'] ) ;
+        $desc = strip_tags($desc , "<b>") ;
+        $event->setIntrotextRegistrantConfirmed( $desc ) ;
+
         $event->setChangeFutureEvents( $eventArray['changeFutureEvents'] ) ;
         $event->setAvailableSeats(intval($event->getAvailableSeats()));
         $event->setAvailableWaitingSeats(intval($event->getAvailableWaitingSeats()));
