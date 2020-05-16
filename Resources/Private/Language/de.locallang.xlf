@@ -310,6 +310,10 @@
                 <source>Event Registration</source>
                 <target>Anmeldung zur Veranstaltung</target>
             </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_event.registrant_email_header_unconfirmed">
+                <source>Unconfirmed Registration</source>
+                <target>Noch unbestätigte Anmeldung</target>
+            </trans-unit>
             <trans-unit id="tx_jvevents_domain_model_event.registration_access" approved="yes">
                 <source>Registration Access</source>
                 <target>Anmeldung beschränken</target>

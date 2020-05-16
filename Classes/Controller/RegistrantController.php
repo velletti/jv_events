@@ -547,11 +547,13 @@ class RegistrantController extends BaseController
 		if( $registrant->getHidden() == 0  ) {
 			$this->settings['success'] = TRUE ;
 			$replyto = false ;
-            if( $event->getNotifyOrganizer() ) {
+            if (is_object($event->getOrganizer())) {
+                if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($event->getOrganizer()->getEmail())) {
+                    $replyto = array( $event->getOrganizer()->getEmail() => '=?utf-8?B?'. base64_encode( $event->getOrganizer()->getName() ) .'?=' ) ;
+                }
+                if( $event->getNotifyOrganizer() && $replyto ) {
 
-                if (is_object($event->getOrganizer())) {
                     if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($event->getOrganizer()->getEmail())) {
-                        $replyto = array( $event->getOrganizer()->getEmail() => '=?utf-8?B?'. base64_encode( $event->getOrganizer()->getName() ) .'?=' ) ;
                         $this->sendEmail($event, $registrant, "Organizer" ,
                             array( $event->getOrganizer()->getEmail() => '=?utf-8?B?'. base64_encode( $event->getOrganizer()->getName() ) .'?=' ) , $otherEvents);
                     }

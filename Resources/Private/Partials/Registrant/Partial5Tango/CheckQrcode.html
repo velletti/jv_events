@@ -4,18 +4,31 @@
 
 <f:if condition="{registrant} && {registrant.fingerprint} == {hash} && {registrant.event} == {event.uid}">
 	<f:then>
-		<div class="alert alert-success">
-			<div class="alert-heading ">
-				<b><f:format.date format="d.m.Y H:i">{registrant.crdate}</f:format.date>: {f:translate(key: 'Qrcode_is_valid_for' , default:'Registration ist Gültig für')}:</b>
+		<f:variable name="alertClass"><f:if condition="{registrant.confirmed}"><f:then>alert-success</f:then><f:else>alert-warning</f:else></f:if></f:variable>
+		<div class="alert {alertClass}">
+			<div class="alert-heading {alertClass}">
+				<b><f:format.date format="d.m.Y H:i">{registrant.crdate}</f:format.date> </b>
 			</div>
-			<div class="alert-body">
-				{registrant.firstname} {registrant.lastname} <br>
-				{registrant.more2} {registrant.more3} <br>
+
+			<div class="alert-body border-top">
+				{f:translate(key: 'Qrcode_is_valid_for' , default:'Registration ist gültig für')}:<br><br>
+				<f:if condition="{registrant.gender}==1"><i class="fa fa-male mr-2"></i> {f:translate(key: 'register_gender_male')}</f:if>
+					<f:if condition="{registrant.gender}==2"><i class="fa fa-female mr-2"></i> {f:translate(key: 'register_gender_female')}</f:if>
+					<b>{registrant.firstname} {registrant.lastname} </b><f:if condition="{registrant.confirmed}"><f:then><i class="fa fa-check"></i> (confirmed)</f:then><f:else><i class="fa fa-warning fa-2x"></i> (no confirmed!)</f:else></f:if><br>
+					<f:if condition="{registrant.more1} || {registrant.more2} || {registrant.more3}">
+					<f:if condition="{registrant.more1}==1">{f:translate(key: 'register_gender_male')}</f:if>
+
+					<f:if condition="{registrant.more1}==2">{f:translate(key: 'register_gender_female')}</f:if>
+						<b>{registrant.more2} {registrant.more3}</b> <f:if condition="{registrant.confirmed}"><f:then><i class="fa fa-check"></i> (confirmed)</f:then><f:else><i class="fa fa-warning fa-2x"></i> (no confirmed!)</f:else></f:if><br>
+				</f:if>
 				<f:if condition="{registrant.more2} || {registrant.more3}">
+
 					<f:then>
-						<b>2 Personen</b>
+						<b>2 Personen</b><br>
 					</f:then>
 				</f:if>
+
+
 			</div>
 		</div>
 	</f:then>

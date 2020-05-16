@@ -42,7 +42,7 @@ class QrcodeViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHel
 	 * @return string
 	 */
 	public function render() {
-        $qrCode = new QrCode( $this->arguments['string'] );
+        $qrCode = new QrCode( ( $this->arguments['string'] ));
 		return base64_encode( $qrCode->writeString());
 	}
 }

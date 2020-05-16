@@ -514,7 +514,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      * @return boolean
      */
 
-    public function sendEmail(\JVE\JvEvents\Domain\Model\Event $event = NULL, \JVE\JvEvents\Domain\Model\Registrant $registrant = NULL , $partialName ='', $recipient=array() , $otherEvents=false , $replyTo = false )
+    public function sendEmail(\JVE\JvEvents\Domain\Model\Event $event = NULL, \JVE\JvEvents\Domain\Model\Registrant $registrant = NULL , $partialName ='', $recipient=array() , $otherEvents=false , $replyTo=false )
     {
         if (!\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($this->settings['register']['senderEmail'])) {
             throw new \Exception('plugin.jv_events.settings.register.senderEmail is not a valid Email Address. Is needed as Sender E-mail');
@@ -612,7 +612,6 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         if( $replyTo ) {
             $message->setReplyTo($replyTo) ;
         }
-
         $returnPath = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFromAddress();
         if ( $returnPath != "no-reply@example.com") {
             $message->setReturnPath($returnPath);

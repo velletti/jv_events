@@ -39,7 +39,14 @@ https://github.com/derekpunsalan/responsive-email/blob/master/README.md
 									</f:if>
 
 									<h1 style="font-size: 32px; font-family: '{emConf.fontFamily}'; line-height: 1.25; max-width: 90%; text-transform: uppercase; margin: 0 auto; padding: 0;">
-										{f:translate(key: 'tx_jvevents_domain_model_event.registrant_email_header')}
+										<f:if condition="{registrant.confirmed">
+											<f:then>
+												{f:translate(key: 'tx_jvevents_domain_model_event.registrant_email_header')}
+											</f:then>
+											<f:else>
+
+											</f:else>
+										</f:if>
 									</h1>
 								</td>
 							</tr>

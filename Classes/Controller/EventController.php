@@ -871,7 +871,7 @@ class EventController extends BaseController
         $event->setAvailableWaitingSeats(intval($event->getAvailableWaitingSeats()));
         $event->setWithRegistration(intval($event->getWithRegistration()));
         if( intval($event->getWithRegistration()) == 1 ) {
-            $event->setRegistrationUntil($event->getStartDate() );
+            $event->setRegistrationUntil($event->getStartDate()->modify('+23 hours') );
             $event->setNotifyOrganizer($this->settings['EmConfiguration']['notifyOrganier']);
             $event->setNotifyRegistrant($this->settings['EmConfiguration']['notifyRegistrant']);
 

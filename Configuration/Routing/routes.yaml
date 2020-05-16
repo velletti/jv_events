@@ -15,6 +15,12 @@ routeEnhancers:
       event_slug: '[0-9]{1..16}'
       org_id: '[0-9]{1..16}'
     routes:
+      - routePath: '/event/{event_id}/registrant/{reg_id}/hash/{hash}'
+        _controller: 'Registrant::checkQrcode'
+        _arguments:
+          reg_id: registrant
+          event_id: event
+          hash: hash
       - routePath: '/event/event/show/{event_slug}'
         _controller: 'Event::show'
         _arguments:
@@ -40,3 +46,11 @@ routeEnhancers:
         type: PersistedAliasMapper
         tableName: tx_jvevents_domain_model_event
         routeFieldName: slug
+      event_id:
+        type: PersistedAliasMapper
+        tableName: tx_jvevents_domain_model_event
+        routeFieldName: uid
+      reg_id:
+        type: PersistedAliasMapper
+        tableName: tx_jvevents_domain_model_registrant
+        routeFieldName: uid

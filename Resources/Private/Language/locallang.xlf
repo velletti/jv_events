@@ -260,6 +260,9 @@
             <trans-unit id="tx_jvevents_domain_model_event.registrant_email_header">
                 <source>Event Registration</source>
             </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_event.registrant_email_header_unconfirmed">
+                <source>Unconfirmed Registration</source>
+            </trans-unit>
             <trans-unit id="tx_jvevents_domain_model_event.registration_access">
                 <source>Registration Access</source>
             </trans-unit>

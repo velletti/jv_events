@@ -33,7 +33,7 @@
 		</div>
 		<f:if condition="{settings.success}">
 			<br>
-			<f:variable name="qrstring">https://www.tangomuenchen.de/index.php?id={settings.pageId}&tx_jvevents_events%5Baction%5D=checkQrcode&tx_jvevents_events%5Bcontroller%5D=Registrant&tx_jvevents_events%5Bevent%5D={event.uid}&tx_jvevents_events%5Bhash%5D={registrant.fingerprint}&tx_jvevents_events%5Bregistrant%5D={registrant.uid}</f:variable>
+			<f:variable name="qrstring">https://{settings.servername}/de/kurseundworkshops/kurs-details/registration/event/{event.uid}/registrant/{registrant.uid}/hash/{registrant.fingerprint}.html</f:variable>
 
             <f:link.action pageUid="{settings.pageId}" controller="Registrant" action="checkQrcode" arguments="{registrant: '{registrant.uid}' , event: '{event.uid}' , hash: '{registrant.fingerprint}'}" class="btn btn-secondary-outline" title="{qrstring}">
 				<hr>
