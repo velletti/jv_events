@@ -218,10 +218,12 @@ class RegistrantController extends BaseController
      * action new
      *
      * @param \JVE\JvEvents\Domain\Model\Event $event
+     * @param \JVE\JvEvents\Domain\Model\Registrant $registrant
      * @ignorevalidation $event
+     * @ignorevalidation $registrant
      * @return void
      */
-    public function newAction(\JVE\JvEvents\Domain\Model\Event $event)
+    public function newAction(\JVE\JvEvents\Domain\Model\Event $event ,\JVE\JvEvents\Domain\Model\Registrant $registrant=null)
     {
 		 $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
 		// $this->addFlashMessage($this->translate('msg_error_cid'), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
@@ -272,6 +274,17 @@ class RegistrantController extends BaseController
             }
 
         }
+        if ( $registrant==null) {
+            /** @var \JVE\JvEvents\Domain\Model\Registrant $registrant */
+            $registrant = $this->objectManager->get("JVE\\JvEvents\\Domain\\Model\\Registrant");
+            if($userUid) {
+                $registrant->setGender(intval( $GLOBALS['TSFE']->fe_user->user['gender'] + 1 ));
+                $registrant->setFirstName($GLOBALS['TSFE']->fe_user->user['first_name']);
+                $registrant->setLastName($GLOBALS['TSFE']->fe_user->user['last_name']);
+                $registrant->setEmail($GLOBALS['TSFE']->fe_user->user['email']);
+                $registrant->setPhone($GLOBALS['TSFE']->fe_user->user['telephone']);
+            }
+        }
 
         $querysettings = new \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings ;
         $querysettings->setStoragePageIds(array( $event->getPid() )) ;
@@ -287,6 +300,7 @@ class RegistrantController extends BaseController
 
         }
 
+		$this->view->assign('registrant', $registrant);
 		$this->view->assign('hash', $checkHash);
 		$this->view->assign('otherEvents', $otherEvents);
 
