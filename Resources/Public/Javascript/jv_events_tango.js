@@ -9,7 +9,6 @@ jQuery(document).ready(function() {
 	if( $(".jv-events-tags-edit") ){
         jv_events_init_edit_tags() ;
     }
-
     if ( jQuery("#streetAndNr").length) {
         jQuery("#streetAndNr").on("keydown" , function( event) {
             jQuery("#jvevents-geo-update").removeClass('opacity-2') ;
@@ -1012,5 +1011,4 @@ function PythagorasEquirectangular( lat1, lon1, lat2, lon2 ) {
 
 
 $.fn.getType = function(){ return this[0].tagName == "INPUT" ? this[0].type.toLowerCase() : this[0].tagName.toLowerCase(); };
-
 
