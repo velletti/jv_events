@@ -57,6 +57,7 @@
 			</p>
 			<br />
 		</f:if>
+		<h3  style="font-size: 22px; font-family: '{emConf.fontFamily}'; line-height: 1.25; margin: 0 0 10px; padding: 0;">Bitte beachten: </h3>
 
 		<f:if condition="{registrant.confirmed}==1">
 			<f:if condition="{event.introtextRegistrantConfirmed}">
@@ -66,7 +67,7 @@
 					</p>
 				</f:then>
 				<f:else>
-					<f:if condition="{settings.register.introtext_registrant_confirmed}">
+					<f:if condition="{settings.Register.introtext_registrant_confirmed}">
 						<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
 							<f:format.nl2br>{settings.register.introtext_registrant_confirmed}</f:format.nl2br>
 						</p>
@@ -83,7 +84,7 @@
 					</p>
 				</f:then>
 				<f:else>
-					<f:if condition="{settings.register.introtext_registrant}">
+					<f:if condition="{settings.Register.introtext_registrant}">
 						<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
 							<f:format.nl2br>{settings.register.introtext_registrant}</f:format.nl2br>
 						</p>

@@ -280,8 +280,8 @@ class EventController extends BaseController
             }
 
             $event->setEventType( 2 ) ;
-            $event->setIntrotextRegistrant( $this->settings['register']['introtext_registrant'] ) ;
-            $event->setIntrotextRegistrantConfirmed( $this->settings['register']['introtext_registrant_confirmed'] ) ;
+            $event->setIntrotextRegistrant( $this->settings['Register']['introtext_registrant'] ) ;
+            $event->setIntrotextRegistrantConfirmed( $this->settings['Register']['introtext_registrant_confirmed'] ) ;
 
             // ToDo find good way to handle ID Default .. maybe a pid per User, per location or other typoscript setting
             $event->setPid( 12 ) ;
