@@ -546,7 +546,28 @@ class RegistrantController extends BaseController
 
 		if( $registrant->getHidden() == 0  ) {
 			$this->settings['success'] = TRUE ;
+			$replyto = false ;
+            if( $event->getNotifyOrganizer() ) {
 
+                if (is_object($event->getOrganizer())) {
+                    if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($event->getOrganizer()->getEmail())) {
+                        $replyto = array( $event->getOrganizer()->getEmail() => '=?utf-8?B?'. base64_encode( $event->getOrganizer()->getName() ) .'?=' ) ;
+                        $this->sendEmail($event, $registrant, "Organizer" ,
+                            array( $event->getOrganizer()->getEmail() => '=?utf-8?B?'. base64_encode( $event->getOrganizer()->getName() ) .'?=' ) , $otherEvents);
+                    }
+                    $ccEmails = str_replace( array("," , ";" , " " ) , array("," , "," , ",") , $event->getOrganizer()->getEmailCc() ) ;
+                    $ccEmailsArray = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode("," , $ccEmails , true ) ;
+                    if ( count($ccEmailsArray) > 0 ) {
+                        foreach ( $ccEmailsArray as $ccEmail ) {
+                            if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail( $ccEmail ) ) {
+
+                                $this->sendEmail($event, $registrant, "Organizer" ,
+                                    array( $ccEmail => '=?utf-8?B?'. base64_encode( $event->getOrganizer()->getName() ) .'?=' ) , $otherEvents);
+                            }
+                        }
+                    }
+                }
+            }
 			if( $event->getNotifyRegistrant()  ) {
 				if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($registrant->getEmail())) {
 					$this->settings['successMsg'] = "register_email_with_infos" ;
@@ -561,27 +582,7 @@ class RegistrantController extends BaseController
 						array( $registrant->getEmail() => $name ) , $otherEvents);
 				}
 			}
-			if( $event->getNotifyOrganizer() ) {
 
-				if (is_object($event->getOrganizer())) {
-					if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($event->getOrganizer()->getEmail())) {
-
-						$this->sendEmail($event, $registrant, "Organizer" ,
-							array( $event->getOrganizer()->getEmail() => '=?utf-8?B?'. base64_encode( $event->getOrganizer()->getName() ) .'?=' ) , $otherEvents);
-					}
-					$ccEmails = str_replace( array("," , ";" , " " ) , array("," , "," , ",") , $event->getOrganizer()->getEmailCc() ) ;
-                    $ccEmailsArray = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode("," , $ccEmails , true ) ;
-                    if ( count($ccEmailsArray) > 0 ) {
-                        foreach ( $ccEmailsArray as $ccEmail ) {
-                            if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail( $ccEmail ) ) {
-
-                                $this->sendEmail($event, $registrant, "Organizer" ,
-                                    array( $ccEmail => '=?utf-8?B?'. base64_encode( $event->getOrganizer()->getName() ) .'?=' ) , $otherEvents);
-                            }
-                        }
-                    }
-				}
-			}
 		}
 		
 
