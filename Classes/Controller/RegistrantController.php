@@ -410,7 +410,9 @@ class RegistrantController extends BaseController
                     foreach ($secondPersonFields as $field) {
                         $func = "get" . ucfirst($field) ;
                         if(method_exists ($registrant , $func)) {
-                            $secondPerson[] = $registrant->$func() ;
+                            if( $registrant->$func() ) {
+                                $secondPerson[] = $registrant->$func() ;
+                            }
                         }
                     }
                     if( count($secondPerson) > 1) {
