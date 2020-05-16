@@ -610,7 +610,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             ->setFrom($sender)
             ->setSubject($subject);
         if( $replyTo ) {
-            $message->getReplyTo($replyTo) ;
+            $message->setReplyTo($replyTo) ;
         }
 
         $returnPath = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFromAddress();
