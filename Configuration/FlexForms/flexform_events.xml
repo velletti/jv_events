@@ -462,7 +462,13 @@
 			<ROOT>
 				<TCEforms>
 					<sheetTitle>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.RegistrationView</sheetTitle>
-                    <displayCond>FIELD:sDEF.switchableControllerActions:=:Event->show;Event->new;Event->create;Event->edit;Event->update;Event->register;Event->confirm;Event->delete;Registrant->new;Registrant->create;Registrant->list;Registrant->show;Registrant->confirm;Registrant->delete;Registrant->checkQrcode;Registrant->checkQrcode</displayCond>
+                    <displayCond>
+						<OR>
+							<numIndex index="0">FIELD:sDEF.switchableControllerActions:=:Event->show;Event->new;Event->create;Event->edit;Event->update;Event->register;Event->confirm;Event->delete;Registrant->new;Registrant->create;Registrant->list;Registrant->show;Registrant->confirm;Registrant->delete;Registrant->checkQrcode;Registrant->checkQrcode</numIndex>
+							<numIndex index="1">FIELD:sDEF.switchableControllerActions:=:Event->new;Event->show;Event->create;Event->edit;Event->update;Event->delete;Event->copy;Event->cancel;</numIndex>
+						</OR>
+
+					</displayCond>
 
                 </TCEforms>
 				<type>array</type>
