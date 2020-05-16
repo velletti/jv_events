@@ -579,7 +579,7 @@ class RegistrantController extends BaseController
 						$name  = '=?utf-8?B?'. base64_encode( $name) .'?=' ;
 					}
 					$this->sendEmail($event, $registrant, "Registrant" ,
-						array( $registrant->getEmail() => $name ) , $otherEvents);
+						array( $registrant->getEmail() => $name ) , $otherEvents , $replyto );
 				}
 			}
 
