@@ -181,15 +181,17 @@
                                      </f:link.page>
                                 </div>
                                 <div class="col-12">
-                                    &nbsp;<span class="nav-link d-inline-block px-1" title="delete Event" >
-                                        <button data-toggle="modal" data-target="#eventDeleteModal-{output.event.uid}" class="btn btn-outline-primary btn-sm rounded-circle" href="#">
+                                    &nbsp;<span class="btn btn-outline-primary x-1" title="delete Event" >
+                                        <button data-toggle="modal" data-target="#eventDeleteModal-{output.event.uid}" class="btn btn-outline-primary btn-sm rounded-circle mr-2" href="#">
                                             <i class="fas fa-trash "></i>
                                         </button>
-                                        <span class="d-none d-md-inline-block">delete</span>
+                                        <span class="d-none d-md-inline-block"><f:translate key="event_delete_button" default="Termin Löschen" /></span>
                                     </span>
                                 </div>
                                 <div class="col-12">
-                                     PageViews: {output.event.viewed}
+                                    <span class="btn btn-outline-primary x-1"  >
+                                        Event was shown {output.event.viewed} times
+                                    </span>
                                 </div>
 
                                 <div class="col-12">
