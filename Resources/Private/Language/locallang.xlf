@@ -390,6 +390,9 @@
             <trans-unit id="event_delete_realy_button">
                 <source>Really delete!</source>
             </trans-unit>
+             <trans-unit id="event_delete_button">
+                <source>Delete Event</source>
+            </trans-unit>
 
 
 

@@ -487,6 +487,9 @@
                 <source>Really delete!</source>
                 <target>Wirklich löschen!</target>
             </trans-unit>
+            <trans-unit id="event_delete_button">
+                <source>Termin löschen</source>
+            </trans-unit>
 
             <trans-unit id="tx_jvevents_domain_model_event.edit.repeating.headline">
                 <source>Repeating Event</source>
