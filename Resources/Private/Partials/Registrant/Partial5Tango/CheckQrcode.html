@@ -16,9 +16,8 @@
 					<f:if condition="{registrant.gender}==2"><i class="fa fa-female mr-2"></i> {f:translate(key: 'register_gender_female')}</f:if>
 					<b>{registrant.firstname} {registrant.lastname} </b><f:if condition="{registrant.confirmed}"><f:then><i class="fa fa-check"></i> (confirmed)</f:then><f:else><i class="fa fa-hourglass-start fa-2x"></i> (no confirmed!)</f:else></f:if><br>
 					<f:if condition="{registrant.more1} || {registrant.more2} || {registrant.more3}">
-                        <f:if condition="{registrant.more1}==1"><i class="fa fa-male mr-2"></i> <f:if condition="{registrant.more1}==1">{f:translate(key: 'register_gender_male')}</f:if>
-
-                        <f:if condition="{registrant.more1}==2"><i class="fa fa-female mr-2"></i> <f:if condition="{registrant.more1}==2">{f:translate(key: 'register_gender_female')}</f:if>
+                        <f:if condition="{registrant.more1}==1"><i class="fa fa-male mr-2"></i> {f:translate(key: 'register_gender_male')}</f:if>
+                        <f:if condition="{registrant.more1}==2"><i class="fa fa-female mr-2"></i> {f:translate(key: 'register_gender_female')}</f:if>
 						<b>{registrant.more2} {registrant.more3}</b> <f:if condition="{registrant.confirmed}"><f:then><i class="fa fa-check"></i> (confirmed)</f:then><f:else><i class="fa fa-hourglass-start fa-2x"></i> (no confirmed!)</f:else></f:if><br>
 				</f:if>
 				<f:if condition="{registrant.more2} || {registrant.more3}">
