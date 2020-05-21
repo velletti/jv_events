@@ -33,7 +33,7 @@
 		</div>
 		<f:if condition="{settings.success}">
 			<br>
-			<f:variable name="qrstring">https://{settings.servername}/de/kurseundworkshops/kurs-details/registration/event/{event.uid}/registrant/{registrant.uid}/hash/{registrant.fingerprint}.html</f:variable>
+			<f:variable name="qrstring">{settings.servername}/de/kurseundworkshops/kurs-details/registration/event/{event.uid}/registrant/{registrant.uid}/hash/{registrant.fingerprint}.html</f:variable>
 
             <f:link.action pageUid="{settings.pageId}" controller="Registrant" action="checkQrcode" arguments="{registrant: '{registrant.uid}' , event: '{event.uid}' , hash: '{registrant.fingerprint}'}" class="btn btn-secondary-outline" title="{qrstring}">
 				<hr>

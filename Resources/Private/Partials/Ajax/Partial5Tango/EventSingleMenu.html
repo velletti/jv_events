@@ -12,14 +12,7 @@
                     <span class="d-none d-md-inline-block">edit</span>
                 </f:link.action>
 
-                <f:if condition="{settings.pageIds.addMedia}">
-                    <f:link.page pageUid="{settings.pageIds.addMedia}" noCache="true" class="nav-link  px-1" title="Add Teaser Image to Event" additionalParams="{tx_jvmediaconnector_connector: {action: 'list', controller: 'Media' ,  reference: {id: output.event.eventId, table: 'tx_jvevents_domain_model_event' , fieldname: 'teaser_image' , maxRelations: '1' , returnPid: output.returnPid , returnArray: {tx_jvevents_events: {action: 'show', event: output.event.eventId }}}}}">
-                        <button class="btn btn-outline-primary btn-sm rounded-circle" href="#">
-                            <i class="fas fa-image"></i>
-                        </button>
-                        <span class="d-none d-md-inline-block">Image</span>
-                    </f:link.page>
-                </f:if>
+
 
                 <span class="nav-link d-inline-block px-1" title="copy Event" >
                     <button data-toggle="modal" data-target="#eventCopyModal-{output.event.eventId}" class="btn btn-outline-primary btn-sm rounded-circle" href="#">
@@ -29,21 +22,22 @@
                 </span>
 
 
-
-
-
-
                 <f:link.action id="jv-events-cancelEvent-link" absolute="true" noCacheHash="true" pageUid="{settings.pageIds.editEvent}" class="nav-link  px-1" title="Cancel Event" action="cancel" controller="Event" arguments="{event: output.event.eventId}">
                     <input id="jv-events-cancelEvent"   type="checkbox" {f:if(condition: '{output.event.canceled}' , else : 'checked' )} data-size="small" data-onstyle="primary" data-offstyle="secondary" data-toggle="toggle" data-style="ios " data-on="{f:if(condition: '{output.event.canceled}' , else: 'ON' , then: '..' )}" data-off="{f:if(condition: '{output.event.canceled}' , then:'Off' , else: '..' )}">
                 </f:link.action>
 
+                <span class="nav-link d-inline-block px-1" title="delete Event" >
+                    <button data-toggle="modal" data-target="#eventDeleteModal-{output.event.uid}" class="btn btn-outline-primary btn-sm rounded-circle" href="#">
+                        <i class="fas fa-trash "></i>
+                    </button>
+                    <span class="d-none d-md-inline-block">delete</span>
+                </span>
 
 
-                <span class="nav-link d-inline-block px-1" title="more" >
+                <span class="nav-link d-inline-block px-1 " title="more" >
                     <button data-toggle="modal" data-target="#eventMoreModal-{output.event.uid}" class="btn btn-outline-primary btn-sm rounded-circle" href="#">
                         <i class="fas fa-bars "></i>
                     </button>
-
                 </span>
 
 
@@ -108,9 +102,6 @@
                         </f:spaceless>
                     </f:format.raw>
                 </f:variable>
-
-
-
                 <f:render partial="Helper/Bootstrap4/Modal" arguments="{'modalId':  'eventCopyModal-{output.event.eventId}', 'modalTitle': 'Copy Event', 'modalBody': copyModalBody,'modalFooter': copyModalFooter,  'settings': settings}" />
 
 
@@ -158,21 +149,15 @@
                         </f:spaceless>
                     </f:format.raw>
                 </f:variable>
-
-
-
                 <f:render partial="Helper/Bootstrap4/Modal" arguments="{'modalId':  'eventDeleteModal-{output.event.uid}', 'modalTitle': 'Delete Event', 'modalBody': deleteModalBody,'modalFooter': deleteModalFooter,  'settings': settings}" />
 
                 <f:variable name="moreModalBody">
                     <f:format.raw>
                         <f:spaceless>
-
                             <div class="row">
-
-
                                 <div class="col-12 pt-2">
 
-                                    <f:link.page pageUid="{settings.pageIds.showEventDetail}" title="Registations for Event" noCache="true" noCacheHash="true" class="btn btn-outline-primary x-1"
+                                    <f:link.page pageUid="{settings.pageIds.showEventDetail}" title="Registations for Event" noCache="true" noCacheHash="true" class="btn btn-outline-primary x-1   w-100 text-left"
                                                  additionalParams="{tx_jvevents_events: {action: 'list', controller: 'Registrant' ,  event: '{output.event.eventId}', hash: '{settings.hash}' , export: '0'}}">
                                         <button class="btn btn-outline-primary btn-sm rounded-circle mr-2" href="#">
                                             <i class="fas fa-users"></i>
@@ -181,23 +166,27 @@
                                      </f:link.page>
                                 </div>
                                 <div class="col-12 pt-2">
-                                    &nbsp;<span class="btn btn-outline-primary x-1" title="delete Event" >
-                                        <button data-toggle="modal" data-target="#eventDeleteModal-{output.event.uid}" class="btn btn-outline-primary btn-sm rounded-circle mr-2" href="#">
-                                            <i class="fas fa-trash "></i>
-                                        </button>
-                                        <span class="d-none d-md-inline-block"><f:translate key="event_delete_button" default="Termin Löschen" /></span>
-                                    </span>
+                                    <f:if condition="{settings.pageIds.addMedia}">
+                                        <f:link.page pageUid="{settings.pageIds.addMedia}" noCache="true" class="btn btn-outline-primary x-1  w-100 text-left" title="Add Teaser Image to Event" additionalParams="{tx_jvmediaconnector_connector: {action: 'list', controller: 'Media' ,  reference: {id: output.event.eventId, table: 'tx_jvevents_domain_model_event' , fieldname: 'teaser_image' , maxRelations: '1' , returnPid: output.returnPid , returnArray: {tx_jvevents_events: {action: 'show', event: output.event.eventId }}}}}">
+                                            <button class="btn btn-outline-primary btn-sm rounded-circle mr-2" href="#">
+                                                <i class="fas fa-image"></i>
+                                            </button>
+                                            <span class="d-none d-md-inline-block">Add / Change Image</span>
+                                        </f:link.page>
+                                    </f:if>
                                 </div>
                                 <div class="col-12 pt-2">
-                                    <span class="btn btn-outline-primary x-1"  >
-                                        Event was shown {output.event.viewed} times
+                                    <span class="btn btn-outline-primary x-1 w-100 text-left"  >
+                                         <button class="btn btn-outline-primary btn-sm rounded-circle mr-2" href="#">
+                                                <i class="fas fa-eye"></i>
+                                            </button> Event was shown {output.event.viewed} times
                                     </span>
                                 </div>
 
                                 <div class="col-12 pt-2">
-                                    <f:security.ifHasRole role="adminOrganizer">
+                                    <f:security.ifHasRole role="adminXOrganizer">
                                         <f:then>
-                                            <f:link.page pageUid="{settings.pageIds.bannerModul}" noCache="true" class="px-1" title="Add Banner for Event"
+                                            <f:link.page pageUid="{settings.pageIds.bannerModul}" noCache="true" class="btn btn-outline-primary x-1  w-100 text-left" title="Add Banner for Event"
                                                          additionalParams="{tx_jvbanners_connector: {action: 'create', controller: 'Connector' ,  event: '{output.event.eventId}' , returnPid: '{output.returnPid}'}}">
                                                 <button class="btn btn-outline-primary btn-sm rounded-circle mx-2" href="#">
                                                     <i class="fas fa-star"></i>
@@ -206,7 +195,7 @@
                                             </f:link.page>
                                         </f:then>
                                         <f:else>
-                                            Ask for a Banner:<hr>
+                                            <hr>Ask for a Banner:<hr>
                                             <f:render partial="Helper/Bootstrap4/Share"  arguments="{object: 'event', event: event, emailTo: 'info@tangomuenchen.de', uri: uri, uids: 'User: {user} | Event: {object.uid} | LocationId: {object.location.uid}', settings: settings}"></f:render>
 
                                         </f:else>
@@ -221,7 +210,6 @@
                 <f:variable name="moreModalFooter">
                     <f:format.raw>
                         <f:spaceless>
-
 
                         </f:spaceless>
                     </f:format.raw>
