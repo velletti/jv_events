@@ -135,6 +135,14 @@ class EventRepository extends BaseRepository
                 }
             }
         }
+        // canceledEvent = default 0 = unset .. if set in Filter to 1 show Only canceledEvents
+        if( $settings['filter']['canceledEvents'] == "1" ) {
+            $constraints[] = $query->equals("canceled",  "1");
+        }
+        // canceledEvent = default 0 = unset .. if set in Filter to 2 hide  canceledEvents needed for corona
+        if( $settings['filter']['canceledEvents'] == "2" ) {
+            $constraints[] = $query->equals("canceled",  "0");
+        }
 
         if( $settings['filter']['masterId']  ) {
             $constraints[] = $query->equals("masterId",  $settings['filter']['masterId'] );

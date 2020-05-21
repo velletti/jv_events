@@ -165,6 +165,18 @@
             <trans-unit id="plugin.filter.hideOrganizerDropdown">
                 <source>Hide Dropdown Organizer, even if there is more than one Organizer</source>
             </trans-unit>
+			<trans-unit id="plugin.filter.canceledEvents">
+				<source>Show Events based on the Canceled Field value </source>
+			</trans-unit>
+            <trans-unit id="plugin.filter.canceledEvents.all">
+                <source>0 - ignore Canceled Filter (default) </source>
+            </trans-unit>
+            <trans-unit id="plugin.filter.canceledEvents.only">
+                <source>1 - All other Filters must fit AND Event must be marked as Canceled</source>
+            </trans-unit>
+            <trans-unit id="plugin.filter.canceledEvents.hide">
+                <source>2 - If Event is marked as Canceled it is NOT listed</source>
+            </trans-unit>
 
 			<trans-unit id="plugin.filter.topEvents">
 				<source>Show Events based on the TopEvent Field value </source>
