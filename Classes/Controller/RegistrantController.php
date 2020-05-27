@@ -561,6 +561,18 @@ class RegistrantController extends BaseController
 		if( $registrant->getHidden() == 0  ) {
 			$this->settings['success'] = TRUE ;
 			$replyto = false ;
+			$registrantEmail = false ;
+            if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($registrant->getEmail())) {
+
+                $name = trim( $registrant->getFirstName() . " " . $registrant->getLastName())  ;
+                if( strlen( $name ) < 3 ) {
+                    $name = "RegistrantId: " . $registrant->getUid() ;
+                } else {
+                    $name  = '=?utf-8?B?'. base64_encode( $name) .'?=' ;
+                }
+                $registrantEmail = array( $registrant->getEmail() => $name ) ;
+            }
+
             if (is_object($event->getOrganizer())) {
                 if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($event->getOrganizer()->getEmail())) {
                     $replyto = array( $event->getOrganizer()->getEmail() => '=?utf-8?B?'. base64_encode( $event->getOrganizer()->getName() ) .'?=' ) ;
@@ -569,7 +581,7 @@ class RegistrantController extends BaseController
 
                     if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($event->getOrganizer()->getEmail())) {
                         $this->sendEmail($event, $registrant, "Organizer" ,
-                            array( $event->getOrganizer()->getEmail() => '=?utf-8?B?'. base64_encode( $event->getOrganizer()->getName() ) .'?=' ) , $otherEvents);
+                            array( $event->getOrganizer()->getEmail() => '=?utf-8?B?'. base64_encode( $event->getOrganizer()->getName() ) .'?=' ) , $otherEvents , $registrantEmail);
                     }
                     $ccEmails = str_replace( array("," , ";" , " " ) , array("," , "," , ",") , $event->getOrganizer()->getEmailCc() ) ;
                     $ccEmailsArray = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode("," , $ccEmails , true ) ;
@@ -578,7 +590,7 @@ class RegistrantController extends BaseController
                             if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail( $ccEmail ) ) {
 
                                 $this->sendEmail($event, $registrant, "Organizer" ,
-                                    array( $ccEmail => '=?utf-8?B?'. base64_encode( $event->getOrganizer()->getName() ) .'?=' ) , $otherEvents);
+                                    array( $ccEmail => '=?utf-8?B?'. base64_encode( $event->getOrganizer()->getName() ) .'?=' ) , $otherEvents , $registrantEmail);
                             }
                         }
                     }
@@ -588,14 +600,8 @@ class RegistrantController extends BaseController
 				if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($registrant->getEmail())) {
 					$this->settings['successMsg'] = "register_email_with_infos" ;
 
-					$name = trim( $registrant->getFirstName() . " " . $registrant->getLastName())  ;
-					if( strlen( $name ) < 3 ) {
-						$name = "RegistrantId: " . $registrant->getUid() ;
-					} else {
-						$name  = '=?utf-8?B?'. base64_encode( $name) .'?=' ;
-					}
 					$this->sendEmail($event, $registrant, "Registrant" ,
-						array( $registrant->getEmail() => $name ) , $otherEvents , $replyto );
+                        $registrantEmail , $otherEvents , $replyto );
 				}
 			}
 
