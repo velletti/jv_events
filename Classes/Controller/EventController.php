@@ -874,9 +874,14 @@ class EventController extends BaseController
             $event->setRegistrationUntil($event->getStartDate()->modify('+23 hours') );
             $event->setNotifyOrganizer($this->settings['EmConfiguration']['notifyOrganizer']);
             $event->setNotifyRegistrant($this->settings['EmConfiguration']['notifyRegistrant']);
-
-            $event->setRegistrationFormPid($this->settings['EmConfiguration']['RegistrationFormPid']);
+            if ( $eventArray['registrationFormPid'] > $this->settings['EmConfiguration']['RegistrationFormPid'] ) {
+                $event->setRegistrationFormPid( intval( $eventArray['registrationFormPid']) ) ;
+            } else {
+                $event->setRegistrationFormPid($this->settings['EmConfiguration']['RegistrationFormPid']);
+            }
             $event->setRegistrationPid($this->settings['EmConfiguration']['RegistrationPid']);
+            // var_dump($eventArray['registrationFormPid'] );
+            // die;
         }
 
 
