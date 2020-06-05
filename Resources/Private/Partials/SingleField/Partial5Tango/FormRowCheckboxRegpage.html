@@ -19,16 +19,17 @@
 			<f:else>
 				{label}
 			</f:else>
-		</f:if>
+			</f:if>
 
-		<f:if condition="{mandatory}">
-			<span class="mandatory">*</span>
-		</f:if>
+			<f:if condition="{mandatory}">
+				<span class="mandatory">*</span>
+			</f:if>
 
-	</label>
-	<div class="col-sm-8">
-
-		<f:form.checkbox id="jv_events_{propertyName}" property="{property}" checked="{value > settings.EmConfiguration.RegistrationFormPid}" value="127" data="{onstyle: 'primary' , offstyle:'secondary' , toggle: 'toggle', style:'ios', on:'{onText}', off: '{offText}'}"/>
+			</label>
+			<div class="col-sm-8">
+				<f:variable name="onText">On </f:variable>
+				<f:variable name="offText">Off </f:variable>
+				<f:form.checkbox id="jv_events_{propertyName}" property="{property}"  value="127" data="{onstyle: 'primary' , offstyle:'secondary' , toggle: 'toggle', style:'ios', on:'{onText}', off: '{offText}'}"/>
 
 
 	</div>

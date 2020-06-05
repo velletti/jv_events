@@ -387,6 +387,13 @@ class EventController extends BaseController
                 $tags = $this->tagRepository->findAllonAllPages('0');
 
                 $this->view->assign('user', intval($GLOBALS['TSFE']->fe_user->user['uid'] ) ) ;
+
+                // remove RegistrationFormPid to be able to use Checkbox: maybe  will be set back to default on SAVE
+
+                if ( $event->getRegistrationFormPid() == $this->settings['EmConfiguration']['RegistrationFormPid'] ) {
+                    $event->setRegistrationFormPid( 0);
+
+                }
                 $this->view->assign('event', $event);
                 $this->view->assign('categories', $categories);
                 $this->view->assign('tags', $tags);
