@@ -43,15 +43,18 @@
 				<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRow" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.first_name', FieldName : 'firstName' , settings: settings , cols: 'col-sm-6' , required: '{f:if(condition: \'{settings.register.required.firstName}\' , then: \'TRUE\')}'}"/>
 				<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRow" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.last_name', FieldName : 'lastName' , settings: settings , cols: 'col-sm-6' , required: '{f:if(condition: \'{settings.register.required.lastName}\' , then: \'TRUE\')}'}"/>
 			</div>
+			<f:if condition="{settings.register.eachPerson}">
+				<f:else>
+					<div class="row">
+						<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRowGender" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.gender', FieldName : 'more1' , settings: settings , cols: 'col-sm-6' , required: ''}"/>
+					</div>
+					<div class="row">
+						<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRow" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.first_name', FieldName : 'more2' , settings: settings , cols: 'col-sm-6' , required: ''}"/>
+						<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRow" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.last_name', FieldName : 'more3' , settings: settings , cols: 'col-sm-6' , required: ''}"/>
 
-			<div class="row">
-				<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRowGender" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.gender', FieldName : 'more1' , settings: settings , cols: 'col-sm-6' , required: ''}"/>
-			</div>
-			<div class="row">
-				<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRow" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.first_name', FieldName : 'more2' , settings: settings , cols: 'col-sm-6' , required: ''}"/>
-				<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRow" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.last_name', FieldName : 'more3' , settings: settings , cols: 'col-sm-6' , required: ''}"/>
-
-			</div>
+					</div>
+				</f:else>
+			</f:if>
 
 
 
