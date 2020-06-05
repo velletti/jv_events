@@ -449,6 +449,10 @@ class EventController extends BaseController
             foreach ($properties as $key => $value ) {
                 $newEvent->_setProperty( $key , $value ) ;
             }
+            // unset all registion Infos
+            $newEvent->setRegisteredSeats(0) ;
+            $newEvent->setUnconfirmedSeats(0) ;
+
             // if we just do ONE Copy, do not set master ID
             if ( $copy2Day == 0 ) {
                 $newEvent->setMasterId( 0 ) ;
