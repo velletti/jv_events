@@ -57,8 +57,6 @@
 
 		</fieldset>
 
-		<f:debug>{settings.register.required}</f:debug>
-
 		<fieldset class="form-group">
 			<div class="row">
 				<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRow" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.email', FieldName : 'email' , settings: settings , cols: 'col-sm-6' , required: '{f:if(condition: \'{settings.register.required.email}\' , then: \'TRUE\')}'}"/>
