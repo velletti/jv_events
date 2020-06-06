@@ -80,7 +80,8 @@ class L10nFalImgViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
 		if(!in_array($tableFieldName, $allowedTableFieldNames)){
 			return null;
 		}
-
+		// ToDo fix following Lines
+        return null;
 
 		/**
 		 * @var $sysPage PageRepository

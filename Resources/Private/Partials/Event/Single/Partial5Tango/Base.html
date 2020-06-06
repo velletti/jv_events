@@ -277,23 +277,25 @@
 						</f:then>
 
 						<f:else>
-							<jve:l10nFalImg event="{event}" tableFieldName="files">
-								<f:for each="{l10nfalimg}" as="falfile" iteration="iteration">
-									<f:if condition="{iteration.isFirst}">
-										<h3><f:translate key="tx_jvevents_domain_model_event.files" /></h3>
-										<ul class="files">
-									</f:if>
-									<li>
-										<a class="downloadPdf" href="{falfile._path -> f:format.htmlspecialchars()}" target="_blank">
-											{f:if(condition:falfile._properties.title, then:falfile._file._properties.title, else:falfile._properties.name)}
-										</a>
-										({falfile._properties.size -> f:format.bytes()})
-									</li>
-									<f:if condition="{iteration.isLast}">
-										</ul>
-									</f:if>
-								</f:for>
-							</jve:l10nFalImg>
+							<f:if condition="'1' == '2'">
+								<jve:l10nFalImg event="{event}" tableFieldName="files">
+									<f:for each="{l10nfalimg}" as="falfile" iteration="iteration">
+										<f:if condition="{iteration.isFirst}">
+											<h3><f:translate key="tx_jvevents_domain_model_event.files" /></h3>
+											<ul class="files">
+										</f:if>
+										<li>
+											<a class="downloadPdf" href="{falfile._path -> f:format.htmlspecialchars()}" target="_blank">
+												{f:if(condition:falfile._properties.title, then:falfile._file._properties.title, else:falfile._properties.name)}
+											</a>
+											({falfile._properties.size -> f:format.bytes()})
+										</li>
+										<f:if condition="{iteration.isLast}">
+											</ul>
+										</f:if>
+									</f:for>
+								</jve:l10nFalImg>
+							</f:if>
 						</f:else>
 
 
@@ -477,21 +479,23 @@
 							<f:image src="{event.organizer.teaserImage.uid}"  class="d-block w-100 h-auto img-float rounded shadow-lg" alt="{event.organizer.teaserImage.alternative}" title="{event.organizer.teaserImage.title}" maxWidth="300" maxHeight="220" treatIdAsReference="true" />
 						</f:then>
 						<f:else>
-							<jve:l10nFalImg event="{event}" tableFieldName="teaser_image">
-								<f:for each="{l10nfalimg}" as="falimage" iteration="i">
-									<f:if condition="{i.index} == 0">
-										<f:image
-											src="{falimage._file.publicUrl}"
-											title="{falimage._file.title}"
-											alt="{falimage._file.alternative}"
-											maxWidth="600"
-											maxHeight="400"
-											class="d-block w-100 h-auto img-float rounded shadow-lg"
-											treatIdAsReference="1"
-										/>
-									</f:if>
-								</f:for>
-							</jve:l10nFalImg>
+							<f:if condition="'1' == '2'">
+								<jve:l10nFalImg event="{event}" tableFieldName="teaser_image">
+									<f:for each="{l10nfalimg}" as="falimage" iteration="i">
+										<f:if condition="{i.index} == 0">
+											<f:image
+												src="{falimage._file.publicUrl}"
+												title="{falimage._file.title}"
+												alt="{falimage._file.alternative}"
+												maxWidth="600"
+												maxHeight="400"
+												class="d-block w-100 h-auto img-float rounded shadow-lg"
+												treatIdAsReference="1"
+											/>
+										</f:if>
+									</f:for>
+								</jve:l10nFalImg>
+							</f:if>
 						</f:else>
 
 					</f:if>
