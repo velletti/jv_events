@@ -184,7 +184,7 @@
                                 </div>
 
                                 <div class="col-12 pt-2">
-                                    <f:security.ifHasRole role="adminXOrganizer">
+                                    <f:security.ifHasRole role="adminOrganizer">
                                         <f:then>
                                             <f:link.page pageUid="{settings.pageIds.bannerModul}" noCache="true" class="btn btn-outline-primary x-1  w-100 text-left" title="Add Banner for Event"
                                                          additionalParams="{tx_jvbanners_connector: {action: 'create', controller: 'Connector' ,  event: '{output.event.eventId}' , returnPid: '{output.returnPid}'}}">
