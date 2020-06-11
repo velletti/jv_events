@@ -162,7 +162,7 @@
                                         <button class="btn btn-outline-primary btn-sm rounded-circle mr-2" href="#">
                                             <i class="fas fa-users"></i>
                                         </button>
-                                        <span class="">{output.event.registration.registeredSeats}<f:if condition="{output.event.registration.unconfirmedSeats}"> <span title="{f:translate(key:'tx_jvevents_domain_model_event.available_waiting_seats' , default:'')}">+({output.event.registration.unconfirmedSeats})</span></f:if> <f:translate key="registrations" default="Anmeldungen"/></span>
+                                        <span class="">{output.event.registration.registeredSeats}<f:if condition="{output.event.registration.unconfirmedSeats}"> <span title="{f:translate(key:'tx_jvevents_domain_model_event.available_waiting_seats' , default:'')}"> (+{output.event.registration.unconfirmedSeats})</span></f:if> <f:translate key="registrations" default="Anmeldungen"/></span>
                                      </f:link.page>
                                 </div>
                                 <div class="col-12 pt-2">
@@ -171,7 +171,7 @@
                                             <button class="btn btn-outline-primary btn-sm rounded-circle mr-2" href="#">
                                                 <i class="fas fa-image"></i>
                                             </button>
-                                            <span class="d-none d-md-inline-block">Add / Change Image</span>
+                                            Add / Change Image
                                         </f:link.page>
                                     </f:if>
                                 </div>

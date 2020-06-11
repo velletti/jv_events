@@ -68,14 +68,17 @@ class RegistrantRepository extends \JVE\JvEvents\Domain\Repository\BaseRepositor
     /**
      * @param int $id
      *
+     * @param bool $alsoHidden
      * @return mixed
      */
-    public function getOneById($id) {
+    public function getOneById($id, $alsoHidden = false) {
 
         $query = $this->createQuery();
         $query->getQuerySettings()->setRespectStoragePage(FALSE);
         $query->getQuerySettings()->setRespectSysLanguage(FALSE);
-        // $query->getQuerySettings()->setIgnoreEnableFields(TRUE) ;
+        if( $alsoHidden ) {
+             $query->getQuerySettings()->setIgnoreEnableFields(TRUE) ;
+        }
 
         return $query->matching( $query->equals("uid", $id) )->execute()->getFirst() ;
     }

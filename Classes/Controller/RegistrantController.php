@@ -1,6 +1,7 @@
 <?php
 namespace JVE\JvEvents\Controller;
 
+use JVE\JvEvents\Domain\Model\Registrant;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
@@ -152,7 +153,7 @@ class RegistrantController extends BaseController
     }
 
     /**
-     * @param \JVE\JvEvents\Domain\Model\Registrant $registrant
+     * @param Registrant $registrant
      * @param $d
      * @param $eol
      * @param $t
@@ -218,12 +219,12 @@ class RegistrantController extends BaseController
      * action new
      *
      * @param \JVE\JvEvents\Domain\Model\Event $event
-     * @param \JVE\JvEvents\Domain\Model\Registrant $registrant
+     * @param Registrant $registrant
      * @ignorevalidation $event
      * @ignorevalidation $registrant
      * @return void
      */
-    public function newAction(\JVE\JvEvents\Domain\Model\Event $event ,\JVE\JvEvents\Domain\Model\Registrant $registrant=null)
+    public function newAction(\JVE\JvEvents\Domain\Model\Event $event , Registrant $registrant=null)
     {
 		 $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
 		// $this->addFlashMessage($this->translate('msg_error_cid'), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
@@ -275,7 +276,7 @@ class RegistrantController extends BaseController
 
         }
         if ( $registrant==null) {
-            /** @var \JVE\JvEvents\Domain\Model\Registrant $registrant */
+            /** @var Registrant $registrant */
             $registrant = $this->objectManager->get("JVE\\JvEvents\\Domain\\Model\\Registrant");
             if($userUid) {
                 $registrant->setGender(intval( $GLOBALS['TSFE']->fe_user->user['gender'] + 1 ));
@@ -314,11 +315,11 @@ class RegistrantController extends BaseController
      *
      * @param \JVE\JvEvents\Domain\Model\Event $event
      * @ignorevalidation $event
-     * @param \JVE\JvEvents\Domain\Model\Registrant $registrant
+     * @param Registrant $registrant
 	 * @validate $registrant \JVE\JvEvents\Validation\Validator\RegistrantValidator
 	 * @return void
      */
-    public function createAction(\JVE\JvEvents\Domain\Model\Event $event, \JVE\JvEvents\Domain\Model\Registrant $registrant) {
+    public function createAction(\JVE\JvEvents\Domain\Model\Event $event, Registrant $registrant) {
 		$this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
 		$otherEvents = FALSE ;
 		if ( is_array( $_POST['tx_jvevents_events']['jv_events_other_events'])) {
@@ -412,7 +413,344 @@ class RegistrantController extends BaseController
 		// noraml each registration is only one Person but we can configure a second Person. if fields like more1, more2 are set
         // the registration is for 2 Persons (or maybe more)
 
-		$totalPersonCount = 1 ;
+		$totalPersonCount = $this->getTotalPersonCount($registrant) ;
+
+        // set Status 0 unconfirmed || 1 Confirmed by Partizipant || 2 Confirmed by Organizer
+
+        if( $this->settings['alreadyRegistered'] ) {
+            if( ! $this->settings['register']['doNotallowSameEmail'] ) {
+                $this->registrantRepository->update($oldReg) ;
+            }
+
+
+		} else {
+            if ($event->getNeedToConfirm() == 1) {
+                $registrant->setHidden(1);
+                $this->settings['success'] = TRUE ;
+                $this->settings['successMsg'] = "register_need_to_confirm" ;
+                $event->setUnconfirmedSeats($event->getUnconfirmedSeats() + $totalPersonCount);
+                // TODo : send Email to partizipant with LINK
+                // in this Process  we need to remove him from UnconfirmedSeats and add him to   RegisteredSeats
+
+            } else {
+                if (intval($event->getAvailableSeats()) > (intval($event->getRegisteredSeats()) + intval($event->getUnconfirmedSeats()))) {
+                    // there are enough free Seats so no confirmation by organizer is needed
+                    $registrant->setConfirmed(1);
+                    $event->setRegisteredSeats($event->getRegisteredSeats() + $totalPersonCount);
+                } else {
+                    // 2 possible situations: registration is using waitingLists
+                    $event->setUnconfirmedSeats($event->getUnconfirmedSeats() + $totalPersonCount);
+                    $registrant->setConfirmed(0);
+                }
+            }
+
+
+			$registrant->setCrdate(time() ) ;
+
+			$this->signalSlotDispatcher->dispatch(
+                __CLASS__,
+                __FUNCTION__,
+                array(
+                    'registrant' => &$registrant,
+                    'event' => &$event,
+                    'settings' => $this->settings,
+                )
+            );
+
+			$this->registrantRepository->add($registrant);
+
+
+
+			$this->persistenceManager->persistAll();
+			if( is_array($otherEvents)) {
+
+				foreach ($otherEvents as $key => $otherEvent) {
+					/** @var Registrant $newregistrant */
+					$newregistrant = $this->objectManager->get( "JVE\\JvEvents\\Domain\\Model\\Registrant")  ;
+					$properties = $registrant->_getProperties() ;
+					unset($properties['uid']) ;
+
+					foreach ($properties as $key => $value ) {
+						$newregistrant->_setProperty( $key , $value ) ;
+					}
+
+					if ($otherEvent->getNeedToConfirm() == 1) {
+						$otherEvent->setUnconfirmedSeats($otherEvent->getUnconfirmedSeats() + $totalPersonCount);
+
+					} else {
+						$otherEvent->setRegisteredSeats($otherEvent->getRegisteredSeats() + $totalPersonCount);
+					}
+
+
+
+					if ($otherEvent->getNeedToConfirm() == 1) {
+						$newregistrant->setHidden(1);
+						$this->settings['success'] = TRUE ;
+						$this->settings['successMsg'] = "register_need_to_confirm" ;
+
+						// TODo : send Email to partizipant with LINK
+                        // User needs to confirm  is not in use in the moment.. !!
+                        $otherEvent->setUnconfirmedSeats($otherEvent->getUnconfirmedSeats() + $totalPersonCount);
+
+					} else {
+                        if (intval($otherEvent->getAvailableSeats()) > (intval($otherEvent->getRegisteredSeats()) + intval($otherEvent->getUnconfirmedSeats()))) {
+                            // there are enough free Seats so no confirmation by organizer is needed
+                            $newregistrant->setConfirmed(1);
+                            $otherEvent->setUnconfirmedSeats($otherEvent->getUnconfirmedSeats() + $totalPersonCount);
+                        } else {
+                            // 2 possible situations: registration is using waitingLists
+                            $newregistrant->setConfirmed(0);
+                            $otherEvent->setRegisteredSeats($otherEvent->getRegisteredSeats() + $totalPersonCount);
+                        }
+
+					}
+
+					if ($otherEvent->getRegistrationPid() > 0) {
+						$newregistrant->setPid($otherEvent->getRegistrationPid());
+					} else {
+						$newregistrant->setPid( $GLOBALS['TSFE']->id );
+					}
+                    $newregistrant->setEvent( $otherEvent->getUid() ) ;
+					$this->registrantRepository->add($newregistrant);
+
+					$this->eventRepository->update($otherEvent);
+					$this->persistenceManager->persistAll();
+
+					unset( $newregistrant ) ;
+				}
+			}
+
+
+
+			$this->eventRepository->update($event);
+		}
+        $this->persistenceManager->persistAll();
+
+		if( $registrant->getHidden() == 0  ) {
+			$this->settings['success'] = TRUE ;
+			$replyto = false ;
+			$registrantEmail = $this->getRegistrantEmail($registrant) ;
+
+
+            if (is_object($event->getOrganizer())) {
+                if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($event->getOrganizer()->getEmail())) {
+                    $replyto = array( $event->getOrganizer()->getEmail() => '=?utf-8?B?'. base64_encode( $event->getOrganizer()->getName() ) .'?=' ) ;
+                }
+                if( $event->getNotifyOrganizer() && $replyto ) {
+
+                    if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($event->getOrganizer()->getEmail())) {
+                        $this->sendEmail($event, $registrant, "Organizer" ,
+                            array( $event->getOrganizer()->getEmail() => '=?utf-8?B?'. base64_encode( $event->getOrganizer()->getName() ) .'?=' ) , $otherEvents , $registrantEmail);
+                    }
+                    $ccEmails = str_replace( array("," , ";" , " " ) , array("," , "," , ",") , $event->getOrganizer()->getEmailCc() ) ;
+                    $ccEmailsArray = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode("," , $ccEmails , true ) ;
+                    if ( count($ccEmailsArray) > 0 ) {
+                        foreach ( $ccEmailsArray as $ccEmail ) {
+                            if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail( $ccEmail ) ) {
+
+                                $this->sendEmail($event, $registrant, "Organizer" ,
+                                    array( $ccEmail => '=?utf-8?B?'. base64_encode( $event->getOrganizer()->getName() ) .'?=' ) , $otherEvents , $registrantEmail);
+                            }
+                        }
+                    }
+                }
+            }
+			if( $event->getNotifyRegistrant()  ) {
+				if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($registrant->getEmail())) {
+					$this->settings['successMsg'] = "register_email_with_infos" ;
+
+					$this->sendEmail($event, $registrant, "Registrant" ,
+                        $registrantEmail , $otherEvents , $replyto );
+				}
+			}
+
+		} else {
+		    // ToDo: create Workflow that this user get a confirmation Email with link before he is REALLY registered actually not in use !!!
+        }
+		
+
+        $this->view->assign('event', $event);
+		if( $this->settings['alreadyRegistered'] ) {
+			$this->view->assign('registrant', $oldReg);
+		} else {
+			$this->view->assign('registrant', $registrant);
+		}
+
+        $this->view->assign('settings', $this->settings);
+    }
+
+    /**
+     * action confirmAction
+     *
+     * @param Registrant $registrant
+     * @return void
+     */
+    public function confirmAction(Registrant $registrant)
+    {
+        $eventUid = 0 ;
+        $hash = '' ;
+        if( $this->request->hasArgument('hash')) {
+            $hash = trim(strip_tags( $this->request->getArgument('hash') ));
+        }
+        if( $this->request->hasArgument('registrant')) {
+            $registrantUid = trim(strip_tags( $this->request->getArgument('registrant') ));
+            $registrant = $this->registrantRepository->getOneById($registrantUid , true ) ;
+        }
+
+        if(is_object($registrant) && $registrant->getEvent()) {
+            $error = false ;
+            /** @var \JVE\JvEvents\Domain\Model\Event $event */
+            $event= $this->eventRepository->findByUid($registrant->getEvent()) ;
+            if ( $event && is_object($event->getOrganizer())) {
+                $eventUid = $event->getUid() ;
+                if($this->isUserOrganizer() ) {
+                    if( $this->hasUserAccess( $event->getOrganizer() )) {
+
+                        if( $registrant->getConfirmed() == 0 ) {
+                            $registrant->setConfirmed(1) ;
+                            $this->registrantRepository->update($registrant);
+                            if( $event->getNotifyRegistrant()  ) {
+                                $replyto = false ;
+                                if (is_object($event->getOrganizer())) {
+                                    if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($event->getOrganizer()->getEmail())) {
+                                        $replyto = array( $event->getOrganizer()->getEmail() => '=?utf-8?B?'. base64_encode( $event->getOrganizer()->getName() ) .'?=' ) ;
+                                    }
+                                }
+                                $registrantEmail = $this->getRegistrantEmail($registrant)   ;
+                                $totalNumberOfPersons = $this->getTotalPersonCount($registrant) ;
+                                $event->setUnconfirmedSeats( $event->getUnconfirmedSeats() - $totalNumberOfPersons );
+                                $event->setRegisteredSeats( $event->getRegisteredSeats() + $totalNumberOfPersons );
+
+                                $this->eventRepository->update($event);
+                                $this->persistenceManager->persistAll();
+
+                                if ($registrantEmail) {
+                                    $this->settings['successMsg'] = "register_email_with_infos" ;
+
+                                    $this->sendEmail($event, $registrant, "Registrant" ,
+                                        $registrantEmail , false , $replyto );
+                                    $this->addFlashMessage('Confirmation Mail is sent registration ', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+                                }
+                            }
+                        } else {
+                            $this->addFlashMessage('registration was already confirmed!', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+                        }
+
+                    } else {
+                        $this->addFlashMessage('No Access ! leasee login ?? ', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
+                    }
+                } else {
+                    $this->addFlashMessage('No Access ! leasee login ?? ', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
+                }
+            } else {
+                $this->addFlashMessage('Could not find event (id: "' . $registrant->getEvent() . '") related to this registration ', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
+
+            }
+        }
+        $this->persistenceManager->persistAll() ;
+        $this->redirect("list" , null , null, array("event" => $eventUid , "hash" => $hash ) ) ;
+
+    }
+
+    /**
+     * action checkQrcodeAction
+     *
+     * @param Registrant|null $registrant
+     * @param \JVE\JvEvents\Domain\Model\Event|null $eventUid
+     * @param string $hash
+     * @return void
+     */
+    public function checkQrcodeAction(Registrant $registrant=null , \JVE\JvEvents\Domain\Model\Event $event=null , string $hash='')
+    {
+        $args = $this->request->getArguments() ;
+        $this->view->assign('registrant', $registrant);
+        $this->view->assign('event', $event);
+        $this->view->assign('hash', $hash);
+
+    }
+
+
+    /**
+     * action deleteAction
+     *
+     * @return void
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
+     */
+    public function deleteAction()
+    {
+        $eventUid = 0 ;
+        $hash = '' ;
+        if( $this->request->hasArgument('hash')) {
+            $hash = trim(strip_tags( $this->request->getArgument('hash') ));
+        }
+        if( $this->request->hasArgument('registrant')) {
+            $registrantUid = trim(strip_tags( $this->request->getArgument('registrant') ));
+            $registrant = $this->registrantRepository->getOneById($registrantUid , true ) ;
+        }
+
+        if(is_object($registrant) && $registrant->getEvent()) {
+            $error = false ;
+            /** @var \JVE\JvEvents\Domain\Model\Event $event */
+            $event= $this->eventRepository->findByUid($registrant->getEvent()) ;
+            if ( $event && is_object($event->getOrganizer())) {
+                $eventUid = $event->getUid() ;
+                if($this->isUserOrganizer() ) {
+                    if( $this->hasUserAccess( $event->getOrganizer() )) {
+
+                        if( $registrant->getHidden() ) {
+                            $this->registrantRepository->remove($registrant) ;
+                        } else {
+                            $newValue = $event->getRegisteredSeats() - $this->getTotalPersonCount( $registrant) ;
+                            $event->setRegisteredSeats($newValue);
+                            $this->eventRepository->update($event) ;
+                            $registrant->setHidden(1) ;
+                            $this->registrantRepository->update($registrant) ;
+                        }
+
+
+
+
+                        $this->addFlashMessage('registration sucessful canceled', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+                    } else {
+                        $this->addFlashMessage('You do not have access to this event registrations', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
+                    }
+                } else {
+                    $this->addFlashMessage('You do not have access as organizer. maybe not logged in ?', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
+                }
+            } else {
+                $this->addFlashMessage('Could not find event (id: "' . $registrant->getEvent() . '") related to this registration ', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
+
+            }
+        } else {
+            $this->addFlashMessage('Could not find this registration ', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
+        }
+        $this->persistenceManager->persistAll() ;
+        $this->redirect("list" , null , null, array("event" => $eventUid , "hash" => $hash ) ) ;
+
+
+    }
+
+
+    /**
+     * action show
+     *
+     * @param Registrant $registrant
+     * @return void
+     */
+    public function showAction(Registrant $registrant)
+    {
+        $this->view->assign('registrant', $registrant);
+    }
+
+    /**
+     * @param Registrant $registrant
+     * @return int|mixed
+     */
+    private function getTotalPersonCount(Registrant $registrant) {
+        $totalPersonCount = 1 ;
         if( array_key_exists('secondPerson' , $this->settings['register'] )) {
             // variant 1 : used for tango münchen: we allow only registration of a second person and gender / first/ lastname
             // fields should be filled. So $totalPersonCount may rise t o2
@@ -450,226 +788,26 @@ class RegistrantController extends BaseController
             // Finally: minium 1 registration but maybe 2 or more up to maxAmount
             $totalPersonCount = max( 1 , $totalPersonCount ) ;
         }
+        return $totalPersonCount ;
+    }
 
+    /**
+     * @param Registrant $registrant
+     * @return array|bool
+     */
+    public function getRegistrantEmail(Registrant $registrant) {
+        $registrantEmail = false ;
+        if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($registrant->getEmail())) {
 
-        // set Status 0 unconfirmed || 1 Confirmed by Partizipant || 2 Confirmed by Organizer
-
-        if( $this->settings['alreadyRegistered'] ) {
-            if( ! $this->settings['register']['doNotallowSameEmail'] ) {
-                $this->registrantRepository->update($oldReg) ;
+            $name = trim( $registrant->getFirstName() . " " . $registrant->getLastName())  ;
+            if( strlen( $name ) < 3 ) {
+                $name = "RegistrantId: " . $registrant->getUid() ;
+            } else {
+                $name  = '=?utf-8?B?'. base64_encode( $name) .'?=' ;
             }
-
-
-		} else {
-			// ToDo Availble Seats or Waintig seats dann ?
-			if (intval($event->getAvailableSeats()) > (intval($event->getRegisteredSeats()) + intval($event->getUnconfirmedSeats()))) {
-				// there are enough free Seats so no confirmation by organizer is needed
-				$registrant->setConfirmed(1);
-			} else {
-				// 2 possible situations: registration is using waitingLists
-				$registrant->setConfirmed(0);
-			}
-
-
-
-			if ($event->getNeedToConfirm() == 1) {
-				$registrant->setHidden(1);
-				$this->settings['success'] = TRUE ;
-				$this->settings['successMsg'] = "register_need_to_confirm" ;
-				$event->setUnconfirmedSeats($event->getUnconfirmedSeats() + $totalPersonCount);
-				// TODo : send Email to partizipant with LINK
-			} else {
-				$event->setRegisteredSeats($event->getRegisteredSeats() + $totalPersonCount);
-			}
-			$registrant->setCrdate(time() ) ;
-
-			$this->signalSlotDispatcher->dispatch(
-                __CLASS__,
-                __FUNCTION__,
-                array(
-                    'registrant' => &$registrant,
-                    'event' => &$event,
-                    'settings' => $this->settings,
-                )
-            );
-
-			$this->registrantRepository->add($registrant);
-
-
-
-			$this->persistenceManager->persistAll();
-			if( is_array($otherEvents)) {
-
-				foreach ($otherEvents as $key => $otherEvent) {
-					/** @var \JVE\JvEvents\Domain\Model\Registrant $newregistrant */
-					$newregistrant = $this->objectManager->get( "JVE\\JvEvents\\Domain\\Model\\Registrant")  ;
-					$properties = $registrant->_getProperties() ;
-					unset($properties['uid']) ;
-
-					foreach ($properties as $key => $value ) {
-						$newregistrant->_setProperty( $key , $value ) ;
-					}
-
-					if ($otherEvent->getNeedToConfirm() == 1) {
-						$otherEvent->setUnconfirmedSeats($otherEvent->getUnconfirmedSeats() + $totalPersonCount);
-
-					} else {
-						$otherEvent->setRegisteredSeats($otherEvent->getRegisteredSeats() + $totalPersonCount);
-					}
-
-					if (intval($otherEvent->getAvailableSeats()) > (intval($otherEvent->getRegisteredSeats()) + intval($otherEvent->getUnconfirmedSeats()))) {
-						// there are enough free Seats so no confirmation by organizer is needed
-						$newregistrant->setConfirmed(1);
-					} else {
-						// 2 possible situations: registration is using waitingLists
-						$newregistrant->setConfirmed(0);
-					}
-
-					if ($otherEvent->getNeedToConfirm() == 1) {
-						$newregistrant->setHidden(1);
-						$this->settings['success'] = TRUE ;
-						$this->settings['successMsg'] = "register_need_to_confirm" ;
-						$otherEvent->setUnconfirmedSeats($otherEvent->getUnconfirmedSeats() + $totalPersonCount);
-						// TODo : send Email to partizipant with LINK
-                        // User needs to confirm  is not in use in the moment.. !!
-
-					} else {
-						$event->setRegisteredSeats($otherEvent->getRegisteredSeats() + $totalPersonCount);
-					}
-
-					if ($otherEvent->getRegistrationPid() > 0) {
-						$newregistrant->setPid($otherEvent->getRegistrationPid());
-					} else {
-						$newregistrant->setPid( $GLOBALS['TSFE']->id );
-					}
-                    $newregistrant->setEvent( $otherEvent->getUid() ) ;
-					$this->registrantRepository->add($newregistrant);
-
-					$this->eventRepository->update($otherEvent);
-					$this->persistenceManager->persistAll();
-
-					unset( $newregistrant ) ;
-				}
-			}
-
-
-
-			$this->eventRepository->update($event);
-		}
-        $this->persistenceManager->persistAll();
-
-		if( $registrant->getHidden() == 0  ) {
-			$this->settings['success'] = TRUE ;
-			$replyto = false ;
-			$registrantEmail = false ;
-            if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($registrant->getEmail())) {
-
-                $name = trim( $registrant->getFirstName() . " " . $registrant->getLastName())  ;
-                if( strlen( $name ) < 3 ) {
-                    $name = "RegistrantId: " . $registrant->getUid() ;
-                } else {
-                    $name  = '=?utf-8?B?'. base64_encode( $name) .'?=' ;
-                }
-                $registrantEmail = array( $registrant->getEmail() => $name ) ;
-            }
-
-            if (is_object($event->getOrganizer())) {
-                if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($event->getOrganizer()->getEmail())) {
-                    $replyto = array( $event->getOrganizer()->getEmail() => '=?utf-8?B?'. base64_encode( $event->getOrganizer()->getName() ) .'?=' ) ;
-                }
-                if( $event->getNotifyOrganizer() && $replyto ) {
-
-                    if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($event->getOrganizer()->getEmail())) {
-                        $this->sendEmail($event, $registrant, "Organizer" ,
-                            array( $event->getOrganizer()->getEmail() => '=?utf-8?B?'. base64_encode( $event->getOrganizer()->getName() ) .'?=' ) , $otherEvents , $registrantEmail);
-                    }
-                    $ccEmails = str_replace( array("," , ";" , " " ) , array("," , "," , ",") , $event->getOrganizer()->getEmailCc() ) ;
-                    $ccEmailsArray = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode("," , $ccEmails , true ) ;
-                    if ( count($ccEmailsArray) > 0 ) {
-                        foreach ( $ccEmailsArray as $ccEmail ) {
-                            if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail( $ccEmail ) ) {
-
-                                $this->sendEmail($event, $registrant, "Organizer" ,
-                                    array( $ccEmail => '=?utf-8?B?'. base64_encode( $event->getOrganizer()->getName() ) .'?=' ) , $otherEvents , $registrantEmail);
-                            }
-                        }
-                    }
-                }
-            }
-			if( $event->getNotifyRegistrant()  ) {
-				if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($registrant->getEmail())) {
-					$this->settings['successMsg'] = "register_email_with_infos" ;
-
-					$this->sendEmail($event, $registrant, "Registrant" ,
-                        $registrantEmail , $otherEvents , $replyto );
-				}
-			}
-
-		}
-		
-
-        $this->view->assign('event', $event);
-		if( $this->settings['alreadyRegistered'] ) {
-			$this->view->assign('registrant', $oldReg);
-		} else {
-			$this->view->assign('registrant', $registrant);
-		}
-
-        $this->view->assign('settings', $this->settings);
+            $registrantEmail = array( $registrant->getEmail() => $name ) ;
+        }
+        return $registrantEmail ;
     }
-
-    /**
-     * action confirmAction
-     *
-     * @param \JVE\JvEvents\Domain\Model\Registrant $registrant
-     * @return void
-     */
-    public function confirmAction(\JVE\JvEvents\Domain\Model\Registrant $registrant)
-    {
-        $this->view->assign('registrant', $registrant);
-    }
-
-    /**
-     * action checkQrcodeAction
-     *
-     * @param \JVE\JvEvents\Domain\Model\Registrant|null $registrant
-     * @param \JVE\JvEvents\Domain\Model\Event|null $eventUid
-     * @param string $hash
-     * @return void
-     */
-    public function checkQrcodeAction(\JVE\JvEvents\Domain\Model\Registrant $registrant=null ,  \JVE\JvEvents\Domain\Model\Event $event=null , string $hash='')
-    {
-        $args = $this->request->getArguments() ;
-        $this->view->assign('registrant', $registrant);
-        $this->view->assign('event', $event);
-        $this->view->assign('hash', $hash);
-
-    }
-
-
-
-    /**
-     * action deleteAction
-     *
-     * @param \JVE\JvEvents\Domain\Model\Registrant $registrant
-     * @return void
-     */
-    public function deleteAction(\JVE\JvEvents\Domain\Model\Registrant $registrant)
-    {
-        $this->view->assign('registrant', $registrant);
-    }
-
-
-    /**
-     * action show
-     *
-     * @param \JVE\JvEvents\Domain\Model\Registrant $registrant
-     * @return void
-     */
-    public function showAction(\JVE\JvEvents\Domain\Model\Registrant $registrant)
-    {
-        $this->view->assign('registrant', $registrant);
-    }
-
 
 }
