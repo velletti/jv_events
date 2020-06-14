@@ -31,15 +31,6 @@
 				</f:if>
 			</div>
 		</div>
-		<f:if condition="{settings.success}">
-			<br>
-			<f:variable name="qrstring">{settings.servername}/de/kurseundworkshops/kurs-details/registration/event/{event.uid}/registrant/{registrant.uid}/hash/{registrant.fingerprint}.html</f:variable>
 
-            <f:link.action pageUid="{settings.pageId}" controller="Registrant" action="checkQrcode" arguments="{registrant: '{registrant.uid}' , event: '{event.uid}' , hash: '{registrant.fingerprint}'}" class="btn btn-secondary-outline" title="{qrstring}">
-				<hr>
-				<img src="data:image/png;base64,{jve:qrcode(string: '{qrstring}')}" height="180" width="180" alt="qrcode" />
-				<hr>
-			</f:link.action>
-		</f:if>
 	</f:else>
 </f:if>
