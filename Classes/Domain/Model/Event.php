@@ -502,7 +502,19 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 	 */
 	protected $registrationFormPid = 0 ;
 
+    /**
+     * registrationGender
+     *
+     * @var integer
+     */
+    protected $registrationGender= 0 ;
 
+    /**
+     * registrationFormPid
+     *
+     * @var integer
+     */
+    protected $registrationShowStatus = 0 ;
 
 	/**
      * Email texst send to the organizer
@@ -2047,6 +2059,24 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         return false ;
     }
 
+    /**
+     * @return boolean
+     */
+    public function isOnlyWaitinglist()
+    {
+
+        // only Check if is with internal registration and we have free seats
+        if ($this->withRegistration ) {
+            // Internal Registration Process : check $this->availableSeats  Seats against Registered
+            if (($this->registeredSeats  +1) > ($this->availableSeats )  ) {
+                // echo "<br>Line: " . __LINE__ . " : " . " File: " . __FILE__ . '<br>$this->registeredSeats + $this->unconfirmedSeats +1) > ($this->availableSeats + $this->availableWaitingSeat <hr>';
+                return TRUE;
+            }
+        }
+        // ok: we have free seats or it is eyternal registration so we do not need or can not show the No Free Seats warning
+        return false ;
+    }
+
 	/**
 	 * @return boolean
 	 */
@@ -2552,6 +2582,42 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         $this->slug = $slug;
     }
+
+    /**
+     * @return int
+     */
+    public function getRegistrationGender(): int
+    {
+        return $this->registrationGender;
+    }
+
+    /**
+     * @param int $registrationGender
+     */
+    public function setRegistrationGender(int $registrationGender)
+    {
+        $this->registrationGender = $registrationGender;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRegistrationShowStatus(): int
+    {
+        return $this->registrationShowStatus;
+    }
+
+    /**
+     * @param mixed $registrationShowStatus
+     */
+    public function setRegistrationShowStatus($registrationShowStatus)
+    {
+        if( is_null($registrationShowStatus)) {
+            $registrationShowStatus = 0 ;
+        }
+        $this->registrationShowStatus = $registrationShowStatus;
+    }
+
 
 
 

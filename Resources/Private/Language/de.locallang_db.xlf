@@ -163,6 +163,31 @@
 			<source>Your Registration</source>
 			<target>Ihre Anmeldung</target>
 		</trans-unit>
+		 <trans-unit id="tx_jvevents_domain_model_event.registration_show_status">
+            <source>Show amount of Registrations during registration</source>
+            <target>Anzahl der bisherigen Anmeldungen bei der Registrierung anzeigen</target>
+        </trans-unit>
+        <trans-unit id="tx_jvevents_domain_model_event.registration_gender">
+            <source>Restrict Registration by gender</source>
+            <target>Registrierung eingeschänken</target>
+        </trans-unit>
+        <trans-unit id="tx_jvevents_domain_model_event.registration_gender.none">
+            <source>Registration is not restricted by gender (default)</source>
+            <target>Registration ist nicht eingeschränkt durch das Geschlecht (default)</target>
+        </trans-unit>
+        <trans-unit id="tx_jvevents_domain_model_event.registration_gender.male">
+            <source>Registration is restricted. Only male (leaders) can register</source>
+            <target>Registrierung ist eingeschänkt. Nur männliche (leader) Teilnehmer erlaubt</target>
+        </trans-unit>
+        <trans-unit id="tx_jvevents_domain_model_event.registration_gender.female">
+            <source>Registration is restricted. Only female (followers) can register</source>
+            <target>Registrierung ist eingeschänkt. Nur weibliche (follower) Teilnehmer erlaubt</target>
+        </trans-unit>
+        <trans-unit id="tx_jvevents_domain_model_event.registration_gender.couples">
+            <source>Registration is restricted. Only Couples can register</source>
+            <target>Registrierung ist eingeschänkt. Nur Paare erlaubt.</target>
+        </trans-unit>
+
 		<trans-unit id="tx_jvevents_domain_model_event.registrant" approved="yes">
 			<source>Participant</source>
 			<target>Teilnehmer</target>

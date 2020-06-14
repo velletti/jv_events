@@ -21,10 +21,12 @@
 				<th><span title="Count of persons in registration">#</span></th>
 				<th><i class="fa fa-wrench text-light" title="Action Column"></i></th>
 				<th><i class="fa fa-info-circle text-light" title="Status of registration"></i></th>
+				<th><i class="fa fa-transgender" title="Gender"></i></th>
 				<th><f:translate key="tx_jvevents_domain_model_registrant.first_name" /></th>
 				<th><f:translate key="tx_jvevents_domain_model_registrant.last_name" /></th>
 				<th><f:translate key="tx_jvevents_domain_model_registrant.email" /></th>
 				<th><f:translate key="tx_jvevents_domain_model_registrant.phone" /></th>
+				<th><i class="fa fa-transgender" title="Gender"></i></th>
 				<th><f:translate key="tx_jvevents_domain_model_registrant.first_name" /></th>
 				<th><f:translate key="tx_jvevents_domain_model_registrant.last_name" /></th>
 				<th><f:translate key="tx_jvevents_domain_model_registrant.street_and_nr" /></th>
@@ -103,10 +105,34 @@
 							</f:else>
 						</f:if>
 					</td>
+					<td>
+						<f:if condition="{registrant.gender} == '1'">
+						<f:then>
+							<i class="fa fa-male " title="male"> </i>
+						</f:then>
+						<f:else>
+							<f:if condition="{registrant.gender} == '2'">
+								<i class="fa fa-female " title="female"> </i>
+							</f:if>
+						</f:else>
+						</f:if>
+					</td>
 					<td>{registrant.firstName}</td>
 					<td>{registrant.lastName}</td>
 					<td><i class="fa fa-envelope  mr-2"></i><f:link.email email="{registrant.email}">{registrant.email}</f:link.email></td>
 					<td><i class="fa fa-phone mr-2"></i><f:link.external uri="tel:{registrant.phone}">{registrant.phone}</f:link.external> </td>
+					<td>
+						<f:if condition="{registrant.more1} == '1'">
+							<f:then>
+								<i class="fa fa-male " title="male"> </i>
+							</f:then>
+							<f:else>
+								<f:if condition="{registrant.more1} == '2'">
+									<i class="fa fa-female " title="female"> </i>
+								</f:if>
+							</f:else>
+						</f:if>
+					</td>
 					<td>{registrant.more2}</td>
 					<td>{registrant.more3}</td>
 					<td>{registrant.streetAndNr}</td>

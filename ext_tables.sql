@@ -40,8 +40,10 @@ CREATE TABLE tx_jvevents_domain_model_event (
 	registration_url text,
 	registration_until int(11) DEFAULT '0' NOT NULL,
 	registration_access text NULL DEFAULT NULL,
+	registration_gender int(11) DEFAULT '0' NOT NULL,
+	registration_show_status tinyint(1) unsigned DEFAULT '0' NOT NULL,
 
-  store_in_hubspot tinyint(1) unsigned DEFAULT '0' NOT NULL,
+    store_in_hubspot tinyint(1) unsigned DEFAULT '0' NOT NULL,
 	sales_force_campaign_id varchar(60) DEFAULT '' NOT NULL,
 
 	store_in_citrix tinyint(1) unsigned DEFAULT '0' NOT NULL,
@@ -357,6 +359,8 @@ CREATE TABLE tx_jvevents_domain_model_registrant (
 	sys_language_uid int(11) DEFAULT '0' NOT NULL,
 	l10n_parent int(11) DEFAULT '0' NOT NULL,
 	l10n_diffsource mediumblob,
+    starttime int(11) unsigned DEFAULT '0' NOT NULL,
+	endtime int(11) unsigned DEFAULT '0' NOT NULL,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid),

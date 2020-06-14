@@ -880,6 +880,14 @@ class EventController extends BaseController
         $event->setChangeFutureEvents( $eventArray['changeFutureEvents'] ) ;
         $event->setAvailableSeats(intval($event->getAvailableSeats()));
         $event->setAvailableWaitingSeats(intval($event->getAvailableWaitingSeats()));
+
+        if(!array_key_exists( 'registrationShowStatus' , $eventArray ) || is_null($eventArray['registrationShowStatus']))  {
+            $event->setRegistrationShowStatus( 0) ;
+        } else {
+            $event->setRegistrationShowStatus( intval($event->getRegistrationShowStatus())) ;
+        }
+
+        $event->setRegistrationGender( intval($event->getRegistrationGender())) ;
         $event->setWithRegistration(intval($event->getWithRegistration()));
         if( intval($event->getWithRegistration()) == 1 ) {
             $event->setRegistrationUntil($event->getStartDate()->modify('+23 hours') );

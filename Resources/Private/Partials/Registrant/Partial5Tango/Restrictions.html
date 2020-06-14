@@ -1,0 +1,28 @@
+{namespace jvt=Jve\JveTemplate\ViewHelpers}
+<f:variable name="alertClass">alert-info</f:variable>
+<f:if condition="{event.registrationGender} || {event.isOnlyWaitinglist}">
+    <f:variable name="alertClass">alert-warning</f:variable>
+</f:if>
+<f:section name="main">
+    <div class="alert {alertClass}">
+        <f:if condition="{event.isOnlyWaitinglist}">
+            <div>Only Waiting list!</div>
+        </f:if>
+        <f:if condition="{event.registrationGender}">
+            <f:switch  expression="{event.registrationGender}">
+                <f:case value="1">
+                    Only Male
+                </f:case>
+                <f:case value="2">
+                    Only female
+                </f:case>
+                <f:case value="3">
+                    Only Couples
+                </f:case>
+            </f:switch>
+        </f:if>
+        <f:if condition="{event.registrationShowStatus}">
+            registeredSeats {event.registeredSeats} | unconfirmedSeats  {event.unconfirmedSeats} |  availableSeats {event.availableSeats} | availableWaitingSeats   {event.availableWaitingSeats} |
+        </f:if>
+    </div>
+</f:section>

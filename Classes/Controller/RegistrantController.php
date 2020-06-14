@@ -2,6 +2,7 @@
 namespace JVE\JvEvents\Controller;
 
 use JVE\JvEvents\Domain\Model\Registrant;
+use JVE\JvEvents\Domain\Model\Subevent;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
@@ -112,6 +113,29 @@ class RegistrantController extends BaseController
 
                 $this->addFlashMessage("Export done ") ;
 
+            }
+            $registered = 0 ;
+            $waiting = 0 ;
+            /** @var Registrant $registrant */
+            foreach ($registrants as $registrant) {
+                if(!$registrant->getHidden() ) {
+                    $single = $this->getTotalPersonCount($registrant) ;
+                    if( $registrant->getConfirmed() ) {
+                        $registered = $registered + $single['total'] ;
+                    }   else {
+                        $waiting = $waiting +  $single['total'] ;
+                    }
+
+                }
+            }
+            if( $event->getRegisteredSeats() != $registered || $event->getUnconfirmedSeats() != $waiting ) {
+
+                $this->addFlashMessage('Number of registrations was corrected from '
+                    . $event->getRegisteredSeats() . " (+" . $event->getUnconfirmedSeats() . ") to : " . $registered . " (+" .  $waiting . ") registrations."
+                    , '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+                $event->setRegisteredSeats($registered) ;
+                $event->setUnconfirmedSeats($waiting)  ;
+                $this->eventRepository->update($event) ;
             }
 
             $this->view->assign('registrants', $registrants);
@@ -320,6 +344,9 @@ class RegistrantController extends BaseController
 	 * @return void
      */
     public function createAction(\JVE\JvEvents\Domain\Model\Event $event, Registrant $registrant) {
+
+        $latestEventDate = $event->getStartDate() ;
+
 		$this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
 		$otherEvents = FALSE ;
 		if ( is_array( $_POST['tx_jvevents_events']['jv_events_other_events'])) {
@@ -335,6 +362,10 @@ class RegistrantController extends BaseController
 					if( is_object($otherEvent[0])) {
 						if($otherEvent[0]->isIsRegistrationPossible() ) {
 							$otherEvents[] = $otherEvent[0] ;
+							if( $otherEvent[0]->getStartDate() > $latestEventDate ) {
+                                $latestEventDate = $otherEvent[0]->getStartDate() ;
+                            }
+
 						}
 					}
 				} else {
@@ -345,6 +376,22 @@ class RegistrantController extends BaseController
 
             $registrant->setOtherEvents( serialize($temp ) );
 		}
+        $querysettings = new \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings ;
+        $querysettings->setStoragePageIds(array( $event->getPid() )) ;
+
+        $this->subeventRepository->setDefaultQuerySettings( $querysettings );
+        $subevents = $this->subeventRepository->findByEventAllpages($event->getUid() , true ) ;
+        if ( is_array( $subevents ) && count( $subevents)  > 0 ) {
+            /** @var Subevent $subevent */
+            foreach ($subevents as $subevent) {
+                if( is_object($subevent)) {
+                    if( $subevent->getStartDate() > $latestEventDate ) {
+                        $latestEventDate = $subevent->getStartDate() ;
+                    }
+                }
+            }
+
+        }
 
 		if( $registrant->getCompany2() == '' ) {
 			if( $registrant->getDepartment2() <> '' ) {
@@ -373,6 +420,11 @@ class RegistrantController extends BaseController
         $this->settings['hash'] = hash("sha256" , $checkString ) ;
 
 		$registrant->setEvent($event->getUid() );
+		if( $latestEventDate instanceof \DateTime ) {
+            $latestEventDate = $latestEventDate->getTimestamp() ;
+        }
+        $latestEventDate = $latestEventDate + (3540 * 24  ) ; // add 23:59  to  Enddate. This  is used to calculate depending on GDPR settings, when registration will be deleted.
+		$registrant->setEndtime( $latestEventDate) ;
 
 		if ($event->getRegistrationPid() > 0) {
 			$registrant->setPid($event->getRegistrationPid());
@@ -413,7 +465,7 @@ class RegistrantController extends BaseController
 		// noraml each registration is only one Person but we can configure a second Person. if fields like more1, more2 are set
         // the registration is for 2 Persons (or maybe more)
 
-		$totalPersonCount = $this->getTotalPersonCount($registrant) ;
+		$totalPersonCount = $this->getTotalPersonCount($registrant)['total'] ;
 
         // set Status 0 unconfirmed || 1 Confirmed by Partizipant || 2 Confirmed by Organizer
 
@@ -617,7 +669,7 @@ class RegistrantController extends BaseController
                                     }
                                 }
                                 $registrantEmail = $this->getRegistrantEmail($registrant)   ;
-                                $totalNumberOfPersons = $this->getTotalPersonCount($registrant) ;
+                                $totalNumberOfPersons = $this->getTotalPersonCount($registrant)['total']  ;
                                 $event->setUnconfirmedSeats( $event->getUnconfirmedSeats() - $totalNumberOfPersons );
                                 $event->setRegisteredSeats( $event->getRegisteredSeats() + $totalNumberOfPersons );
 
@@ -703,14 +755,12 @@ class RegistrantController extends BaseController
                         if( $registrant->getHidden() ) {
                             $this->registrantRepository->remove($registrant) ;
                         } else {
-                            $newValue = $event->getRegisteredSeats() - $this->getTotalPersonCount( $registrant) ;
+                            $newValue = $event->getRegisteredSeats() - $this->getTotalPersonCount( $registrant)['total']  ;
                             $event->setRegisteredSeats($newValue);
                             $this->eventRepository->update($event) ;
                             $registrant->setHidden(1) ;
                             $this->registrantRepository->update($registrant) ;
                         }
-
-
 
 
                         $this->addFlashMessage('registration sucessful canceled', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
@@ -788,7 +838,7 @@ class RegistrantController extends BaseController
             // Finally: minium 1 registration but maybe 2 or more up to maxAmount
             $totalPersonCount = max( 1 , $totalPersonCount ) ;
         }
-        return $totalPersonCount ;
+        return array( "total" => $totalPersonCount ) ;
     }
 
     /**

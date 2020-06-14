@@ -23,10 +23,10 @@ return array(
 		'iconfile' => '/typo3conf/ext/jv_events/Resources/Public/Icons/tx_jvevents_domain_model_registrant.gif'
 	),
 	'interface' => array(
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, confirmed, hidden, gender, title,first_name, last_name, email, company, department, street_and_nr, zip, city, country, language, phone, additional_info, privacy, newsletter, customer_id, profession, recall, contact_id, username, more1, more2, more3, more4, more5bool, more6int, more7date, more8file, password, company2, department2, street_and_nr2, zip2, city2, country2',
+		'showRecordFieldList' => 'starttime,endtime, sys_language_uid, l10n_parent, l10n_diffsource, confirmed, hidden, gender, title,first_name, last_name, email, company, department, street_and_nr, zip, city, country, language, phone, additional_info, privacy, newsletter, customer_id, profession, recall, contact_id, username, more1, more2, more3, more4, more5bool, more6int, more7date, more8file, password, company2, department2, street_and_nr2, zip2, city2, country2',
 	),
 	'types' => array(
-		'1' => array('showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, confirmed,  privacy, newsletter,  recall, citrix_response , hubspot_response,--div--;UserData, gender, title, first_name, last_name,username,  profession, email,phone,language,contact_id , --div--;CompanyData, company, department, street_and_nr, zip, city, country,  customer_id,--div--;MoreData, additional_info,  more1, more2, more3, more4, more5bool, more6int, more7date, more8file, password,--div--;InvoiceAddress,company2,department2,street_and_nr2,zip2,city2,country2 '),
+		'1' => array('showitem' => 'starttime,endtime, sys_language_uid, l10n_parent, l10n_diffsource, hidden, confirmed,  privacy, newsletter,  recall, citrix_response , hubspot_response,--div--;UserData, gender, title, first_name, last_name,username,  profession, email,phone,language,contact_id , --div--;CompanyData, company, department, street_and_nr, zip, city, country,  customer_id,--div--;MoreData, additional_info,  more1, more2, more3, more4, more5bool, more6int, more7date, more8file, password,--div--;InvoiceAddress,company2,department2,street_and_nr2,zip2,city2,country2 '),
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),
@@ -66,7 +66,38 @@ return array(
 				'type' => 'passthrough',
 			),
 		),
-		
+        'starttime' => array(
+            'exclude' => 1,
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
+            'config' => array(
+                'type' => 'input',
+                'renderType' => 'inputDateTime' ,
+                'behaviour' => array(
+                    'allowLanguageSynchronization' => true ,
+                ) ,
+                'size' => 13,
+                'eval' => 'datetime,int',
+                'checkbox' => 0,
+                'default' => 0,
+
+            ),
+        ),
+        'endtime' => array(
+            'exclude' => 1,
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
+            'config' => array(
+                'type' => 'input',
+                'renderType' => 'inputDateTime' ,
+                'behaviour' => array(
+                    'allowLanguageSynchronization' => true ,
+                ) ,
+                'size' => 13,
+                'eval' => 'datetime,int',
+                'checkbox' => 0,
+                'default' => 0,
+
+            ),
+        ),
 		
 		't3ver_label' => array(
 			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.versionLabel',

@@ -53,6 +53,19 @@ class Registrant extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 	 */
 	protected $created  ;
 
+    /**
+     * Access Start Time of this event (default TYP3 Field )
+     * @ignorevalidation
+     * @var int
+     */
+    protected $starttime ;
+
+    /**
+     * Access End Time of this event (default TYP3 Field )
+     * @ignorevalidation
+     * @var int
+     */
+    protected $endtime ;
 
 	/**
 	 * event
@@ -1347,8 +1360,37 @@ class Registrant extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         $this->hubspotResponse = $hubspotResponse;
     }
 
+    /**
+     * @return int
+     */
+    public function getStarttime(): int
+    {
+        return $this->starttime;
+    }
 
+    /**
+     * @param int $starttime
+     */
+    public function setStarttime(int $starttime)
+    {
+        $this->starttime = $starttime;
+    }
 
-	
+    /**
+     * @return int
+     */
+    public function getEndtime(): int
+    {
+        return $this->endtime;
+    }
+
+    /**
+     * @param int $endtime
+     */
+    public function setEndtime(int $endtime)
+    {
+        $this->endtime = $endtime;
+    }
+
 
 }

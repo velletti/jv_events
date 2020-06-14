@@ -26,6 +26,25 @@
             <trans-unit id="tx_jvevents_domain_model_event.registration_access">
                 <source>Needed Access Group(s) for a registraton</source>
             </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_event.registration_show_status">
+                <source>Show amount of Registrations during registration</source>
+            </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_event.registration_gender">
+                <source>Restrict Registration by gender</source>
+            </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_event.registration_gender.none">
+                <source>Registration is not restricted by gender (default)</source>
+            </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_event.registration_gender.male">
+                <source>Registration is restricted. Only male (leaders) can register</source>
+            </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_event.registration_gender.female">
+                <source>Registration is restricted. Only female (followers) can register</source>
+            </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_event.registration_gender.couples">
+                <source>Registration is restricted. Only Couples can register</source>
+            </trans-unit>
+
             <trans-unit id="tx_jvevents_domain_model_category.block_registration">
                 <source>Allow register to all events in this Category</source>
             </trans-unit>
