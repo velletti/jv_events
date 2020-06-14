@@ -44,6 +44,9 @@
             <trans-unit id="tx_jvevents_domain_model_event.registration_gender.couples">
                 <source>Registration is restricted. Only Couples can register</source>
             </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_event.registration_gender.single">
+                <source>Registration is restricted. Only Single Persons can register</source>
+            </trans-unit>
 
             <trans-unit id="tx_jvevents_domain_model_category.block_registration">
                 <source>Allow register to all events in this Category</source>

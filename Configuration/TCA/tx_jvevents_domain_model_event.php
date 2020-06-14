@@ -731,6 +731,10 @@ $returnArray = array(
                         'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.registration_gender.couples',
                         3
                     ),
+                    array(
+                        'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.registration_gender.single',
+                        -1
+                    ),
                 ),
                 'size' => 1,
                 'maxitems' => 1,
