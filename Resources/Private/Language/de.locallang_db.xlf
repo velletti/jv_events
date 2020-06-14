@@ -169,7 +169,7 @@
         </trans-unit>
         <trans-unit id="tx_jvevents_domain_model_event.registration_gender">
             <source>Restrict Registration by gender</source>
-            <target>Registrierung eingeschänken</target>
+            <target>Registrierung eingeschränken</target>
         </trans-unit>
         <trans-unit id="tx_jvevents_domain_model_event.registration_gender.none">
             <source>Registration is not restricted by gender (default)</source>
