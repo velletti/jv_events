@@ -274,6 +274,8 @@ class RegistrantController extends BaseController
 				}
 			}
 		}
+
+
         $checkString =  $_SERVER["SERVER_NAME"] . "-" . $event->getUid() . "-" . $event->getCrdate() ;
         $checkHash = hash("sha256" , $checkString ) ;
 
@@ -297,8 +299,9 @@ class RegistrantController extends BaseController
 
                 }
             }
-
         }
+
+
         if ( $registrant==null) {
             /** @var Registrant $registrant */
             $registrant = $this->objectManager->get("JVE\\JvEvents\\Domain\\Model\\Registrant");

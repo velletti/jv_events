@@ -6,12 +6,12 @@
         <f:variable name="alertClass">alert-warning</f:variable>
     </f:if>
     <f:if condition="{event.registrationGender} || {event.isOnlyWaitinglist} || {event.registrationShowStatus}">
-        <div class="alert {alertClass}">
+        <div class="alert {alertClass} pt-0">
             <f:if condition="{event.registrationGender} || {event.isOnlyWaitinglist}">
-                <h2><f:translate key="register_important_notice"></f:translate></h2>
+                <h2 class="mb-1"><f:translate key="register_important_notice" default="Important Notice"></f:translate></h2>
             </f:if>
             <f:if condition="{event.isOnlyWaitinglist}">
-                <div class="py-2"><f: translate key="register_available_waiting_seats_only" default="Only Waringlist"/></div>
+                <div class="py-2"><f: translate key="register_available_waiting_seats_only" default="Only Watinglist"/></div>
             </f:if>
             <f:if condition="{event.registrationGender}">
                 <div class="py-2">
@@ -37,13 +37,14 @@
 
 
                 <f:if condition="{totalSeats}">
-                    <f:translate key="registrations"></f:translate>: {event.registeredSeats} <f:if condition="{event.unconfirmedSeats}"> <span title="{f:translate(key:'tx_jvevents_domain_model_event.available_waiting_seats' , default:'')}"> (+{event.unconfirmedSeats})</span></f:if><br>
-                    <f:translate key="tx_jvevents_domain_model_event.available_seats"></f:translate>: {event.availableSeats - event.registeredSeats} <f:if condition="{event.availableWaitingSeats}"> <span title="{f:translate(key:'tx_jvevents_domain_model_event.available_waiting_seats' , default:'')}"> (+{event.availableWaitingSeats - event.unconfirmedSeats})</span></f:if><br>
+                    <f:translate key="registrations"></f:translate>: {event.registeredSeats} <f:if condition="{event.unconfirmedSeats}"> <span title="{f:translate(key:'tx_jvevents_domain_model_event.available_waiting_seats' , default:'')}"> (+{event.unconfirmedSeats} <span class="d-none d-md-inline-block">{f:translate(key:'tx_jvevents_domain_model_event.available_waiting_seats' , default:'')}</span>)</span> </f:if><br>
+                    <f:translate key="tx_jvevents_domain_model_event.available_seats"></f:translate>: {event.availableSeats - event.registeredSeats} <f:if condition="{event.availableWaitingSeats}"> <span title="{f:translate(key:'tx_jvevents_domain_model_event.available_waiting_seats' , default:'')}"> (+{event.availableWaitingSeats - event.unconfirmedSeats}  <span class="d-none d-md-inline-block">{f:translate(key:'tx_jvevents_domain_model_event.available_waiting_seats' , default:'')}</span>)</span></f:if><br>
 
                     <div class="bg-white border-dark w-100 mt-2">
-                        <span class="bg-success border-success py-2 text-center" style="display:inline-block;  width:{event.registrationWidthWithoutWaiting}%">
-                            {event.registrationWidthWithoutWaiting}
+                        <span class="bg-success text-light border-success py-2 text-center" style="display:inline-block;  width:{event.registrationWidthConfirmed}%">
+                            {event.registrationWidthConfirmed} %
                         </span>
+
                     </div>
                 </f:if>
 

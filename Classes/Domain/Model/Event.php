@@ -1088,17 +1088,24 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         return $this->withRegistration;
     }
-    public function getRegistrationWidthWithoutWaiting() {
-        $totalSeats = $this->availableWaitingSeats + $this->availableSeats ;
-        if ( $totalSeats > 0){
-            return ( 1-( $totalSeats -  $this->registeredSeats  ) / $totalSeats)  * 100 ;
+    public function getRegistrationWidthConfirmed() {
+        if ( $this->availableSeats > 0){
+            return (  $this->registeredSeats  / $this->availableSeats)  * 100 ;
         }
         return 0 ;
     }
+    public function getRegistrationWidthConfirmedWithWaiting() {
+        $totalSeats = $this->availableWaitingSeats + $this->availableSeats ;
+        if ( $totalSeats > 0){
+            return (  $this->registeredSeats  / $totalSeats)  * 100 ;
+        }
+        return 0 ;
+    }
+
     public function getRegistrationWidthWaiting() {
         $totalSeats = $this->availableWaitingSeats + $this->availableSeats ;
         if ( $totalSeats > 0){
-            return ( 1-( $this->unconfirmedSeats  ) / $totalSeats)  * 100 ;
+            return (  $this->unconfirmedSeats  / $totalSeats)  * 100 ;
         }
         return 0 ;
     }

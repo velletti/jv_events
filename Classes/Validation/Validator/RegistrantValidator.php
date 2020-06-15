@@ -79,8 +79,25 @@ class RegistrantValidator extends \JVE\JvEvents\Validation\Validator\BaseValidat
 		if ( $isValid ) {
 
 			$layout = $registrant->getLayoutRegister() ;
+            $secondPersonFields = '' ;
+            $secondPersonFieldsArray = false ;
+            $temp = $this->eventRepository->findByUidAllpages( intval($registrant->getEvent() )) ;
+            if ( is_object($temp[0])) {
+                if ( $temp[0]->getRegistrationGender() == "3") {
+                // Only Couples allowed. we need to Find out the Additional mandatory Fields
+                    if( array_key_exists('secondPerson' , $this->settings['register'] )) {
 
-			$requiredFields = GeneralUtility::trimExplode( "," , $this->settings['register']['requiredFields'][$layout] ) ;
+                        if ( array_key_exists( 'fieldNames', $this->settings['register']['secondPerson']) )  {
+                            $secondPersonFields = ","  . $this->settings['register']['secondPerson']['fieldNames']  ;
+                            $secondPersonFieldsArray = GeneralUtility::trimExplode( "," , $secondPersonFields , true ) ;
+
+                        }
+                    }
+                }
+            }
+
+
+			$requiredFields = GeneralUtility::trimExplode( "," , $this->settings['register']['requiredFields'][$layout] . $secondPersonFields , true ) ;
 
 			foreach ($requiredFields as $field ) {
 				$getter = "get" . trim(ucfirst($field)) ;
@@ -96,6 +113,7 @@ class RegistrantValidator extends \JVE\JvEvents\Validation\Validator\BaseValidat
 							}
 							break;
 						case 'getGender':
+
 							if( $value < 1 ) {
 								$error = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error',$this->translate('register_mandatory_error'), time());
 								$this->result->forProperty($field)->addError($error);
@@ -123,11 +141,22 @@ class RegistrantValidator extends \JVE\JvEvents\Validation\Validator\BaseValidat
 							}
 							break;
 						default:
-							if(strlen(trim($value)) < 1 ) {
-								$error = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error',$this->translate('register_mandatory_error'), time());
-								$this->result->forProperty($field)->addError($error);
-								$isValid = false ;
-							}
+						    if( $secondPersonFieldsArray && $field == $secondPersonFieldsArray[0] ) {
+						        // first Field should be gender
+                                if( $value < 1 ) {
+                                    $error = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error',$this->translate('register_mandatory_error'), time());
+                                    $this->result->forProperty($field)->addError($error);
+                                    $isValid = false ;
+                                }
+                                break;
+                            } else {
+                                if(strlen(trim($value)) < 1 ) {
+                                    $error = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error',$this->translate('register_mandatory_error'), time());
+                                    $this->result->forProperty($field)->addError($error);
+                                    $isValid = false ;
+                                }
+                            }
+
 
 							break;
 
