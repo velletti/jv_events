@@ -77,6 +77,15 @@
             <trans-unit id="register_gender_male">
                 <source>Mr.</source>
             </trans-unit>
+            <trans-unit id="register_gender_female_follower">
+                <source>Follower (Role woman)</source>
+            </trans-unit>
+            <trans-unit id="register_gender_male_leader">
+                <source>Leader (Role man)</source>
+            </trans-unit>
+           <trans-unit id="register_important_notice">
+                <source>Important Notice</source>
+            </trans-unit>
             <trans-unit id="register_head_company_data">
                 <source>Company Data / Invoice Address</source>
             </trans-unit>
@@ -165,6 +174,7 @@
             <trans-unit id="tx_jvevents_domain_model_event.available_waiting_seats">
                 <source>Waiting list Seats</source>
             </trans-unit>
+
 
             <trans-unit id="register.you_are_on_waiting_list">
                 <source>Your registration was successfull added to the Waiting list. Please wait for the Confirmation by the Organizer</source>
@@ -658,7 +668,9 @@
            <trans-unit id="tx_jvevents_event.filter.configure.text_default">
                 <source>Without this settings, resultlists will only show hits that are 50 (or 250km on tangobayern.de) away from Marienplatz in Munich.</source>
             </trans-unit>
-
+            <trans-unit id="register_available_waiting_seats_only">
+                <source>You will be registered to Waitinglist.</source>
+            </trans-unit>
 
             <trans-unit id="tx_jvevents_event.list.event_details">
                 <source>Event details</source>

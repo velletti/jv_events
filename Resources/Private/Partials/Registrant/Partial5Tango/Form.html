@@ -13,7 +13,7 @@
 
 <f:form action="create" class="jv-events-regform" name="registrant" object="{registrant}" enctype="multipart/form-data">
 
-	<f:render partial="Registrant/Partial{settings.LayoutRegister}/Restrictions" arguments="{_all}"></f:render>
+	<f:render partial="Registrant/Partial{settings.LayoutRegister}/Restrictions" section="Main" arguments="{_all}"></f:render>
 
 	<f:render partial="FormErrors" section="Main" arguments="{for: 'registrant'}" />
 	<f:render partial="FormOtherErrors" section="Main" arguments="{for: 'event' ,field: 'uid'}" />

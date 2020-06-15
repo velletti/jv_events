@@ -1,28 +1,54 @@
 {namespace jvt=Jve\JveTemplate\ViewHelpers}
-<f:variable name="alertClass">alert-info</f:variable>
-<f:if condition="{event.registrationGender} || {event.isOnlyWaitinglist}">
-    <f:variable name="alertClass">alert-warning</f:variable>
-</f:if>
-<f:section name="main">
-    <div class="alert {alertClass}">
-        <f:if condition="{event.isOnlyWaitinglist}">
-            <div>Only Waiting list!</div>
-        </f:if>
-        <f:if condition="{event.registrationGender}">
-            <f:switch  expression="{event.registrationGender}">
-                <f:case value="1">
-                    Only Male
-                </f:case>
-                <f:case value="2">
-                    Only female
-                </f:case>
-                <f:case value="3">
-                    Only Couples
-                </f:case>
-            </f:switch>
-        </f:if>
-        <f:if condition="{event.registrationShowStatus}">
-            registeredSeats {event.registeredSeats} | unconfirmedSeats  {event.unconfirmedSeats} |  availableSeats {event.availableSeats} | availableWaitingSeats   {event.availableWaitingSeats} |
-        </f:if>
-    </div>
+
+<f:section name="Main">
+    <f:variable name="alertClass">alert-info</f:variable>
+    <f:if condition="{event.registrationGender || event.isOnlyWaitinglist}">
+        <f:variable name="alertClass">alert-warning</f:variable>
+    </f:if>
+    <f:if condition="{event.registrationGender} || {event.isOnlyWaitinglist} || {event.registrationShowStatus}">
+        <div class="alert {alertClass}">
+            <f:if condition="{event.registrationGender} || {event.isOnlyWaitinglist}">
+                <h2><f:translate key="register_important_notice"></f:translate></h2>
+            </f:if>
+            <f:if condition="{event.isOnlyWaitinglist}">
+                <div class="py-2"><f: translate key="register_available_waiting_seats_only" default="Only Waringlist"/></div>
+            </f:if>
+            <f:if condition="{event.registrationGender}">
+                <div class="py-2">
+                    <f:switch  expression="{event.registrationGender}">
+                        <f:case value="1">
+                            <b><f:translate key="LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.registration_gender.male"></f:translate></b>
+                        </f:case>
+                        <f:case value="2">
+                            <b><f:translate key="LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.registration_gender.female"></f:translate></b>
+                        </f:case>
+                        <f:case value="3">
+                            <b><f:translate key="LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.registration_gender.couples"></f:translate></b>
+                        </f:case>
+                        <f:case value="4">
+                            <b><f:translate key="LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.registration_gender.single"></f:translate></b>
+                        </f:case>
+                    </f:switch>
+                </div>
+            </f:if>
+            <f:if condition="{event.registrationShowStatus}">
+                <f:variable name="totalSeats">{event.availableSeats + event.availableWaitingSeats}</f:variable>
+                <f:variable name="totalRegs">{event.registeredSeats + event.unconfirmedSeats}</f:variable>
+
+
+                <f:if condition="{totalSeats}">
+                    <f:translate key="registrations"></f:translate>: {event.registeredSeats} <f:if condition="{event.unconfirmedSeats}"> <span title="{f:translate(key:'tx_jvevents_domain_model_event.available_waiting_seats' , default:'')}"> (+{event.unconfirmedSeats})</span></f:if><br>
+                    <f:translate key="tx_jvevents_domain_model_event.available_seats"></f:translate>: {event.availableSeats - event.registeredSeats} <f:if condition="{event.availableWaitingSeats}"> <span title="{f:translate(key:'tx_jvevents_domain_model_event.available_waiting_seats' , default:'')}"> (+{event.availableWaitingSeats - event.unconfirmedSeats})</span></f:if><br>
+
+                    <div class="bg-white border-dark w-100 mt-2">
+                        <span class="bg-success border-success py-2 text-center" style="display:inline-block;  width:{event.registrationWidthWithoutWaiting}%">
+                            {event.registrationWidthWithoutWaiting}
+                        </span>
+                    </div>
+                </f:if>
+
+
+            </f:if>
+        </div>
+    </f:if>
 </f:section>

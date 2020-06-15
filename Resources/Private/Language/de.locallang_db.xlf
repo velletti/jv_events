@@ -176,16 +176,16 @@
             <target>Registration ist nicht eingeschränkt durch das Geschlecht (default)</target>
         </trans-unit>
         <trans-unit id="tx_jvevents_domain_model_event.registration_gender.male">
-            <source>Registration is restricted. Only male (leaders) can register</source>
-            <target>Registrierung ist eingeschränkt. Nur männliche (leader) Teilnehmer erlaubt</target>
+            <source>Registration is restricted. Only role male (leaders) can register</source>
+            <target>Registrierung ist eingeschränkt. Nur für 'Führende' (Rolle: Mann) möglich</target>
         </trans-unit>
         <trans-unit id="tx_jvevents_domain_model_event.registration_gender.female">
-            <source>Registration is restricted. Only female (followers) can register</source>
-            <target>Registrierung ist eingeschränkt. Nur weibliche (follower) Teilnehmer erlaubt</target>
+            <source>Registration is restricted. Only rle female (followers) can register</source>
+            <target>Registrierung ist eingeschränkt. Nur für 'Folgende' (Rolle: Frau) möglich</target>
         </trans-unit>
         <trans-unit id="tx_jvevents_domain_model_event.registration_gender.couples">
             <source>Registration is restricted. Only Couples can register</source>
-            <target>Registrierung ist eingeschränkt. Nur Paare erlaubt.</target>
+            <target>Registrierung ist eingeschränkt. Anmeldung nur möglich als Paar.</target>
         </trans-unit>
          <trans-unit id="tx_jvevents_domain_model_event.registration_gender.single">
             <source>Registration is restricted. Only Single Persons can register</source>

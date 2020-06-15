@@ -49,6 +49,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     protected $hidden ;
 
+
     /**
      * hidden or not that is the question
      *
@@ -1086,6 +1087,20 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function isWithRegistration()
     {
         return $this->withRegistration;
+    }
+    public function getRegistrationWidthWithoutWaiting() {
+        $totalSeats = $this->availableWaitingSeats + $this->availableSeats ;
+        if ( $totalSeats > 0){
+            return ( 1-( $totalSeats -  $this->registeredSeats  ) / $totalSeats)  * 100 ;
+        }
+        return 0 ;
+    }
+    public function getRegistrationWidthWaiting() {
+        $totalSeats = $this->availableWaitingSeats + $this->availableSeats ;
+        if ( $totalSeats > 0){
+            return ( 1-( $this->unconfirmedSeats  ) / $totalSeats)  * 100 ;
+        }
+        return 0 ;
     }
     
     /**
