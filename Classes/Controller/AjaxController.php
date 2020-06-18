@@ -384,8 +384,14 @@ class AjaxController extends BaseController
             if ( $output['eventsFilter']['sameCity'] ) {
                 $output['eventsFilter']['citys'] = $output['event']['locationId']  ;
                 if( is_object( $location )) {
-                    $cityname = $location->getCity() ;
-                    $locations = $this->locationRepository->findByFilterAllpages( array( "city" => $cityname ) , true , true , false , '-10 YEAR') ;
+                    $dist = intval( $output['eventsFilter']['sameCity'] ) ;
+                    if ( $dist == 1 ||  $dist > 500 || intval( $location->getLng() == 0 )) {
+                        $filter = array( "city" =>  $location->getCity() )  ;
+                    } else {
+                        $filter = $this->locationRepository->getBoundingBox(  $location->getLat() , $location->getLng() , $dist ) ;
+                    }
+
+                    $locations = $this->locationRepository->findByFilterAllpages( $filter , true , true , false , '-10 YEAR') ;
                     if(is_array($locations)) {
                         /** @var Location $otherLocation */
                         foreach ($locations as $otherLocation ) {
