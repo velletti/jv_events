@@ -110,7 +110,7 @@ class LocationRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
         }
     }
 
-    public function findByFilterAllpages($filter=FALSE , $toArray=FALSE , $ignoreEnableFields = FALSE , $limit=FALSE)
+    public function findByFilterAllpages($filter=FALSE , $toArray=FALSE , $ignoreEnableFields = FALSE , $limit=FALSE, $lastModified = '-1 YEAR')
     {
         $query = $this->createQuery();
         $query->setOrderings( [ 'organizer.sorting' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING ] );
@@ -136,9 +136,7 @@ class LocationRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
         // and the normal visibility contrains , including date Time
         /** @var \DateTime $actualTime */
         $actualTime = new \DateTime('now' ) ;
-        $actualTime->modify('-1 YEAR') ;
-        $constraints[] = $query->equals('organizer.hidden', 0 );
-        $constraints[] = $query->equals('organizer.deleted', 0 );
+        $actualTime->modify($lastModified ) ;
 
         $constraints[] = $query->logicalOr( [
                                                 $query->greaterThanOrEqual('tstamp', $actualTime ),
@@ -151,18 +149,18 @@ class LocationRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
 
         if ( $ignoreEnableFields ) {
             $constraints[] =  $query->equals('deleted',  0 )  ;
+            $constraints[] = $query->logicalOr( [
+                $query->equals('organizer.hidden', 0 ) ,
+                $query->equals('organizer.uid', null )
+             ]
+            ) ;
         }
         $query->matching( $query->logicalAnd($constraints)) ;
         $res = $query->execute() ;
 
         // new way to debug typo3 db queries
-        $debug = false ;
-        if ( $debug == true ) {
-            $queryParser = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class);
-            var_dump($queryParser->convertQueryToDoctrineQueryBuilder($query)->getSQL());
-            var_dump($queryParser->convertQueryToDoctrineQueryBuilder($query)->getParameters()) ;
-            die;
-        }
+        // $this->debugQuery( $query) ;
+
         if( $toArray === TRUE ) {
             return $res->toArray();
         } else {

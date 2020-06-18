@@ -25,6 +25,8 @@ namespace JVE\JvEvents\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use JVE\JvEvents\Domain\Model\Location;
 use \TYPO3\CMS\Core\Utility\ArrayUtility;
 use \TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -381,6 +383,17 @@ class AjaxController extends BaseController
 
             if ( $output['eventsFilter']['sameCity'] ) {
                 $output['eventsFilter']['citys'] = $output['event']['locationId']  ;
+                if( is_object( $location )) {
+                    $cityname = $location->getCity() ;
+                    $locations = $this->locationRepository->findByFilterAllpages( array( "city" => $cityname ) , true , true , false , '-10 YEAR') ;
+                    if(is_array($locations)) {
+                        /** @var Location $otherLocation */
+                        foreach ($locations as $otherLocation ) {
+                            $citys[] = $otherLocation->getUid() ;
+                        }
+                        $output['eventsFilter']['citys'] = implode("," , $citys) ;
+                    }
+                }
             }
 
             // $this->settings['debug'] = 2 ;
