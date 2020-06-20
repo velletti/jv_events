@@ -1,0 +1,35 @@
+<f:section name="Main">
+	<f:form.validationResults for="{for}">
+		<f:if condition="{validationResults.flattenedErrors}">
+			<div class="alert alert-warning" data-element-type="partials-formErrors.html">
+					<h3>{f:translate(key: 'register_send_error')}</h3>
+					<ul>
+						<f:for each="{validationResults.flattenedErrors}" key="propertyPath" as="propertyErrors">
+							<f:for each="{propertyErrors}" as="propertyError">
+								<li>
+									<f:switch  expression="{propertyPath}">
+										<f:case value="more1">
+											{f:translate(key: 'tx_jvevents_domain_model_registrant.gender')} 2. Person -> ({propertyError.message})
+										</f:case>
+										<f:case value="more2">
+											{f:translate(key: 'tx_jvevents_domain_model_registrant.first_name')} 2. Person   -> ({propertyError.message})
+										</f:case>
+										<f:case value="more3">
+											{f:translate(key: 'tx_jvevents_domain_model_registrant.last_name')} 2. Person  -> ({propertyError.message})
+										</f:case>
+										<f:defaultCase>
+											{f:translate(key: 'tx_jvevents_domain_model_registrant.{propertyPath}')}  -> ({propertyError.message})
+										</f:defaultCase>
+									</f:switch>
+
+
+								</li>
+							</f:for>
+						</f:for>
+					</ul>
+			</div>
+
+			<br/>
+		</f:if>
+	</f:form.validationResults>
+</f:section>

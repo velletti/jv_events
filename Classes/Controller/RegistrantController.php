@@ -1,6 +1,7 @@
 <?php
 namespace JVE\JvEvents\Controller;
 
+use JVE\JvEvents\Domain\Model\Event;
 use JVE\JvEvents\Domain\Model\Registrant;
 use JVE\JvEvents\Domain\Model\Subevent;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -57,12 +58,12 @@ class RegistrantController extends BaseController
 	
     /**
      * action list
-     * @param \JVE\JvEvents\Domain\Model\Event $event
+     * @param Event $event
      * @ignorevalidation $event
      * @param string $hash
      * @return void
      */
-    public function listAction(\JVE\JvEvents\Domain\Model\Event $event, $hash  )
+    public function listAction(Event $event, $hash  )
     {
         // toDo add restrictions to listing ... only for admins or the organizer himself ..
 
@@ -242,13 +243,13 @@ class RegistrantController extends BaseController
     /**
      * action new
      *
-     * @param \JVE\JvEvents\Domain\Model\Event $event
+     * @param Event $event
      * @param Registrant $registrant
      * @ignorevalidation $event
      * @ignorevalidation $registrant
      * @return void
      */
-    public function newAction(\JVE\JvEvents\Domain\Model\Event $event , Registrant $registrant=null)
+    public function newAction(Event $event , Registrant $registrant=null)
     {
 		 $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
 		// $this->addFlashMessage($this->translate('msg_error_cid'), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
@@ -340,13 +341,13 @@ class RegistrantController extends BaseController
     /**
      * action createAction
      *
-     * @param \JVE\JvEvents\Domain\Model\Event $event
+     * @param Event $event
      * @ignorevalidation $event
      * @param Registrant $registrant
 	 * @validate $registrant \JVE\JvEvents\Validation\Validator\RegistrantValidator
 	 * @return void
      */
-    public function createAction(\JVE\JvEvents\Domain\Model\Event $event, Registrant $registrant) {
+    public function createAction(Event $event, Registrant $registrant) {
 
         $latestEventDate = $event->getStartDate() ;
 
@@ -358,7 +359,7 @@ class RegistrantController extends BaseController
 			$registrant->setOtherEvents( serialize($_POST['tx_jvevents_events']['jv_events_other_events']) );
 
 			foreach ($temp  as $key => $uid ) {
-				/** @var \JVE\JvEvents\Domain\Model\Event $otherEvent */
+				/** @var Event $otherEvent */
 				if( intval($uid) > 0 ) {
 					$otherEvent = $this->eventRepository->findByUidAllpages( intval($uid )) ;
 					// var_dump($otherEvent[0]) ;
@@ -473,12 +474,16 @@ class RegistrantController extends BaseController
         // set Status 0 unconfirmed || 1 Confirmed by Partizipant || 2 Confirmed by Organizer
 
         if( $this->settings['alreadyRegistered'] ) {
-            if( ! $this->settings['register']['doNotallowSameEmail'] ) {
-                $this->registrantRepository->update($oldReg) ;
+            if( is_object( $oldReg ) ) {
+                if( ! $this->settings['register']['doNotallowSameEmail'] ) {
+                    $this->registrantRepository->update($oldReg) ;
+                }
+            } else {
+                $oldReg = $registrant ;
             }
 
-
 		} else {
+            $oldReg = $registrant ;
             if ($event->getNeedToConfirm() == 1) {
                 $registrant->setHidden(1);
                 $this->settings['success'] = TRUE ;
@@ -581,6 +586,8 @@ class RegistrantController extends BaseController
 		}
         $this->persistenceManager->persistAll();
 
+
+
 		if( $registrant->getHidden() == 0  ) {
 			$this->settings['success'] = TRUE ;
 			$replyto = false ;
@@ -595,7 +602,7 @@ class RegistrantController extends BaseController
 
                     if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($event->getOrganizer()->getEmail())) {
                         $this->sendEmail($event, $registrant, "Organizer" ,
-                            array( $event->getOrganizer()->getEmail() => '=?utf-8?B?'. base64_encode( $event->getOrganizer()->getName() ) .'?=' ) , $otherEvents , $registrantEmail);
+                            array( $event->getOrganizer()->getEmail() => '=?utf-8?B?'. base64_encode( $event->getOrganizer()->getName() ) .'?=' ) , $otherEvents , $registrantEmail , $oldReg );
                     }
                     $ccEmails = str_replace( array("," , ";" , " " ) , array("," , "," , ",") , $event->getOrganizer()->getEmailCc() ) ;
                     $ccEmailsArray = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode("," , $ccEmails , true ) ;
@@ -604,7 +611,7 @@ class RegistrantController extends BaseController
                             if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail( $ccEmail ) ) {
 
                                 $this->sendEmail($event, $registrant, "Organizer" ,
-                                    array( $ccEmail => '=?utf-8?B?'. base64_encode( $event->getOrganizer()->getName() ) .'?=' ) , $otherEvents , $registrantEmail);
+                                    array( $ccEmail => '=?utf-8?B?'. base64_encode( $event->getOrganizer()->getName() ) .'?=' ) , $otherEvents , $registrantEmail , $oldReg );
                             }
                         }
                     }
@@ -615,7 +622,7 @@ class RegistrantController extends BaseController
 					$this->settings['successMsg'] = "register_email_with_infos" ;
 
 					$this->sendEmail($event, $registrant, "Registrant" ,
-                        $registrantEmail , $otherEvents , $replyto );
+                        $registrantEmail , $otherEvents , $replyto , $oldReg );
 				}
 			}
 
@@ -654,7 +661,7 @@ class RegistrantController extends BaseController
 
         if(is_object($registrant) && $registrant->getEvent()) {
             $error = false ;
-            /** @var \JVE\JvEvents\Domain\Model\Event $event */
+            /** @var Event $event */
             $event= $this->eventRepository->findByUid($registrant->getEvent()) ;
             if ( $event && is_object($event->getOrganizer())) {
                 $eventUid = $event->getUid() ;
@@ -710,14 +717,18 @@ class RegistrantController extends BaseController
     /**
      * action checkQrcodeAction
      *
-     * @param Registrant|null $registrant
-     * @param \JVE\JvEvents\Domain\Model\Event|null $eventUid
+     * @param Event|null $eventUid
      * @param string $hash
      * @return void
      */
-    public function checkQrcodeAction(Registrant $registrant=null , \JVE\JvEvents\Domain\Model\Event $event=null , string $hash='')
+    public function checkQrcodeAction(Event $event=null , string $hash='')
     {
-        $args = $this->request->getArguments() ;
+        $registrant = false ;
+
+        if ( $this->request->hasArgument("registrant") ) {
+            $registrantId = $this->request->getArgument("registrant") ;
+            $registrant= $this->registrantRepository->getOneById($registrantId , true ) ;
+        }
         $this->view->assign('registrant', $registrant);
         $this->view->assign('event', $event);
         $this->view->assign('hash', $hash);
@@ -748,7 +759,7 @@ class RegistrantController extends BaseController
 
         if(is_object($registrant) && $registrant->getEvent()) {
             $error = false ;
-            /** @var \JVE\JvEvents\Domain\Model\Event $event */
+            /** @var Event $event */
             $event= $this->eventRepository->findByUid($registrant->getEvent()) ;
             if ( $event && is_object($event->getOrganizer())) {
                 $eventUid = $event->getUid() ;

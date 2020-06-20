@@ -26,6 +26,8 @@ namespace JVE\JvEvents\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use JVE\JvEvents\Domain\Model\Event;
+use JVE\JvEvents\Domain\Model\Registrant;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -211,7 +213,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         $months = array() ;
 
 
-        /** @var \JVE\JvEvents\Domain\Model\Event $event */
+        /** @var Event $event */
         $eventsArray = $events->toArray() ;
         // while( $event instanceof  \JVE\JvEvents\Domain\Model\Event ) {
         foreach ($eventsArray as $key => $event ) {
@@ -504,17 +506,18 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     /**
      * function sendEmail
      *
-     * @param \JVE\JvEvents\Domain\Model\Event $event
-     * @param \JVE\JvEvents\Domain\Model\Registrant $registrant
+     * @param Event $event
+     * @param Registrant $registrant
      * @param string $partialName possible Values: organizer, registrant, developer or admin
      * @throws \Exception
      * @param array $recipient
      * @param array|bool $otherEvents Array with IDs of other Events or False
      * @param array|bool $replyTo  Array with Email and Name of replyto or false
+     * @param Registrant $oldReg  Copy of a registrant. may dbe different if user is alread registered with same email.
      * @return boolean
      */
 
-    public function sendEmail(\JVE\JvEvents\Domain\Model\Event $event = NULL, \JVE\JvEvents\Domain\Model\Registrant $registrant = NULL , $partialName ='', $recipient=array() , $otherEvents=false , $replyTo=false )
+    public function sendEmail(Event $event = NULL, Registrant $registrant = NULL , $partialName ='', $recipient=array() , $otherEvents=false , $replyTo=false , Registrant $oldReg = NULL )
     {
         if (!\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($this->settings['register']['senderEmail'])) {
             throw new \Exception('plugin.jv_events.settings.register.senderEmail is not a valid Email Address. Is needed as Sender E-mail');
@@ -566,6 +569,10 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
         $renderer->assign('signature', $signature);
         $renderer->assign('registrant', $registrant);
+        if( !is_object($oldReg) ) {
+            $oldReg = $registrant ;
+        }
+        $renderer->assign('oldReg', $oldReg );
         $renderer->assign('event', $event);
         $renderer->assign('otherEvents', $otherEvents);
         $renderer->assign('partial', "Registrant/Partial" . $this->settings['LayoutRegister'] . "/Emails/" . $partialName);

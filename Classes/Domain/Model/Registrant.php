@@ -423,7 +423,7 @@ class Registrant extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 	public function setFingerprint() {
 
 		$fingerPrint = strtolower( $this->getEmail() . $this->getFirstName() . $this->getLastName() . $this->getEvent() );
-		$fingerPrint = md5($fingerPrint) ;
+		$fingerPrint = md5( $fingerPrint) ;
 		$this->fingerprint = $fingerPrint;
 	}
 

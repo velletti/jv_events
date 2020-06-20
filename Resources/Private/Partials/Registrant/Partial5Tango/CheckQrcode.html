@@ -21,7 +21,6 @@
 						<b>{registrant.more2} {registrant.more3}</b> <f:if condition="{registrant.confirmed}"><f:then><i class="fa fa-check"></i> (confirmed)</f:then><f:else><i class="fa fa-hourglass-start fa-2x"></i> (no confirmed!)</f:else></f:if><br>
 				</f:if>
 				<f:if condition="{registrant.more2} || {registrant.more3}">
-
 					<f:then>
 						<b>2 Personen</b><br>
 					</f:then>
@@ -44,13 +43,13 @@
 				</f:if>
 				<f:if condition="{registrant.fingerprint} == {hash}">
 					<f:else>
-						FP: '{registrant.fingerprint}' != H: '{hash}' <br>
+						Invalid Hash: '{hash}' <br>
 					</f:else>
 
 				</f:if>
 				<f:if condition="{registrant.event} != {event.uid}">
 					<f:else>
-						RE: '{registrant.event}' != E: '{event.uid}' <br>
+						Invalid Event: '{event.uid}' <br>
 					</f:else>
 
 				</f:if>

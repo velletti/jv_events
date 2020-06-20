@@ -5,10 +5,30 @@
 			<span class="required">*</span>
 		</f:if>
 	</label>
-	<f:form.select id="jv_events_{FieldName}" class="form-control jv-events-req-{required}" property="{FieldName}" options="{
+	<f:switch  expression="{registrationGender}">
+		<f:case value="1">
+			<f:form.select id="jv_events_{FieldName}" class="form-control jv-events-req-{required}" property="{FieldName}" options="{
+							0: '{f:translate(key: \'register_please_select\')}',
+							1: '{f:translate(key: \'register_gender_male_leader\')}'
+						}" />
+		</f:case>
+
+		<f:case value="2">
+			<f:form.select id="jv_events_{FieldName}" class="form-control jv-events-req-{required}" property="{FieldName}" options="{
+							0: '{f:translate(key: \'register_please_select\')}',
+							2: '{f:translate(key: \'register_gender_female_follower\')}'
+						}" />
+		</f:case>
+
+		<f:defaultCase>
+			<f:form.select id="jv_events_{FieldName}" class="form-control jv-events-req-{required}" property="{FieldName}" options="{
 							0: '{f:translate(key: \'register_please_select\')}',
 							1: '{f:translate(key: \'register_gender_male_leader\')}',
 							2: '{f:translate(key: \'register_gender_female_follower\')}'
 						}" />
+		</f:defaultCase>
+	</f:switch>
+
+
 	<f:render partial="FieldError" section="Main" arguments="{for: 'registrant', field: '{FieldName}'}" />
 </div>

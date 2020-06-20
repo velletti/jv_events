@@ -392,7 +392,6 @@ class EventController extends BaseController
 
                 if ( $event->getRegistrationFormPid() == $this->settings['EmConfiguration']['RegistrationFormPid'] ) {
                     $event->setRegistrationFormPid( 0);
-
                 }
                 $this->view->assign('event', $event);
                 $this->view->assign('categories', $categories);

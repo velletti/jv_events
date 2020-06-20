@@ -142,12 +142,17 @@ class RegistrantValidator extends \JVE\JvEvents\Validation\Validator\BaseValidat
 							break;
 						default:
 						    if( $secondPersonFieldsArray && $field == $secondPersonFieldsArray[0] ) {
-						        // first Field should be gender
+						        // first Field should be gender AND registration is only allowed as Couple !
                                 if( $value < 1 ) {
                                     $error = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error',$this->translate('register_mandatory_error'), time());
                                     $this->result->forProperty($field)->addError($error);
                                     $isValid = false ;
+                                } else if (  $value ==  $registrant->getGender()  ) {
+                                    $error = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error',$this->translate('LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.registration_gender.couples'), time());
+                                    $this->result->forProperty($field)->addError($error);
+                                    $isValid = false ;
                                 }
+
                                 break;
                             } else {
                                 if(strlen(trim($value)) < 1 ) {

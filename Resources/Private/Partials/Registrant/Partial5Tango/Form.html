@@ -15,7 +15,7 @@
 
 	<f:render partial="Registrant/Partial{settings.LayoutRegister}/Restrictions" section="Main" arguments="{_all}"></f:render>
 
-	<f:render partial="FormErrors" section="Main" arguments="{for: 'registrant'}" />
+	<f:render partial="Registrant/Partial{settings.LayoutRegister}/FormErrors" section="Main" arguments="{for: 'registrant'}" />
 	<f:render partial="FormOtherErrors" section="Main" arguments="{for: 'event' ,field: 'uid'}" />
 
 	<f:form.hidden class="d-none" name="event" value="{event.uid}" />
@@ -40,7 +40,7 @@
 		<fieldset class="form-group">
 			<legend>{f:translate(key: 'register_head_participant_data' , default:'Participants Data')}</legend>
 			<div class="row">
-				<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRowGender" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.gender', FieldName : 'gender' , settings: settings , cols: 'col-sm-6' , required: '{f:if(condition: \'{settings.register.required.gender}\' , then: \'TRUE\')}'}"/>
+				<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRowGender" arguments="{registrationGender: '{event.registrationGender}' , translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.gender', FieldName : 'gender' , settings: settings , cols: 'col-sm-6' , required: '{f:if(condition: \'{settings.register.required.gender}\' , then: \'TRUE\')}'}"/>
 			</div>
 			<div class="row">
 				<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRow" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.first_name', FieldName : 'firstName' , settings: settings , cols: 'col-sm-6' , required: '{f:if(condition: \'{settings.register.required.firstName}\' , then: \'TRUE\')}'}"/>

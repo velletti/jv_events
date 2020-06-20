@@ -1,6 +1,6 @@
 {namespace event=JVE\JvEvents\ViewHelpers}
 {namespace jvt=Jve\JveTemplate\ViewHelpers}
-<f:variable name="qrstring">{settings.servername}/de/kurseundworkshops/kurs-details/registration/event/{event.uid}/registrant/{registrant.uid}/hash/{registrant.fingerprint}.html</f:variable>
+<f:variable name="qrstring">{settings.servername}/de/kurseundworkshops/kurs-details/registration/event/{event.uid}/registrant/{oldReg.uid}/hash/{oldReg.fingerprint}.html</f:variable>
 
 
 <f:if condition="{html}">
@@ -94,7 +94,7 @@
 		</f:if>
 
 		<h3 style="font-size: 22px; font-family: '{emConf.fontFamily}'; line-height: 1.25; margin: 0; padding: 0; border-bottom: 1px solid #ddd ; border-top: 1px solid #ddd ;  ">
-			ID: E-{event.uid}-R-{registrant.uid}-<f:format.date format="H-i-s">{registrant.crdate}</f:format.date>
+			ID: E-{event.uid}-R-{oldReg.uid}-<f:format.date format="H-i-s">{registrant.crdate}</f:format.date>
 		</h3>
 
 		<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
