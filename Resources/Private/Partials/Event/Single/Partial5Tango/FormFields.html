@@ -102,12 +102,16 @@
 	<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowCheckboxRegpage"
 			  arguments="{object: '', property:'registrationFormPid' , label: 'with full Address' ,  value: '{event.registrationFormPid}', settings: settings }" />
 
+
+
+	<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowCheckbox"
+			  arguments="{object: '', property:'registrationShowStatus' , euro: '', label: '' , translationKey: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.registration_show_status' ,  mandatory: '0' }" />
+	<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowSelectGenderRestriction"
+			  arguments="{object: 'event', property:'registrationGender' , euro: 'false', label: '' , translationKey: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.registration_gender' ,  mandatory: '0' }" />
+
 	<f:security.ifHasRole role="adminOrganizer">
 		<f:then>
-			<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowCheckbox"
-					  arguments="{object: '', property:'registrationShowStatus' , euro: '', label: '' , translationKey: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.registration_show_status' ,  mandatory: '0' }" />
-			<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowSelectGenderRestriction"
-					  arguments="{object: 'event', property:'registrationGender' , euro: 'false', label: '' , translationKey: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.registration_gender' ,  mandatory: '0' }" />
+
 		</f:then>
 	</f:security.ifHasRole>
 </div>
