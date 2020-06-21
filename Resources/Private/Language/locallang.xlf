@@ -757,7 +757,21 @@
           <trans-unit id="donate">
                 <source>Donate</source>
             </trans-unit>
-
+             <trans-unit id="indexerTask_DelRegistratationsAfter">
+                <source>Amount of Days, after that a users event Registration is deleted (eventend dat + given days) (if = 0 will do nothing) </source>
+            </trans-unit>
+            <trans-unit id="indexerTask_DelEventsAfter">
+                <source>Amount of Days, after an old event is deleted (eventend dat + given days) (if = 0 will do nothing) </source>
+            </trans-unit>
+            <trans-unit id="indexerTask_ResortingOrganizer">
+                <source>Amount of Days a organizer should have an Event in the past. if less, resorting to lower value is done. (if = 0 will do nothing) </source>
+            </trans-unit>
+             <trans-unit id="indexerTask_DisableOrganizer">
+                <source>Disable organizer, if lastlogin of maintainer is more than given days. (if = 0 will do nothing) </source>
+            </trans-unit>
+             <trans-unit id="indexerTask_Debugmail">
+                <source>Email receiver . If set, this will get debug infos via Email on each run</source>
+            </trans-unit>
 		</body>
 	</file>
 </xliff>

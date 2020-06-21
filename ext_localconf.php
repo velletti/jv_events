@@ -94,3 +94,10 @@ if (TYPO3_MODE === 'FE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
     // Feel Free to add your Own extension , and add your Own signal Slot to handle a registration
     // if you need more slots, contact me .. typo3@velletti.de
 }
+
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['JVE\JvEvents\Scheduler\CleanEventsTask'] = array(
+    'extension'        =>  $_EXTKEY,
+    'title'            => 'Clean Events Extensions Data (remove registrations and old Events)',
+    'description'      => 'set only frequency ',
+    'additionalFields' => 'JVE\JvEvents\Scheduler\CleanEventsTaskAdditionalFieldProvider'
+);
