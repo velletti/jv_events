@@ -84,6 +84,21 @@ class RegistrantRepository extends \JVE\JvEvents\Domain\Repository\BaseRepositor
     }
 
     /**
+     * @param int $uid
+     *
+     * @return mixed
+     */
+    public function FindOneByUid($uid ) {
+
+        $query = $this->createQuery();
+        $query->getQuerySettings()->setRespectStoragePage(FALSE);
+        $query->getQuerySettings()->setRespectSysLanguage(FALSE);
+        $query->getQuerySettings()->setIgnoreEnableFields(TRUE) ;
+
+        return $query->matching( $query->equals("uid", $uid) )->execute()->getFirst() ;
+    }
+
+    /**
      * @param string $email
      * @param int $pid
      * @param array $settings
