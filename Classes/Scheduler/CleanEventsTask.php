@@ -255,10 +255,12 @@ class CleanEventsTask extends AbstractTask
         $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
         /** @var QueryBuilder $queryBuilder */
         /** @var QueryBuilder $queryBuilderUpdate */
+        /** @var QueryBuilder $queryEvents */
         /** @var QueryBuilder $queryFeUser */
         $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_jvevents_domain_model_organizer') ;
         $queryBuilderUpdate = $connectionPool->getQueryBuilderForTable('tx_jvevents_domain_model_organizer') ;
         $queryFeUser = $connectionPool->getQueryBuilderForTable('fe_users') ;
+        $queryEvents = $connectionPool->getQueryBuilderForTable('tx_jvevents_domain_model_events') ;
 
         /** @var Connection $connection */
         $connection = $connectionPool->getConnectionForTable('tx_jvevents_domain_model_organizer') ;
@@ -307,6 +309,14 @@ class CleanEventsTask extends AbstractTask
 
                         $debug[] = "Organizer : " . $row['uid'] . " - "  . $row['name'] . " changed sorting from " . $row['sorting']  . "  . managed by  user(s) " . $row['access_users'] ;
                     }
+                    $queryEvents->update('tx_jvevents_domain_model_event')
+                        ->where($queryBuilder->expr()->eq('canceled',   1 ))
+                        ->andWhere($queryBuilder->expr()->eq('organizer' , $row['uid'] ) )
+                        ->andWhere($queryBuilder->expr()->gt('start_date' , time() ) )
+                        ->set('deleted' , 1)
+                        ->execute()
+                        ;
+
                 }
             }
         }
