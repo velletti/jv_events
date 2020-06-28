@@ -119,12 +119,20 @@ class OrganizerRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
         $constraints = array() ;
         if ( $filter ) {
             foreach ( $filter as $field => $value) {
-                if( is_array( $value ) ) {
-                    $constraints[] = $query->in($field ,  $value ) ;
-                } else {
-                    $constraints[] = $query->equals($field ,  $value ) ;
-                }
+                switch ($field) {
+                    case "tstamp":
+                    case "latest_event":
+                        $constraints[] = $query->greaterThanOrEqual($field ,  $value ) ;
+                        break;
+                    default:
+                        if( is_array( $value ) ) {
+                            $constraints[] = $query->in($field ,  $value ) ;
+                        } else {
+                            $constraints[] = $query->equals($field, $value);
+                        }
+                        break;
 
+                }
             }
         }
 
@@ -150,7 +158,7 @@ class OrganizerRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
         }
 
         $res = $query->execute() ;
-         // $this->debugQuery($query) ;
+        //  $this->debugQuery($query) ;
 
         if( $toArray === TRUE ) {
             return $res->toArray();

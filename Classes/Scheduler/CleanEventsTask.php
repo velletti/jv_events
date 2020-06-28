@@ -27,11 +27,15 @@ class CleanEventsTask extends AbstractTask
     /** @var int Amount of Day when Events  are deleted   | if 0 = do nothing*/
     private $delEventsAfter = 365;
 
-    /** @var int Amount of Days a organizer should have an Event in the past. if less, resorting to lower value is done. (if = 0 will do nothing)   */
+    /** @var int Amount of Days a organizer should have an Event in the past. if now after that day, resorting to lower value is done. (if = 0 will do nothing)   */
     private $resortingOrganizer = 30 ;
 
     /** @var int Disable organizer, if lastlogin of maintainer is more than given days. (if = 0 will do nothing) */
     private $disableOrganizer = 180 ;
+
+
+    /** @var int Disable organizer REALLY, if sorting is bigger than given value (if = 0 will do nothing default 123.456.789) */
+    private $disableOrganizerSortingValue = 123456789 ;
 
 
     /** @var string email Address if set, debug output will be sent  */
@@ -47,6 +51,7 @@ class CleanEventsTask extends AbstractTask
         $this->delEventsAfter           = (int) $this->delEventsAfter ;
         $this->resortingOrganizer       = (int) $this->resortingOrganizer ;
         $this->disableOrganizer         = (int) $this->disableOrganizer ;
+        $this->disableOrganizerSortingValue         = (int) $this->disableOrganizerSortingValue ;
         $this->debugmail                = trim( $this->debugmail) ;
 
         return true;
@@ -89,22 +94,22 @@ class CleanEventsTask extends AbstractTask
 
         /* ##############    Remove registrations ############################### */
         if ( $this->delRegistratationsAfter > 0 ) {
-            $debug = $this->cleanupRegistrations( $debug ) ;
+            $debug = $this->doCleanupRegistrations( $debug ) ;
         }
 
         /* ##############    Remove ld events ############################### */
         if ( $this->delEventsAfter > 0 ) {
-            $debug = $this->cleanupEvents( $debug ) ;
+            $debug = $this-doCleanupEvents( $debug ) ;
         }
 
         /* ##############    Remove ld events ############################### */
         if ( $this->resortingOrganizer > 0 ) {
-            $debug = $this->resortingOrganizer( $debug ) ;
+            $debug = $this->doResortingOrganizer( $debug ) ;
         }
 
         /* ##############    Remove ld events ############################### */
         if ( $this->disableOrganizer > 0 ) {
-            $debug = $this->disableOrganizer( $debug ) ;
+            $debug = $this->doDisableOrganizer( $debug ) ;
         }
 
         if( GeneralUtility::validEmail( trim( $this->getDebugmail()) ) ) {
@@ -116,7 +121,7 @@ class CleanEventsTask extends AbstractTask
             $params['user']['email'] = trim( $this->getDebugmail());
             $params['sendCCmail'] = false  ;
 
-            $params['message'] = "Debug Output " . implode(" \n" , $debug ) ;
+            $params['message'] = "[tango][cleanup] Debug Output of Scheduler from " . $baseUrl . " \n\n" . var_export( $debug , true ) ;
             $mailService->sentHTMLmailService($params) ;
         }
 
@@ -130,7 +135,7 @@ class CleanEventsTask extends AbstractTask
         $this->logger->error($msg);
     }
 
-    private function cleanupRegistrations($debug ) {
+    private function doCleanupRegistrations($debug ) {
         $timeInPast  =  time() - intval( $this->delRegistratationsAfter )* 60 * 60 *24 ;
 
 
@@ -155,7 +160,9 @@ class CleanEventsTask extends AbstractTask
             ->where( $queryBuilder->expr()->lte('endtime',  $timeInPast ) )
             ->andWhere($queryBuilder->expr()->gt('endtime', 0 ))
             ->andWhere($queryBuilder->expr()->eq('deleted', 0 ))
-            ->set('deleted', 1 ) ;
+            ->set('deleted', 1 )
+            ->set('tstamp', $queryBuilder->quoteIdentifier('tstamp') , false )
+        ;
 
        //  $this->debugQuery($queryBuilder) ;
 
@@ -172,7 +179,7 @@ class CleanEventsTask extends AbstractTask
     }
 
 
-    private function cleanupEvents($debug ) {
+    private function doCleanupEvents($debug ) {
         $timeInPast  =  time() - intval( $this->delEventsAfter )* 60 * 60 *24 ;
 
 
@@ -197,7 +204,9 @@ class CleanEventsTask extends AbstractTask
             ->where( $queryBuilder->expr()->lte('start_date',  $timeInPast ) )
             ->andWhere($queryBuilder->expr()->lte('end_date', $timeInPast ))
             ->andWhere($queryBuilder->expr()->eq('deleted', 0 ))
-            ->set('deleted', 1 ) ;
+            ->set('deleted', 1 )
+            ->set('tstamp', $queryBuilder->quoteIdentifier('tstamp') , false )
+        ;
 
         //  $this->debugQuery($queryBuilder) ;
 
@@ -213,7 +222,7 @@ class CleanEventsTask extends AbstractTask
 
     }
 
-    private function resortingOrganizer($debug ) {
+    private function doResortingOrganizer($debug ) {
         $timeInPast  =  time() - intval( $this->resortingOrganizer ) * 60 * 60 *24 ;
 
 
@@ -225,19 +234,29 @@ class CleanEventsTask extends AbstractTask
         $connection = $connectionPool->getConnectionForTable('tx_jvevents_domain_model_organizer') ;
 
 
+        /** @var QueryBuilder $queryCount */
+        $queryCount = $connectionPool->getQueryBuilderForTable('tx_jvevents_domain_model_organizer');
+        $countResult = $queryCount->count( '*' )->from('tx_jvevents_domain_model_organizer' )
+            ->where( $queryBuilder->expr()->lte('latest_event',  $timeInPast ) )
+            ->andWhere($queryBuilder->expr()->gt('sorting', 20 ))
+            ->andWhere($queryBuilder->expr()->lt('sorting', 100099999 ))
+            ->execute()->fetchColumn(0) ;
+
 
         $queryBuilder ->update('tx_jvevents_domain_model_organizer')
             ->where( $queryBuilder->expr()->lte('latest_event',  $timeInPast ) )
             ->andWhere($queryBuilder->expr()->gt('sorting', 20 ))
             ->andWhere($queryBuilder->expr()->lt('sorting', 100099999 ))
-            ->set('sorting', $queryBuilder->quoteIdentifier('sorting') . " + " . $this->resortingOrganizer   , false );
+            ->set('sorting', $queryBuilder->quoteIdentifier('sorting') . " + " . $this->resortingOrganizer   , false )
+            ->set('tstamp',        $queryBuilder->quoteIdentifier('tstamp') , false )
+        ;
 
         // $this->debugQuery($queryBuilder) ;
 
         $queryBuilder->execute() ;
 
         if ( !$connection->errorInfo() ) {
-            $debug[] = "Updated  sorting of Organizers  with latest_event older than " . $timeInPast . " - " . date( "d.m.Y H:i" , $timeInPast ) ;
+            $debug[] = "Updated  sorting of '" . $countResult .  "' Organizers  with latest_event older than " . $timeInPast . " - " . date( "d.m.Y H:i" , $timeInPast ) ;
             return $debug;
         } else {
             $debug[] = array('faultstring' => 'Line: ' . __LINE__ . ' Error on update ', 'mode' => 'update', " error " => $connection->errorInfo() );
@@ -247,7 +266,7 @@ class CleanEventsTask extends AbstractTask
     }
 
 
-    private function disableOrganizer($debug ) {
+    private function doDisableOrganizer($debug ) {
         $timeInPast  =  time() - intval( $this->disableOrganizer ) * 60 * 60 *24 ;
 
 
@@ -256,11 +275,16 @@ class CleanEventsTask extends AbstractTask
         /** @var QueryBuilder $queryBuilder */
         /** @var QueryBuilder $queryBuilderUpdate */
         /** @var QueryBuilder $queryEvents */
+        /** @var QueryBuilder $queryFeUserUpdate */
         /** @var QueryBuilder $queryFeUser */
         $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_jvevents_domain_model_organizer') ;
         $queryBuilderUpdate = $connectionPool->getQueryBuilderForTable('tx_jvevents_domain_model_organizer') ;
         $queryFeUser = $connectionPool->getQueryBuilderForTable('fe_users') ;
+        $queryFeUserUpdate = $connectionPool->getQueryBuilderForTable('fe_users') ;
         $queryEvents = $connectionPool->getQueryBuilderForTable('tx_jvevents_domain_model_events') ;
+        /** @var QueryBuilder $queryCount */
+        $queryCount = $connectionPool->getQueryBuilderForTable('tx_jvevents_domain_model_events');
+
 
         /** @var Connection $connection */
         $connection = $connectionPool->getConnectionForTable('tx_jvevents_domain_model_organizer') ;
@@ -274,19 +298,23 @@ class CleanEventsTask extends AbstractTask
         ;
        // $this->debugQuery($queryBuilder) ;
         $result = $queryBuilder->execute() ;
+        $countTotalResult = 0 ;
+        $debug2 = [] ;
 
         while ($row = $result->fetch()) {
-            $debug[] = $row ;
+            // $debug[] = $row ;
             if(is_array($row )) {
                 $lastLogin = 0 ;
                 $users = GeneralUtility::trimExplode("," , $row['access_users'] , true) ;
+                $usersData = array() ;
                 if(is_array($users)) {
                     foreach ( $users as $userUid ) {
-                        $feuser = $queryFeUser->select('lastlogin' , "username")->from('fe_users')->where(
+                        $feuser = $queryFeUser->select('uid' , 'lastlogin' , "username", 'usergroup' )->from('fe_users')->where(
                             $queryFeUser->expr()->eq('uid' , $queryFeUser->createNamedParameter($userUid , Connection::PARAM_INT )
                         ))->execute()->fetch() ;
-                        $debug[] = $feuser ;
                         if( $feuser) {
+                            $debug[] = "lastLogin: " . date('d.m.Y H:i' , $feuser['lastlogin'] ) . ": uid= '" . $userUid . "' - ". $feuser['username'] . " : groups: " . $feuser['usergroup'];
+                            $usersData[] =  $feuser ;
                             if( $feuser['lastlogin'] > $lastLogin ) {
                                 $lastLogin = $feuser['lastlogin'] ;
                             }
@@ -295,31 +323,67 @@ class CleanEventsTask extends AbstractTask
                 }
                 if ( $lastLogin < $timeInPast ) {
 
-                    if(  $row['sorting']  > 109999999) {
+                    if(  $row['sorting']  > $this->disableOrganizerSortingValue &&  $this->disableOrganizerSortingValue  > 0 ) {
+                        $debug2[] = "Organizer : " . $row['uid'] . " - "  . $row['name'] . " set Hidden . managed by  user(s) " . $row['access_users'] ;
+                        /*
                         $queryBuilderUpdate->update('tx_jvevents_domain_model_organizer')
                             ->where( $queryBuilder->expr()->eq('uid',   $row['uid'] ) )
                             ->set('hidden', 1 )
+                            ->set('tstamp', $queryBuilder->quoteIdentifier('tstamp') ,false)
                             ->execute() ;
                         $debug[] = "Organizer : " . $row['uid'] . " - "  . $row['name'] . " set Hidden . managed by  user(s) " . $row['access_users'] ;
+ */
+                        foreach ( $usersData as $user ) {
+                            $orig = $user['usergroup'];
+                            $user['usergroup'] = GeneralUtility::rmFromList( "2" , $user['usergroup']) ;
+                            $user['usergroup'] = "1," . $user['usergroup'] ;
+                            $user['usergroup'] = GeneralUtility::rmFromList( "5" , $user['usergroup']) ;
+                            $user['usergroup'] = GeneralUtility::rmFromList( "6" , $user['usergroup']) ;
+                            $user['usergroup'] = GeneralUtility::rmFromList( "7" , $user['usergroup']) ;
+                            $debug[] = "Reduced Group access of user : " . $user['uid'] . " from: " . $orig ." to " .   $user['usergroup'];
+
+                            $queryFeUserUpdate->update('fe_user')
+                                ->where( $queryBuilder->expr()->eq('uid',   $user['uid'] ))
+                                ->set('usergroup' , $user['usergroup'] )->execute();
+                        }
+
+
                     } else {
                         $queryBuilderUpdate->update('tx_jvevents_domain_model_organizer')
                             ->where( $queryBuilder->expr()->eq('uid',   $row['uid'] ) )
+                            ->set('tstamp', $queryBuilder->quoteIdentifier('tstamp') , false )
                             ->set('sorting', $queryBuilder->quoteIdentifier('sorting') . " + " . 5000000   , false )
                             ->execute() ;
 
-                        $debug[] = "Organizer : " . $row['uid'] . " - "  . $row['name'] . " changed sorting from " . $row['sorting']  . "  . managed by  user(s) " . $row['access_users'] ;
+                        $debug[] = "Organizer : " . $row['uid'] . " - "  . $row['name'] . " moved sorting from " . $row['sorting']  . " + 5000000 ! managed by  user(s) " . $row['access_users'] ;
                     }
-                    $queryEvents->update('tx_jvevents_domain_model_event')
+                    $countResult = $queryCount->count( '*' )->from('tx_jvevents_domain_model_event' )
                         ->where($queryBuilder->expr()->eq('canceled',   1 ))
                         ->andWhere($queryBuilder->expr()->eq('organizer' , $row['uid'] ) )
                         ->andWhere($queryBuilder->expr()->gt('start_date' , time() ) )
-                        ->set('deleted' , 1)
-                        ->execute()
+                        ->execute()->fetchColumn(0) ;
+
+                    if( $countResult > 0 ) {
+                        $queryEvents->update('tx_jvevents_domain_model_event')
+                            ->where($queryBuilder->expr()->eq('canceled',   1 ))
+                            ->andWhere($queryBuilder->expr()->eq('organizer' , $row['uid'] ) )
+                            ->andWhere($queryBuilder->expr()->gt('start_date' , time() ) )
+                            ->set('deleted' , 1)
+                            ->set('tstamp', $queryBuilder->quoteIdentifier('tstamp') , false )
+                            ->execute()
                         ;
+                        $debug[] = "Number of Removed canceled Events of this organizer: " . $countResult ;
+                    }
+                    $countTotalResult = $countTotalResult + $countResult ;
 
                 }
             }
         }
+        $debug[] = "Number of Removed canceled Events all organizer: " . $countTotalResult ;
+        $debug[] = "" ;
+        $debug[] = "List of Ogranizer that should be disabled" ;
+        $debug[] =  $debug2 ;
+
         return $debug;
 
     }
@@ -403,6 +467,24 @@ class CleanEventsTask extends AbstractTask
     {
         $this->disableOrganizer = $disableOrganizer;
     }
+
+    /**
+     * @return int
+     */
+    public function getDisableOrganizerSortingValue(): int
+    {
+        return $this->disableOrganizerSortingValue;
+    }
+
+    /**
+     * @param int $disableOrganizerSortingValue
+     */
+    public function setDisableOrganizerSortingValue(int $disableOrganizerSortingValue)
+    {
+        $this->disableOrganizerSortingValue = $disableOrganizerSortingValue;
+    }
+
+
 
     function debugQuery($query) {
         // new way to debug typo3 db queries

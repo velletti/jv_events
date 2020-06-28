@@ -41,7 +41,8 @@ class CleanEventsTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Add
             $taskInfo['IndexerDelRegistratationsAfter'] = $task->getDelRegistratationsAfter();
             $taskInfo['IndexerDelEventsAfter']          = $task->getDelEventsAfter();
             $taskInfo['IndexerResortingOrganizer']      = $task->getResortingOrganizer();
-            $taskInfo['IndexerDisableOrganizer'] = $task->getDisableOrganizer();
+            $taskInfo['IndexerDisableOrganizer']        = $task->getDisableOrganizer();
+            $taskInfo['IndexerDisableOrganizerSortingValue']        = $task->getDisableOrganizerSortingValue();
             $taskInfo['IndexerDebugmail'] = $task->getDebugmail();
         }
         $additionalFields = array() ;
@@ -50,6 +51,7 @@ class CleanEventsTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Add
         $additionalFields = $this->generateFormField($additionalFields , "DelEventsAfter"          , "text" , $taskInfo ) ;
         $additionalFields = $this->generateFormField($additionalFields , "ResortingOrganizer" , "text" , $taskInfo ) ;
         $additionalFields = $this->generateFormField($additionalFields , "DisableOrganizer" , "text" , $taskInfo ) ;
+        $additionalFields = $this->generateFormField($additionalFields , "DisableOrganizerSortingValue" , "text" , $taskInfo ) ;
         $additionalFields = $this->generateFormField($additionalFields , "Debugmail" , "text" , $taskInfo ) ;
 
 
@@ -139,6 +141,7 @@ class CleanEventsTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Add
         $task->setDelEventsAfter($submittedData['IndexerDelEventsAfter']);
         $task->setResortingOrganizer($submittedData['IndexerResortingOrganizer']);
         $task->setDisableOrganizer($submittedData['IndexerDisableOrganizer']);
+        $task->setDisableOrganizerSortingValue($submittedData['IndexerDisableOrganizerSortingValue']);
         $task->setDebugmail($submittedData['IndexerDebugmail']);
 
 

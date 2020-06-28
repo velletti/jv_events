@@ -764,10 +764,13 @@
                 <source>Amount of Days, after an old event is deleted (eventend dat + given days) (if = 0 will do nothing) </source>
             </trans-unit>
             <trans-unit id="indexerTask_ResortingOrganizer">
-                <source>Amount of Days a organizer should have an Event in the past. if less, resorting to lower value is done. (if = 0 will do nothing) </source>
+                <source>Amount of Days a organizer should have an Event in the past. If he does not have at eas one, resorting to lower value is done. (if = 0 will do nothing) </source>
             </trans-unit>
              <trans-unit id="indexerTask_DisableOrganizer">
                 <source>Disable organizer, if lastlogin of maintainer is more than given days. (if = 0 will do nothing) </source>
+            </trans-unit>
+            <trans-unit id="indexerTask_DisableOrganizerSortingValue">
+                <source>Disable organizer REALLY, if sorting Value of orgnizer is higher  given value. (if = 0 will do nothing, default: 123.456.789 ) </source>
             </trans-unit>
              <trans-unit id="indexerTask_Debugmail">
                 <source>Email receiver . If set, this will get debug infos via Email on each run</source>

@@ -111,10 +111,23 @@ class OrganizerController extends BaseController
 
 
         $filter = false ;
-        if( array_key_exists( 'filterorganizer' , $this->settings) && array_key_exists( "tags", $this->settings['filterorganizer']))  {
-            if( count(GeneralUtility::trimExplode( "," , $this->settings['filterorganizer']['tags'] , true)  ) > 0 ) {
-                $filter = ["tags.uid" => GeneralUtility::trimExplode( "," , $this->settings['filterorganizer']['tags'] , true ) ]  ;
+        if( array_key_exists( 'filterorganizer' , $this->settings)) {
+            if ( array_key_exists( "tags", $this->settings['filterorganizer']))  {
+                if( count(GeneralUtility::trimExplode( "," , $this->settings['filterorganizer']['tags'] , true)  ) > 0 ) {
+                    $filter["tags.uid"]  = GeneralUtility::trimExplode( "," , $this->settings['filterorganizer']['tags'] , true )   ;
+                }
             }
+            if ( array_key_exists( "hideInactives", $this->settings['filterorganizer']) )  {
+               if(  $this->settings['filterorganizer']['hideInactives'] ) {
+                   $filter['latest_event'] = time() ;
+               }
+            }
+            if ( array_key_exists( "latestUpdate", $this->settings['filterorganizer']) )  {
+                if(  $this->settings['filterorganizer']['latestUpdate'] > 0 ) {
+                    $filter['tstamp'] = time() - ( intval( $this->settings['filterorganizer']['latestUpdate'] ) * 3600 * 24 ) ;
+                }
+            }
+
         }
         $organizers = $this->organizerRepository->findByFilterAllpages($filter);
         $this->debugArray[] = "Before Generate Array:" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " Line: " . __LINE__ ;
