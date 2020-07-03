@@ -459,6 +459,7 @@ class EventController extends BaseController
             $newDate->add( $diff) ;
 
             $newEvent->setStartDate($newDate ) ;
+            $newEvent->setRegistrationUntil($newDate->modify('+23 hours') );
             $newEvent->setSysLanguageUid(-1 ) ;
 
             // ++++ now copy the Categories and tags  ++++
