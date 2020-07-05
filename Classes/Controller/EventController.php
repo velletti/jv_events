@@ -869,11 +869,11 @@ class EventController extends BaseController
         $desc = strip_tags($desc , "<p><br><a><i><strong><h2><h3>") ;
 
         $event->setDescription( $desc ) ;
-        $desc = str_replace( array( "\n" , "\r" , "\t" ), array(" " , "" , " " ), $eventArray['introtextRegistrant'] ) ;
+        $desc = str_replace( array( "\r" , "\t" ), array( "" , " " ), $eventArray['introtextRegistrant'] ) ;
         $desc = strip_tags($desc , "<b>") ;
         $event->setIntrotextRegistrant( $desc ) ;
 
-        $desc = str_replace( array( "\n" , "\r" , "\t" ), array(" " , "" , " " ), $eventArray['introtextRegistrantConfirmed'] ) ;
+        $desc = str_replace( array(  "\r" , "\t" ), array( "" , " " ), $eventArray['introtextRegistrantConfirmed'] ) ;
         $desc = strip_tags($desc , "<b>") ;
         $event->setIntrotextRegistrantConfirmed( $desc ) ;
 
