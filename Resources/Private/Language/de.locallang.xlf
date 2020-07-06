@@ -794,7 +794,7 @@
             </trans-unit>
             <trans-unit id="tx_jvevents_event.filter.configure.text_setposition">
                 <source>First set the position of the center of the Map. You can do this by using your GPS positon or just enter the Name of your city or optional the street.</source>
-                <target>Zuerst gilt es die Position festzulegen, von der ausgesucht werden soll. Dies kann auf Wunsch automatisch über die GPS Daten / Deine Positon erfolgen oder indem dort der Name einer Stadt (optional mit einer Straße) eingetragen wird.</target>
+                <target>Zuerst gilt es, die Position festzulegen, von der aus gesucht werden soll. Dies kann auf Wunsch automatisch über die GPS Daten / Deine Positon erfolgen oder indem dort der Name einer Stadt (optional mit einer Straße) eingetragen wird.</target>
             </trans-unit>
             <trans-unit id="tx_jvevents_event.filter.configure.text_selectDist">
                 <source>As second step, select the wanted distance you want to search events, locations and teachers.</source>
@@ -802,7 +802,7 @@
             </trans-unit>
             <trans-unit id="tx_jvevents_event.filter.configure.text_saveButton">
                 <source>if you use the save button after the Distance selector, your settings will be stored as a cookie in your browser and text will disapear.</source>
-                <target>Wenn du auf das 'Speichern' Icon hinter der Auswahl der Entfernung nutzt, werden deine Einstellungen als Cookie in deinem Browser gespeichert und dieser Text verschwindet.</target>
+                <target>Wenn du auf das 'Speichern' Icon hinter der Auswahl der Entfernung klickst, werden deine Einstellungen als Cookie in deinem Browser gespeichert und dieser Text verschwindet.</target>
             </trans-unit>
               <trans-unit id="tx_jvevents_event.filter.configure.text_default">
                  <source>Without this settings, resultlists will only show hits that are 50 (or 250km on tangobayern.de) away from Marienplatz in Munich.</source>
