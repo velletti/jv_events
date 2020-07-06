@@ -473,7 +473,11 @@ class EventController extends BaseController
             if( $event->getTags() ) {
                 /** @var \JVE\JvEvents\Domain\Model\Tag $tag */
                 foreach ($event->getTags() as $tag ) {
-                    $newEvent->addTag($tag) ;
+                    if ( $tag->getNocopy() != 1 ) {
+                        $newEvent->addTag($tag) ;
+                    } else {
+                        $newEvent->removeTag($tag);
+                    }
                 }
             }
 

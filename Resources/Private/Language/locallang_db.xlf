@@ -462,6 +462,9 @@
             <trans-unit id="tx_jvevents_domain_model_tag.name">
                 <source>Name</source>
             </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_tag.nocopy">
+                <source>Do not copy tag</source>
+            </trans-unit>
              <trans-unit id="tx_jvevents_domain_model_tag.tag_category">
                 <source>Allowed on Category</source>
             </trans-unit>

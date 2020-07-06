@@ -48,6 +48,14 @@ class Tag extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $name = '';
 
     /**
+     * nocopy
+     *
+     * @var int
+     */
+    protected $nocopy = 0;
+
+
+    /**
      * type 0=Event Category 1=Location Category 2=Organizer Category
      *
      * @var int
@@ -201,6 +209,22 @@ class Tag extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function setTagCategory(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $tagCategory)
     {
         $this->tagCategory = $tagCategory;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNocopy(): int
+    {
+        return $this->nocopy;
+    }
+
+    /**
+     * @param int $nocopy
+     */
+    public function setNocopy(int $nocopy)
+    {
+        $this->nocopy = $nocopy;
     }
 
 

@@ -22,10 +22,10 @@ return array(
 		'iconfile' => '/typo3conf/ext/jv_events/Resources/Public/Icons/tx_jvevents_domain_model_tag.gif'
 	),
 	'interface' => array(
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, type, tag_category',
+		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, type, tag_category, nocopy',
 	),
 	'types' => array(
-		'1' => array('showitem' => 'sys_language_uid, l10n_parent, name,type, tag_category,--div--;access, hidden, starttime, endtime'),
+		'1' => array('showitem' => 'sys_language_uid, l10n_parent, name,type, tag_category,--div--;access, hidden, starttime, endtime, nocopy'),
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),
@@ -129,6 +129,16 @@ return array(
 				'eval' => 'trim'
 			),
 		),
+        'nocopy' => array(
+            'exclude' => 1,
+            'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_tag.nocopy',
+            'config' => array(
+                'type' => 'check',
+                'behaviour' => array(
+                    'allowLanguageSynchronization' => true ,
+                ) ,
+            ),
+        ),
         'type' => array(
             'exclude' => 1,
             'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_category.type',
