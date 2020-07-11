@@ -29,9 +29,11 @@
 
 
 				<f:for each="{events}" as="event">
-					<f:variable name="aktDate">{event.startDate -> f:format.date(format:"d.m.Y")}</f:variable>
-					<f:render partial="Event/List/Partial{settings.LayoutList}/SingleEvent" arguments="{event:event, settings: settings, aktDate: aktDate, lastDate: lastDate}" />
-					<f:variable name="lastDate">{event.startDate -> f:format.date(format:"d.m.Y")}</f:variable>
+					<f:if condition="{event.organizer.uid}">
+						<f:variable name="aktDate">{event.startDate -> f:format.date(format:"d.m.Y")}</f:variable>
+						<f:render partial="Event/List/Partial{settings.LayoutList}/SingleEvent" arguments="{event:event, settings: settings, aktDate: aktDate, lastDate: lastDate}" />
+						<f:variable name="lastDate">{event.startDate -> f:format.date(format:"d.m.Y")}</f:variable>
+					</f:if>
 				</f:for>
 				<f:render section="navigation" arguments="{settings: settings, id: 'bottom'}"></f:render>
 
