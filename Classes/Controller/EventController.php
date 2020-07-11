@@ -91,10 +91,12 @@ class EventController extends BaseController
         parent::initializeAction() ;
         $this->debugArray[] = "Init Done:" . intval(1000 * ($this->microtime_float()  - $this->timeStart ) ) . " Line: " . __LINE__ ;
 	}
+
     /**
      * action list
      *
      * @return void
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
      */
     public function listAction()
     {
@@ -430,9 +432,13 @@ class EventController extends BaseController
             $event->setMasterId( $event->getUid() ) ;
             $this->eventRepository->update($event) ;
         }
-        /** @var \DateTime $accessStart */
+
+
+        /** @var \DateTime $newDate */
         $newDate = new \DateTime(  ) ;
         $newDate->setTimestamp($event->getStartDate()->getTimestamp()) ;
+        $newDate->setTime(0,0,0);
+
         $addDays = intval( $copy2Day  ) ;
         $diff= date_interval_create_from_date_string( $addDays  . " days") ;
 
@@ -457,9 +463,14 @@ class EventController extends BaseController
                 $newEvent->setMasterId( 0 ) ;
             }
             $newDate->add( $diff) ;
-
             $newEvent->setStartDate($newDate ) ;
-            $newEvent->setRegistrationUntil($newDate->modify('+23 hours') );
+            /** @var \DateTime $newRegDate */
+            $newRegDate = new \DateTime(  ) ;
+            $newRegTimestamp= $newEvent->getStartDate()->getTimestamp() ;
+            $newRegDate->setTimestamp($newRegTimestamp) ;
+            $newRegDate->setTime(23,0,0);
+
+            $newEvent->setRegistrationUntil( $newRegDate );
             $newEvent->setSysLanguageUid(-1 ) ;
 
             // ++++ now copy the Categories and tags  ++++
@@ -894,7 +905,10 @@ class EventController extends BaseController
         $event->setRegistrationGender( intval($event->getRegistrationGender())) ;
         $event->setWithRegistration(intval($event->getWithRegistration()));
         if( intval($event->getWithRegistration()) == 1 ) {
-            $event->setRegistrationUntil($event->getStartDate()->modify('+23 hours') );
+            $regD = \DateTime::createFromFormat('d.m.Y', $eventArray['startDateFE']  );
+            $regD->setTime(22,0,0,0 ) ;
+
+            $event->setRegistrationUntil( $regD );
             $event->setNotifyOrganizer($this->settings['EmConfiguration']['notifyOrganizer']);
             $event->setNotifyRegistrant($this->settings['EmConfiguration']['notifyRegistrant']);
             if ( $eventArray['registrationFormPid'] > $this->settings['EmConfiguration']['RegistrationFormPid'] ) {

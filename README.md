@@ -52,6 +52,17 @@ Then you can IDE Controls for each repository separate
  ### QR Codes .. if you want to use QR Codes:
  
       composer require endroid/qr-code
+      
+      
+UPDATE `db`.`tx_jvevents_domain_model_event` SET `start_date`= start_date - ( from_unixtime( start_date , "%H" )* 60*60) 
+WHERE from_unixtime( start_date , "%H" ) <> 0      
+
+
+SELECT  `uid`,  `pid`,  `name`,  `teaser`,  FROM_UNIXTIME(`start_date` , "%H") ,  `end_date`,  LEFT(`url`, 256),  `registration_pid`,  `registration_form_pid`,  `available_seats`,  `available_waiting_seats`,  `registered_seats`,  `unconfirmed_seats`,  LEFT(`introtext_registrant`, 256),  LEFT(`introtext_registrant_confirmed`, 256),  `organizer`,  `tstamp`,  `deleted`,  `hidden`,  `canceled`,  `canceledApril2020`,  `viewed`,  `registration_gender`,  `registration_show_status` FROM `db`.`tx_jvevents_domain_model_event` 
+WHERE from_unixtime( start_date , "%H" ) <> 0 or `uid`=7788  
+
+
+ ORDER BY `uid` DESC LIMIT 1000;
 
   
  
