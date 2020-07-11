@@ -468,7 +468,11 @@ class EventController extends BaseController
             $newRegDate = new \DateTime(  ) ;
             $newRegTimestamp= $newEvent->getStartDate()->getTimestamp() ;
             $newRegDate->setTimestamp($newRegTimestamp) ;
-            $newRegDate->setTime(23,0,0);
+            $addHours = 23 ;
+            if (  $newRegDate->format("I")  == "1" ) {
+                $addHours = 22 ;
+            }
+            $newRegDate->setTime($addHours,0,0);
 
             $newEvent->setRegistrationUntil( $newRegDate );
             $newEvent->setSysLanguageUid(-1 ) ;
@@ -906,7 +910,11 @@ class EventController extends BaseController
         $event->setWithRegistration(intval($event->getWithRegistration()));
         if( intval($event->getWithRegistration()) == 1 ) {
             $regD = \DateTime::createFromFormat('d.m.Y', $eventArray['startDateFE']  );
-            $regD->setTime(22,0,0,0 ) ;
+            $addHours = 23 ;
+            if (  $regD->format("I")  == "1" ) {
+                $addHours = 22 ;
+            }
+            $regD->setTime($addHours,0,0,0 ) ;
 
             $event->setRegistrationUntil( $regD );
             $event->setNotifyOrganizer($this->settings['EmConfiguration']['notifyOrganizer']);
