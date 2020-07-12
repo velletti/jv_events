@@ -23,6 +23,8 @@ namespace JVE\JvEvents\Hooks ;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use JVE\JvEvents\Utility\SlugUtility;
+
 class ProcessCmdmap {
 
 	protected $webserviceErrors;
@@ -121,6 +123,18 @@ class ProcessCmdmap {
 									}
 								}
 							}
+                            if( intval( TYPO3_branch ) > 8 ) {
+                                $row['name'] =  $this->event->getName() ;
+                                $row['pid'] =  $this->event->getPid() ;
+                                $row['parentpid'] =  1 ;
+                                $row['uid'] =  $this->event->getUid() ;
+                                $row['sys_language_uid'] =  $this->event->getSysLanguageUid() ;
+                                $row['slug'] =  $this->event->getSlug() ;
+                                $row['start_date'] =  $this->event->getStartDate()->format("d-m-Y") ;
+                                $slug = SlugUtility::getSlug("tx_jvevents_domain_model_event", "slug", $row  )  ;
+                                $this->event->setSlug( $slug ) ;
+                            }
+
 							$this->event->setHidden(1) ;
 
 							$this->eventRepository->update($this->event) ;
