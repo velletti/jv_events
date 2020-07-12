@@ -617,8 +617,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * registrant
      *
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Registrant>
-     * @cascade remove
+     * @var \JVE\JvEvents\Domain\Model\Registrant
      */
     protected $registrant = null;
     
@@ -1554,49 +1553,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 		$this->teaserImage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
     }
     
-    /**
-     * Adds a Registrant
-     *
-     * @param \JVE\JvEvents\Domain\Model\Registrant $registrant
-     * @return void
-     */
-    public function addRegistrant(\JVE\JvEvents\Domain\Model\Registrant $registrant)
-    {
-        $this->registrant->attach($registrant);
-    }
-    
-    /**
-     * Removes a Registrant
-     *
-     * @param \JVE\JvEvents\Domain\Model\Registrant $registrantToRemove The Registrant to be removed
-     * @return void
-     */
-    public function removeRegistrant(\JVE\JvEvents\Domain\Model\Registrant $registrantToRemove)
-    {
-        $this->registrant->detach($registrantToRemove);
-    }
-    
-    /**
-     * Returns the registrant
-     *
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Registrant> $registrant
-     */
-    public function getRegistrant()
-    {
-        return $this->registrant;
-    }
-    
-    /**
-     * Sets the registrant
-     *
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Registrant> $registrant
-     * @return void
-     */
-    public function setRegistrant(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $registrant)
-    {
-        $this->registrant = $registrant;
-    }
-    
+
     /**
      * Returns the access
      *

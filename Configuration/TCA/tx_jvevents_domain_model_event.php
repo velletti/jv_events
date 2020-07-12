@@ -1163,6 +1163,10 @@ $returnArray = array(
 
 			),
 		),
+		/*
+		 *  // activating the next line will copy registrations of an event, if you copy the event. This is NOT wanted
+		 */
+		/*
 		'registrant' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.registrant',
@@ -1181,6 +1185,7 @@ $returnArray = array(
 			),
 
 		),
+		*/
 		'event_category' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.event_category',
