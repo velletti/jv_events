@@ -9,11 +9,7 @@ routeEnhancers:
     type: Extbase
     extension: JvEvents
     plugin: Events
-    requirements:
-      organizer_slug: '[0-9]{1..16}'
-      location_slug: '[0-9]{1..16}'
-      event_slug: '[0-9]{1..16}'
-      org_id: '[0-9]{1..16}'
+
     defaults:
       event_id: '1'
       registrant: '1'
