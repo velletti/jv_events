@@ -614,14 +614,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     protected $location = null;
     
-    /**
-     * registrant
-     *
-     * @var \JVE\JvEvents\Domain\Model\Registrant
-     */
-    protected $registrant = null;
-    
-    /**
+       /**
      * eventCategory
      *
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Category>
