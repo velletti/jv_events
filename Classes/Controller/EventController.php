@@ -26,6 +26,7 @@ namespace JVE\JvEvents\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Doctrine\DBAL\Connection;
 use JVE\JvEvents\Utility\SlugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
@@ -454,9 +455,38 @@ class EventController extends BaseController
             foreach ($properties as $key => $value ) {
                 $newEvent->_setProperty( $key , $value ) ;
             }
-            // unset all registion Infos
+
+
+            // unset all registion Infos Minimal this
             $newEvent->setRegisteredSeats(0) ;
             $newEvent->setUnconfirmedSeats(0) ;
+            $newEvent->setViewed(0) ;
+
+            // then have a look at Ext Conf
+            $extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['jv_events']);
+            $fields =  $extConf['resetFieldListAfterCopy']   ;
+
+            // default: setUnconfirmedSeats:0;setRegisteredSeats:0;setSalesForceEventId:"";setSalesForceSessionId:""
+            $fieldsArray = explode(";" , trim($fields)  ) ;
+            if( is_array($fieldsArray)) {
+                foreach ($fieldsArray as $value ) {
+                    $fieldsArraySub = explode(":" , trim($value)  ) ;
+                    if( is_array($fieldsArraySub)) {
+                        $func = $fieldsArraySub[0] ;
+
+                        if(method_exists($this->event , $func )) {
+                            if(strlen($fieldsArraySub[1]) == 0 ) {
+                                $this->event->$func( "" ) ;
+                            } else {
+                                $this->event->$func( $fieldsArraySub[1] ) ;
+                            }
+
+
+                            // echo "<hr>event->" . $func . "(" . $fieldsArraySub[1] . ") ;" ;
+                        }
+                    }
+                }
+            }
 
             // if we just do ONE Copy, do not set master ID
             if ( $copy2Day == 0 ) {
@@ -496,6 +526,9 @@ class EventController extends BaseController
                 }
             }
 
+
+
+
             // ----- end copy the Categories and tags and now  Teaser image  -----
 
             $this->eventRepository->add($newEvent) ;
@@ -510,6 +543,29 @@ class EventController extends BaseController
 
             /** @var \TYPO3\CMS\Core\Database\ConnectionPool $connectionPool */
             $connectionPool = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class);
+
+            // --------- now fix Slug Name
+            if( intval( TYPO3_branch ) > 8 ) {
+                $row['name'] =  $newEvent->getName() ;
+                $row['pid'] =  $newEvent->getPid() ;
+                $row['parentpid'] =  1 ;
+                $row['uid'] =  $eventUid;
+                $row['sys_language_uid'] =  $newEvent->getSysLanguageUid() ;
+                $row['slug'] =  $newEvent->getSlug() ;
+                $row['start_date'] =  $newEvent->getStartDate()->format("d-m-Y") ;
+                $slug = SlugUtility::getSlug("tx_jvevents_domain_model_event", "slug", $row  )  ;
+                // $newEvent->setSlug( $slug ) ;
+                // $this->eventRepository->update($newEvent) ;
+                /** @var \TYPO3\CMS\Core\Database\Connection $dbConnectionForSysRef */
+                $dbConnectionForSlug = $connectionPool->getConnectionForTable('tx_jvevents_domain_model_event');
+
+                /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilderEvent */
+                $queryBuilderEvent = $dbConnectionForSlug->createQueryBuilder();
+                $queryBuilderEvent->update('tx_jvevents_domain_model_event')->set('slug' , $slug )
+                    ->where( $queryBuilderEvent->expr()->eq('uid' , $queryBuilderEvent->createNamedParameter( $eventUid , \PDO::PARAM_INT )) )
+                    ->execute() ;
+            }
+
 
             /** @var \TYPO3\CMS\Core\Database\Connection $dbConnectionForSysRef */
             $dbConnectionForSysRef = $connectionPool->getConnectionForTable('sys_file_reference');
@@ -549,9 +605,15 @@ class EventController extends BaseController
             }
             unset( $newEvent ) ;
         }
+        // got from EM Settings
+        $clearCachePids = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode("," , $this->settings['EmConfiguration']['clearCachePids']) ;
+        if( is_array($clearCachePids) && count( $clearCachePids) > 0 ) {
+            $clearCachePids[] = $GLOBALS['TSFE']->id ;
+            $this->cacheService->clearPageCache( $clearCachePids );
+            $this->addFlashMessage('The object was updated and Cache of following pages are cleared: ' . implode("," , $clearCachePids), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+        }
 
-
-       $this->redirect("edit" , null , null , array( "event" => $eventUid  )) ;
+       $this->redirect("show" , null , null , array( "event" => $eventUid  )) ;
 
     }
     /**
