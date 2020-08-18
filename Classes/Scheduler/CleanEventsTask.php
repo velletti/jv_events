@@ -352,10 +352,10 @@ class CleanEventsTask extends AbstractTask
                         $queryBuilderUpdate->update('tx_jvevents_domain_model_organizer')
                             ->where( $queryBuilder->expr()->eq('uid',   $row['uid'] ) )
                             ->set('tstamp', $queryBuilder->quoteIdentifier('tstamp') , false )
-                            ->set('sorting', $queryBuilder->quoteIdentifier('sorting') . " + " . 5000000   , false )
+                            ->set('sorting', $queryBuilder->quoteIdentifier('sorting') . " + " . 50000   , false )
                             ->execute() ;
 
-                        $debug[] = "Organizer : " . $row['uid'] . " - "  . $row['name'] . " moved sorting from " . $row['sorting']  . " + 5000000 ! managed by  user(s) " . $row['access_users'] ;
+                        $debug[] = "Organizer : " . $row['uid'] . " - "  . $row['name'] . " moved sorting from " . $row['sorting']  . " + 50.000 ! managed by  user(s) " . $row['access_users'] ;
                     }
                     $countResult = $queryCount->count( '*' )->from('tx_jvevents_domain_model_event' )
                         ->where($queryBuilder->expr()->eq('canceled',   1 ))
