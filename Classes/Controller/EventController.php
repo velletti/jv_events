@@ -734,8 +734,20 @@ class EventController extends BaseController
                                 $otherEvent->setPriceReducedText( $event->getPriceReducedText() ) ;
                             }
 
-
+                            // --------- now fix Slug Name
+                            if( intval( TYPO3_branch ) > 8 ) {
+                                $row['name'] = $otherEvent->getName();
+                                $row['pid'] = $otherEvent->getPid();
+                                $row['parentpid'] = 1;
+                                $row['uid'] = $otherEvent->getUid();
+                                $row['sys_language_uid'] = $otherEvent->getSysLanguageUid();
+                                $row['slug'] = $otherEvent->getSlug();
+                                $row['start_date'] = $otherEvent->getStartDate()->format("d-m-Y");
+                                $slug = SlugUtility::getSlug("tx_jvevents_domain_model_event", "slug", $row);
+                                $otherEvent->setSlug($slug);
+                            }
                             $this->eventRepository->update($otherEvent) ;
+
                         }
                         $this->addFlashMessage('The following Events : ' . $otherDaysText . ' were also updated.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
 
