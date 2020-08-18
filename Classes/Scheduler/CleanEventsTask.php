@@ -99,7 +99,7 @@ class CleanEventsTask extends AbstractTask
 
         /* ##############    Remove ld events ############################### */
         if ( $this->delEventsAfter > 0 ) {
-            $debug = $this-doCleanupEvents( $debug ) ;
+            $debug = $this->doCleanupEvents( $debug ) ;
         }
 
         /* ##############    Remove ld events ############################### */
