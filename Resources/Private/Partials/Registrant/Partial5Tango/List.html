@@ -31,7 +31,7 @@
 				<th><f:translate key="tx_jvevents_domain_model_registrant.last_name" /></th>
 				<th><f:translate key="tx_jvevents_domain_model_registrant.street_and_nr" /></th>
 				<th><f:translate key="tx_jvevents_domain_model_registrant.zip" /></th>
-				<th><f:translate key="tx_jvevents_domain_model_registrant.city" /></th>
+				<th><f:translate default="City" key="tx_jvevents_domain_model_registrant.city" /></th>
 			</tr>
 			<f:variable name="regCount">0</f:variable>
 			<f:variable name="regCountWait">0</f:variable>
@@ -58,7 +58,7 @@
 						</f:if>
 					</f:else>
 				</f:if>
-				<tr>
+				<tr data-toggle="tooltip" title="{registrant.additionalInfo}">
 					<td>
 						{regCountSingle}
 					</td>

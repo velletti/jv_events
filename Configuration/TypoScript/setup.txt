@@ -86,6 +86,9 @@ plugin.tx_jvevents_events {
 				username = {$plugin.tx_jvevents_events.settings.register.citrix.username}
 				password = 	{$plugin.tx_jvevents_events.settings.register.citrix.password}
 			}
+			formFields{
+				5Tango = {$plugin.tx_jvevents_events.settings.register.formFields.5Tango}
+			}
 			requiredFields {
 				1Allplan =	{$plugin.tx_jvevents_events.settings.register.requiredFields.1Allplan}
 				2Megra 	=	{$plugin.tx_jvevents_events.settings.register.requiredFields.2Megra}
