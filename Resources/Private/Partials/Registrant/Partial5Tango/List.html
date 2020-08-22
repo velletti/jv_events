@@ -79,13 +79,16 @@
 									</f:then>
 									<f:else>
 										<f:link.action action="confirm" arguments="{registrant: registrant.uid, hash: hash , doit: '1'}" noCacheHash="true">
-											<i class="fa fa-envelope text-warning " title="confirm This Registration .. Need to test this "> </i>
+											<i class="fa fa-envelope text-warning " title="confirm This Registration ..  "> </i>
 										</f:link.action>
 
 									</f:else>
 								</f:if>
 							</f:else>
 						</f:if>
+						<f:link.action action="new" arguments="{event: event.uid, registrant: registrant.uid, hash: hash }" controller="Registrant" noCacheHash="true">
+							<i class="fa fa-edit text-error " title="edit..  "> </i>
+						</f:link.action>
 					</td>
 					<td>
 						<f:if condition="{registrant.hidden}">

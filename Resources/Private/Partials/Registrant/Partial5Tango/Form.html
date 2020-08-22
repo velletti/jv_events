@@ -95,7 +95,7 @@
 			<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRow" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.additional_info', FieldName : 'additionalInfo' , settings: settings , cols: 'col-sm-12' , textarea: '1' , required: '{f:if(condition: \'{settings.register.required.additionalInfo}\' , then: \'TRUE\')}'}"/>
 
 			<f:if condition="{settings.register.required.privacy}">
-				<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRowCheckPrivacy" arguments="{FieldName : 'privacy' , settings: settings , cols: 'col-sm-12'}"/>
+				<f:render arguments="{FieldName : 'privacy' , settings: settings , checked: '{registrant.privacy}' cols: 'col-sm-12'}" partial="Registrant/Partial{settings.LayoutSingle}/FormRowCheckPrivacy"/>
 			</f:if>
 
 		</fieldset>

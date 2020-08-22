@@ -337,6 +337,28 @@ class RegistrantController extends BaseController
                 }
             }
         }
+        $mayEdit = false ;
+        if( is_object($registrant) && $registrant->getUid() > 0) {
+           if ( is_object( $event) && is_object($event->getOrganizer())) {
+                if(  $registrant->getEvent() == $event->getUid() ) {
+                    if($this->isUserOrganizer() ) {
+                        if( $this->hasUserAccess( $event->getOrganizer() )) {
+                            if( $this->request->hasArgument("hash")) {
+                                if( $this->request->getArgument("hash") == $checkHash ) {
+                                    $mayEdit = true ;
+                                    $registrant->setPrivacy("1");
+                                }
+
+                            }
+                        }
+                    }
+                }
+            }
+
+            if( !$mayEdit) {
+                $registrant=null ;
+            }
+        }
 
 
         if ( $registrant==null) {

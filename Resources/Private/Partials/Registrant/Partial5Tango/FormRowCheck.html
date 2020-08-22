@@ -1,8 +1,9 @@
 <div class="{cols}">
 	<div class="checkbox" >
 		<label for="jv_events_{FieldName}">
-			<f:form.checkbox class="checkbox jv-events-req-{required}" id="jv_events_{FieldName}" property="{FieldName}" value="1" checked=""/>
-
+			<f:variable name="object">registrant.{FieldName}</f:variable>
+			<f:variable name="checked"><f:if condition="{object}">checked</f:if></f:variable>
+			<f:form.checkbox checked="{checked}" class="checkbox jv-events-req-{required}" id="jv_events_{FieldName}" property="{FieldName}" value="1"/>
 			{label}
 			<f:if condition="{required}">
 				<span class="required">*</span>

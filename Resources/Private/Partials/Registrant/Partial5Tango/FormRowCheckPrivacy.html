@@ -1,8 +1,8 @@
 <div class="{cols}">
 	<div class="checkbox" >
 		<label for="jv_events_{FieldName}">
-			<f:form.checkbox class="checkbox jv-events-req-TRUE" id="jv_events_{FieldName}" property="{FieldName}" value="1" checked=""/>
-
+			<f:if condition="{checked}"><f:variable name="checked">checked</f:variable></f:if>
+			<f:form.checkbox checked="{checked}" class="checkbox jv-events-req-TRUE" id="jv_events_{FieldName}" property="{FieldName}" value="1"/>
 			{f:translate(key: 'register.accept_privacy_intro' , default:'I have read and accept the ')}
 
 			<f:link.page pageUid="{settings.register.termsOfUsePid}" target="_blank">
