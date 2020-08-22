@@ -4,6 +4,7 @@ namespace JVE\JvEvents\Controller;
 use JVE\JvEvents\Domain\Model\Event;
 use JVE\JvEvents\Domain\Model\Registrant;
 use JVE\JvEvents\Domain\Model\Subevent;
+use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
@@ -152,28 +153,50 @@ class RegistrantController extends BaseController
 
     }
 
+    private function getCsvLine( $d ,  $t , $value , $fields , $field , $all ) {
+        if( $all || array_key_exists($field , $fields )) {
+            return $d .  $t . '"' . $value . '"' ;
+        }
+        return '' ;
+    }
     private function getCsvHeader( $d , $eol , $t ) {
-        $return = $t . "hidden" . $t  ;
-        $return .= $d .  $t . "Firstname" . $t . $d  . $t . "Lastname" . $t  ;
-        $return .= $d  . $t . "Gender" . $t . $d  . $t . "title" . $t  ;
-        $return .= $d  . $t . "confirmed" . $t . $d  . $t . "email" . $t  ;
-        $return .= $d  . $t . "company" . $t . $d  . $t . "department" . $t  ;
-        $return .= $d  . $t . "address" . $t  ;
-        $return .= $d  . $t . "zip" . $t . $d  . $t . "city" . $t  ;
-        $return .= $d  . $t . "Country" . $t . $d  . $t . "Language" . $t  ;
+        $all = true ;
+        $fields = [] ;
+        if( array_key_exists( 'allformFields' ,$this->settings['register'] ) && is_array ( $this->settings['register']['allformFields'] )) {
+            $all = false ;
+            $fields = $this->settings['register']['allformFields'] ;
+        }
 
-        $return .= $d  . $t . "phone" . $t . $d  . $t . "profession" . $t  ;
-        $return .= $d  . $t . "customer_id" . $t . $d  . $t . "contact_id" . $t  ;
+        // gender,streetAndNr,firstName,lastName,zip,city,phone,email,privacy,hotprice,more1,more2,more3,hidden,confirmed
 
-        $return .= $d  . $t . "company2" . $t . $d  . $t . "department2" . $t  ;
-        $return .= $d  . $t . "address2" . $t  ;
-        $return .= $d  . $t . "zip2" . $t  . $d  . $t . "city2" . $t  ;
-        $return .= $d  . $t . "Country2" . $t ;
-        $return .= $d  . $t . "More" . $t ;
-        $return .= $d  . $t . "More2" . $t ;
-        $return .= $d  . $t . "More3" . $t ;
-        $return .= $d  . $t . "Additional Info" . $t ;
-
+        $return = $this->getCsvLine(  "",  $t , "hidden" , $fields , "hidden" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t , "Firstname" , $fields , "firstName" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t , "Lastname" , $fields , "lastName" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t , "Gender" , $fields , "gender" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t , "title" , $fields , "title" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t , "confirmed" , $fields , "confirmed" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t , "email" , $fields , "email" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t , "company" , $fields , "company" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t , "department" , $fields , "department" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t , "address" , $fields , "streetAndNr" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t , "zip" , $fields , "zip" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t , "city" , $fields , "city" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t , "Country" , $fields , "country" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t , "Language" , $fields , "language" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t , "phone" , $fields , "phone" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t , "profession" , $fields , "profession" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t , "customer_id" , $fields , "customerId" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t , "contact_id" , $fields , "contactId" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t , "company2" , $fields , "company2" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t , "department2" , $fields , "department2" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t , "address2" , $fields , "streetAndNr2" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t , "zip2" , $fields , "zip2" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t , "city2" , $fields , "city2" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t , "Country2" , $fields , "country2" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t , "More" , $fields , "more" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t , "More2" , $fields , "more2" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t , "More3" , $fields , "more3" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t , "Additional Info" , $fields , "additionalInfo" , $all ) ;
         return $return . $eol ;
     }
 
@@ -185,39 +208,52 @@ class RegistrantController extends BaseController
      * @return string
      */
     private function getCsvValues( $registrant , $d , $eol , $t ) {
-        $return = $t . $this->cleanString($registrant->getHidden(), $t , $d ) . $t  ;
-        $return .= $d . $t . $this->cleanString( $registrant->getFirstname() , $t , $d) . $t . $d  . $t . $this->cleanString($registrant->getLastName(), $t , $d ) . $t  ;
+
+        $all = true ;
+        $fields = [] ;
+        if( array_key_exists( 'allformFields' ,$this->settings['register'] ) && is_array ( $this->settings['register']['allformFields'] )) {
+            $all = false ;
+            $fields = $this->settings['register']['allformFields'] ;
+        }
 
         $gender = $this->translate("register_gender_female" ) ;
         if( $registrant->getGender() < 2 ) {
             $gender = $this->translate("register_gender_male" ) ;
         }
-
-
-        $return .= $d  . $t . $this->cleanString($gender , $t , $d ). $t . $d  . $t . $this->cleanString($registrant->getTitle() , $t , $d) . $t  ;
-        $return .= $d  . $t . $this->cleanString($registrant->getConfirmed(), $t , $d) . $t . $d  . $t . $this->cleanString($registrant->getEmail() , $t , $d). $t  ;
-
-        $return .= $d  . $t . $this->cleanString($registrant->getCompany(), $t , $d) . $t . $d  . $t . $this->cleanString($registrant->getDepartment() , $t , $d). $t  ;
-        $return .= $d  . $t . $this->cleanString($registrant->getStreetAndNr(), $t , $d) . $t   ;
-        $return .= $d  . $t . $this->cleanString(" " . $registrant->getZip(), $t , $d) . $t . $d  . $t . $this->cleanString($registrant->getCity() , $t , $d). $t  ;
-        $return .= $d  . $t . $this->cleanString($registrant->getCountry(), $t , $d) . $t . $d  . $t . $this->cleanString($registrant->getLanguage(), $t , $d) . $t  ;
         $phone = " " . $registrant->getPhone() ;
         if ( str_replace( " " , "" , trim($phone )) == trim($phone) ) {
             $old = $phone ;
             $phone = " " . substr( $old , 0 , 2) . " " . substr( $old , 2 , 2 ) . " " . substr( $old , 4 , 2 ) . " " . substr( $old , 6 , 99 ) ;
         }
-        $return .= $d  . $t . $this->cleanString($phone, $t , $d) . $t . $d  . $t . $this->cleanString($registrant->getProfession() , $t , $d). $t  ;
-        $return .= $d  . $t . $this->cleanString($registrant->getCustomerId(), $t , $d) . $t . $d  . $t . $this->cleanString($registrant->getContactId(), $t , $d). $t  ;
 
-
-        $return .= $d  . $t . $this->cleanString($registrant->getCompany2(), $t , $d) . $t . $d  . $t . $this->cleanString($registrant->getDepartment2(), $t , $d) . $t  ;
-        $return .= $d  . $t . $this->cleanString($registrant->getStreetAndNr2(), $t , $d) . $t   ;
-        $return .= $d  . $t . $this->cleanString(" " . $registrant->getZip2(), $t , $d) . $t . $d  . $t . $this->cleanString($registrant->getCity2(), $t , $d) . $t  ;
-        $return .= $d  . $t . $this->cleanString($registrant->getCountry2(), $t , $d). $t  ;
-        $return .= $d  . $t . $this->cleanString($registrant->getMore1(), $t , $d). $t  ;
-        $return .= $d  . $t . $this->cleanString($registrant->getMore2(), $t , $d). $t  ;
-        $return .= $d  . $t . $this->cleanString($registrant->getMore3(), $t , $d). $t  ;
-        $return .= $d  . $t . $this->cleanString($registrant->getAdditionalInfo(), $t , $d). $t  ;
+        $return = $this->getCsvLine(  "",  $t , $this->cleanString($registrant->getHidden() , $t , $d), $fields , "hidden" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t ,  $this->cleanString( $registrant->getFirstname() , $t , $d), $fields , "firstName" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t , $this->cleanString($registrant->getLastName() , $t , $d), $fields , "lastName" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t , $this->cleanString($gender , $t , $d ) , $fields , "gender" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t , $this->cleanString($registrant->getTitle() , $t , $d) , $fields , "title" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t , $this->cleanString($registrant->getConfirmed()  , $t , $d) , $fields , "confirmed" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t ,  $this->cleanString($registrant->getEmail()  , $t , $d) , $fields , "email" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t , $this->cleanString($registrant->getCompany(), $t , $d) , $fields , "company" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t , $this->cleanString($registrant->getDepartment() , $t , $d) , $fields , "department" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t ,  $this->cleanString($registrant->getStreetAndNr(), $t , $d) , $fields , "streetAndNr" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t ,  $this->cleanString(" " . $registrant->getZip(), $t , $d) , $fields , "zip" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t ,  $this->cleanString($registrant->getCity() , $t , $d), $fields , "city" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t ,  $this->cleanString($registrant->getCountry(), $t , $d), $fields , "country" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t ,  $this->cleanString($registrant->getLanguage(), $t , $d) , $fields , "language" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t ,  $this->cleanString($phone, $t , $d) , $fields , "phone" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t ,  $this->cleanString($registrant->getProfession() , $t , $d) , $fields , "profession" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t ,  $this->cleanString($registrant->getCustomerId(), $t , $d), $fields , "customerId" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t ,  $this->cleanString($registrant->getContactId(), $t , $d), $fields , "contactId" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t ,  $this->cleanString($registrant->getCompany2(), $t , $d) , $fields , "company2" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t ,  $this->cleanString($registrant->getDepartment2(), $t , $d), $fields , "department2" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t ,  $this->cleanString($registrant->getStreetAndNr2()  , $t , $d) , $fields , "streetAndNr2" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t ,  $this->cleanString(" " . $registrant->getZip2(), $t , $d)  , $fields , "zip2" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t ,  $this->cleanString($registrant->getCity2(), $t , $d)  , $fields , "city2" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t ,  $this->cleanString($registrant->getCountry2(), $t , $d), $fields , "country2" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t ,  $this->cleanString($registrant->getMore1(), $t , $d) , $fields , "more" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t ,  $this->cleanString($registrant->getMore2(), $t , $d) , $fields , "more2" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t ,  $this->cleanString($registrant->getMore3(), $t , $d) , $fields , "more3" , $all ) ;
+        $return .= $this->getCsvLine(  $d ,  $t ,  $this->cleanString($registrant->getAdditionalInfo(), $t , $d) , $fields , "additionalInfo" , $all ) ;
 
         return $return . $eol ;
     }
@@ -453,6 +489,7 @@ class RegistrantController extends BaseController
 
 
 		if( is_object( $existingRegistration ) ) {
+		    /** @var Registrant $oldReg */
 			$oldReg = $existingRegistration->getFirst() ;
 			if( is_object( $oldReg ) ) {
 				// solve it by setting .. : allow Double registrations ...
@@ -472,11 +509,29 @@ class RegistrantController extends BaseController
 		$totalPersonCount = $this->getTotalPersonCount($registrant)['total'] ;
 
         // set Status 0 unconfirmed || 1 Confirmed by Partizipant || 2 Confirmed by Organizer
-
         if( $this->settings['alreadyRegistered'] ) {
             if( is_object( $oldReg ) ) {
                 if( ! $this->settings['register']['doNotallowSameEmail'] ) {
-                    $this->registrantRepository->update($oldReg) ;
+                    // 1. we need to Check if Number registrered Persons have changed
+                    $oldPersonCount = $this->getTotalPersonCount($oldReg)['total'] ;
+
+                    $diffCount  = $totalPersonCount - $oldPersonCount ;
+                    if($diffCount != 0 ) {
+                        if($oldReg->getConfirmed() ) {
+                            $registrant->setConfirmed(1) ;
+                            // maybe one More or one Less. if OLD registration have 2 Persons, new only 1 , diffcount will be -1
+                            $event->setRegisteredSeats($event->getRegisteredSeats() + $diffCount );
+                        } else {
+                            $event->setUnconfirmedSeats($event->getUnconfirmedSeats() + $diffCount);
+                            $registrant->setConfirmed(0);
+                        }
+
+                        if ($event->getNeedToConfirm() == 1 && $oldReg->getHidden() == 1 ) {
+                            $registrant->setHidden(1);
+                        }
+                    }
+                    // 1. we need to load Data from OLD New Registration to OLD Registration
+                    $this->updateOldReg( $oldReg , $registrant ) ;
                 }
             } else {
                 $oldReg = $registrant ;
@@ -714,6 +769,27 @@ class RegistrantController extends BaseController
 
     }
 
+    /**
+     * @param Registrant $oldReg
+     * @param Registrant $registrant
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
+     */
+    public function updateOldReg(Registrant $oldReg , Registrant $registrant){
+        try {
+            if( array_key_exists( 'allformFields' ,$this->settings['register'] ) && is_array ( $this->settings['register']['allformFields'] )) {
+                foreach ( $this->settings['register']['allformFields'] as $fieldname => $value ) {
+
+                    if( $registrant->_hasProperty($fieldname)) {
+                        $value = $registrant->_getProperty($fieldname) ;
+                        $oldReg->_setProperty( $fieldname , $value ) ;
+                    }
+                }
+            }
+            $this->registrantRepository->update($oldReg) ;
+        } catch(Exception $e) {
+        }
+    }
     /**
      * action checkQrcodeAction
      *

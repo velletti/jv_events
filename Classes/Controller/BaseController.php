@@ -151,6 +151,14 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         foreach( $required as $key => $field ) {
             $this->settings['register']['required'][$field] = TRUE ;
         }
+
+        $fields = $this->settings['register']['formFields'][$layout] ;
+        $formFields  = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode( "," , $fields ) ;
+        foreach( $formFields as $key => $field ) {
+            $this->settings['register']['allformFields'][$field] = TRUE ;
+        }
+
+
         $this->persistenceManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
     }
 
