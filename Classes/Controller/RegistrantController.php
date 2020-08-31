@@ -162,7 +162,10 @@ class RegistrantController extends BaseController
     private function getCsvHeader( $d , $eol , $t ) {
         $all = true ;
         $fields = [] ;
-        if( array_key_exists( 'allformFields' ,$this->settings['register'] ) && is_array ( $this->settings['register']['allformFields'] )) {
+        if( array_key_exists( 'allformFields' ,$this->settings['register'] )
+            && is_array ( $this->settings['register']['allformFields'] )
+            && count($this->settings['register']['allformFields'] )  > 0
+        ) {
             $all = false ;
             $fields = $this->settings['register']['allformFields'] ;
         }
@@ -819,7 +822,7 @@ class RegistrantController extends BaseController
      * @param string $hash
      * @return void
      */
-    public function checkQrcodeAction(Event $event=null , string $hash='')
+    public function checkQrcodeAction(Event $event=null , $hash='')
     {
         $registrant = false ;
 
