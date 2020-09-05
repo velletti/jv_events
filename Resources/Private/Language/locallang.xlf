@@ -182,6 +182,13 @@
             <trans-unit id="register.you_are_registered">
                 <source>Your registration was stored successfull. </source>
             </trans-unit>
+            <trans-unit id="register.you_are_registered_again">
+                <source>Your registration was updated successfull. </source>
+            </trans-unit>
+            <trans-unit id="register.you_are_registered_same_email_warning">
+                <source>You can only registered once with the same E-mail for the same event!</source>
+            </trans-unit>
+
             <trans-unit id="register.you_need_to_confirm">
                 <source>Your Need to confirm your registration. Please click the following button.</source>
             </trans-unit>

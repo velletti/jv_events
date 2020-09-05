@@ -208,6 +208,17 @@
                 <source>Your registration was stored successfull. </source>
                 <target>Ihre Registrierung wurde erfolgreich durchgeführt.</target>
             </trans-unit>
+
+            <trans-unit id="register.you_are_registered_again">
+                <source>Your registration was updated successfull. </source>
+                <target>Ihre Anmeldung wurde erfolgreich aktualisiert. </target>
+            </trans-unit>
+            <trans-unit id="register.you_are_registered_same_email_warning">
+                <source>You can only registered once with the same E-mail for the same event!</source>
+                <target>Pro Veranstaltung kann man sich mit der gleichen E-mail Adresse nur einmal anmelden!</target>
+            </trans-unit>
+
+
             <trans-unit id="register.you_need_to_confirm" approved="yes">
                 <source>Your Need to confirm your registration. Please click the following button.</source>
                 <target>Sie müssen Ihre Registrierung noch durch 'Klick' auf den nachfolgenden Button bestätigen.</target>

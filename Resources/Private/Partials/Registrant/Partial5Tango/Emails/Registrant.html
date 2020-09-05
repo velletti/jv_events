@@ -14,7 +14,10 @@
 					{event.startDate -> f:format.date(format:"d.m.Y")} um {event.startTime -> event:format.date( format:"H:i")}<f:if condition="{event.endTime}"> - {event.endTime -> event:format.date( format:"H:i")}</f:if> <br> {event.name}<br />
 				</f:else>
 			</f:if>
+			<f:if condition="{settings.alreadyRegistered}">
+				<br>{f:translate(key: '{settings.you_are_registered_again}')}
 
+			</f:if>
 
 		</h2>
 
@@ -38,7 +41,29 @@
 			{event.location.name}<br />
 			{event.location.streetAndNr}<br />
 			{event.location.zip} {event.location.city}<br />
+			<br />
+			<b><f:translate key="tx_jvevents_domain_model_event.details.tab.contact"/>></b>
+			<f:if condition="{event.location.email}">
+				<f:then>
+					<strong><f:translate key="tx_jvevents_domain_model_location.email" />:</strong> <f:link.email class="email" email="{event.location.email}" /><br/>
+				</f:then>
+				<f:else>
+					<f:if condition="{event.organizer.email}">
+						<strong><f:translate key="tx_jvevents_domain_model_location.email" />:</strong> <f:link.email class="email" email="{event.organizer.email}" /><br/>
+					</f:if>
+				</f:else>
+			</f:if>
 
+			<f:if condition="{event.location.phone}">
+				<f:then>
+					<strong><f:translate key="tx_jvevents_domain_model_location.phone" />:</strong> {event.location.phone}<br/>
+				</f:then>
+				<f:else>
+					<f:if condition="{event.organizer.phone}">
+						<strong><f:translate key="tx_jvevents_domain_model_location.phone" />:</strong> {event.organizer.phone}<br/>
+					</f:if>
+				</f:else>
+			</f:if>
 		</p>
 
 		<f:if condition="{otherEvents}">
@@ -57,7 +82,7 @@
 			</p>
 			<br />
 		</f:if>
-		<h3  style="font-size: 22px; font-family: '{emConf.fontFamily}'; line-height: 1.25; margin: 0 0 10px; padding: 0;">Bitte beachten: </h3>
+		<h3  style="font-size: 22px; font-family: '{emConf.fontFamily}'; line-height: 1.25; margin: 0 0 10px; padding: 0;">Bitte beachten / Important: </h3>
 
 		<f:if condition="{registrant.confirmed}==1">
 			<f:if condition="{event.introtextRegistrantConfirmed}">
