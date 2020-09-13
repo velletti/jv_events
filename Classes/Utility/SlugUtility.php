@@ -67,22 +67,31 @@ class SlugUtility {
 
         /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
         $queryBuilder = $connectionPool->getQueryBuilderForTable($tableName);
-        $userQuery = $queryBuilder->count( '*' )->from($tableName )
-            ->where( $queryBuilder->expr()->eq($field, $queryBuilder->createNamedParameter( $slug , \TYPO3\CMS\Core\Database\Connection::PARAM_STR )) )
-            ->andWhere( $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter( $pageId , \TYPO3\CMS\Core\Database\Connection::PARAM_INT )) )
-            ->andWhere( $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter( $languageId , \TYPO3\CMS\Core\Database\Connection::PARAM_INT )) )
-            ->andWhere( $queryBuilder->expr()->neq('uid', $queryBuilder->createNamedParameter( $recordId , \TYPO3\CMS\Core\Database\Connection::PARAM_INT )) )
-        ;
-/*
-         $querystr = $userQuery->getSQL() ;
-         $queryParams = array_reverse ( $userQuery->getParameters()) ;
-         foreach ($queryParams as $key => $value ) {
-             $search[] = ":" . $key ;
-             $replace[] = "'$value'" ;
+        $userQuery = $queryBuilder->count( '*' )->from($tableName )->where( $queryBuilder->expr()->neq('uid', $queryBuilder->createNamedParameter( $recordId , \TYPO3\CMS\Core\Database\Connection::PARAM_INT )) ) ;
+
+        $pageId = intval($pageId) ;
+        if( $pageId > 0) {
+             $userQuery = $queryBuilder->andWhere( $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter( $pageId , \TYPO3\CMS\Core\Database\Connection::PARAM_INT )) ) ;
          }
-         echo str_replace( $search , $replace , $querystr ) ;
-die;
-*/
+         $languageId = intval($languageId) ;
+         if( $languageId > -1 ) {
+             $userQuery = $queryBuilder->andWhere( $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter( $languageId , \TYPO3\CMS\Core\Database\Connection::PARAM_INT )) );
+         }
+         $slug = trim($slug) ;
+         if( $slug ) {
+             $userQuery = $queryBuilder->andWhere( $queryBuilder->expr()->eq($field, $queryBuilder->createNamedParameter( $slug , \TYPO3\CMS\Core\Database\Connection::PARAM_STR )) ) ;
+         }
+
+        /*
+             $querystr = $userQuery->getSQL() ;
+             $queryParams = array_reverse ( $userQuery->getParameters()) ;
+             foreach ($queryParams as $key => $value ) {
+                 $search[] = ":" . $key ;
+                 $replace[] = "'$value'" ;
+             }
+             echo str_replace( $search , $replace , $querystr ) ;
+            die;
+        */
         if ( $userQuery->execute()->fetchColumn(0)  < 1 ) {
             return true ;
         }
