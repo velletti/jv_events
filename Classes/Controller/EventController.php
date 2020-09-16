@@ -1014,7 +1014,7 @@ class EventController extends BaseController
             $row['name'] =  $event->getName() ;
             $row['pid'] =  $event->getPid() ;
             $row['parentpid'] =  1 ;
-            $row['uid'] =  $event->getUid() ;
+            $row['uid'] =  $event->getUid() ? $event->getUid() : 0  ;
             $row['sys_language_uid'] =  $event->getSysLanguageUid() ;
             $row['slug'] =  $event->getSlug() ;
             $row['start_date'] =  $event->getStartDate()->format("d-m-Y") ;
