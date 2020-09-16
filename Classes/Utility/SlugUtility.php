@@ -81,17 +81,18 @@ class SlugUtility {
          if( $slug ) {
              $userQuery = $queryBuilder->andWhere( $queryBuilder->expr()->eq($field, $queryBuilder->createNamedParameter( $slug , \TYPO3\CMS\Core\Database\Connection::PARAM_STR )) ) ;
          }
-
         /*
-             $querystr = $userQuery->getSQL() ;
-             $queryParams = array_reverse ( $userQuery->getParameters()) ;
-             foreach ($queryParams as $key => $value ) {
-                 $search[] = ":" . $key ;
-                 $replace[] = "'$value'" ;
-             }
-             echo str_replace( $search , $replace , $querystr ) ;
-            die;
-        */
+
+                     $querystr = $userQuery->getSQL() ;
+                     $queryParams = array_reverse ( $userQuery->getParameters()) ;
+                     foreach ($queryParams as $key => $value ) {
+                         $search[] = ":" . $key ;
+                         $replace[] = "'$value'" ;
+                     }
+                     echo str_replace( $search , $replace , $querystr ) ;
+                     echo "<hr>" . $userQuery->execute()->fetchColumn(0)  ;
+                die;
+            */
         if ( $userQuery->execute()->fetchColumn(0)  < 1 ) {
             return true ;
         }
