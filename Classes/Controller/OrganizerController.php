@@ -413,7 +413,7 @@ class OrganizerController extends BaseController
         $organizer->setLink( trim($organizer->getLink())) ;
         $organizer->setCharityLink( trim($organizer->getCharityLink())) ;
         $organizer->setEmail( trim($organizer->getEmail())) ;
-
+        $organizer->setLanguageUid( -1)  ;
         if ($organizer->getPid() < 1 ) {
             // ToDo find good way to handle ID Default .. maybe a pid per User, per location or other typoscript setting
             $organizer->setPid( 13 ) ;
