@@ -1,5 +1,11 @@
 <?php
 namespace JVE\JvEvents\Scheduler;
+use JVE\JvEvents\Domain\Model\Organizer;
+use JVE\JvEvents\Domain\Repository\EventRepository;
+use JVE\JvEvents\Domain\Repository\OrganizerRepository;
+use JVE\JvRanking\Domain\Repository\AnswerRepository;
+use JVE\JvRanking\Domain\Repository\QuestionRepository;
+use JVE\JvRanking\Utility\RankingUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -10,6 +16,8 @@ use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 use TYPO3\CMS\Core\Locking\LockFactory;
 use TYPO3\CMS\Core\Locking\LockingStrategyInterface;
@@ -223,6 +231,94 @@ class CleanEventsTask extends AbstractTask
     }
 
     private function doResortingOrganizer($debug ) {
+        $debug[] = "\n ***************************************************" ;
+        $debug[] = "\n now calculating the New sorting value" ;
+
+
+
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+
+
+        /** @var QuestionRepository $questionRepository */
+        $questionRepository = $objectManager->get(QuestionRepository::class) ;
+
+        /** @var PersistenceManager $persistanceManager */
+        $persistanceManager = $objectManager->get(PersistenceManager::class) ;
+
+        /** @var EventRepository $eventRepository */
+        $eventRepository = $objectManager->get(EventRepository::class) ;
+        /** @var AnswerRepository $answerRepository */
+        $answerRepository = $objectManager->get(AnswerRepository::class) ;
+        /** @var OrganizerRepository $organizerRepository */
+        $organizerRepository = $objectManager->get(OrganizerRepository::class) ;
+        $organizers = $organizerRepository->findByFilterAllpages(FALSE , true ) ;
+
+        /** @var ConnectionPool $connectionPool */
+        $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
+        /** @var QueryBuilder $queryFeUser */
+        $queryFeUser = $connectionPool->getQueryBuilderForTable('fe_users') ;
+
+        if( $organizers ) {
+            $debug[] = "Found Organizers: " . count( $organizers) ;
+            /** @var Organizer $organizer */
+            foreach ($organizers as $organizer ) {
+                if ( $organizer->getSorting() <  ( $this->disableOrganizerSortingValue + 5 ) ) {
+                    $isVip = false ;
+
+                    $lastLogin = 0 ;
+                    $users = GeneralUtility::trimExplode("," ,$organizer->getAccessUsers() , true) ;
+                    $usersData = array() ;
+                    if(is_array($users)) {
+                        foreach ( $users as $userUid ) {
+                            $feuser = $queryFeUser->select('uid' , 'lastlogin' , "username", 'usergroup' )->from('fe_users')->where(
+                                $queryFeUser->expr()->eq('uid' , $queryFeUser->createNamedParameter($userUid , Connection::PARAM_INT )
+                                ))->execute()->fetch() ;
+                            if( $feuser) {
+                                $debug[] = "lastLogin: " . date('d.m.Y H:i' , $feuser['lastlogin'] ) . ": uid= '" . $userUid . "' - ". $feuser['username'] . " : groups: " . $feuser['usergroup'];
+                                $usersData[] =  $feuser ;
+                                if( $feuser['lastlogin'] > $lastLogin ) {
+                                    $lastLogin = $feuser['lastlogin'] ;
+                                }
+                                if( $feuser['isonline'] > $lastLogin ) {
+                                    $lastLogin = $feuser['isonline'] ;
+                                }
+                                $userGroups = GeneralUtility::trimExplode("," , $feuser['usergroup']  ) ;
+                                if(in_array("3" , $userGroups ) ) {
+                                    $isVip = true ;
+                                }
+                            }
+                        }
+                    }
+
+                    $result = RankingUtility::calculate($questionRepository, $organizer , $eventRepository , $answerRepository , $isVip , $lastLogin ) ;
+                    if ($organizer->getUid() == 2157 && 1==2  ) {
+                        echo $result['newsorting'] ;
+                        echo"<hr>" ;
+                        echo nl2br($result['debug']) ;
+                        echo"<hr>" ;
+                        echo  "Organizer: " . $organizer->getUid() . " - " . $organizer->getName() . " Old: " . $organizer->getSorting() . " -> " . $result['newsorting'] ;
+                        echo"<hr>" ;
+                        die;
+                    }
+
+                    $debug[] = "Organizer: " . $organizer->getUid() . " - " . $organizer->getName() . " Old: " . $organizer->getSorting() . " -> " . $result['newsorting'] ;
+
+                    /** @var ConnectionPool $connectionPool */
+                    $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
+                    /** @var QueryBuilder $queryBuilder */
+                    $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_jvevents_domain_model_organizer') ;
+                    $queryBuilder->update("tx_jvevents_domain_model_organizer")->set("sorting" , $result['newsorting'])
+                        ->where($queryBuilder->expr()->eq("uid" , $queryBuilder->createNamedParameter( $organizer->getUid() , Connection::PARAM_INT)))
+                        ->execute() ;
+                }
+
+            }
+        }
+        return $debug ;
+
+    }
+
+    private function doResortingOrganizerOld($debug ) {
         $timeInPast  =  time() - intval( $this->resortingOrganizer ) * 60 * 60 *24 ;
 
 
@@ -257,6 +353,7 @@ class CleanEventsTask extends AbstractTask
 
         if ( !$connection->errorInfo() ) {
             $debug[] = "Updated  sorting of '" . $countResult .  "' Organizers  with latest_event older than " . $timeInPast . " - " . date( "d.m.Y H:i" , $timeInPast ) ;
+
             return $debug;
         } else {
             $debug[] = array('faultstring' => 'Line: ' . __LINE__ . ' Error on update ', 'mode' => 'update', " error " => $connection->errorInfo() );
@@ -268,7 +365,7 @@ class CleanEventsTask extends AbstractTask
 
     private function doDisableOrganizer($debug ) {
         $timeInPast  =  time() - intval( $this->disableOrganizer ) * 60 * 60 *24 ;
-
+        $debug[] = " *********  now uses with really last login " ;
 
         /** @var ConnectionPool $connectionPool */
         $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
@@ -342,7 +439,7 @@ class CleanEventsTask extends AbstractTask
                             $user['usergroup'] = GeneralUtility::rmFromList( "7" , $user['usergroup']) ;
                             $debug[] = "Reduced Group access of user : " . $user['uid'] . " from: " . $orig ." to " .   $user['usergroup'];
 
-                            $queryFeUserUpdate->update('fe_user')
+                            $queryFeUserUpdate->update('fe_users')
                                 ->where( $queryBuilder->expr()->eq('uid',   $user['uid'] ))
                                 ->set('usergroup' , $user['usergroup'] )->execute();
                         }
