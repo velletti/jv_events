@@ -259,10 +259,10 @@ class CleanEventsTask extends AbstractTask
         $queryFeUser = $connectionPool->getQueryBuilderForTable('fe_users') ;
 
         if( $organizers ) {
-            $debug[] = "Found Organizers: " . count( $organizers) ;
+            $debug[] = "Found Organizers: " . count( $organizers) . " now searching for those with lower Sorting Value than : " . 10000 ;
             /** @var Organizer $organizer */
             foreach ($organizers as $organizer ) {
-                if ( $organizer->getSorting() <  ( $this->disableOrganizerSortingValue + 5 ) ) {
+                if ( $organizer->getSorting() <  ( 10000 + 5 ) ) {
                     $isVip = false ;
 
                     $lastLogin = 0 ;
