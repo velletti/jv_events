@@ -68,14 +68,16 @@
                                          Wenn du einen Termin kopierst, können Änderungen auch automatisch an dem/den anderen Termin(en) übernommen werden. Damit kann man somit regelmäßig stattfindende Termine einfach pflegen.
                                      </f:translate><br><br>
                                      <f:translate key="event_copy_intro2">
-                                         Inhaltlich unterschiedliche Termine (z.b. verschiedene Kursarten oder Uhrzeiten) sollten deshalb nicht durch die unten Buttons erstellt werden.
+                                         Inhaltlich unterschiedliche Termine (z.b. verschiedene Kursarten oder Uhrzeiten) sollten deshalb nicht durch die nachfolgenden Buttons erstellt werden.
                                      </f:translate>
                                  </div>
-                                 <div class="col-6">
-                                     <f:translate key="event_copy_one_linked">Single Copy (linked)</f:translate>
-                                 </div>
-                                 <div class="col-6">
-                                     <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '1', amount: '1' , msgtext: '1 Copy'}" />
+                                 <div class="col-12">
+                                     <b><f:translate key="event_copy_one_linked">Single Copy (linked)</f:translate></b>
+                                     <br>
+                                     <f:render arguments="{eventId: output.event.eventId, copy2Day: '1', amount: '1' , msgtext: '+1 Day'}" section="renderCopyLink" />
+                                     <f:render arguments="{eventId: output.event.eventId, copy2Day: '7', amount: '1' , msgtext: '+7 Days'}" section="renderCopyLink" />
+                                     <f:render arguments="{eventId: output.event.eventId, copy2Day: '14', amount: '1' , msgtext: '+14 Days'}" section="renderCopyLink" />
+                                     <f:render arguments="{eventId: output.event.eventId, copy2Day: '28', amount: '1' , msgtext: '+28 Days'}" section="renderCopyLink" />
                                  </div>
                                  <div class="col-12">
                                      <b><f:translate key="event_copy_multi">Copy multiple weekly</f:translate></b>
@@ -95,8 +97,7 @@
                                      <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '14', amount: '3' , msgtext: '3'}" />
                                      <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '14', amount: '4' , msgtext: '4'}" />
                                       <br>
-                                      Jeden 3. Donnerstag / 1. Sonntag im Monat etc Funktion ist geplant ..
-                                 </div>
+                                  </div>
                              </div>
 
                         </f:spaceless>
