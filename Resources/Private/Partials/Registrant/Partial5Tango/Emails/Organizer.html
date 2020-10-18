@@ -5,7 +5,10 @@
 	<f:then>
 		<h2 style="font-size: 22px; font-family: '{emConf.fontFamily}'; line-height: 1.25; margin: 0 0 20px; padding: 0;">
 			Event ID: {event.uid} | <f:format.date format="d.m.Y">{event.startDate}</f:format.date>
+			<f:if condition="{settings.alreadyRegistered}">
+				<br>{f:translate(key: '{settings.you_are_registered_again}')}
 
+			</f:if>
 		</h2>
 
 		<f:link.action  absolute="true" controller="Registrant" action="list" class="btn btn-primary" arguments="{event : event.uid, hash: settings.hash, export: 1}"> CSV Export </f:link.action>

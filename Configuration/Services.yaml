@@ -1,0 +1,13 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: true
+
+  JVE\JvEvents\:
+    resource: '../Classes/*'
+
+  JVE\JvEvents\Command\UpdateSlugCommand:
+    tags:
+      - name: 'console.command'
+        command: 'jvevents:updateslug'

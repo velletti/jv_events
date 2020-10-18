@@ -1014,10 +1014,10 @@ class EventController extends BaseController
             $row['name'] =  $event->getName() ;
             $row['pid'] =  $event->getPid() ;
             $row['parentpid'] =  1 ;
-            $row['uid'] =  $event->getUid() ;
-            $row['sys_language_uid'] =  $event->getSysLanguageUid() ;
-            $row['slug'] =  $event->getSlug() ;
+            $row['uid'] =  $event->getUid() ? $event->getUid() : 0  ;
+            $row['sys_language_uid'] = -1 ;
             $row['start_date'] =  $event->getStartDate()->format("d-m-Y") ;
+            $row['slug'] =  $event->getSlug() ? $event->getSlug() : $event->getName() . "-" . $row['start_date'] ;
             $slug = SlugUtility::getSlug("tx_jvevents_domain_model_event", "slug", $row  )  ;
             $event->setSlug( $slug ) ;
         }
