@@ -25,7 +25,7 @@
                     <f:link.action action="show" arguments="{organizer : organizer.uid}">
                             <f:if condition="{organizer.teaserImage}">
                                 <f:then>
-                                    <f:image src="{organizer.teaserImage.uid}" class="d-block w-100 h-auto img-float rounded shadow-lg" alt="{organizer.teaserImage.alternative}" title="{organizer.teaserImage.title}" width="{settings.list.image.width}c" maxWidth="{settings.list.image.width}" maxHeight="{settings.list.image.height}" treatIdAsReference="true" />
+                                    <jve:image alt="{organizer.teaserImage.alternative}" class="d-block w-100 h-auto img-float rounded shadow-lg" maxHeight="{settings.list.image.height}" maxWidth="{settings.list.image.width}" src="{organizer.teaserImage.uid}" title="{organizer.teaserImage.title}" treatIdAsReference="true" width="{settings.list.image.width}c" />
                                 </f:then>
                                 <f:else>
                                     <f:if condition="{hideDefaultImg}">
