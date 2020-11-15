@@ -1,60 +1,267 @@
-<f:layout name="Default" />
+{namespace jve=JVE\JvEvents\ViewHelpers}
+{namespace be=TYPO3\CMS\Backend\ViewHelpers}
+<f:layout name="Backend" />
 
-<f:section name="main">
-<f:flashMessages />
+<f:section name="content">
+	<f:flashMessages />
+	<script type="application/javascript">
+		$(document).ready(function() {
+			$('.tx_jvevents_citrix').click( function(event) {
+				event.preventDefault() ;
+				var thisReg = $(this)
+				$(thisReg).html( $('#jvevents-spinner-icon').html() )  ;
 
-	<f:render partial="Debug/CheckInstallation" arguments="{modulelist: 'TRUE' , event:event, settings: settings}" />
-	<f:if condition="{settings.EmConfiguration.useGeoLocation}">
-		<div id="jv_events_geo" class="hidden" data-lng="" data-lat="">
-			GEO Position
-		</div>
-	</f:if>
-	<div class="jv_vents_{settings.LayoutList}"	>
-		<f:if condition="{settings.ShowFilter}">
-			<f:render partial="Event/List/Partial{settings.LayoutList}/Filter" arguments="{eventsFilter: eventsFilter, settings: settings}"/>
-		</f:if>
-		<f:if condition="{events}">
-			<f:then>
-				<f:render partial="Event/List/Partial{settings.LayoutList}/HeaderEvent" arguments="{event:event, settings: settings}" />
-				<f:for each="{events}" as="event">
-					<f:render partial="Event/List/Partial{settings.LayoutList}/SingleEvent" arguments="{event:event, settings: settings}" />
-				</f:for>
+				$.get( $(this).attr("href") , function(data , status ) {
+					$(thisReg).html($('#jvevents-close-icon').html());
+					if (data.uid) {
+						if (data.text.status) {
+							$(thisReg).html($('#jvevents-okay-icon').html());
+							$(thisReg).attr("title" , "Response Status: " . data.text.status ) ;
+						} else {
+							$(thisReg).html($('#jvevents-error-icon').html());
+							$(thisReg).attr("title" , 'error : '  . data.text.error ) ;
+						}
+					} else {
+						$(thisReg).html($('#jvevents-error-icon').html());
+						$(thisReg).attr("title" , 'undefined error' ) ;
+					}
 
-				<f:if condition="{settings.debug} > 0 ">
-					<f:then>
-						[
-						<f:for each="{events}" as="event" iteration="index">
+				}) ;
+			}) ;
+			$('.pagination LI A').each( function() {
+				var eventId = $("#jveventFilterForm #jvevents").val() ;
+				var recursive = $("#jveventFilterForm #recursive").val() ;
+				var onlyActual = $("#jveventFilterForm #onlyActual").val() ;
+				var addString =  "&tx_jvevents_web_jveventseventmngt[recursive]=" +  recursive ;
+				addString = addString +  "&tx_jvevents_web_jveventseventmngt[onlyActual]=" +  onlyActual ;
+				addString = addString + "&tx_jvevents_web_jveventseventmngt[event]=" +  eventId ;
+				console.log( " Addstrng= " +addString ) ;
+				console.log( " old HREF = " +$(this).attr("href"  ) ) ;
 
-							<f:render partial="Event/Single/MicroFormat" arguments="{event: event, settings: settings}"/>
-							<f:if condition="{index.isLast}">
-								<f:then></f:then>
-								<f:else>,</f:else>
-							</f:if>
-						</f:for>
-						]
-					</f:then>
-					<f:else>
-						<script type="application/ld+json">
-						[
-							<f:for each="{events}" as="event" iteration="index">
-								<f:render partial="Event/Single/MicroFormat" arguments="{event: event, settings: settings}"/>
-									<f:if condition="{index.isLast}">
-									<f:then></f:then>
-									<f:else>,</f:else>
-								</f:if>
-							</f:for>
-						]
-					</script>
-					</f:else>
-				</f:if>
-			</f:then>
-			<f:else>
-				<div class="alert alert-info">
-					<f:translate key="tx_jvevents_event.list.no_events_found"> No Events Found</f:translate>
-				</div>
-			</f:else>
-		</f:if>
+				$(this).attr("href" , $(this).attr("href") + addString )  ;
+				console.log( " NEW HREF = " +$(this).attr("href"  ) ) ;
+
+			}) ;
+
+
+		}) ;
+
+	</script>
+	<div class="hide">
+		<!-- comment: Icon or messages needed for Ajax see typo3\sysext\core\Classes\Imaging\IconRegistry.php //-->
+
+
+		<span id="jvevents-spinner-icon"><core:icon identifier="spinner-circle-dark"/></span>
+		<span id="jvevents-close-icon"><core:icon identifier="status-dialog-notification"/></span>
+		<span id="jvevents-error-icon"><core:icon identifier="status-dialog-error"/></span>
+		<span id="jvevents-okay-icon"><core:icon identifier="status-dialog-ok"/></span>
 	</div>
+
+
+	<h2><f:count>{registrants}</f:count> Registrations {f:if( condition: '{onlyActual}' , then: 'in the last {onlyActual} Days' )} </h2>
+	<f:if condition="events">
+		<f:if condition="{settings.directmail}">
+			<div>
+				<f:link.action class="btn btn-default" action="list" arguments="{createDmailGroup:1}" title="Create Email Group">
+					<core:icon identifier="actions-document"/> Create Email lists for Newsletter
+				</f:link.action>
+
+
+			</div>
+		</f:if>
+		<f:form id="jveventFilterForm" action="list" controller="EventBackend" method="post">
+			<input type="hidden" name="uid" value="{plugin.uid}" /><f:form.hidden name="pluginUid" value="{plugin.uid}" />
+			<f:form.select name="event" value="{event}" additionalAttributes="{onchange: 'document.getElementById(\'jveventFilterForm\').submit();'}" id="jvevents" property="event" options="{events}" optionLabelField="name" sortByOptionLabel="TRUE" prependOptionLabel="-" prependOptionValue="0"></f:form.select>
+			<br><f:form.checkbox name="recursive" id="recursive" property="recursive"  value="1" checked="{recursive} == 1" additionalAttributes="{onchange: 'document.getElementById(\'jveventFilterForm\').submit();'}" /> Search also subpages of Page ID: {pageId}
+			<br><f:form.checkbox name="onlyActual" id="onlyActual" property="onlyActual"  value="-90" checked="{onlyActual} == -90" additionalAttributes="{onchange: 'document.getElementById(\'jveventFilterForm\').submit();'}" /> not older than 90 Days
+		</f:form>
+
+		<f:for as="event" each="{events}">
+			<f:variable name="eventTitle{event.uid}">{event.name}</f:variable>
+		</f:for>
+
+	</f:if>
+	<f:be.widget.paginate objects="{registrants}" as="paginatedRegistrants" configuration="{itemsPerPage: itemsPerPage, insertAbove: 1, maximumNumberOfLinks: 3}">
+		<div class="row bg-primary ">
+			<div class="col-xs-1">
+
+			</div>
+			<div class="col-xs-4">
+				<b>First- Lastname</b>
+			</div>
+			<div class="col-xs-3">
+				<b>E-Mail</b>
+			</div>
+
+			<div class="col-xs-1">
+				<span title="This is a registration is UNconfirmed by User (if here is an 'X') ">U</span>
+			</div>
+			<div class="col-xs-1">
+				<span title="This is a registration is confirmed / send to citrix">C</span>
+			</div>
+			<div class="col-xs-1">
+				<span title="This is a registration is confirmed / send to Hubspot">H</span>
+			</div>
+			<div class="col-xs-1">
+				<span title="This is a registration for multiple events (BB=BlockBooking) ">BB</span>
+			</div>
+		</div>
+		<div class="jvevents-entrys">
+			<f:for each="{paginatedRegistrants}" as="registrant" iteration="iterator">
+
+				<div class="row registrant{registrant.uid} regEvent{registrant.event}">
+					<div class="col-xs-1">
+
+
+						<div class="btn-group" role="group">
+							<button type="button" class="btn btn-info btn-sm"  data-toggle="collapse" data-target="#regInfo{registrant.uid}">
+								<core:icon identifier="actions-document-info"/>
+							</button>
+
+						</div>
+
+					</div>
+					<div class="col-xs-4">
+						{registrant.firstName} {registrant.lastName}
+					</div>
+					<div class="col-xs-3">
+						{registrant.email}
+					</div>
+					<div class="col-xs-1">
+						<f:if condition="{registrant.hidden}">
+							X
+						</f:if>
+					</div>
+
+					<div class="col-xs-1">
+						<f:if condition="{registrant.hidden}">
+							<f:else>
+								<f:if condition="{registrant.confirmed}">
+									<f:then>
+										<f:if condition="{settings.EmConfiguration.enableCitrix}">
+											<f:then>
+												<f:if condition="{0: registrant.citrixResponse} == {0: '200'} || {0: registrant.citrixResponse} == {0: '201'} ">
+													<f:then>
+														<f:if condition="{0: registrant.citrixResponse} == {0: '200'}">
+															<f:then>
+																<span title="Sent to Citrix. Response was OK">
+																	{registrant.citrixResponse}
+																</span>
+															</f:then>
+															<f:else>
+																<span title="Was ReSent to Citrix. Response was OK">
+																	{registrant.citrixResponse}
+																</span>
+															</f:else>
+														</f:if>
+													</f:then>
+													<f:else>
+														<f:link.action absolute="true" class="btn btn-sm tx_jvevents_citrix" action="resendCitrix" arguments="{registrant: registrant.uid}" title="Send to citrix - {registrant.citrixResponse} ">
+															<core:icon identifier="actions-system-backend-user-switch"/>
+														</f:link.action>
+													</f:else>
+												</f:if>
+											</f:then>
+											<f:else>
+												ok
+											</f:else>
+										</f:if>
+
+									</f:then>
+									<f:else>
+										<f:link.action class="btn btn-sm" action="confirm" arguments="{registrant: registrant, eventID: event}" title="Send Email confirmation">
+											<core:icon identifier="actions-document"/>
+										</f:link.action>
+									</f:else>
+								</f:if>
+							</f:else>
+
+						</f:if>
+
+					</div>
+					<div class="col-xs-1">
+						<f:if condition="{registrant.hidden}">
+							<f:else>
+								<f:if condition="{settings.EmConfiguration.enableHubspot}">
+									<f:then>
+										<f:if condition="{0: registrant.hubspotResponse} == {0: '201'} || {0: registrant.hubspotResponse} == {0: '204'} ">
+											<f:then>
+												<f:if condition="{0: registrant.hubspotResponse} == {0: '204'}">
+													<f:then>
+														<span title="Sent to Hubspot. Response was OK - {registrant.hubspotResponse}">
+															{registrant.hubspotResponse}
+														</span>
+													</f:then>
+													<f:else>
+														<span title="Was ReSent to Hubspot. Response was OK - {registrant.hubspotResponse}">
+															{registrant.hubspotResponse}
+														</span>
+													</f:else>
+												</f:if>
+											</f:then>
+											<f:else>
+												<f:if condition="{0: registrant.hubspotResponse} == {0: '100'} || {0: registrant.hubspotResponse} == {0: '404'} || {0: registrant.hubspotResponse} == {0: '500'}">
+													<f:then>
+														<f:link.action absolute="true" class="btn btn-sm tx_jvevents_citrix" action="resendHubspot" arguments="{registrant: registrant.uid}" title="Send to Hubspot - {registrant.hubspotResponse} ">
+															<core:icon identifier="actions-system-backend-user-switch"/>
+														</f:link.action>
+													</f:then>
+													<f:else>
+														{registrant.hubspotResponse}
+													</f:else>
+												</f:if>
+
+											</f:else>
+										</f:if>
+									</f:then>
+									<f:else>
+										{registrant.hubspotResponse}
+									</f:else>
+								</f:if>
+							</f:else>
+
+						</f:if>
+
+					</div>
+					<div class="col-xs-1">
+						<f:if condition="{registrant.otherEvents}">
+							<span title="This is a registration for multiple events (BB=BlockBooking) ">BB</span>
+						</f:if>
+					</div>
+
+				</div>
+
+				<div id="regInfo{registrant.uid}" class="collapse" role="dialog">
+					<div class="well">
+						<p>
+
+							Event:
+							<be:link.editRecord uid="{registrant.event}" table="tx_jvevents_domain_model_event" returnUrl="">
+								<core:icon identifier="actions-document-open"/> {eventTitle{registrant.event}}
+							</be:link.editRecord>
+
+
+							<br>
+							<br>
+							<be:link.editRecord uid="{registrant.uid}" table="tx_jvevents_domain_model_registrant" returnUrl="">
+								<core:icon identifier="actions-document-open"/> RegUid: {registrant.uid}
+							</be:link.editRecord>
+							Registrered at: <f:format.date format="d.m.Y">{registrant.crdate}</f:format.date><br>
+							Company: {registrant.company}<br>
+							City: {registrant.zip} {registrant.city}<br>
+							Tel: {registrant.phone}<br>
+							Additional Info: <f:format.nl2br>{registrant.additionalInfo}</f:format.nl2br><br>
+
+							<f:if condition="{registrant.otherEvents}">
+								<br>This is a registration for multiple events <b>(BB=BlockBooking)</b>
+							</f:if>
+						</p>
+					</div>
+				</div>
+
+			</f:for>
+		</div>
+	</f:be.widget.paginate>
 
 
 </f:section>

@@ -510,11 +510,18 @@ class EventBackendController extends BaseController
 	public function createDmailGroup( \JVE\JvEvents\Domain\Model\Event  $event ) {
 
         if (! \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('direct_mail')) {
-            return ;
+            return true ;
         }
-        $dgroupRow =  \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw("sys_dmail_group" , "deleted = 0 AND static_list = " . $event->getUid() , "*" ) ;
-        if(is_array($dgroupRow )) {
-            return ;
+        /** @var \TYPO3\CMS\Core\Database\ConnectionPool $connectionPool */
+        $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
+
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_dmail_group') ;
+        $dgroupRow = $queryBuilder->select("*")->from("sys_dmail_group")->where($queryBuilder->expr()->eq("static_list" ,$event->getUid() ))->execute()->fetchAll() ;
+
+        // $dgroupRow =  \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw("sys_dmail_group" , "deleted = 0 AND static_list = " . $event->getUid() , "*" ) ;
+        if($dgroupRow ) {
+            return true ;
         }
 
         $query[] = array (
@@ -565,11 +572,7 @@ class EventBackendController extends BaseController
 	    $dgroup['csv'] =  0 ;
 	    $dgroup['query'] = serialize($query) ;
 
-        /** @var \TYPO3\CMS\Core\Database\ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
 
-        /** @var QueryBuilder $queryBuilder */
-        $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_dmail_group') ;
 
         return $queryBuilder->insert('sys_dmail_group')->values($dgroup)->execute() ;
 
