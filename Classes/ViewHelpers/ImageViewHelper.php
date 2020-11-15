@@ -104,18 +104,26 @@ class ImageViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\ImageViewHelper
             }
         } catch (ResourceDoesNotExistException $e) {
             // thrown if file does not exist
-            return "1509741911: " . $e->getMessage() ;
+            $this->outputException( "1509741911: " , $e->getMessage() );
         } catch (\UnexpectedValueException $e) {
             // thrown if a file has been replaced with a folder
-            return "1509741912: " . $e->getMessage() ;
+            $this->outputException( "1509741912: " , $e->getMessage() );
         } catch (\RuntimeException $e) {
             // RuntimeException thrown if a file is outside of a storage
-            return "1509741913: " . $e->getMessage() ;
+            $this->outputException( "1509741913: " , $e->getMessage() );
         } catch (\InvalidArgumentException $e) {
             // thrown if file storage does not exist
-            return "1509741914: " . $e->getMessage() ;
+            $this->outputException( "1509741914: " , $e->getMessage() );
         }
 
         return $this->tag->render();
+    }
+    private function outputException($id , $text ){
+        if( $this->arguments['src'] ) {
+            return '<img src="' . $this->arguments['src'] . '" title="' . $id . ' = ' . $text .  ' ' . $this->arguments['src'] .'" >' ;
+        } else {
+            return '<img src="' . $this->arguments['image'] . '" title="' . $id . ' = ' . $text .  ' ' . $this->arguments['image'] . '" >' ;
+        }
+
     }
 }
