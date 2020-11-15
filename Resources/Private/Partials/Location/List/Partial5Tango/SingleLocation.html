@@ -49,13 +49,10 @@
                             {location.name}
                         </f:link.action></h4>
                         <b>{location.organizer.name}</b><br><br>
-                        <f:format.nl2br>
-                            <f:format.crop append=" &nbsp; ... " maxCharacters="400">
-                                <f:format.stripTags>
+                            <f:format.crop append=" &nbsp; ... " maxCharacters="400"><f:format.stripTags allowedTags="<p><br>">
                                     {location.description}
                                 </f:format.stripTags>
                             </f:format.crop>
-                        </f:format.nl2br>
                     </div>
                 </div>
 
