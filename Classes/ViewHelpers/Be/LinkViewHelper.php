@@ -24,7 +24,8 @@ class LinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedVi
         $this->registerTagAttribute('eventId', 'integer', 'id of the event if set ' , false );
         $this->registerTagAttribute('recursive', 'integer', 'if checkbox is set to search recursive ' , false );
         $this->registerTagAttribute('table', 'string', 'Name of the database table' , false , "tx_jvevents_domain_model_event" );
-        $this->registerTagAttribute('returnModule', 'string', 'Module name_of_backend' , true , "tx_jvevents_web_jveventseventmngt");
+        $this->registerTagAttribute('returnM', 'string', 'Module name_of_backend' , false , "web_eventmngt");
+        $this->registerTagAttribute('returnModule', 'string', 'parameterArray' , false , "tx_jvevents_web_jveventseventmngt");
         $this->registerTagAttribute('returnController', 'string', 'controller name_of_backend' , true , "EventBackend");
         $this->registerTagAttribute('returnAction', 'string', 'function name of the action' , true , "list");
     }
@@ -40,6 +41,7 @@ class LinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedVi
     public function render( ) {
         $uid        = $this->arguments['uid'];
         $table   = $this->arguments['table'];
+        $returnM   = $this->arguments['returnM'];
         $returnModule   = $this->arguments['returnModule'];
         $class   = $this->arguments['class'];
 
@@ -52,8 +54,11 @@ class LinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedVi
         $returnArray[$returnModule]['recursive'] = $this->arguments['recursive'] ;
         $returnArray[$returnModule]['onlyActual'] = $this->arguments['onlyActual'] ;
 
-
-        $returnUrl = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl( $returnModule , array( $returnArray ) ) ;
+        /* outdated. will be removed when LTS 8 support is dropped  */
+        if( $_GET['M']) {
+            $returnM = $_GET['M'] ;
+        }
+        $returnUrl = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl( $returnM , array( $returnArray ) ) ;
            // tx_fetool_tools_fetoolfeuserlist%5Baction%5D=listbyclass&tx_fetool_tools_fetoolfeuserlist%5Bcontroller%5D=Feuserlist
         // tx_jvevents_web_jveventseventmngt[action]=list&tx_jvevents_web_jveventseventmngt[controller]=EventBackend
         $uri = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('record_edit', array( 'edit['. $table . '][' . $uid . ']' => 'edit' ,'returnUrl' => $returnUrl )) ;
