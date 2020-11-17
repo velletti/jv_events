@@ -26,15 +26,15 @@
                     <f:link.action action="show" arguments="{location : location.uid}">
                             <f:if condition="{location.teaserImage}">
                                 <f:then>
-                                    <f:image src="{location.teaserImage.uid}" class="d-block w-100 h-auto img-float rounded shadow-lg" alt="{location.teaserImage.alternative}" title="{location.teaserImage.title}" width="{settings.list.image.width}c" maxWidth="{settings.list.image.width}" maxHeight="{settings.list.image.height}" treatIdAsReference="true" />
+                                    <jve:image alt="{location.teaserImage.alternative}" class="d-block w-100 h-auto img-float rounded shadow-lg" maxHeight="{settings.list.image.height}" maxWidth="{settings.list.image.width}" src="{location.teaserImage.uid}" title="{location.teaserImage.title}" treatIdAsReference="true" width="{settings.list.image.width}c" />
                                 </f:then>
                                 <f:else>
                                     <f:if condition="{location.organizer.teaserImage}">
                                         <f:then>
-                                            <f:image src="{location.organizer.teaserImage.uid}" class="d-block w-100 h-auto img-float rounded shadow-lg" alt="{location.organizer.teaserImage.alternative}" title="{location.organizer.teaserImage.title}" width="{settings.list.image.width}c" maxWidth="{settings.list.image.width}" maxHeight="{settings.list.image.height}" treatIdAsReference="true" />
+                                            <jve:image alt="{location.organizer.teaserImage.alternative}" class="d-block w-100 h-auto img-float rounded shadow-lg" maxHeight="{settings.list.image.height}" maxWidth="{settings.list.image.width}" src="{location.organizer.teaserImage.uid}" title="{location.organizer.teaserImage.title}" treatIdAsReference="true" width="{settings.list.image.width}c" />
                                         </f:then>
                                         <f:else>
-                                            <f:image src="{settings.list.image.defaultImage}" class="d-block w-100 h-auto img-float rounded shadow-lg" alt="img" title="Settings: {settings.list.image.defaultImage}" width="{settings.list.image.width}c" maxWidth="{settings.list.image.width}" maxHeight="{settings.list.image.height}" treatIdAsReference="false" />
+                                            <jve:image alt="img" class="d-block w-100 h-auto img-float rounded shadow-lg" maxHeight="{settings.list.image.height}" maxWidth="{settings.list.image.width}" src="{settings.list.image.defaultImage}" title="Settings: {settings.list.image.defaultImage}" treatIdAsReference="false" width="{settings.list.image.width}c" />
 
                                         </f:else>
                                     </f:if>
@@ -49,11 +49,10 @@
                             {location.name}
                         </f:link.action></h4>
                         <b>{location.organizer.name}</b><br><br>
-                        <f:format.crop maxCharacters="400" append=" &nbsp; ... ">
-                            <f:format.stripTags>
-                                {location.description}
-                            </f:format.stripTags>
-                        </f:format.crop>
+                            <f:format.crop append=" &nbsp; ... " maxCharacters="200"><f:format.stripTags allowedTags="<p><br>">
+                                    {location.description}
+                                </f:format.stripTags>
+                            </f:format.crop>
                     </div>
                 </div>
 

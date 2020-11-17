@@ -17,17 +17,17 @@
                         </f:if>
                         <f:if condition="{event.teaserImage}">
                             <f:then>
-                                <f:image src="{event.teaserImage.uid}" class="d-block w-100 h-auto img-float rounded shadow-lg" alt="{event.teaserImage.alternative}" title="{event.teaserImage.title}" width="{settings.list.image.width}c" maxWidth="{settings.list.image.width}" maxHeight="{settings.list.image.height}" treatIdAsReference="true" />
+                                <jve:image alt="{event.teaserImage.alternative}" class="d-block w-100 h-auto img-float rounded shadow-lg" maxHeight="{settings.list.image.height}" maxWidth="{settings.list.image.width}" src="{event.teaserImage.uid}" title="{event.teaserImage.title}" treatIdAsReference="true" width="{settings.list.image.width}c" />
                             </f:then>
                             <f:else>
                                 <f:if condition="{event.location.teaserImage}">
                                     <f:then>
-                                        <f:image src="{event.location.teaserImage.uid}" class="d-block w-100 h-auto img-float rounded shadow-lg" alt="{event.location.teaserImage.alternative}" title="{event.location.teaserImage.title}" width="{settings.list.image.width}c" maxWidth="{settings.list.image.width}" maxHeight="{settings.list.image.height}" treatIdAsReference="true" />
+                                        <jve:image alt="{event.location.teaserImage.alternative}" class="d-block w-100 h-auto img-float rounded shadow-lg" maxHeight="{settings.list.image.height}" maxWidth="{settings.list.image.width}" src="{event.location.teaserImage.uid}" title="{event.location.teaserImage.title}" treatIdAsReference="true" width="{settings.list.image.width}c" />
                                     </f:then>
                                     <f:else>
                                         <f:if condition="{event.organizer.teaserImage}">
                                             <f:then>
-                                                <f:image src="{event.organizer.teaserImage.uid}" class="d-block w-100 h-auto img-float rounded shadow-lg" alt="{event.organizer.teaserImage.alternative}" title="{event.organizer.teaserImage.title}" width="{settings.list.image.width}c" maxWidth="{settings.list.image.width}" maxHeight="{settings.list.image.height}" treatIdAsReference="true" />
+                                                <jve:image alt="{event.organizer.teaserImage.alternative}" class="d-block w-100 h-auto img-float rounded shadow-lg" maxHeight="{settings.list.image.height}" maxWidth="{settings.list.image.width}" src="{event.organizer.teaserImage.uid}" title="{event.organizer.teaserImage.title}" treatIdAsReference="true" width="{settings.list.image.width}c" />
                                             </f:then>
                                             <f:else>
                                                 <f:image src="{settings.list.image.defaultImage}" class="d-block w-100 h-auto img-float rounded shadow-lg" alt="img" title="Settings: {settings.list.image.defaultImage}" width="{settings.list.image.width}c" maxWidth="{settings.list.image.width}" maxHeight="{settings.list.image.height}" treatIdAsReference="false" />
