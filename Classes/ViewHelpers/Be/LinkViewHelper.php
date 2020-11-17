@@ -53,7 +53,7 @@ class LinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedVi
         $returnArray[$returnModule]['onlyActual'] = $this->arguments['onlyActual'] ;
 
 
-        $returnUrl = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl($_GET['M'] , array( $returnArray ) ) ;
+        $returnUrl = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl( $returnModule , array( $returnArray ) ) ;
            // tx_fetool_tools_fetoolfeuserlist%5Baction%5D=listbyclass&tx_fetool_tools_fetoolfeuserlist%5Bcontroller%5D=Feuserlist
         // tx_jvevents_web_jveventseventmngt[action]=list&tx_jvevents_web_jveventseventmngt[controller]=EventBackend
         $uri = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('record_edit', array( 'edit['. $table . '][' . $uid . ']' => 'edit' ,'returnUrl' => $returnUrl )) ;
