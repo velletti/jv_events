@@ -13,13 +13,13 @@ function initMap() {
 	// Info window for the markers
 	var infoWindow = new google.maps.InfoWindow();
 
-	// See also: https://mapstyle.withgoogle.com/
+	// https://mapstyle.withgoogle.com/: "Silver" theme
 	var styleArray = [
 		{
 			"elementType": "geometry",
 			"stylers": [
 				{
-					"color": "#212121"
+					"color": "#f5f5f5"
 				}
 			]
 		},
@@ -35,7 +35,7 @@ function initMap() {
 			"elementType": "labels.text.fill",
 			"stylers": [
 				{
-					"color": "#757575"
+					"color": "#616161"
 				}
 			]
 		},
@@ -43,34 +43,25 @@ function initMap() {
 			"elementType": "labels.text.stroke",
 			"stylers": [
 				{
-					"color": "#212121"
+					"color": "#f5f5f5"
 				}
 			]
 		},
 		{
-			"featureType": "administrative",
-			"elementType": "geometry",
-			"stylers": [
-				{
-					"color": "#757575"
-				}
-			]
-		},
-		{
-			"featureType": "administrative.country",
-			"elementType": "labels.text.fill",
-			"stylers": [
-				{
-					"color": "#9e9e9e"
-				}
-			]
-		},
-		{
-			"featureType": "administrative.locality",
+			"featureType": "administrative.land_parcel",
 			"elementType": "labels.text.fill",
 			"stylers": [
 				{
 					"color": "#bdbdbd"
+				}
+			]
+		},
+		{
+			"featureType": "poi",
+			"elementType": "geometry",
+			"stylers": [
+				{
+					"color": "#eeeeee"
 				}
 			]
 		},
@@ -88,7 +79,7 @@ function initMap() {
 			"elementType": "geometry",
 			"stylers": [
 				{
-					"color": "#181818"
+					"color": "#e5e5e5"
 				}
 			]
 		},
@@ -97,75 +88,21 @@ function initMap() {
 			"elementType": "labels.text.fill",
 			"stylers": [
 				{
-					"color": "#616161"
-				}
-			]
-		},
-		{
-			"featureType": "poi.park",
-			"elementType": "labels.text.stroke",
-			"stylers": [
-				{
-					"color": "#1b1b1b"
+					"color": "#9e9e9e"
 				}
 			]
 		},
 		{
 			"featureType": "road",
-			"elementType": "geometry.fill",
+			"elementType": "geometry",
 			"stylers": [
 				{
-					"color": "#2c2c2c"
-				}
-			]
-		},
-		{
-			"featureType": "road",
-			"elementType": "labels.text.fill",
-			"stylers": [
-				{
-					"color": "#8a8a8a"
+					"color": "#ffffff"
 				}
 			]
 		},
 		{
 			"featureType": "road.arterial",
-			"elementType": "geometry",
-			"stylers": [
-				{
-					"color": "#373737"
-				}
-			]
-		},
-		{
-			"featureType": "road.highway",
-			"elementType": "geometry",
-			"stylers": [
-				{
-					"color": "#3c3c3c"
-				}
-			]
-		},
-		{
-			"featureType": "road.highway.controlled_access",
-			"elementType": "geometry",
-			"stylers": [
-				{
-					"color": "#4e4e4e"
-				}
-			]
-		},
-		{
-			"featureType": "road.local",
-			"elementType": "labels.text.fill",
-			"stylers": [
-				{
-					"color": "#616161"
-				}
-			]
-		},
-		{
-			"featureType": "transit",
 			"elementType": "labels.text.fill",
 			"stylers": [
 				{
@@ -174,11 +111,56 @@ function initMap() {
 			]
 		},
 		{
+			"featureType": "road.highway",
+			"elementType": "geometry",
+			"stylers": [
+				{
+					"color": "#dadada"
+				}
+			]
+		},
+		{
+			"featureType": "road.highway",
+			"elementType": "labels.text.fill",
+			"stylers": [
+				{
+					"color": "#616161"
+				}
+			]
+		},
+		{
+			"featureType": "road.local",
+			"elementType": "labels.text.fill",
+			"stylers": [
+				{
+					"color": "#9e9e9e"
+				}
+			]
+		},
+		{
+			"featureType": "transit.line",
+			"elementType": "geometry",
+			"stylers": [
+				{
+					"color": "#e5e5e5"
+				}
+			]
+		},
+		{
+			"featureType": "transit.station",
+			"elementType": "geometry",
+			"stylers": [
+				{
+					"color": "#eeeeee"
+				}
+			]
+		},
+		{
 			"featureType": "water",
 			"elementType": "geometry",
 			"stylers": [
 				{
-					"color": "#000000"
+					"color": "#c9c9c9"
 				}
 			]
 		},
@@ -187,7 +169,7 @@ function initMap() {
 			"elementType": "labels.text.fill",
 			"stylers": [
 				{
-					"color": "#3d3d3d"
+					"color": "#9e9e9e"
 				}
 			]
 		}
@@ -213,7 +195,8 @@ function initMap() {
 			var marker = new google.maps.Marker({
 				position: point,
 				map: map,
-				title: addresses[i].title
+				title: addresses[i].title,
+				icon: '/typo3conf/ext/jv_events/Resources/Public/Icons/google-maps-marker-allplan.png'
 			});
 
 			// Bound the marker for centering the map
