@@ -34,7 +34,7 @@ $returnArray = array(
 	    'access' => array('showitem' => ' starttime, endtime, --linebreak--,access_users,--linebreak--, access_groups,')
     ),
 	'columns' => array(
-	
+
 		'sys_language_uid' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.language',
@@ -590,6 +590,14 @@ $returnArray = array(
                 ) ,
             ),
         ),
+
+        'module_sys_dmail_html' => [
+            'label' => 'LLL:EXT:direct_mail/Resources/Private/Language/locallang_tca.xlf:module_sys_dmail_group.htmlemail',
+            'exclude' => '1',
+            'config' => [
+                'type' => 'check'
+            ]
+        ]
 		
 	),
 );
@@ -629,5 +637,14 @@ if ( ! $configuration['enableSalesForce'] == 1 ) {
     unset($returnArray['columns']['sales_force_user_id2'] ) ;
     unset($returnArray['columns']['sales_force_user_org'] ) ;
 }
+// needed to direct Mail
+$returnArray['columns']['module_sys_dmail_category'] = array (
+    'exclude' => 1,
+    'label' => "module_sys_dmail_category",
+    'config' => array(
+        'type' => "passthrough" ,
+        'MM' => "tx_jvevents_organizer_category_mm"
+    )
+);
 
 return $returnArray ;
