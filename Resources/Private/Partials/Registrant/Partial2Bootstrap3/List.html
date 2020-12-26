@@ -1,0 +1,37 @@
+{namespace jvt=Jve\JveTemplate\ViewHelpers}
+<h1>Registrations  {event.startDate -> f:format.date(format:"d.m.Y")} - {event.name}</h1>
+
+<f:flashMessages />
+
+
+<f:if condition="{registrants}">
+	<div class="text-right">
+		<f:link.action action="list" class="btn btn-primary" noCache="1" noCacheHash="1" arguments="{event : event.uid, hash: hash, export: 1}"> CSV Export </f:link.action>
+		<br />
+		<br />
+	</div>
+
+	<table  class="table table-responsive table-bordered" >
+		<tr>
+			<th><f:translate key="tx_jvevents_domain_model_registrant.first_name" /></th>
+			<th><f:translate key="tx_jvevents_domain_model_registrant.last_name" /></th>
+			<th><f:translate key="tx_jvevents_domain_model_registrant.email" /></th>
+			<th><f:translate key="tx_jvevents_domain_model_registrant.company" /></th>
+			<th><f:translate key="tx_jvevents_domain_model_registrant.city" /></th>
+			<th><f:translate key="tx_jvevents_domain_model_registrant.country" /></th>
+			<th><f:translate key="tx_jvevents_domain_model_registrant.phone" /></th>
+		</tr>
+
+		<f:for each="{registrants}" as="registrant">
+			<tr>
+				<td> {registrant.firstName}</td>
+				<td> {registrant.lastName}</td>
+				<td> {registrant.email}</td>
+				<td> {registrant.company}</td>
+				<td> {registrant.city}</td>
+				<td> {registrant.country}</td>
+				<td> {registrant.phone}</td>
+			</tr>
+		</f:for>
+	</table>
+</f:if>

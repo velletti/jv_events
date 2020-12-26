@@ -1,0 +1,193 @@
+{namespace event=JVE\JvEvents\ViewHelpers}
+<f:if condition="{html}">
+	<f:then>
+		<h2 style="font-size: 22px; font-family: '{emConf.fontFamily}'; line-height: 1.25; margin: 0 0 20px; padding: 0;">
+			<f:if condition="{event.allDay}">
+				<f:then>
+					{event.startDate -> f:format.date(format:"d.m.Y")} {event.name}<br />
+				</f:then>
+				<f:else>
+					{event.startDate -> f:format.date(format:"d.m.Y")} : {event.startTime -> f:format.date( format:"H:i")}<f:if condition="{event.endTime}"> - {event.endTime -> f:format.date( format:"H:i")}</f:if> - {event.name}<br />
+				</f:else>
+			</f:if>
+
+
+		</h2>
+
+		<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
+			<f:if condition="{subevents}">
+				<f:then>
+					<f:for each="{subevents}" as="subevent" iteration="i">
+						<f:if condition="{subevent.allDay}">
+							<f:then>
+								{subevent.startDate -> f:format.date(format:"d.m.Y")} }<br />
+							</f:then>
+							<f:else>
+								{subevent.startDate -> f:format.date(format:"d.m.Y")} : {subevent.startTime -> event:format.date( format:"H:i")}<f:if condition="{subevent.endTime}"> - {subevent.endTime -> event:format.date( format:"H:i")}</f:if><br />
+							</f:else>
+						</f:if>
+					</f:for>
+					<br />
+				</f:then>
+			</f:if>
+			{event.location.name}<br />
+			{event.location.streetAndNr}<br />
+			{event.location.zip} {event.location.city}<br />
+
+		</p>
+
+		<f:if condition="{otherEvents}">
+			<h3  style="font-size: 22px; font-family: '{emConf.fontFamily}'; line-height: 1.25; margin: 0 0 10px; padding: 0;">'{event.eventCategory.0.title}': Weitere gebuchte Termine</h3>
+			<p>
+				<f:for each="{otherEvents}" as="otherEvent">
+					<f:if condition="{otherEvent.allDay}">
+						<f:then>
+							{otherEvent.startDate -> f:format.date(format:"d.m.Y")} {otherEvent.name}<br />
+						</f:then>
+						<f:else>
+							{otherEvent.startDate -> f:format.date(format:"d.m.Y")} um {otherEvent.startTime -> f:format.date( format:"H:i")}<f:if condition="{otherEvent.endTime}"> - {otherEvent.endTime -> f:format.date( format:"H:i")}</f:if> - {otherEvent.name}<br />
+						</f:else>
+					</f:if>
+				</f:for>
+			</p>
+			<br />
+		</f:if>
+
+		<f:if condition="{registrant.confirmed}==1">
+			<f:if condition="{event.introtextRegistrantConfirmed}">
+				<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
+					<f:format.nl2br>{event.introtextRegistrantConfirmed}</f:format.nl2br>
+				</p>
+			</f:if>
+		</f:if>
+		<f:if condition="{registrant.confirmed}==0">
+			<f:if condition="{event.introtextRegistrant}">
+				<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
+					<f:format.nl2br>{event.introtextRegistrant}</f:format.nl2br>
+				</p>
+			</f:if>
+		</f:if>
+		<f:if condition="{registrant.more6int}==1">
+			<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 20px; background: #fcf8e3">
+			<b>Wichtiger Hinweis!</b><br/>
+				Als Nichtmitglied haben Sie gleichzeitig mit Ihrer Anmeldung zur genannten Veranstaltung die Mitgliedschaft bei der MEGRA e.V. beantragt. <br/>
+				<b>Um Ihre Anmeldung abzuschliessen, senden Sie bitte den ausgefüllten Aufnahmeantrag sowie die unterschriebene Widerrufsbelehrung an uns zurück.</b><br/>
+			</p>
+		</f:if>
+
+		<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
+			{f:translate(key: 'tx_jvevents_domain_model_registrant.gender')}:
+			<f:if condition="{registrant.gender}==1">{f:translate(key: 'register_gender_male')}</f:if>
+			<f:if condition="{registrant.gender}==2">{f:translate(key: 'register_gender_female')}</f:if>
+			<br/>
+			{f:translate(key: 'tx_jvevents_domain_model_registrant.title')}: {registrant.title} <br/>
+			{f:translate(key: 'tx_jvevents_domain_model_registrant.first_name')}: {registrant.firstname} <br/>
+			{f:translate(key: 'tx_jvevents_domain_model_registrant.last_name')}: {registrant.lastname} <br/>
+			{f:translate(key: 'tx_jvevents_domain_model_registrant.email')}: {registrant.email} <br/>
+			{f:translate(key: 'tx_jvevents_domain_model_registrant.phone')}: {registrant.phone} <br/>
+			{f:translate(key: 'tx_jvevents_domain_model_registrant.profession')}: {registrant.profession} <br/>
+			{f:translate(key: 'tx_jvevents_domain_model_registrant.contact_id')}: {registrant.contactId} <br/>
+		</p>
+		<h3 style="font-size: 22px; font-family: '{emConf.fontFamily}'; line-height: 1.25; margin: 0 0 20px; padding: 0;">
+			{f:translate(key: 'register_head_company_data' , default:'Company Data / Invoice Address')}
+		</h3>
+		<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
+			{f:translate(key: 'tx_jvevents_domain_model_registrant.company')}: {registrant.company} <br/>
+			{f:translate(key: 'tx_jvevents_domain_model_registrant.customer_id')}: {registrant.customerId} <br/>
+			{f:translate(key: 'tx_jvevents_domain_model_registrant.department')}: {registrant.department} <br/>
+			{f:translate(key: 'tx_jvevents_domain_model_registrant.street_and_nr')}: {registrant.streetAndNr} <br/>
+			{f:translate(key: 'tx_jvevents_domain_model_registrant.zip')}: {registrant.zip} <br/>
+			{f:translate(key: 'tx_jvevents_domain_model_registrant.city')}: {registrant.city} <br/>
+			{f:translate(key: 'tx_jvevents_domain_model_registrant.country')}: {registrant.country} <br/>
+		</p>
+		<f:if condition="{registrant.company2}">
+			<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
+				{f:translate(key: 'tx_jvevents_domain_model_registrant.company')}: {registrant.company2} <br/>
+				{f:translate(key: 'tx_jvevents_domain_model_registrant.department')}: {registrant.department2} <br/>
+				{f:translate(key: 'tx_jvevents_domain_model_registrant.street_and_nr')}: {registrant.streetAndNr2} <br/>
+				{f:translate(key: 'tx_jvevents_domain_model_registrant.zip')}: {registrant.zip2} <br/>
+				{f:translate(key: 'tx_jvevents_domain_model_registrant.city')}: {registrant.city2} <br/>
+				{f:translate(key: 'tx_jvevents_domain_model_registrant.country')}: {registrant.country2} <br/>
+			</p>
+		</f:if>
+		<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
+			{registrant.additionalInfo}
+		</p>
+
+
+	</f:then>
+	<f:else>
+ <f:format.date format="d.m.Y">{event.startDate}</f:format.date>
+{event.name}
+{event.location.name}
+{event.location.streetAndNr}
+{event.location.zip} {event.location.city}
+
+<f:if condition="{otherEvents}">
+	 Weitere gebuchte Termine:
+	<f:for each="{otherEvents}" as="otherEvent">
+		<f:format.date format="d.m.Y">{otherEvent.startDate}</f:format.date>: {otherEvent.name}
+	</f:for>
+</f:if>
+*********************************
+<f:if condition="{registrant.confirmed}==1">
+	<f:if condition="{event.introtextRegistrantConfirmed}">
+{event.introtextRegistrantConfirmed}
+*********************************
+	</f:if>
+</f:if>
+<f:if condition="{registrant.confirmed}==0">
+	<f:if condition="{event.introtextRegistrant}">
+{event.introtextRegistrant}
+
+*********************************
+	</f:if>
+</f:if>
+<f:if condition="{registrant.more6int}==1">
+
+	Wichtiger Hinweis!
+	Als Nichtmitglied haben Sie gleichzeitig mit  Ihrer meiner Anmeldung zur genannten Veranstaltung die Mitgliedschaft bei der MEGRA e.V. beantragt.
+	Um Ihre Anmeldung abzuschliessen, senden Sie bitte den ausgefüllten Aufnahmeantrag sowie die unterschriebene Widerrufsbelehrung das ausgefüllte Beitrittsformular an uns zurück.
+
+</f:if>
+{f:translate(key: 'register_head_participant_data' , default:'Participants Data')}
+ID: {registrant.uid} | <f:format.date format="d.m.Y">{registrant.created}</f:format.date>
+*********************************
+{f:translate(key: 'tx_jvevents_domain_model_registrant.gender')}: 		<f:if condition="{registrant.gender}==1">{f:translate(key: 'register_gender_male')}</f:if><f:if condition="{registrant.gender}==2">{f:translate(key: 'register_gender_female')}</f:if>
+
+{f:translate(key: 'tx_jvevents_domain_model_registrant.title')}: {registrant.title}
+{f:translate(key: 'tx_jvevents_domain_model_registrant.first_name')}: {registrant.firstname}
+{f:translate(key: 'tx_jvevents_domain_model_registrant.last_name')}: {registrant.lastname}
+{f:translate(key: 'tx_jvevents_domain_model_registrant.email')}: {registrant.email}
+{f:translate(key: 'tx_jvevents_domain_model_registrant.phone')}: {registrant.phone}
+{f:translate(key: 'tx_jvevents_domain_model_registrant.profession')}: {registrant.profession}
+{f:translate(key: 'tx_jvevents_domain_model_registrant.contact_id')}: {registrant.contactId}
+*********************************
+{f:translate(key: 'register_head_company_data' , default:'Company Data / Invoice Address')}
+{f:translate(key: 'tx_jvevents_domain_model_registrant.company')}: {registrant.company}
+{f:translate(key: 'tx_jvevents_domain_model_registrant.customer_id')}: {registrant.customerId}
+{f:translate(key: 'tx_jvevents_domain_model_registrant.department')}: {registrant.department}
+{f:translate(key: 'tx_jvevents_domain_model_registrant.street_and_nr')}: {registrant.streetAndNr}
+{f:translate(key: 'tx_jvevents_domain_model_registrant.zip')}: {registrant.zip}
+{f:translate(key: 'tx_jvevents_domain_model_registrant.city')}: {registrant.city}
+{f:translate(key: 'tx_jvevents_domain_model_registrant.country')}: {registrant.country}
+
+<f:if condition="{registrant.company2}">
+	*********************************
+	{f:translate(key: 'tx_jvevents_domain_model_registrant.company')}: {registrant.company2} <br/>
+	{f:translate(key: 'tx_jvevents_domain_model_registrant.department')}: {registrant.department2} <br/>
+	{f:translate(key: 'tx_jvevents_domain_model_registrant.street_and_nr')}: {registrant.streetAndNr2} <br/>
+	{f:translate(key: 'tx_jvevents_domain_model_registrant.zip')}: {registrant.zip2} <br/>
+	{f:translate(key: 'tx_jvevents_domain_model_registrant.city')}: {registrant.city2} <br/>
+	{f:translate(key: 'tx_jvevents_domain_model_registrant.country')}: {registrant.country2} <br/>
+</f:if>
+
+*********************************
+{signature.plain}
+
+	</f:else>
+</f:if>
+
+
+
+

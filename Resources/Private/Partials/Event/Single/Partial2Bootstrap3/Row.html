@@ -1,0 +1,27 @@
+	<div class="row">
+		<div class="col-sm-4">
+			<f:if condition="{translate}">
+				<f:then>
+					<f:translate key="{title}" />
+				</f:then>
+				<f:else>
+					{title}
+				</f:else>
+			</f:if>
+
+		</div>
+		<div class="col-sm-8">
+			<f:if condition="{isHeadline}">
+				<f:then>
+					<{isHeadline}>{value}</{isHeadline}>
+				</f:then>
+				<f:else>
+					{value}
+				</f:else>
+			</f:if>
+		</div>
+		<div class="col-xs-12 hidden-sm hidden-md hidden-lg" ><br/>
+		</div>
+	</div>
+
+
