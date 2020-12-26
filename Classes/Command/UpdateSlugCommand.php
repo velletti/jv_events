@@ -28,6 +28,13 @@ class UpdateSlugCommand extends Command {
     private $allowedTables = [] ;
 
     /**
+     * @var array
+     */
+    private $extConf = [] ;
+
+
+
+    /**
      * Configure the command by defining the name, options and arguments
      */
     protected function configure()
@@ -59,6 +66,8 @@ class UpdateSlugCommand extends Command {
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['jv_events']);
+
         $io = new SymfonyStyle($input, $output);
         $io->title($this->getDescription());
         $maxRows = 999999999999 ;
@@ -158,10 +167,17 @@ class UpdateSlugCommand extends Command {
 
 	    switch ($table) {
             case "tx_jvevents_domain_model_event":
+
                 $return['name'] =  $row['name'] ;
                 $return['parentpid'] =  1 ;
                 $return['sys_language_uid'] = -1 ;
-                $return['start_date'] =   date( "d-m-Y" , $row['start_date'] ) ;
+
+                $slugGenerationDateFormat = "d-m-Y" ;
+                if( is_array( $this->extConf) and array_key_exists( "slugGenerationDateFormat" , $this->extConf )) {
+                    $slugGenerationDateFormat =  $this->extConf['slugGenerationDateFormat'] ;
+                }
+
+                $return['start_date'] =   date( $slugGenerationDateFormat , $row['start_date'] ) ;
                 $return[$slugField] =   $row[$slugField]?  $row[$slugField] : $row['name'] . "-" . $row['start_date'] ;
                 break ;
             default:

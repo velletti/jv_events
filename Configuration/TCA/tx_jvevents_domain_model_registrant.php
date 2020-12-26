@@ -539,5 +539,12 @@ return array(
 				'type' => 'passthrough',
 			),
 		),
+        'module_sys_dmail_html' => [
+            'label' => 'LLL:EXT:direct_mail/Resources/Private/Language/locallang_tca.xlf:module_sys_dmail_group.htmlemail',
+            'exclude' => '1',
+            'config' => [
+                'type' => 'check'
+            ]
+        ]
 	),
 );

@@ -89,6 +89,9 @@ class ProcessCmdmap {
 			/** @var  \JVE\JvEvents\Domain\Repository\EventRepository $eventRepository */
 			$this->eventRepository = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\EventRepository');
 
+
+
+
 			if( $this->command == 'copy') {
 				if( is_object($this->pObj )) {
 					$mapping = $this->pObj ->copyMappingArray['tx_jvevents_domain_model_event'] ;
@@ -130,7 +133,13 @@ class ProcessCmdmap {
                                 $row['uid'] =  $this->event->getUid() ;
                                 $row['sys_language_uid'] =  $this->event->getSysLanguageUid() ;
                                 $row['slug'] =  $this->event->getSlug() ;
-                                $row['start_date'] =  $this->event->getStartDate()->format("d-m-Y") ;
+
+                                $slugGenerationDateFormat = "d-m-Y" ;
+                                if( is_array( $this->extConf) and array_key_exists( "slugGenerationDateFormat" , $this->extConf )) {
+                                    $slugGenerationDateFormat =  $this->extConf['slugGenerationDateFormat'] ;
+                                }
+
+                                $row['start_date'] =  $this->event->getStartDate()->format($slugGenerationDateFormat ) ;
                                 $slug = SlugUtility::getSlug("tx_jvevents_domain_model_event", "slug", $row  )  ;
                                 $this->event->setSlug( $slug ) ;
                             }

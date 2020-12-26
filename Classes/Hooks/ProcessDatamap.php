@@ -85,6 +85,9 @@ class ProcessDatamap {
            // $this->flashMessage['INFO'][] = 'config:  !' . var_export( $configuration , true ) ;
 
 			if( is_object( $this->event ) ) {
+
+
+
 			    // remove unwanted Chars from Text Initial we start with removign ETX = end of text
 			    $search[] = chr(3) ;
 			    $replace[] = '' ;
@@ -97,7 +100,12 @@ class ProcessDatamap {
                     $row['uid'] =  $this->event->getUid() ;
                     $row['sys_language_uid'] =  $this->event->getSysLanguageUid() ;
                     $row['slug'] =  $this->event->getSlug() ;
-                    $row['start_date'] =  $this->event->getStartDate()->format("d-m-Y") ;
+
+                    $slugGenerationDateFormat = "d-m-Y" ;
+                    if( is_array( $this->extConf) and array_key_exists( "slugGenerationDateFormat" , $this->extConf )) {
+                        $slugGenerationDateFormat =  $this->extConf['slugGenerationDateFormat'] ;
+                    }
+                    $row['start_date'] =  $this->event->getStartDate()->format($slugGenerationDateFormat) ;
                     $slug = SlugUtility::getSlug("tx_jvevents_domain_model_event", "slug", $row  )  ;
                     $this->event->setSlug( $slug ) ;
                 }
