@@ -45,7 +45,7 @@ function jv_events_init() {
     // https://allplan.local/index.php?id=110&L=1&no_cache=1&tx_jvevents_events[eventsFilter][categories]=4&tx_jvevents_events[eventsFilter][citys]=Ratingen
 
     $(".js-warning-disabled").hide() ;
-
+    jv_events_init_AjaxMenu() ;
     jv_events_initOneFilter('categories') ;
 	jv_events_initOneFilter('locations') ;
 	jv_events_initOneFilter('citys') ;
@@ -467,6 +467,40 @@ function jv_events_submit() {
 		}
 	}
 
+}
+
+
+function jv_events_init_AjaxMenu() {
+    var eventId = 0;
+    var locationId = 0;
+    if( $("#jv-events-dataids").length ) {
+        if( $("#jv-events-dataids").data ("eventuid") ) {
+            eventId = parseInt( $("#jv-events-dataids").data("eventuid"));
+        }
+        if( $("#jv-events-dataids").data ("locationuid") ) {
+            locationId = parseInt( $("#jv-events-dataids").data("locationuid"));
+        }
+    }
+    if ( $("#jvEventsAjaxSingleMenu").length ) {
+        $.ajax( {
+            url: '/index.php' ,
+            data: 'uid=1&eID=jv_events&L=0&tx_jvevents_ajax[event]=' + eventId + '&tx_jvevents_ajax[location]=' +  locationId + '&tx_jvevents_ajax[action]=eventMenu&tx_jvevents_ajax[controller]=Ajax&' ,
+
+            before: function() {
+
+            } ,
+            success: function(response) {
+                if ($('#jvEventsAjaxSingleMenu') ) {
+                    $('#jvEventsAjaxSingleMenu').addClass('d-none').removeClass('d-block').after( response.html.single) ;
+                }
+
+            },
+            error: function(response) {
+                $('#jvEventsAjaxSingleMenu').removeClass('show').addClass('d-none') ;
+            }
+        })
+
+    }
 }
 
 

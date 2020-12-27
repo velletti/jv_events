@@ -43,11 +43,33 @@ Then you can IDE Controls for each repository separate
  if you want to push changes, you need to get write Access to the events repository or you need to create your own fork
  and then Create Pull requests  that your changes get merged
  
+ 
+  
  To keep Updated on your server you need to switch to the jv_events Folder and initiate a 
  git pull 
  or in the outside repository:
  
  git submodule update --recursive
+ 
+ ### backend Modul in LTS9 - 
+ add this to your typocript ! 
+ 
+     
+     module.tx_jvevents_eventmngt {
+     	view {
+     		# cat=module.tx_jvevents_eventmngt/file; type=string; label=Path to template root (BE)
+     		templateRootPath = EXT:jv_events/Resources/Private/Backend/Templates/
+     		# cat=module.tx_jvevents_eventmngt/file; type=string; label=Path to template partials (BE)
+     		partialRootPath = EXT:jv_events/Resources/Private/Backend/Partials/
+     		# cat=module.tx_jvevents_eventmngt/file; type=string; label=Path to template layouts (BE)
+     		layoutRootPath = EXT:jv_events/Resources/Private/Backend/Layouts/
+     	}
+     	persistence {
+     		# cat=module.tx_jvevents_eventmngt//a; type=string; label=Default storage PID
+     		storagePid =
+     	}
+     }
+ 
  
  ### QR Codes .. if you want to use QR Codes:
  

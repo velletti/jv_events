@@ -1,0 +1,25 @@
+
+
+        <!--  ################# Event Single 2Megra  nav  loaded via AJAX to #jvEventsAjaxSingleMenu  - for Organizer   ##################### //-->
+
+        <f:be.security.ifAuthenticated>
+            <f:then>
+                <li data-access="backenduser">
+                    <f:link.action pageUid="{output.event.registration.formPid}" action="list" controller="Registrant" class="" noCache="1" noCacheHash="1" arguments="{event : output.event.eventId, hash: settings.hash, export: 0}">
+                        Anmeldungen </f:link.action>
+                </li >
+            </f:then>
+            <f:else>
+                <f:if condition="{output.event.hasAccess}">
+                    <f:then>
+                        <li data-access="feuser">
+                            <f:link.action pageUid="{output.event.registration.formPid}" action="list" controller="Registrant" class="btn btn-primary" noCache="1" noCacheHash="1" arguments="{event : output.event.eventId, hash: hash, export: 0}">
+                                Anmeldungen </f:link.action>
+                        </li>
+                    </f:then>
+                </f:if>
+            </f:else>
+        </f:be.security.ifAuthenticated>
+
+
+

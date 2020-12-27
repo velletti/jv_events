@@ -5,7 +5,7 @@
 	<div class="well well-sm well-primary ">
 			<div class="row-fluid clearfix">
 				<div class="col-md-1 col-12">
-					<f:link.action pageUid="{settings.detailPid}" action="show" arguments="{event : event}" noCache="true" noCacheHash="true">
+					<f:link.action pageUid="{settings.detailPid}" action="show" arguments="{event : event}">
 						<div class="date">
 							<span class="day">{f:format.date(date:event.startDate, format:'d')}</span>
 							<span class="month-year"><JVE:writeDateAbbreviation month="{f:format.date(date:event.startDate, format:'m')}"></JVE:writeDateAbbreviation></span>
@@ -15,7 +15,7 @@
 				</div>
 				<div class="col-md-8 col-12">
 					<h4>
-						<f:link.action  pageUid="{settings.detailPid}" action="show" arguments="{event : event}"  noCache="true" noCacheHash="true">
+						<f:link.action  pageUid="{settings.detailPid}" action="show" arguments="{event : event}">
 							{event.name}
 						</f:link.action>
 					</h4>

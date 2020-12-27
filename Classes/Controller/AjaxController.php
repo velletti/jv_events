@@ -27,6 +27,7 @@ namespace JVE\JvEvents\Controller;
  ***************************************************************/
 
 use JVE\JvEvents\Domain\Model\Location;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use \TYPO3\CMS\Core\Utility\ArrayUtility;
 use \TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -134,11 +135,13 @@ class AjaxController extends BaseController
         $GLOBALS['TSFE']->settingLanguage();
         $GLOBALS['TSFE']->settingLocale();
 
+        $GLOBALS['BE_USER'] =  $GLOBALS['TSFE']->initializeBackendUser() ;
         /**
          * Initialize Backend-User (if logged in)
          */
         // $GLOBALS['BE_USER'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Authentication\BackendUserAuthentication');
-        // $GLOBALS['BE_USER']->start();
+        //
+
 
         /**
          * Initialize Database
@@ -306,6 +309,7 @@ class AjaxController extends BaseController
                 $output['event']['priceReducedText'] = $event->getPriceReducedText();
 
                 $output['event']['registration']['possible'] = $event->isIsRegistrationPossible() ;
+                $output['event']['registration']['formPid'] = $event->getRegistrationFormPid() ;
                 $output['event']['registration']['noFreeSeats'] = $event->isIsNoFreeSeats() ;
                 $output['event']['registration']['freeSeats'] = $event->getAvailableSeats() ;
                 $output['event']['registration']['freeSeatsWaitinglist'] = $event->getAvailableWaitingSeats();
@@ -595,6 +599,7 @@ class AjaxController extends BaseController
         $checkString = $_SERVER["SERVER_NAME"] . "-" . $output['event']['eventId'] . "-" . $output['event']['crdate'];
         $checkHash = hash("sha256", $checkString);
         $this->settings['hash'] =  $checkHash ;
+        $this->settings['cookie'] =  $_COOKIE ;
 
         $renderer->setLayoutRootPaths(array(0 => $layoutPath));
 
