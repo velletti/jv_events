@@ -13,6 +13,10 @@ jQuery(document).ready(function() {
 function jv_events_init_AjaxMenu() {
     var eventId = 0;
     var locationId = 0;
+    var ajaxCurrentPageUid = parseInt($('meta[name=pageUid]').attr('content'));
+    if ( ajaxCurrentPageUid < 1) {
+        ajaxCurrentPageUid = 1 ;
+    }
     if( $("#jv-events-dataids").length ) {
         if( $("#jv-events-dataids").data ("eventuid") ) {
             eventId = parseInt( $("#jv-events-dataids").data("eventuid"));
@@ -24,7 +28,7 @@ function jv_events_init_AjaxMenu() {
     if ( $("#jvEventsAjaxMenu").length ) {
         $.ajax( {
             url: '/index.php' ,
-            data: 'uid=1&eID=jv_events&L=0&tx_jvevents_ajax[event]=' + eventId + '&tx_jvevents_ajax[location]=' +  locationId + '&tx_jvevents_ajax[action]=eventMenu&tx_jvevents_ajax[controller]=Ajax&' ,
+            data: 'id=' + ajaxCurrentPageUid + '&L=0&tx_jvevents_ajax[event]=' + eventId + '&tx_jvevents_ajax[location]=' +  locationId + '&tx_jvevents_ajax[action]=eventMenu&tx_jvevents_ajax[controller]=Ajax&' ,
 
             before: function() {
                 $('#jvEventsAjaxMenu').addClass('show').addClass('d-block') ;

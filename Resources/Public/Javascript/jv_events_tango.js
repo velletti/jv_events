@@ -51,7 +51,7 @@ function jv_events_init_AjaxMenu() {
             $.ajax({
 
                 url: '/index.php',
-                data: 'uid=' + ajaxCurrentPageUid + '&eID=jv_events&L=0&tx_jvevents_ajax[event]=' + eventId + '&tx_jvevents_ajax[action]=eventUnlink&tx_jvevents_ajax[controller]=Ajax&',
+                data: 'id=' + ajaxCurrentPageUid + '&L=0&tx_jvevents_ajax[event]=' + eventId + '&tx_jvevents_ajax[action]=eventUnlink&tx_jvevents_ajax[controller]=Ajax&',
 
                 before: function () {
                     spinner.removeClass('d-none');
@@ -73,7 +73,7 @@ function jv_events_init_AjaxMenu() {
     if ( $("#jvEventsAjaxMenu").length) {
         $.ajax( {
             url: '/index.php' ,
-            data: 'uid=' + ajaxCurrentPageUid + '&tx_jvevents_ajax[returnPid]=' + ajaxCurrentPageUid + '&eID=jv_events&L=0&tx_jvevents_ajax[event]=' + eventId + addOrgId + '&tx_jvevents_ajax[location]=' +  locationId + '&tx_jvevents_ajax[action]=eventMenu&tx_jvevents_ajax[controller]=Ajax&' ,
+            data: 'id=' + ajaxCurrentPageUid + '&tx_jvevents_ajax[returnPid]=' + ajaxCurrentPageUid + '&L=0&tx_jvevents_ajax[event]=' + eventId + addOrgId + '&tx_jvevents_ajax[location]=' +  locationId + '&tx_jvevents_ajax[action]=eventMenu&tx_jvevents_ajax[controller]=Ajax&' ,
 
             before: function() {
                 $('#jvEventsAjaxMenu').addClass('show').addClass('d-block') ;

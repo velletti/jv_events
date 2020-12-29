@@ -79,75 +79,68 @@ class AjaxController extends BaseController
      */
     public $tsFEController ;
 
-    public function dispatcher() {
-
+    public function dispatcher()
+    {
         /**
          * Gets the Ajax Call Parameters
          */
         $_gp = GeneralUtility::_GPmerged('tx_jvevents_ajax');
-        $pid = intval(GeneralUtility::_GPmerged('uid') );
-        $type =  intval(GeneralUtility::_GPmerged('type'));
+        $pid = intval(GeneralUtility::_GPmerged('uid'));
+        $type = intval(GeneralUtility::_GPmerged('type'));
 
         $ajax = array();
-        $ajax['arguments']	= $_gp;
-        $ajax['vendor'] 	= 'JVE';
-        $ajax['vendorName'] 	= 'JVE';
-        $ajax['extensionName'] 	= 'JvEvents';
-        $ajax['pluginName'] 	= 'Events';
-        $ajax['controller'] 	= 'Ajax';
-        $ajax['action'] 	= $_gp['action'] ;
+        $ajax['arguments'] = $_gp;
+        $ajax['vendor'] = 'JVE';
+        $ajax['vendorName'] = 'JVE';
+        $ajax['extensionName'] = 'JvEvents';
+        $ajax['pluginName'] = 'Events';
+        $ajax['controller'] = 'Ajax';
+        $ajax['action'] = $_gp['action'];
 
         /*
         * check if action is allowed
         */
-        if ( !in_array( $ajax['action'] , array("eventMenu" , "eventList" , "locationList" , "activate" , "eventUnlink") ) ) {
-            $ajax['action'] = "eventMenu" ;
+        if (!in_array($ajax['action'], array("eventMenu", "eventList", "locationList", "activate", "eventUnlink"))) {
+            $ajax['action'] = "eventMenu";
         }
 
-
-        /**
-         * @var $TSFE \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
-         */
-        $TSFE = GeneralUtility::makeInstance('TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController', $GLOBALS['TYPO3_CONF_VARS'],
-            $pid,  // pageUid Homepage
-            $type   // pageType
-        );
-        $GLOBALS['TSFE'] = $TSFE;
-
-
-// Important: no Cache for Ajax stuff
-        $GLOBALS['TSFE']->set_no_cache();
-
-        EidUtility::initLanguage();
-        EidUtility::initTCA();
-// Get FE User Information
-        $GLOBALS['TSFE']->initFEuser();
-        $GLOBALS['TSFE']->initUserGroups();
-        $GLOBALS['TSFE']->fe_user ;
-
-        $GLOBALS['TSFE']->checkAlternativeIdMethods();
-        $GLOBALS['TSFE']->determineId();
-        $GLOBALS['TSFE']->initTemplate();
-        $GLOBALS['TSFE']->getConfigArray();
-        \TYPO3\CMS\Core\Core\Bootstrap::getInstance();
-
-        $GLOBALS['TSFE']->cObj = GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
-        $GLOBALS['TSFE']->settingLanguage();
-        $GLOBALS['TSFE']->settingLocale();
-
-        $GLOBALS['BE_USER'] =  $GLOBALS['TSFE']->initializeBackendUser() ;
-        /**
-         * Initialize Backend-User (if logged in)
-         */
-        // $GLOBALS['BE_USER'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Authentication\BackendUserAuthentication');
-        //
+        if (\TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_branch) < 9000000) {
+                /**
+                 * @var $TSFE \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+                 */
+                $TSFE = GeneralUtility::makeInstance('TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController', $GLOBALS['TYPO3_CONF_VARS'],
+                    $pid,  // pageUid Homepage
+                    $type   // pageType
+                );
+            $GLOBALS['TSFE'] = $TSFE;
 
 
-        /**
-         * Initialize Database
-         */
-        $GLOBALS['TSFE']->connectToDB();
+    // Important: no Cache for Ajax stuff
+            $GLOBALS['TSFE']->set_no_cache();
+            EidUtility::initLanguage();
+            EidUtility::initTCA();
+    // Get FE User Information
+            $GLOBALS['TSFE']->initFEuser();
+            $GLOBALS['TSFE']->initUserGroups();
+            $GLOBALS['TSFE']->fe_user;
 
+            $GLOBALS['TSFE']->checkAlternativeIdMethods();
+            $GLOBALS['TSFE']->determineId();
+            $GLOBALS['TSFE']->initTemplate();
+            $GLOBALS['TSFE']->getConfigArray();
+            \TYPO3\CMS\Core\Core\Bootstrap::getInstance();
+
+            $GLOBALS['TSFE']->cObj = GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
+            $GLOBALS['TSFE']->settingLanguage();
+            $GLOBALS['TSFE']->settingLocale();
+
+            $GLOBALS['BE_USER'] = $GLOBALS['TSFE']->initializeBackendUser();
+
+            /**
+             * Initialize Database
+             */
+            $GLOBALS['TSFE']->connectToDB();
+        }
         /**
          * @var $objectManager \TYPO3\CMS\Extbase\Object\ObjectManager
          */
