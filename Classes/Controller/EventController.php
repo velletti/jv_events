@@ -29,7 +29,7 @@ namespace JVE\JvEvents\Controller;
 use Doctrine\DBAL\Connection;
 use JVE\JvEvents\Utility\SlugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
+use TYPO3\CMS\Extbase\Annotation as Extbase;
 
 /**
  * EventController
@@ -166,7 +166,7 @@ class EventController extends BaseController
      * action show
      *
      * @param \JVE\JvEvents\Domain\Model\Event|null $event
-     * @ignorevalidation $event
+     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("event")
      * @return void
      */
     public function showAction(\JVE\JvEvents\Domain\Model\Event $event=null)
@@ -222,7 +222,7 @@ class EventController extends BaseController
     /**
      * action new
      * @param \JVE\JvEvents\Domain\Model\Event|null $event
-     * @ignorevalidation $event
+     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("event")
      *
      * @return void
      */
@@ -286,7 +286,7 @@ class EventController extends BaseController
      * action create
      *
      * @param \JVE\JvEvents\Domain\Model\Event $event
-     * @validate $event \JVE\JvEvents\Validation\Validator\EventValidator
+     * @Extbase\Validate(param="event" , validator="JVE\JvEvents\Validation\Validator\EventValidator")
      * @return void
      */
     public function createAction(\JVE\JvEvents\Domain\Model\Event $event)
@@ -346,7 +346,7 @@ class EventController extends BaseController
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
-     * @ignorevalidation $event
+     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("event")
      * @return void
      */
     public function editAction(\JVE\JvEvents\Domain\Model\Event $event , $copy2Day=0 , $amount=0 )
@@ -607,7 +607,7 @@ class EventController extends BaseController
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
-     * @ignorevalidation $event
+     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("event")
      * @return void
      */
     public function cancelAction(\JVE\JvEvents\Domain\Model\Event $event)
@@ -649,7 +649,7 @@ class EventController extends BaseController
      * action update
      *
      * @param \JVE\JvEvents\Domain\Model\Event $event
-     * @validate $event \JVE\JvEvents\Validation\Validator\EventValidator
+     * @Extbase\Validate(param="event" , validator="JVE\JvEvents\Validation\Validator\EventValidator")
      * @return void
      */
     public function updateAction(\JVE\JvEvents\Domain\Model\Event $event)

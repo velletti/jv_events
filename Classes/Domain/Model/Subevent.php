@@ -64,7 +64,7 @@ class Subevent extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
     /**
      * Access Start Time of this event (default TYP3 Field )
-     * @ignorevalidation
+     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("starttime")
      * @var \DateTime
      */
     protected $starttime ;

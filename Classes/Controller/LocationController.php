@@ -29,6 +29,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Extbase\Annotation as Extbase;
+
 /**
  * LocationController
  */
@@ -80,7 +82,7 @@ class LocationController extends BaseController
     /**
      * action new
      * @param \JVE\JvEvents\Domain\Model\Location|Null $location
-     * @ignorevalidation $location
+     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("location")
      * @return void
      */
     public function newAction(\JVE\JvEvents\Domain\Model\Location $location=Null)
@@ -118,7 +120,7 @@ class LocationController extends BaseController
      * action create
      *
      * @param \JVE\JvEvents\Domain\Model\Location $location
-     * @validate $location \JVE\JvEvents\Validation\Validator\LocationValidator
+     * @Extbase\Validate(param="location" , validator="JVE\JvEvents\Validation\Validator\LocationValidator")
      * @return void
      */
 
@@ -178,7 +180,7 @@ class LocationController extends BaseController
      * @param \JVE\JvEvents\Domain\Model\Location $location
      * @param \JVE\JvEvents\Domain\Model\Organizer $organizer
      * @param integer $oldDefault
-     * @ignorevalidation $location
+     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("location")
      * @return void
      */
     public function setDefaultAction(\JVE\JvEvents\Domain\Model\Location $location , \JVE\JvEvents\Domain\Model\Organizer $organizer ,  $oldDefault= 0) {
@@ -207,7 +209,7 @@ class LocationController extends BaseController
      * action edit
      *
      * @param \JVE\JvEvents\Domain\Model\Location $location
-     * @ignorevalidation $location
+     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("location")
      * @return void
      */
     public function editAction(\JVE\JvEvents\Domain\Model\Location $location)
@@ -229,7 +231,7 @@ class LocationController extends BaseController
      * action update
      *
      * @param \JVE\JvEvents\Domain\Model\Location $location
-     * @validate $location \JVE\JvEvents\Validation\Validator\LocationValidator
+     * @Extbase\Validate(param="location" , validator="JVE\JvEvents\Validation\Validator\LocationValidator")
      * @return void
      */
     public function updateAction(\JVE\JvEvents\Domain\Model\Location $location)

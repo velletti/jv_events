@@ -29,7 +29,7 @@ class EventValidator extends BaseValidator {
 	 * Check if $value is valid
 	 *
 	 * @param \JVE\JvEvents\Domain\Model\Event $event
-     * @ignorevalidation $event
+     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("event")
 	 * @return boolean
 	 */
 	public function isValid($event) {

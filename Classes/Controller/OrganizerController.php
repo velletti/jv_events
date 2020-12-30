@@ -29,7 +29,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
+use TYPO3\CMS\Extbase\Annotation as Extbase;
 
 /**
  * OrganizerController
@@ -166,7 +166,7 @@ class OrganizerController extends BaseController
     /**
      * action new
      * @param \JVE\JvEvents\Domain\Model\Organizer|Null $organizer
-     * @ignorevalidation $organizer
+     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("organizer")
      * @return void
      */
     public function newAction(\JVE\JvEvents\Domain\Model\Organizer $organizer = null )
@@ -205,7 +205,7 @@ class OrganizerController extends BaseController
      * action create
      *
      * @param \JVE\JvEvents\Domain\Model\Organizer $organizer
-     * @validate $organizer \JVE\JvEvents\Validation\Validator\OrganizerValidator
+     * @Extbase\Validate(param="organizer" , validator="JVE\JvEvents\Validation\Validator\OrganizerValidator")
      * @return void
      */
     public function createAction(\JVE\JvEvents\Domain\Model\Organizer $organizer)
@@ -296,7 +296,7 @@ class OrganizerController extends BaseController
      * action edit
      *
      * @param \JVE\JvEvents\Domain\Model\Organizer $organizer
-     * @ignorevalidation $organizer
+     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("organizer")
      * @return void
      */
     public function editAction(\JVE\JvEvents\Domain\Model\Organizer $organizer)
@@ -323,7 +323,7 @@ class OrganizerController extends BaseController
      * action update
      *
      * @param \JVE\JvEvents\Domain\Model\Organizer $organizer
-     * @validate $organizer \JVE\JvEvents\Validation\Validator\OrganizerValidator
+     * @Extbase\Validate(param="organizer" , validator="JVE\JvEvents\Validation\Validator\OrganizerValidator")
 
      * @return void
      */

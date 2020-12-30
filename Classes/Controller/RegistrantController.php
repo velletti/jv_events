@@ -32,6 +32,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Extbase\Annotation as Extbase;
+
+
 /**
  * RegistrantController
  */
@@ -60,7 +63,7 @@ class RegistrantController extends BaseController
     /**
      * action list
      * @param Event $event
-     * @ignorevalidation $event
+     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("event")
      * @param string $hash
      * @return void
      */
@@ -284,8 +287,8 @@ class RegistrantController extends BaseController
      *
      * @param Event $event
      * @param Registrant $registrant
-     * @ignorevalidation $event
-     * @ignorevalidation $registrant
+     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("event")
+     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("registrant")
      * @return void
      */
     public function newAction(Event $event , Registrant $registrant=null)
@@ -403,9 +406,9 @@ class RegistrantController extends BaseController
      * action createAction
      *
      * @param Event $event
-     * @ignorevalidation $event
+     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("event")
      * @param Registrant $registrant
-	 * @validate $registrant \JVE\JvEvents\Validation\Validator\RegistrantValidator
+     * @Extbase\Validate(param="registrant" , validator="JVE\JvEvents\Validation\Validator\RegistrantValidator")
 	 * @return void
      */
     public function createAction(Event $event, Registrant $registrant) {
