@@ -26,24 +26,23 @@ class Ajax implements MiddlewareInterface
             $useMiddleware = true;
         }
         if( is_array($arguments) && key_exists("tx_jvevents_ajax" ,$arguments ) && key_exists("controller" ,$arguments['tx_jvevents_ajax'] ) && $useMiddleware == true) {
-            // ToDo generate Output as before in ajax Controller
+            $GLOBALS['TSFE']->set_no_cache();
+
+            // ToDo generate Output as before in ajax Controller here in Middleware with CORE features.
             /** @var \JVE\JvEvents\Controller\AjaxController $controller */
             $controller = GeneralUtility::makeInstance('JVE\JvEvents\Controller\AjaxController' ) ;
             $controller->dispatcher() ;
             die;
 
-
-            $output["arguments"] = $arguments  ;
-            $output["feUser"] =  $GLOBALS['TSFE']->fe_user->user  ;
-
-
-            $result = json_encode( $output) ;
+/*
+            $result = json_encode( $output['data']) ;
             $body = new Stream('php://temp', 'rw');
             $body->write($result);
             return (new Response())
-                ->withHeader('content-type', 'application/json; charset=utf-8')
+                ->withHeader('content-type', $output['content-type'] . '; charset=utf-8')
                 ->withBody($body)
-                ->withStatus(200);
+                ->withStatus($output['status']);
+*/
         }
         return $handler->handle($request);
     }

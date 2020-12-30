@@ -37,22 +37,6 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
 class EventController extends BaseController
 {
 
-    /**
-     * eventRepository
-     *
-     * @var \JVE\JvEvents\Domain\Repository\EventRepository
-     * @inject
-     */
-    protected $eventRepository = NULL;
-
-
-	/**
-	 * staticCountryRepository
-	 *
-	 * @var \JVE\JvEvents\Domain\Repository\StaticCountryRepository
-	 * @inject
-	 */
-	protected $staticCountryRepository = NULL;
 
 	public function initializeAction() {
         $this->timeStart = $this->microtime_float() ;

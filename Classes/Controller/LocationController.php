@@ -36,8 +36,6 @@ class LocationController extends BaseController
 {
 
 
-
-
     /**
      * action init
      *

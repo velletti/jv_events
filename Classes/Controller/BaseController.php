@@ -28,6 +28,14 @@ namespace JVE\JvEvents\Controller;
 
 use JVE\JvEvents\Domain\Model\Event;
 use JVE\JvEvents\Domain\Model\Registrant;
+use JVE\JvEvents\Domain\Repository\CategoryRepository;
+use JVE\JvEvents\Domain\Repository\EventRepository;
+use JVE\JvEvents\Domain\Repository\LocationRepository;
+use JVE\JvEvents\Domain\Repository\OrganizerRepository;
+use JVE\JvEvents\Domain\Repository\RegistrantRepository;
+use JVE\JvEvents\Domain\Repository\StaticCountryRepository;
+use JVE\JvEvents\Domain\Repository\SubeventRepository;
+use JVE\JvEvents\Domain\Repository\TagRepository;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -66,7 +74,6 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      * organizerRepository
      *
      * @var \JVE\JvEvents\Domain\Repository\OrganizerRepository
-     * @inject
      */
     protected $organizerRepository = NULL;
 
@@ -75,7 +82,6 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      * locationRepository
      *
      * @var \JVE\JvEvents\Domain\Repository\LocationRepository
-     * @inject
      */
     protected $locationRepository = NULL;
 
@@ -83,7 +89,6 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      * persistencemanager
      *
      * @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
-     * @inject
      */
     protected $persistenceManager = NULL ;
 
@@ -91,7 +96,6 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      * registrantRepository
      *
      * @var \JVE\JvEvents\Domain\Repository\RegistrantRepository
-     * @inject
      */
     protected $registrantRepository = NULL;
 
@@ -100,15 +104,13 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      * categoryRepository
      *
      * @var \JVE\JvEvents\Domain\Repository\CategoryRepository
-     * @inject
      */
     protected $categoryRepository = NULL;
 
     /**
      * tagRepository
      *
-     * @var \JVE\JvEvents\Domain\Repository\TagRepository
-     * @inject
+     * @var TagRepository
      */
     protected $tagRepository = NULL;
 
@@ -123,6 +125,73 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      * @var float
      */
     public $timeStart ;
+
+    /**
+     * @param TagRepository $tagRepository
+     */
+    public function injectTagRepository(TagRepository $tagRepository)
+    {
+        $this->tagRepository = $tagRepository;
+    }
+
+    /**
+     * @param CategoryRepository $categoryRepository
+     */
+    public function injectCategoryRepository(CategoryRepository $categoryRepository)
+    {
+        $this->categoryRepository = $categoryRepository;
+    }
+
+    /**
+     * @param RegistrantRepository $registrantRepository
+     */
+    public function injectRegistrantRepository(RegistrantRepository $registrantRepository)
+    {
+        $this->registrantRepository = $registrantRepository;
+    }
+
+    /**
+     * @param LocationRepository $locationRepository
+     */
+    public function injectLocationRepository(LocationRepository $locationRepository)
+    {
+        $this->locationRepository = $locationRepository;
+    }
+
+    /**
+     * @param OrganizerRepository $organizerRepository
+     */
+    public function injectOrganizerRepository(OrganizerRepository $organizerRepository)
+    {
+        $this->organizerRepository = $organizerRepository;
+    }
+
+    /**
+     * @param EventRepository $eventRepository
+     */
+    public function injectEventRepository(EventRepository $eventRepository)
+    {
+        $this->eventRepository = $eventRepository;
+    }
+
+    /**
+     * @param SubeventRepository $subeventRepository
+     */
+    public function injectSubeventRepository(SubeventRepository $subeventRepository)
+    {
+        $this->subeventRepository = $subeventRepository;
+    }
+
+    /**
+     * @param StaticCountryRepository $staticCountryRepository
+     */
+    public function injectStaticCountryRepository(StaticCountryRepository $staticCountryRepository)
+    {
+        $this->staticCountryRepository = $staticCountryRepository;
+    }
+
+
+
 
     /**
      * action list
@@ -165,6 +234,15 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
 
         $this->persistenceManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
+        $this->tagRepository        = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\TagRepository;');
+        $this->categoryRepository        = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\CategoryRepository;');
+        $this->registrantRepository        = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\RegistrantRepository;');
+        $this->locationRepository        = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\LocationRepository;');
+        $this->organizerRepository        = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\OrganizerRepository;');
+        $this->eventRepository        = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\EventRepository;');
+        $this->subeventRepository        = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\SubeventRepository;');
+        $this->staticCountryRepository        = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\StaticCountryRepository;');
+
     }
 
     public function generateFilterAll( $filter )

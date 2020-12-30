@@ -36,35 +36,17 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
  */
 class EventBackendController extends BaseController
 {
-
-    /**
-     * eventRepository
-     *
-     * @var \JVE\JvEvents\Domain\Repository\EventRepository
-     * @inject
-     */
-    protected $eventRepository = NULL;
-
-
     /**
      * @var \JVE\JvEvents\Signal\RegisterCitrixSignal
-     * @inject
      */
     protected  $citrixSlot  ;
 
     /**
      * @var \JVE\JvEvents\Signal\RegisterHubspotSignal
-     * @inject
      */
     protected  $hubspotSlot  ;
 
-    /**
-	 * staticCountryRepository
-	 *
-	 * @var \JVE\JvEvents\Domain\Repository\StaticCountryRepository
-	 * @inject
-	 */
-	protected $staticCountryRepository = NULL;
+
 
 	public function initializeAction() {
 		if ($this->request->hasArgument('action')) {
@@ -78,6 +60,7 @@ class EventBackendController extends BaseController
 		if (!$this->request->hasArgument('event')) {
 			// ToDo redirect to error
 		}
+        $this->citrixSlot = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("JVE\\JvEvents\\Signal\\RegisterCitrixSignal");
         $this->hubspotSlot = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("JVE\\JvEvents\\Signal\\RegisterHubspotSignal");
         parent::initializeAction() ;
 	}
