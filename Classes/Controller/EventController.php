@@ -529,26 +529,24 @@ class EventController extends BaseController
             $connectionPool = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class);
 
             // --------- now fix Slug Name
-            if( intval( TYPO3_branch ) > 8 ) {
-                $row['name'] =  $newEvent->getName() ;
-                $row['pid'] =  $newEvent->getPid() ;
-                $row['parentpid'] =  1 ;
-                $row['uid'] =  $eventUid;
-                $row['sys_language_uid'] =  $newEvent->getSysLanguageUid() ;
-                $row['slug'] =  $newEvent->getSlug() ;
-                $row['start_date'] =  $newEvent->getStartDate()->format("d-m-Y") ;
-                $slug = SlugUtility::getSlug("tx_jvevents_domain_model_event", "slug", $row  )  ;
-                // $newEvent->setSlug( $slug ) ;
-                // $this->eventRepository->update($newEvent) ;
-                /** @var \TYPO3\CMS\Core\Database\Connection $dbConnectionForSysRef */
-                $dbConnectionForSlug = $connectionPool->getConnectionForTable('tx_jvevents_domain_model_event');
+            $row['name'] =  $newEvent->getName() ;
+            $row['pid'] =  $newEvent->getPid() ;
+            $row['parentpid'] =  1 ;
+            $row['uid'] =  $eventUid;
+            $row['sys_language_uid'] =  $newEvent->getSysLanguageUid() ;
+            $row['slug'] =  $newEvent->getSlug() ;
+            $row['start_date'] =  $newEvent->getStartDate()->format("d-m-Y") ;
+            $slug = SlugUtility::getSlug("tx_jvevents_domain_model_event", "slug", $row  )  ;
+            // $newEvent->setSlug( $slug ) ;
+            // $this->eventRepository->update($newEvent) ;
+            /** @var \TYPO3\CMS\Core\Database\Connection $dbConnectionForSysRef */
+            $dbConnectionForSlug = $connectionPool->getConnectionForTable('tx_jvevents_domain_model_event');
 
-                /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilderEvent */
-                $queryBuilderEvent = $dbConnectionForSlug->createQueryBuilder();
-                $queryBuilderEvent->update('tx_jvevents_domain_model_event')->set('slug' , $slug )
-                    ->where( $queryBuilderEvent->expr()->eq('uid' , $queryBuilderEvent->createNamedParameter( $eventUid , \PDO::PARAM_INT )) )
-                    ->execute() ;
-            }
+            /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilderEvent */
+            $queryBuilderEvent = $dbConnectionForSlug->createQueryBuilder();
+            $queryBuilderEvent->update('tx_jvevents_domain_model_event')->set('slug' , $slug )
+                ->where( $queryBuilderEvent->expr()->eq('uid' , $queryBuilderEvent->createNamedParameter( $eventUid , \PDO::PARAM_INT )) )
+                ->execute() ;
 
 
             /** @var \TYPO3\CMS\Core\Database\Connection $dbConnectionForSysRef */
@@ -719,7 +717,6 @@ class EventController extends BaseController
                             }
 
                             // --------- now fix Slug Name
-                            if( intval( TYPO3_branch ) > 8 ) {
                                 $row['name'] = $otherEvent->getName();
                                 $row['pid'] = $otherEvent->getPid();
                                 $row['parentpid'] = 1;
@@ -729,7 +726,7 @@ class EventController extends BaseController
                                 $row['start_date'] = $otherEvent->getStartDate()->format("d-m-Y");
                                 $slug = SlugUtility::getSlug("tx_jvevents_domain_model_event", "slug", $row);
                                 $otherEvent->setSlug($slug);
-                            }
+
                             $this->eventRepository->update($otherEvent) ;
 
                         }
@@ -994,7 +991,6 @@ class EventController extends BaseController
             $event->setPid( 12 ) ;
         }
 
-        if( intval( TYPO3_branch ) > 8 ) {
             $row['name'] =  $event->getName() ;
             $row['pid'] =  $event->getPid() ;
             $row['parentpid'] =  1 ;
@@ -1004,7 +1000,6 @@ class EventController extends BaseController
             $row['slug'] =  $event->getSlug() ? $event->getSlug() : $event->getName() . "-" . $row['start_date'] ;
             $slug = SlugUtility::getSlug("tx_jvevents_domain_model_event", "slug", $row  )  ;
             $event->setSlug( $slug ) ;
-        }
 
         return $event ;
     }

@@ -22,10 +22,7 @@ class Ajax implements MiddlewareInterface
         RequestHandlerInterface $handler
     ): ResponseInterface {
         $arguments = $request->getQueryParams();
-        if (\TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_branch) > 9004000) {
-            $useMiddleware = true;
-        }
-        if( is_array($arguments) && key_exists("tx_jvevents_ajax" ,$arguments ) && key_exists("controller" ,$arguments['tx_jvevents_ajax'] ) && $useMiddleware == true) {
+        if( is_array($arguments) && key_exists("tx_jvevents_ajax" ,$arguments ) && key_exists("controller" ,$arguments['tx_jvevents_ajax'] ) ) {
             $GLOBALS['TSFE']->set_no_cache();
 
             // ToDo generate Output as before in ajax Controller here in Middleware with CORE features.

@@ -603,7 +603,6 @@ $returnArray = array(
 );
 
 
-if( intval( TYPO3_branch ) > 8 ) {
     $returnArray['columns']['slug']  = [
         'exclude' => 1,
         'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:pages.slug',
@@ -623,7 +622,6 @@ if( intval( TYPO3_branch ) > 8 ) {
             'default' => 'organizer'
         ]
     ] ;
-}
 
 $configuration = \JVE\JvEvents\Utility\EmConfigurationUtility::getEmConf();
 

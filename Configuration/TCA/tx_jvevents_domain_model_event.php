@@ -1356,7 +1356,6 @@ if ( $configuration['Registrationid'] > 0 ) {
 }
 
 
-if( intval( TYPO3_branch ) > 8 ) {
     $returnArray['columns']['slug']  = [
         'exclude' => true,
         'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:pages.slug',
@@ -1377,5 +1376,5 @@ if( intval( TYPO3_branch ) > 8 ) {
             'default' => 'event'
         ]
     ] ;
-}
+
 return $returnArray ;

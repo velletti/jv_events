@@ -332,7 +332,6 @@ class LocationController extends BaseController
 
         $location->setLanguageUid(-1) ;
 
-        if( intval( TYPO3_branch ) > 8 ) {
             $row['name'] =  $location->getName() ;
             $row['pid'] =  $location->getPid() ;
             $row['parentpid'] =  1 ;
@@ -341,7 +340,6 @@ class LocationController extends BaseController
             $row['slug'] =  $location->getSlug() ;
             $slug = SlugUtility::getSlug("tx_jvevents_domain_model_location", "slug", $row )  ;
             $location->setSlug( $slug ) ;
-        }
 
 
         return $location ;

@@ -712,12 +712,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             $message->setReturnPath($returnPath);
         }
 
-        if ( TYPO3_branch < 9 ) {
-            $rootPath = PATH_site ;
-        } else {
-            /* available from typo3 V9 */
-            $rootPath = \TYPO3\CMS\Core\Core\Environment::getPublicPath() ;
-        }
+        $rootPath = \TYPO3\CMS\Core\Core\Environment::getPublicPath() ;
 
         if ( is_array( $attachments ) ) {
             if( $registrant->getMore6int() == 1  ) {

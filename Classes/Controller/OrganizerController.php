@@ -418,7 +418,6 @@ class OrganizerController extends BaseController
             // ToDo find good way to handle ID Default .. maybe a pid per User, per location or other typoscript setting
             $organizer->setPid( 13 ) ;
         }
-        if( intval( TYPO3_branch ) > 8 ) {
             $row['name'] =  $organizer->getName() ;
             $row['pid'] =  $organizer->getPid() ;
             $row['parentpid'] =  1 ;
@@ -427,7 +426,6 @@ class OrganizerController extends BaseController
             $row['slug'] =  $organizer->getSlug() ;
             $slug = SlugUtility::getSlug("tx_jvevents_domain_model_organizer", "slug", $row  )  ;
             $organizer->setSlug( $slug ) ;
-        }
         return $organizer ;
     }
 

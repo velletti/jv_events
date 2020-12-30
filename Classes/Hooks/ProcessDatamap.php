@@ -93,7 +93,6 @@ class ProcessDatamap {
 			    $replace[] = '' ;
                 $this->event->setDescription( str_replace($search , $replace , $this->event->getDescription())) ;
 
-                if( intval( TYPO3_branch ) > 8 ) {
                     $row['name'] =  $this->event->getName() ;
                     $row['pid'] =  $this->event->getPid() ;
                     $row['parentpid'] =  1 ;
@@ -108,7 +107,6 @@ class ProcessDatamap {
                     $row['start_date'] =  $this->event->getStartDate()->format($slugGenerationDateFormat) ;
                     $slug = SlugUtility::getSlug("tx_jvevents_domain_model_event", "slug", $row  )  ;
                     $this->event->setSlug( $slug ) ;
-                }
 
 
                 if ($this->event->getEventType() == 0 ) {
