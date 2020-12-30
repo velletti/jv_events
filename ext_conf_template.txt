@@ -84,8 +84,6 @@ imgUrl2 =
 
 # Backend modules
 ###########################
-	# cat=advanced/enable/31; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.showImporter
-showImporter = 0
 
 	# cat=advanced/enable/32; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.showIndividualMailTemplatesPerEvent
 showIndividualMailTemplatesPerEvent = 0

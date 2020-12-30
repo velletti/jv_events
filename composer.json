@@ -2,9 +2,17 @@
     "name": "jve/jv-events",
     "type": "typo3-cms-extension",
     "description": "List and show Events with filters. Including registration",
-    "authors": [],
+    "authors": [
+        {
+            "name": "Jörg Velletti",
+            "role": "Developer",
+            "homepage": "http://www.velletti.de/"
+        }
+
+    ],
+    "license": "GPL-2.0-or-later",
     "require": {
-        "typo3/cms-core": "^8.7.1"
+        "typo3/cms-core": "^8.7.1 ^9.5 || ^10.1 "
     },
     "autoload": {
         "psr-4": {
@@ -18,5 +26,10 @@
     "replace": {
         "jv_events": "self.version",
         "typo3-ter/jv-events": "self.version"
+    },
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "jv_events"
+        }
     }
 }

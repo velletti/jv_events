@@ -16,15 +16,10 @@ if (!defined('TYPO3_MODE')) {
 );
 $configuration = \JVE\JvEvents\Utility\EmConfigurationUtility::getEmConf();
 
-if ( $configuration['showImporter'] == 1 ) {
-    // Todo add importer to modules
-    $EventModules = array('EventBackend' => 'list, show, new, create, edit, update, delete, register, confirm, search, resendCitrix,resendHubspot' ) ;
 
-} else {
-    $EventModules = array('EventBackend' => 'list, show, new, create, edit, update, delete, register, confirm, search, resendCitrix,resendHubspot' ) ;
-}
 if (TYPO3_MODE === 'BE') {
-
+    $_EXTKEY = "jv_events" ;
+    $EventModules = array('EventBackend' => 'list, show, new, create, edit, update, delete, register, confirm, search, resendCitrix,resendHubspot' ) ;
     //       * Registers a Backend Module
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
         'JVE.jv_events' ,
