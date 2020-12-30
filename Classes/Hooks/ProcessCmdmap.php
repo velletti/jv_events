@@ -166,32 +166,31 @@ class ProcessCmdmap {
                 $eventId = $regevent['event'] ;
                 if( $eventId > 0 ) {
                     $event = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('tx_jvevents_domain_model_event', $eventId );
+
+                    /** @var \TYPO3\CMS\Core\Database\ConnectionPool $connectionPool */
+                    $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
+                    /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
+                    $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_jvevents_domain_model_event') ;
+
+                    $queryBuilder ->update('tx_jvevents_domain_model_event')
+                        ->where( $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter(intval($eventId) , Connection::PARAM_INT )) ) ;
+
                     if( $regevent['hidden'] == 0 ) {
                         $registeredSeats = max( 0 , $event['registered_seats'] - 1 ) ;
-                        $updateData = array(
-                            'registered_seats' => $registeredSeats
-                        );
+                        $queryBuilder->set('registered_seats' , $registeredSeats ) ;
+
                     } else {
                         $unconfirmed_seats = max($event['unconfirmed_seats'] - 1 , 0 );
-                        $updateData = array(
-                            'unconfirmed_seats' => $unconfirmed_seats
-                        );
-                    }
-                    /** @var \TYPO3\CMS\Dbal\Database\DatabaseConnection $db */
-                    $db = $GLOBALS['TYPO3_DB'] ;
-                    $db->exec_UPDATEquery('tx_jvevents_domain_model_event', 'uid=' . intval($eventId), $updateData);
+                        $queryBuilder->set('registered_seats' , unconfirmed_seats ) ;
 
+                    }
+                    $queryBuilder->execute() ;
 
                 }
             }
 
         }
     }
-
-
-	public function main() {
-
-	}
 
 }
 

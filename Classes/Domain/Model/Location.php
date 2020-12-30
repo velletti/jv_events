@@ -36,7 +36,7 @@ class Location extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Name of the Location
      *
      * @var string
-     * @validate NotEmpty
+     * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
      */
     protected $name = '';
 
@@ -64,7 +64,7 @@ class Location extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Name of the City
      *
      * @var string
-     * @validate NotEmpty
+     * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
      */
     protected $city = '';
     

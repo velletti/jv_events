@@ -37,7 +37,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * default: show event details from this extension
      *
      * @var int
-     * @validate NotEmpty
+     * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
      */
     protected $eventType = 0;
 
@@ -93,7 +93,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Short Title of this event. Used in listings
      *
      * @var string
-     * @validate NotEmpty
+     * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
      */
     protected $name = '';
 
@@ -203,7 +203,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Start Date of this event. Mandatory
      *
-     * @validate NotEmpty
+     * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
      * @var \DateTime
      */
     protected $startDate = null;
@@ -274,15 +274,14 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * Access Start Time of this event (default TYP3 Field )
-     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("starttime")
-     * @var int
+
+     * @var int|\DateTime|null
      */
     protected $starttime ;
 
     /**
      * Access End Time of this event (default TYP3 Field )
-     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("endtime")
-     * @var int
+     * @var int|\DateTime|null
      */
     protected $endtime ;
 
@@ -603,7 +602,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Subevent (additional dates )
      *
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Subevent>
-     * @cascade remove
+     * @TYPO3\\CMS\\Extbase\\Annotation\\ORM\\Cascade("remove")
      */
     protected $subevent = null;
 

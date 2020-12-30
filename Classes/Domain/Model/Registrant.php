@@ -55,15 +55,13 @@ class Registrant extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * Access Start Time of this event (default TYP3 Field )
-     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("starttime")
-     * @var int
+     * @var int|\DateTime|null
      */
     protected $starttime ;
 
     /**
      * Access End Time of this event (default TYP3 Field )
-     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("endtime")
-     * @var int
+     * @var int|\DateTime|null
      */
     protected $endtime ;
 
@@ -266,7 +264,7 @@ class Registrant extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * privacy
      *
      * @var bool
-     * @validate NotEmpty
+     * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
      */
     protected $privacy = false;
     

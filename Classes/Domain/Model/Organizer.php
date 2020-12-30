@@ -36,7 +36,7 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Name of the Organizer, shown in Event lists
      *
      * @var string
-     * @validate NotEmpty
+     * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
      */
     protected $name = '';
 
@@ -52,7 +52,7 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * email to organizer on new registrations
      *
      * @var string
-     * @validate NotEmpty
+     * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
      */
     protected $email = '';
 

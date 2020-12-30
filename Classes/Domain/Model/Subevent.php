@@ -51,7 +51,7 @@ class Subevent extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
      * Start Date of this event. Mandatory
      *
      * @var \DateTime
-     * @validate NotEmpty
+     * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
      */
     protected $startDate = null;
     
@@ -64,8 +64,7 @@ class Subevent extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
     /**
      * Access Start Time of this event (default TYP3 Field )
-     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("starttime")
-     * @var \DateTime
+     * @var int|\DateTime|null
      */
     protected $starttime ;
 
