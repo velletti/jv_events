@@ -50,7 +50,6 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     /**
      *  $eventRepository
      * @var \JVE\JvEvents\Domain\Repository\EventRepository
-     * @inject
      */
     protected $eventRepository = NULL;
 
@@ -58,7 +57,6 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      * subeventRepository
      *
      * @var \JVE\JvEvents\Domain\Repository\SubeventRepository
-     * @inject
      */
     protected $subeventRepository = NULL;
 
@@ -66,7 +64,6 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 	 * staticCountryRepository
 	 *
 	 * @var \JVE\JvEvents\Domain\Repository\StaticCountryRepository
-	 * @inject
 	 */
 	protected $staticCountryRepository = NULL;
 

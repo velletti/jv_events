@@ -37,7 +37,6 @@ class TagController extends BaseController
      * tagRepository
      *
      * @var \JVE\JvEvents\Domain\Repository\TagRepository
-     * @inject
      */
     protected $tagRepository = NULL;
 

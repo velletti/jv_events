@@ -39,7 +39,6 @@ class SearchController extends BaseController
      * eventRepository
      *
      * @var \JVE\JvEvents\Domain\Repository\EventRepository
-     * @inject
      */
     protected $eventRepository = NULL;
 
