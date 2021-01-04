@@ -30,23 +30,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class RegisterCitrixSignal {
 
-    /**
-     * persistencemanager
-     *
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
-     * @inject
-     */
-    protected $persistenceManager = NULL ;
-
-    /**
-     * registrantRepository
-     *
-     * @var \JVE\JvEvents\Domain\Repository\RegistrantRepository
-     * @inject
-     */
-    protected $registrantRepository = NULL;
-
-    /**
+     /**
      * Initialize action settings
      * @return void
      */

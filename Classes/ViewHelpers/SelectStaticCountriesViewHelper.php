@@ -1,5 +1,7 @@
 <?php
 namespace JVE\JvEvents\ViewHelpers;
+use JVE\JvEvents\Domain\Repository\StaticCountryRepository;
+
 /***************************************************************
  * Copyright notice
  *
@@ -43,10 +45,16 @@ class SelectStaticCountriesViewHelper extends SelectStaticViewHelper {
 	 * Repository that provides the country models
 	 *
 	 * @var \JVE\JvEvents\Domain\Repository\StaticCountryRepository
-	 * @inject
 	 */
 	protected $countryRepository;
 
+    /**
+     * @param StaticCountryRepository $staticCountryRepository
+     */
+    public function injectStaticCountryRepository(StaticCountryRepository $staticCountryRepository)
+    {
+        $this->staticCountryRepository = $staticCountryRepository;
+    }
 
 	/**
 	 * Initialize arguments. Cant be moved to parent because

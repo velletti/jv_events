@@ -39,7 +39,6 @@ class ProcessDatamap {
 	protected $flashMessage = array() ;
 
     /** @var  \JVE\JvEvents\Utility\SalesforceWrapperUtility
-     * @inject
      */
     public $sfConnect ;
 

@@ -4,6 +4,8 @@ namespace JVE\JvEvents\Validation\Validator;
 
 
 
+use JVE\JvEvents\Domain\Repository\EventRepository;
+use JVE\JvEvents\Domain\Repository\RegistrantRepository;
 use TYPO3\CMS\Core\Context\AspectInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -17,7 +19,6 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
 	 * eventRepository
 	 *
 	 * @var \JVE\JvEvents\Domain\Repository\EventRepository
-	 * @inject
 	 */
 	protected $eventRepository = NULL;
 
@@ -30,7 +31,6 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
 	 * registrantRepository
 	 *
 	 * @var \JVE\JvEvents\Domain\Repository\RegistrantRepository
-	 * @inject
 	 */
 	protected $registrantRepository = NULL;
 
@@ -39,6 +39,23 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
 
 	/** @var array   */
 	public $settings = NULL ;
+
+
+    /**
+     * @param EventRepository $eventRepository
+     */
+    public function injectEventRepository(EventRepository $eventRepository)
+    {
+        $this->eventRepository = $eventRepository;
+    }
+
+    /**
+     * @param RegistrantRepository $registrantRepository
+     */
+    public function injectRegistrantRepository(RegistrantRepository $registrantRepository)
+    {
+        $this->registrantRepository = $registrantRepository;
+    }
 
 	public function __construct() {
 		$this->emConf =\JVE\JvEvents\Utility\EmConfigurationUtility::getEmConf();
