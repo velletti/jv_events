@@ -2,8 +2,7 @@
 namespace JVE\JvEvents\ViewHelpers;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
  * Viewhelper to render a selectbox with values
@@ -14,7 +13,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  * <register:form.required fieldName="'username"/>
  * </code>
  */
-class RequiredViewHelper extends AbstractConditionViewHelper implements CompilableInterface  {
+class RequiredViewHelper extends AbstractConditionViewHelper implements \TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperInterface  {
 	/**
 	 * Configuration manager to fetch settings from
 	 *

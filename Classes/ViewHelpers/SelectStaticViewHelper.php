@@ -1,5 +1,7 @@
 <?php
 namespace JVE\JvEvents\ViewHelpers;
+use  TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelper;
+
 /***************************************************************
  * Copyright notice
  *
@@ -28,7 +30,7 @@ namespace JVE\JvEvents\ViewHelpers;
  * viewhelpers to beable to use options not set by options
  * argument but by initialization method
  */
-class SelectStaticViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelper {
+class SelectStaticViewHelper extends SelectViewHelper {
 	/**
 	 * @var array
 	 */

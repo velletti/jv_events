@@ -52,8 +52,7 @@ use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException;
 use TYPO3\CMS\Frontend\Page\PageRepository;
-
-class L10nFalImgViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class L10nFalImgViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 
     public function initializeArguments()

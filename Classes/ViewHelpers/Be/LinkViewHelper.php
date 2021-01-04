@@ -3,7 +3,7 @@
 namespace JVE\JvEvents\ViewHelpers\Be;
 
 
-class LinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper {
+class LinkViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper {
 
     /**
      * @var string
