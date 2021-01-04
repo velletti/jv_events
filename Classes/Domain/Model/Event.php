@@ -602,7 +602,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Subevent (additional dates )
      *
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Subevent>
-     * @TYPO3\\CMS\\Extbase\\Annotation\\ORM\\Cascade("remove")
+     * @TYPO3\CMS\Extbase\Annotation\ORM\Cascade("remove")
      */
     protected $subevent = null;
 
