@@ -142,21 +142,7 @@ class Tag extends AbstractEntity
         $this->_languageUid = $languageUid;
     }
 
-    /**
-     * @return int
-     */
-    public function getPid(): ?int
-    {
-        return $this->pid;
-    }
 
-    /**
-     * @param int $pid
-     */
-    public function setPid($pid): void
-    {
-        $this->pid = $pid;
-    }
 
     /**
      * @return int

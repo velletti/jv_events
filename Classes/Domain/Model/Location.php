@@ -519,22 +519,6 @@ class Location extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     }
 
     /**
-     * @return int
-     */
-    public function getPid(): ?int
-    {
-        return $this->pid;
-    }
-
-    /**
-     * @param int $pid
-     */
-    public function setPid($pid): void
-    {
-        $this->pid = $pid;
-    }
-
-    /**
      * @return \DateTime
      */
     public function getLatestEvent()
