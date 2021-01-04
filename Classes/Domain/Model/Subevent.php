@@ -242,22 +242,6 @@ class Subevent extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
     /**
      * @return int
      */
-    public function getUid()
-    {
-        return $this->uid;
-    }
-
-    /**
-     * @param int $uid
-     */
-    public function setUid($uid)
-    {
-        $this->uid = $uid;
-    }
-
-    /**
-     * @return int
-     */
     public function getPid()
     {
         return $this->pid;

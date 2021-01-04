@@ -51,21 +51,6 @@ class FrontendUser extends \TYPO3\CMS\Extbase\Domain\Model\FrontendUser {
 	 */
 	protected $disable;
 
-    /**
-     * @return int
-     */
-    public function getUid()
-    {
-        return $this->uid;
-    }
-
-    /**
-     * @param int $uid
-     */
-    public function setUid($uid)
-    {
-        $this->uid = $uid;
-    }
 
     /**
      * @return int

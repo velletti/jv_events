@@ -709,21 +709,6 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         $this->salesForceUserOrg = $salesForceUserOrg;
     }
 
-    /**
-     * @return int
-     */
-    public function getUid()
-    {
-        return $this->uid;
-    }
-
-    /**
-     * @param int $uid
-     */
-    public function setUid($uid)
-    {
-        $this->uid = $uid;
-    }
 
     /**
      * @return int
