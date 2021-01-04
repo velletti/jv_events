@@ -13,6 +13,7 @@
 							<onChange>reload</onChange>
 							<config>
 								<type>select</type>
+								<renderType>selectSingle</renderType>
 								<items>
 									<numIndex index="0">
 										<numIndex index="0">EventList</numIndex>
@@ -49,6 +50,7 @@
 
 							<config>
 								<type>select</type>
+								<renderType>selectSingle</renderType>
 								<items>
 									<numIndex index="0">
 										<numIndex index="0">Organizer List</numIndex>
@@ -68,6 +70,7 @@
 							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms_additional.layout</label>
 							<config>
 								<type>user</type>
+								<renderType>jvEventsCustomLayoutElement</renderType>
 								<size>30</size>
 								<userFunc>JVE\JvEvents\UserFunc\Flexforms->selectLayout</userFunc>
 								<parameters>
@@ -83,6 +86,7 @@
 
 							<config>
 								<type>select</type>
+								<renderType>selectSingle</renderType>
 								<items type="array">
 									<numIndex index="0" type="array">
 										<numIndex index="0">LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.ShowFilter.NoFilter</numIndex>
@@ -141,6 +145,7 @@
 							<displayCond>FIELD:sDEF.switchableControllerActions:=:Event->list;Event->search</displayCond>
 							<config>
 								<type>select</type>
+								<renderType>selectSingle</renderType>
 								<items type="array">
 									<numIndex index="0" type="array">
 										<numIndex index="0">LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.startDate.Yesterday</numIndex>
@@ -222,6 +227,7 @@
 							<displayCond>FIELD:sDEF.switchableControllerActions:=:Event->list;Event->search</displayCond>
 							<config>
 								<type>select</type>
+								<renderType>selectSingle</renderType>
 								<items type="array">
 									<numIndex index="0" type="array">
 										<numIndex index="0">LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.sortTags.alfabetic</numIndex>
@@ -241,6 +247,7 @@
 							<displayCond>FIELD:sDEF.switchableControllerActions:=:Event->list;Event->search</displayCond>
 							<config>
 								<type>select</type>
+								<renderType>selectSingle</renderType>
 								<items type="array">
 									<numIndex index="0" type="array">
 										<numIndex index="0">LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.sortTags.alfabetic</numIndex>
@@ -313,6 +320,7 @@
 							<displayCond>FIELD:sDEF.switchableControllerActions:=:Event->list;Event->search</displayCond>
 							<config>
 								<type>select</type>
+								<renderType>selectSingle</renderType>
 								<items type="array">
 									<numIndex index="0" type="array">
 										<numIndex index="0">LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.canceledEvents.all</numIndex>
@@ -339,6 +347,7 @@
 							<displayCond>FIELD:sDEF.switchableControllerActions:=:Event->list;Event->search</displayCond>
 							<config>
 								<type>select</type>
+								<renderType>selectSingle</renderType>
 								<items type="array">
 									<numIndex index="0" type="array">
 										<numIndex index="0">LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.topEvents.all</numIndex>
@@ -488,7 +497,7 @@
 							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms_additional.layout</label>
 							<config>
 								<type>user</type>
-
+								<renderType>jvEventsCustomLayoutElement</renderType>
 								<size>30</size>
 								<userFunc>JVE\JvEvents\UserFunc\Flexforms->selectLayout</userFunc>
 								<parameters>
@@ -523,12 +532,15 @@
 
 							<config>
 								<type>user</type>
+								<renderType>jvEventsCustomLayoutElement</renderType>
 
 								<size>30</size>
 								<userFunc>JVE\JvEvents\UserFunc\Flexforms->selectLayout</userFunc>
 								<parameters>
 									<layoutType>register.</layoutType>
 								</parameters>
+
+
 							</config>
 						</TCEforms>
 					</settings.LayoutRegister>
@@ -618,6 +630,7 @@
 							<label>LLL:EXT:lang/locallang_general.xml:LGL.recursive</label>
 							<config>
 								<type>select</type>
+								<renderType>selectSingle</renderType>
 								<items type="array">
 									<numIndex index="1" type="array">
 										<numIndex index="0">LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:recursive.I.0</numIndex>

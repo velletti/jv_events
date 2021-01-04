@@ -101,3 +101,10 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['JVE\JvEvents\Sc
     'description'      => 'set only frequency ',
     'additionalFields' => 'JVE\JvEvents\Scheduler\CleanEventsTaskAdditionalFieldProvider'
 );
+
+// Register a node in ext_localconf.php
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1609762346] = [
+    'nodeName' => 'jvEventsCustomLayoutElement',
+    'priority' => 40,
+    'class' => \JVE\JvEvents\Form\Element\JvEventsCustomLayoutElement::class,
+];
