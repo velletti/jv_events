@@ -819,16 +819,6 @@ class ProcessDatamap {
 		}
 	}
 
-	/**
-	 * if the salesforce event linked to this record is deleted ( in salesforce )
-	 * we remove the event and session id so the event can be created again
-	 *
-	 * @param $uid
-	 */
-	private function removeSalesforceFieldsAfterDelete($uid) {
-		// toDo : rework this with extbase
-		$GLOBALS['TYPO3_DB']->exec_UPDATEquery($this->table, 'uid=' . intval($uid), array('tx_nemcalwebservices_salesforce_eventid' => '', 'tx_nemcalwebservices_salesforce_sessionid' => ''));
-	}
 
 }
 
