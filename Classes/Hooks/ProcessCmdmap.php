@@ -77,8 +77,9 @@ class ProcessCmdmap {
 		if ($table == 'tx_jvevents_domain_model_event') {
 			$this->id = (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($id)?$id:$this->pObj->substNEWwithIDs[$id]);
 			$this->command = $command;
-			$this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['jv_events']);
-			$this->table = $table;
+            $this->extConf = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class) ->get('jv_events');
+
+            $this->table = $table;
 			$this->pObj = $Obj;
 			/** @var  \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
 			$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("TYPO3\\CMS\\Extbase\\Object\\ObjectManager") ;

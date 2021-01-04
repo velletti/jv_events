@@ -3,10 +3,32 @@ declare(strict_types = 1);
 namespace JVE\JvEvents\Form\Element;
 
 use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
+use TYPO3\CMS\Backend\Form\NodeFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 
 class JvEventsCustomLayoutElement extends AbstractFormElement
 {
-    public function render()
+
+    /**
+     * Main data array to work on, given from parent to child elements
+     *
+     * @var array
+     */
+    protected $data = [];
+
+    /**
+     * Container objects give $nodeFactory down to other containers.
+     *
+     * @param NodeFactory $nodeFactory
+     * @param array $data
+     */
+    public function __construct(NodeFactory $nodeFactory, array $data  = [])
+    {
+        parent::__construct($nodeFactory, $data);
+    }
+
+    public function render(): array
     {
         $result = $this->initializeResultArray();
 
@@ -45,10 +67,8 @@ class JvEventsCustomLayoutElement extends AbstractFormElement
     }
 
     public function getSettings() {
-        $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+        $objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
         $configurationManager = $objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
-        $settings = $configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT );
-
-        return $settings ;
+        return  $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT );
     }
 }

@@ -29,11 +29,11 @@ class EmConfigurationUtility
     /**
      * Parses the extension settings.
      * @param boolean $asObject
-     * @return array
+     * @return array|object
      */
     public static function getEmConf($asObject=false)
     {
-		$settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['jv_events']);
+		$settings = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class) ->get('jv_events') ;
 
 		if (!is_array($settings)) {
 			$settings = [];
@@ -55,11 +55,10 @@ class EmConfigurationUtility
 
 	public static function getGoogleApiKey() {
 		$configuration = self::getEmConf();
-        if( GeneralUtility::getApplicationContext()->isDevelopment() ) {
+        if( \TYPO3\CMS\Core\Core\Environment::getContext()->isDevelopment() ) {
             return trim( $configuration['googleApiKeyDEV'] );
         }
 		return trim($configuration['googleApiKey'] );
-		// return $configuration['googleApiKey']['value'];
 	}
 
 }

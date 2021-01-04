@@ -66,7 +66,7 @@ class UpdateSlugCommand extends Command {
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['jv_events']);
+        $this->extConf = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class) ->get('jv_events');
 
         $io = new SymfonyStyle($input, $output);
         $io->title($this->getDescription());
@@ -136,6 +136,7 @@ class UpdateSlugCommand extends Command {
         }
 
         if( $io->getVerbosity() > 16 ) {
+            // @extensionScannerIgnoreLine
             $progress->finish();
 
             if( $io->getVerbosity()  > 128 ) {

@@ -59,8 +59,9 @@ class ProcessDatamap {
 		$this->status = $status;
 		$this->fieldArray = $fieldArray;
 		$this->id = (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($id)?$id:$this->pObj->substNEWwithIDs[$id]);
-		$this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['jv_events']);
-		$this->main();
+        $this->extConf = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class) ->get('jv_events');
+
+        $this->main();
 	}
  //   public function processDatamap_beforeStart($pObj ) {
  //

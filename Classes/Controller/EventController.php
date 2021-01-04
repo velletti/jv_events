@@ -447,7 +447,8 @@ class EventController extends BaseController
             $newEvent->setViewed(0) ;
 
             // then have a look at Ext Conf
-            $extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['jv_events']);
+            $extConf = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class) ->get('jv_events');
+
             $fields =  $extConf['resetFieldListAfterCopy']   ;
 
             // default: setUnconfirmedSeats:0;setRegisteredSeats:0;setSalesForceEventId:"";setSalesForceSessionId:""

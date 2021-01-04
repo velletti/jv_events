@@ -22,7 +22,7 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
  * A task that should be run regularly that deletes
  * datasets flagged as "deleted" from the DB.
  */
-class CleanEventsTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface
+class CleanEventsTaskAdditionalFieldProvider extends  \TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface
 {
 
 
@@ -30,14 +30,14 @@ class CleanEventsTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Add
      * Gets additional fields to render in the form to add/edit a task
      *
      * @param array $taskInfo Values of the fields from the add/edit task form
-     * @param \JV\Jvchat\Scheduler\MailchatsTask $task The task object being edited. NULL when adding a task!
+     * @param \JVE\JvEvents\Scheduler\CleanEventsTask $task The task object being edited. NULL when adding a task!
      * @param SchedulerModuleController $schedulerModule Reference to the scheduler backend module
      * @return array A two dimensional array, array('Identifier' => array('fieldId' => array('code' => '', 'label' => '', 'cshKey' => '', 'cshLabel' => ''))
      */
     public function getAdditionalFields(array &$taskInfo, $task, SchedulerModuleController $schedulerModule)
     {
 
-        if ($schedulerModule->CMD === 'edit') {
+        if ($schedulerModule->getCurrentAction()  === 'edit') {
             $taskInfo['IndexerDelRegistratationsAfter'] = $task->getDelRegistratationsAfter();
             $taskInfo['IndexerDelEventsAfter']          = $task->getDelEventsAfter();
             $taskInfo['IndexerResortingOrganizer']      = $task->getResortingOrganizer();
@@ -108,7 +108,7 @@ class CleanEventsTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Add
         if (empty($period) ||   filter_var($period, FILTER_VALIDATE_INT) !== false  ) {
             $validPeriod = true;
         } else {
-            $schedulerModule->addMessage(
+            $this->addMessage(
                 //$this->getLanguageService()->sL('LLL:EXT:allplan_ke_search_extended/Resources/Private/Language/locallang_tasks.xlf:indexerTaskErrorStoragePid', true),
                 'Error Checking period' ,
                 FlashMessage::ERROR
@@ -147,9 +147,7 @@ class CleanEventsTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Add
 
     }
 
-    /**
-     * @return \TYPO3\CMS\Lang\LanguageService
-     */
+
     protected function getLanguageService()
     {
         return $GLOBALS['LANG'];

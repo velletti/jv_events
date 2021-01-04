@@ -36,6 +36,7 @@ use JVE\JvEvents\Domain\Repository\RegistrantRepository;
 use JVE\JvEvents\Domain\Repository\StaticCountryRepository;
 use JVE\JvEvents\Domain\Repository\SubeventRepository;
 use JVE\JvEvents\Domain\Repository\TagRepository;
+use TYPO3\CMS\Core\Context\AspectInterface;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -203,7 +204,10 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
         $this->settings['pageId']						=  $GLOBALS['TSFE']->id ;
         $this->settings['servername']					=  \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST');
-        $this->settings['sys_language_uid']				=  $GLOBALS['TSFE']->sys_language_uid ;
+        /** @var AspectInterface $languageAspect */
+        $languageAspect = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Context\Context::class)->getAspect('language') ;
+
+        $this->settings['sys_language_uid']				=  $languageAspect->getId() ;
 
         $this->settings['EmConfiguration']	 			= \JVE\JvEvents\Utility\EmConfigurationUtility::getEmConf();
 
