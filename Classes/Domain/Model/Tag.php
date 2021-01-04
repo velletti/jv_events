@@ -3,7 +3,7 @@ namespace JVE\JvEvents\Domain\Model;
 
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
-use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+
 
 /***************************************************************
  *
@@ -70,7 +70,7 @@ class Tag extends AbstractEntity
      *
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Category>
      */
-    protected $tagCategory = null;
+    protected $tagCategory = NULL;
 
     /**
      * Initializes all ObjectStorage properties
@@ -79,7 +79,7 @@ class Tag extends AbstractEntity
      */
     protected function initStorageObjects()
     {
-        $this->tagCategory = new ObjectStorage();
+        $this->tagCategory = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
     }
 
     /**
@@ -179,7 +179,7 @@ class Tag extends AbstractEntity
     /**
      * Returns the tagCategory
      *
-     * @return ObjectStorage<\JVE\JvEvents\Domain\Model\Category> $tagCategory
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Category> $tagCategory
      */
     public function getTagCategory()
     {
@@ -189,10 +189,10 @@ class Tag extends AbstractEntity
     /**
      * Sets the tagCategory
      *
-     * @param ObjectStorage<\JVE\JvEvents\Domain\Model\Category> $tagCategory
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Category> $tagCategory
      * @return void
      */
-    public function setTagCategory(ObjectStorage $tagCategory)
+    public function setTagCategory(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $tagCategory)
     {
         $this->tagCategory = $tagCategory;
     }
