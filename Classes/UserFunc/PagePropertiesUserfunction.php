@@ -7,7 +7,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class PageProperties{
+class PagePropertiesUserfunction{
 
 	/**
 	 * Reference to the parent (calling) cObject set from TypoScript
