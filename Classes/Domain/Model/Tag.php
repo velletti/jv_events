@@ -68,10 +68,9 @@ class Tag extends AbstractEntity
     /**
      * tagCategory
      *
-     * @var ObjectStorage<\JVE\JvEvents\Domain\Model\Category>
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Category>
      */
     protected $tagCategory = null;
-
 
     /**
      * Initializes all ObjectStorage properties
@@ -175,8 +174,6 @@ class Tag extends AbstractEntity
     {
         $this->type = $type;
     }
-
-
 
 
     /**
