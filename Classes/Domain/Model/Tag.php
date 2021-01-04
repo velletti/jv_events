@@ -2,6 +2,9 @@
 namespace JVE\JvEvents\Domain\Model;
 
 
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+
 /***************************************************************
  *
  *  Copyright notice
@@ -30,7 +33,7 @@ namespace JVE\JvEvents\Domain\Model;
 /**
  * Tag
  */
-class Tag extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class Tag extends AbstractEntity
 {
 
     /**
@@ -65,7 +68,7 @@ class Tag extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * tagCategory
      *
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Category>
+     * @var ObjectStorage<\JVE\JvEvents\Domain\Model\Category>
      */
     protected $tagCategory = null;
 
@@ -77,7 +80,7 @@ class Tag extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     protected function initStorageObjects()
     {
-        $this->tagCategory = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+        $this->tagCategory = new ObjectStorage();
     }
 
     /**
@@ -96,7 +99,7 @@ class Tag extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param string $name
      * @return void
      */
-    public function setName($name)
+    public function setName(string $name)
     {
         $this->name = $name;
     }
@@ -126,7 +129,7 @@ class Tag extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @return int
      */
-    public function getLanguageUid()
+    public function getLanguageUid(): ?int
     {
         return $this->_languageUid;
     }
@@ -134,7 +137,7 @@ class Tag extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @param int $languageUid
      */
-    public function setLanguageUid($languageUid)
+    public function setLanguageUid($languageUid): void
     {
         $this->_languageUid = $languageUid;
     }
@@ -142,7 +145,7 @@ class Tag extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @return int
      */
-    public function getPid()
+    public function getPid(): ?int
     {
         return $this->pid;
     }
@@ -150,7 +153,7 @@ class Tag extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @param int $pid
      */
-    public function setPid($pid)
+    public function setPid($pid): void
     {
         $this->pid = $pid;
     }
@@ -158,7 +161,7 @@ class Tag extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @return int
      */
-    public function getSorting()
+    public function getSorting(): ?int
     {
         return $this->sorting;
     }
@@ -174,7 +177,7 @@ class Tag extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @return int
      */
-    public function getType()
+    public function getType(): ?int
     {
         return $this->type;
     }
@@ -182,7 +185,7 @@ class Tag extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @param int $type
      */
-    public function setType($type)
+    public function setType($type): void
     {
         $this->type = $type;
     }
@@ -193,7 +196,7 @@ class Tag extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Returns the tagCategory
      *
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Category> $tagCategory
+     * @return ObjectStorage<\JVE\JvEvents\Domain\Model\Category> $tagCategory
      */
     public function getTagCategory()
     {
@@ -203,10 +206,10 @@ class Tag extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Sets the tagCategory
      *
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Category> $tagCategory
+     * @param ObjectStorage<\JVE\JvEvents\Domain\Model\Category> $tagCategory
      * @return void
      */
-    public function setTagCategory(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $tagCategory)
+    public function setTagCategory(ObjectStorage $tagCategory)
     {
         $this->tagCategory = $tagCategory;
     }

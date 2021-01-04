@@ -242,7 +242,7 @@ class Subevent extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
     /**
      * @return int
      */
-    public function getPid()
+    public function getPid(): ?int
     {
         return $this->pid;
     }
@@ -250,7 +250,7 @@ class Subevent extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
     /**
      * @param int $pid
      */
-    public function setPid($pid)
+    public function setPid($pid): void
     {
         $this->pid = $pid;
     }

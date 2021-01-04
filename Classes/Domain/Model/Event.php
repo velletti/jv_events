@@ -2109,7 +2109,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @return int
      */
-    public function getPid()
+    public function getPid(): ?int
     {
         return $this->pid;
     }
@@ -2117,7 +2117,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @param int $pid
      */
-    public function setPid($pid)
+    public function setPid(int $pid): void
     {
         $this->pid = $pid;
     }
@@ -2126,7 +2126,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @return string
      */
-    public function getUrl()
+    public function getUrl(): string
     {
         return $this->url;
     }
@@ -2134,7 +2134,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @param string $url
      */
-    public function setUrl($url)
+    public function setUrl(string $url)
     {
         $this->url = $url;
     }
