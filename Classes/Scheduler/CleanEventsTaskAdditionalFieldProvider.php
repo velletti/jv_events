@@ -14,7 +14,11 @@ namespace JVE\JvEvents\Scheduler;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider;
+use TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
@@ -22,7 +26,7 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
  * A task that should be run regularly that deletes
  * datasets flagged as "deleted" from the DB.
  */
-class CleanEventsTaskAdditionalFieldProvider extends  \TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface
+class CleanEventsTaskAdditionalFieldProvider extends  AbstractAdditionalFieldProvider implements AdditionalFieldProviderInterface
 {
 
 
@@ -34,7 +38,7 @@ class CleanEventsTaskAdditionalFieldProvider extends  \TYPO3\CMS\Scheduler\Abstr
      * @param SchedulerModuleController $schedulerModule Reference to the scheduler backend module
      * @return array A two dimensional array, array('Identifier' => array('fieldId' => array('code' => '', 'label' => '', 'cshKey' => '', 'cshLabel' => ''))
      */
-    public function getAdditionalFields(array &$taskInfo, $task, SchedulerModuleController $schedulerModule)
+    public function getAdditionalFields(array &$taskInfo, $task, SchedulerModuleController $schedulerModule): array
     {
 
         if ($schedulerModule->getCurrentAction()  === 'edit') {
@@ -59,7 +63,17 @@ class CleanEventsTaskAdditionalFieldProvider extends  \TYPO3\CMS\Scheduler\Abstr
         return $additionalFields;
     }
 
-    public function generateFormField($additionalFields , $name, $type ,$taskInfo, $cshKey = '' , $class='form-control' ) {
+    /**
+     * @param array $additionalFields
+     * @param string $name
+     * @param string $type
+     * @param array $taskInfo
+     * @param string $cshKey
+     * @param string $class
+     * @return array
+     */
+    public function generateFormField(array $additionalFields , string $name, string $type , array $taskInfo, $cshKey = '' , $class='form-control'): array
+    {
         $formField = array() ;
         switch ($type) {
             case 'bool':
@@ -91,33 +105,31 @@ class CleanEventsTaskAdditionalFieldProvider extends  \TYPO3\CMS\Scheduler\Abstr
      */
     public function validateAdditionalFields(array &$submittedData, SchedulerModuleController $schedulerModule)
     {
-        $validStoragePid = $this->validateAdditionalFieldStoragePid($submittedData['IndexerStoragePid'], $schedulerModule);
-        return $validStoragePid ;
+        return $this->validateAdditionalFieldStoragePid($submittedData['IndexerStoragePid']);
     }
 
 
     /**
      * Validates the input of period
      *
-     * @param int $period The given period as integer
-     * @param SchedulerModuleController $schedulerModule Reference to the scheduler backend module
+     * @param int $storagePid The given $storagePid as integer
      * @return bool TRUE if validation was ok, FALSE otherwise
      */
-    protected function validateAdditionalFieldStoragePid($storagePid, SchedulerModuleController $schedulerModule)
+    protected function validateAdditionalFieldStoragePid($storagePid): bool
     {
-        if (empty($period) ||   filter_var($period, FILTER_VALIDATE_INT) !== false  ) {
-            $validPeriod = true;
+        if (empty($storagePid) ||   filter_var($storagePid, FILTER_VALIDATE_INT) !== false  ) {
+            $validStoragePid = true;
         } else {
             $this->addMessage(
                 //$this->getLanguageService()->sL('LLL:EXT:allplan_ke_search_extended/Resources/Private/Language/locallang_tasks.xlf:indexerTaskErrorStoragePid', true),
-                'Error Checking period' ,
+                'Error Checking storagePid' ,
                 FlashMessage::ERROR
 
             );
-            $validPeriod = false;
+            $validStoragePid = false;
         }
 
-        return $validPeriod;
+        return $validStoragePid;
     }
 
     /**
@@ -148,9 +160,26 @@ class CleanEventsTaskAdditionalFieldProvider extends  \TYPO3\CMS\Scheduler\Abstr
     }
 
 
+    /**
+     * @return array|LanguageService
+     */
     protected function getLanguageService()
     {
-        return $GLOBALS['LANG'];
+        if( key_exists("LANG" , $GLOBALS ) && is_array($GLOBALS['LANG'])) {
+            return $GLOBALS['LANG'];
+        }
+        /** @var LanguageService $lang */
+        $lang = GeneralUtility::makeInstance(LanguageService::class) ;
+        if (TYPO3_MODE === 'BE') {
+            $lng = $GLOBALS['BE_USER']->uc['lang'] ;
+        } else {
+            $lng = $GLOBALS['TSFE']->config['config']['language'] ;
+        }
+        if ( $lng == '' ) { $lng = "en" ;}
+        $lang->init($lng) ;
+        $GLOBALS['LANG'] = $lang ;
+        return $lang ;
+
     }
 
 

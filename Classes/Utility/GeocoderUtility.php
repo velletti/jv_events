@@ -27,12 +27,12 @@ class GeocoderUtility {
     /**
      * Returns an instance of LanguageService
      *
-     * @return LanguageService
+     * @return \TYPO3\CMS\Core\Localization\LanguageService
      */
     protected function getLanguageService()
     {
-        /** @var LanguageService $lang */
-        $lang = GeneralUtility::makeInstance(\TYPO3\CMS\Lang\LanguageService::class) ;
+        /** @var \TYPO3\CMS\Core\Localization\LanguageService $lang */
+        $lang = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\LanguageService::class) ;
         if (TYPO3_MODE === 'BE') {
             $lng = $GLOBALS['BE_USER']->uc['lang'] ;
         } else {

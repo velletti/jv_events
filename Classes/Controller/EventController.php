@@ -5,7 +5,7 @@ namespace JVE\JvEvents\Controller;
  *
  *  Copyright notice
  *
- *  (c) 2016 Jörg velletti <jVelletti@allplan.com>, Allplan GmbH
+ *  (c) 2016 Jörg Velletti <jVelletti@allplan.com>, Allplan GmbH
  *
  *  All rights reserved
  *
@@ -26,10 +26,16 @@ namespace JVE\JvEvents\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Doctrine\DBAL\Connection;
+use JVE\JvEvents\Domain\Model\Event;
+use JVE\JvEvents\Domain\Model\Location;
+use JVE\JvEvents\Domain\Model\Organizer;
 use JVE\JvEvents\Utility\SlugUtility;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Annotation as Extbase;
+use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
 /**
  * EventController
@@ -65,8 +71,7 @@ class EventController extends BaseController
             $this->forward("list") ;
         }
         if ( $this->request->hasArgument('event')) {
-            if ( array_key_exists("event" , $this->arguments)) {
-                /** @var \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration $propertyMappingConfiguration */
+            if ( property_exists( $this->arguments , "event")) {
                 $propertyMappingConfiguration = $this->arguments['event']->getPropertyMappingConfiguration();
                 $propertyMappingConfiguration->allowProperties('changeFutureEvents') ;
             }
@@ -132,7 +137,7 @@ class EventController extends BaseController
 
 
         $this->debugArray[] = "Load Events:" . intval(1000 * ($this->microtime_float()  - $this->timeStart ) ) . " Line: " . __LINE__ ;
-        /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $events */
+        /** @var QueryResultInterface $events */
         $events = $this->eventRepository->findByFilter(false, false,  $this->settings );
         $this->view->assign('events', $events);
         // read settings from Flexform .. if not set, take it from typoscript setup
@@ -140,15 +145,12 @@ class EventController extends BaseController
             $this->settings['detailPid'] = intval( $this->settings['link']['detailPidDefault']) ;
         }
         $this->debugArray[] = "Before generate Filter :" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " Line: " . __LINE__ ;
-        $eventsFilter = array() ;
-       // if (  $this->settings['ShowFilter'] > 0 ) {
-            if (  $this->settings['ShowFilter'] == 3) {
-                $eventsFilter = $this->generateFilterAll( $this->settings['filter']) ;
-            } else {
-                $eventsFilter = $this->generateFilter( $events ,  $this->settings['filter']) ;
-            }
-            $this->debugArray[] = "After generate Filter :" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " Line: " . __LINE__ ;
-        //}
+        if (  $this->settings['ShowFilter'] == 3) {
+            $eventsFilter = $this->generateFilterAll( $this->settings['filter']) ;
+        } else {
+            $eventsFilter = $this->generateFilter( $events ,  $this->settings['filter']) ;
+        }
+        $this->debugArray[] = "After generate Filter :" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " Line: " . __LINE__ ;
 
         $dtz = $this->eventRepository->getDateTimeZone() ;
         $this->settings['navigationDates'] = $this->eventRepository->getDateArray($this->settings , $dtz ) ;
@@ -165,17 +167,17 @@ class EventController extends BaseController
     /**
      * action show
      *
-     * @param \JVE\JvEvents\Domain\Model\Event|null $event
+     * @param Event|null $event
      * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("event")
      * @return void
      */
-    public function showAction(\JVE\JvEvents\Domain\Model\Event $event=null)
+    public function showAction(Event $event=null)
     {
         if( $event ) {
             $checkString = $_SERVER["SERVER_NAME"] . "-" . $event->getUid() . "-" . $event->getCrdate();
             $checkHash = hash("sha256", $checkString);
 
-            $querysettings = new \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
+            $querysettings = new Typo3QuerySettings;
             $querysettings->setStoragePageIds(array($event->getPid()));
 
             $this->subeventRepository->setDefaultQuerySettings($querysettings);
@@ -195,12 +197,12 @@ class EventController extends BaseController
             if ($GLOBALS['TSFE']->fe_user->user) {
                 $userUid = $GLOBALS['TSFE']->fe_user->user['uid'];
                 if (is_object($event->getOrganizer())) {
-                    $userAccessArr = \TYPO3\CMS\CORE\Utility\GeneralUtility::trimExplode(",", $event->getOrganizer()->getAccessUsers());
+                    $userAccessArr = GeneralUtility::trimExplode(",", $event->getOrganizer()->getAccessUsers());
                     if (in_array($userUid, $userAccessArr)) {
                         $this->settings['fe_user']['organizer']['showTools'] = TRUE;
                     } else {
-                        $usersGroups = \TYPO3\CMS\CORE\Utility\GeneralUtility::trimExplode(",", $GLOBALS['TSFE']->fe_user->user['usergroup']);
-                        $OrganizerAccessToolsGroups = \TYPO3\CMS\CORE\Utility\GeneralUtility::trimExplode(",", $event->getOrganizer()->getAccessGroups());
+                        $usersGroups = GeneralUtility::trimExplode(",", $GLOBALS['TSFE']->fe_user->user['usergroup']);
+                        $OrganizerAccessToolsGroups = GeneralUtility::trimExplode(",", $event->getOrganizer()->getAccessGroups());
                         foreach ($OrganizerAccessToolsGroups as $tempGroup) {
                             if (in_array($tempGroup, $usersGroups)) {
                                 $this->settings['fe_user']['organizer']['showTools'] = TRUE;
@@ -221,21 +223,21 @@ class EventController extends BaseController
     
     /**
      * action new
-     * @param \JVE\JvEvents\Domain\Model\Event|null $event
+     * @param Event|null $event
      * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("event")
      *
      * @return void
      */
-    public function newAction(\JVE\JvEvents\Domain\Model\Event $event=null)
+    public function newAction(Event $event=null)
     {
-        /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $categories */
+        /** @var QueryResultInterface $categories */
         $categories = $this->categoryRepository->findAllonAllPages( '0' );
 
-        /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $tags */
+        /** @var QueryResultInterface $tags */
         $tags = $this->tagRepository->findAllonAllPages('0');
 
         if ( $event==null) {
-            /** @var \JVE\JvEvents\Domain\Model\Event $event */
+            /** @var Event $event */
             $event = $this->objectManager->get("JVE\\JvEvents\\Domain\\Model\\Event");
         }
         if ( $event->getUid() < 1 ) {
@@ -243,21 +245,21 @@ class EventController extends BaseController
             $today->setTime(0,0,0 , 0) ;
             $event->setStartDate( $today ) ;
 
-            /** @var \JVE\JvEvents\Domain\Model\Organizer $organizer */
+            /** @var Organizer $organizer */
             $organizer = $this->getOrganizer() ;
-            if ($organizer instanceof \JVE\JvEvents\Domain\Model\Organizer) {
+            if ($organizer instanceof Organizer) {
                 $event->setOrganizer($organizer);
                 $this->view->assign('organizer', $organizer );
             } else {
                 $pid = $this->settings['pageIds']['loginForm'] ;
-                $this->addFlashMessage('You are not logged in as Organizer.'  , '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+                $this->addFlashMessage('You are not logged in as Organizer.'  , '', AbstractMessage::WARNING);
                 $this->redirect(null , null , NULL , NULL , $pid );
             }
 
             if( $this->request->hasArgument('location')) {
-                /** @var \JVE\JvEvents\Domain\Model\Location $location */
+                /** @var Location $location */
                 $location= $this->locationRepository->findByUid( intval( $this->request->getArgument('location') )) ;
-                if($location instanceof  \JVE\JvEvents\Domain\Model\Location ) {
+                if($location instanceof  Location ) {
                     $event->setLocation($location ) ;
                 }
                 $this->view->assign('location', $location );
@@ -285,13 +287,13 @@ class EventController extends BaseController
     /**
      * action create
      *
-     * @param \JVE\JvEvents\Domain\Model\Event $event
+     * @param Event $event
      * @Extbase\Validate(param="event" , validator="JVE\JvEvents\Validation\Validator\EventValidator")
      * @return void
      */
-    public function createAction(\JVE\JvEvents\Domain\Model\Event $event)
+    public function createAction(Event $event)
     {
-
+        $pid = 0 ;
         if( $this->request->hasArgument('event')) {
             $event = $this->cleanEventArguments( $event) ;
         }
@@ -307,17 +309,17 @@ class EventController extends BaseController
                 $this->persistenceManager->persistAll() ;
 
                 // got from EM Settings
-                $clearCachePids = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode("," , $this->settings['EmConfiguration']['clearCachePids']) ;
+                $clearCachePids = GeneralUtility::trimExplode("," , $this->settings['EmConfiguration']['clearCachePids']) ;
                 if( is_array($clearCachePids) && count( $clearCachePids) > 0 ) {
                     $this->cacheService->clearPageCache( $clearCachePids );
-                    $this->addFlashMessage('The object was created and Cache of following pages are cleared: ' . implode("," , $clearCachePids), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+                    $this->addFlashMessage('The object was created and Cache of following pages are cleared: ' . implode("," , $clearCachePids), '', AbstractMessage::OK);
                 } else {
-                    $this->addFlashMessage('The object was created.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+                    $this->addFlashMessage('The object was created.', '', AbstractMessage::OK);
                 }
                 $pid = $this->settings['pageIds']['showEventDetail'] ;
                 $action = "show" ;
             } catch ( \Exception $e ) {
-                $this->addFlashMessage($e->getMessage() , 'Error', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+                $this->addFlashMessage($e->getMessage() , 'Error', AbstractMessage::WARNING);
 
             }
 
@@ -325,7 +327,7 @@ class EventController extends BaseController
             $action = false ;
 
             $pid = $this->settings['pageIds']['loginForm'] ;
-            $this->addFlashMessage('The object was NOT created. You are not logged in as Organizer.' . $event->getUid() , '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+            $this->addFlashMessage('The object was NOT created. You are not logged in as Organizer.' . $event->getUid() , '', AbstractMessage::WARNING);
             $this->redirect(null , null , NULL , array( 'event' => $event ) , $pid );
         }
         // if PID from TS settings is set: if User is not logged in-> Page with loginForm , on success -> showEventDetail  Page
@@ -340,8 +342,8 @@ class EventController extends BaseController
     /**
      * action edit
      *
-     * @param \JVE\JvEvents\Domain\Model\Event $event
-     * @param integer $copy2Date if set, Copy the event to the given DateDiff in DAYS
+     * @param Event $event
+     * @param integer $copy2Day if set, Copy the event to the given DateDiff in DAYS
      * @param integer $amount if set, the amount of Copys that shall be created
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
@@ -349,7 +351,7 @@ class EventController extends BaseController
      * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("event")
      * @return void
      */
-    public function editAction(\JVE\JvEvents\Domain\Model\Event $event , $copy2Day=0 , $amount=0 )
+    public function editAction(Event $event , $copy2Day=0 , $amount=0 )
     {
 
         if($this->isUserOrganizer() ) {
@@ -367,10 +369,10 @@ class EventController extends BaseController
                         $this->copyEvent($event , intval( $copy2Day ) , $amount ) ;
                    }
                 }
-                /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $categories */
+                /** @var QueryResultInterface $categories */
                 $categories = $this->categoryRepository->findAllonAllPages( '0' );
 
-                /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $tags */
+                /** @var QueryResultInterface $tags */
                 $tags = $this->tagRepository->findAllonAllPages('0');
 
                 $this->view->assign('user', intval($GLOBALS['TSFE']->fe_user->user['uid'] ) ) ;
@@ -401,14 +403,14 @@ class EventController extends BaseController
     }
 
     /**
-     * @param \JVE\JvEvents\Domain\Model\Event $event
+     * @param Event $event
      * @param int $copy2Day
      * @param int $amount
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      */
-    private function copyEvent(\JVE\JvEvents\Domain\Model\Event $event, $copy2Day= 0, $amount= 0 ){
+    private function copyEvent(Event $event, $copy2Day= 0, $amount= 0 ){
         // Does the Copy Master Event already have a masterId? if not, use its uid as new  Master
         // with this master ID we are able to update Changes from one event to all events with the same master Id
         // if we just do ONE Copy, do not set master ID
@@ -419,7 +421,6 @@ class EventController extends BaseController
         }
 
 
-        /** @var \DateTime $newDate */
         $newDate = new \DateTime(  ) ;
         $newDate->setTimestamp($event->getStartDate()->getTimestamp()) ;
         $newDate->setTime(0,0,0);
@@ -428,7 +429,7 @@ class EventController extends BaseController
         $diff= date_interval_create_from_date_string( $addDays  . " days") ;
 
         for ( $i=1 ;$i<= $amount ; $i++) {
-            /** @var \JVE\JvEvents\Domain\Model\Event $newEvent */
+            /** @var Event $newEvent */
 
             $newEvent = $this->objectManager->get( "JVE\\JvEvents\\Domain\\Model\\Event")  ;
 
@@ -447,7 +448,7 @@ class EventController extends BaseController
             $newEvent->setViewed(0) ;
 
             // then have a look at Ext Conf
-            $extConf = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class) ->get('jv_events');
+            $extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class) ->get('jv_events');
 
             $fields =  $extConf['resetFieldListAfterCopy']   ;
 
@@ -459,11 +460,11 @@ class EventController extends BaseController
                     if( is_array($fieldsArraySub)) {
                         $func = $fieldsArraySub[0] ;
 
-                        if(method_exists($this->event , $func )) {
+                        if(method_exists($newEvent , $func )) {
                             if(strlen($fieldsArraySub[1]) == 0 ) {
-                                $this->event->$func( "" ) ;
+                                $newEvent->$func( "" ) ;
                             } else {
-                                $this->event->$func( $fieldsArraySub[1] ) ;
+                                $newEvent->$func( $fieldsArraySub[1] ) ;
                             }
 
 
@@ -519,15 +520,15 @@ class EventController extends BaseController
             $this->eventRepository->add($newEvent) ;
             try {
                 $this->persistenceManager->persistAll() ;
-                $this->addFlashMessage('The Event was copied to: ' . $newEvent->getStartDate( )->format("d.m.Y"), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+                $this->addFlashMessage('The Event was copied to: ' . $newEvent->getStartDate( )->format("d.m.Y"), '', AbstractMessage::OK);
 
             } catch ( \Exception $e ) {
-                $this->addFlashMessage($e->getMessage() , 'Error in action ' . ' - copyEvent -', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+                $this->addFlashMessage($e->getMessage() , 'Error in action ' . ' - copyEvent -', AbstractMessage::WARNING);
             }
             $eventUid = $newEvent->getUid() ;
 
-            /** @var \TYPO3\CMS\Core\Database\ConnectionPool $connectionPool */
-            $connectionPool = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class);
+            /** @var ConnectionPool $connectionPool */
+            $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
 
             // --------- now fix Slug Name
             $row['name'] =  $newEvent->getName() ;
@@ -568,7 +569,7 @@ class EventController extends BaseController
                 ->execute();
 
 
-            $mediaRow = $affectedRows->fetch() ;
+            $mediaRow = $affectedRows->fetchAssociative() ;
             if ( is_array( $mediaRow)) {
                 $affectedRows = $queryBuilder
                     ->insert('sys_file_reference')
@@ -589,11 +590,11 @@ class EventController extends BaseController
             unset( $newEvent ) ;
         }
         // got from EM Settings
-        $clearCachePids = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode("," , $this->settings['EmConfiguration']['clearCachePids']) ;
+        $clearCachePids = GeneralUtility::trimExplode("," , $this->settings['EmConfiguration']['clearCachePids']) ;
         if( is_array($clearCachePids) && count( $clearCachePids) > 0 ) {
             $clearCachePids[] = $GLOBALS['TSFE']->id ;
             $this->cacheService->clearPageCache( $clearCachePids );
-            $this->addFlashMessage('The object was updated and Cache of following pages are cleared: ' . implode("," , $clearCachePids), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+            $this->addFlashMessage('The object was updated and Cache of following pages are cleared: ' . implode("," , $clearCachePids), '', AbstractMessage::OK);
         }
 
        $this->redirect("show" , null , null , array( "event" => $eventUid  )) ;
@@ -602,14 +603,14 @@ class EventController extends BaseController
     /**
      * action cancel - will toogle the canceled status
      *
-     * @param \JVE\JvEvents\Domain\Model\Event $event
+     * @param Event $event
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("event")
      * @return void
      */
-    public function cancelAction(\JVE\JvEvents\Domain\Model\Event $event)
+    public function cancelAction(Event $event)
     {
         if($this->isUserOrganizer() ) {
             if( $this->hasUserAccess( $event->getOrganizer() )) {
@@ -623,17 +624,17 @@ class EventController extends BaseController
                     $this->eventRepository->update($event) ;
 
                     // got from EM Settings
-                    $clearCachePids = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode("," , $this->settings['EmConfiguration']['clearCachePids']) ;
+                    $clearCachePids = GeneralUtility::trimExplode("," , $this->settings['EmConfiguration']['clearCachePids']) ;
                     if( is_array($clearCachePids) && count( $clearCachePids) > 0 ) {
                         $clearCachePids[] = $GLOBALS['TSFE']->id ;
                         $this->cacheService->clearPageCache( $clearCachePids );
-                        $this->addFlashMessage('The object was updated and Cache of following pages are cleared: ' . implode("," , $clearCachePids), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+                        $this->addFlashMessage('The object was updated and Cache of following pages are cleared: ' . implode("," , $clearCachePids), '', AbstractMessage::OK);
                     } else {
-                        $this->addFlashMessage('The object was updated.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+                        $this->addFlashMessage('The object was updated.', '', AbstractMessage::OK);
                     }
 
                 } catch ( \Exception $e ) {
-                    $this->addFlashMessage($e->getMessage() , 'Error', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+                    $this->addFlashMessage($e->getMessage() , 'Error', AbstractMessage::WARNING);
 
                 }
                 $this->persistenceManager->persistAll() ;
@@ -647,11 +648,11 @@ class EventController extends BaseController
     /**
      * action update
      *
-     * @param \JVE\JvEvents\Domain\Model\Event $event
+     * @param Event $event
      * @Extbase\Validate(param="event" , validator="JVE\JvEvents\Validation\Validator\EventValidator")
      * @return void
      */
-    public function updateAction(\JVE\JvEvents\Domain\Model\Event $event)
+    public function updateAction(Event $event)
     {
 
         if( $this->request->hasArgument('event')) {
@@ -662,19 +663,19 @@ class EventController extends BaseController
             $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
 
             try {
-                /** @var \TYPO3\CMS\Core\Database\ConnectionPool $connection */
+                /** @var ConnectionPool $connection */
                 /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
-                $connection = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class);
+                $connection = GeneralUtility::makeInstance(ConnectionPool::class);
                 $queryBuilder = $connection->getQueryBuilderForTable('tx_jvevents_domain_model_event');
                 $oldEventRows = $queryBuilder->select('*' )
                     ->from('tx_jvevents_domain_model_event')
                     ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($event->getUid(), \PDO::PARAM_INT)) )
                     ->execute()
-                    ->fetchAll();
+                    ->fetchAllAssociative();
 
                 if ( count($oldEventRows ) > 0 ) {
                     $oldEventRow = $oldEventRows[0] ;
-                } ;
+                }
 
                 $this->eventRepository->update($event) ;
                 if( $event->getChangeFutureEvents() && $event->getMasterId() > 0 ) {
@@ -684,7 +685,7 @@ class EventController extends BaseController
                     $filter['masterId'] = $event->getMasterId() ;
 
                     $otherEvents = $this->eventRepository->findByFilter($filter ) ;
-                    /** @var \JVE\JvEvents\Domain\Model\Event $otherEvent */
+                    /** @var Event $otherEvent */
                     if ( count($otherEvents) > 0 ) {
                         $otherDaysText = " " ;
                         foreach ( $otherEvents as $otherEvent ) {
@@ -731,7 +732,7 @@ class EventController extends BaseController
                             $this->eventRepository->update($otherEvent) ;
 
                         }
-                        $this->addFlashMessage('The following Events : ' . $otherDaysText . ' were also updated.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+                        $this->addFlashMessage('The following Events : ' . $otherDaysText . ' were also updated.', '', AbstractMessage::OK);
 
                     }
                 }
@@ -739,21 +740,21 @@ class EventController extends BaseController
                 $this->updateLatestEvent($event , $event->getStartDate()) ;
 
                 // got from EM Settings
-                $clearCachePids = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode("," , $this->settings['EmConfiguration']['clearCachePids']) ;
+                $clearCachePids = GeneralUtility::trimExplode("," , $this->settings['EmConfiguration']['clearCachePids']) ;
                 if( is_array($clearCachePids) && count( $clearCachePids) > 0 ) {
                     $this->cacheService->clearPageCache( $clearCachePids );
-                    $this->addFlashMessage('The object was updated and Cache of following pages are cleared: ' . implode("," , $clearCachePids), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+                    $this->addFlashMessage('The object was updated and Cache of following pages are cleared: ' . implode("," , $clearCachePids), '', AbstractMessage::OK);
                 } else {
-                    $this->addFlashMessage('The object was updated.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+                    $this->addFlashMessage('The object was updated.', '', AbstractMessage::OK);
                 }
 
             } catch ( \Exception $e ) {
-                $this->addFlashMessage($e->getMessage() , 'Error', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+                $this->addFlashMessage($e->getMessage() , 'Error', AbstractMessage::WARNING);
 
             }
 
         } else {
-            $this->addFlashMessage('You do not have access rights to change this data.' . $event->getUid() , '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+            $this->addFlashMessage('You do not have access rights to change this data.' . $event->getUid() , '', AbstractMessage::WARNING);
         }
         $this->persistenceManager->persistAll() ;
 
@@ -764,11 +765,11 @@ class EventController extends BaseController
     /**
      * action delete
      *
-     * @param \JVE\JvEvents\Domain\Model\Event $event
+     * @param Event $event
      * @param integer $deleteFutureEvents
      * @return void
      */
-    public function deleteAction(\JVE\JvEvents\Domain\Model\Event $event , $deleteFutureEvents = 0)
+    public function deleteAction(Event $event , $deleteFutureEvents = 0)
     {
 
         if($this->request->hasArgument('deleteFutureEvents') ) {
@@ -784,7 +785,7 @@ class EventController extends BaseController
                 $this->eventRepository->remove($event) ;
 
                 if( $masterId && $deleteFutureEvents) {
-                    $querysettings = new \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings ;
+                    $querysettings = new Typo3QuerySettings ;
                     $querysettings->setStoragePageIds(array( $event->getPid() )) ;
 
                     $this->eventRepository->setDefaultQuerySettings( $querysettings );
@@ -795,7 +796,7 @@ class EventController extends BaseController
                     $filter['masterId']  = $event->getMasterId() ;
 
                     $otherEvents = $this->eventRepository->findByFilter($filter ) ;
-                    /** @var \JVE\JvEvents\Domain\Model\Event $otherEvent */
+                    /** @var Event $otherEvent */
                     if ( count($otherEvents) > 0 ) {
                         $otherDaysText = count($otherEvents) . " Copies: "  ;
                         foreach ( $otherEvents as $otherEvent ) {
@@ -809,24 +810,24 @@ class EventController extends BaseController
                 }
 
                 // got from EM Settings
-                $clearCachePids = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode("," , $this->settings['EmConfiguration']['clearCachePids']) ;
+                $clearCachePids = GeneralUtility::trimExplode("," , $this->settings['EmConfiguration']['clearCachePids']) ;
                 if( is_array($clearCachePids) && count( $clearCachePids) > 0 ) {
                     $this->cacheService->clearPageCache( $clearCachePids );
-                    $this->addFlashMessage('The object was successfully deleted and Cache of following pages are cleared: ' . implode("," , $clearCachePids), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+                    $this->addFlashMessage('The object was successfully deleted and Cache of following pages are cleared: ' . implode("," , $clearCachePids), '', AbstractMessage::OK);
                 } else {
-                    $this->addFlashMessage('The Event was deleted.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+                    $this->addFlashMessage('The Event was deleted.', '', AbstractMessage::OK);
                 }
                 if( $otherDaysText ) {
-                    $this->addFlashMessage($otherDaysText, '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+                    $this->addFlashMessage($otherDaysText, '', AbstractMessage::OK);
                 }
 
             } catch ( \Exception $e ) {
-                $this->addFlashMessage($e->getMessage() , 'Error', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+                $this->addFlashMessage($e->getMessage() , 'Error', AbstractMessage::WARNING);
 
             }
 
         } else {
-            $this->addFlashMessage('You do not have access rights to delete this event.' . $event->getUid() , '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+            $this->addFlashMessage('You do not have access rights to delete this event.' . $event->getUid() , '', AbstractMessage::WARNING);
         }
         $this->persistenceManager->persistAll() ;
 
@@ -855,8 +856,8 @@ class EventController extends BaseController
 	 * @param string $action
 	 * @return string
 	 */
-	public function generateToken($action = "action")
-	{
+	public function generateToken($action = "action"): string
+    {
 		/** @var \TYPO3\CMS\Core\FormProtection\FrontendFormProtection $formClass */
 		$formClass =  $this->objectManager->get( "TYPO3\\CMS\\Core\\FormProtection\\FrontendFormProtection") ;
 
@@ -867,11 +868,11 @@ class EventController extends BaseController
 	}
 
     /**
-     * @param \JVE\JvEvents\Domain\Model\Event $event
+     * @param Event $event
      * @return mixed
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      */
-	public function cleanEventArguments(\JVE\JvEvents\Domain\Model\Event  $event)
+	public function cleanEventArguments(Event  $event)
     {
         // Type validation should be done in validator class so we can ignore issue with wrong format
         $eventArray = $this->request->getArgument('event');
@@ -892,7 +893,7 @@ class EventController extends BaseController
 
 
         // Update the Tags
-        $eventTagUids = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode("," , $eventArray['tagsFE'] , true ) ;
+        $eventTagUids = GeneralUtility::trimExplode("," , $eventArray['tagsFE'] , true ) ;
         if( is_array($eventTagUids) && count($eventTagUids) > 0  ) {
             $existingTags = $event->getTags() ;
             $existingTagsArray = array() ;
@@ -912,14 +913,12 @@ class EventController extends BaseController
                     }
                 }
             }
-            if( is_array($eventTagUids) && count($eventTagUids) > 0  ) {
-                foreach ($eventTagUids as $eventTagUid) {
-                    if( intval( $eventTagUid ) > 0 && !in_array( $eventTagUid , $existingTagsArray , false )) {
-                        /** @var  \JVE\JvEvents\Domain\Model\Tag $eventTag */
-                        $eventTag = $this->tagRepository->findByUid($eventTagUid) ;
-                        if($eventTag) {
-                            $event->addTag($eventTag) ;
-                        }
+            foreach ($eventTagUids as $eventTagUid) {
+                if( intval( $eventTagUid ) > 0 && !in_array( $eventTagUid , $existingTagsArray , false )) {
+                    /** @var  \JVE\JvEvents\Domain\Model\Tag $eventTag */
+                    $eventTag = $this->tagRepository->findByUid($eventTagUid) ;
+                    if($eventTag) {
+                        $event->addTag($eventTag) ;
                     }
                 }
             }
@@ -1006,12 +1005,12 @@ class EventController extends BaseController
     }
 
     /**
-     * @param \JVE\JvEvents\Domain\Model\Event $event   The Event nneded to get Location and Organizer
+     * @param Event $event   The Event nneded to get Location and Organizer
      * @param \DateTime|null $date  Will used to set The Latest Events Date
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
      */
-    public function updateLatestEvent( \JVE\JvEvents\Domain\Model\Event $event , \DateTime $date = NULL ) {
+    public function updateLatestEvent( Event $event , \DateTime $date = NULL ) {
         if( $date == NULL ) {
             $date = new \DateTime('now' ) ;
             // Idea : : get latest Date from any other event of this organizer ?
