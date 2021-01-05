@@ -288,7 +288,7 @@ class EventController extends BaseController
      * action create
      *
      * @param Event $event
-     * @Extbase\Validate(param="event" , validator="JVE\JvEvents\Validation\Validator\EventValidator")
+     * @TYPO3\CMS\Extbase\Annotation\Validate(param="event" , validator="JVE\JvEvents\Validation\Validator\EventValidator")
      * @return void
      */
     public function createAction(Event $event)
@@ -649,7 +649,7 @@ class EventController extends BaseController
      * action update
      *
      * @param Event $event
-     * @Extbase\Validate(param="event" , validator="JVE\JvEvents\Validation\Validator\EventValidator")
+     *  @TYPO3\CMS\Extbase\Annotation\Validate(param="event" , validator="JVE\JvEvents\Validation\Validator\EventValidator")
      * @return void
      */
     public function updateAction(Event $event)

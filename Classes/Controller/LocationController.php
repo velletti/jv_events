@@ -120,7 +120,8 @@ class LocationController extends BaseController
      * action create
      *
      * @param \JVE\JvEvents\Domain\Model\Location $location
-     * @Extbase\Validate(param="location" , validator="JVE\JvEvents\Validation\Validator\LocationValidator")
+     *
+     * @TYPO3\CMS\Extbase\Annotation\Validate(param="location" , validator="JVE\JvEvents\Validation\Validator\LocationValidator")
      * @return void
      */
 
@@ -231,7 +232,7 @@ class LocationController extends BaseController
      * action update
      *
      * @param \JVE\JvEvents\Domain\Model\Location $location
-     * @Extbase\Validate(param="location" , validator="JVE\JvEvents\Validation\Validator\LocationValidator")
+     * @TYPO3\CMS\Extbase\Annotation\Validate(param="location" , validator="JVE\JvEvents\Validation\Validator\LocationValidator")
      * @return void
      */
     public function updateAction(\JVE\JvEvents\Domain\Model\Location $location)

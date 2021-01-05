@@ -408,7 +408,7 @@ class RegistrantController extends BaseController
      * @param Event $event
      * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("event")
      * @param Registrant $registrant
-     * @Extbase\Validate(param="registrant" , validator="JVE\JvEvents\Validation\Validator\RegistrantValidator")
+     * @TYPO3\CMS\Extbase\Annotation\Validate(param="registrant" , validator="JVE\JvEvents\Validation\Validator\RegistrantValidator")
 	 * @return void
      */
     public function createAction(Event $event, Registrant $registrant) {

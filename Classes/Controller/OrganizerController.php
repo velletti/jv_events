@@ -205,7 +205,7 @@ class OrganizerController extends BaseController
      * action create
      *
      * @param \JVE\JvEvents\Domain\Model\Organizer $organizer
-     * @Extbase\Validate(param="organizer" , validator="JVE\JvEvents\Validation\Validator\OrganizerValidator")
+     * @TYPO3\CMS\Extbase\Annotation\Validate(param="organizer" , validator="JVE\JvEvents\Validation\Validator\OrganizerValidator")
      * @return void
      */
     public function createAction(\JVE\JvEvents\Domain\Model\Organizer $organizer)
@@ -323,7 +323,7 @@ class OrganizerController extends BaseController
      * action update
      *
      * @param \JVE\JvEvents\Domain\Model\Organizer $organizer
-     * @Extbase\Validate(param="organizer" , validator="JVE\JvEvents\Validation\Validator\OrganizerValidator")
+     * @TYPO3\CMS\Extbase\Annotation\Validate(param="organizer" , validator="JVE\JvEvents\Validation\Validator\OrganizerValidator")
 
      * @return void
      */
