@@ -4,9 +4,10 @@ namespace JVE\JvEvents\Command;
 use JVE\JvEvents\Utility\SlugUtility;
 use PDO;
 use Symfony\Component\Console\Input\InputOption;
-use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 use Symfony\Component\Console\Command\Command;
@@ -56,8 +57,6 @@ class UpdateSlugCommand extends Command {
                 'f',
                 InputOption::VALUE_OPTIONAL,
                 'Name of the slug field in database Table. default is: slug' );
-        ;
-        // toDo: make this configurable somehow
         $this->allowedTables[] = "tx_jvevents_domain_model_event" ;
         $this->allowedTables[] = "tx_jvevents_domain_model_location" ;
         $this->allowedTables[] = "tx_jvevents_domain_model_organizer" ;
@@ -72,15 +71,22 @@ class UpdateSlugCommand extends Command {
      * execute() method, you set the code to execute by passing
      * a Closure to the setCode() method.
      *
+     * @param InputInterface $input
+     * @param OutputInterface $output
      * @return int 0 if everything went fine, or an exit code
-     *
-     * @throws LogicException When this abstract method is not implemented
      *
      * @see setCode()
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->extConf = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class) ->get('jv_events');
+        /** @var  ExtensionConfiguration $extConf */
+        $extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class) ;
+        try {
+            $this->extConf = $extConf->get('jv_events');
+        } catch (Exception $e) {
+            $this->extConf = [] ;
+        }
+
 
         $io = new SymfonyStyle($input, $output);
         $io->title($this->getDescription());
@@ -121,7 +127,7 @@ class UpdateSlugCommand extends Command {
      * @param $maxRows
      */
     public function updateCommand(SymfonyStyle $io , $table , $slugField , $maxRows  ){
-
+        $progress = false ;
         if( !$table ) { return ; }
 		$rows = $this->getQueryBuilder($table)->select("*")->from($table)->execute() ;
         $total = $rows->rowCount()  ;
@@ -135,7 +141,7 @@ class UpdateSlugCommand extends Command {
         }
         $i = 0 ;
         $debugOutput = "" ;
-        while ( $row = $rows->fetch()) {
+        while ( $row = $rows->fetchAssociative()) {
             $singleRow = $this->mapRow($table, $row , $slugField) ;
             $slug = SlugUtility::getSlug( $table, $slugField , $singleRow  )  ;
             if( $io->getVerbosity() > 16 ) {
@@ -165,17 +171,26 @@ class UpdateSlugCommand extends Command {
         }
 	}
 
-	/**
-	 * @return QueryBuilder
-	 */
-	private function getQueryBuilder($table){
+    /**
+     * @param string $table
+     * @return QueryBuilder
+     */
+	private function getQueryBuilder(string $table): QueryBuilder
+    {
         /** @var ConnectionPool $connectionPool */
         $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
         /** @var QueryBuilder $queryBuilder */
         return $connectionPool->getConnectionForTable($table)->createQueryBuilder();
 	}
 
-	private function mapRow($table , $row , $slugField ) {
+    /**
+     * @param $table
+     * @param $row
+     * @param $slugField
+     * @return array
+     */
+    private function mapRow($table , $row , $slugField ): array
+    {
 	    $return = array() ;
 
         $return['pid'] =   $row['pid'] ? $row['pid'] : 0  ;
@@ -215,9 +230,13 @@ class UpdateSlugCommand extends Command {
     }
 
     /**
-     * @return QueryBuilder
+     * @param $table
+     * @param $uid
+     * @param $slugField
+     * @param $slug
      */
-    private function setSlug($table , $uid , $slugField , $slug){
+    private function setSlug($table , $uid , $slugField , $slug)
+    {
         $qb = $this->getQueryBuilder($table) ;
         $qb->update($table)->set($slugField , $slug)
             ->where($qb->expr()->eq("uid" , $qb->createNamedParameter($uid , PDO::PARAM_INT)))
