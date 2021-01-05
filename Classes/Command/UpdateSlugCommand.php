@@ -64,6 +64,20 @@ class UpdateSlugCommand extends Command {
 
     }
 
+    /**
+     * Executes the current command.
+     *
+     * This method is not abstract because you can use this class
+     * as a concrete class. In this case, instead of defining the
+     * execute() method, you set the code to execute by passing
+     * a Closure to the setCode() method.
+     *
+     * @return int 0 if everything went fine, or an exit code
+     *
+     * @throws LogicException When this abstract method is not implemented
+     *
+     * @see setCode()
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->extConf = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class) ->get('jv_events');
@@ -91,18 +105,22 @@ class UpdateSlugCommand extends Command {
 
         if( in_array( $table , $this->allowedTables) ) {
             $this->updateCommand($io , $table, $field , $maxRows  ) ;
+            return 0 ;
         } else {
             $io->writeln('Entered Tablename . $table . " that has a field slug to be updated. Only tableNames that are configured are allowed');
             $io->writeln(var_export( $this->allowedTables , true )) ;
+            return 1 ;
         }
-            // ...
-
-
-
     }
 
 
-	public function updateCommand(SymfonyStyle $io , $table , $slugField , $maxRows  ){
+    /**
+     * @param SymfonyStyle $io
+     * @param $table
+     * @param $slugField
+     * @param $maxRows
+     */
+    public function updateCommand(SymfonyStyle $io , $table , $slugField , $maxRows  ){
 
         if( !$table ) { return ; }
 		$rows = $this->getQueryBuilder($table)->select("*")->from($table)->execute() ;
