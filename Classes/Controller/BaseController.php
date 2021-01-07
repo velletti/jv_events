@@ -774,6 +774,9 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         $message->send();
     }
 
+    /**
+     * @return bool
+     */
     public function isUserOrganizer() {
         $groups = GeneralUtility::trimExplode("," , $this->settings['feEdit']['organizerGroudIds'] , TRUE ) ;
         $feuserGroups = GeneralUtility::trimExplode("," ,  $GLOBALS['TSFE']->fe_user->user['usergroup']  , TRUE ) ;
@@ -785,7 +788,11 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         return false  ;
     }
 
-    public function hasUserGroup( $groupId) {
+    /**
+     * @param $groupId
+     * @return bool
+     */
+    public function hasUserGroup($groupId) {
         $feuserGroups = GeneralUtility::trimExplode("," ,  $GLOBALS['TSFE']->fe_user->user['usergroup']  , TRUE ) ;
         return in_array( $groupId  , $feuserGroups ) ;
     }

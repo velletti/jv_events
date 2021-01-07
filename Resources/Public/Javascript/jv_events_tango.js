@@ -51,7 +51,7 @@ function jv_events_init_AjaxMenu() {
             $.ajax({
 
                 url: '/index.php',
-                data: 'id=' + ajaxCurrentPageUid + '&L=0&tx_jvevents_ajax[event]=' + eventId + '&tx_jvevents_ajax[action]=eventUnlink&tx_jvevents_ajax[controller]=Ajax&',
+                data: 'id=' + ajaxCurrentPageUid + '&L=0&tx_jvevents_ajax[event]=' + eventId + '&tx_jvevents_ajax[action]=eventUnlink&tx_jvevents_ajax[controller]=Ajax',
 
                 before: function () {
                     spinner.removeClass('d-none');

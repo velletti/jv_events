@@ -223,7 +223,6 @@ class OrganizerController extends BaseController
 
             $organizer->setAccessUsers(intval($GLOBALS['TSFE']->fe_user->user['uid'] ));
             $organizer->setAccessGroups( $this->settings['feEdit']['adminOrganizerGroudIds'] );
-            // special needs for tango. maybe we make this configurabale via typoscript
 
             $this->organizerRepository->add($organizer);
             $this->persistenceManager->persistAll() ;
