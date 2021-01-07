@@ -27,9 +27,12 @@ namespace JVE\JvEvents\Controller;
  ***************************************************************/
 
 use JVE\JvEvents\Domain\Model\Location;
+use JVE\JvEvents\Utility\AjaxUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use JVE\JvEvents\Utility\ShowAsJsonArrayUtility;
+use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Frontend\Utility\EidUtility;
 
 /**/
 
@@ -50,34 +53,31 @@ class AjaxController extends BaseController
      */
     public $tsFEController ;
 
-    /** @var string  */
-    public $mode = '' ;
-
-    /** @var int  */
-    public $returnPid = 0 ;
-
-    /** @var int  */
-    public $event = 0 ;
-
-    /** @var int  */
-    public $location = 0 ;
-
-    /** @var int  */
-    public $organizer = 0 ;
-
     /** @var array  */
-    public $eventsFilter = NULL ;
+    public $arguments = '' ;
 
-    /** @var int  */
-    public $limit = NULL ;
-
-    /** @var boolean  */
-    public $rss = NULL ;
 
     /**
      * @var StandaloneView
      */
     public $standaloneView;
+
+    public function initializeAction() {
+        parent::initializeAction() ;
+    }
+
+    public function initializeRepositorys()
+    {
+        $this->tagRepository        = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\TagRepository');
+        $this->categoryRepository        = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\CategoryRepository');
+        $this->registrantRepository        = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\RegistrantRepository');
+        $this->locationRepository        = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\LocationRepository');
+        $this->organizerRepository        = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\OrganizerRepository');
+        $this->eventRepository        = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\EventRepository');
+        $this->subeventRepository        = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\SubeventRepository');
+        $this->staticCountryRepository        = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\StaticCountryRepository');
+
+    }
 
     public function dispatcher()
     {
@@ -85,8 +85,7 @@ class AjaxController extends BaseController
          * Gets the Ajax Call Parameters   | OLD school without middleWare ..
          */
         $_gp = GeneralUtility::_GPmerged('tx_jvevents_ajax');
-        $pid = intval(GeneralUtility::_GPmerged('uid'));
-        $type = intval(GeneralUtility::_GPmerged('type'));
+
 
         $ajax = array();
         $ajax['arguments'] = $_gp;
@@ -102,33 +101,6 @@ class AjaxController extends BaseController
             $ajax['action'] = "eventMenu";
         }
 
-        if( $this->request->hasArgument('mode')) {
-            $this->mode = $this->request->getArgument('mode') ;
-        }
-        if( $this->request->hasArgument('returnPid')) {
-            $this->returnPid = $this->request->getArgument('returnPid') ;
-        }
-        if( $this->request->hasArgument('event')) {
-            $this->event = intval($this->request->getArgument('event'));
-        }
-        if( $this->request->hasArgument('eventsFilter')) {
-            $this->eventsFilter = $this->request->getArgument('eventsFilter') ;
-        }
-        if( $this->request->hasArgument('limit')) {
-            $this->limit = $this->request->getArgument('limit') ;
-        }
-        if( $this->request->hasArgument('location')) {
-            $this->location = intval($this->request->getArgument('location'));
-        }
-        if( $this->request->hasArgument('organizer')) {
-            $this->organizer= intval($this->request->getArgument('organizer'));
-        }
-        if( $this->request->hasArgument('rss')) {
-            $this->rss = true ;
-        }
-
-
-
 
         /**
          * @var $objectManager \TYPO3\CMS\Extbase\Object\ObjectManager
@@ -141,6 +113,52 @@ class AjaxController extends BaseController
         $version = GeneralUtility::makeInstance('TYPO3\CMS\Core\Information\Typo3Version');
 
         if (\TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger($version->getBranch() ) < 10000000) {
+            $pid = intval(GeneralUtility::_GPmerged('uid') );
+            $type =  intval(GeneralUtility::_GPmerged('type'));
+
+            /**
+             * @var $TSFE \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+             */
+            $TSFE = GeneralUtility::makeInstance('TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController', $GLOBALS['TYPO3_CONF_VARS'],
+                $pid,  // pageUid Homepage
+                $type   // pageType
+            );
+            $GLOBALS['TSFE'] = $TSFE;
+
+
+// Important: no Cache for Ajax stuff
+            $GLOBALS['TSFE']->set_no_cache();
+
+            EidUtility::initLanguage();
+            EidUtility::initTCA();
+// Get FE User Information
+            $GLOBALS['TSFE']->initFEuser();
+            $GLOBALS['TSFE']->initUserGroups();
+            $GLOBALS['TSFE']->fe_user ;
+
+            $GLOBALS['TSFE']->checkAlternativeIdMethods();
+            $GLOBALS['TSFE']->determineId();
+            $GLOBALS['TSFE']->initTemplate();
+            $GLOBALS['TSFE']->getConfigArray();
+            \TYPO3\CMS\Core\Core\Bootstrap::getInstance();
+
+            $GLOBALS['TSFE']->cObj = GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
+            $GLOBALS['TSFE']->settingLanguage();
+            $GLOBALS['TSFE']->settingLocale();
+
+            // $GLOBALS['BE_USER'] =  $GLOBALS['TSFE']->initializeBackendUser() ;
+            /**
+             * Initialize Backend-User (if logged in)
+             */
+            // $GLOBALS['BE_USER'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Authentication\BackendUserAuthentication');
+            //
+
+
+            /**
+             * Initialize Database
+             */
+            $GLOBALS['TSFE']->connectToDB();
+
             /**
              * Initialize Extbase bootstap
              */
@@ -161,26 +179,28 @@ class AjaxController extends BaseController
         $request->setControllerActionName($ajax['action']);
         $request->setArguments($ajax['arguments']);
 
-
         $response = $objectManager->get('TYPO3\CMS\Extbase\Mvc\ResponseInterface');
         $dispatcher = $objectManager->get('TYPO3\CMS\Extbase\Mvc\Dispatcher');
+
+        if( key_exists('event' , $_gp)) {
+            $request->setArgument('event',  intval( $_gp['event'] )) ;
+        }
+
         $dispatcher->dispatch($request, $response);
-
         echo $response->getContent();
-
         die;
+
     }
 
 
-	public function initializeAction() {
-		parent::initializeAction() ;
-	}
+
+
     /**
      * action list
      *
      * @return array
      */
-    public function eventsListMenuSub()
+    public function eventsListMenuSub(array $arguments )
     {
 
        //  $GLOBALS['TSFE']->fe_user->user = [ 'uid' => 476 , "username" => "jvel@test.de" , "1,2,3,4,5,6,7"] ;
@@ -196,7 +216,7 @@ class AjaxController extends BaseController
             "events" => array()  ,
             "eventsFilter" => array()  ,
             "eventsByFilter" => array()  ,
-            "mode" => $this->mode  ,
+            "mode" => $arguments['mode'] ,
             "feuser" => array(
                 "uid" => $GLOBALS['TSFE']->fe_user->user['uid'] ,
                 "username" => $GLOBALS['TSFE']->fe_user->user['username'] ,
@@ -217,8 +237,8 @@ class AjaxController extends BaseController
         }
 
 
-        if( $this->returnPid > 0 ) {
-            $output['returnPid'] = $this->returnPid ;
+        if(  $arguments['returnPid']  > 0 ) {
+            $output['returnPid'] = $arguments['returnPid']  ;
         }
 
         $needToStore = FALSE ;
@@ -226,8 +246,8 @@ class AjaxController extends BaseController
         /*   Get infos about: EVENT
         /* ************************************************************************************************************ */
 
-        if( $this->event > 0 ) {
-            $output['event']['requestId'] =  $this->event ;
+        if( $arguments['event']  > 0 ) {
+            $output['event']['requestId'] =  $arguments['event']  ;
 
             /** @var \JVE\JvEvents\Domain\Model\Event $event */
             $event = $this->eventRepository->findByUidAllpages( $output['event']['requestId'] , FALSE  , TRUE );
@@ -363,9 +383,9 @@ class AjaxController extends BaseController
             }
         }
 
-        if( $this->eventsFilter) {
+        if( $arguments['eventsFilter']  ) {
 
-            $output['eventsFilter'] = $this->request->getArgument('eventsFilter') ;
+            $output['eventsFilter'] = $arguments['eventsFilter'] ;
 
             if ( $output['eventsFilter']['sameCity'] ) {
                 $output['eventsFilter']['citys'] = $output['event']['locationId']  ;
@@ -391,7 +411,7 @@ class AjaxController extends BaseController
             // $this->settings['debug'] = 2 ;
 
             /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $events */
-            $events = $this->eventRepository->findByFilter( $output['eventsFilter'], $this->limit,  $this->settings );
+            $events = $this->eventRepository->findByFilter( $output['eventsFilter'], $arguments['limit'],  $this->settings );
             if( count( $events ) > 0 ) {
                 $output['events'] = $events ;
                 /** @var \JVE\JvEvents\Domain\Model\Event $tempEvent */
@@ -432,11 +452,11 @@ class AjaxController extends BaseController
         /* ************************************************************************************************************ */
         /*   Get infos about: Location
         /* ************************************************************************************************************ */
-        if( $this->location > 0 && !is_object($location ) ) {
-            $output['location']['requestId'] = $this->location ;
+        if( $arguments['location'] > 0 && !is_object($location ) ) {
+            $output['location']['requestId'] = $arguments['location'] ;
 
             /** @var \JVE\JvEvents\Domain\Model\Event $event */
-            $location = $this->locationRepository->findByUidAllpages($this->location, FALSE, TRUE);
+            $location = $this->locationRepository->findByUidAllpages( $arguments['location'], FALSE, TRUE);
 
         }
 
@@ -465,11 +485,11 @@ class AjaxController extends BaseController
         /* ************************************************************************************************************ */
         /*   Get infos about: Organizer
         /* ************************************************************************************************************ */
-        if(  $this->organizer > 0  && !is_object($organizer ) ) {
-            $output['organizer']['requestId'] =  $this->organizer;
+        if(  $arguments['organizer'] > 0  && !is_object($organizer ) ) {
+            $output['organizer']['requestId'] =  $arguments['organizer'];
 
             /** @var \JVE\JvEvents\Domain\Model\Organizer $organizer */
-            $organizer = $this->organizerRepository->findByUidAllpages(  $this->organizer , FALSE, TRUE);
+            $organizer = $this->organizerRepository->findByUidAllpages(  $arguments['organizer'], FALSE, TRUE);
         }
 
         // Location is set either by Event OR by location uid from request
@@ -488,26 +508,28 @@ class AjaxController extends BaseController
     }
 
 
-
     /**
      * action list
      *
+     * @param array|null $arguments
      * @return void
      */
-    public function eventListAction()
+    public function eventListAction(array $arguments=Null)
     {
-
+        if(!$arguments) {
+            $arguments = GeneralUtility::_GPmerged('tx_jvevents_ajax');
+        }
         // 6.2.2020 with teaserText and files
-        // https://www.allplan.com.ddev.local/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=4308&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[mode]=onlyValues
+        // https://wwwv9.allplan.com.ddev.site/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=4308&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[mode]=onlyValues
 
-        // https://www.allplan.com.ddev.local/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=94&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[rss]=1
-        // https://www.allplan.com.ddev.local/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=94&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[mode]=onlyValues
+        // https://wwwv9.allplan.com.ddev.site/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=94&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[rss]=1
+        // https://wwwv9.allplan.com.ddev.site/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=94&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[mode]=onlyValues
 
         // https://www-dev.allplan.com/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=2049&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][sameCity]=&tx_jvevents_ajax[eventsFilter][skipEvent]=2049&tx_jvevents_ajax[eventsFilter][startDate]=1&tx_jvevents_ajax[rss]=1
         // https://www-dev.allplan.com/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=2049&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][sameCity]=&tx_jvevents_ajax[eventsFilter][skipEvent]=2049&tx_jvevents_ajax[eventsFilter][startDate]=1&tx_jvevents_ajax[mode]=onlyValues
 
         // get all Access infos, Location infos , find similar events etc
-        $output = $this->eventsListMenuSub() ;
+        $output = $this->eventsListMenuSub($arguments) ;
 
         if ( $output['mode'] == "onlyValues") {
             unset( $output['events'] ) ;
@@ -522,14 +544,14 @@ class AjaxController extends BaseController
         if( $this->standaloneView ) {
             /** @var \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
             $renderer = $this->standaloneView  ;
-            if( $this->rss ) {
+            if( $arguments['rss'] ) {
                 $renderer->setTemplate("EventListRss");
             } else {
                 $renderer->setTemplate("EventList");
             }
         } else {
             /** @var \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
-            if( $this->rss ) {
+            if( $arguments['rss'] ) {
                 $renderer = $this->getEmailRenderer($templatePath = '', '/Ajax/EventListRss' );
             } else {
                 $renderer = $this->getEmailRenderer($templatePath = '', '/Ajax/EventList' );
@@ -544,7 +566,7 @@ class AjaxController extends BaseController
         $renderer->assign('settings' , $this->settings ) ;
         $return = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" .  trim( $renderer->render() ) ;
 
-        if( $this->rss ) {
+        if( $arguments['rss'] ) {
             header_remove();
             header("content-type: application/rss+xml;charset=utf-8") ;
 
@@ -568,11 +590,14 @@ class AjaxController extends BaseController
      *
      * @return void
      */
-    public function eventMenuAction()
+    public function eventMenuAction(array $arguments=Null)
     {
+        if(!$arguments) {
+            $arguments = GeneralUtility::_GPmerged('tx_jvevents_ajax');
+        }
         // https://www.allplan.com.ddev.local/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=94&tx_jvevents_ajax[action]=eventMenu&tx_jvevents_ajax[controller]=Ajax
         // https://www.allplan.com.ddev.local/index.php?uid=82&eID=jv_events&tx_jvevents_ajax[event]=2934&tx_jvevents_ajax[action]=eventMenu&tx_jvevents_ajax[mode]=onlyValues
-        $output = $this->eventsListMenuSub() ;
+        $output = $this->eventsListMenuSub($arguments) ;
         if ( $output['mode'] == "onlyValues") {
             unset( $output['events'] ) ;
             ShowAsJsonArrayUtility::show(  $output ) ;
@@ -623,12 +648,15 @@ class AjaxController extends BaseController
 
 
 
-    public function locationListAction() {
+    public function locationListAction(array $arguments=Null) {
         /* ************************************************************************************************************ */
         /*   render the HTML Output :
         /* ************************************************************************************************************ */
+        if(!$arguments) {
+            $arguments = GeneralUtility::_GPmerged('tx_jvevents_ajax');
+        }
 
-        $output = $this->locationListSub() ;
+        $output = $this->locationListSub($arguments) ;
 
         if( $output['feuser']['isOrganizer']) {
             $organizers = $this->organizerRepository->findByUserAllpages( $output['feuser']['uid'] , FALSE ) ;
@@ -674,7 +702,7 @@ class AjaxController extends BaseController
      *
      * @return array
      */
-    public function locationListSub()
+    public function locationListSub(array $arguments)
     {
         /* ************************************************************************************************************ */
         /*   Prepare the Output :
@@ -683,7 +711,7 @@ class AjaxController extends BaseController
 
         $output = array(
             "requestId" => intval($GLOBALS['TSFE']->id),
-            "mode" => $this->mode,
+            "mode" => $arguments['mode'] ,
             "feuser" => array(
                 "uid" => $feuser ,
                 "username" => $GLOBALS['TSFE']->fe_user->user['username'],
@@ -802,15 +830,19 @@ class AjaxController extends BaseController
 
 
     /**
-     *
+     * @param array|null $arguments
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
      */
-    public function eventUnlinkAction(  ) {
-
+    public function eventUnlinkAction( array $arguments=null ) {
+        if(!$arguments) {
+            $arguments = GeneralUtility::_GPmerged('tx_jvevents_ajax');
+        }
         // https:/tango.ddev.local/index.php?uid=82&eID=jv_events&tx_jvevents_ajax[event]=2264&tx_jvevents_ajax[action]=eventUnlink&
         $output['success'] = false ;
         $output['msg'] = 'Starting unLink';
-        if( $this->event > 0 ) {
-            $output['event']['requestId'] =  $this->event ;
+        if( $arguments['event'] > 0 ) {
+            $output['event']['requestId'] =  $arguments['event'] ;
             $output['msg'] = 'got Event';
             if ( intval( $GLOBALS['TSFE']->fe_user->user['uid'] ) > 0 ) {
                 $output['event']['user'] =  intval( $GLOBALS['TSFE']->fe_user->user['uid'] ) ;

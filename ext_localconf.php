@@ -1,4 +1,7 @@
 <?php
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 if (!defined('TYPO3_MODE')) {
 	die('Access denied.');
 }
@@ -59,6 +62,13 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['proc
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']['jv_events'] =
 	'JVE\\JvEvents\\Hooks\\ProcessDatamap';
 
+/** @var \TYPO3\CMS\Core\Information\Typo3Version $version */
+$version = GeneralUtility::makeInstance('TYPO3\CMS\Core\Information\Typo3Version');
+
+if ($version->getMajorVersion()  < 10) {
+    // to Check if we need this
+    $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['jv_events'] = 'JVE\JvEvents\Controller\AjaxController::dispatcher';
+}
 
 
 if (TYPO3_MODE === 'FE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
@@ -108,3 +118,5 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1609762346] = [
     'priority' => 40,
     'class' => \JVE\JvEvents\Form\Element\JvEventsCustomLayoutElement::class,
 ];
+
+

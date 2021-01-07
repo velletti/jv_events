@@ -2166,7 +2166,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Returns the Subevent
      *
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Subevent> $subevent
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Subevent> $subevent
      */
     public function getSubevent()
     {
@@ -2176,7 +2176,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Sets the Subevent
      *
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Subevent> $subevent
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Subevent> $subevent
      * @return void
      */
     public function setSubevent(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $subevent)

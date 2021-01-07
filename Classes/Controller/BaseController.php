@@ -233,17 +233,10 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         }
 
 
-
+        if( !$this->objectManager) {
+            $this->objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager') ;
+        }
         $this->persistenceManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
-        // $this->tagRepository        = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\TagRepository;');
-        // $this->categoryRepository        = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\CategoryRepository;');
-        // $this->registrantRepository        = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\RegistrantRepository;');
-        // $this->locationRepository        = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\LocationRepository;');
-        // $this->organizerRepository        = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\OrganizerRepository;');
-        // $this->eventRepository        = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\EventRepository;');
-        // $this->subeventRepository        = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\SubeventRepository;');
-        // $this->staticCountryRepository        = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\StaticCountryRepository;');
-
     }
 
     public function generateFilterAll( $filter )
