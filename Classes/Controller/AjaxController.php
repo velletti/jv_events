@@ -32,7 +32,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use JVE\JvEvents\Utility\ShowAsJsonArrayUtility;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
-use TYPO3\CMS\Frontend\Utility\EidUtility;
+
 
 /**/
 
@@ -112,7 +112,8 @@ class AjaxController extends BaseController
         /** @var \TYPO3\CMS\Core\Information\Typo3Version $version */
         $version = GeneralUtility::makeInstance('TYPO3\CMS\Core\Information\Typo3Version');
 
-        if (\TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger($version->getBranch() ) < 10000000) {
+
+        if ($version->getMajorVersion() < 10) {
             $pid = intval(GeneralUtility::_GPmerged('uid') );
             $type =  intval(GeneralUtility::_GPmerged('type'));
 
@@ -129,8 +130,9 @@ class AjaxController extends BaseController
 // Important: no Cache for Ajax stuff
             $GLOBALS['TSFE']->set_no_cache();
 
-            EidUtility::initLanguage();
-            EidUtility::initTCA();
+            \TYPO3\CMS\Frontend\Utility\EidUtility::initLanguage();
+            \TYPO3\CMS\Frontend\Utility\EidUtility::initTCA();
+
 // Get FE User Information
             $GLOBALS['TSFE']->initFEuser();
             $GLOBALS['TSFE']->initUserGroups();
@@ -642,7 +644,7 @@ class AjaxController extends BaseController
 
         $return = array( "main" => $returnMain , "single" => $returnSingle ) ;
 
-        ShowAsJsonArrayUtility::show( array( 'values' => $output , 'html' => $return , 'settings' => $this->settings ) ) ;
+        ShowAsJsonArrayUtility::show( array( 'values' => $output , 'html' => $return ) ) ;
         die;
     }
 

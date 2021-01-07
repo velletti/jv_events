@@ -28,14 +28,11 @@ class Ajax implements MiddlewareInterface
         ServerRequestInterface $request,
         RequestHandlerInterface $handler
     ): ResponseInterface {
-        $arguments = $request->getQueryParams();
-        if( is_array($arguments) && key_exists("tx_jvevents_ajax" ,$arguments ) && key_exists("controller" ,$arguments['tx_jvevents_ajax'] ) ) {
+        $_gp = $request->getQueryParams();
+
+        if( is_array($_gp) && key_exists("tx_jvevents_ajax" ,$_gp ) && key_exists("controller" ,$_gp['tx_jvevents_ajax'] ) ) {
             $GLOBALS['TSFE']->set_no_cache();
 
-            /**
-             * Gets the Ajax Call Parameters
-             */
-            $_gp = GeneralUtility::_GPmerged('tx_jvevents_ajax');
             $function = trim($_gp['action']) ;
 
             /** @var AjaxUtility $ajaxUtility */
@@ -49,20 +46,24 @@ class Ajax implements MiddlewareInterface
 
             switch ($function) {
                 case 'eventList' :
-                    $controller->eventListAction($_gp) ;
+                    $controller->eventListAction($_gp["tx_jvevents_ajax"]) ;
                     break;
                 case 'locationList' :
-                    $controller->locationListAction($_gp) ;
+                    $controller->locationListAction($_gp["tx_jvevents_ajax"]) ;
                     break;
                 case 'activate' :
                     // $organizerUid=0 , $userUid=0 , $hmac='invalid' , $rnd = 0
-                    $controller->activateAction( $_gp['organizerUid'] , $_gp['userUid'] , $_gp['hmac'] , $_gp['rnd'] ) ;
+                    $organizerUid  =    key_exists( 'organizerUid' , $_gp["tx_jvevents_ajax"]) ?  $_gp["tx_jvevents_ajax"]['organizerUid'] : 0 ;
+                    $userUid  =         key_exists( 'userUid' , $_gp["tx_jvevents_ajax"]) ?  $_gp["tx_jvevents_ajax"]['userUid'] : 0 ;
+                    $hmac  =            key_exists( 'hmac' , $_gp["tx_jvevents_ajax"]) ?  $_gp["tx_jvevents_ajax"]['hmac'] : 'invalid' ;
+                    $rnd  =             key_exists( 'rnd' , $_gp["tx_jvevents_ajax"]) ?  $_gp["tx_jvevents_ajax"]['rnd'] : 0 ;
+                    $controller->activateAction( $organizerUid , $userUid , $hmac , $rnd ) ;
                     break;
                 case 'eventUnlink' :
-                    $controller->eventUnlinkAction($_gp) ;
+                    $controller->eventUnlinkAction($_gp["tx_jvevents_ajax"]) ;
                     break;
                 default:
-                    $controller->eventMenuAction($_gp) ;
+                    $controller->eventMenuAction($_gp["tx_jvevents_ajax"]) ;
                     break;
             }
 
