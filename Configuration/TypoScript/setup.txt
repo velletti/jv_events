@@ -207,7 +207,7 @@ lib.jveventsRTE.dontConvBRtoParagraph = 1
 # if you have your own javaScript add the following line  to your typoScript setup :
 # page.includeJSFooter.jvEvents >
 #
-page.includeJSFooter.jvEvents = EXT:jv_events/Resources/Public/Javascript/jv_events.js
+page.includeJSFooter.jvEvents = EXT:jv_events/Resources/Public/JavaScript/jv_events.js
 
 
 config.tx_extbase.persistence.classes {

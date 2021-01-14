@@ -23,7 +23,10 @@
             </trans-unit>
 
             <trans-unit id="jv_events_model_location.geocoder.title">
-                <source>Google Geocoder (Please enter the address data first!)</source>
+                <source>Geocoder (Please enter the address data first!)</source>
+            </trans-unit>
+             <trans-unit id="jv_events_model_location.geocoder.close">
+                <source>Close Geocoder</source>
             </trans-unit>
             <trans-unit id="aks_for_position_intro">
                 <source>If you like, you can give the browser access to you actual position to compute the distance to the tango locations.</source>

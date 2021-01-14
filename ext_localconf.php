@@ -116,7 +116,13 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['JVE\JvEvents\Sc
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1609762346] = [
     'nodeName' => 'jvEventsCustomLayoutElement',
     'priority' => 40,
-    'class' => \JVE\JvEvents\Form\Element\JvEventsCustomLayoutElement::class,
+    'class' => \JVE\JvEvents\FormEngine\Element\JvEventsCustomLayoutElement::class,
+];
+// Add wizard with map for setting geo location
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1609762347] = [
+    'nodeName' => 'eventLocationMapWizard',
+    'priority' => 42,
+    'class' => \JVE\JvEvents\FormEngine\FieldControl\EventLocationMapWizard::class
 ];
 
 

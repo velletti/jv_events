@@ -49,11 +49,11 @@ class SelectStaticCountriesViewHelper extends SelectStaticViewHelper {
 	protected $countryRepository;
 
     /**
-     * @param StaticCountryRepository $staticCountryRepository
+     * @param StaticCountryRepository $countryRepository
      */
-    public function injectStaticCountryRepository(StaticCountryRepository $staticCountryRepository)
+    public function injectCountryRepository(StaticCountryRepository $countryRepository)
     {
-        $this->staticCountryRepository = $staticCountryRepository;
+        $this->countryRepository = $countryRepository;
     }
 
 	/**

@@ -182,7 +182,7 @@ $return = array(
 			'config' => array(
 				'type' => 'input',
 				'size' => 30,
-				'eval' => 'trim' ,
+				'eval' => 'double' ,
 
 			),
 		),
@@ -192,7 +192,12 @@ $return = array(
 			'config' => array(
 				'type' => 'input',
 				'size' => 30,
-				'eval' => 'trim' ,
+				'eval' => 'double' ,
+                'fieldControl' => [
+                    'locationMap' => [
+                        'renderType' => 'eventLocationMapWizard'
+                    ]
+                ],
 				'wizards' => array(
 					'jv_events_wizard_geocoder' => array(
 						'type' => 'popup',
