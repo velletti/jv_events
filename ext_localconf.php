@@ -50,6 +50,19 @@ $_EXTKEY = "jv_events" ;
     )
 );
 
+// Register icons
+$icons = [
+    'jvevents-plugin' => 'ContentElementWizard.svg',
+    'jvevents-location-map-wizard' => 'actions-geo.svg',
+];
+$iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
+foreach ($icons as $identifier => $path) {
+    $iconRegistry->registerIcon(
+        $identifier,
+        \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
+        ['source' => 'EXT:jv_events/Resources/Public/Icons/' . $path]
+    );
+}
 /**
  * Register Hook on delete/copy/move record ( event) - unset registrations and so on
  */
@@ -124,5 +137,6 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1609762347] = [
     'priority' => 42,
     'class' => \JVE\JvEvents\FormEngine\FieldControl\EventLocationMapWizard::class
 ];
+
 
 

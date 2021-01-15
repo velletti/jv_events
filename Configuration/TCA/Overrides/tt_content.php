@@ -6,14 +6,16 @@ $_EXTKEY = 'jv_events' ;
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
     'JVE.' . $_EXTKEY,
     'Events',
-    'Events'
+    'Events' ,
+    'jvevents-plugin'
 );
 
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
     'JVE.' . $_EXTKEY,
     'Ajax',
-    'Ajax Event Controller'
+    'Ajax Event Controller',
+    'jvevents-plugin'
 );
 
 $pluginSignature = str_replace('_','',$_EXTKEY) . '_events';

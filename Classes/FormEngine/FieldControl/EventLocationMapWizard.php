@@ -57,7 +57,7 @@ class EventLocationMapWizard extends AbstractNode
             }
         }
 
-        $resultArray['iconIdentifier'] = 'location-map-wizard';
+        $resultArray['iconIdentifier'] = 'jvevent-location-map-wizard';
         $resultArray['title'] = $this->getLanguageService()->sL('LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:jv_events_model_location.geocoder.title');
         $resultArray['linkAttributes']['class'] = 'locationMapWizard ';
         $resultArray['linkAttributes']['data-label-title'] = $this->getLanguageService()->sL('LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:jv_events_model_location.geocoder.title');
