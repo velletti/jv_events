@@ -17,15 +17,15 @@
 	<f:render partial="FormErrors" section="Main" arguments="{for: 'registrant'}" />
 	<f:render partial="FormOtherErrors" section="Main" arguments="{for: 'event' ,field: 'uid'}" />
 
-	<f:form.hidden class="hidden" name="event" value="{event.uid}" />
-	<f:form.textfield class="hidden" property="layoutRegister" value="{settings.LayoutRegister}" />
-	<f:form.textfield class="hidden" property="event" value="{event.uid}" />
+	<f:form.hidden class="hidden d-none" name="event" value="{event.uid}" />
+	<f:form.textfield class="hidden d-none" property="layoutRegister" value="{settings.LayoutRegister}" />
+	<f:form.textfield class="hidden d-none" property="event" value="{event.uid}" />
 
 	<f:if condition="{otherEvents}">
-		<div class="well">
+		<div class="alert alert-light border">
 
 			<h4>Auch für diese Veranstaltungen anmelden (Blockbuchung '{event.eventCategory.0.title}'):</h4>
-			<div class="row">
+			<div class="row mt-2">
 				<f:for each="{otherEvents}" as="otherEvent" iteration="iteration">
 					<f:if condition="{otherEvent.isRegistrationPossible}">
 						<f:then>
@@ -55,7 +55,7 @@
 	</f:if>
 
 	<div class="row-fluid clearfix">
-		<div id="jv_events_js_error" class="hidden">
+		<div id="jv_events_js_error" class="hidden d-none">
 			<div class="alert alert-warning">
 				{f:translate(key: 'register_send_error' , default: 'Some required Fields are empty')}
 			</div>
@@ -65,10 +65,10 @@
 
 		</div>
 
-		<div class="clearfix hidden">
+		<div class="clearfix hidden d-none">
 			<f:comment><!-- three spam and xss protection fields  //--></f:comment>
-			<f:form.textfield class="hidden" property="startReg" value="{settings.startReg}" />
-			<f:form.textfield class="hidden" name="formToken" value="{settings.formToken}" />
+			<f:form.textfield class="hidden d-none" property="startReg" value="{settings.startReg}" />
+			<f:form.textfield class="hidden d-none" name="formToken" value="{settings.formToken}" />
 			<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRow" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.hotprice', FieldName : 'hotprice' , settings: settings , cols: 'col-md-12' , required: '{f:if(condition: \'{settings.register.required.hotPrice}\' , then: \'TRUE\')}'}"/>
 		</div>
 
