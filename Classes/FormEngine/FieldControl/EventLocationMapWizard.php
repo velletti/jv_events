@@ -27,6 +27,7 @@ class EventLocationMapWizard extends AbstractNode
 
         $paramArray = $this->data['parameterArray'];
         $resultArray = $this->initializeResultArray();
+        $title = $this->getLanguageService()->sL('LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:jv_events_model_location.geocoder.title');
 
         $paramArray['itemFormElName'];
         $nameLongitude = $paramArray['itemFormElName'];
@@ -38,7 +39,9 @@ class EventLocationMapWizard extends AbstractNode
 
         $lat = $row['lat'] != '' ? htmlspecialchars(sprintf("%.16f",$row['lat'])) : '';
         $lon = $row['lng'] != '' ? htmlspecialchars(sprintf("%.16f",$row['lng'])) : '';
-
+        if( $row['street_and_nr'] != '' &&  $row['city'] != ''  ) {
+            $title = "GeoCoder" ;
+        }
         if ($row['lat'] || $row['lng'] == '') {
             // remove all after first slash in address (top, floor ...)
             $address = preg_replace('/^([^\/]*).*$/', '$1', $row['street_and_nr'] ?? '') . ' ';
@@ -58,9 +61,9 @@ class EventLocationMapWizard extends AbstractNode
         }
 
         $resultArray['iconIdentifier'] = 'jvevents-location-map-wizard';
-        $resultArray['title'] = $this->getLanguageService()->sL('LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:jv_events_model_location.geocoder.title');
+        $resultArray['title'] = $title ;
         $resultArray['linkAttributes']['class'] = 'locationMapWizard ';
-        $resultArray['linkAttributes']['data-label-title'] = $this->getLanguageService()->sL('LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:jv_events_model_location.geocoder.title');
+        $resultArray['linkAttributes']['data-label-title'] = $title ;
         $resultArray['linkAttributes']['data-label-close'] = $this->getLanguageService()->sL('LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:jv_events_model_location.geocoder.close');
         $resultArray['linkAttributes']['data-label-import'] = $this->getLanguageService()->sL('LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:select-position');
         $resultArray['linkAttributes']['data-lat'] = $lat;

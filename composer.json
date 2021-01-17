@@ -12,7 +12,7 @@
     ],
     "license": "GPL-2.0-or-later",
     "require": {
-        "typo3/cms-core": "^9.5 || ^10.1 "
+        "typo3/cms-core": "^9.5 || ^10.4 "
     },
     "autoload": {
         "psr-4": {
@@ -24,7 +24,6 @@
         }
     },
     "replace": {
-        "jv_events": "self.version",
         "typo3-ter/jv-events": "self.version"
     },
     "extra": {
