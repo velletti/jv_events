@@ -44,7 +44,7 @@
                         <div class="checkbox" id="jv_events_filter_tags">
                             <f:for each="{eventsFilter.tags2}" as="tag" >
                                 <label>
-                                    <input type="checkbox" id="jv_events_filter_tag-{tag.id}" value="{tag.id}">{tag.title}
+                                    <input type="checkbox" id="jv_events_filter_tag-{tag.id}" value="{tag.id}" class="mr-2">{tag.title}
                                 </label>
                             </f:for>
                         </div>
@@ -61,7 +61,7 @@
 
 
                                     <label>
-                                        <input type="checkbox" id="jv_events_filter_cat-{category.id}" value="{category.id}">{category.title}
+                                        <input type="checkbox" id="jv_events_filter_cat-{category.id}" value="{category.id}" class="mr-2">{category.title}
                                         <f:if condition="{category.description}">
                                             <a class="info" href="#" data-toggle="modal" data-target="#jv_events_cat_modal-{category.id}"><span>Info</span></a>
                                         </f:if>
