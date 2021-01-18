@@ -1,9 +1,9 @@
 {namespace JVE=JVE\JvEvents\ViewHelpers}
 
-<div class="jv-events-singleEvent" data-eventUid="{event.uid}" data-monthUid="{event.startDate -> f:format.date(format:"m.Y")}" data-cityuid="{event.location.city}" data-catuids="{f:if(condition: i.isFirst, then: '{cat.uid},', else: '{cat.uid},') -> f:for(each:'{event.EventCategory}', as: 'cat', iteration: 'i')}" data-taguids="{f:if(condition: i.isFirst, then: '{tag.uid},', else: '{tag.uid},') -> f:for(each:'{event.Tags}', as: 'tag', iteration: 'i')}">
+<div class="jv-events-singleEvent  jv-events-row" {JVE:dataAttrib( event: event )}>
 
-	<div class="well well-sm well-primary ">
-			<div class="row-fluid clearfix">
+	<div class="alert alert-light border">
+			<div class="row clearfix">
 				<div class="col-md-1 col-12">
 					<f:link.action pageUid="{settings.detailPid}" action="show" arguments="{event : event}">
 						<div class="date">
@@ -20,7 +20,7 @@
 						</f:link.action>
 					</h4>
 				</div>
-				<div class="col-md-3 col-12 text-right">
+				<div class="col-md-3 col-12 text-right mb-2">
 					<f:if condition="{event.isRegistrationPossible}">
 							<JVE:regLink event="{event}" settings="{settings}" uriOnly="0">
 								<span class="btn btn-primary">
@@ -35,9 +35,9 @@
 				<div class="col-md-1 d-none d-sm-block">
 					&nbsp;<br>
 				</div>
-				<div class="col-md-6 col-12">
+				<div class="col-md-7 col-12">
 					<f:if condition="{event.Tags}">
-						<div class="small">
+						<div class="small mb-1">
 							<f:for each="{event.Tags}" as="Tag" iteration="iteration"><f:if condition="{iteration.index} > 0 ">, </f:if>{Tag.name}
 							</f:for>
 						</div>
@@ -60,7 +60,7 @@
 					{event.location.city}
 				</div>
 
-				<div class="col-md-3 col-6">
+				<div class="col-md-2 col-6">
 					<f:if condition="{event.EventCategory}">
 						<f:for each="{event.EventCategory}" as="EventCategory" iteration="iteration"><f:if condition="{iteration.index} > 0 ">, </f:if>{EventCategory.title}</f:for>
 

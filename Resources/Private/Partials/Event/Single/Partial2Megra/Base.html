@@ -1,21 +1,21 @@
 {namespace event=JVE\JvEvents\ViewHelpers}
 
-<ul class="nav nav-tabs">
-	<li class="active"><a id="jv_events_event_nav" data-toggle="tab" href="#jv_events_event">Info</a></li>
+<ul class="nav nav-tabs" role="tablist">
+	<li class="nav-tab active  px-3 py-1" role="presentation" ><a id="jv_events_event_nav" data-toggle="tab" href="#jv_events_event">Info</a></li>
 	<f:if condition="{event.location.lng}">
-		<li ><a  id="jv_events_map_nav" data-toggle="tab" href="#jv_events_map">Map</a></li>
+		<li ><a  id="jv_events_map_nav" role="presentation" data-toggle="tab" href="#jv_events_map">Map</a></li>
 	</f:if>
-	<li ><a  id="jv_events_contact_nav" data-toggle="tab" href="#jv_events_contact">Kontakt</a></li>
+	<li  class="nav-tab  px-3 py-1"><a  id="jv_events_contact_nav" data-toggle="tab" href="#jv_events_contact">Kontakt</a></li>
 
 	<f:if condition="{event.isRegistrationPossible}">
-		<li >
+		<li class="nav-tab  px-3 py-1">
 			<event:regLink event="{event}" settings="{settings}" uriOnly="0">
 				{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:list.register.button.subscribe' , default:'Anmelden')}
 			</event:regLink>
 
 		</li>
 	</f:if>
-	<li id="jvEventsAjaxSingleMenu" class="pt-3">
+	<li id="jvEventsAjaxSingleMenu" class="nav-tab px-3 py-1 pt-3">
 		<span class="fa fa-spin fa-spinner"></span>
 	</li>
 
@@ -25,7 +25,7 @@
 </ul>
 <div class="tab-content clearfix " style="min-height:550px;">
 	<div class="tab-pane active " id="jv_events_event">
-		<div class="well">
+		<div class="alert alert-light border w-100">
 			<div class="hidden" id="jv-events-dataids" data-locationuid="{event.location.uid}" data-eventuid="{event.uid}" data-piduid="{event.pid}"></div>
 			<f:render partial="Event/Single/Partial{settings.LayoutSingle}/Row"
 				arguments="{title: '', translate: '0', isHeadline: 'H2' ,value: '{event.name}' }" />
@@ -110,7 +110,7 @@
 		</div>
 		<f:if condition="{event.isRegistrationPossible}">
 			<div class="row">
-				<div class="col-xs-12 text-right">
+				<div class="col-12 text-right">
 					<event:regLink event="{event}" settings="{settings}" uriOnly="0">
 						<span class="btn btn-primary">
 							{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:list.register.button.subscribe' , default:'Anmelden')}
@@ -124,7 +124,7 @@
 		<div class="row clearfix">
 			&nbsp;
 		</div>
-		<div class="well" >
+		<div class="w-100" >
 			<f:format.html parseFuncTSPath="lib.jveventsRTE">
 				{event.description}
 			</f:format.html>
@@ -156,7 +156,7 @@
 	</f:if>
 	<div class="tab-pane" id="jv_events_contact">
 
-		<div class="well">
+		<div class="alert alert-light border w-100">
 			<h2><f:translate key="tx_jvevents_domain_model_organizer" /></h2>
 
 			<f:render partial="Event/Single/Partial{settings.LayoutSingle}/Row"
