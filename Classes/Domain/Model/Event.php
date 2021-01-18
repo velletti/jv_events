@@ -1014,6 +1014,8 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Returns the Access starttime
      *
      * @return \DateTime
+     */
+
     public function getAccessStarttime()
     {
         return $this->starttime;
