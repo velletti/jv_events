@@ -165,10 +165,12 @@ class ProcessDatamap {
                     } else {
                         $accessEnd = $this->event->getAccessEndtime() ;
                     }
-
-                    if ( $accessEnd->getTimestamp() < time() && $accessEnd->getTimestamp() > 0 ) {
-                        $this->flashMessage['WARNING'][] = 'Event visibility END date is in the past: ' .  $accessEnd->format("d.m.Y - H:i") ;
+                    if( $accessEnd ) {
+                        if ( $accessEnd->getTimestamp() < time() && $accessEnd->getTimestamp() > 0 ) {
+                            $this->flashMessage['WARNING'][] = 'Event visibility END date is in the past: ' .  $accessEnd->format("d.m.Y - H:i") ;
+                        }
                     }
+
 
                     if ($this->event->getWithRegistration()   ) {
 
@@ -212,8 +214,10 @@ class ProcessDatamap {
                                 $this->flashMessage['ERROR'][] = 'Registration Until date is not set!' ;
                                 $allowedError ++ ;
                             } else {
-                                if ($this->event->getRegistrationUntil()->getTimestamp()  < time()  ) {
-                                    $this->flashMessage['ERROR'][] = 'Registration Until date is in the Past!' ;
+                                if( $this->event->getRegistrationUntil() instanceof \DateTime ) {
+                                    if ($this->event->getRegistrationUntil()->getTimestamp()  < time()  ) {
+                                        $this->flashMessage['ERROR'][] = 'Registration Until date is in the Past!' ;
+                                    }
                                 }
                             }
                         }
