@@ -8,6 +8,7 @@ use JVE\JvEvents\Domain\Repository\EventRepository;
 use JVE\JvEvents\Domain\Repository\RegistrantRepository;
 use TYPO3\CMS\Core\Context\AspectInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 
 /**
  * Validator for ProfileData
@@ -60,9 +61,7 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
 	public function __construct() {
 		$this->emConf =\JVE\JvEvents\Utility\EmConfigurationUtility::getEmConf();
 
-		/** @var \JVE\JvEvents\FormEngine\Element\JvEventsCustomLayoutElement $helper */
-        $helper = GeneralUtility::makeInstance('JVE\\JvEvents\\FormEngine\\Element\\JvEventsCustomLayoutElement');
-		$allSettings = $helper->getSettings() ;
+		$allSettings = $this->getSettings() ;
 
 		$this->settings = $allSettings['plugin.']['tx_jvevents_events.']['settings.'];
 		$this->settings = GeneralUtility::removeDotsFromTS($this->settings ) ;
@@ -75,6 +74,12 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
         parent::__construct() ;
 
 	}
+	public function getSettings() {
+        $objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+        $configurationManager = $objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
+        return  $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT );
+
+    }
 
 	/**
 	 * Check if $value is valid
