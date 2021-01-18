@@ -128,7 +128,7 @@ class AjaxController extends BaseController
 
 
 // Important: no Cache for Ajax stuff
-            $GLOBALS['TSFE']->set_no_cache();
+            $GLOBALS['TSFE']->set_no_cache("JvEvents Ajax Call" , true);
 
             \TYPO3\CMS\Frontend\Utility\EidUtility::initLanguage();
             \TYPO3\CMS\Frontend\Utility\EidUtility::initTCA();
