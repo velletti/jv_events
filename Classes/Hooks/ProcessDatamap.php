@@ -463,7 +463,7 @@ class ProcessDatamap {
              $data['OwnerId'] ;
 
         }
-
+        // $data['ExtendMemberAccess__c'] = true ;
 
         // a possible fallback during tests :
         //    $data['OwnerId']  = "0051w000000rsfAAAQ" ;  // that is the ID (on DEV !) of the user: allplan-dev-api@allplan.com
