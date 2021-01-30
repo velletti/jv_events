@@ -210,8 +210,6 @@ class EventBackendController extends BaseController
                         $pid = $event[0]->getRegistrationFormPid() ;
                         $lng = $event[0]->getSysLanguageUid() ;
                         $typoScript = \JVE\JvEvents\Utility\TyposcriptUtility::loadTypoScriptFromScratch( $pid , "tx_jvevents_events" , array( "[globalVar = GP:L = " . intval($lng ) . "]" )) ;
-
-
                         $this->settings = array_merge( $this->settings ,  $typoScript['settings'] ) ;
                         $this->settings['pageId'] = $pid ;
                         $this->settings['sys_language_uid'] = $lng ;
@@ -224,7 +222,7 @@ class EventBackendController extends BaseController
                         if( !$this->settings['LayoutRegister'] ) {
                             $this->settings['LayoutRegister'] = "2Allplan" ;
                         }
-                        // echo "<pre>" ;
+                        //  echo "<pre>" ;
                         // var_dump($this->settings) ;
                         // die;
                         // ***** NEEDS a FIX !!! ********************

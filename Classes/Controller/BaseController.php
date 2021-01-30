@@ -559,12 +559,16 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             $partialPaths = array( 0 => \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName( "typo3conf/ext/jv_events/Resources/Private/Partials" ) ) ;
         }
         if (isset($extbaseFrameworkConfiguration['view']['layoutRootPaths']) && is_array($extbaseFrameworkConfiguration['view']['layoutRootPaths'])) {
-
+            echo " yyy" . __line__  ." ... ";
             $layoutPaths = $extbaseFrameworkConfiguration['view']['layoutRootPaths'];
         } else {
             $layoutPaths =  array( 0 => \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName( "typo3conf/ext/jv_events/Resources/Private/Layouts" )) ;
         }
-
+        # Jan 2021 : as we want to use same email layout in frontend as in backend, we need to remove "/Backend" from layout path
+        #
+        foreach ( $layoutPaths as $key => $layoutPath ) {
+            $layoutPaths[$key] = str_replace("/Backend" , "" , $layoutPath ) ;
+        }
         if ( $templatePath == '') {
 
 			if (isset($extbaseFrameworkConfiguration['view']['templateRootPath']) && strlen($extbaseFrameworkConfiguration['view']['templateRootPath']) > 0) {
@@ -608,10 +612,9 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             throw new \Exception('plugin.jv_events.settings.register.senderEmail is not a valid Email Address. Is needed as Sender E-mail');
         }
         $sender = array($this->settings['register']['senderEmail']
-        =>
-            $this->settings['register']['sendername']
-        );
-
+                        =>
+                        $this->settings['register']['sendername']
+                    );
         foreach ($recipient as $key => $value ) {
             if (!\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($key )) {
                 throw new \Exception(var_export( $recipient , true ) . "( " . $key . ") " . ' is not a valid -recipient- Email Address. ');
