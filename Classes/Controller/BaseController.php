@@ -559,7 +559,6 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             $partialPaths = array( 0 => \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName( "typo3conf/ext/jv_events/Resources/Private/Partials" ) ) ;
         }
         if (isset($extbaseFrameworkConfiguration['view']['layoutRootPaths']) && is_array($extbaseFrameworkConfiguration['view']['layoutRootPaths'])) {
-            echo " yyy" . __line__  ." ... ";
             $layoutPaths = $extbaseFrameworkConfiguration['view']['layoutRootPaths'];
         } else {
             $layoutPaths =  array( 0 => \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName( "typo3conf/ext/jv_events/Resources/Private/Layouts" )) ;
