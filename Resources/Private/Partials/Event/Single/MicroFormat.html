@@ -25,19 +25,13 @@
 	  "location" :
 	  {
 	    "@type" : "Place",
-	    "name" : "{event.location.name}",
+	    "name" : "{event.location.streetAndNr}",
 	    "address" :
 	    {
       "@type" : "PostalAddress",
-			<f:if condition="{event.location.streetAndNr}">
-				  "streetAddress" : "{event.location.streetAndNr}",
-			</f:if>
-			<f:if condition="{event.location.city}">
-			  	"addressLocality" : "{event.location.city}",
-			</f:if>
-			<f:if condition="{event.location.zip}">
-		  		"postalCode" : "{event.location.zip}"
-			</f:if>
+			<f:if condition="{event.location.streetAndNr}">"streetAddress" : "{event.location.streetAndNr}",</f:if>
+			<f:if condition="{event.location.city}">"addressLocality" : "{event.location.city}",</f:if>
+			<f:if condition="{event.location.zip}">"postalCode" : "{event.location.zip}"</f:if>
 	    }
 	  }
 </f:if>
