@@ -21,7 +21,7 @@
     </f:else>
 </f:if>
 	  "url" : "<event:link event="{event}" settings="{settings}" uriOnly="1" />",
-<f:if condition="{event.location.name}">
+<f:if condition="{event.location} && {event.location.name}">
 	  "location" :
 	  {
 	    "@type" : "Place",
