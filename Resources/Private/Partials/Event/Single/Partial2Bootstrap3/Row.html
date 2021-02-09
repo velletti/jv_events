@@ -1,5 +1,5 @@
 	<div class="row">
-		<div class="col-sm-4">
+		<div class="col-sm-4 col-md-3">
 			<f:if condition="{translate}">
 				<f:then>
 					<f:translate key="{title}" />
@@ -10,10 +10,10 @@
 			</f:if>
 
 		</div>
-		<div class="col-sm-8">
+		<div class="col-sm-8 col-md-9">
 			<f:if condition="{isHeadline}">
 				<f:then>
-					<{isHeadline}>{value}</{isHeadline}>
+					<{isHeadline} class="mt-0">{value}</{isHeadline}>
 				</f:then>
 				<f:else>
 					{value}

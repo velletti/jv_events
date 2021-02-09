@@ -1,69 +1,66 @@
-{namespace event=JVE\JvEvents\ViewHelpers}
-
+{namespace JVE=JVE\JvEvents\ViewHelpers}
 <div class="jv-events-singleEvent" data-eventUid="{event.uid}" data-monthUid="{event.startDate -> f:format.date(format:"m.Y")}" data-cityuid="{event.location.city}" data-catuids="{f:if(condition: i.isFirst, then: '{cat.uid},', else: '{cat.uid},') -> f:for(each:'{event.EventCategory}', as: 'cat', iteration: 'i')}" data-taguids="{f:if(condition: i.isFirst, then: '{tag.uid},', else: '{tag.uid},') -> f:for(each:'{event.Tags}', as: 'tag', iteration: 'i')}">
 
-	<div class="well well-sm well-primary ">
+	<div class="panel pnel-sm panel-info p-2 ">
 			<div class="row row-fluid">
 				<div class="col-sm-2 col-xs-12">
 					<f:link.action pageUid="{settings.detailPid}" action="show" arguments="{event : event}" noCache="true" noCacheHash="true">
-						{event.startDate -> f:format.date(format:"d.m.Y")}
+						<div class="date">
+							<span class="day">{f:format.date(date:event.startDate, format:'d')}</span>
+							<span class="month-year"><JVE:writeDateAbbreviation month="{f:format.date(date:event.startDate, format:'m')}"></JVE:writeDateAbbreviation></span>
+							<span class="year">{event.startDate -> f:format.date(format:"Y")}</span>
+						</div>
 					</f:link.action>
 				</div>
-				<div class="col-sm-8 col-xs-12">
+				<div class="col-sm-10 col-xs-12">
 					<h4>
 						<f:link.action  pageUid="{settings.detailPid}" action="show" arguments="{event : event}"  noCache="true" noCacheHash="true">
 							{event.name}
 						</f:link.action>
 					</h4>
 				</div>
-				<div class="col-sm-2 col-xs-12 text-right">
-					<f:if condition="{event.isRegistrationPossible}">
-							<event:regLink event="{event}" settings="{settings}" uriOnly="0">
-								<span class="btn btn-primary">
-									{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:list.register.button.subscribe' , default:'Anmelden')}
-								</span>
-							</event:regLink>
-					</f:if>
-				</div>
+
 				<div class="clearfix">
 					<br/>
 				</div>
 				<div class="col-sm-2 hidden-xs">
 					&nbsp;
 				</div>
-				<div class="col-sm-5 col-xs-12">
-					<f:if condition="{event.Tags}">
-						<div class="small">
-							<f:for each="{event.Tags}" as="Tag" iteration="iteration"><f:if condition="{iteration.index} > 0 ">, </f:if>{Tag.name}
-							</f:for>
-						</div>
-					</f:if>
+				<div class="col-sm-6 col-xs-12">
+					<div class="small">
+						<f:if condition="{event.EventCategory}">
+							<f:for each="{event.EventCategory}" as="EventCategory" iteration="iteration"><f:if condition="{iteration.index} > 0 ">, </f:if>{EventCategory.title}</f:for>
+						</f:if>
+						<f:if condition="{event.Tags}">
+
+								<f:for each="{event.Tags}" as="Tag" iteration="iteration"><f:if condition="{iteration.index} > 0 ">, </f:if>{Tag.name}
+								</f:for>
+
+						</f:if>
+					</div>
 					<f:if condition="{event.teaser}">
 						<div class="jv_events_teaser">
 							{event.teaser}
 						</div>
 					</f:if>
 
-					<f:if condition="{event.files}">
-							<br/>
-							<f:link.external defaultScheme="" uri="{event.files.0.originalResource.publicUrl -> f:format.htmlspecialchars()}" target="_blank">
-								{f:if(condition:event.files.0.originalResource.title, then:event.files.0.originalResource.title, else:event.files.0.originalResource.name)}
-							</f:link.external>
-					</f:if>
+
 				</div>
 
 				<div class="col-sm-2 col-xs-6">
 					{event.location.city}
 				</div>
 
-				<div class="col-sm-3 col-xs-6">
-					<f:if condition="{event.EventCategory}">
-						<f:for each="{event.EventCategory}" as="EventCategory" iteration="iteration"><f:if condition="{iteration.index} > 0 ">, </f:if>{EventCategory.title}</f:for>
 
+				<div class="col-sm-2 col-xs-6 text-right">
+					<f:if condition="{event.isRegistrationPossible}">
+						<JVE:regLink event="{event}" settings="{settings}" uriOnly="0">
+								<span class="btn btn-default">
+									{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:list.register.button.subscribe' , default:'Anmelden')}
+								</span>
+						</JVE:regLink>
 					</f:if>
-
 				</div>
-
 			</div>
 	</div>
 

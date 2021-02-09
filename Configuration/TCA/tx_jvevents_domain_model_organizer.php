@@ -625,12 +625,12 @@ $returnArray = array(
 
 $configuration = \JVE\JvEvents\Utility\EmConfigurationUtility::getEmConf();
 
-if ( ! $configuration['hasLoginUser'] == 1 ) {
+if ( $configuration['hasLoginUser'] != 1 ) {
     unset($returnArray['columns']['access'] ) ;
     unset($returnArray['columns']['registration_access'] ) ;
 }
 
-if ( ! $configuration['enableSalesForce'] == 1 ) {
+if ( $configuration['enableSalesForce'] != 1 && $configuration['enableHubspot'] != 1  ) {
     unset($returnArray['columns']['sales_force_user_id'] ) ;
     unset($returnArray['columns']['sales_force_user_id2'] ) ;
     unset($returnArray['columns']['sales_force_user_org'] ) ;

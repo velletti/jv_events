@@ -16,7 +16,8 @@ namespace JVE\JvEvents\Utility ;
  *
  * inspirerd from Georg Ringer news Extension
  */
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -33,7 +34,7 @@ class EmConfigurationUtility
      */
     public static function getEmConf($asObject=false)
     {
-		$settings = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class) ->get('jv_events') ;
+		$settings = GeneralUtility::makeInstance(ExtensionConfiguration::class) ->get('jv_events') ;
 
 		if (!is_array($settings)) {
 			$settings = [];
