@@ -276,7 +276,6 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * Access Start Time of this event (default TYPO3 Field ) -> this does not wrk in TYPO3 10:  int|\DateTime|NULL
-
      * @var \DateTime
      */
     protected $starttime ;
@@ -289,7 +288,6 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * End Date of this event.  var \DateTime|int does  not work in TYPO3 LTS 10
-     *
      * @var \DateTime
 
      */
@@ -297,7 +295,6 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     
     /**
      * End time of this event
-     *
      * @var int
      */
     protected $endTime = 0;

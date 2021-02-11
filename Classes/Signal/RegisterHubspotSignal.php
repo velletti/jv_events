@@ -22,6 +22,8 @@ namespace JVE\JvEvents\Signal;
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Class RegisterHubspotSignal
@@ -219,8 +221,15 @@ class RegisterHubspotSignal {
         } else {
             $Typo3_v6mail->setSubject( "JV Events Registration Debug - " . $event->getStartDate()->format("d.m.Y") . " - " . $event->getName()  );
         }
+        /** @var Typo3Version $tt */
+        $tt = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Information\Typo3Version::class ) ;
 
-        $Typo3_v6mail->setBody(nl2br( $debugmail ) , 'text/html'  );
+        if( $tt->getMajorVersion()  < 10 ) {
+            $Typo3_v6mail->setBody(nl2br( $debugmail ) , 'text/html'  );
+        } else {
+            $Typo3_v6mail->html( nl2br( $debugmail )  , 'utf-8'  );
+        }
+
         $Typo3_v6mail->send();
 
 

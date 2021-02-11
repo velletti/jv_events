@@ -24,6 +24,8 @@ namespace JVE\JvEvents\Hooks ;
  * ************************************************************* */
 
 use JVE\JvEvents\Utility\SlugUtility;
+use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class ProcessDatamap {
 
@@ -528,9 +530,17 @@ class ProcessDatamap {
                             'lgraf@allplan.com' => 'Linda G',
                         )
                     );
+                    /** @var Typo3Version $tt */
+                    $tt = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Information\Typo3Version::class ) ;
+
+                    if( $tt->getMajorVersion()  < 10 ) {
+                        $Typo3_v6mail->setBody(nl2br( $settings['SFREST']['instance_url'] . "/" . $sfResponse->id . "\n\n\n" . var_export($data , true  )  ) , 'text/html'  );
+                    } else {
+                        $Typo3_v6mail->html(nl2br( $settings['SFREST']['instance_url'] . "/" . $sfResponse->id . "\n\n\n" . var_export($data , true  )  ) , 'utf-8'  );
+                    }
+
                     $Typo3_v6mail->setSubject( "[JV Events] Campaign created  - " .  $data['Name']  );
-                    $Typo3_v6mail->setBody(nl2br( $settings['SFREST']['instance_url'] . "/" . $sfResponse->id . "\n\n\n" . var_export($data , true  )  ) , 'text/html'  );
-                    $Typo3_v6mail->send();
+                      $Typo3_v6mail->send();
                     $this->flashMessage['NOTICE'][] = 'send Info Email to : ' .var_export( $Typo3_v6mail->getTo()  , true )  ;
                 } else {
                     if ( substr( $sfResponse , 0 , 6 ) == "Error" ) {

@@ -38,6 +38,7 @@ use JVE\JvEvents\Domain\Repository\SubeventRepository;
 use JVE\JvEvents\Domain\Repository\TagRepository;
 use TYPO3\CMS\Core\Context\AspectInterface;
 use TYPO3\CMS\Core\Exception;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
 use \TYPO3\CMS\Core\Messaging\AbstractMessage ;
@@ -610,9 +611,16 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         if (!\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($this->settings['register']['senderEmail'])) {
             throw new \Exception('plugin.jv_events.settings.register.senderEmail is not a valid Email Address. Is needed as Sender E-mail');
         }
+        if( ! $this->settings['register']['senderName']) {
+            if( $this->settings['register']['sendername']) {
+                $this->settings['register']['senderName'] = $this->settings['register']['sendername'];
+            } else {
+                $this->settings['register']['senderName'] = $this->settings['register']['senderEmail'] ;
+            }
+        }
         $sender = array($this->settings['register']['senderEmail']
                         =>
-                        $this->settings['register']['sendername']
+                        $this->settings['register']['senderName']
                     );
         foreach ($recipient as $key => $value ) {
             if (!\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($key )) {
@@ -727,8 +735,16 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             }
         }
 
-        $message->setBody($emailBody, 'text/html');
-        $message->addPart($plainMsg, 'text/plain');
+        /** @var Typo3Version $tt */
+        $tt = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Information\Typo3Version::class ) ;
+        if( $tt->getMajorVersion()  < 10 ) {
+            $message->setBody($emailBody, 'text/html');
+            $message->addPart($plainMsg, 'text/plain');
+        } else {
+            $message->html($emailBody, 'utf-8');
+            $message->text($plainMsg, 'utf-8');
+        }
+
 
 
         $message->send();
@@ -754,13 +770,21 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             $message->setReturnPath($returnPath);
         }
 
-        $message->setBody(strip_tags( $plainMsg ), 'text/plain');
+        /** @var Typo3Version $tt */
+        $tt = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Information\Typo3Version::class ) ;
         if ( !$htmlMsg || $htmlMsg == '' ) {
             $htmlMsg =  nl2br( $plainMsg );
             $subject .= " - converted" ;
         }
 
-        $message->addPart( $htmlMsg , 'text/html');
+        if( $tt->getMajorVersion()  < 10 ) {
+            $message->setBody($htmlMsg, 'text/html');
+            $message->addPart($plainMsg, 'text/plain');
+        } else {
+            $message->html($htmlMsg, 'utf-8');
+            $message->text($plainMsg, 'utf-8');
+        }
+
 
         $message->setTo($recipient)
             ->setFrom($sender)

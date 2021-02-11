@@ -120,6 +120,7 @@ class CleanEventsTaskAdditionalFieldProvider extends  AbstractAdditionalFieldPro
         if (empty($storagePid) ||   filter_var($storagePid, FILTER_VALIDATE_INT) !== false  ) {
             $validStoragePid = true;
         } else {
+            // @extensionScannerIgnoreLine
             $this->addMessage(
                 //$this->getLanguageService()->sL('LLL:EXT:allplan_ke_search_extended/Resources/Private/Language/locallang_tasks.xlf:indexerTaskErrorStoragePid', true),
                 'Error Checking storagePid' ,
