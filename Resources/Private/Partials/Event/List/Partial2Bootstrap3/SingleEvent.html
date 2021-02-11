@@ -31,11 +31,7 @@
 						<f:if condition="{event.url}">
 							<f:then>
 								<f:link.typolink class="internalLink" parameter="{event.url}">
-									<div class="date">
-										<span class="day">{f:format.date(date:event.startDate, format:'d')}</span>
-										<span class="month-year"><JVE:writeDateAbbreviation month="{f:format.date(date:event.startDate, format:'m')}"></JVE:writeDateAbbreviation></span>
-										<span class="year">{event.startDate -> f:format.date(format:"Y")}</span>
-									</div>
+									{event.name}
 								</f:link.typolink>
 							</f:then>
 							<f:else>
