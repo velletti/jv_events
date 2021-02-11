@@ -57,10 +57,11 @@
 							<f:for each="{event.EventCategory}" as="EventCategory" iteration="iteration"><f:if condition="{iteration.index} > 0 ">, </f:if>{EventCategory.title}</f:for>
 						</f:if>
 						<f:if condition="{event.Tags}">
-
+							<f:if condition="{event.EventCategory}">
+								,
+							</f:if>
 								<f:for each="{event.Tags}" as="Tag" iteration="iteration"><f:if condition="{iteration.index} > 0 ">, </f:if>{Tag.name}
 								</f:for>
-
 						</f:if>
 					</div>
 					<f:if condition="{event.teaser}">
