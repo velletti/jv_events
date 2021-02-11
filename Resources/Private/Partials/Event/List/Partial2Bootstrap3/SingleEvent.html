@@ -4,19 +4,44 @@
 	<div class="panel pnel-sm panel-info p-2 ">
 			<div class="row row-fluid">
 				<div class="col-sm-2 col-xs-12">
-					<f:link.action pageUid="{settings.detailPid}" action="show" arguments="{event : event}" noCache="true" noCacheHash="true">
-						<div class="date">
-							<span class="day">{f:format.date(date:event.startDate, format:'d')}</span>
-							<span class="month-year"><JVE:writeDateAbbreviation month="{f:format.date(date:event.startDate, format:'m')}"></JVE:writeDateAbbreviation></span>
-							<span class="year">{event.startDate -> f:format.date(format:"Y")}</span>
-						</div>
-					</f:link.action>
+					<f:if condition="{event.url}">
+						<f:then>
+							<f:link.typolink class="internalLink" parameter="{event.url}">
+								<div class="date">
+									<span class="day">{f:format.date(date:event.startDate, format:'d')}</span>
+									<span class="month-year"><JVE:writeDateAbbreviation month="{f:format.date(date:event.startDate, format:'m')}"></JVE:writeDateAbbreviation></span>
+									<span class="year">{event.startDate -> f:format.date(format:"Y")}</span>
+								</div>
+							</f:link.typolink>
+						</f:then>
+						<f:else>
+							<f:link.action pageUid="{settings.detailPid}" action="show" arguments="{event : event}" noCache="true" noCacheHash="true">
+								<div class="date">
+									<span class="day">{f:format.date(date:event.startDate, format:'d')}</span>
+									<span class="month-year"><JVE:writeDateAbbreviation month="{f:format.date(date:event.startDate, format:'m')}"></JVE:writeDateAbbreviation></span>
+									<span class="year">{event.startDate -> f:format.date(format:"Y")}</span>
+								</div>
+							</f:link.action>
+						</f:else>
+					</f:if>
+
 				</div>
 				<div class="col-sm-10 col-xs-12">
 					<h4>
-						<f:link.action  pageUid="{settings.detailPid}" action="show" arguments="{event : event}"  noCache="true" noCacheHash="true">
-							{event.name}
-						</f:link.action>
+						<f:if condition="{event.url}">
+							<f:then>
+								<f:link.typolink class="internalLink" parameter="{event.url}">
+									{event.name}
+								</f:link.typolink>
+							</f:then>
+							<f:else>
+								<f:link.action  pageUid="{settings.detailPid}" action="show" arguments="{event : event}"  noCache="true" noCacheHash="true">
+									{event.name}
+								</f:link.action>
+							</f:else>
+						</f:if>
+
+
 					</h4>
 				</div>
 
@@ -32,15 +57,16 @@
 							<f:for each="{event.EventCategory}" as="EventCategory" iteration="iteration"><f:if condition="{iteration.index} > 0 ">, </f:if>{EventCategory.title}</f:for>
 						</f:if>
 						<f:if condition="{event.Tags}">
-
+							<f:if condition="{event.EventCategory}">
+								,
+							</f:if>
 								<f:for each="{event.Tags}" as="Tag" iteration="iteration"><f:if condition="{iteration.index} > 0 ">, </f:if>{Tag.name}
 								</f:for>
-
 						</f:if>
 					</div>
 					<f:if condition="{event.teaser}">
 						<div class="jv_events_teaser">
-							{event.teaser}
+							<f:format.nl2br>{event.teaser}</f:format.nl2br>
 						</div>
 					</f:if>
 

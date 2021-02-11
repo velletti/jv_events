@@ -433,7 +433,7 @@ if( class_exists('\SJBR\StaticInfoTables\Hook\Backend\Form\FormDataProvider\TcaS
             ],
             'prependSlash' => false,
             'fallbackCharacter' => '-',
-            'eval' => 'uniqueInPid',
+            'eval' => 'unique',
             'default' => 'location'
         ]
     ] ;

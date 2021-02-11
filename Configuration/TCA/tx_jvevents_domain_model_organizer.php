@@ -618,7 +618,7 @@ $returnArray = array(
             ],
             'prependSlash' => false,
             'fallbackCharacter' => '-',
-            'eval' => 'uniqueInPid',
+            'eval' => 'unique',
             'default' => 'organizer'
         ]
     ] ;
