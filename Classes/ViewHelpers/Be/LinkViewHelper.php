@@ -4,6 +4,7 @@ namespace JVE\JvEvents\ViewHelpers\Be;
 
 
 use TYPO3\CMS\Core\Exception;
+use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class LinkViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper {
@@ -73,20 +74,19 @@ class LinkViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedV
         $moduleName = str_replace( array( "module/" , "/" ) , array("" ,"_" ), trim( $returnM , "/") ) ;
         $debug[] = GeneralUtility::_GP('M')  ;
         $debug[] = GeneralUtility::_GP('route')  ;
-        $debug[] = $route ;
+        $debug[] = $returnM ;
         $debug[] = $moduleName ;
-
-       //  $returnUrl = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl( $returnM , array( $returnArray ) ) ;
 
         /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
 
         try {
-            $returnUrl = $uriBuilder->buildUriFromRoute($returnM, array( $returnArray ));
+            $returnUrlObj = $uriBuilder->buildUriFromRoute($moduleName,  $returnArray );
+            $returnUrl = $returnUrlObj->getPath() . "?" .  $returnUrlObj->getQuery() ;
         } catch (\TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException $e) {
-            $returnUrl = "exceptionInRoute__" . $returnM ;
+            $returnUrl = "exceptionInRoute__" . $moduleName ;
         }
-
+        $debug[] = $returnUrl ;
         // tx_fetool_tools_fetoolfeuserlist%5Baction%5D=listbyclass&tx_fetool_tools_fetoolfeuserlist%5Bcontroller%5D=Feuserlist
         // tx_jvevents_web_jveventseventmngt[action]=list&tx_jvevents_web_jveventseventmngt[controller]=EventBackend
 
