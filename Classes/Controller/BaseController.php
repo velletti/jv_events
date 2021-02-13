@@ -611,17 +611,34 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         if (!\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($this->settings['register']['senderEmail'])) {
             throw new \Exception('plugin.jv_events.settings.register.senderEmail is not a valid Email Address. Is needed as Sender E-mail');
         }
+        if( !$replyTo ) {
+            $replyTo = $this->settings['register']['senderEmail'] ;
+        }
+
+        $returnPath = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFromAddress();
+        if ( $returnPath == "no-reply@example.com" ) {
+            $returnPath = $this->settings['register']['senderEmail'] ;
+        } else {
+            $this->settings['register']['senderEmail'] = $returnPath ;
+        }
+
         if( ! $this->settings['register']['senderName']) {
+            // in old version sendername was written wrong .. fix this
             if( $this->settings['register']['sendername']) {
                 $this->settings['register']['senderName'] = $this->settings['register']['sendername'];
             } else {
+                // we did not find any Senders Name , use Email als From Name
                 $this->settings['register']['senderName'] = $this->settings['register']['senderEmail'] ;
             }
         }
+
         $sender = array($this->settings['register']['senderEmail']
                         =>
                         $this->settings['register']['senderName']
                     );
+
+
+
         foreach ($recipient as $key => $value ) {
             if (!\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($key )) {
                 throw new \Exception(var_export( $recipient , true ) . "( " . $key . ") " . ' is not a valid -recipient- Email Address. ');
@@ -711,13 +728,9 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         $message->setTo($recipient)
             ->setFrom($sender)
             ->setSubject($subject);
-        if( $replyTo ) {
-            $message->setReplyTo($replyTo) ;
-        }
-        $returnPath = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFromAddress();
-        if ( $returnPath != "no-reply@example.com") {
-            $message->setReturnPath($returnPath);
-        }
+
+        $message->setReplyTo($replyTo) ;
+        $message->setReturnPath($returnPath);
 
         $rootPath = \TYPO3\CMS\Core\Core\Environment::getPublicPath() ;
 
