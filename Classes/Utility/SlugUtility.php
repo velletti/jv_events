@@ -41,7 +41,7 @@ class SlugUtility {
             $counter = 0;
             while ( $counter++ < 100 ) {
                 $newValue = $proposal. '-' . $counter ;
-                if( self::isUnique( $newValue , $tableName , $fieldName , $recordData['pid'] , $recordData['uid'] , $recordData['sys_language_uid']) ) {
+                if( self::isUnique( $newValue , $tableName , $fieldName , $uniquePid, $recordData['uid'] , $recordData['sys_language_uid']) ) {
                     return  $newValue ;
                 }
             }
