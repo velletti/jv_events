@@ -55,7 +55,9 @@
 			<f:if condition="{event.Tags}">
 				<ul class="tags">
 				<f:for each="{event.Tags}" as="Tag" iteration="iteration">
-					<li>{Tag.name}</li>
+					<f:if condition="{Tag.visibility} < 2">
+						<li>{Tag.name}</li>
+					</f:if>
 				</f:for>
 				</ul>
 			</f:if>

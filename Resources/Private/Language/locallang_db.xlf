@@ -465,6 +465,21 @@
             <trans-unit id="tx_jvevents_domain_model_tag.nocopy">
                 <source>Do not copy tag</source>
             </trans-unit>
+
+            <trans-unit id="tx_jvevents_domain_model_tag.visibility">
+                <source>Visiblity</source>
+            </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_tag.visibility.default">
+                <source>Tag visibility not restricted - Default</source>
+            </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_tag.visibility.hiddenInFilter">
+                <source>This tag is not visible in Filters</source>
+            </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_tag.visibility.onlyVisibleInBackend">
+                <source>This tag is only visible in Backend - usefull to filter in plugins</source>
+            </trans-unit>
+
+
              <trans-unit id="tx_jvevents_domain_model_tag.tag_category">
                 <source>Allowed on Category</source>
             </trans-unit>

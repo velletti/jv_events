@@ -22,19 +22,25 @@
                                     
                                     <f:variable name="allowedTags"><vhs:iterator.explode glue="," content="{settings.filter.tags}" /></f:variable>
                                     <f:for each="{eventsFilter.tags2}" as="tag">
-                                        <vhs:condition.iterator.contains needle="{tag.id}" haystack="{allowedTags}" >
-                                            <label>
-                                                <input type="checkbox" id="jv_events_filter_tag-{tag.id}" checked value="{tag.id}">{tag.title}
-                                            </label>
-                                        </vhs:condition.iterator.contains>
+                                        <f:if condition="{tag.visibility} < 1">
+
+                                            <vhs:condition.iterator.contains needle="{tag.id}" haystack="{allowedTags}" >
+                                                <label>
+                                                    <input type="checkbox" id="jv_events_filter_tag-{tag.id}" checked value="{tag.id}">{tag.title}
+                                                </label>
+                                            </vhs:condition.iterator.contains>
+                                        </f:if>
+
 
                                     </f:for>
                                 </f:then>
                                 <f:else>
                                     <f:for each="{eventsFilter.tags2}" as="tag">
-                                        <label>
-                                            <input type="checkbox" id="jv_events_filter_tag-{tag.id}" value="{tag.id}">{tag.title}
-                                        </label>
+                                        <f:if condition="{tag.visibility} < 1">
+                                            <label>
+                                                <input type="checkbox" id="jv_events_filter_tag-{tag.id}" value="{tag.id}">{tag.title}
+                                            </label>
+                                        </f:if>
                                     </f:for>
                                 </f:else>
                             </f:if>
@@ -176,9 +182,14 @@
 
                         <div class="checkbox" id="jv_events_filter_tags" data-combinetags="{settings.filter.combinetags}">
                             <f:for each="{eventsFilter.tags2}" as="tag">
-                                <label>
+                                <f:variable name="tagClass">hidden d-none</f:variable>
+                                <f:if condition="{tag.visibility} < 1">
+                                    <f:variable name="tagClass"></f:variable>
+                                </f:if>
+                                <label class="{tagClass}">
                                     <input type="checkbox" id="jv_events_filter_tag-{tag.id}" value="{tag.id}">{tag.title}
                                 </label>
+
                             </f:for>
                         </div>
                     </fieldset>
@@ -304,9 +315,11 @@
 
                         <div class="checkbox d-flex row w-100 mx-1" id="jv_events_filter_tags">
                             <f:for each="{eventsFilter.tags2}" as="tag">
-                                <label class="col-6 col-md-4 col-lg-3 mx-0">
-                                    <input type="checkbox" id="jv_events_filter_tag-{tag.id}" value="{tag.id}">{tag.title}
-                                </label>
+                                <f:if condition="{tag.visibility} < 1">
+                                    <label class="col-6 col-md-4 col-lg-3 mx-0">
+                                        <input type="checkbox" id="jv_events_filter_tag-{tag.id}" value="{tag.id}">{tag.title}
+                                    </label>
+                                </f:if>
                             </f:for>
                         </div>
                     </fieldset>

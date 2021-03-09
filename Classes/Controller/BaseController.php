@@ -336,12 +336,15 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
                 foreach ($objArray as $obj ) {
                     if ( is_object($obj) ) {
                       //  if ( $filter['combinetags'] == "0" || count($filterTags) < 1 || in_array(  $obj->getUid() , $filterTags )) {
-                            $tags[$obj->getUid()] = $obj->getName() ;
-                            $tags2[$obj->getUid()] = array( "id" => $obj->getUid() , "title" => $obj->getName()  ) ;
+                            if ( $obj->getVisibility() < 1 ) {
+                                $tags[$obj->getUid()] = $obj->getName() ;
+                            }
+                            $tags2[$obj->getUid()] = array( "id" => $obj->getUid() , "title" => $obj->getName() , "visibility"  => $obj->getVisibility()) ;
                      //   }
                     }
                 }
             }
+
             $objArray =  $event->getEventCategory() ;
 
             if( is_object( $objArray)) {

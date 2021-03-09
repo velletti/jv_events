@@ -109,7 +109,7 @@
 			<div class="row">
 				<div class="col-md-3"><strong><f:translate key="tx_jvevents_domain_model_event.tags" />:</strong></div>
 				<div class="col-md-9">
-					<f:for each="{event.Tags}" as="Tag" iteration="iteration"><f:if condition="{iteration.index} > 0 ">, </f:if>{Tag.name}</f:for>
+					<f:for each="{event.Tags}" as="Tag" iteration="iteration"><f:if condition="{Tag.visibility} < 2"> {Tag.name}<f:if condition="{iteration.isLast}"><f:else>, </f:else></f:if></f:if></f:for>
 				</div>
 			</div>
 		</f:if>
