@@ -41,6 +41,13 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $name = '';
 
     /**
+     * Name Addon of the Organizer, shown in Event lists
+     *
+     * @var string
+     */
+    protected $subname = '';
+
+    /**
      * slug Name of the Location
      *
      * @var string
@@ -288,6 +295,24 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         $this->name = $name;
     }
+
+    /**
+     * @return string
+     */
+    public function getSubname(): string
+    {
+        return $this->subname;
+    }
+
+    /**
+     * @param string $subname
+     */
+    public function setSubname(string $subname): void
+    {
+        $this->subname = $subname;
+    }
+
+
     
     /**
      * Returns the email

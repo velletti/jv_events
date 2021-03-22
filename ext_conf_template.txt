@@ -108,3 +108,6 @@ clearCachePids =
 
 # cat=advanced/default/9; type=text; label=Max Tags per Event;description=If you use Frontend editing, this will be the maximum amount of tags per event. will be checked during validation
 MaxTagsPerEvent = 5
+
+# cat=advanced/default/10; type=text; label=Max Length for organizer name;description=If set, it is not possible to enter more chars as Organizer name
+MaxLengthOrgTitle = 200

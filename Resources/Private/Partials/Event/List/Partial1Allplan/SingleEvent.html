@@ -1,7 +1,7 @@
 {namespace jve=JVE\JvEvents\ViewHelpers}
 
 <div class="jv-events-singleEvent" {jve:dataAttrib( event: event )}>
-	<div class="list-item clearfix" >
+	<div class="list-item clearfix" data-comment="list-partial1allplan-singleEvent">
 
 		<div class="date clearfix">
 			<span class="day">{f:format.date(date:event.startDate, format:'d')}</span>
@@ -17,7 +17,7 @@
 								<strong>
 									{event.name}
 									<f:if condition="{event.organizer.name}">
-										<br />({event.organizer.name})
+										<br />({event.organizer.name}<f:if condition="{event.organizer.subname}"> - {event.organizer.subname}</f:if>)
 									</f:if>
 								</strong>
 								<f:if condition="{event.teaser}">
@@ -32,7 +32,7 @@
 								<strong>
 									{event.name}
 									<f:if condition="{event.organizer.name}">
-										<br />({event.organizer.name})
+										<br />({event.organizer.name}<f:if condition="{event.organizer.subname}"> - {event.organizer.subname}</f:if>)
 									</f:if>
 								</strong>
 								<f:if condition="{event.teaser}">

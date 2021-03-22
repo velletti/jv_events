@@ -173,6 +173,7 @@ CREATE TABLE tx_jvevents_domain_model_organizer (
 	pid int(11) DEFAULT '0' NOT NULL,
 
 	name varchar(255) DEFAULT '' NOT NULL,
+	subname varchar(255) DEFAULT '' NOT NULL,
 	slug varchar(2048),
 	email varchar(255) DEFAULT '' NOT NULL,
 	email_cc varchar(255) DEFAULT '' NOT NULL,
