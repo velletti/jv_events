@@ -1,7 +1,7 @@
 {namespace jve=JVE\JvEvents\ViewHelpers}
 
-<div class="jv-events-singleEvent" {jve:dataAttrib( event: event )}>
-	<div class="list-item clearfix" >
+<div class="jv-events-singleEvent {f:if(condition: event.organizer.top, then:'jv_events-top-organizer')}" {jve:dataAttrib( event: event )}>
+	<div class="list-item clearfix" data-comment="list-partial1allplan-singleEvent">
 
 		<div class="date clearfix">
 			<span class="day">{f:format.date(date:event.startDate, format:'d')}</span>
@@ -17,7 +17,7 @@
 								<strong>
 									{event.name}
 									<f:if condition="{event.organizer.name}">
-										<br />({event.organizer.name})
+										<br />({event.organizer.name}<f:if condition="{event.organizer.subname}"> - {event.organizer.subname}</f:if>)
 									</f:if>
 								</strong>
 								<f:if condition="{event.teaser}">
@@ -32,7 +32,7 @@
 								<strong>
 									{event.name}
 									<f:if condition="{event.organizer.name}">
-										<br />({event.organizer.name})
+										<br />({event.organizer.name}<f:if condition="{event.organizer.subname}"> - {event.organizer.subname}</f:if>)
 									</f:if>
 								</strong>
 								<f:if condition="{event.teaser}">
@@ -55,7 +55,9 @@
 			<f:if condition="{event.Tags}">
 				<ul class="tags">
 				<f:for each="{event.Tags}" as="Tag" iteration="iteration">
-					<li>{Tag.name}</li>
+					<f:if condition="{Tag.visibility} < 2">
+						<li>{Tag.name}</li>
+					</f:if>
 				</f:for>
 				</ul>
 			</f:if>

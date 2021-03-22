@@ -41,6 +41,13 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $name = '';
 
     /**
+     * Name Addon of the Organizer, shown in Event lists
+     *
+     * @var string
+     */
+    protected $subname = '';
+
+    /**
      * slug Name of the Location
      *
      * @var string
@@ -56,6 +63,12 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     protected $email = '';
 
+    /**
+     * mark this organizer as TOP  (to be able to filter, place special CSS code etc.)
+     *
+     * @var int
+     */
+    protected $top = 0;
 
     /**
      * Please enter one or more valid Email Addresses.
@@ -288,6 +301,24 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         $this->name = $name;
     }
+
+    /**
+     * @return string
+     */
+    public function getSubname(): string
+    {
+        return $this->subname;
+    }
+
+    /**
+     * @param string $subname
+     */
+    public function setSubname(string $subname): void
+    {
+        $this->subname = $subname;
+    }
+
+
     
     /**
      * Returns the email
@@ -823,6 +854,23 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         $this->youtubeLink = $youtubeLink;
     }
+
+    /**
+     * @return int
+     */
+    public function getTop(): int
+    {
+        return $this->top;
+    }
+
+    /**
+     * @param int $top
+     */
+    public function setTop(int $top): void
+    {
+        $this->top = $top;
+    }
+
 
 
 

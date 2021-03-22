@@ -55,13 +55,13 @@ class Registrant extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * Access Start Time of this event (default TYP3 Field )
-     * @var int|\DateTime|null
+     * @var \DateTime
      */
     protected $starttime ;
 
     /**
      * Access End Time of this event (default TYP3 Field )
-     * @var int|\DateTime|null
+     * @var \DateTime
      */
     protected $endtime ;
 

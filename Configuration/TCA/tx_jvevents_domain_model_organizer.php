@@ -19,17 +19,17 @@ $returnArray = array(
 			'starttime' => 'starttime',
 			'endtime' => 'endtime',
 		),
-		'searchFields' => 'name,email,email_cc,phone,sales_force_user_id,sales_force_user_id2,images,description,organizer_category,registration_info,slug,',
+		'searchFields' => 'name,subname,email,email_cc,phone,sales_force_user_id,sales_force_user_id2,images,description,organizer_category,registration_info,slug,',
 		'iconfile' =>  'EXT:jv_events/Resources/Public/Icons/tx_jvevents_domain_model_organizer.gif'
 	),
 	'interface' => array(
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, email, email_cc, link, phone, sales_force_user_id,sales_force_user_id2, sales_force_user_org,images, description, organizer_category, tags,registration_info,charity_link,slug, youtube_link',
+		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, subname, email, email_cc, link, phone, sales_force_user_id,sales_force_user_id2, sales_force_user_org,images, description, organizer_category, tags,registration_info,charity_link,slug, youtube_link',
 	),
 	'types' => array(
 		'1' => array('showitem' => '--palette--;;data, --div--;Relations, --palette--;;relations, --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, --palette--;;access,'),
 	),
 	'palettes' => array(
-		'data' => array('showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, --linebreak--,name, --linebreak--,slug, --linebreak--,email, --linebreak--,email_cc,--linebreak--,link, --linebreak--,charity_link, --linebreak--,phone, --linebreak--,sales_force_user_id,  --linebreak--, sales_force_user_id2, sales_force_user_org,--linebreak--,description,--linebreak--,registration_info,'),
+		'data' => array('showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, --linebreak--, top , --linebreak--, name, --linebreak--,subname,--linebreak--,slug, --linebreak--,email, --linebreak--,email_cc,--linebreak--,link, --linebreak--,charity_link, --linebreak--,phone, --linebreak--,sales_force_user_id,  --linebreak--, sales_force_user_id2, sales_force_user_org,--linebreak--,description,--linebreak--,registration_info,'),
 		'relations' => array('showitem' => 'teaser_image, --linebreak--,images,  --linebreak--,youtube_link , --linebreak--,organizer_category, --linebreak--, tags,'),
 	    'access' => array('showitem' => ' starttime, endtime, --linebreak--,access_users,--linebreak--, access_groups,')
     ),
@@ -37,22 +37,22 @@ $returnArray = array(
 
 		'sys_language_uid' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.language',
+			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
 			'config' => array(
 				'type' => 'select',
 				'renderType' => 'selectSingle',
 				'foreign_table' => 'sys_language',
 				'foreign_table_where' => 'ORDER BY sys_language.title',
 				'items' => array(
-					array('LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', -1),
-					array('LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.default_value', 0)
+					array('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', -1),
+					array('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.default_value', 0)
 				),
 			),
 		),
 		'l10n_parent' => array(
 			'displayCond' => 'FIELD:sys_language_uid:>:0',
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
+			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
 			'config' => array(
 				'type' => 'select',
 				'renderType' => 'selectSingle',
@@ -71,7 +71,7 @@ $returnArray = array(
 		
 		
 		't3ver_label' => array(
-			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.versionLabel',
+			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.versionLabel',
 			'config' => array(
 				'type' => 'input',
 				'size' => 30,
@@ -81,14 +81,14 @@ $returnArray = array(
 	
 		'hidden' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
+			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
 			'config' => array(
 				'type' => 'check',
 			),
 		),
 		'starttime' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
+			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
 			'config' => array(
 				'type' => 'input',
                 'renderType' => 'inputDateTime',
@@ -106,7 +106,7 @@ $returnArray = array(
 		),
 		'endtime' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
+			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
 			'config' => array(
 				'type' => 'input',
                 'renderType' => 'inputDateTime',
@@ -124,7 +124,7 @@ $returnArray = array(
 		),
         'crdate' => array(
             'exclude' => 1,
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.crdate',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.crdate',
             'config' => array(
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
@@ -139,14 +139,14 @@ $returnArray = array(
         ),
         'tstamp' => array(
             'exclude' => 1,
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.tstamp',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.tstamp',
             'config' => array(
                 'type' => 'passthrough',
             ),
         ),
         'sorting' => array(
             'exclude' => 1,
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.sorting',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.sorting',
             'config' => array(
                 'type' => 'passthrough',
             ),
@@ -163,6 +163,22 @@ $returnArray = array(
 				'eval' => 'trim,required'
 			),
 		),
+        'subname' => array(
+            'exclude' => 0,
+            'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_organizer.subname',
+            'config' => array(
+                'type' => 'input',
+                'size' => 30,
+                'eval' => 'trim'
+            ),
+        ),
+        'top' => array(
+            'exclude' => 1,
+            'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_organizer.top',
+            'config' => array(
+                'type' => 'check',
+            ),
+        ),
 		'email' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_organizer.email',
@@ -618,23 +634,28 @@ $returnArray = array(
             ],
             'prependSlash' => false,
             'fallbackCharacter' => '-',
-            'eval' => 'uniqueInPid',
+            'eval' => 'unique',
             'default' => 'organizer'
         ]
     ] ;
 
 $configuration = \JVE\JvEvents\Utility\EmConfigurationUtility::getEmConf();
 
-if ( ! $configuration['hasLoginUser'] == 1 ) {
+if ( $configuration['hasLoginUser'] != 1 ) {
     unset($returnArray['columns']['access'] ) ;
     unset($returnArray['columns']['registration_access'] ) ;
 }
 
-if ( ! $configuration['enableSalesForce'] == 1 ) {
+if ( $configuration['enableSalesForce'] != 1 && $configuration['enableHubspot'] != 1  ) {
     unset($returnArray['columns']['sales_force_user_id'] ) ;
     unset($returnArray['columns']['sales_force_user_id2'] ) ;
     unset($returnArray['columns']['sales_force_user_org'] ) ;
 }
+
+if ( intval( $configuration['MaxLengthOrgTitle'] ) > 1 ) {
+    $returnArray['columns']['name']['config']['max'] =  intval( $configuration['MaxLengthOrgTitle'] )  ;
+}
+
 // needed to direct Mail
 $returnArray['columns']['module_sys_dmail_category'] = array (
     'exclude' => 1,

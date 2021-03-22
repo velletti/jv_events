@@ -3,6 +3,8 @@
 namespace JVE\JvEvents\ViewHelpers\Be;
 
 
+use TYPO3\CMS\Core\Exception;
+use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class LinkViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper {
@@ -68,29 +70,32 @@ class LinkViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedV
         if( $_GET['route']) {
             $returnM = $_GET['route'] ;
         }
-       //  $returnUrl = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl( $returnM , array( $returnArray ) ) ;
-        /* *** not needed in LTS 8 - in LTS 9 strange effekt .. remove it when using URI Builder and LTS 8 support is dropped***/
+        //  Routing in LTS 9 is without /module, but / at the end    | LTS 10 "/module" at beginning, but no / at the end
+        $moduleName = str_replace( array( "module/" , "/" ) , array("" ,"_" ), trim( $returnM , "/") ) ;
+        $debug[] = GeneralUtility::_GP('M')  ;
+        $debug[] = GeneralUtility::_GP('route')  ;
+        $debug[] = $returnM ;
+        $debug[] = $moduleName ;
 
         /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
 
         try {
-            $returnUrl = $uriBuilder->buildUriFromRoute($returnM, array( $returnArray ));
+            $returnUrlObj = $uriBuilder->buildUriFromRoute($moduleName,  $returnArray );
+            $returnUrl = $returnUrlObj->getPath() . "?" .  $returnUrlObj->getQuery() ;
         } catch (\TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException $e) {
-            // no route registered, use the fallback logic to check for a module
-            $returnUrl = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl( $returnM , array( $returnArray ) ) ;
-            $returnUrl = str_replace( "0%5Bid%5D=" , "id=" , $returnUrl ) ;
+            $returnUrl = "exceptionInRoute__" . $moduleName ;
         }
-           // tx_fetool_tools_fetoolfeuserlist%5Baction%5D=listbyclass&tx_fetool_tools_fetoolfeuserlist%5Bcontroller%5D=Feuserlist
+        $debug[] = $returnUrl ;
+        // tx_fetool_tools_fetoolfeuserlist%5Baction%5D=listbyclass&tx_fetool_tools_fetoolfeuserlist%5Bcontroller%5D=Feuserlist
         // tx_jvevents_web_jveventseventmngt[action]=list&tx_jvevents_web_jveventseventmngt[controller]=EventBackend
 
         try {
             $uri = $uriBuilder->buildUriFromRoute('record_edit', array( 'edit['. $table . '][' . $uid . ']' => 'edit' ,'returnUrl' => $returnUrl )) ;
         } catch (\TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException $e) {
             // no route registered, use the fallback logic to check for a module
-            $uri = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('record_edit', array( 'edit['. $table . '][' . $uid . ']' => 'edit' ,'returnUrl' => $returnUrl )) ;
+            $uri = "exceptionInRoute__record_edit"  ;
         }
-
 
         $this->tag->setTagName("a") ;
 

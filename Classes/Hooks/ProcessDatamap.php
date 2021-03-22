@@ -24,6 +24,8 @@ namespace JVE\JvEvents\Hooks ;
  * ************************************************************* */
 
 use JVE\JvEvents\Utility\SlugUtility;
+use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class ProcessDatamap {
 
@@ -165,10 +167,12 @@ class ProcessDatamap {
                     } else {
                         $accessEnd = $this->event->getAccessEndtime() ;
                     }
-
-                    if ( $accessEnd->getTimestamp() < time() && $accessEnd->getTimestamp() > 0 ) {
-                        $this->flashMessage['WARNING'][] = 'Event visibility END date is in the past: ' .  $accessEnd->format("d.m.Y - H:i") ;
+                    if( $accessEnd ) {
+                        if ( $accessEnd->getTimestamp() < time() && $accessEnd->getTimestamp() > 0 ) {
+                            $this->flashMessage['WARNING'][] = 'Event visibility END date is in the past: ' .  $accessEnd->format("d.m.Y - H:i") ;
+                        }
                     }
+
 
                     if ($this->event->getWithRegistration()   ) {
 
@@ -212,8 +216,10 @@ class ProcessDatamap {
                                 $this->flashMessage['ERROR'][] = 'Registration Until date is not set!' ;
                                 $allowedError ++ ;
                             } else {
-                                if ($this->event->getRegistrationUntil()->getTimestamp()  < time()  ) {
-                                    $this->flashMessage['ERROR'][] = 'Registration Until date is in the Past!' ;
+                                if( $this->event->getRegistrationUntil() instanceof \DateTime ) {
+                                    if ($this->event->getRegistrationUntil()->getTimestamp()  < time()  ) {
+                                        $this->flashMessage['ERROR'][] = 'Registration Until date is in the Past!' ;
+                                    }
                                 }
                             }
                         }
@@ -459,7 +465,7 @@ class ProcessDatamap {
              $data['OwnerId'] ;
 
         }
-
+        $data['ExtendMemberAccess__c'] = true ;
 
         // a possible fallback during tests :
         //    $data['OwnerId']  = "0051w000000rsfAAAQ" ;  // that is the ID (on DEV !) of the user: allplan-dev-api@allplan.com
@@ -524,9 +530,17 @@ class ProcessDatamap {
                             'lgraf@allplan.com' => 'Linda G',
                         )
                     );
+                    /** @var Typo3Version $tt */
+                    $tt = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Information\Typo3Version::class ) ;
+
+                    if( $tt->getMajorVersion()  < 10 ) {
+                        $Typo3_v6mail->setBody(nl2br( $settings['SFREST']['instance_url'] . "/" . $sfResponse->id . "\n\n\n" . var_export($data , true  )  ) , 'text/html'  );
+                    } else {
+                        $Typo3_v6mail->html(nl2br( $settings['SFREST']['instance_url'] . "/" . $sfResponse->id . "\n\n\n" . var_export($data , true  )  ) , 'utf-8'  );
+                    }
+
                     $Typo3_v6mail->setSubject( "[JV Events] Campaign created  - " .  $data['Name']  );
-                    $Typo3_v6mail->setBody(nl2br( $settings['SFREST']['instance_url'] . "/" . $sfResponse->id . "\n\n\n" . var_export($data , true  )  ) , 'text/html'  );
-                    $Typo3_v6mail->send();
+                      $Typo3_v6mail->send();
                     $this->flashMessage['NOTICE'][] = 'send Info Email to : ' .var_export( $Typo3_v6mail->getTo()  , true )  ;
                 } else {
                     if ( substr( $sfResponse , 0 , 6 ) == "Error" ) {

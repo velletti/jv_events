@@ -4,12 +4,7 @@
 namespace JVE\JvEvents\Utility;
 
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\DataHandling\Model\RecordState;
-use TYPO3\CMS\Core\DataHandling\Model\RecordStateFactory;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
-use TYPO3\CMS\Core\Exception\SiteNotFoundException;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class SlugUtility {
@@ -31,17 +26,22 @@ class SlugUtility {
         }
         $evalInfo = !empty($fieldConfig['eval']) ? GeneralUtility::trimExplode(',', $fieldConfig['eval'], true) : [];
         $hasToBeUniqueInPid = in_array('uniqueInPid', $evalInfo, true);
+        $hasToBeUniqueInSite = in_array('uniqueInSite', $evalInfo, true);
 
         /** @var SlugHelper $slug */
         $slug = GeneralUtility::makeInstance(SlugHelper::class, $tableName, $fieldName, $fieldConfig);
         $proposal = $slug->generate($recordData, $recordData['pid']);
+        $uniquePid = 0 ;
+        if ($hasToBeUniqueInPid) {
+            $uniquePid = $recordData['pid'] ;
+        }
 
-        if ($hasToBeUniqueInPid && ! self::isUniqueInPid( $proposal , $tableName , $fieldName , $recordData['pid'] , $recordData['uid'] , $recordData['sys_language_uid'])) {
+        if (!self::isUnique( $proposal , $tableName , $fieldName , $uniquePid , $recordData['uid'] , $recordData['sys_language_uid'])) {
 
             $counter = 0;
             while ( $counter++ < 100 ) {
                 $newValue = $proposal. '-' . $counter ;
-                if( self::isUniqueInPid( $newValue , $tableName , $fieldName , $recordData['pid'] , $recordData['uid'] , $recordData['sys_language_uid']) ) {
+                if( self::isUnique( $newValue , $tableName , $fieldName , $uniquePid, $recordData['uid'] , $recordData['sys_language_uid']) ) {
                     return  $newValue ;
                 }
             }
@@ -51,7 +51,7 @@ class SlugUtility {
     }
 
     /**
-     * Checks if there are other records with the same slug that are located on the same PID.
+     * Checks if there are other records with the same slug that are located on the same PID or in db table if pid = 0
      *
      * @param string $slug
      * @param string $tableName
@@ -61,7 +61,7 @@ class SlugUtility {
      * @param integer $languageId
      * @return bool
      */
-     public static function isUniqueInPid(string $slug, $tableName , $field , $pageId , $recordId , $languageId ): bool    {
+     public static function isUnique(string $slug, string $tableName , string $field , int $pageId , int $recordId , int $languageId): bool    {
         /** @var \TYPO3\CMS\Core\Database\ConnectionPool $connectionPool */
         $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
 

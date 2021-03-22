@@ -73,7 +73,8 @@ plugin.tx_jvevents_events {
 		security.filter {
 		    maxDays = 90
 		}
-
+		# Fallback Layout for Register Emails if nothing set
+		LayoutRegister = 2Megra
 		register {
             layouts {
                 1Allplan = Normal Event Registration

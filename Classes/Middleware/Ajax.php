@@ -41,6 +41,7 @@ class Ajax implements MiddlewareInterface
             /** @var AjaxUtility $ajaxUtility */
             $ajaxUtility = GeneralUtility::makeInstance('JVE\JvEvents\Utility\AjaxUtility') ;
 
+            // ToDo generate Output as before in ajax Controller here in Middleware with CORE features.
             $controller = $ajaxUtility->initController($_gp , $function ) ;
             $controller->initializeRepositorys() ;
 

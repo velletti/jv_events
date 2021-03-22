@@ -32,8 +32,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Extbase\Annotation as Extbase;
-
 
 /**
  * RegistrantController
@@ -376,6 +374,20 @@ class RegistrantController extends BaseController
                 $registrant->setLastName($GLOBALS['TSFE']->fe_user->user['last_name']);
                 $registrant->setEmail($GLOBALS['TSFE']->fe_user->user['email']);
                 $registrant->setPhone($GLOBALS['TSFE']->fe_user->user['telephone']);
+                $registrant->setTitle($GLOBALS['TSFE']->fe_user->user['title']);
+                $registrant->setCity($GLOBALS['TSFE']->fe_user->user['city']);
+                $registrant->setZip($GLOBALS['TSFE']->fe_user->user['zip']);
+                $registrant->setCountry($GLOBALS['TSFE']->fe_user->user['country']);
+                if( array_key_exists( 'tx_nem_firstname' , $GLOBALS['TSFE']->fe_user->user )) {
+                    $registrant->setFirstName($GLOBALS['TSFE']->fe_user->user['tx_nem_firstname']);
+                    $registrant->setLastName($GLOBALS['TSFE']->fe_user->user['tx_nem_lastname']);
+
+                    $registrant->setProfession($GLOBALS['TSFE']->fe_user->user['tx_nem_profession']);
+                    $registrant->setCompany($GLOBALS['TSFE']->fe_user->user['tx_nem_company']);
+                  //  $registrant->setDepartment($GLOBALS['TSFE']->fe_user->user['tx_nem_department']);
+                    $registrant->setCustomerId($GLOBALS['TSFE']->fe_user->user['tx_nem_cnum']);
+                    $registrant->setStreetAndNr($GLOBALS['TSFE']->fe_user->user['tx_nem_street_and_nr']);
+                }
             }
         }
 

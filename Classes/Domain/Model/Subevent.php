@@ -64,7 +64,8 @@ class Subevent extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
     /**
      * Access Start Time of this event (default TYP3 Field )
-     * @var int|\DateTime|null
+     * Access Start Time of this event (default TYPO3 Field ) -> this does not wrk in TYPO3 10:  int|\DateTime|NULL
+     * @var \DateTime
      */
     protected $starttime ;
 

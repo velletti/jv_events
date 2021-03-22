@@ -1372,7 +1372,7 @@ if ( $configuration['Registrationid'] > 0 ) {
             ],
             'prependSlash' => false,
             'fallbackCharacter' => '-',
-            'eval' => 'uniqueInPid',
+            'eval' => 'unique',
             'default' => 'event'
         ]
     ] ;

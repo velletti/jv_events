@@ -173,11 +173,12 @@ CREATE TABLE tx_jvevents_domain_model_organizer (
 	pid int(11) DEFAULT '0' NOT NULL,
 
 	name varchar(255) DEFAULT '' NOT NULL,
+	subname varchar(255) DEFAULT '' NOT NULL,
 	slug varchar(2048),
 	email varchar(255) DEFAULT '' NOT NULL,
 	email_cc varchar(255) DEFAULT '' NOT NULL,
 	link varchar(255) DEFAULT '' NOT NULL,
-
+    top tinyint(1) unsigned DEFAULT '0' NOT NULL,
 	charity_link varchar(255) DEFAULT '' NOT NULL,
 	youtube_link varchar(255) DEFAULT '' NOT NULL,
 
@@ -431,6 +432,7 @@ CREATE TABLE tx_jvevents_domain_model_tag (
 	type int(11) DEFAULT '0' NOT NULL,
 	tag_category int(11) unsigned DEFAULT '0' NOT NULL,
 	nocopy tinyint(4) unsigned DEFAULT '0' NOT NULL,
+    visibility tinyint(4) unsigned DEFAULT '0' NOT NULL,
 
 	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
 	crdate int(11) unsigned DEFAULT '0' NOT NULL,

@@ -38,6 +38,7 @@ use JVE\JvEvents\Domain\Repository\SubeventRepository;
 use JVE\JvEvents\Domain\Repository\TagRepository;
 use TYPO3\CMS\Core\Context\AspectInterface;
 use TYPO3\CMS\Core\Exception;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
 use \TYPO3\CMS\Core\Messaging\AbstractMessage ;
@@ -335,12 +336,15 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
                 foreach ($objArray as $obj ) {
                     if ( is_object($obj) ) {
                       //  if ( $filter['combinetags'] == "0" || count($filterTags) < 1 || in_array(  $obj->getUid() , $filterTags )) {
-                            $tags[$obj->getUid()] = $obj->getName() ;
-                            $tags2[$obj->getUid()] = array( "id" => $obj->getUid() , "title" => $obj->getName()  ) ;
+                            if ( $obj->getVisibility() < 1 ) {
+                                $tags[$obj->getUid()] = $obj->getName() ;
+                            }
+                            $tags2[$obj->getUid()] = array( "id" => $obj->getUid() , "title" => $obj->getName() , "visibility"  => $obj->getVisibility()) ;
                      //   }
                     }
                 }
             }
+
             $objArray =  $event->getEventCategory() ;
 
             if( is_object( $objArray)) {
@@ -559,12 +563,15 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             $partialPaths = array( 0 => \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName( "typo3conf/ext/jv_events/Resources/Private/Partials" ) ) ;
         }
         if (isset($extbaseFrameworkConfiguration['view']['layoutRootPaths']) && is_array($extbaseFrameworkConfiguration['view']['layoutRootPaths'])) {
-
             $layoutPaths = $extbaseFrameworkConfiguration['view']['layoutRootPaths'];
         } else {
             $layoutPaths =  array( 0 => \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName( "typo3conf/ext/jv_events/Resources/Private/Layouts" )) ;
         }
-
+        # Jan 2021 : as we want to use same email layout in frontend as in backend, we need to remove "/Backend" from layout path
+        #
+        foreach ( $layoutPaths as $key => $layoutPath ) {
+            $layoutPaths[$key] = str_replace("/Backend" , "" , $layoutPath ) ;
+        }
         if ( $templatePath == '') {
 
 			if (isset($extbaseFrameworkConfiguration['view']['templateRootPath']) && strlen($extbaseFrameworkConfiguration['view']['templateRootPath']) > 0) {
@@ -607,10 +614,33 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         if (!\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($this->settings['register']['senderEmail'])) {
             throw new \Exception('plugin.jv_events.settings.register.senderEmail is not a valid Email Address. Is needed as Sender E-mail');
         }
+        if( !$replyTo ) {
+            $replyTo = $this->settings['register']['senderEmail'] ;
+        }
+
+        $returnPath = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFromAddress();
+        if ( $returnPath == "no-reply@example.com" ) {
+            $returnPath = $this->settings['register']['senderEmail'] ;
+        } else {
+            $this->settings['register']['senderEmail'] = $returnPath ;
+        }
+
+        if( ! $this->settings['register']['senderName']) {
+            // in old version sendername was written wrong .. fix this
+            if( $this->settings['register']['sendername']) {
+                $this->settings['register']['senderName'] = $this->settings['register']['sendername'];
+            } else {
+                // we did not find any Senders Name , use Email als From Name
+                $this->settings['register']['senderName'] = $this->settings['register']['senderEmail'] ;
+            }
+        }
+
         $sender = array($this->settings['register']['senderEmail']
-        =>
-            $this->settings['register']['sendername']
-        );
+                        =>
+                        $this->settings['register']['senderName']
+                    );
+
+
 
         foreach ($recipient as $key => $value ) {
             if (!\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($key )) {
@@ -701,13 +731,9 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         $message->setTo($recipient)
             ->setFrom($sender)
             ->setSubject($subject);
-        if( $replyTo ) {
-            $message->setReplyTo($replyTo) ;
-        }
-        $returnPath = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFromAddress();
-        if ( $returnPath != "no-reply@example.com") {
-            $message->setReturnPath($returnPath);
-        }
+
+        $message->setReplyTo($replyTo) ;
+        $message->setReturnPath($returnPath);
 
         $rootPath = \TYPO3\CMS\Core\Core\Environment::getPublicPath() ;
 
@@ -725,8 +751,16 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             }
         }
 
-        $message->setBody($emailBody, 'text/html');
-        $message->addPart($plainMsg, 'text/plain');
+        /** @var Typo3Version $tt */
+        $tt = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Information\Typo3Version::class ) ;
+        if( $tt->getMajorVersion()  < 10 ) {
+            $message->setBody($emailBody, 'text/html');
+            $message->addPart($plainMsg, 'text/plain');
+        } else {
+            $message->html($emailBody, 'utf-8');
+            $message->text($plainMsg, 'utf-8');
+        }
+
 
 
         $message->send();
@@ -752,13 +786,21 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             $message->setReturnPath($returnPath);
         }
 
-        $message->setBody(strip_tags( $plainMsg ), 'text/plain');
+        /** @var Typo3Version $tt */
+        $tt = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Information\Typo3Version::class ) ;
         if ( !$htmlMsg || $htmlMsg == '' ) {
             $htmlMsg =  nl2br( $plainMsg );
             $subject .= " - converted" ;
         }
 
-        $message->addPart( $htmlMsg , 'text/html');
+        if( $tt->getMajorVersion()  < 10 ) {
+            $message->setBody($htmlMsg, 'text/html');
+            $message->addPart($plainMsg, 'text/plain');
+        } else {
+            $message->html($htmlMsg, 'utf-8');
+            $message->text($plainMsg, 'utf-8');
+        }
+
 
         $message->setTo($recipient)
             ->setFrom($sender)
