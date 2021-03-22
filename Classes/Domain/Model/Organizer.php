@@ -63,6 +63,12 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     protected $email = '';
 
+    /**
+     * mark this organizer as TOP  (to be able to filter, place special CSS code etc.)
+     *
+     * @var int
+     */
+    protected $top = 0;
 
     /**
      * Please enter one or more valid Email Addresses.
@@ -848,6 +854,23 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         $this->youtubeLink = $youtubeLink;
     }
+
+    /**
+     * @return int
+     */
+    public function getTop(): int
+    {
+        return $this->top;
+    }
+
+    /**
+     * @param int $top
+     */
+    public function setTop(int $top): void
+    {
+        $this->top = $top;
+    }
+
 
 
 

@@ -342,6 +342,9 @@
             <trans-unit id="tx_jvevents_domain_model_organizer.subname">
                 <source>Name (second line)</source>
             </trans-unit>
+             <trans-unit id="tx_jvevents_domain_model_organizer.top">
+                <source>Top</source>
+            </trans-unit>
             <trans-unit id="tx_jvevents_domain_model_organizer.organizer_category">
                 <source>Organizer Category</source>
             </trans-unit>

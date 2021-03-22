@@ -178,7 +178,7 @@ CREATE TABLE tx_jvevents_domain_model_organizer (
 	email varchar(255) DEFAULT '' NOT NULL,
 	email_cc varchar(255) DEFAULT '' NOT NULL,
 	link varchar(255) DEFAULT '' NOT NULL,
-
+    top tinyint(1) unsigned DEFAULT '0' NOT NULL,
 	charity_link varchar(255) DEFAULT '' NOT NULL,
 	youtube_link varchar(255) DEFAULT '' NOT NULL,
 
