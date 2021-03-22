@@ -29,6 +29,9 @@ class Ajax implements MiddlewareInterface
         RequestHandlerInterface $handler
     ): ResponseInterface {
         $_gp = $request->getQueryParams();
+        // examples:
+        // https://wwwv10.allplan.com.ddev.site/?id=110&L=1&tx_jvevents_ajax[event]=4308&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[mode]=onlyValues
+        // https://tangov10.ddev.site/?id=110&L=1&tx_jvevents_ajax[event]=4308&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[mode]=onlyValues
 
         if( is_array($_gp) && key_exists("tx_jvevents_ajax" ,$_gp ) && key_exists("controller" ,$_gp['tx_jvevents_ajax'] ) ) {
             $GLOBALS['TSFE']->set_no_cache();
@@ -38,7 +41,6 @@ class Ajax implements MiddlewareInterface
             /** @var AjaxUtility $ajaxUtility */
             $ajaxUtility = GeneralUtility::makeInstance('JVE\JvEvents\Utility\AjaxUtility') ;
 
-            // ToDo generate Output as before in ajax Controller here in Middleware with CORE features.
             $controller = $ajaxUtility->initController($_gp , $function ) ;
             $controller->initializeRepositorys() ;
 

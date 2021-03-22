@@ -4,6 +4,7 @@
 namespace JVE\JvEvents\Utility;
 
 
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -17,13 +18,16 @@ class AjaxUtility {
 
     /**
      * @param array $_gp
+     * @param string $function
      * @return \JVE\JvEvents\Controller\AjaxController
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException
      */
     public function initController(array $_gp , $function ) {
         /** @var \JVE\JvEvents\Controller\AjaxController $controller */
         $controller = GeneralUtility::makeInstance('JVE\JvEvents\Controller\AjaxController' ) ;
 
         $controller->initializeAction() ;
+
         /* First: move request parameter to Controller variables */
         if( key_exists('mode' , $_gp)) {
             $controller->mode = $_gp['mode'] ;
@@ -59,6 +63,9 @@ class AjaxUtility {
         $controller->standaloneView->setLayoutRootPaths(array( 0 => ExtensionManagementUtility::extPath('jv_events') . 'Resources/Private/Layouts'  ));
         $controller->standaloneView->setPartialRootPaths(array( 0 => ExtensionManagementUtility::extPath('jv_events') . 'Resources/Private/Partials' ));
 
+
+
+        
         return $controller ;
     }
 

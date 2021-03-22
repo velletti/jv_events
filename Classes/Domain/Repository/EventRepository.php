@@ -267,9 +267,9 @@ class EventRepository extends BaseRepository
                         $endDate->modify("+" . intval( $settings['filter']['maxDays']-1) . " Days" ) ;
 
                     } else {
-
-                        $startDate = new DateTime( 'NOW ' . $settings['filter']['startDate'] . ' Days' , $DateTimeZone) ;
-                        $endDate = new DateTime( 'NOW +' . (intval ($settings['filter']['startDate'] )). ' Days' , $DateTimeZone) ;
+                        $sd = $settings['filter']['startDate'] ? $settings['filter']['startDate'] : "0" ;
+                        $startDate = new DateTime( 'NOW ' . $sd . ' Days' , $DateTimeZone) ;
+                        $endDate = new DateTime( 'NOW +' . (intval ($sd )). ' Days' , $DateTimeZone) ;
 
                         $endDate->modify("+" . intval( $settings['filter']['maxDays'] -1) . " Days" ) ;
 
