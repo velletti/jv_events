@@ -39,7 +39,7 @@ $returnArray = array(
 		   price,currency,--linebreak--,--palette--;LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.priceReducedHeader;priceReduced,
 		--div--;Relations, --palette--;;relations,
 		--div--;Files, teaser_image, files, files_after_reg, files_after_event,
-		--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, --palette--;;access,'),
+		--div--;LLL:EXT:core/Resources/Private/Language/locallang_ttc.xlf:tabs.access, --palette--;;access,'),
 		'2' => array('showitem' => 'event_type,--palette--;;dates,--palette--;LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.entry_time_help;entryTime,
 		   --palette--;;infos,description,
 		--div--;Advanced, --palette--;;language, --palette--;;advanced, --palette--;;frequent,
@@ -49,7 +49,7 @@ $returnArray = array(
 		--div--;Registration, --palette--;;register,
 		--div--;Notifications, --palette--;;notification, --palette--;Email;notifyOrg, --palette--;Email;notifyReg,
 		--div--;Old, --palette--;;old,
-		--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, --palette--;;access,'),
+		--div--;LLL:EXT:core/Resources/Private/Language/locallang_ttc.xlf:tabs.access, --palette--;;access,'),
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),
@@ -73,22 +73,22 @@ $returnArray = array(
 	
 		'sys_language_uid' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.language',
+			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
 			'config' => array(
 				'type' => 'select',
 				'renderType' => 'selectSingle',
 				'foreign_table' => 'sys_language',
 				'foreign_table_where' => 'ORDER BY sys_language.title',
 				'items' => array(
-					array('LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', -1),
-					array('LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.default_value', 0)
+					array('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', -1),
+					array('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.default_value', 0)
 				),
 			),
 		),
 		'l10n_parent' => array(
 			'displayCond' => 'FIELD:sys_language_uid:>:0',
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
+			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
 			'config' => array(
 				'type' => 'select',
 				'renderType' => 'selectSingle',
@@ -114,7 +114,7 @@ $returnArray = array(
         ),
 		
 		't3ver_label' => array(
-			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.versionLabel',
+			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.versionLabel',
 			'config' => array(
 				'type' => 'input',
 				'size' => 30,
@@ -124,7 +124,7 @@ $returnArray = array(
 	
 		'hidden' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
+			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
 			'config' => array(
 				'type' => 'check',
 			),
@@ -159,7 +159,7 @@ $returnArray = array(
         ),
 		'starttime' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
+			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
 			'config' => array(
 				'type' => 'input',
                 'renderType' => 'inputDateTime' ,
@@ -175,7 +175,7 @@ $returnArray = array(
 		),
 		'endtime' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
+			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
 			'config' => array(
 				'type' => 'input',
                 'renderType' => 'inputDateTime' ,
@@ -607,15 +607,15 @@ $returnArray = array(
 				'maxitems' => 20,
 				'items' => array(
 					array(
-						'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.hide_at_login',
+						'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hide_at_login',
 						-1
 					),
 					array(
-						'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.any_login',
+						'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.any_login',
 						-2
 					),
 					array(
-						'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.usergroups',
+						'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.usergroups',
 						'--div--'
 					)
 				),
@@ -752,15 +752,15 @@ $returnArray = array(
 				'maxitems' => 20,
 				'items' => array(
 					array(
-						'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.hide_at_login',
+						'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hide_at_login',
 						-1
 					),
 					array(
-						'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.any_login',
+						'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.any_login',
 						-2
 					),
 					array(
-						'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.usergroups',
+						'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.usergroups',
 						'--div--'
 					)
 				),

@@ -39,6 +39,7 @@ use JVE\JvEvents\Domain\Repository\TagRepository;
 use TYPO3\CMS\Core\Context\AspectInterface;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
 use \TYPO3\CMS\Core\Messaging\AbstractMessage ;
@@ -87,7 +88,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     /**
      * persistencemanager
      *
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
+     * @var PersistenceManager
      */
     protected $persistenceManager = NULL ;
 
@@ -190,6 +191,14 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     }
 
 
+
+    /**
+     * @param PersistenceManager $persistenceManager
+     */
+    public function injectPersistenceManager(PersistenceManager $persistenceManager)
+    {
+        $this->persistenceManager = $persistenceManager;
+    }
 
 
     /**
