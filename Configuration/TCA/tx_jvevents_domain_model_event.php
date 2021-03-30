@@ -29,9 +29,6 @@ $returnArray = array(
 		'searchFields' => 'event_type,name,teaser,description,images,files,start_date,start_time,end_date,marketing_process_id,sales_force_record_type,sales_force_campaign_id,sales_force_event_id,sales_force_session_id,subject_organizer,text_organizer,subject_registrant,introtext_registrant,text_registrant,organizer,location,slug,',
 		'iconfile' => 'EXT:jv_events/Resources/Public/Icons/tx_jvevents_domain_model_event.gif'
 	),
-	'interface' => array(
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, event_type, teaser, description, images, files, files_after_reg, files_after_event,all_day, start_date, start_time, end_date, end_time, access, with_registration, registration_until,registration_gender,registration_show_status, registration_access, store_in_citrix, sales_force_campaign_id, store_in_hubspot, citrix_uid, store_in_sales_force, marketing_process_id, sales_force_record_type, sales_force_event_id, sales_force_session_id, available_seats,available_waiting_seats, registered_seats, unconfirmed_seats, notify_organizer, notify_registrant, subject_organizer, text_organizer, subject_registrant,introtext_registrant, text_registrant, need_to_confirm, is_recurring, frequency, freq_exception, is_exception_for, organizer, location, registrant, event_category, tags, url,price,',
-	),
 	'types' => array(
 		'0' => array('showitem' => 'event_type,url,--palette--;;dates,--palette--;LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.entry_time_help;entryTime,
 		   --palette--;;infos,
@@ -87,7 +84,6 @@ $returnArray = array(
 		),
 		'l10n_parent' => array(
 			'displayCond' => 'FIELD:sys_language_uid:>:0',
-			'exclude' => 1,
 			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
 			'config' => array(
 				'type' => 'select',
@@ -621,8 +617,7 @@ $returnArray = array(
 				),
 				'exclusiveKeys' => '-1,-2',
 				'foreign_table' => 'fe_groups',
-				'foreign_table_where' => 'ORDER BY fe_groups.title',
-				'enableMultiSelectFilterTextfield' => true
+				'foreign_table_where' => 'ORDER BY fe_groups.title'
 			)
 		),
 		'with_registration' => array(
@@ -766,8 +761,7 @@ $returnArray = array(
 				),
 				'exclusiveKeys' => '-1,-2',
 				'foreign_table' => 'fe_groups',
-				'foreign_table_where' => 'ORDER BY fe_groups.title',
-				'enableMultiSelectFilterTextfield' => true
+				'foreign_table_where' => 'ORDER BY fe_groups.title'
 			)
 		),
         'store_in_hubspot' => array(
