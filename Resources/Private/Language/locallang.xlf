@@ -785,6 +785,13 @@
              <trans-unit id="indexerTask_Debugmail">
                 <source>Email receiver . If set, this will get debug infos via Email on each run</source>
             </trans-unit>
+
+             <trans-unit id="event.created">
+                <source>Created</source>
+            </trans-unit>
+            <trans-unit id="event.modified">
+                <source>Last modified</source>
+            </trans-unit>
 		</body>
 	</file>
 </xliff>

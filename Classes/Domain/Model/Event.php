@@ -51,6 +51,12 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     protected $hidden ;
 
+    /**
+     * last modification
+     *
+     * @var int|null
+     */
+    protected $tstamp ;
 
     /**
      * hidden or not that is the question
@@ -2476,6 +2482,26 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         $this->hidden = $hidden;
     }
+
+    /**
+     * @return int|null
+     */
+    public function getTstamp(): ?int
+    {
+        return $this->tstamp;
+    }
+
+    /**
+     * @param int $tstamp
+     */
+    public function setTstamp(int $tstamp): void
+    {
+        $this->tstamp = $tstamp;
+    }
+
+
+
+
 
     /**
      * @return int

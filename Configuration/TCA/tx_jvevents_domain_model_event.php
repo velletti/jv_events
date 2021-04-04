@@ -108,7 +108,13 @@ $returnArray = array(
                 'eval' => 'int',
             )
         ),
-		
+        'tstamp' => Array (
+            'exclude' => 1,
+            'label' => 'Last modification',
+            'config' => Array (
+                'type' => 'passthrough',
+            )
+        ),
 		't3ver_label' => array(
 			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.versionLabel',
 			'config' => array(
