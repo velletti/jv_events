@@ -142,7 +142,18 @@
 							</div>
 						</div>
 					</f:if>
+					<div style="display:none">
+						event.isRegistrationConfigured: {event.isRegistrationConfigured} <br>
+						event.isRegistrationPossible: {event.isRegistrationPossible} <br>
+						event.isNoFreeSeats: {event.isNoFreeSeats} <br>
+						<br>
+						event.registeredSeats: {event.registeredSeats} <br>
+						event.unconfirmedSeats: {event.unconfirmedSeats} <br>
+						<br>
+						event.availableSeats: {event.availableSeats} <br>
+						event.availableWaitingSeats: {event.availableWaitingSeats} <br>
 
+					</div>
 					<f:if condition="{event.isRegistrationConfigured}">
 						<f:if condition="{event.isRegistrationPossible}">
 							<f:then>
