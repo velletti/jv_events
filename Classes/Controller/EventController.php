@@ -597,7 +597,7 @@ class EventController extends BaseController
             $this->addFlashMessage('The object was updated and Cache of following pages are cleared: ' . implode("," , $clearCachePids), '', AbstractMessage::OK);
         }
         $action = "show" ;
-        if ( $copy2Day= 0 &&  $amount= 1 ) {
+        if ( $copy2Day == 0 &&  $amount == 1 ) {
             $action = "edit" ;
         }
        $this->redirect($action , null , null , array( "event" => $eventUid  )) ;
