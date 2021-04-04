@@ -1971,7 +1971,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         if ($this->withRegistration ) {
             // Internal Registration Process : check $this->availableSeats  configured and PID set
 
-            if (($this->unconfirmedSeats  + $this->availableSeats)  > 0  && $this->registrationFormPid > 0 ) {
+            if (($this->availableWaitingSeats  + $this->availableSeats)  > 0  && $this->registrationFormPid > 0 ) {
 
                 return TRUE;
             }
