@@ -667,6 +667,10 @@
 			<source>Reset filter</source>
 			<target>Filter zurücksetzen</target>
 		</trans-unit>
+		 <trans-unit id="tx_jvevents_event.filter.resultcount">
+            <source>Hits</source>
+            <target>Treffer</target>
+        </trans-unit>
 		<trans-unit id="tx_jvevents_event.filter.resulthint" approved="yes">
 			<source>The following content was modified pursuant to your filter settings</source>
 			<target>Die folgenden Inhalte wurden entsprechend Ihrer Auswahl angepasst</target>

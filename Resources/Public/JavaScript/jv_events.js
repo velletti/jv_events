@@ -244,6 +244,7 @@ function jv_events_refreshList(){
     }) ;
     var filterIsActive = false ;
     var needTohide = false ;
+    let resultcountEvents = 0 ;
 	jQuery('.tx-jv-events DIV.jv-events-singleEvent').each(function (i) {
        // console.log( " ************* event **************** UID: " + jQuery(this).data("eventuid")  ) ;
 		jQuery(this).removeClass('hide') ;
@@ -357,13 +358,16 @@ function jv_events_refreshList(){
         }
         if ( jQuery(this).hasClass('hide')) {
             filterIsActive = true ;
-		}
+		} else {
+            resultcountEvents ++ ;
+        }
 	});
 
 
 	if ( filterIsActive ) {
 		jQuery( "#filter-events A").addClass('hide') ;
 		jQuery( "#filter-reset-events").removeClass('hide') ;
+		jQuery( "#filter-resultcount-events").html( resultcountEvents ) ;
 		jQuery( "#filter-result-hint-events").removeClass('hide') ;
 
 

@@ -144,12 +144,27 @@ class EventController extends BaseController
         if( intval( $this->settings['detailPid'] ) < 1 ) {
             $this->settings['detailPid'] = intval( $this->settings['link']['detailPidDefault']) ;
         }
+
         $this->debugArray[] = "Before generate Filter :" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " Line: " . __LINE__ ;
-        if (  $this->settings['ShowFilter'] == 3) {
-            $eventsFilter = $this->generateFilterAll( $this->settings['filter']) ;
-        } else {
-            $eventsFilter = $this->generateFilter( $events ,  $this->settings['filter']) ;
+        switch ($this->settings['ShowFilter']) {
+            case "3":
+                $eventsFilter = $this->generateFilterAll( $this->settings['filter']) ;
+                break;
+
+            case "6":
+                $eventsFilter = $this->generateFilter( $events ,  $this->settings['filter']) ;
+                $eventsFilter['box1'] = $this->generateFilterBox( $this->settings['filter']['tagbox1tags']) ;
+                $eventsFilter['box2'] = $this->generateFilterBox( $this->settings['filter']['tagbox2tags']) ;
+                $eventsFilter['box3'] = $this->generateFilterBox( $this->settings['filter']['tagbox3tags']) ;
+                $eventsFilter['box4'] = $this->generateFilterBox( $this->settings['filter']['tagbox4tags']) ;
+                break;
+
+            default:
+                $eventsFilter = $this->generateFilter( $events ,  $this->settings['filter']) ;
+                break;
+
         }
+
         $this->debugArray[] = "After generate Filter :" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " Line: " . __LINE__ ;
 
         $dtz = $this->eventRepository->getDateTimeZone() ;

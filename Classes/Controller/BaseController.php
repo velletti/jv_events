@@ -240,6 +240,20 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         $this->persistenceManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
     }
 
+    public function generateFilterBox( $filter ) {
+        $filterTags = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $filter , true);
+        $tags = [] ;
+        if( is_array($filterTags)) {
+            foreach ($filterTags as $Id ) {
+                $tag = $this->tagRepository->findByUid($Id) ;
+                $tags[] = array( "id" => $Id , "title" => $tag->getName()  ) ;
+            }
+        }
+        if( count($tags) > 0) {
+            return $tags ;
+        }
+        return false;
+    }
     public function generateFilterAll( $filter )
     {
         $organizers = array();
