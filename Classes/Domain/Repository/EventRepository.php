@@ -89,7 +89,26 @@ class EventRepository extends BaseRepository
             $settings['filter'] = $filter ;
         }
         $query = $this->createQuery();
-		$query->setOrderings($this->defaultOrderings);
+        $sortings = false ;
+        if( is_array($settings['list']['sorting'])) {
+            $sortings= [] ;
+            foreach ($settings['list']['sorting'] as $sortField => $sort) {
+                if ( in_array($sortField , ['crdate' , 'tstamp'] )) {
+                    if( $sort == "ASC") {
+                        $sortings[$sortField] = QueryInterface::ORDER_ASCENDING ;
+                    } else {
+                        $sortings[$sortField] = QueryInterface::ORDER_DESCENDING ;
+                    }
+                }
+
+            }
+        }
+        if ( is_array( $sortings ) && count($sortings) > 0 ) {
+            $query->setOrderings($sortings);
+        } else {
+            $query->setOrderings($this->defaultOrderings);
+        }
+
 
 
 

@@ -15,7 +15,6 @@
                 <source>Description</source>
             </trans-unit>
 
-
             <trans-unit id="tx_jvevents_domain_model_organizer.latest_event">
                 <source>Latest Event</source>
             </trans-unit>

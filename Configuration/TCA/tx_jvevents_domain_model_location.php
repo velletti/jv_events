@@ -24,9 +24,6 @@ $return = array(
 		'searchFields' => 'name,street_and_nr,zip,city,country,lat,lng,link,email,phone,description,organizer,location_category,slug,',
 		'iconfile' => 'EXT:jv_events/Resources/Public/Icons/tx_jvevents_domain_model_location.gif'
 	),
-	'interface' => array(
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, street_and_nr, zip, city, country,lat, lng,  link, email, phone, description, organizer, location_category',
-	),
 	'types' => array(
 		'1' => array('showitem' => 'sys_language_uid, l10n_parent,l10n_diffsource,hidden,--palette--;;1,name,slug,street_and_nr,zip,city,country,--palette--;;geo,teaser_image,link,email,phone,description,organizer,location_category,--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,starttime,endtime,default_location'),
 	),
@@ -37,29 +34,28 @@ $return = array(
 	'columns' => array(
         'tstamp' => array(
             'exclude' => 1,
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.tstamp',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.tstamp',
             'config' => array(
                 'type' => 'passthrough',
             ),
         ),
 		'sys_language_uid' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.language',
+			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
 			'config' => array(
 				'type' => 'select',
 				'renderType' => 'selectSingle',
 				'foreign_table' => 'sys_language',
 				'foreign_table_where' => 'ORDER BY sys_language.title',
 				'items' => array(
-					array('LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', -1),
-					array('LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.default_value', 0)
+					array('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', -1),
+					array('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.default_value', 0)
 				),
 			),
 		),
 		'l10n_parent' => array(
 			'displayCond' => 'FIELD:sys_language_uid:>:0',
-			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
+			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
 			'config' => array(
 				'type' => 'select',
 				'renderType' => 'selectSingle',
@@ -78,7 +74,7 @@ $return = array(
 		
 		
 		't3ver_label' => array(
-			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.versionLabel',
+			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.versionLabel',
 			'config' => array(
 				'type' => 'input',
 				'size' => 30,
@@ -88,14 +84,14 @@ $return = array(
 	
 		'hidden' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
+			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
 			'config' => array(
 				'type' => 'check',
 			),
 		),
 		'starttime' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
+			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
 			'config' => array(
 				'type' => 'input',
                 'renderType' => 'inputDateTime',
@@ -113,7 +109,7 @@ $return = array(
 		),
 		'endtime' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
+			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
 			'config' => array(
 				'type' => 'input',
                 'renderType' => 'inputDateTime',
@@ -281,7 +277,7 @@ $return = array(
 		),
         'latest_event' => array(
             'exclude' => 1,
-            'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_loacation.latest_event',
+            'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_location.latest_event',
             'config' => array(
                 'type' => 'input',
                 'renderType' => 'inputDateTime',

@@ -21,9 +21,6 @@ return array(
 		'searchFields' => 'name,',
 		'iconfile' => '/typo3conf/ext/jv_events/Resources/Public/Icons/tx_jvevents_domain_model_tag.gif'
 	),
-	'interface' => array(
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, type, tag_category, visibility, nocopy',
-	),
 	'types' => array(
 		'1' => array('showitem' => 'sys_language_uid, l10n_parent, name,type, tag_category,--div--;access, hidden, starttime, endtime, visibility, nocopy'),
 	),
@@ -48,7 +45,6 @@ return array(
 		),
 		'l10n_parent' => array(
 			'displayCond' => 'FIELD:sys_language_uid:>:0',
-			'exclude' => 1,
 			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
 			'config' => array(
 				'type' => 'select',
@@ -200,8 +196,6 @@ return array(
                 'multiple' => 0,
                 'exclusiveKeys' => '0',
                 'allowNonIdValues' => true ,
-
-                'enableMultiSelectFilterTextfield' => true ,
 
                 'fieldControl' => array(
                     'addRecord' => array(

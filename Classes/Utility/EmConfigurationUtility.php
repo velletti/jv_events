@@ -34,9 +34,9 @@ class EmConfigurationUtility
      */
     public static function getEmConf($asObject=false)
     {
-		$settings = GeneralUtility::makeInstance(ExtensionConfiguration::class) ->get('jv_events') ;
+        $settings = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class) ->get('jv_events');
 
-		if (!is_array($settings)) {
+        if (!is_array($settings)) {
 			$settings = [];
 		}
 		if( $settings['fontFamiliy ']) {

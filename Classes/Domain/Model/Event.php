@@ -51,6 +51,12 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     protected $hidden ;
 
+    /**
+     * last modification
+     *
+     * @var int|null
+     */
+    protected $tstamp ;
 
     /**
      * hidden or not that is the question
@@ -1965,7 +1971,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         if ($this->withRegistration ) {
             // Internal Registration Process : check $this->availableSeats  configured and PID set
 
-            if (($this->unconfirmedSeats  + $this->availableSeats)  > 0  && $this->registrationFormPid > 0 ) {
+            if (($this->availableWaitingSeats  + $this->availableSeats)  > 0  && $this->registrationFormPid > 0 ) {
 
                 return TRUE;
             }
@@ -2476,6 +2482,26 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         $this->hidden = $hidden;
     }
+
+    /**
+     * @return int|null
+     */
+    public function getTstamp(): ?int
+    {
+        return $this->tstamp;
+    }
+
+    /**
+     * @param int $tstamp
+     */
+    public function setTstamp(int $tstamp): void
+    {
+        $this->tstamp = $tstamp;
+    }
+
+
+
+
 
     /**
      * @return int

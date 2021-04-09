@@ -5,6 +5,7 @@
 </f:if>
 
 <f:spaceless>
+
     <div class="jv-events-singleEvent jv-events-row" {jve:dataAttrib( event: event )}>
 
         <div class="card col-12 my-4 clearfix rounded-bottom {f:if(condition: '{event.canceled}', then: 'canceled' )}">
@@ -93,6 +94,15 @@
                                 <span class="fas fa-map-pin"></span>
                                 <span class="jv_events_dist ml-2">.</span>
                             </div>
+                            <f:if condition="{settings.list.showCrdate}">
+                                <div class="small">
+                                    <br>
+                                    <f:translate key="event.created" default="Erstellt am" />: <f:format.date format="d.M.y H:i">{event.crdate}</f:format.date>
+                                    <f:if condition="{event.tstamp}">
+                                        <br><f:translate key="event.modified" default="Letzte Änderung" />: <f:format.date format="d.M.y H:i">{event.tstamp}</f:format.date>
+                                    </f:if>
+                                </div>
+                            </f:if>
                         </f:else>
                     </f:if>
 
