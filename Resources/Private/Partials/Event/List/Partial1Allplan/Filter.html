@@ -400,7 +400,7 @@
                 <p class="left"><f:translate key="tx_jvevents_event.filter.hint" /></p>
                 <p class="right hide" id="filter-reset-events"><a href="#"><f:translate key="tx_jvevents_event.filter.reset" /> (<span id="filter-resultcount-events">#</span> <f:translate key="tx_jvevents_event.filter.resultcount" default="#"/>)</a></p>
             </div>
-            <div class="fieldsets">
+            <div class="fieldsets  clearfix">
                 <f:if condition="{eventsFilter.box1}">
                     <fieldset class="fieldsetbox1 filtersetboxWidth_{settings.filter.tagbox1width}">
                         <legend>{settings.filter.tagbox1headline}</legend>
@@ -453,7 +453,7 @@
                     </fieldset>
                 </f:if>
             </div>
-            <div class="fieldsets">
+            <div class="fieldsets  clearfix">
                 <f:if condition="{f:count(subject: eventsFilter.categories2)} > 0">
                     <fieldset class="fieldsetboxcat  filtersetboxWidth_1">
 
@@ -493,7 +493,7 @@
                 </f:if>
 
                 <f:if condition="{eventsFilter.box4}">
-                    <fieldset class="fieldsetbox4  filtersetboxWidth_{settings.filter.tagbox1Width}">
+                    <fieldset class="fieldsetbox4  filtersetboxWidth_{settings.filter.tagbox4width}">
                         <legend>{settings.filter.tagbox4headline}</legend>
                         <div class="checkbox" >
                             <f:for each="{eventsFilter.box4}" as="tag">
@@ -509,13 +509,13 @@
                         </div>
                     </fieldset>
                 </f:if>
-                <fieldset class="fieldsetbox5  filtersetboxWidth_1">
+                <fieldset class="fieldsetbox5  filtersetboxWidth_2">
                     <br>
                     <!-- J.v. placeholder for MAP selector see TYPO3-52 //-->
                 </fieldset>
 
                 <fieldset class="fieldsetbox6  filtersetboxWidth_1">
-                    <label for="jv_events_filter_months">{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_event.filter.month', default:'by month')}</label>
+                    <label for="jv_events_filter_months" class="hidden">{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_event.filter.month', default:'by month')}</label>
                     <div class="form-group">
                         <f:form.select property="months" class="form-control" id="jv_events_filter_months" options="{eventsFilter.months}" prependOptionLabel="{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_event.filter.month', default:'by month')}" prependOptionValue=""/>
                     </div>
