@@ -255,7 +255,9 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         if( is_array($filterTags)) {
             foreach ($filterTags as $Id ) {
                 $tag = $this->tagRepository->findByUid($Id) ;
-                $tags[] = array( "id" => $Id , "title" => $tag->getName()  ) ;
+                if( $tag ) {
+                    $tags[] = array( "id" => $Id , "title" => $tag->getName()  ) ;
+                }
             }
         }
         if( count($tags) > 0) {
