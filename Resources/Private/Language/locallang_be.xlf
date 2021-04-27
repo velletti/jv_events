@@ -151,6 +151,11 @@
 		<trans-unit id="flexforms_additional.layout">
 			<source>Select layout Style for Frontend rendering</source>
 		</trans-unit>
+
+		<trans-unit id="flexforms_add_mandatory_fields">
+			<source>Typoscript: Add mandatory fields</source>
+		</trans-unit>
+
 		<trans-unit id="flexforms_additional.registerPid">
 			<source>Show Registration Form Page ID</source>
 		</trans-unit>

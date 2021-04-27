@@ -848,7 +848,7 @@
 							</config>
 						</TCEforms>
 					</settings.RegisterHubSpotFormId>
-					<setttings.Register.introtext_registrant>
+					<settings.Register.introtext_registrant>
 						<TCEforms>
 							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.introtext_registrant</label>
 							<config>
@@ -858,8 +858,8 @@
 								<exclude>1</exclude>
 							</config>
 						</TCEforms>
-					</setttings.Register.introtext_registrant>
-					<setttings.Register.introtext_registrant_confirmed>
+					</settings.Register.introtext_registrant>
+					<settings.Register.introtext_registrant_confirmed>
 						<TCEforms>
 							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.introtext_registrant_confirmed</label>
 							<config>
@@ -869,7 +869,18 @@
 								<exclude>1</exclude>
 							</config>
 						</TCEforms>
-					</setttings.Register.introtext_registrant_confirmed>
+					</settings.Register.introtext_registrant_confirmed>
+					<settings.Register.add_mandatory_fields>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms_add_mandatory_fields</label>
+							<config>
+								<type>text</type>
+								<cols>30</cols>
+								<rows>5</rows>
+								<exclude>1</exclude>
+							</config>
+						</TCEforms>
+					</settings.Register.add_mandatory_fields>
 				</el>
 
 			</ROOT>

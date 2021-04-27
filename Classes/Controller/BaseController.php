@@ -227,7 +227,11 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         $layout = $this->settings['LayoutRegister'] ;
         $this->settings['phpTimeZone'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['phpTimeZone'] ;
         $fields = $this->settings['register']['requiredFields'][$layout] ;
-        $required  = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode( "," , $fields ) ;
+        if( strlen( $this->settings['Register']['add_mandatory_fields'] ) > 1 ) {
+            $fields .= "," . $this->settings['Register']['add_mandatory_fields'] ;
+        }
+
+        $required  = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode( "," , $fields , true ) ;
         foreach( $required as $key => $field ) {
             $this->settings['register']['required'][$field] = TRUE ;
         }
