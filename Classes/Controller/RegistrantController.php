@@ -389,7 +389,8 @@ class RegistrantController extends BaseController
                     $registrant->setStreetAndNr($GLOBALS['TSFE']->fe_user->user['tx_nem_street_and_nr']);
                 }
             }
-            $registrant->setAddMandatoryFields($this->settings['Register']['add_mandatory_fields']);
+            $addFields = $this->settings['Register']['add_mandatory_fields'] ? trim($this->settings['Register']['add_mandatory_fields']) : '' ;
+            $registrant->setAddMandatoryFields($addFields);
         }
 
         $querysettings = new \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings ;
