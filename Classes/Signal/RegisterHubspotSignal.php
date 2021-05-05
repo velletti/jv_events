@@ -153,7 +153,7 @@ class RegisterHubspotSignal {
         $data['is_confirmed']  =   $registrant->getConfirmed() ? 'true' : 'false' ;
 
         // see ticket:  https://jira.allplan.com/browse/TYPO3-291
-        $data['event_flag']  =   'true' ;
+        // $data['event_flag']  =   'true' ;
         $data['form_type']  =   'Event' ;
 
         // 2019 language Key ... ggf aber auch constants die "locale_all"
