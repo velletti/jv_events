@@ -36,7 +36,7 @@ $returnArray = array(
 		   price,currency,--linebreak--,--palette--;LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.priceReducedHeader;priceReduced,
 		--div--;Relations, --palette--;;relations,
 		--div--;Files, teaser_image, files, files_after_reg, files_after_event,
-		--div--;LLL:EXT:core/Resources/Private/Language/locallang_ttc.xlf:tabs.access, --palette--;;access,'),
+		--div--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.tabs.access, --palette--;;access,'),
 		'2' => array('showitem' => 'event_type,--palette--;;dates,--palette--;LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.entry_time_help;entryTime,
 		   --palette--;;infos,description,
 		--div--;Advanced, --palette--;;language, --palette--;;advanced, --palette--;;frequent,
