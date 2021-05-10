@@ -46,7 +46,7 @@ $returnArray = array(
 		--div--;Registration, --palette--;;register,
 		--div--;Notifications, --palette--;;notification, --palette--;Email;notifyOrg, --palette--;Email;notifyReg,
 		--div--;Old, --palette--;;old,
-		--div--;LLL:EXT:core/Resources/Private/Language/locallang_ttc.xlf:tabs.access, --palette--;;access,'),
+		--div--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.tabs.access, --palette--;;access,'),
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),
