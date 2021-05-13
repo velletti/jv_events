@@ -35,13 +35,13 @@ class SlugUtility {
         if ($hasToBeUniqueInPid) {
             $uniquePid = $recordData['pid'] ;
         }
-
-        if (!self::isUnique( $proposal , $tableName , $fieldName , $uniquePid , $recordData['uid'] , $recordData['sys_language_uid'])) {
+        $objectId = $recordData['uid'] ? $recordData['uid'] : 0 ;
+        if (!self::isUnique( $proposal , $tableName , $fieldName , $uniquePid , $objectId, $recordData['sys_language_uid'])) {
 
             $counter = 0;
             while ( $counter++ < 100 ) {
                 $newValue = $proposal. '-' . $counter ;
-                if( self::isUnique( $newValue , $tableName , $fieldName , $uniquePid, $recordData['uid'] , $recordData['sys_language_uid']) ) {
+                if( self::isUnique( $newValue , $tableName , $fieldName , $uniquePid, $objectId , $recordData['sys_language_uid']) ) {
                     return  $newValue ;
                 }
             }
