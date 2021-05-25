@@ -32,7 +32,7 @@
 					<div class="row">
 
 						<div class="col-md-4">
-							<strong><f:translate key="tx_jvevents_domain_model_event.details.canceled" />Entfällt!!</strong>
+							<strong><f:translate key="tx_jvevents_domain_model_event.details.canceled" default="Entfällt!!" /></strong>
 						</div>
 						<div class="col-md-8">{event.startDate -> f:format.date(format:"d.m.Y")}
 
@@ -265,10 +265,9 @@
 
 
 	<div class="tab-content clearfix">
-		<div class="tab-pane {tabDescActive} p-3" id="jv_events_event">
+		<div class="tab-pane {tabDescActive} p-3 {f:if(condition: '{event.canceled}' , then:'opacity-3')}" id="jv_events_event">
 			<div class="row">
-				<div class="col-12 col-md-8">
-
+				<div class="col-12 col-md-8 ">
 
 					<div class="data clearfix">
 						<f:format.html parseFuncTSPath="lib.jveventsRTE">{event.description}</f:format.html>
@@ -328,56 +327,65 @@
 				</f:comment>
 
 				<div class="col-12 col-md-4 logo">
-
-					<f:if condition="{event.images}">
-
+					<f:if condition="{event.canceled}">
 						<f:then>
-							<h3><f:translate key="tx_jvevents_domain_model_event.images" /></h3>
-							<ul class="images clearfix">
-								<f:for each="{event.images}" as="image" >
-									<li>
-										<f:image class="d-block w-100 h-auto img-float rounded shadow-lg" src="{image.uid}" maxWidth="300" maxHeight="220" alt="{image.alternative}" title="{image.title}" treatIdAsReference="true" />
-									</li>
-								</f:for>
-							</ul>
+							<f:image src="/typo3conf/ext/jv_events/Resources/Public/Images/canceled.png" class="d-block w-auto jv_event_canceled opacity-3" alt="canceled" title="{f:translate(key: 'tx_jvevents_domain_model_event.details.canceled', default: 'canceled')}" width="{settings.list.image.width}c" maxWidth="{settings.list.image.width}" maxHeight="{settings.list.image.height}" treatIdAsReference="false" />
 						</f:then>
-
 						<f:else>
-							<jve:l10nFalImg event="{event}" tableFieldName="images">
-								<f:for each="{l10nfalimg}" as="falimage" iteration="iteration">
-									<f:if condition="{iteration.isFirst}">
-										<h3><f:translate key="tx_jvevents_domain_model_event.images" /></h3>
-										<ul class="images clearfix">
-									</f:if>
-									<li>
-										<f:image
-												src="{falimage._file.publicUrl}"
-												title="{falimage._file.title}"
-												alt="{falimage._file.alternative}"
-												maxWidth="600"
-												maxHeight="400"
-												treatIdAsReference="1"
-												class="d-block w-100 h-auto img-float rounded shadow-lg"
-										/>
-									</li>
-									<f:if condition="{iteration.isLast}">
-										</ul>
-									</f:if>
-								</f:for>
-							</jve:l10nFalImg>
-						</f:else>
+							<f:if condition="{event.images}">
 
+								<f:then>
+									<h3><f:translate key="tx_jvevents_domain_model_event.images" /></h3>
+									<ul class="images clearfix">
+										<f:for each="{event.images}" as="image" >
+											<li>
+												<f:image class="d-block w-100 h-auto img-float rounded shadow-lg" src="{image.uid}" maxWidth="300" maxHeight="220" alt="{image.alternative}" title="{image.title}" treatIdAsReference="true" />
+											</li>
+										</f:for>
+									</ul>
+								</f:then>
+
+								<f:else>
+									<jve:l10nFalImg event="{event}" tableFieldName="images">
+										<f:for each="{l10nfalimg}" as="falimage" iteration="iteration">
+											<f:if condition="{iteration.isFirst}">
+												<h3><f:translate key="tx_jvevents_domain_model_event.images" /></h3>
+												<ul class="images clearfix">
+											</f:if>
+											<li>
+												<f:image
+														src="{falimage._file.publicUrl}"
+														title="{falimage._file.title}"
+														alt="{falimage._file.alternative}"
+														maxWidth="600"
+														maxHeight="400"
+														treatIdAsReference="1"
+														class="d-block w-100 h-auto img-float rounded shadow-lg"
+												/>
+											</li>
+											<f:if condition="{iteration.isLast}">
+												</ul>
+											</f:if>
+										</f:for>
+									</jve:l10nFalImg>
+								</f:else>
+
+							</f:if>
+						</f:else>
 					</f:if>
+
 
 				</div>
 			</div>
 			<f:if condition="{event.location.description}">
-				<div class="data clearfix border-top pt-3">
+				<div class="data clearfix border-top pt-3 ">
 					<h4><f:translate key="tx_jvevents_domain_model_location" /></h4>
 					<f:format.html parseFuncTSPath="lib.jveventsRTE">{event.location.description}</f:format.html>
 				</div>
 			</f:if>
-
+			<div class="small data clearfix pt-2 ">
+				<f:translate key="event.modified" default="Last Mod" />: {event.tstamp -> f:format.date(format:"d.m.Y H:i")} ({event.daysSinceLastMod} <f:translate key="days" default="Days" />)
+			</div>
 
 
 

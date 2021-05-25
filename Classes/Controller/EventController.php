@@ -637,7 +637,7 @@ class EventController extends BaseController
                 } else {
                     $event->setCanceled( '1' ) ;
                 }
-
+                $event->setTstamp(time());
                 try {
                     $this->eventRepository->update($event) ;
 
@@ -694,7 +694,7 @@ class EventController extends BaseController
                 if ( count($oldEventRows ) > 0 ) {
                     $oldEventRow = $oldEventRows[0] ;
                 }
-
+                $event->setTstamp(time());
                 $this->eventRepository->update($event) ;
                 if( $event->getChangeFutureEvents() && $event->getMasterId() > 0 ) {
                     $filter['startDate'] = $event->getStartDate()->getTimestamp() ;
@@ -707,6 +707,8 @@ class EventController extends BaseController
                     if ( count($otherEvents) > 0 ) {
                         $otherDaysText = " " ;
                         foreach ( $otherEvents as $otherEvent ) {
+                            $otherEvent->setTstamp(time());
+
                             $otherDaysText .= $otherEvent->getStartDate()->format("d.M-Y") .  " (Id:" . $otherEvent->getUid() ."), " ;
                             if( $oldEventRow['name'] != $event->getName() ) {
                                 $otherEvent->setName( $event->getName() ) ;
@@ -799,7 +801,7 @@ class EventController extends BaseController
 
             try {
                 $masterId = $event->getMasterId() ;
-
+                $event->setTstamp(time());
                 $this->eventRepository->remove($event) ;
 
                 if( $masterId && $deleteFutureEvents) {
@@ -820,6 +822,7 @@ class EventController extends BaseController
                         foreach ( $otherEvents as $otherEvent ) {
                             if( $otherEvent) {
                                 $otherDaysText .= $otherEvent->getStartDate()->format("d.M-Y") .  " (Id:" . $otherEvent->getUid() ."), " ;
+                                $otherEvent->setTstamp(time());
                                 $this->eventRepository->remove($otherEvent) ;
                             }
                         }
@@ -998,11 +1001,10 @@ class EventController extends BaseController
                 $event->setRegistrationFormPid($this->settings['EmConfiguration']['RegistrationFormPid']);
             }
             $event->setRegistrationPid($this->settings['EmConfiguration']['RegistrationPid']);
+
             // var_dump($eventArray['registrationFormPid'] );
             // die;
         }
-
-
 
         if ( $event->getPid() < 1 ) {
             // ToDo find good way to handle ID Default .. maybe a pid per User, per location or other typoscript setting
@@ -1037,6 +1039,7 @@ class EventController extends BaseController
         if( is_object( $organizer )) {
             if ( $organizer->getUid() > 0 ) {
                 $organizer->setLatestEvent( $date ) ;
+                $organizer->setTstamp( time() ) ;
                 $this->organizerRepository->update($organizer ) ;
             }
         }

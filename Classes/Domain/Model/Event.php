@@ -2500,7 +2500,9 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     }
 
 
-
+    public function getDaysSinceLastMod() {
+        return round( ( time() - $this->tstamp) / (3600*24) , 0 ) ;
+    }
 
 
     /**
