@@ -24,6 +24,10 @@ CREATE TABLE tx_jvevents_domain_model_event (
 	all_day tinyint(1) unsigned DEFAULT '0' NOT NULL,
 	top_event tinyint(1) unsigned DEFAULT '0' NOT NULL,
 	canceled tinyint(1) unsigned DEFAULT '0' NOT NULL,
+
+	last_updated int(11) DEFAULT '0',
+	last_updated_by int(11) DEFAULT '0',
+
 	start_date int(11) DEFAULT '0' NOT NULL,
 	start_time int(11) DEFAULT '0' NOT NULL,
 	entry_time int(11) DEFAULT '0' NOT NULL,

@@ -383,9 +383,15 @@
 					<f:format.html parseFuncTSPath="lib.jveventsRTE">{event.location.description}</f:format.html>
 				</div>
 			</f:if>
-			<div class="small data clearfix pt-2 ">
-				<f:translate key="event.modified" default="Last Mod" />: {event.tstamp -> f:format.date(format:"d.m.Y H:i")} ({event.daysSinceLastMod} <f:translate key="days" default="Days" />)
-			</div>
+			<f:if condition="{event.lastUpdated} > 0">
+				<div class="small data clearfix pt-2 " data-userid="{event.lastUpdatedBy}">
+					<f:translate key="event.modified" default="Last Mod" />: {event.lastUpdated -> f:format.date(format:"d.m.Y")}
+					<f:if condition="{event.daysSinceLastMod} > 2">
+						<f:then>({event.daysSinceLastMod} <f:translate key="days" default="Days" />)</f:then>
+						<f:else>({event.hoursSinceLastMod} <f:translate key="hours" default="Hours" />)</f:else>
+					</f:if>
+				</div>
+			</f:if>
 
 
 

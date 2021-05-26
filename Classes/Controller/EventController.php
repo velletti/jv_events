@@ -637,7 +637,12 @@ class EventController extends BaseController
                 } else {
                     $event->setCanceled( '1' ) ;
                 }
-                $event->setTstamp(time());
+                $event->setLastUpdated(time());
+                if ( intval($GLOBALS['TSFE']->fe_user->user['uid'] ) ) {
+                    $event->setLastUpdatedBy(intval($GLOBALS['TSFE']->fe_user->user['uid'] ) );
+                }
+
+
                 try {
                     $this->eventRepository->update($event) ;
 
@@ -694,7 +699,10 @@ class EventController extends BaseController
                 if ( count($oldEventRows ) > 0 ) {
                     $oldEventRow = $oldEventRows[0] ;
                 }
-                $event->setTstamp(time());
+                $event->setLastUpdated(time());
+                if ( intval($GLOBALS['TSFE']->fe_user->user['uid'] ) ) {
+                    $event->setLastUpdatedBy(intval($GLOBALS['TSFE']->fe_user->user['uid'] ) );
+                }
                 $this->eventRepository->update($event) ;
                 if( $event->getChangeFutureEvents() && $event->getMasterId() > 0 ) {
                     $filter['startDate'] = $event->getStartDate()->getTimestamp() ;
@@ -707,7 +715,10 @@ class EventController extends BaseController
                     if ( count($otherEvents) > 0 ) {
                         $otherDaysText = " " ;
                         foreach ( $otherEvents as $otherEvent ) {
-                            $otherEvent->setTstamp(time());
+                            $otherEvent->setLastUpdated(time());
+                            if ( intval($GLOBALS['TSFE']->fe_user->user['uid'] ) ) {
+                                $otherEvent->setLastUpdatedBy(intval($GLOBALS['TSFE']->fe_user->user['uid'] ) );
+                            }
 
                             $otherDaysText .= $otherEvent->getStartDate()->format("d.M-Y") .  " (Id:" . $otherEvent->getUid() ."), " ;
                             if( $oldEventRow['name'] != $event->getName() ) {
@@ -801,7 +812,10 @@ class EventController extends BaseController
 
             try {
                 $masterId = $event->getMasterId() ;
-                $event->setTstamp(time());
+                $event->setLastUpdated(time());
+                if ( intval($GLOBALS['TSFE']->fe_user->user['uid'] ) ) {
+                    $event->setLastUpdatedBy(intval($GLOBALS['TSFE']->fe_user->user['uid'] ) );
+                }
                 $this->eventRepository->remove($event) ;
 
                 if( $masterId && $deleteFutureEvents) {
@@ -822,7 +836,10 @@ class EventController extends BaseController
                         foreach ( $otherEvents as $otherEvent ) {
                             if( $otherEvent) {
                                 $otherDaysText .= $otherEvent->getStartDate()->format("d.M-Y") .  " (Id:" . $otherEvent->getUid() ."), " ;
-                                $otherEvent->setTstamp(time());
+                                $otherEvent->setLastUpdated(time());
+                                if ( intval($GLOBALS['TSFE']->fe_user->user['uid'] ) ) {
+                                    $otherEvent->setLastUpdatedBy(intval($GLOBALS['TSFE']->fe_user->user['uid'] ) );
+                                }
                                 $this->eventRepository->remove($otherEvent) ;
                             }
                         }

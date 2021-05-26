@@ -58,6 +58,22 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     protected $tstamp ;
 
+
+    /**
+     * last modification in Frontend
+     *
+     * @var int|null
+     */
+    protected $lastUpdated ;
+
+    /**
+     * last modification in Frontend by feuser ID
+     *
+     * @var int|null
+     */
+    protected $lastUpdatedBy ;
+
+
     /**
      * hidden or not that is the question
      *
@@ -2499,9 +2515,45 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         $this->tstamp = $tstamp;
     }
 
+    /**
+     * @return int|null
+     */
+    public function getLastUpdated(): ?int
+    {
+        return $this->lastUpdated;
+    }
+
+    /**
+     * @param int|null $lastUpdated
+     */
+    public function setLastUpdated(?int $lastUpdated): void
+    {
+        $this->lastUpdated = $lastUpdated;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getLastUpdatedBy(): ?int
+    {
+        return $this->lastUpdatedBy;
+    }
+
+    /**
+     * @param int|null $lastUpdatedBy
+     */
+    public function setLastUpdatedBy(?int $lastUpdatedBy): void
+    {
+        $this->lastUpdatedBy = $lastUpdatedBy;
+    }
+
+
 
     public function getDaysSinceLastMod() {
-        return round( ( time() - $this->tstamp) / (3600*24) , 0 ) ;
+        return round( ( time() - $this->lastUpdated) / (3600*24) , 0 ) ;
+    }
+    public function getHoursSinceLastMod() {
+        return round( ( time() - $this->lastUpdated) / (3600) , 0 ) ;
     }
 
 
@@ -2587,6 +2639,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         }
         $this->registrationShowStatus = $registrationShowStatus;
     }
+
 
 
 

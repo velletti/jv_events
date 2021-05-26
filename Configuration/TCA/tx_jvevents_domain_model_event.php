@@ -115,6 +115,21 @@ $returnArray = array(
                 'type' => 'passthrough',
             )
         ),
+        'last_updated' => Array (
+            'exclude' => 1,
+            'label' => 'Last modification in Frontend',
+            'config' => Array (
+                'type' => 'passthrough',
+            )
+        ),
+        'last_updated_by' => Array (
+            'exclude' => 1,
+            'label' => 'Last modification in Frontend by frontenduser UID',
+            'config' => Array (
+                'type' => 'input',
+                'eval' => 'int',
+            )
+        ),
 		't3ver_label' => array(
 			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.versionLabel',
 			'config' => array(
