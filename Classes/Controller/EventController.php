@@ -91,7 +91,6 @@ class EventController extends BaseController
     public function listAction()
     {
         $this->debugArray[] = "After Init :" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " Line: " . __LINE__ ;
-
         $this->settings['filter']['distance']['doNotOverrule'] = "false" ;
 
         if( $this->request->hasArgument('overruleFilter')) {

@@ -5,22 +5,22 @@
 <f:flashMessages />
 
 	<f:render partial="Debug/CheckInstallation" arguments="{modulelist: 'TRUE' , event:event, settings: settings, debugArray: debugArray}" />
-	<f:if condition="{settings.EmConfiguration.useGeoLocation}">
-		<f:then>
-			<div id="jv_events_geo" class="hidden d-none" data-allowed="0" data-askUser="1" data-lng="{settings.list.longitude}" data-lat="{settings.list.latitude}">
-				GEO Position from User
-			</div>
-		</f:then>
-		<f:else>
-			<div id="jv_events_geo" class="hidden d-none" data-lng="{settings.list.longitude}" data-lat="{settings.list.latitude}">
-				GEO Position from Settings
-			</div>
-		</f:else>
+	<f:if condition="{settings.ShowFilter}>0">
+		<f:if condition="{settings.EmConfiguration.useGeoLocation}">
+			<f:then>
+				<div id="jv_events_geo" class="hidden d-none" data-allowed="0" data-askUser="1" data-lng="{settings.list.longitude}" data-lat="{settings.list.latitude}">
+					GEO Position from User
+				</div>
+			</f:then>
+			<f:else>
+				<div id="jv_events_geo" class="hidden d-none" data-lng="{settings.list.longitude}" data-lat="{settings.list.latitude}">
+					GEO Position from Settings
+				</div>
+			</f:else>
 
+		</f:if>
+		<f:render partial="Event/List/Partial{settings.LayoutList}/Filter" arguments="{eventsFilter: eventsFilter, settings: settings}"/>
 	</f:if>
-
-	<f:render partial="Event/List/Partial{settings.LayoutList}/Filter" arguments="{eventsFilter: eventsFilter, settings: settings}"/>
-
 
 	<div class="jv_events_{settings.LayoutList} {settings.list.additionalClass}">
 		<f:if condition="{events}">
