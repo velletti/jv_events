@@ -1,7 +1,7 @@
 {namespace jve=JVE\JvEvents\ViewHelpers}
 
 <div style="background: #d9d9d9; padding:8px; display: block; float: none; clear: both; margin-top: 20px">
-    <f:link.action class="" pageUid="{settings.detailPid}" action="show" arguments="{event : event}" style="text-decoration: none; color:black !important;">
+    <f:link.action class="" pageUid="{settings.detailPid}" action="show" arguments="{event : event}" style="text-decoration: none; color:black !important; max-width:90%">
           {event.startDate -> f:format.date(format:"D d. M. ")}  {event.startTime -> f:format.date(format:"H:i")}-<f:if condition="{event.endTime}"><f:then>{event.endTime -> jve:format.date( format:"H:i")}</f:then><f:else><f:translate key="tx_jvevents_domain_model_event.openEnd">Open End</f:translate></f:else></f:if> h
 
         | {event.name}
@@ -38,7 +38,7 @@
         </div>
         <div style="width:52%; display: inline-table; ; float: left; margin:2%;">
             <f:format.nl2br>{event.teaser}</f:format.nl2br>
-            <br>
+            <br><br>
             <small class="">
                 <f:variable name="tagLine">
                     <f:for each="{event.eventCategory}" as="Category" iteration="iteration">{Category.title}, </f:for>
@@ -46,7 +46,7 @@
                 </f:variable>
                 {tagLine}
             </small>
-            <br>{event.location.city}
+            <br><br>{event.location.city}
         </div>
     </div>
     <div style="clear: both; margin-bottom: 20px">

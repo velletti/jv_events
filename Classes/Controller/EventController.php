@@ -460,6 +460,7 @@ class EventController extends BaseController
             $newEvent->setRegisteredSeats(0) ;
             $newEvent->setUnconfirmedSeats(0) ;
             $newEvent->setViewed(0) ;
+            $newEvent->setTopEvent(0) ;
 
             // then have a look at Ext Conf
             $extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class) ->get('jv_events');
