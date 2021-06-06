@@ -1010,12 +1010,12 @@ class RegistrantController extends BaseController
             parent::processRequest($request, $response);
         }
         catch(\TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException $e) {
-            if ($e instanceof \TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException) {
 
-            } else {
-                throw $e;
-            }
+        }
+        catch(\Exception $e) {
+            throw $e;
         }
     }
+
 
 }

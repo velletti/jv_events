@@ -27,11 +27,27 @@ class Ajax implements MiddlewareInterface
     public function process(
         ServerRequestInterface $request,
         RequestHandlerInterface $handler
-    ): ResponseInterface {
+    ): ResponseInterface
+    {
         $_gp = $request->getQueryParams();
         // examples:
         // https://wwwv10.allplan.com.ddev.site/?id=110&L=1&tx_jvevents_ajax[event]=4308&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[mode]=onlyValues
         // https://tangov10.ddev.site/?id=110&L=1&tx_jvevents_ajax[event]=4308&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[mode]=onlyValues
+
+        if( is_array($_gp) && key_exists("tx_jvevents_events" ,$_gp ) && is_string($_gp['tx_jvevents_events'] )  ) {
+            return (new Response())
+                ->withHeader('Location', $request->getUri()->getScheme() . "://" .$request->getUri()->getHost() )
+                ->withStatus("301");
+            die;
+        }
+        if( is_array($_gp) && key_exists("tx_sfregister_create" ,$_gp ) && key_exists("action" ,$_gp['tx_sfregister_create']  )
+        && $_gp['tx_sfregister_create']['action'] == "save" && !$request->getParsedBody() ) {
+            return (new Response())
+                ->withHeader('Location', $request->getUri()->getScheme() . "://" .$request->getUri()->getHost() )
+                ->withStatus("301");
+            die;
+        }
+
 
         if( is_array($_gp) && key_exists("tx_jvevents_ajax" ,$_gp ) && key_exists("controller" ,$_gp['tx_jvevents_ajax'] ) ) {
             $GLOBALS['TSFE']->set_no_cache();
