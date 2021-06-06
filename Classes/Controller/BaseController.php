@@ -224,10 +224,14 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         // get the list of Required Fields for this layout and store it to the  settings Array
         // seemed faster than separate via a Viewhelper for each Field
 
-        $layout = $this->settings['LayoutRegister'] ;
-        $this->settings['phpTimeZone'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['phpTimeZone'] ;
+        if( array_key_exists( 'LayoutRegister' , $this->settings ) && $this->settings['LayoutRegister'] ) {
+            $layout = $this->settings['LayoutRegister'] ;
+        } else {
+            $layout = "5Tango" ;
+        }
+        $this->settings['phpTimeZone'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['phpTimeZone'] ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['phpTimeZone'] : "UTC" ;
         $fields = $this->settings['register']['requiredFields'][$layout] ;
-        if( strlen( $this->settings['Register']['add_mandatory_fields'] ) > 1 ) {
+        if( array_key_exists( 'add_mandatory_fields' , $this->settings['Register'] ) && strlen( $this->settings['Register']['add_mandatory_fields'] ) > 1 ) {
             $fields .= "," . $this->settings['Register']['add_mandatory_fields'] ;
         }
 

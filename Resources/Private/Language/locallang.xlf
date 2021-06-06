@@ -797,6 +797,10 @@
                 <source>Last modified</source>
             </trans-unit>
 
+             <trans-unit id="event.notfound">
+                <source>An event with this ID could not be found</source>
+            </trans-unit>
+
 		</body>
 	</file>
 </xliff>

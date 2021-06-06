@@ -1388,7 +1388,7 @@ class Registrant extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     public function getAddMandatoryFields(): string
     {
-        return $this->addMandatoryFields;
+        return $this->addMandatoryFields ? $this->addMandatoryFields : "";
     }
 
     /**
