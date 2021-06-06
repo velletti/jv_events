@@ -231,7 +231,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         }
         $this->settings['phpTimeZone'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['phpTimeZone'] ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['phpTimeZone'] : "UTC" ;
         $fields = $this->settings['register']['requiredFields'][$layout] ;
-        if( array_key_exists( 'add_mandatory_fields' , $this->settings['Register'] ) && strlen( $this->settings['Register']['add_mandatory_fields'] ) > 1 ) {
+        if( array_key_exists( 'Register' , $this->settings )  && array_key_exists( 'add_mandatory_fields' , $this->settings['Register'] ) && strlen( $this->settings['Register']['add_mandatory_fields'] ) > 1 ) {
             $fields .= "," . $this->settings['Register']['add_mandatory_fields'] ;
         }
 
