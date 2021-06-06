@@ -6,7 +6,7 @@
 		<h2 style="font-size: 22px; font-family: '{emConf.fontFamily}'; line-height: 1.25; margin: 0 0 20px; padding: 0;">
 			Event ID: {event.uid} | <f:format.date format="d.m.Y">{event.startDate}</f:format.date>
 			<f:if condition="{settings.alreadyRegistered}">
-				<br>{f:translate(key: '{settings.you_are_registered_again}')}
+				<br><b>{f:translate(key: 'register.you_are_registered_again')}</b>
 
 			</f:if>
 		</h2>
