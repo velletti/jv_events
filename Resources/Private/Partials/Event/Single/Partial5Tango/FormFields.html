@@ -67,7 +67,7 @@
 		  arguments="{object: '', property:'withRegistration' , euro: 'false', label: '' , translationKey: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.with_registration' ,  maxLength: 20 ,  mandatory: '0' }" />
 
 <div class="mb-2 p-1 cursor-pointer border-top border-bottom " type="button" data-toggle="collapse" data-target="#jv_events_edit_register_on" aria-expanded="{f:if(condition: '{event.withRegistration} == 1' , then: 'true' , else: 'false')}" aria-controls="jv_events_edit_register_on" >
-	<button class="btn btn-outline-primary btn-sm rounded-circle mr-2" href="#"> <i class=" fa fa-wrench"> </i></button><span class="{f:if(condition: '{event.withRegistration} == 1' , else: ' d-none')}">Click here to see</span> Registration options
+	<i class="btn btn-outline-primary btn-sm rounded-circle mr-2" href="#"> <i class=" fa fa-wrench"> </i></i><span class="{f:if(condition: '{event.withRegistration} == 1' , else: ' d-none')}">Click here to see</span> Registration options
 </div>
 <div id="jv_events_edit_register_on"  class="border-bottom p-1 collapse {f:if(condition: '{event.withRegistration} == 1' , then: 'show', else: '')}">
 
