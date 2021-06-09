@@ -6,10 +6,9 @@ if (!defined('TYPO3_MODE')) {
 	die('Access denied.');
 }
 ## EXTENSION BUILDER DEFAULTS END TOKEN - Everything BEFORE this line is overwritten with the defaults of the extension builder
-$_EXTKEY = "jv_events" ;
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-	'JVE.' . $_EXTKEY,
+	'JVE.' . "jv_events" ,
 	'Events',
 	array(
 		'Event' => 'list, show, new, create, edit, update, delete, register, confirm, search,copy,cancel',
@@ -29,7 +28,7 @@ $_EXTKEY = "jv_events" ;
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'JVE.' .$_EXTKEY,
+    'JVE.' ."jv_events" ,
     'Ajax',
     array(
         'Ajax'  => 'eventMenu,locationList,organizerList,eventList,eventDisable,eventUnlink',
@@ -40,7 +39,7 @@ $_EXTKEY = "jv_events" ;
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'JVE.' .$_EXTKEY,
+    'JVE.' ."jv_events" ,
     'search',
     array(
         'Search'  => 'search',
@@ -119,7 +118,7 @@ if (TYPO3_MODE === 'FE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
 }
 
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['JVE\JvEvents\Scheduler\CleanEventsTask'] = array(
-    'extension'        =>  $_EXTKEY,
+    'extension'        =>  "jv_events" ,
     'title'            => 'Clean Events Extensions Data (remove registrations and old Events)',
     'description'      => 'set only frequency ',
     'additionalFields' => 'JVE\JvEvents\Scheduler\CleanEventsTaskAdditionalFieldProvider'

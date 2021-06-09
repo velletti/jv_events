@@ -62,7 +62,6 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
 		$this->emConf =\JVE\JvEvents\Utility\EmConfigurationUtility::getEmConf();
 
 		$allSettings = $this->getSettings() ;
-
 		$this->settings = $allSettings['plugin.']['tx_jvevents_events.']['settings.'];
 		$this->settings = GeneralUtility::removeDotsFromTS($this->settings ) ;
 		$this->settings['pageId']						=  $GLOBALS['TSFE']->id ;
@@ -71,6 +70,8 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
         $languageAspect = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Context\Context::class)->getAspect('language') ;
 
 		$this->settings['sys_language_uid']				=  $languageAspect->getId() ;
+
+
         parent::__construct() ;
 
 	}

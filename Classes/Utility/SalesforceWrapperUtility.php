@@ -40,8 +40,18 @@ class SalesforceWrapperUtility
             case "www-typo3.allplan.com" :
                 $env = "PROD" ;
                 break ;
+            case "connect-typo3.allplan.com" :
+            case "campus-typo3.allplan.com" :
+                $env = "live" ;
+                break ;
             case "www-stage.allplan.com" :
                 $env = "STAGE" ;
+                break ;
+            case "connect-dev.allplan.com" :
+            case "connectv9.allplan.com.ddev.site" :
+            case "connectv10.allplan.com.ddev.site" :
+            case "campus-dev.allplan.com" :
+                $env = "test" ;
                 break ;
             default:
                 $env = "DEV" ;

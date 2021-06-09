@@ -15,7 +15,7 @@
 				</f:else>
 			</f:if>
 			<f:if condition="{settings.alreadyRegistered}">
-				<br>{f:translate(key: '{settings.you_are_registered_again}')}
+				<br><b>{f:translate(key: 'register.you_are_registered_again')}</b>
 
 			</f:if>
 
@@ -82,17 +82,19 @@
 			</p>
 			<br />
 		</f:if>
-		<h3  style="font-size: 22px; font-family: '{emConf.fontFamily}'; line-height: 1.25; margin: 0 0 10px; padding: 0;">Bitte beachten / Important: </h3>
+
 
 		<f:if condition="{registrant.confirmed}==1">
 			<f:if condition="{event.introtextRegistrantConfirmed}">
 				<f:then>
+					<h3  style="font-size: 22px; font-family: '{emConf.fontFamily}'; line-height: 1.25; margin: 0 0 10px; padding: 0;">Bitte beachten / Important: </h3>
 					<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
 						<f:format.nl2br>{event.introtextRegistrantConfirmed}</f:format.nl2br>
 					</p>
 				</f:then>
 				<f:else>
 					<f:if condition="{settings.Register.introtext_registrant_confirmed}">
+						<h3  style="font-size: 22px; font-family: '{emConf.fontFamily}'; line-height: 1.25; margin: 0 0 10px; padding: 0;">Bitte beachten / Important: </h3>
 						<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
 							<f:format.nl2br>{settings.register.introtext_registrant_confirmed}</f:format.nl2br>
 						</p>
@@ -104,12 +106,14 @@
 		<f:if condition="{registrant.confirmed}==0">
 			<f:if condition="{event.introtextRegistrant}">
 				<f:then>
+					<h3  style="font-size: 22px; font-family: '{emConf.fontFamily}'; line-height: 1.25; margin: 0 0 10px; padding: 0;">Bitte beachten / Important: </h3>
 					<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0; border-bottom: 1px solid #dddddd">
 						<f:format.nl2br>{event.introtextRegistrant}</f:format.nl2br>
 					</p>
 				</f:then>
 				<f:else>
 					<f:if condition="{settings.Register.introtext_registrant}">
+						<h3  style="font-size: 22px; font-family: '{emConf.fontFamily}'; line-height: 1.25; margin: 0 0 10px; padding: 0;">Bitte beachten / Important: </h3>
 						<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
 							<f:format.nl2br>{settings.register.introtext_registrant}</f:format.nl2br>
 						</p>

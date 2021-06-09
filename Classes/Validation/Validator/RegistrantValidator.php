@@ -95,9 +95,12 @@ class RegistrantValidator extends \JVE\JvEvents\Validation\Validator\BaseValidat
                     }
                 }
             }
+            $fields = $this->settings['register']['requiredFields'][$layout]  ;
+            if( strlen( $registrant->getAddMandatoryFields() ) > 1 ) {
+                $fields .=   "," . $registrant->getAddMandatoryFields() ;
+            }
+			$requiredFields = GeneralUtility::trimExplode( "," , $fields  . $secondPersonFields , true ) ;
 
-
-			$requiredFields = GeneralUtility::trimExplode( "," , $this->settings['register']['requiredFields'][$layout] . $secondPersonFields , true ) ;
 
 			foreach ($requiredFields as $field ) {
 				$getter = "get" . trim(ucfirst($field)) ;
@@ -120,6 +123,16 @@ class RegistrantValidator extends \JVE\JvEvents\Validation\Validator\BaseValidat
 								$isValid = false ;
 							}
 							break;
+
+                        case 'getZip':
+                        case 'getZip2':
+                            if( strlen( $value )  < 4 ) {
+                                $error = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error',$this->translate('register_mandatory_error'), time());
+                                $this->result->forProperty($field)->addError($error);
+                                $isValid = false ;
+                            }
+                            break;
+
 						case 'getEmail':
 							if(strlen(trim($value)) < 1 ) {
 								$error = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error',$this->translate('register_mandatory_error'), time());

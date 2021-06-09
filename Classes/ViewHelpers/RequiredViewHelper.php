@@ -53,6 +53,9 @@ class RequiredViewHelper extends AbstractConditionViewHelper implements \TYPO3Fl
         if ( $layout == '' ) { $layout = "1Allplan" ; }
 
 		$fields = $this->settings['register']['requiredFields'][$layout] ;
+        if( strlen( $this->settings['Register']['add_mandatory_fields'] ) > 1 ) {
+            $fields .= "," . $this->settings['Register']['add_mandatory_fields'] ;
+        }
 		$this->settings['register']['requiredFields'] = $fields ;
 		$this->frameworkConfiguration = $this->configurationManager->getConfiguration(
 			\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK

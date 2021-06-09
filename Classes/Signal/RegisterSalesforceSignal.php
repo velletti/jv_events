@@ -22,6 +22,8 @@ namespace JVE\JvEvents\Signal;
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Class RegisterSalesforceSignal
@@ -260,7 +262,15 @@ class RegisterSalesforceSignal {
         }
 
 
-        $Typo3_v6mail->setBody(nl2br( $debugmail ) , 'text/html'  );
+        /** @var Typo3Version $tt */
+        $tt = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Information\Typo3Version::class ) ;
+
+        if( $tt->getMajorVersion()  < 10 ) {
+            $Typo3_v6mail->setBody(nl2br( $debugmail ) , 'text/html'  );
+        } else {
+            $Typo3_v6mail->html( nl2br( $debugmail )  , 'utf-8'  );
+        }
+
         $Typo3_v6mail->send();
 
 

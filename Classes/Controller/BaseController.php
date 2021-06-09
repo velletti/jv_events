@@ -38,6 +38,8 @@ use JVE\JvEvents\Domain\Repository\SubeventRepository;
 use JVE\JvEvents\Domain\Repository\TagRepository;
 use TYPO3\CMS\Core\Context\AspectInterface;
 use TYPO3\CMS\Core\Exception;
+use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
 use \TYPO3\CMS\Core\Messaging\AbstractMessage ;
@@ -86,7 +88,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     /**
      * persistencemanager
      *
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
+     * @var PersistenceManager
      */
     protected $persistenceManager = NULL ;
 
@@ -190,6 +192,14 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
 
 
+    /**
+     * @param PersistenceManager $persistenceManager
+     */
+    public function injectPersistenceManager(PersistenceManager $persistenceManager)
+    {
+        $this->persistenceManager = $persistenceManager;
+    }
+
 
     /**
      * action list
@@ -214,10 +224,18 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         // get the list of Required Fields for this layout and store it to the  settings Array
         // seemed faster than separate via a Viewhelper for each Field
 
-        $layout = $this->settings['LayoutRegister'] ;
-        $this->settings['phpTimeZone'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['phpTimeZone'] ;
+        if( array_key_exists( 'LayoutRegister' , $this->settings ) && $this->settings['LayoutRegister'] ) {
+            $layout = $this->settings['LayoutRegister'] ;
+        } else {
+            $layout = "5Tango" ;
+        }
+        $this->settings['phpTimeZone'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['phpTimeZone'] ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['phpTimeZone'] : "UTC" ;
         $fields = $this->settings['register']['requiredFields'][$layout] ;
-        $required  = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode( "," , $fields ) ;
+        if( array_key_exists( 'Register' , $this->settings )  && array_key_exists( 'add_mandatory_fields' , $this->settings['Register'] ) && strlen( $this->settings['Register']['add_mandatory_fields'] ) > 1 ) {
+            $fields .= "," . $this->settings['Register']['add_mandatory_fields'] ;
+        }
+
+        $required  = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode( "," , $fields , true ) ;
         foreach( $required as $key => $field ) {
             $this->settings['register']['required'][$field] = TRUE ;
         }
@@ -239,6 +257,22 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         $this->persistenceManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
     }
 
+    public function generateFilterBox( $filter ) {
+        $filterTags = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $filter , true);
+        $tags = [] ;
+        if( is_array($filterTags)) {
+            foreach ($filterTags as $Id ) {
+                $tag = $this->tagRepository->findByUid($Id) ;
+                if( $tag ) {
+                    $tags[] = array( "id" => $Id , "title" => $tag->getName()  ) ;
+                }
+            }
+        }
+        if( count($tags) > 0) {
+            return $tags ;
+        }
+        return false;
+    }
     public function generateFilterAll( $filter )
     {
         $organizers = array();
@@ -335,12 +369,15 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
                 foreach ($objArray as $obj ) {
                     if ( is_object($obj) ) {
                       //  if ( $filter['combinetags'] == "0" || count($filterTags) < 1 || in_array(  $obj->getUid() , $filterTags )) {
-                            $tags[$obj->getUid()] = $obj->getName() ;
-                            $tags2[$obj->getUid()] = array( "id" => $obj->getUid() , "title" => $obj->getName()  ) ;
+                            if ( $obj->getVisibility() < 1 ) {
+                                $tags[$obj->getUid()] = $obj->getName() ;
+                            }
+                            $tags2[$obj->getUid()] = array( "id" => $obj->getUid() , "title" => $obj->getName() , "visibility"  => $obj->getVisibility()) ;
                      //   }
                     }
                 }
             }
+
             $objArray =  $event->getEventCategory() ;
 
             if( is_object( $objArray)) {
@@ -610,10 +647,34 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         if (!\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($this->settings['register']['senderEmail'])) {
             throw new \Exception('plugin.jv_events.settings.register.senderEmail is not a valid Email Address. Is needed as Sender E-mail');
         }
+        if( !$replyTo ) {
+            $replyTo = $this->settings['register']['senderEmail'] ;
+        }
+
+        $returnPath = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFromAddress();
+        if ( $returnPath == "no-reply@example.com" ) {
+            $returnPath = $this->settings['register']['senderEmail'] ;
+        } else {
+            $this->settings['register']['senderEmail'] = $returnPath ;
+        }
+
+        if( ! $this->settings['register']['senderName']) {
+            // in old version sendername was written wrong .. fix this
+            if( $this->settings['register']['sendername']) {
+                $this->settings['register']['senderName'] = $this->settings['register']['sendername'];
+            } else {
+                // we did not find any Senders Name , use Email als From Name
+                $this->settings['register']['senderName'] = $this->settings['register']['senderEmail'] ;
+            }
+        }
+
         $sender = array($this->settings['register']['senderEmail']
                         =>
-                        $this->settings['register']['sendername']
+                        $this->settings['register']['senderName']
                     );
+
+
+
         foreach ($recipient as $key => $value ) {
             if (!\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($key )) {
                 throw new \Exception(var_export( $recipient , true ) . "( " . $key . ") " . ' is not a valid -recipient- Email Address. ');
@@ -703,13 +764,9 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         $message->setTo($recipient)
             ->setFrom($sender)
             ->setSubject($subject);
-        if( $replyTo ) {
-            $message->setReplyTo($replyTo) ;
-        }
-        $returnPath = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFromAddress();
-        if ( $returnPath != "no-reply@example.com") {
-            $message->setReturnPath($returnPath);
-        }
+
+        $message->setReplyTo($replyTo) ;
+        $message->setReturnPath($returnPath);
 
         $rootPath = \TYPO3\CMS\Core\Core\Environment::getPublicPath() ;
 
@@ -727,8 +784,16 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             }
         }
 
-        $message->setBody($emailBody, 'text/html');
-        $message->addPart($plainMsg, 'text/plain');
+        /** @var Typo3Version $tt */
+        $tt = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Information\Typo3Version::class ) ;
+        if( $tt->getMajorVersion()  < 10 ) {
+            $message->setBody($emailBody, 'text/html');
+            $message->addPart($plainMsg, 'text/plain');
+        } else {
+            $message->html($emailBody, 'utf-8');
+            $message->text($plainMsg, 'utf-8');
+        }
+
 
 
         $message->send();
@@ -754,13 +819,21 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             $message->setReturnPath($returnPath);
         }
 
-        $message->setBody(strip_tags( $plainMsg ), 'text/plain');
+        /** @var Typo3Version $tt */
+        $tt = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Information\Typo3Version::class ) ;
         if ( !$htmlMsg || $htmlMsg == '' ) {
             $htmlMsg =  nl2br( $plainMsg );
             $subject .= " - converted" ;
         }
 
-        $message->addPart( $htmlMsg , 'text/html');
+        if( $tt->getMajorVersion()  < 10 ) {
+            $message->setBody($htmlMsg, 'text/html');
+            $message->addPart($plainMsg, 'text/plain');
+        } else {
+            $message->html($htmlMsg, 'utf-8');
+            $message->text($plainMsg, 'utf-8');
+        }
+
 
         $message->setTo($recipient)
             ->setFrom($sender)

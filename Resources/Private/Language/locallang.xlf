@@ -204,6 +204,9 @@
             <trans-unit id="list.register.button.registration">
                 <source>Registration</source>
             </trans-unit>
+             <trans-unit id="register.registration.date">
+                <source>Registration date</source>
+            </trans-unit>
             <trans-unit id="list.register.button.subscribe">
                 <source>Subscribe</source>
             </trans-unit>
@@ -645,9 +648,13 @@
             <trans-unit id="tx_jvevents_event.filter.hint">
                 <source>Filter the content on this page</source>
             </trans-unit>
+            <trans-unit id="tx_jvevents_event.filter.resultcount">
+                <source>Hits</source>
+            </trans-unit>
             <trans-unit id="tx_jvevents_event.filter.reset">
                 <source>Reset filter</source>
             </trans-unit>
+
             <trans-unit id="tx_jvevents_event.filter.resulthint">
                 <source>The following content was modified pursuant to your filter settings</source>
             </trans-unit>
@@ -785,6 +792,18 @@
              <trans-unit id="indexerTask_Debugmail">
                 <source>Email receiver . If set, this will get debug infos via Email on each run</source>
             </trans-unit>
+
+             <trans-unit id="event.created">
+                <source>Created</source>
+            </trans-unit>
+            <trans-unit id="event.modified">
+                <source>Last modified</source>
+            </trans-unit>
+
+             <trans-unit id="event.notfound">
+                <source>An event with this ID could not be found</source>
+            </trans-unit>
+
 		</body>
 	</file>
 </xliff>

@@ -11,33 +11,26 @@
         "description" : "{event.description -> f:format.stripTags()}",
     </f:else>
 </f:if>
-
-<f:if condition="{event.allDay}">
+<f:spaceless><f:if condition="{event.allDay}">
     <f:then>
         "startDate" : "{event.startDate -> f:format.date(format:"Y-m-d")}T{event.startTime -> event:format.date( format:"H:i")}",
     </f:then>
     <f:else>
         "startDate" : "{event.startDate -> f:format.date(format:"Y-m-d")}T00:00" ,
     </f:else>
-</f:if>
+</f:if></f:spaceless>
 	  "url" : "<event:link event="{event}" settings="{settings}" uriOnly="1" />",
-<f:if condition="{event.location.name}">
+<f:if condition="{event.location} && {event.location.name}">
 	  "location" :
 	  {
 	    "@type" : "Place",
-	    "name" : "{event.location.name}",
+	    "name" : "<f:format.raw>{event.location.name}</f:format.raw>",
 	    "address" :
 	    {
       "@type" : "PostalAddress",
-			<f:if condition="{event.location.streetAndNr}">
-				  "streetAddress" : "{event.location.streetAndNr}",
-			</f:if>
-			<f:if condition="{event.location.city}">
-			  	"addressLocality" : "{event.location.city}",
-			</f:if>
-			<f:if condition="{event.location.zip}">
-		  		"postalCode" : "{event.location.zip}"
-			</f:if>
+			<f:if condition="{event.location.streetAndNr}">"streetAddress" : "{event.location.streetAndNr}",</f:if>
+			<f:if condition="{event.location.city}">"addressLocality" : "{event.location.city}",</f:if>
+			<f:if condition="{event.location.zip}">"postalCode" : "{event.location.zip}"</f:if>
 	    }
 	  }
 </f:if>

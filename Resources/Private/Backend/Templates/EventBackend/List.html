@@ -231,12 +231,12 @@
 						<p>
 
 							Event:
-							<jve:be.link uid="{registrant.event}" table="tx_jvevents_domain_model_event" pageId="{pageId}" onlyActual="{onlyActual}" recursive="{recursive}" eventId="{event}" returnModule="tx_jvevents_web_jveventseventmngt"  returnController="EventBackend" returnAction="list" title="Edit Event" class="btn btn-default">
-								<core:icon identifier="actions-document-open"/> {registrant.event}
+							<jve:be.link uid="{registrant.event}" table="tx_jvevents_domain_model_event" pageId="{registrant.pid}" onlyActual="{onlyActual}" recursive="{recursive}" eventId="{event}" returnModule="tx_jvevents_web_jveventseventmngt"  returnController="EventBackend" returnAction="list" title="Edit Event" class="btn btn-default">
+								<core:icon identifier="actions-document-open"/> ID: {registrant.event}
 							</jve:be.link>
 							<br>
 							<br>
-							<jve:be.link uid="{registrant.uid}" table="tx_jvevents_domain_model_registrant" pageId="{pageId}" onlyActual="{onlyActual}" recursive="{recursive}" eventId="{event}" returnModule="tx_jvevents_web_jveventseventmngt"  returnController="EventBackend" returnAction="list" title="Edit Registration" class="btn btn-default">
+							<jve:be.link uid="{registrant.uid}" table="tx_jvevents_domain_model_registrant" pageId="{registrant.pid}" onlyActual="{onlyActual}" recursive="{recursive}" eventId="{event}" returnModule="tx_jvevents_web_jveventseventmngt"  returnController="EventBackend" returnAction="list" title="Edit Registration" class="btn btn-default">
 								<core:icon identifier="actions-document-open"/>
 							</jve:be.link> Registrered at: <f:format.date format="d.m.Y">{registrant.crdate}</f:format.date><br>
 							Company: {registrant.company}<br>

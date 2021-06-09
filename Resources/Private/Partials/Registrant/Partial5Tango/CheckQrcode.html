@@ -7,18 +7,20 @@
 		<f:variable name="alertClass"><f:if condition="{registrant.confirmed}"><f:then>alert-success</f:then><f:else>alert-warning</f:else></f:if></f:variable>
 		<div class="alert {alertClass}">
 			<div class="alert-heading {alertClass}">
-				<b><f:format.date format="d.m.Y H:i">{registrant.crdate}</f:format.date> </b>
+				<b>{f:translate(key: 'register.registration.date')}: <f:format.date format="d.m.Y H:i">{registrant.crdate}</f:format.date> </b>
 			</div>
 
-			<div class="alert-body border-top">
+			<div class="alert-body border-top mt-1">
 				{f:translate(key: 'Qrcode_is_valid_for' , default:'Registration ist gültig für')}:<br><br>
+				<f:if condition="{registrant.more1}==0"><i class="fa fa-question  mr-2"></i> ??? </f:if>
 				<f:if condition="{registrant.gender}==1"><i class="fa fa-male mr-2"></i> {f:translate(key: 'register_gender_male')}</f:if>
 					<f:if condition="{registrant.gender}==2"><i class="fa fa-female mr-2"></i> {f:translate(key: 'register_gender_female')}</f:if>
-					<b>{registrant.firstname} {registrant.lastname} </b><f:if condition="{registrant.confirmed}"><f:then><i class="fa fa-check"></i> (confirmed)</f:then><f:else><i class="fa fa-hourglass-start fa-2x"></i> (no confirmed!)</f:else></f:if><br>
+					<b>{registrant.firstname} {registrant.lastname} </b><f:if condition="{registrant.confirmed}"><f:then><i class="fa fa-check"></i> (confirmed)</f:then><f:else><i class="fa fa-hourglass-start fa-2x"></i> (not confirmed!)</f:else></f:if><br>
 					<f:if condition="{registrant.more1} || {registrant.more2} || {registrant.more3}">
+                        <f:if condition="{registrant.more1}==0"><i class="fa fa-question  mr-2"></i> ??? </f:if>
                         <f:if condition="{registrant.more1}==1"><i class="fa fa-male mr-2"></i> {f:translate(key: 'register_gender_male')}</f:if>
                         <f:if condition="{registrant.more1}==2"><i class="fa fa-female mr-2"></i> {f:translate(key: 'register_gender_female')}</f:if>
-						<b>{registrant.more2} {registrant.more3}</b> <f:if condition="{registrant.confirmed}"><f:then><i class="fa fa-check"></i> (confirmed)</f:then><f:else><i class="fa fa-hourglass-start fa-2x"></i> (no confirmed!)</f:else></f:if><br>
+						<b>{registrant.more2} {registrant.more3}</b> <f:if condition="{registrant.confirmed}"><f:then><i class="fa fa-check"></i> (confirmed)</f:then><f:else><i class="fa fa-hourglass-start fa-2x"></i> (not confirmed!)</f:else></f:if><br>
 				</f:if>
 				<f:if condition="{registrant.more2} || {registrant.more3}">
 					<f:then>

@@ -57,6 +57,13 @@ class Tag extends AbstractEntity
      */
     protected $nocopy = 0;
 
+    /**
+     * visibility of tag in Filter o Event details
+     *
+     * @var int
+     */
+    protected $visibility = 0;
+
 
     /**
      * type 0=Event Category 1=Location Category 2=Organizer Category
@@ -212,6 +219,24 @@ class Tag extends AbstractEntity
     {
         $this->nocopy = $nocopy;
     }
+
+    /**
+     * @return int
+     */
+    public function getVisibility(): int
+    {
+        return $this->visibility;
+    }
+
+    /**
+     * @param int $visibility
+     */
+    public function setVisibility(int $visibility): void
+    {
+        $this->visibility = $visibility;
+    }
+
+
 
 
 }

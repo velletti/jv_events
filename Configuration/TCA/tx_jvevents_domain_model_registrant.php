@@ -22,9 +22,6 @@ return array(
 		'searchFields' => 'first_name,last_name,email,title,company,department,street_and_nr,zip,city,country,language,phone,additional_info,customer_id,profession,contact_id,username,more1,more2,more3,more4,more5bool,more6int,more7date,more8file,company2,department2,street_and_nr2,zip2,city2,country2',
 		'iconfile' => '/typo3conf/ext/jv_events/Resources/Public/Icons/tx_jvevents_domain_model_registrant.gif'
 	),
-	'interface' => array(
-		'showRecordFieldList' => 'starttime,endtime, sys_language_uid, l10n_parent, l10n_diffsource, confirmed, hidden, gender, title,first_name, last_name, email, company, department, street_and_nr, zip, city, country, language, phone, additional_info, privacy, newsletter, customer_id, profession, recall, contact_id, username, more1, more2, more3, more4, more5bool, more6int, more7date, more8file, password, company2, department2, street_and_nr2, zip2, city2, country2',
-	),
 	'types' => array(
 		'1' => array('showitem' => 'starttime,endtime, sys_language_uid, l10n_parent, l10n_diffsource, hidden, confirmed,  privacy, newsletter,  recall, citrix_response , hubspot_response,--div--;UserData, gender, title, first_name, last_name,username,  profession, email,phone,language,contact_id , --div--;CompanyData, company, department, street_and_nr, zip, city, country,  customer_id,--div--;MoreData, additional_info,  more1, more2, more3, more4, more5bool, more6int, more7date, more8file, password,--div--;InvoiceAddress,company2,department2,street_and_nr2,zip2,city2,country2 '),
 	),
@@ -49,7 +46,6 @@ return array(
 		),
 		'l10n_parent' => array(
 			'displayCond' => 'FIELD:sys_language_uid:>:0',
-			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.l18n_parent',
 			'config' => array(
 				'type' => 'select',
@@ -68,7 +64,7 @@ return array(
 		),
         'starttime' => array(
             'exclude' => 1,
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
             'config' => array(
                 'type' => 'input',
                 'renderType' => 'inputDateTime' ,
@@ -84,7 +80,7 @@ return array(
         ),
         'endtime' => array(
             'exclude' => 1,
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
             'config' => array(
                 'type' => 'input',
                 'renderType' => 'inputDateTime' ,

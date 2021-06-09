@@ -16,22 +16,30 @@
 	</f:then>
 	<f:else>
 		<div class="alert alert-success">
-			<div class="alert-heading ">
-				{f:translate(key: 'register_was_stored' , default:'Your registration was stored')}
-			</div>
+			<h3>
+				<f:if condition="{settings.alreadyRegistered}">
+					<f:then>
+						<f:if condition="{settings.register.doNotallowSameEmail}">
+							<f:then>
+								{f:translate(key: 'register_was_stored' , default:'Your registration was stored')}
+							</f:then>
+							<f:else>
+								{f:translate(key: 'register.you_are_registered_again')}<br><br>
+							</f:else>
+						</f:if>
+					</f:then>
+					<f:else>
+						{f:translate(key: 'register_was_stored' , default:'Your registration was stored')}
+					</f:else>
+
+				</f:if>
+
+			</h3>
 			<div class="alert-body">
 				<f:if condition="{settings.success}">
 					<f:then>
 						<div class="hidden">ID: {settings.pageId}-L-{settings.sys_language_uid}-E-{event.uid}-R-{registrant.uid}<br></div>
-						<f:if condition="{settings.alreadyRegistered}">
-							<h3>{f:translate(key: '{settings.you_are_registered_again}')}</h3>
-							<f:if condition="{settings.register.doNotallowSameEmail}">
-								<f:else>
-									<i>{f:translate(key: '{settings.you_are_registered_again}')}</i><br><br>
-								</f:else>
-							</f:if>
 
-						</f:if>
 						<f:if condition="{settings.successMsg}">
 							{f:translate(key: '{settings.successMsg}')}
 						</f:if>

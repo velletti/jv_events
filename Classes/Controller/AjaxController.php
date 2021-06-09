@@ -28,6 +28,7 @@ namespace JVE\JvEvents\Controller;
 
 use JVE\JvEvents\Domain\Model\Location;
 use JVE\JvEvents\Utility\AjaxUtility;
+use JVE\JvEvents\Utility\TyposcriptUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use JVE\JvEvents\Utility\ShowAsJsonArrayUtility;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
@@ -66,8 +67,9 @@ class AjaxController extends BaseController
         parent::initializeAction() ;
     }
 
-    public function initializeRepositorys()
+    public function initializeRepositorys(array $ts=null)
     {
+
         $this->tagRepository        = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\TagRepository');
         $this->categoryRepository        = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\CategoryRepository');
         $this->registrantRepository        = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\RegistrantRepository');
@@ -521,11 +523,25 @@ class AjaxController extends BaseController
         if(!$arguments) {
             $arguments = GeneralUtility::_GPmerged('tx_jvevents_ajax');
         }
-        // 6.2.2020 with teaserText and files
-        // https://wwwv9.allplan.com.ddev.site/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=4308&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[mode]=onlyValues
+        $pid =  GeneralUtility::_GP('id');
+        $ts = TyposcriptUtility::loadTypoScriptFromScratch( $pid , "tx_jvevents_events") ;
+        if( is_array($this->settings) && is_array($ts)) {
+            $this->settings = array_merge($ts['settings']);
+        } elseif ( is_array($ts)) {
+            $this->settings = $ts['settings'] ;
+        }
 
-        // https://wwwv9.allplan.com.ddev.site/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=94&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[rss]=1
-        // https://wwwv9.allplan.com.ddev.site/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=94&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[mode]=onlyValues
+        // 6.2.2020 with teaserText and files
+        // 27.1.2021 LTS 10 : wegfall &eID=jv_events und uid, dafür Page ID der Seite mit der Liste : z.b. "id=110"
+        // https://wwwv10.allplan.com.ddev.site/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=4308&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[mode]=onlyValues
+        // wird zu :
+        // https://wwwv10.allplan.com.ddev.site/?id=110&L=1&tx_jvevents_ajax[event]=4308&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[mode]=onlyValues
+
+
+        // https://wwwv10.allplan.com.ddev.site/de/?uid=82&L=1&tx_jvevents_ajax[event]=4308&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[mode]=onlyValues
+
+        // https://wwwv10.allplan.com.ddev.site/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=94&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[rss]=1
+        // https://wwwv10.allplan.com.ddev.site/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=94&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[mode]=onlyValues
 
         // https://www-dev.allplan.com/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=2049&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][sameCity]=&tx_jvevents_ajax[eventsFilter][skipEvent]=2049&tx_jvevents_ajax[eventsFilter][startDate]=1&tx_jvevents_ajax[rss]=1
         // https://www-dev.allplan.com/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=2049&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][sameCity]=&tx_jvevents_ajax[eventsFilter][skipEvent]=2049&tx_jvevents_ajax[eventsFilter][startDate]=1&tx_jvevents_ajax[mode]=onlyValues
@@ -554,9 +570,9 @@ class AjaxController extends BaseController
         } else {
             /** @var \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
             if( $arguments['rss'] ) {
-                $renderer = $this->getEmailRenderer($templatePath = '', '/Ajax/EventListRss' );
+                $renderer = $this->getEmailRenderer('', '/Ajax/EventListRss' );
             } else {
-                $renderer = $this->getEmailRenderer($templatePath = '', '/Ajax/EventList' );
+                $renderer = $this->getEmailRenderer( '', '/Ajax/EventList' );
             }
         }
 
@@ -594,6 +610,14 @@ class AjaxController extends BaseController
      */
     public function eventMenuAction(array $arguments=Null)
     {
+        $pid =  GeneralUtility::_GP('id');
+        $ts = TyposcriptUtility::loadTypoScriptFromScratch( $pid , "tx_jvevents_events") ;
+        if( is_array($this->settings) && is_array($ts)) {
+            $this->settings = array_merge($ts['settings']);
+        } elseif ( is_array($ts)) {
+            $this->settings = $ts['settings'] ;
+        }
+
         if(!$arguments) {
             $arguments = GeneralUtility::_GPmerged('tx_jvevents_ajax');
         }
@@ -605,18 +629,18 @@ class AjaxController extends BaseController
             ShowAsJsonArrayUtility::show(  $output ) ;
         }
 
+
+
         /* ************************************************************************************************************ */
         /*   render the HTML Output :
         /* ************************************************************************************************************ */
 
 
         if( $this->standaloneView ) {
-            /** @var \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
             $renderer = $this->standaloneView  ;
             $renderer->setTemplate("EventMenu") ;
         } else {
-            /** @var \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
-            $renderer = $this->getEmailRenderer($templatePath = '', '/Ajax/EventMenu' );
+            $renderer = $this->getEmailRenderer('', '/Ajax/EventMenu' );
         }
 
         $layoutPath = GeneralUtility::getFileAbsFileName("typo3conf/ext/jv_events/Resources/Private/Layouts/");
@@ -643,7 +667,8 @@ class AjaxController extends BaseController
 
 
         $return = array( "main" => $returnMain , "single" => $returnSingle ) ;
-
+        // debug : enalbe next line
+        $output['settings'] = $this->settings ;
         ShowAsJsonArrayUtility::show( array( 'values' => $output , 'html' => $return ) ) ;
         die;
     }
@@ -683,7 +708,7 @@ class AjaxController extends BaseController
             $renderer->setTemplate("locationList") ;
         } else {
             /** @var \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
-            $renderer = $this->getEmailRenderer($templatePath = '', '/Ajax/locationList' );
+            $renderer = $this->getEmailRenderer( '', '/Ajax/locationList' );
         }
 
         $layoutPath = GeneralUtility::getFileAbsFileName("typo3conf/ext/jv_events/Resources/Private/Layouts/");

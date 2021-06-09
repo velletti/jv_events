@@ -89,7 +89,26 @@ class EventRepository extends BaseRepository
             $settings['filter'] = $filter ;
         }
         $query = $this->createQuery();
-		$query->setOrderings($this->defaultOrderings);
+        $sortings = false ;
+        if( is_array($settings['list']['sorting'])) {
+            $sortings= [] ;
+            foreach ($settings['list']['sorting'] as $sortField => $sort) {
+                if ( in_array($sortField , ['crdate' , 'tstamp'] )) {
+                    if( $sort == "ASC") {
+                        $sortings[$sortField] = QueryInterface::ORDER_ASCENDING ;
+                    } else {
+                        $sortings[$sortField] = QueryInterface::ORDER_DESCENDING ;
+                    }
+                }
+
+            }
+        }
+        if ( is_array( $sortings ) && count($sortings) > 0 ) {
+            $query->setOrderings($sortings);
+        } else {
+            $query->setOrderings($this->defaultOrderings);
+        }
+
 
 
 
@@ -267,9 +286,9 @@ class EventRepository extends BaseRepository
                         $endDate->modify("+" . intval( $settings['filter']['maxDays']-1) . " Days" ) ;
 
                     } else {
-
-                        $startDate = new DateTime( 'NOW ' . $settings['filter']['startDate'] . ' Days' , $DateTimeZone) ;
-                        $endDate = new DateTime( 'NOW +' . (intval ($settings['filter']['startDate'] )). ' Days' , $DateTimeZone) ;
+                        $sd = $settings['filter']['startDate'] ? $settings['filter']['startDate'] : "0" ;
+                        $startDate = new DateTime( 'NOW ' . $sd . ' Days' , $DateTimeZone) ;
+                        $endDate = new DateTime( 'NOW +' . (intval ($sd )). ' Days' , $DateTimeZone) ;
 
                         $endDate->modify("+" . intval( $settings['filter']['maxDays'] -1) . " Days" ) ;
 

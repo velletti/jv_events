@@ -17,6 +17,7 @@
 
 	<f:form.hidden class="hidden" name="event" value="{event.uid}" />
 	<f:form.textfield class="hidden" property="layoutRegister" value="{settings.LayoutRegister}" />
+	<f:form.textfield class="hidden" property="addMandatoryFields" value="{registrant.addMandatoryFields}" />
 	<f:form.textfield class="hidden" property="event" value="{event.uid}" />
 
 
@@ -88,7 +89,7 @@
 		</f:if>
 
 		<div class="clearfix text-right col-xs-12">
-			<a class="button-orange-filled" onclick="jv_events_submit();return false;">
+			<a class="btn btn-primary button-orange-filled" onclick="jv_events_submit();return false;">
 				{f:translate(key: 'register_send' , default:'Register')}
 			</a>
 		</div>

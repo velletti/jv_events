@@ -5,7 +5,10 @@ use JVE\JvEvents\Domain\Model\Event;
 use JVE\JvEvents\Domain\Model\Registrant;
 use JVE\JvEvents\Domain\Model\Subevent;
 use TYPO3\CMS\Core\Exception;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Controller\ErrorController;
+use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
 
 /***************************************************************
  *
@@ -31,8 +34,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-use TYPO3\CMS\Extbase\Annotation as Extbase;
 
 
 /**
@@ -291,114 +292,134 @@ class RegistrantController extends BaseController
      * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("registrant")
      * @return void
      */
-    public function newAction(Event $event , Registrant $registrant=null)
+    public function newAction(Event $event=null, Registrant $registrant=null)
     {
-		 $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
-		// $this->addFlashMessage($this->translate('msg_error_cid'), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
+        $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
+        if (is_object($event)) {
 
-		$this->settings['startReg'] = time() ;
-		$tokenBase  = "P" . $this->settings['pageId'] . "-L" .$this->settings['sys_language_uid'] . "-E" . $event->getUid();
+            $this->settings['startReg'] = time();
+            $tokenBase = "P" . $this->settings['pageId'] . "-L" . $this->settings['sys_language_uid'] . "-E" . $event->getUid();
 
-		$this->settings['formToken'] = md5($tokenBase);
-		$this->settings['filter']['startDate'] = time() ;
-		// $this->settings['filter']['maxDays'] = 99999 ;
+            $this->settings['formToken'] = md5($tokenBase);
+            $this->settings['filter']['startDate'] = time();
+            // $this->settings['filter']['maxDays'] = 99999 ;
 
-		// $this->settings['debug'] = 2 ;
-		$otherEvents = false ;
-		if ( $event->getEventCategory() ) {
-			$this->settings['filter']['skipEvent'] = $event->getUid() ;
-			foreach ($event->getEventCategory() as $cat ) {
-				if( $cat->getBlockRegistration() ) {
-					$this->settings['filter']['categories'] = $cat->getUid() ;
+            // $this->settings['debug'] = 2 ;
+            $otherEvents = false;
+            if ($event->getEventCategory()) {
+                $this->settings['filter']['skipEvent'] = $event->getUid();
+                foreach ($event->getEventCategory() as $cat) {
+                    if ($cat->getBlockRegistration()) {
+                        $this->settings['filter']['categories'] = $cat->getUid();
 
-					/** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $events */
-					$otherEvents = $this->eventRepository->findByFilter(false, false,  $this->settings );
+                        /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $events */
+                        $otherEvents = $this->eventRepository->findByFilter(false, false, $this->settings);
 
-				}
-			}
-		}
-
-
-        $checkString =  $_SERVER["SERVER_NAME"] . "-" . $event->getUid() . "-" . $event->getCrdate() ;
-        $checkHash = hash("sha256" , $checkString ) ;
-
-        $this->settings['fe_user']['user'] = $GLOBALS['TSFE']->fe_user->user ;
-        $this->settings['fe_user']['organizer']['showTools'] = FALSE ;
-
-        if ( $GLOBALS['TSFE']->fe_user->user ) {
-            $userUid = $GLOBALS['TSFE']->fe_user->user['uid'] ;
-            if( is_object($event->getOrganizer())) {
-                $userAccessArr = \TYPO3\CMS\CORE\Utility\GeneralUtility::trimExplode( "," , $event->getOrganizer()->getAccessUsers() ) ;
-                if( in_array( $userUid , $userAccessArr ))  {
-                    $this->settings['fe_user']['organizer']['showTools'] = TRUE ;
-                } else {
-                    $usersGroups = \TYPO3\CMS\CORE\Utility\GeneralUtility::trimExplode( "," ,  $GLOBALS['TSFE']->fe_user->user['usergroup'] ) ;
-                    $OrganizerAccessToolsGroups = \TYPO3\CMS\CORE\Utility\GeneralUtility::trimExplode( "," ,  $event->getOrganizer()->getAccessGroups() ) ;
-                    foreach ($OrganizerAccessToolsGroups as $tempGroup ) {
-                        if( in_array( $tempGroup , $usersGroups ))  {
-                            $this->settings['fe_user']['organizer']['showTools'] = TRUE ;
-                        }
                     }
-
                 }
             }
-        }
-        $mayEdit = false ;
-        if( is_object($registrant) && $registrant->getUid() > 0) {
-           if ( is_object( $event) && is_object($event->getOrganizer())) {
-                if(  $registrant->getEvent() == $event->getUid() ) {
-                    if($this->isUserOrganizer() ) {
-                        if( $this->hasUserAccess( $event->getOrganizer() )) {
-                            if( $this->request->hasArgument("hash")) {
-                                if( $this->request->getArgument("hash") == $checkHash ) {
-                                    $mayEdit = true ;
-                                    $registrant->setPrivacy("1");
-                                }
 
+
+            $checkString = $_SERVER["SERVER_NAME"] . "-" . $event->getUid() . "-" . $event->getCrdate();
+            $checkHash = hash("sha256", $checkString);
+
+            $this->settings['fe_user']['user'] = $GLOBALS['TSFE']->fe_user->user;
+            $this->settings['fe_user']['organizer']['showTools'] = FALSE;
+
+            if ($GLOBALS['TSFE']->fe_user->user) {
+                $userUid = $GLOBALS['TSFE']->fe_user->user['uid'];
+                if (is_object($event->getOrganizer())) {
+                    $userAccessArr = \TYPO3\CMS\CORE\Utility\GeneralUtility::trimExplode(",", $event->getOrganizer()->getAccessUsers());
+                    if (in_array($userUid, $userAccessArr)) {
+                        $this->settings['fe_user']['organizer']['showTools'] = TRUE;
+                    } else {
+                        $usersGroups = \TYPO3\CMS\CORE\Utility\GeneralUtility::trimExplode(",", $GLOBALS['TSFE']->fe_user->user['usergroup']);
+                        $OrganizerAccessToolsGroups = \TYPO3\CMS\CORE\Utility\GeneralUtility::trimExplode(",", $event->getOrganizer()->getAccessGroups());
+                        foreach ($OrganizerAccessToolsGroups as $tempGroup) {
+                            if (in_array($tempGroup, $usersGroups)) {
+                                $this->settings['fe_user']['organizer']['showTools'] = TRUE;
+                            }
+                        }
+
+                    }
+                }
+            }
+            $mayEdit = false;
+            if (is_object($registrant) && $registrant->getUid() > 0) {
+                if (is_object($event) && is_object($event->getOrganizer())) {
+                    if ($registrant->getEvent() == $event->getUid()) {
+                        if ($this->isUserOrganizer()) {
+                            if ($this->hasUserAccess($event->getOrganizer())) {
+                                if ($this->request->hasArgument("hash")) {
+                                    if ($this->request->getArgument("hash") == $checkHash) {
+                                        $mayEdit = true;
+                                        $registrant->setPrivacy("1");
+                                    }
+
+                                }
                             }
                         }
                     }
                 }
+
+                if (!$mayEdit) {
+                    $registrant = null;
+                }
             }
 
-            if( !$mayEdit) {
-                $registrant=null ;
+
+            if ($registrant == null) {
+                /** @var Registrant $registrant */
+                $registrant = $this->objectManager->get("JVE\\JvEvents\\Domain\\Model\\Registrant");
+                if ($userUid) {
+                    $registrant->setGender(intval($GLOBALS['TSFE']->fe_user->user['gender'] + 1));
+                    $registrant->setFirstName($GLOBALS['TSFE']->fe_user->user['first_name']);
+                    $registrant->setLastName($GLOBALS['TSFE']->fe_user->user['last_name']);
+                    $registrant->setEmail($GLOBALS['TSFE']->fe_user->user['email']);
+                    $registrant->setPhone($GLOBALS['TSFE']->fe_user->user['telephone']);
+                    $registrant->setTitle($GLOBALS['TSFE']->fe_user->user['title']);
+                    $registrant->setCity($GLOBALS['TSFE']->fe_user->user['city']);
+                    $registrant->setZip($GLOBALS['TSFE']->fe_user->user['zip']);
+                    $registrant->setCountry($GLOBALS['TSFE']->fe_user->user['country']);
+                    if (array_key_exists('tx_nem_firstname', $GLOBALS['TSFE']->fe_user->user)) {
+                        $registrant->setFirstName($GLOBALS['TSFE']->fe_user->user['tx_nem_firstname']);
+                        $registrant->setLastName($GLOBALS['TSFE']->fe_user->user['tx_nem_lastname']);
+
+                        $registrant->setProfession($GLOBALS['TSFE']->fe_user->user['tx_nem_profession']);
+                        $registrant->setCompany($GLOBALS['TSFE']->fe_user->user['tx_nem_company']);
+                        //  $registrant->setDepartment($GLOBALS['TSFE']->fe_user->user['tx_nem_department']);
+                        $registrant->setCustomerId($GLOBALS['TSFE']->fe_user->user['tx_nem_cnum']);
+                        $registrant->setStreetAndNr($GLOBALS['TSFE']->fe_user->user['tx_nem_street_and_nr']);
+                    }
+                }
             }
-        }
+
+            $addFields = $this->settings['Register']['add_mandatory_fields'] ? trim($this->settings['Register']['add_mandatory_fields']) : '';
+            $registrant->setAddMandatoryFields($addFields);
 
 
-        if ( $registrant==null) {
-            /** @var Registrant $registrant */
-            $registrant = $this->objectManager->get("JVE\\JvEvents\\Domain\\Model\\Registrant");
-            if($userUid) {
-                $registrant->setGender(intval( $GLOBALS['TSFE']->fe_user->user['gender'] + 1 ));
-                $registrant->setFirstName($GLOBALS['TSFE']->fe_user->user['first_name']);
-                $registrant->setLastName($GLOBALS['TSFE']->fe_user->user['last_name']);
-                $registrant->setEmail($GLOBALS['TSFE']->fe_user->user['email']);
-                $registrant->setPhone($GLOBALS['TSFE']->fe_user->user['telephone']);
+            $querysettings = new \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
+            $querysettings->setStoragePageIds(array($event->getPid()));
+
+            $this->subeventRepository->setDefaultQuerySettings($querysettings);
+            $subevents = $this->subeventRepository->findByEventAllpages($event->getUid(), FALSE);
+            if (!is_object($subevents)) {
+                $this->view->assign('subevents', null);
+                $this->view->assign('subeventcount', 0);
+            } else {
+                $this->view->assign('subevents', $subevents);
+                $this->view->assign('subeventcount', $subevents->count() + 1);
+
             }
+
+            $this->view->assign('registrant', $registrant);
+            $this->view->assign('hash', $checkHash);
+            $this->view->assign('otherEvents', $otherEvents);
+
+
+            $this->view->assign('event', $event);
         }
-
-        $querysettings = new \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings ;
-        $querysettings->setStoragePageIds(array( $event->getPid() )) ;
-
-        $this->subeventRepository->setDefaultQuerySettings( $querysettings );
-        $subevents = $this->subeventRepository->findByEventAllpages($event->getUid() , FALSE ) ;
-        if ( ! is_object( $subevents ) ) {
-            $this->view->assign('subevents', null );
-            $this->view->assign('subeventcount', 0 );
-        } else {
-            $this->view->assign('subevents', $subevents);
-            $this->view->assign('subeventcount', $subevents->count() + 1 );
-
-        }
-
-		$this->view->assign('registrant', $registrant);
-		$this->view->assign('hash', $checkHash);
-		$this->view->assign('otherEvents', $otherEvents);
-
-		$this->view->assign('settings', $this->settings);
-		$this->view->assign('event', $event);
+        $this->view->assign('settings', $this->settings);
     }
 
 
@@ -978,5 +999,24 @@ class RegistrantController extends BaseController
         }
         return $registrantEmail ;
     }
+
+    /**
+     * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request
+     * @param \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response
+     * @throws \Exception|\TYPO3\CMS\Extbase\Property\Exception
+     */
+    public function processRequest(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request, \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response)
+    {
+        try {
+            parent::processRequest($request, $response);
+        }
+        catch(\TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException $e) {
+
+        }
+        catch(\Exception $e) {
+            throw $e;
+        }
+    }
+
 
 }

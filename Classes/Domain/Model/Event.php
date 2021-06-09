@@ -51,6 +51,28 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     protected $hidden ;
 
+    /**
+     * last modification
+     *
+     * @var int|null
+     */
+    protected $tstamp ;
+
+
+    /**
+     * last modification in Frontend
+     *
+     * @var int|null
+     */
+    protected $lastUpdated ;
+
+    /**
+     * last modification in Frontend by feuser ID
+     *
+     * @var int|null
+     */
+    protected $lastUpdatedBy ;
+
 
     /**
      * hidden or not that is the question
@@ -276,7 +298,6 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * Access Start Time of this event (default TYPO3 Field ) -> this does not wrk in TYPO3 10:  int|\DateTime|NULL
-
      * @var \DateTime
      */
     protected $starttime ;
@@ -289,7 +310,6 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * End Date of this event.  var \DateTime|int does  not work in TYPO3 LTS 10
-     *
      * @var \DateTime
 
      */
@@ -297,7 +317,6 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     
     /**
      * End time of this event
-     *
      * @var int
      */
     protected $endTime = 0;
@@ -1968,7 +1987,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         if ($this->withRegistration ) {
             // Internal Registration Process : check $this->availableSeats  configured and PID set
 
-            if (($this->unconfirmedSeats  + $this->availableSeats)  > 0  && $this->registrationFormPid > 0 ) {
+            if (($this->availableWaitingSeats  + $this->availableSeats)  > 0  && $this->registrationFormPid > 0 ) {
 
                 return TRUE;
             }
@@ -2481,6 +2500,64 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     }
 
     /**
+     * @return int|null
+     */
+    public function getTstamp(): ?int
+    {
+        return $this->tstamp;
+    }
+
+    /**
+     * @param int $tstamp
+     */
+    public function setTstamp(int $tstamp): void
+    {
+        $this->tstamp = $tstamp;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getLastUpdated(): ?int
+    {
+        return $this->lastUpdated;
+    }
+
+    /**
+     * @param int|null $lastUpdated
+     */
+    public function setLastUpdated(?int $lastUpdated): void
+    {
+        $this->lastUpdated = $lastUpdated;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getLastUpdatedBy(): ?int
+    {
+        return $this->lastUpdatedBy;
+    }
+
+    /**
+     * @param int|null $lastUpdatedBy
+     */
+    public function setLastUpdatedBy(?int $lastUpdatedBy): void
+    {
+        $this->lastUpdatedBy = $lastUpdatedBy;
+    }
+
+
+
+    public function getDaysSinceLastMod() {
+        return round( ( time() - $this->lastUpdated) / (3600*24) , 0 ) ;
+    }
+    public function getHoursSinceLastMod() {
+        return round( ( time() - $this->lastUpdated) / (3600) , 0 ) ;
+    }
+
+
+    /**
      * @return int
      */
     public function getMasterId()
@@ -2562,6 +2639,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         }
         $this->registrationShowStatus = $registrationShowStatus;
     }
+
 
 
 

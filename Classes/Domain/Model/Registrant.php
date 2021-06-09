@@ -53,15 +53,23 @@ class Registrant extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 	 */
 	protected $created  ;
 
+
+    /**
+     * created
+     *
+     * @var string
+     */
+    protected $addMandatoryFields  ;
+
     /**
      * Access Start Time of this event (default TYP3 Field )
-     * @var int|\DateTime|null
+     * @var \DateTime
      */
     protected $starttime ;
 
     /**
      * Access End Time of this event (default TYP3 Field )
-     * @var int|\DateTime|null
+     * @var \DateTime
      */
     protected $endtime ;
 
@@ -1374,6 +1382,23 @@ class Registrant extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         $this->endtime = $endtime;
     }
+
+    /**
+     * @return string
+     */
+    public function getAddMandatoryFields(): string
+    {
+        return $this->addMandatoryFields ? $this->addMandatoryFields : "";
+    }
+
+    /**
+     * @param string $addMandatoryFields
+     */
+    public function setAddMandatoryFields(string $addMandatoryFields): void
+    {
+        $this->addMandatoryFields = $addMandatoryFields;
+    }
+
 
 
 }

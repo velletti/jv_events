@@ -29,9 +29,6 @@ $returnArray = array(
 		'searchFields' => 'event_type,name,teaser,description,images,files,start_date,start_time,end_date,marketing_process_id,sales_force_record_type,sales_force_campaign_id,sales_force_event_id,sales_force_session_id,subject_organizer,text_organizer,subject_registrant,introtext_registrant,text_registrant,organizer,location,slug,',
 		'iconfile' => 'EXT:jv_events/Resources/Public/Icons/tx_jvevents_domain_model_event.gif'
 	),
-	'interface' => array(
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, event_type, teaser, description, images, files, files_after_reg, files_after_event,all_day, start_date, start_time, end_date, end_time, access, with_registration, registration_until,registration_gender,registration_show_status, registration_access, store_in_citrix, sales_force_campaign_id, store_in_hubspot, citrix_uid, store_in_sales_force, marketing_process_id, sales_force_record_type, sales_force_event_id, sales_force_session_id, available_seats,available_waiting_seats, registered_seats, unconfirmed_seats, notify_organizer, notify_registrant, subject_organizer, text_organizer, subject_registrant,introtext_registrant, text_registrant, need_to_confirm, is_recurring, frequency, freq_exception, is_exception_for, organizer, location, registrant, event_category, tags, url,price,',
-	),
 	'types' => array(
 		'0' => array('showitem' => 'event_type,url,--palette--;;dates,--palette--;LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.entry_time_help;entryTime,
 		   --palette--;;infos,
@@ -39,7 +36,7 @@ $returnArray = array(
 		   price,currency,--linebreak--,--palette--;LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.priceReducedHeader;priceReduced,
 		--div--;Relations, --palette--;;relations,
 		--div--;Files, teaser_image, files, files_after_reg, files_after_event,
-		--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, --palette--;;access,'),
+		--div--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.tabs.access, --palette--;;access,'),
 		'2' => array('showitem' => 'event_type,--palette--;;dates,--palette--;LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.entry_time_help;entryTime,
 		   --palette--;;infos,description,
 		--div--;Advanced, --palette--;;language, --palette--;;advanced, --palette--;;frequent,
@@ -49,7 +46,7 @@ $returnArray = array(
 		--div--;Registration, --palette--;;register,
 		--div--;Notifications, --palette--;;notification, --palette--;Email;notifyOrg, --palette--;Email;notifyReg,
 		--div--;Old, --palette--;;old,
-		--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, --palette--;;access,'),
+		--div--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.tabs.access, --palette--;;access,'),
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),
@@ -73,22 +70,21 @@ $returnArray = array(
 	
 		'sys_language_uid' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.language',
+			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
 			'config' => array(
 				'type' => 'select',
 				'renderType' => 'selectSingle',
 				'foreign_table' => 'sys_language',
 				'foreign_table_where' => 'ORDER BY sys_language.title',
 				'items' => array(
-					array('LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', -1),
-					array('LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.default_value', 0)
+					array('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', -1),
+					array('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.default_value', 0)
 				),
 			),
 		),
 		'l10n_parent' => array(
 			'displayCond' => 'FIELD:sys_language_uid:>:0',
-			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
+			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
 			'config' => array(
 				'type' => 'select',
 				'renderType' => 'selectSingle',
@@ -112,9 +108,30 @@ $returnArray = array(
                 'eval' => 'int',
             )
         ),
-		
+        'tstamp' => Array (
+            'exclude' => 1,
+            'label' => 'Last modification',
+            'config' => Array (
+                'type' => 'passthrough',
+            )
+        ),
+        'last_updated' => Array (
+            'exclude' => 1,
+            'label' => 'Last modification in Frontend',
+            'config' => Array (
+                'type' => 'passthrough',
+            )
+        ),
+        'last_updated_by' => Array (
+            'exclude' => 1,
+            'label' => 'Last modification in Frontend by frontenduser UID',
+            'config' => Array (
+                'type' => 'input',
+                'eval' => 'int',
+            )
+        ),
 		't3ver_label' => array(
-			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.versionLabel',
+			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.versionLabel',
 			'config' => array(
 				'type' => 'input',
 				'size' => 30,
@@ -124,7 +141,7 @@ $returnArray = array(
 	
 		'hidden' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
+			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
 			'config' => array(
 				'type' => 'check',
 			),
@@ -159,7 +176,7 @@ $returnArray = array(
         ),
 		'starttime' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
+			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
 			'config' => array(
 				'type' => 'input',
                 'renderType' => 'inputDateTime' ,
@@ -175,7 +192,7 @@ $returnArray = array(
 		),
 		'endtime' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
+			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
 			'config' => array(
 				'type' => 'input',
                 'renderType' => 'inputDateTime' ,
@@ -607,22 +624,21 @@ $returnArray = array(
 				'maxitems' => 20,
 				'items' => array(
 					array(
-						'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.hide_at_login',
+						'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hide_at_login',
 						-1
 					),
 					array(
-						'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.any_login',
+						'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.any_login',
 						-2
 					),
 					array(
-						'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.usergroups',
+						'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.usergroups',
 						'--div--'
 					)
 				),
 				'exclusiveKeys' => '-1,-2',
 				'foreign_table' => 'fe_groups',
-				'foreign_table_where' => 'ORDER BY fe_groups.title',
-				'enableMultiSelectFilterTextfield' => true
+				'foreign_table_where' => 'ORDER BY fe_groups.title'
 			)
 		),
 		'with_registration' => array(
@@ -752,22 +768,21 @@ $returnArray = array(
 				'maxitems' => 20,
 				'items' => array(
 					array(
-						'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.hide_at_login',
+						'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hide_at_login',
 						-1
 					),
 					array(
-						'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.any_login',
+						'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.any_login',
 						-2
 					),
 					array(
-						'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.usergroups',
+						'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.usergroups',
 						'--div--'
 					)
 				),
 				'exclusiveKeys' => '-1,-2',
 				'foreign_table' => 'fe_groups',
-				'foreign_table_where' => 'ORDER BY fe_groups.title',
-				'enableMultiSelectFilterTextfield' => true
+				'foreign_table_where' => 'ORDER BY fe_groups.title'
 			)
 		),
         'store_in_hubspot' => array(
@@ -1372,7 +1387,7 @@ if ( $configuration['Registrationid'] > 0 ) {
             ],
             'prependSlash' => false,
             'fallbackCharacter' => '-',
-            'eval' => 'uniqueInPid',
+            'eval' => 'unique',
             'default' => 'event'
         ]
     ] ;

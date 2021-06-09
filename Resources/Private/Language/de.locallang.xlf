@@ -790,6 +790,10 @@
                 <source>Reset filter</source>
                 <target>Filter zurücksetzen</target>
             </trans-unit>
+            <trans-unit id="tx_jvevents_event.filter.resultcount">
+                <source>Hits</source>
+                <target>Treffer</target>
+            </trans-unit>
              <trans-unit id="tx_jvevents_event.filter.distance">
                 <source>Set Position</source>
                 <target>Setze Position</target>
@@ -944,6 +948,14 @@
             <trans-unit id="donate">
                 <source>Donate</source>
                 <target>Spenden</target>
+            </trans-unit>
+             <trans-unit id="event.created">
+                <source>Created</source>
+                <target>Erstellt</target>
+            </trans-unit>
+            <trans-unit id="event.modified">
+                <source>Last modified</source>
+                <target>Letzte Änderung</target>
             </trans-unit>
 		</body>
 	</file>

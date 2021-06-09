@@ -91,7 +91,6 @@ class EventController extends BaseController
     public function listAction()
     {
         $this->debugArray[] = "After Init :" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " Line: " . __LINE__ ;
-
         $this->settings['filter']['distance']['doNotOverrule'] = "false" ;
 
         if( $this->request->hasArgument('overruleFilter')) {
@@ -144,12 +143,27 @@ class EventController extends BaseController
         if( intval( $this->settings['detailPid'] ) < 1 ) {
             $this->settings['detailPid'] = intval( $this->settings['link']['detailPidDefault']) ;
         }
+
         $this->debugArray[] = "Before generate Filter :" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " Line: " . __LINE__ ;
-        if (  $this->settings['ShowFilter'] == 3) {
-            $eventsFilter = $this->generateFilterAll( $this->settings['filter']) ;
-        } else {
-            $eventsFilter = $this->generateFilter( $events ,  $this->settings['filter']) ;
+        switch ($this->settings['ShowFilter']) {
+            case "3":
+                $eventsFilter = $this->generateFilterAll( $this->settings['filter']) ;
+                break;
+
+            case "6":
+                $eventsFilter = $this->generateFilter( $events ,  $this->settings['filter']) ;
+                $eventsFilter['box1'] = $this->generateFilterBox( $this->settings['filter']['tagbox1tags']) ;
+                $eventsFilter['box2'] = $this->generateFilterBox( $this->settings['filter']['tagbox2tags']) ;
+                $eventsFilter['box3'] = $this->generateFilterBox( $this->settings['filter']['tagbox3tags']) ;
+                $eventsFilter['box4'] = $this->generateFilterBox( $this->settings['filter']['tagbox4tags']) ;
+                break;
+
+            default:
+                $eventsFilter = $this->generateFilter( $events ,  $this->settings['filter']) ;
+                break;
+
         }
+
         $this->debugArray[] = "After generate Filter :" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " Line: " . __LINE__ ;
 
         $dtz = $this->eventRepository->getDateTimeZone() ;
@@ -446,6 +460,7 @@ class EventController extends BaseController
             $newEvent->setRegisteredSeats(0) ;
             $newEvent->setUnconfirmedSeats(0) ;
             $newEvent->setViewed(0) ;
+            $newEvent->setTopEvent(0) ;
 
             // then have a look at Ext Conf
             $extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class) ->get('jv_events');
@@ -596,8 +611,11 @@ class EventController extends BaseController
             $this->cacheService->clearPageCache( $clearCachePids );
             $this->addFlashMessage('The object was updated and Cache of following pages are cleared: ' . implode("," , $clearCachePids), '', AbstractMessage::OK);
         }
-
-       $this->redirect("show" , null , null , array( "event" => $eventUid  )) ;
+        $action = "show" ;
+        if ( $copy2Day == 0 &&  $amount == 1 ) {
+            $action = "edit" ;
+        }
+       $this->redirect($action , null , null , array( "event" => $eventUid  )) ;
 
     }
     /**
@@ -619,6 +637,11 @@ class EventController extends BaseController
                 } else {
                     $event->setCanceled( '1' ) ;
                 }
+                $event->setLastUpdated(time());
+                if ( intval($GLOBALS['TSFE']->fe_user->user['uid'] ) ) {
+                    $event->setLastUpdatedBy(intval($GLOBALS['TSFE']->fe_user->user['uid'] ) );
+                }
+
 
                 try {
                     $this->eventRepository->update($event) ;
@@ -676,7 +699,10 @@ class EventController extends BaseController
                 if ( count($oldEventRows ) > 0 ) {
                     $oldEventRow = $oldEventRows[0] ;
                 }
-
+                $event->setLastUpdated(time());
+                if ( intval($GLOBALS['TSFE']->fe_user->user['uid'] ) ) {
+                    $event->setLastUpdatedBy(intval($GLOBALS['TSFE']->fe_user->user['uid'] ) );
+                }
                 $this->eventRepository->update($event) ;
                 if( $event->getChangeFutureEvents() && $event->getMasterId() > 0 ) {
                     $filter['startDate'] = $event->getStartDate()->getTimestamp() ;
@@ -689,6 +715,11 @@ class EventController extends BaseController
                     if ( count($otherEvents) > 0 ) {
                         $otherDaysText = " " ;
                         foreach ( $otherEvents as $otherEvent ) {
+                            $otherEvent->setLastUpdated(time());
+                            if ( intval($GLOBALS['TSFE']->fe_user->user['uid'] ) ) {
+                                $otherEvent->setLastUpdatedBy(intval($GLOBALS['TSFE']->fe_user->user['uid'] ) );
+                            }
+
                             $otherDaysText .= $otherEvent->getStartDate()->format("d.M-Y") .  " (Id:" . $otherEvent->getUid() ."), " ;
                             if( $oldEventRow['name'] != $event->getName() ) {
                                 $otherEvent->setName( $event->getName() ) ;
@@ -781,7 +812,10 @@ class EventController extends BaseController
 
             try {
                 $masterId = $event->getMasterId() ;
-
+                $event->setLastUpdated(time());
+                if ( intval($GLOBALS['TSFE']->fe_user->user['uid'] ) ) {
+                    $event->setLastUpdatedBy(intval($GLOBALS['TSFE']->fe_user->user['uid'] ) );
+                }
                 $this->eventRepository->remove($event) ;
 
                 if( $masterId && $deleteFutureEvents) {
@@ -802,6 +836,10 @@ class EventController extends BaseController
                         foreach ( $otherEvents as $otherEvent ) {
                             if( $otherEvent) {
                                 $otherDaysText .= $otherEvent->getStartDate()->format("d.M-Y") .  " (Id:" . $otherEvent->getUid() ."), " ;
+                                $otherEvent->setLastUpdated(time());
+                                if ( intval($GLOBALS['TSFE']->fe_user->user['uid'] ) ) {
+                                    $otherEvent->setLastUpdatedBy(intval($GLOBALS['TSFE']->fe_user->user['uid'] ) );
+                                }
                                 $this->eventRepository->remove($otherEvent) ;
                             }
                         }
@@ -980,11 +1018,10 @@ class EventController extends BaseController
                 $event->setRegistrationFormPid($this->settings['EmConfiguration']['RegistrationFormPid']);
             }
             $event->setRegistrationPid($this->settings['EmConfiguration']['RegistrationPid']);
+
             // var_dump($eventArray['registrationFormPid'] );
             // die;
         }
-
-
 
         if ( $event->getPid() < 1 ) {
             // ToDo find good way to handle ID Default .. maybe a pid per User, per location or other typoscript setting
@@ -1019,6 +1056,7 @@ class EventController extends BaseController
         if( is_object( $organizer )) {
             if ( $organizer->getUid() > 0 ) {
                 $organizer->setLatestEvent( $date ) ;
+                $organizer->setTstamp( time() ) ;
                 $this->organizerRepository->update($organizer ) ;
             }
         }
