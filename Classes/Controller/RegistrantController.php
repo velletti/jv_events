@@ -558,6 +558,7 @@ class RegistrantController extends BaseController
                             $registrant->setHidden(1);
                         }
                     }
+                    $oldReg->setPid( $registrant->getPid() ) ;
                     // 1. we need to load Data from OLD New Registration to OLD Registration
                     $this->updateOldReg( $oldReg , $registrant ) ;
                 }
@@ -566,7 +567,7 @@ class RegistrantController extends BaseController
             }
 
 		} else {
-            $oldReg = $registrant ;
+
             if ($event->getNeedToConfirm() == 1) {
                 $registrant->setHidden(1);
                 $this->settings['success'] = TRUE ;
@@ -599,7 +600,7 @@ class RegistrantController extends BaseController
                     'settings' => $this->settings,
                 )
             );
-
+            $oldReg = $registrant ;
 			$this->registrantRepository->add($registrant);
 
 
