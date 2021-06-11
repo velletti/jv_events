@@ -1,7 +1,5 @@
 <?php
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 if (!defined('TYPO3_MODE')) {
 	die('Access denied.');
 }
@@ -75,7 +73,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['proc
 	'JVE\\JvEvents\\Hooks\\ProcessDatamap';
 
 /** @var \TYPO3\CMS\Core\Information\Typo3Version $version */
-$version = GeneralUtility::makeInstance('TYPO3\CMS\Core\Information\Typo3Version');
+$version = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Information\Typo3Version');
 
 if ($version->getMajorVersion()  < 10) {
     // to Check if we need this
