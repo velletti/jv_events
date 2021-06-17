@@ -10,7 +10,7 @@
  * "version" and "dependencies" must not be touched!
  ***************************************************************/
 
-$EM_CONF[$_EXTKEY] = array(
+$EM_CONF['jv_events'] = array(
 	'title' => 'Eventmanagement',
 	'description' => 'List and show Events with filters. Including registration',
 	'category' => 'plugin',
