@@ -137,12 +137,16 @@ class GeocoderUtility {
 				if ( initZoom ) {
                     map = new google.maps.Map(document.getElementById(\'map\'), {
                         zoom: initZoom ,
+                        streetViewControl: false,
+                        mapTypeControl: false,
                         center: myLatLng
                     });
 				} else {
                     // Create the map
                     map = new google.maps.Map(document.getElementById(\'map\'), {
                         zoom: 8,
+                        streetViewControl: false,
+                        mapTypeControl: false,
                         center: myLatLng
                     });
 				}
@@ -150,10 +154,19 @@ class GeocoderUtility {
                     if(document.getElementById("zoom")) {
                         document.getElementById("zoom").value = map.getZoom() ;
                     }
-                    ' . $updateFunctionCode .
-            '
+                    updatePosition() ;
                 });
-				
+				map.addListener( \'click\', function(e) {
+				    marker.setPosition( e.latLng ) ;
+				    map.panTo(marker.getPosition()) ;
+                    var zoom = map.getZoom();
+                    if ( zoom < 9 ) {
+                      zoom = 9 ;
+                    }
+                    map.setZoom( zoom ) ;
+                    updatePosition() ;
+                    
+                });
 			
 				// Google geocoder
 				geocoder = new google.maps.Geocoder();
@@ -173,12 +186,12 @@ class GeocoderUtility {
 				
 			}
 			
-			function updatePostion() {
+			function updatePosition() {
 				if(document.getElementById("lat")) {
-					document.getElementById("lat").val( marker.getPosition().lat()) ;
+					document.getElementById("lat").value =  marker.getPosition().lat() ;
 				}
 				if(document.getElementById("lng")) {
-					document.getElementById("lng").val( marker.getPosition().lng()) ;
+					document.getElementById("lng").value =  marker.getPosition().lng() ;
 				}
 
 				if(document.getElementById("jvevents-geo-ok")) {
@@ -290,7 +303,7 @@ class GeocoderUtility {
                                     });
                             }    
                             if(draggable ) {
-                                marker.addListener("drag", updatePostion);
+                                marker.addListener("drag", updatePosition);
                             }
                               marker.addListener("click", () => {
                                 map.setZoom(10);
@@ -305,7 +318,7 @@ class GeocoderUtility {
                                 }
                             }
                 
-                            function updatePostion() {
+                            function updatePosition() {
                                 if(document.getElementById("lat")) {
                                     document.getElementById("lat").value = marker.getPosition().lat() ;
                                 }
