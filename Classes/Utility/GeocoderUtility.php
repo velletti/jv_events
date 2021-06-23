@@ -378,6 +378,8 @@ class GeocoderUtility {
                 address = address + ",DE" ;
                 if ( map && map.getZoom() < 7 ) {
                     initZoom = 7 ;
+                } else {
+                   initZoom = map.getZoom() ;
                 }
                 findAddress({address: address}) ;
                

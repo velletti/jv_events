@@ -688,10 +688,10 @@
 
 					<settings.filter.initMapZoom>
 						<TCEforms>
-							<label>Init Zoom factor for Map (1-15) default 6 </label>
+							<label>Init Zoom factor for Map (1= world - 15 one street) default 4 </label>
 							<config>
 								<type>input</type>
-								<default>6</default>
+								<default>4</default>
 							</config>
 						</TCEforms>
 					</settings.filter.initMapZoom>
