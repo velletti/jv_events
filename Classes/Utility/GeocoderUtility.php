@@ -73,38 +73,46 @@ class GeocoderUtility {
      * @param string $updateFunction
 	 * @return string
 	 */
-	protected function getInlineJs($addressData = false , $uid = 0 , $jQueryName = "TYPO3.jQuery" , $formfieldIds= false , $updateFunction='' ){
+	protected function getInlineJs($addressData = false , $uid = 0 , $jQueryName = "TYPO3.jQuery" , $formfieldIds= false , $updateFunction='' )
+    {
 
-		$js = '<script type="text/javascript">';
+        $js = '<script type="text/javascript">';
 
-        if ( $addressData ) {
+        if ($addressData) {
             // get AddressData variables from incomming array add Function to write back to fields
-            $js.= $this->inlineJsFromAddressData($addressData , $jQueryName ,  $updateFunction ) ;
+            $js .= $this->inlineJsFromAddressData($addressData, $jQueryName, $updateFunction);
         } else {
-            if ( $formfieldIds ) {
-                // get AddressData variables from incomming array add Function to write back to fields
-                $js.= $this->inlineJsFromFormfieldIds($formfieldIds , $jQueryName  ,  $updateFunction ) ;
+            if ($formfieldIds) {
+                if (array_key_exists("input", $formfieldIds)) {
+                    $js .= $this->inlineJsFromLatLng($formfieldIds, $jQueryName, $updateFunction);
+                } else {
+                    // get AddressData variables from incomming array add Function to write back to fields
+                    $js .= $this->inlineJsFromFormfieldIds($formfieldIds, $jQueryName, $updateFunction);
+                }
+
             } else {
                 // get AddressData variables from parent.window and add Function to write back to that window
-                $js.= $this->inlineJsFromParentWindow($uid , $jQueryName  ,  $updateFunction  ) ;
-
+                $js .= $this->inlineJsFromParentWindow($uid, $jQueryName, $updateFunction);
             }
 
         }
-        $updateFunctionCode = '' ;
-        if( $updateFunction ) {
+        $updateFunctionCode = '';
+        if ($updateFunction) {
             // $updateFunction should look like: "jv_events_refreshList();"
-            $updateFunctionName = explode("(" , $updateFunction) ;
+            $updateFunctionName = explode("(", $updateFunction);
             $updateFunctionCode = 'if (typeof ' . $updateFunctionName[0] . ' === "function") {' . "\n" .
                 $updateFunction . "\n"
-            .'}'  . "\n"  . "\n" ;
+                . '}' . "\n" . "\n";
         }
-       // $updateFunctionCode = '' ;
-		// We need this here and not in a file, because we don't need this in the head
-		$js.= '
-		   var address = concatAddress();
+        // $updateFunctionCode = '' ;
+        // We need this here and not in a file, because we don't need this in the head
+        $js .= '
+		    if ( initZoom ) { 
+		       var address = initAddress ; 
+		    } else {
+		       var address = concatAddress();
+		    }
             // console.log(address);
-
             
             var map = null;
             var geocoder = null;
@@ -126,12 +134,26 @@ class GeocoderUtility {
 			
 				// Set the center of the map (value not important, because we bound the markers to set the center of the map)
 				var myLatLng = {lat: 11.4712, lng: 48.1148};
-			
-				// Create the map
-				map = new google.maps.Map(document.getElementById(\'map\'), {
-					zoom: 8,
-					center: myLatLng
-				});
+				if ( initZoom ) {
+                    map = new google.maps.Map(document.getElementById(\'map\'), {
+                        zoom: initZoom ,
+                        center: myLatLng
+                    });
+				} else {
+                    // Create the map
+                    map = new google.maps.Map(document.getElementById(\'map\'), {
+                        zoom: 8,
+                        center: myLatLng
+                    });
+				}
+				map.addListener( \'zoom_changed\', function() {
+                    if(document.getElementById("zoom")) {
+                        document.getElementById("zoom").value = map.getZoom() ;
+                    }
+                    ' . $updateFunctionCode .
+            '
+                });
+				
 			
 				// Google geocoder
 				geocoder = new google.maps.Geocoder();
@@ -140,13 +162,15 @@ class GeocoderUtility {
 				bounds = new google.maps.LatLngBounds();
 			
 		        // console.log(address);	
-				// Find the address
-				findAddress({"address": address});
-				        
-				// Put the address into the search field
+				// Find the address 
 				
+				    findAddress({"address": address});
+				    // Put the address into the search field
 				' . $jQueryName . '("#geosearch input#geosearchbox").val(address);
 			
+				
+				
+				
 			}
 			
 			function updatePostion() {
@@ -156,6 +180,7 @@ class GeocoderUtility {
 				if(document.getElementById("lng")) {
 					document.getElementById("lng").val( marker.getPosition().lng()) ;
 				}
+
 				if(document.getElementById("jvevents-geo-ok")) {
 					document.getElementById("jvevents-geo-ok").style.opacity = "1" ;
 				}
@@ -171,6 +196,8 @@ class GeocoderUtility {
                     document.cookie = "tx_events_lat=" + marker.getPosition().lat() + "; " + expires + ";path=/";
                     document.cookie = "tx_events_lng=" + marker.getPosition().lng() + "; " + expires + ";path=/";
                 }
+                ' . $updateFunctionCode .
+            '
 			}
 			function concatAddress() {
                 address = "";
@@ -252,13 +279,16 @@ class GeocoderUtility {
                             } 
                             // console.log( "geometrie Location") ;
                             // console.debug( results[0].geometry.location ) ;
-                            marker = new google.maps.Marker({
-                                    position: results[0].geometry.location,
-                                    map: map,
-                                    title: address.address,
-                                    draggable: draggable
-                                });
-                                
+                            if( marker ) {
+                                marker.setPosition(results[0].geometry.location) ;
+                            } else {
+                                marker = new google.maps.Marker({
+                                        position: results[0].geometry.location,
+                                        map: map,
+                                        title: address.address,
+                                        draggable: draggable
+                                    });
+                            }    
                             if(draggable ) {
                                 marker.addListener("drag", updatePostion);
                             }
@@ -284,6 +314,11 @@ class GeocoderUtility {
                                     document.cookie = "tx_events_lat=" + marker.getPosition().lat() + "; " + expires + ";path=/";
                                     document.cookie = "tx_events_lng=" + marker.getPosition().lng() + "; " + expires + ";path=/";
                                 }
+                                ' . $updateFunctionCode . ' 
+                                map.panTo(marker.getPosition()) ;
+                                if( jQuery("SELECT#jv_events_filter_citys") ) {
+                                    jQuery("SELECT#jv_events_filter_citys").val("") ;
+                                }
                             }
                             function getCookies(name) {
                                 var v = document.cookie.match("(^|;) ?" + name + "=([^;]*)(;|$)");
@@ -293,13 +328,17 @@ class GeocoderUtility {
                              * Center map on marker and zoom if needed
                              */
                             map.panTo(results[0].geometry.location);
-                            map.setZoom(15);
+                            if ( initZoom) {
+                                map.setZoom(initZoom);
+                            } else {
+                                map.setZoom(15);
+                            }
                 
                             /**
                              * Update fields longitude and latitude
                              */
                               geoCoderFieldUpdate( results[0].geometry.location ) ;
-                            
+                              
                 
                         } else {
                             showErrorMessage("' . $this->getLanguageService()->getLL('geocoding.error.geocodingNotSuccessful.part1') . ' " + status + " ' . $this->getLanguageService()->getLL('geocoding.error.geocodingNotSuccessful.part2') . '");
@@ -335,7 +374,15 @@ class GeocoderUtility {
 				' . $jQueryName . '("#geosearcherrormessage").show();
 				' . $jQueryName . '("#geosearcherrormessage div").text("' . $this->getLanguageService()->getLL('geocoding.error') . ': " + message);
 			}
-			
+			function updateMarker(address) {
+                address = address + ",DE" ;
+                if ( map && map.getZoom() < 7 ) {
+                    initZoom = 7 ;
+                }
+                findAddress({address: address}) ;
+               
+			    
+			}
             function updateMapTimer(map) {
                 clearInterval(refreshIntervalId);
                 var center = map.getCenter() ;
@@ -405,8 +452,64 @@ class GeocoderUtility {
                 }
 			    ' . $jQueryName . '("'. $formfieldIds['return']['lat'] . '").val( roundDataToNumber(location.lat() , 11) );
 				' . $jQueryName . '("'. $formfieldIds['return']['lng'] . '").val( roundDataToNumber(location.lng() , 11) );
+				
 				' . $updateFunctionCode
                .'
+			}
+			function getCookies(name) {
+                var v = document.cookie.match("(^|;) ?" + name + "=([^;]*)(;|$)");
+                return v ? v[2] : null;
+            }
+	    ' ;
+
+    }
+
+
+    /**
+     * @param array $formfieldIds array of Selectors for jQuery
+     * @param string $jQueryName
+     * @return string
+     */
+    public function inlineJsFromLatLng($formfieldIds , $jQueryName , $updateFunction='') {
+        $updateFunctionCode = '' ;
+        if( $updateFunction ) {
+            // $updateFunction should look like: "jv_events_refreshList();"
+            $updateFunctionName = explode("(" , $updateFunction) ;
+            $updateFunctionCode = 'if (typeof ' . $updateFunctionName[0] . ' === "function") {' . "\n" .
+                $updateFunction . "\n"
+                .'}'  . "\n"  . "\n" ;
+        }
+
+        return '
+	        var initAddress = "' . $formfieldIds['input']['address'] . '"; 
+	        var initZoom = ' . $formfieldIds['input']['zoom'] . '; 
+            
+            function updateMapTimer(map) {
+                clearInterval(refreshIntervalId);
+                var center = map.getCenter() ;
+                google.maps.event.trigger(map, \'resize\');
+                map.setCenter(center) ;
+            }
+
+            /**
+		    * updates the fields in search Form 
+		    */
+		    /**
+		    * updates the fields in search Form if available
+		    */
+			function geoCoderFieldUpdate( location ) {
+			    if ( getCookies("tx_cookies_accepted") == "1") {
+			        // Set cookie for 365 days
+                    var d = new Date();
+                    d.setTime(d.getTime() + ( 24*60*60*1000 * 365));
+                    var expires = "expires=" + d.toUTCString();
+                    document.cookie = "tx_events_lat=" + location.lat() + "; " + expires + ";path=/";
+                    document.cookie = "tx_events_lng=" + location.lng() + "; " + expires + ";path=/";
+                }
+			    ' . $jQueryName . '("'. $formfieldIds['return']['lat'] . '").val( roundDataToNumber(location.lat() , 11) );
+				' . $jQueryName . '("'. $formfieldIds['return']['lng'] . '").val( roundDataToNumber(location.lng() , 11) );
+				' . $updateFunctionCode
+            .'
 			}
 			function getCookies(name) {
                 var v = document.cookie.match("(^|;) ?" + name + "=([^;]*)(;|$)");

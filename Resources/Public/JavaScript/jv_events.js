@@ -3,7 +3,7 @@
  * Last Change:
  */
 jQuery(document).ready(function() {
-	jv_events_init() ;
+    jv_events_init() ;
     if ( $("#jvEventsAjaxMenu").length ) {
         jv_events_init_AjaxMenu();
     }
@@ -77,14 +77,14 @@ function jv_events_init_AjaxMenu() {
 
 //  ############   generic function for everyone: test if a spezific Parameter is in URL and return its value ###########
 function jv_events_GetURLParameter(sParam) {
-	var sPageURL = window.location.search.substring(1);
-	var sURLVariables = sPageURL.split('&');
-	for (var i = 0; i < sURLVariables.length; i++) {
-		var sParameterName = sURLVariables[i].split('=');
-		if (sParameterName[0] == sParam) {
-			return  decodeURIComponent(sParameterName[1]);
-		}
-	}
+    var sPageURL = window.location.search.substring(1);
+    var sURLVariables = sPageURL.split('&');
+    for (var i = 0; i < sURLVariables.length; i++) {
+        var sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0] == sParam) {
+            return  decodeURIComponent(sParameterName[1]);
+        }
+    }
 }
 function jv_events_GetURLnonEventParms( noIdandLang ) {
     var sPageURL = window.location.search.substring(1);
@@ -110,25 +110,25 @@ function jv_events_GetURLnonEventParms( noIdandLang ) {
 
 function jv_events_init() {
 
-	// http://nemetschek.local/index.php?id=116&tx_jvevents_events[eventsFilter][categories]=3&tx_jvevents_events[eventsFilter][citys]=4
-	// http://nemetschek.local/index.php?id=116&tx_jvevents_events[eventsFilter][categories]=3&tx_jvevents_events[eventsFilter][citys]=4&tx_jvevents_events[eventsFilter][tags]=3&tx_jvevents_events[eventsFilter][months]=03.2017
+    // http://nemetschek.local/index.php?id=116&tx_jvevents_events[eventsFilter][categories]=3&tx_jvevents_events[eventsFilter][citys]=4
+    // http://nemetschek.local/index.php?id=116&tx_jvevents_events[eventsFilter][categories]=3&tx_jvevents_events[eventsFilter][citys]=4&tx_jvevents_events[eventsFilter][tags]=3&tx_jvevents_events[eventsFilter][months]=03.2017
     // https://allplan.local/index.php?id=110&L=1&no_cache=1&tx_jvevents_events[eventsFilter][categories]=4&tx_jvevents_events[eventsFilter][citys]=Ratingen
 
     $(".js-warning-disabled").hide() ;
 
     jv_events_initOneFilter('categories') ;
-	jv_events_initOneFilter('locations') ;
-	jv_events_initOneFilter('citys') ;
-	jv_events_initOneFilter('tags') ;
-	jv_events_initOneFilter('organizers') ;
-	jv_events_initOneFilter('months') ;
-	if( jQuery('#jv_events_geo').length > 0 ) {
+    jv_events_initOneFilter('locations') ;
+    jv_events_initOneFilter('citys') ;
+    jv_events_initOneFilter('tags') ;
+    jv_events_initOneFilter('organizers') ;
+    jv_events_initOneFilter('months') ;
+    if( jQuery('#jv_events_geo').length > 0 ) {
         if( jQuery('#jv_events_geo').data("askUser" )  == "1") {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(jv_events_initPosition);
             }
         }
-	}
+    }
     jQuery('#filter-reset-events' ).click(function(i) {
         jv_events_filter_reset() ;
         return false ;
@@ -162,31 +162,35 @@ function jv_events_init() {
 
     }
 
-	jv_events_refreshList();
+    jv_events_refreshList();
 }
 function jv_events_initPosition(position) {
 
-	if( jQuery('#jv_events_geo').length > 0  ) {
-		jQuery('#jv_events_geo').data("lng" , position.coords.longitude ) ;
-		jQuery('#jv_events_geo').data("lat" , position.coords.latitude ) ;
-	}
+    if( jQuery('#jv_events_geo').length > 0  ) {
+        jQuery('#jv_events_geo').data("lng" , position.coords.longitude ) ;
+        jQuery('#jv_events_geo').data("lat" , position.coords.latitude ) ;
+    }
 }
 
 function jv_events_initOneFilter(filterName) {
 
-	if ( jQuery('SELECT#jv_events_filter_' + filterName ).length ) {
-		jQuery('SELECT#jv_events_filter_' + filterName ).change(function(i) {
-			jv_events_refreshList() ;
-		});
-		var filterVal = jv_events_GetURLParameter('tx_jvevents_events[eventsFilter][' + filterName + ']') ;
-		if ( filterVal ) {
-		    jQuery('SELECT#jv_events_filter_' + filterName + ' OPTION').each(function(i) {
+    if ( jQuery('SELECT#jv_events_filter_' + filterName ).length ) {
+        jQuery('SELECT#jv_events_filter_' + filterName ).change(function(i) {
+            jv_events_refreshList() ;
+            if( filterName == "citys" && jQuery("#map").length && jQuery(this).val().length > 1 ){
+                updateMarker(jQuery(this).val()) ;
+            }
+        });
+
+        var filterVal = jv_events_GetURLParameter('tx_jvevents_events[eventsFilter][' + filterName + ']') ;
+        if ( filterVal ) {
+            jQuery('SELECT#jv_events_filter_' + filterName + ' OPTION').each(function(i) {
                 if ("'" + jQuery(this).val() + "'" == "'" + filterVal +"'") {
                     jQuery(this).prop("selected", true);
                 }
             });
-		}
-	}
+        }
+    }
     if ( jQuery('#jv_events_filter_' + filterName + " input[type=checkbox]").length ) {
         jQuery('#jv_events_filter_' + filterName + " input[type=checkbox]").change(function(i) {
             jv_events_refreshList() ;
@@ -209,7 +213,7 @@ function jv_events_initOneFilter(filterName) {
             }
         } else {
             jQuery('#jv_events_filter_' + filterName + ' input[type=checkbox]').each(function(i) {
-            //    jQuery(this).prop("checked", true);
+                //    jQuery(this).prop("checked", true);
             });
         }
     }
@@ -217,17 +221,75 @@ function jv_events_initOneFilter(filterName) {
 
 
 function jv_events_refreshList(){
-	var fMonth= jQuery("SELECT#jv_events_filter_months") ;
-	var fTag= jQuery("SELECT#jv_events_filter_tags") ;
-	var fCity= jQuery("SELECT#jv_events_filter_citys") ;
-	var fCat= jQuery("SELECT#jv_events_filter_categories") ;
-	var fOrg= jQuery("SELECT#jv_events_filter_organizers") ;
+    var fMonth= jQuery("SELECT#jv_events_filter_months") ;
+    var fTag= jQuery("SELECT#jv_events_filter_tags") ;
+    var fCity= jQuery("SELECT#jv_events_filter_citys") ;
+    var fCat= jQuery("SELECT#jv_events_filter_categories") ;
+    var fOrg= jQuery("SELECT#jv_events_filter_organizers") ;
+
+    var iZoom= jQuery("INPUT#zoom") ;
+    var userLat = false ;
+    var userLng= false ;
+    var maxDist = false ;
+    if( iZoom && jQuery( iZoom ).val() > 0 ) {
+
+
+
+
+        if( jQuery('#lat').length > 0  && jQuery('#lat').val() > 5 ) {
+            userLat = jQuery('#lat').val();
+        }
+
+        if( jQuery('#lng').length > 0  && jQuery('#lng').val() > 5 ) {
+            userLng = jQuery('#lng').val();
+        }
+        if( userLat  && userLng ) {
+            switch (jQuery( iZoom ).val())
+            {
+                case "15":
+                case "14":
+                    maxDist = 10;
+                    break;
+                case "13":
+                case "12":
+                case "11":
+                    maxDist = 20;
+                    break;
+                case "10":
+                    maxDist = 30;
+                    break;
+                case "9":
+                    maxDist = 60;
+                    break;
+                case "8":
+                    maxDist = 100;
+                    break;
+                case "7":
+                    maxDist = 200;
+                    break;
+                case "6":
+                    maxDist = 300;
+                    break;
+                case "5":
+                    maxDist = 500;
+                    break;
+                default:
+                    maxDist = 9999;
+            }
+            console.log( "Lat:" + userLat + " Lng: " + userLng + " maxDist:" +  maxDist ) ;
+
+        }
+    }
+
+
+
     var cCats= jQuery("#jv_events_filter_categories INPUT[type=checkbox]") ;
-    var cTags= jQuery("#jv_events_filter_tags INPUT[type=checkbox]") ;
+    var cTags= jQuery(".jv_events_filter_tag_check") ;
 
     var cTagChecked = false ;
     jQuery( cTags ).each( function() {
         if ( jQuery(this).prop("checked") ) {
+         //   console.log("found one tag checked: " + jQuery(this).val() )
             cTagChecked = true ;
             return false ;
         }
@@ -237,6 +299,7 @@ function jv_events_refreshList(){
     var cCatChecked = false ;
     jQuery( cCats ).each( function() {
         if ( jQuery(this).prop("checked") ) {
+       //     console.log("found one category checked: " + jQuery(this).val() )
             cCatChecked = true ;
             return false ;
         }
@@ -245,53 +308,70 @@ function jv_events_refreshList(){
     var filterIsActive = false ;
     var needTohide = false ;
     let resultcountEvents = 0 ;
-	jQuery('.tx-jv-events DIV.jv-events-singleEvent').each(function (i) {
-       // console.log( " ************* event **************** UID: " + jQuery(this).data("eventuid")  ) ;
-		jQuery(this).removeClass('hide') ;
+    var dist = 0 ;
+    jQuery('.tx-jv-events DIV.jv-events-singleEvent').each(function (i) {
+        // console.log( " ************* event **************** UID: " + jQuery(this).data("eventuid")  ) ;
 
-		if( fMonth && fMonth.val() && fMonth.val().length > 0 ) {
-			if( jQuery(this).data("monthuid")  != fMonth.val() ) {
-				jQuery(this).addClass('hide') ;
-            }
-		}
-		if( fTag && fTag.val() > 0 ) {
-			var fTags = jQuery(this).data("taguids") ;
-			if( fTags ) {
-				fTags = fTags.split(",") ;
-				if( fTags.indexOf( fTag.val() ) < 0 ) {
-					jQuery(this).addClass('hide') ;
-				}
-			} else {
-				jQuery(this).addClass('hide') ;
-			}
-
-		}
-		if( fCity && fCity.length > 0 ) {
-		    if(  fCity.val().length > 0 ) {
-                if( (jQuery(this).data("cityuid")) && decodeURI (jQuery(this).data("cityuid")) != (fCity.val()) && ( parseInt( jQuery(this).data("longitude") ) != 0  )  ) {
-                    jQuery(this).addClass('hide') ;
-                }
-			}
-		}
-
-		if( fCat && fCat.val() > 0 ) {
-			var fCats = jQuery(this).data("catuids") ;
-			if( fCats ) {
-				fCats = fCats.split(",") ;
-				if( fCats.indexOf( fCat.val() ) < 0 ) {
-					jQuery(this).addClass('hide') ;
-				}
-			} else {
-				jQuery(this).addClass('hide') ;
-			}
-		}
-        if( fOrg && fOrg.val() > 0 ) {
-            if( parseInt( jQuery(this).data("orguid"))   !== parseInt( fOrg.val()) ) {
-                jQuery(this).addClass('hide') ;
+        jQuery(this).removeClass('hide') ;
+        if( fMonth && fMonth.val() && fMonth.val().length > 0 ) {
+            if( jQuery(this).data("monthuid")  != fMonth.val() ) {
+                jQuery(this).addClass('hide').addClass('hidden-by-fMonth') ;
             }
         }
 
-        if( cTagChecked  ) {
+
+
+
+
+
+        if( fTag && fTag.val() > 0 && !jQuery(this).hasClass('hide')) {
+            var fTags = jQuery(this).data("taguids") ;
+            if( fTags ) {
+                fTags = fTags.split(",") ;
+                if( fTags.indexOf( fTag.val() ) < 0 ) {
+                    jQuery(this).addClass('hide').addClass('hidden-by-fTag') ;
+                }
+            } else {
+                jQuery(this).addClass('hide').addClass('hidden-by-fTag') ;
+            }
+
+        }
+        if( fCity && fCity.length > 0 && !jQuery(this).hasClass('hide')) {
+            if(  fCity.val().length > 0 ) {
+                if( (jQuery(this).data("cityuid")) && decodeURI (jQuery(this).data("cityuid")) != (fCity.val()) && ( parseInt( jQuery(this).data("longitude") ) != 0  )  ) {
+                    jQuery(this).addClass('hide').addClass('hidden-by-fCity') ;
+                }
+            }
+        }
+
+        if( fCat && fCat.val() > 0 && !jQuery(this).hasClass('hide')) {
+            var fCats = jQuery(this).data("catuids") ;
+            if( fCats ) {
+                fCats = fCats.split(",") ;
+                if( fCats.indexOf( fCat.val() ) < 0 ) {
+                    jQuery(this).addClass('hide').addClass('hidden-by-fCat') ;
+                }
+            } else {
+                jQuery(this).addClass('hide').addClass('hidden-by-fCat') ;
+            }
+        }
+        if( fOrg && !jQuery(this).hasClass('hide') ) {
+
+            if ( $("#jv_events_filter_tags").hasClass( "filterType6") && fOrg.val() ) {
+               //  console.log( "filterType6: forg: " + ( fOrg.val()) + " <> " + decodeURI(jQuery(this).data("orgname")) ) ;
+                if( (jQuery(this).data("orgname")) && decodeURI (jQuery(this).data("orgname")) !== (fOrg.val()) ) {
+                    jQuery(this).addClass('hide').addClass('hidden-by-fOrg') ;
+                }
+            } else {
+                if( fOrg.val() > 0 && parseInt( jQuery(this).data("orguid"))   !== parseInt( fOrg.val()) ) {
+                    jQuery(this).addClass('hide').addClass('hidden-by-fOrg') ;
+                }
+            }
+
+
+        }
+
+        if( cTagChecked === true && !jQuery(this).hasClass('hide')) {
             var sTags = jQuery(this).data("taguids") ;
             // console.log( " sTags (Tag Ids of Event) : " + sTags ) ;
 
@@ -300,14 +380,14 @@ function jv_events_refreshList(){
                 needTohide = true ;
                 var combineTags =  jQuery('#jv_events_filter_tags').data('combinetags') ;
                 //console.log( "Combine Tags: " +  combineTags  ) ;
-				jQuery( cTags ).each( function() {
-                   // console.log( "Filter Tag: " + jQuery(this).val() + " checked ? : " + jQuery(this).prop("checked") ) ;
+                jQuery( cTags ).each( function() {
+                    // console.log( "Filter Tag: " + jQuery(this).val() + " checked ? : " + jQuery(this).prop("checked") ) ;
 
-					if ( jQuery(this).prop("checked") ) {
+                    if ( jQuery(this).prop("checked") ) {
                         // console.log( "position of " + jQuery(this).val() + " in string " + sTags + " = " + sTags.indexOf( "," + jQuery(this).val()   ) ) ;
-						if( sTags.indexOf( "," + jQuery(this).val() + ","  ) > -1 ) {
+                        if( sTags.indexOf( "," + jQuery(this).val() + ","  ) > -1 ) {
                             needTohide = false ;
-                           // console.log(" if All Tags must fit (combineTags = " + combineTags + "): we can not exit , we need to stay in loop and check all " ) ;
+                            // console.log(" if All Tags must fit (combineTags = " + combineTags + "): we can not exit , we need to stay in loop and check all " ) ;
                             if ( combineTags != "1") {
                                 return false ;
                             }
@@ -319,63 +399,82 @@ function jv_events_refreshList(){
                                 return false ;
                             }
                         }
-					}
+                    }
 
-				}) ;
+                }) ;
 
 
                 if( needTohide ) {
-                    jQuery(this).addClass('hide') ;
+                    jQuery(this).addClass('hide').addClass('hidden-by-cTag') ;
                 }
             } else {
-                jQuery(this).addClass('hide') ;
+                jQuery(this).addClass('hide').addClass('hidden-by-cTag') ;
             }
         }
 
-        if( cCatChecked ) {
+        if( cCatChecked === true && !jQuery(this).hasClass('hide')) {
             var sCats = jQuery(this).data("catuids") ;
-            // console.log( " sCats : " + sCats ) ;
+
             if( sCats ) {
                 sCats = "," + sCats + "," ;
-                needTohide = true ;
+                // console.log( " sCats of Event : " + sCats ) ;
+                let needTohide = true ;
                 jQuery( cCats ).each( function() {
-					// console.log( jQuery(this).prop("checked") ) ;
+                     // console.log("FormField: " + jQuery(this).val() + " " +  jQuery(this).prop("checked") ) ;
                     if ( jQuery(this).prop("checked") ) {
-                      //  console.log( "position: " + sCats.indexOf( jQuery(this).val()  ) ) ;
+                          // console.log( "position of cat ID " + jQuery(this).val()  + " = " + sCats.indexOf( "," + jQuery(this).val() + "," ) ) ;
                         if( sCats.indexOf( "," + jQuery(this).val() + ","  ) > -1 ) {
+                            // console.log( "No need to hide") ;
                             needTohide = false ;
                             return false ;
                         }
                     }
 
                 }) ;
-                if( needTohide ) {
-                    jQuery(this).addClass('hide') ;
+                // console.log( "needTohide " + needTohide ) ;
+                if( needTohide === true ) {
+                    jQuery(this).addClass('hide').addClass('hidden-by-cCat') ;
                 }
             } else {
-                jQuery(this).addClass('hide') ;
+                jQuery(this).addClass('hide').addClass('hidden-by-cCat') ;
             }
         }
+        if ( maxDist  && !jQuery(this).hasClass('hide') ) {
+            dist = PythagorasEquirectangular( userLat , userLng , jQuery(this).data("latitude") , jQuery(this).data("longitude") ) ;
+            if ( dist > maxDist  ) {
+                console.log( jQuery(this).data("eventuid") + ": MaxDist " + maxDist + " > dist: " + dist ) ;
+                jQuery(this).addClass('hide').addClass('hidden-by-maxDist')  ;
+            }
+        }
+
+
         if ( jQuery(this).hasClass('hide')) {
             filterIsActive = true ;
-		} else {
+        } else {
             resultcountEvents ++ ;
         }
-	});
+    });
 
 
-	if ( filterIsActive ) {
-		jQuery( "#filter-events A").addClass('hide') ;
-		jQuery( "#filter-reset-events").removeClass('hide') ;
-		jQuery( "#filter-resultcount-events").html( resultcountEvents ) ;
-		jQuery( "#filter-result-hint-events").removeClass('hide') ;
+    if ( filterIsActive ) {
+        jQuery( "#filter-events A").addClass('hide') ;
+        jQuery( "#filter-reset-events").removeClass('hide') ;
+        jQuery( "#filter-resultcount-events").html( resultcountEvents ) ;
+        jQuery( "#filter-result-hint-events").removeClass('hide') ;
 
 
         // now change also the URL in the Browser to be able to copy the URL !!!
         urlFilter = "" ;
-        if( fOrg && fOrg.val() > 0 ) {
-            urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][organizers]=" + fOrg.val() ;
+        if( fOrg ) {
+            if ( $("#jv_events_filter_tags").hasClass( "filterType6") && fOrg.val() ) {
+                urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][organizers]=" + fOrg.val() ;
+            } else {
+                if(  fOrg.val() > 0 ) {
+                    urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][organizers]=" + fOrg.val() ;
+                }
+            }
         }
+
 
         if( cCatChecked ) {
 
@@ -417,13 +516,13 @@ function jv_events_refreshList(){
         jv_events_pushUrl( urlFilter ) ;
 
 
-	} else {
+    } else {
         jQuery( "#filter-events A").removeClass('hide') ;
         jQuery( "#filter-reset-events").addClass('hide') ;
         jQuery( "#filter-result-hint-events").addClass('hide') ;
         jv_events_pushUrl( '' ) ;
 
-	}
+    }
 
 
 }
@@ -448,8 +547,8 @@ function jv_events_pushUrl( urlFilter ) {
 function jv_events_filter_reset() {
     var fMonth= jQuery("SELECT#jv_events_filter_months") ;
     if( fMonth) {
-    	jQuery( fMonth).val("") ;
-	}
+        jQuery( fMonth).val("") ;
+    }
     var fTag= jQuery("SELECT#jv_events_filter_tags") ;
     if( fTag) {
         jQuery( fTag).val("") ;
@@ -473,8 +572,8 @@ function jv_events_filter_reset() {
     var cCats= jQuery("#jv_events_filter_categories INPUT[type=checkbox]") ;
     if( cCats) {
         jQuery( cCats).each( function() {
-        	jQuery(this).prop("checked" , false ) ;
-		}) ;
+            jQuery(this).prop("checked" , false ) ;
+        }) ;
     }
     var cTags= jQuery("#jv_events_filter_tags INPUT[type=checkbox]") ;
     if( cTags) {
@@ -483,11 +582,11 @@ function jv_events_filter_reset() {
         }) ;
     }
     if(jQuery('#filter-reset-events').length){
-		jQuery('#filter-reset-events').addClass('hide');
-	}
-	if(jQuery('#filter-result-hint-events').length){
-		jQuery('#filter-result-hint-events').addClass('hide');
-	}
+        jQuery('#filter-reset-events').addClass('hide');
+    }
+    if(jQuery('#filter-result-hint-events').length){
+        jQuery('#filter-result-hint-events').addClass('hide');
+    }
 
 
     jQuery('.tx-jv-events DIV.jv-events-singleEvent').each(function (i) {
@@ -500,64 +599,87 @@ function jv_events_filter_reset() {
 
 function jv_events_submit() {
 
-	var error = false ;
-	// Test if all required Fields have input .. first cleanup then test
-	jQuery(".jv-events-regform .has-error").each(function() {
-		jQuery(this).removeClass('has-error') ;
-	}) ;
+    var error = false ;
+    // Test if all required Fields have input .. first cleanup then test
+    jQuery(".jv-events-regform .has-error").each(function() {
+        jQuery(this).removeClass('has-error') ;
+    }) ;
 
-	jQuery(".jv-events-regform .jv-events-req-TRUE").each(function() {
+    jQuery(".jv-events-regform .jv-events-req-TRUE").each(function() {
 
-		switch ( jQuery(this).getType() ) {
-			case 'checkbox' :
-				if ( ! jQuery(this).prop("checked" ) ) {
-					jQuery(this).parent().parent().addClass('has-error') ;
-					error = true ;
-				}
-				break ;
+        switch ( jQuery(this).getType() ) {
+            case 'checkbox' :
+                if ( ! jQuery(this).prop("checked" ) ) {
+                    jQuery(this).parent().parent().addClass('has-error') ;
+                    error = true ;
+                }
+                break ;
 
-			case 'select' :
-				if (  parseInt (jQuery(this).val()) == 0 ) {
-					jQuery(this).parent().addClass('has-error') ;
-					error = true ;
-				}
-				break ;
+            case 'select' :
+                if (  parseInt (jQuery(this).val()) == 0 ) {
+                    jQuery(this).parent().addClass('has-error') ;
+                    error = true ;
+                }
+                break ;
 
-			default:
-				if ( jQuery(this).val() == '' ) {
-					jQuery(this).parent().addClass('has-error') ;
-					error = true ;
-				}
-				break;
+            default:
+                if ( jQuery(this).val() == '' ) {
+                    jQuery(this).parent().addClass('has-error') ;
+                    error = true ;
+                }
+                break;
 
-		}
-
-
-	}) ;
+        }
 
 
-	if( error) {
-		jQuery('#jv_events_js_error').removeClass('hidden') ;
-		alert( jQuery('#jv_events_js_error DIV.alert').html().trim()  ) ;
-	} else {
-		var retVal = 1 ;
-		if ( typeof 'jv-events-own-script' == 'function' ) {
-			// return 0 to stay and show your won error messages
-			// return 1 to let this script submit
-			retVal = jv-events-own-script()  ;
-			// jump out if return val = 2
-			if (retVal == 2) {
-				return ;
-			}
-		}
-		if (retVal == 1) {
+    }) ;
+
+
+    if( error) {
+        jQuery('#jv_events_js_error').removeClass('hidden') ;
+        alert( jQuery('#jv_events_js_error DIV.alert').html().trim()  ) ;
+    } else {
+        var retVal = 1 ;
+        if ( typeof 'jv-events-own-script' == 'function' ) {
+            // return 0 to stay and show your won error messages
+            // return 1 to let this script submit
+            retVal = jv-events-own-script()  ;
+            // jump out if return val = 2
+            if (retVal == 2) {
+                return ;
+            }
+        }
+        if (retVal == 1) {
             if (typeof showSpinner == 'function')
             {
                 showSpinner();
             }
-			jQuery(".jv-events-regform").submit();
-		}
-	}
+            jQuery(".jv-events-regform").submit();
+        }
+    }
+
+}
+
+
+function Deg2Rad( deg ) {
+    return deg * Math.PI / 180;
+}
+
+function PythagorasEquirectangular( lat1, lon1, lat2, lon2 ) {
+
+    if( lat2 > 0 && lon2 > 0 ) {
+        lat1 = Deg2Rad(lat1);
+        lat2 = Deg2Rad(lat2);
+        lon1 = Deg2Rad(lon1);
+        lon2 = Deg2Rad(lon2);
+        var R = 6371; // km
+        var x = (lon2-lon1) * Math.cos((lat1+lat2)/2);
+        var y = (lat2-lat1);
+        var d = Math.sqrt(x*x + y*y) * R;
+        return d;
+    } else {
+        return 0;
+    }
 
 }
 

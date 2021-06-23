@@ -342,7 +342,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
                 /** @var \JVE\JvEvents\Domain\Model\Location $obj */
                 $obj =  $event->getLocation() ;
                 if ( is_object($obj) ) {
-                    $locations[$obj->getUid()] = $obj->getName() ;
+                    $locations[$obj->getUid()] = $obj->getName()  ;
 
                     if(! in_array($obj->getCity() , $citys )) {
                         $citys[$obj->getCity()] = $obj->getCity() ;
@@ -355,11 +355,15 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
                 /** @var \JVE\JvEvents\Domain\Model\Tag $obj */
                 $obj = $event->getOrganizer();
                 if (is_object($obj)) {
-                   //  $organizers[$obj->getUid()] = $obj->getName();
-
-                    if(! in_array($obj->getName() , $organizers )) {
-                        $organizers[$obj->getName()] = $obj->getName() ;
+                    if ( $this->settings['ShowFilter'] == 6 ) {
+                        $orgName = str_replace(" " , "+" , $obj->getName() ) ;
+                        if(! in_array($orgName , $organizers )) {
+                            $organizers[$orgName] = $obj->getName() ;
+                        }
+                    } else {
+                        $organizers[$obj->getUid()] = $obj->getName();
                     }
+
                 }
             }
 

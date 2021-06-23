@@ -676,6 +676,25 @@
 						</TCEforms>
 					</settings.filter.hideOrganizerDropdown>
 
+					<settings.filter.initMapAddress>
+						<TCEforms>
+							<label>Init Address for Map if shown</label>
+							<config>
+								<type>input</type>
+								<default>Konrad-Zuse-Platz 1,81829 München, Germany</default>
+							</config>
+						</TCEforms>
+					</settings.filter.initMapAddress>
+
+					<settings.filter.initMapZoom>
+						<TCEforms>
+							<label>Init Zoom factor for Map (1-15) default 6 </label>
+							<config>
+								<type>input</type>
+								<default>6</default>
+							</config>
+						</TCEforms>
+					</settings.filter.initMapZoom>
 				</el>
 			</ROOT>
 		</sDEFfilter>

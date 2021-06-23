@@ -66,6 +66,7 @@ class GeocoderViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewH
         $updateFunction = $this->arguments['updateFunction'] ;
         $formfieldIds = $this->arguments['formfields'] ;
 
+
         /** @var \JVE\JvEvents\Utility\GeocoderUtility $geoCoder */
         $geoCoder = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("JVE\\JvEvents\\Utility\\GeocoderUtility") ;
         if ( ! $formfieldIds ) {

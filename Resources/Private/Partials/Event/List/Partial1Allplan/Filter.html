@@ -26,7 +26,7 @@
 
                                             <vhs:condition.iterator.contains needle="{tag.id}" haystack="{allowedTags}" >
                                                 <label>
-                                                    <input type="checkbox" id="jv_events_filter_tag-{tag.id}" checked value="{tag.id}">{tag.title}
+                                                    <input type="checkbox"  class="jv_events_filter_tag_check" id="jv_events_filter_tag-{tag.id}" checked value="{tag.id}">{tag.title}
                                                 </label>
                                             </vhs:condition.iterator.contains>
                                         </f:if>
@@ -38,7 +38,7 @@
                                     <f:for each="{eventsFilter.tags2}" as="tag">
                                         <f:if condition="{tag.visibility} < 1">
                                             <label>
-                                                <input type="checkbox" id="jv_events_filter_tag-{tag.id}" value="{tag.id}">{tag.title}
+                                                <input type="checkbox"  class="jv_events_filter_tag_check" id="jv_events_filter_tag-{tag.id}" value="{tag.id}">{tag.title}
                                             </label>
                                         </f:if>
                                     </f:for>
@@ -187,7 +187,7 @@
                                     <f:variable name="tagClass"></f:variable>
                                 </f:if>
                                 <label class="{tagClass}">
-                                    <input type="checkbox" id="jv_events_filter_tag-{tag.id}" value="{tag.id}">{tag.title}
+                                    <input type="checkbox"  class="jv_events_filter_tag_check" id="jv_events_filter_tag-{tag.id}" value="{tag.id}">{tag.title}
                                 </label>
 
                             </f:for>
@@ -317,7 +317,7 @@
                             <f:for each="{eventsFilter.tags2}" as="tag">
                                 <f:if condition="{tag.visibility} < 1">
                                     <label class="col-6 col-md-4 col-lg-3 mx-0">
-                                        <input type="checkbox" id="jv_events_filter_tag-{tag.id}" value="{tag.id}">{tag.title}
+                                        <input type="checkbox"  class="jv_events_filter_tag_check" id="jv_events_filter_tag-{tag.id}" value="{tag.id}">{tag.title}
                                     </label>
                                 </f:if>
                             </f:for>
@@ -411,7 +411,7 @@
                                     <f:variable name="tagClass"></f:variable>
                                 </f:if>
                                 <label class="{tagClass}">
-                                    <input type="checkbox" id="jv_events_filter_tag-{tag.id}" value="{tag.id}">{tag.title}
+                                    <input type="checkbox"  class="jv_events_filter_tag_check" class="jv_events_filter_tag_check" id="jv_events_filter_tag-{tag.id}" value="{tag.id}">{tag.title}
                                 </label>
 
                             </f:for>
@@ -428,7 +428,7 @@
                                     <f:variable name="tagClass"></f:variable>
                                 </f:if>
                                 <label class="{tagClass}">
-                                    <input type="checkbox" id="jv_events_filter_tag-{tag.id}" value="{tag.id}">{tag.title}
+                                    <input type="checkbox" class="jv_events_filter_tag_check"  id="jv_events_filter_tag-{tag.id}" value="{tag.id}">{tag.title}
                                 </label>
 
                             </f:for>
@@ -445,7 +445,7 @@
                                     <f:variable name="tagClass"></f:variable>
                                 </f:if>
                                 <label class="{tagClass}">
-                                    <input type="checkbox" id="jv_events_filter_tag-{tag.id}" value="{tag.id}">{tag.title}
+                                    <input type="checkbox" class="jv_events_filter_tag_check"  id="jv_events_filter_tag-{tag.id}" value="{tag.id}">{tag.title}
                                 </label>
 
                             </f:for>
@@ -502,16 +502,20 @@
                                     <f:variable name="tagClass"></f:variable>
                                 </f:if>
                                 <label class="{tagClass}">
-                                    <input type="checkbox" id="jv_events_filter_tag-{tag.id}" value="{tag.id}">{tag.title}
+                                    <input type="checkbox" class="jv_events_filter_tag_check"  id="jv_events_filter_tag-{tag.id}" value="{tag.id}">{tag.title}
                                 </label>
 
                             </f:for>
                         </div>
                     </fieldset>
                 </f:if>
-                <fieldset class="fieldsetbox5  filtersetboxWidth_2">
-                    <br>
-                    <!-- J.v. placeholder for MAP selector see TYPO3-52 //-->
+                <fieldset class="fieldsetbox5  filtersetboxWidth_2" style="padding:0;">
+                    <f:render partial="SingleField/Partial{settings.LayoutList}/FormRowGeocoderFilter6"
+                              arguments="{settings: settings , updateFunction: 'jv_events_refreshList();' ,
+                              buttonSetPosition: '1' , property:'lng'  ,  property2:'lat', zoom: 'zoom' ,
+                              maxLength: 30 , mandatory: '0' }" />
+
+
                 </fieldset>
 
                 <fieldset class="fieldsetbox6  filtersetboxWidth_1">
