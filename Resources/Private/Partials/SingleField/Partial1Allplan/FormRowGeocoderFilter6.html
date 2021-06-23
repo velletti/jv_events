@@ -9,8 +9,8 @@
 
         <f:form.textfield class="form-control" readonly="readonly" property="{property}" id="{property}" maxlength="{maxLength}"/>
         <f:form.textfield class="form-control" readonly="readonly" property="{property2}" id="{property2}" maxlength="{maxLength}"/>
+        <f:form.textfield class="form-control" readonly="readonly" property="{zoom}" id="{zoom}" value="{settings.filter.initMapZoom}" maxlength="{maxLength}"/>
 </div>
-<f:form.textfield class="form-control" readonly="readonly" property="{zoom}" id="{zoom}" value="{settings.filter.initMapZoom}" maxlength="{maxLength}"/>
 
 <div id="map" style="height:200px;"></div>
 <jve:geocoder formfields="{input: {address: '{settings.filter.initMapAddress}' , zoom: '{settings.filter.initMapZoom}'}, return: {lat: '#lat', lng: '#lng', zoom: '#zoom'}}" updateFunction="{updateFunction}">

@@ -292,6 +292,18 @@ class GeocoderUtility {
                             if(draggable ) {
                                 marker.addListener("drag", updatePostion);
                             }
+                              marker.addListener("click", () => {
+                                map.setZoom(10);
+                                map.panTo(marker.getPosition()) ;
+                              });
+                            
+                            map.addListener("zoom_changed" , updateCity ) ;
+                            
+                            function updateCity() {
+                                if( jQuery("SELECT#jv_events_filter_citys") ) {
+                                    jQuery("SELECT#jv_events_filter_citys").val("") ;
+                                }
+                            }
                 
                             function updatePostion() {
                                 if(document.getElementById("lat")) {
@@ -376,8 +388,8 @@ class GeocoderUtility {
 			}
 			function updateMarker(address) {
                 address = address + ",DE" ;
-                if ( map && map.getZoom() < 7 ) {
-                    initZoom = 7 ;
+                if ( map && map.getZoom() < 10 ) {
+                    initZoom = 10 ;
                 } else {
                    initZoom = map.getZoom() ;
                 }

@@ -1,8 +1,8 @@
 /**
  * Created by velletti on 29.09.2016.
- * Last Change:
+ * Last Change: 23.6.2021
  */
-jQuery(document).ready(function() {
+$(window).on("load", function(){
     jv_events_init() ;
     if ( $("#jvEventsAjaxMenu").length ) {
         jv_events_init_AjaxMenu();
@@ -142,12 +142,16 @@ function jv_events_init() {
                 var heightBiggestElement = 0;
 
                 $(this).find('fieldset').each(function(){
+
                     if($(this).height() > heightBiggestElement) {
-                        heightBiggestElement = $(this).height();
+                        if ( !$(this).hasClass("fieldsetbox5")) {
+                            heightBiggestElement = $(this).height() ;
+                        }
                     }
                 });
                 $(this).find('fieldset').each(function(){
                     $(this).css("min-height" , heightBiggestElement);
+                    $(this).css("height" , heightBiggestElement );
                 });
 
             });
