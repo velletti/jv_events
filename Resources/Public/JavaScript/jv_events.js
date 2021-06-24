@@ -151,7 +151,9 @@ function jv_events_init() {
                 });
                 $(this).find('fieldset').each(function(){
                     $(this).css("min-height" , heightBiggestElement);
-                    $(this).css("height" , heightBiggestElement );
+                    if ( $('.tx-jv-events .filter').hasClass("filterType6")) {
+                        $(this).css("height", heightBiggestElement);
+                    }
                 });
 
             });
