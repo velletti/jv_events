@@ -139,6 +139,7 @@ class GeocoderUtility {
                         zoom: initZoom ,
                         streetViewControl: false,
                         mapTypeControl: false,
+                        draggableCursor: "default" ,
                         center: myLatLng
                     });
 				} else {
@@ -147,6 +148,7 @@ class GeocoderUtility {
                         zoom: 8,
                         streetViewControl: false,
                         mapTypeControl: false,
+                        draggableCursor: "default" ,
                         center: myLatLng
                     });
 				}
