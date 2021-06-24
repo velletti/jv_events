@@ -345,7 +345,10 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
                     $locations[$obj->getUid()] = $obj->getName()  ;
 
                     if(! in_array($obj->getCity() , $citys )) {
-                        $citys[$obj->getCity()] = $obj->getCity() ;
+                        // no online Events in CITY Filter
+                        if( $obj->getLat() != 0 || $obj->getLng() != 0 ) {
+                            $citys[$obj->getCity()] = $obj->getCity() ;
+                        }
                     }
                 }
             }
