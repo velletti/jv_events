@@ -346,7 +346,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
                     if(! in_array($obj->getCity() , $citys )) {
                         // no online Events in CITY Filter
-                        if( $obj->getLat() != 0 || $obj->getLng() != 0 ) {
+                        if( intval( $obj->getLat())  != 0 || intval($obj->getLng() != 0 )) {
                             $citys[$obj->getCity()] = $obj->getCity() ;
                         }
                     }
@@ -428,7 +428,6 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         array_multisort($sortArray, SORT_ASC, SORT_NUMERIC, $tags);
 
         usort($tags2, function ($a, $b) { return strcmp(ucfirst($a["title"]), ucfirst($b["title"])); });
-
         return array(
             "locations" => $locations ,  
             "organizers" => $organizers ,  
