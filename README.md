@@ -70,7 +70,9 @@ Then you can IDE Controls for each repository separate
      	}
      }
  
+
  
+
  ### QR Codes .. if you want to use QR Codes:
  
       composer require endroid/qr-code
