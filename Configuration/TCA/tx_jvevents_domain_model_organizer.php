@@ -7,7 +7,8 @@ $returnArray = array(
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',
 		'dividers2tabs' => TRUE,
-		'sortby' => 'sorting',
+	//	'sortby' => 'sorting',
+        'default_sortby' => 'crdate DESC',
 		'versioningWS' => TRUE,
 
 		'languageField' => 'sys_language_uid',
