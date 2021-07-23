@@ -53,11 +53,16 @@ class FrontendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\Fronte
     /**
      * find the logged in Frontend User and return the Details.
      * @param int $uid
-     * @return \JVE\JvEvents\Domain\Model\FrontendUser the current user if found, otherwise NULL
+     * @return \JVE\JvEvents\Domain\Model\FrontendUser|object the current user if found, otherwise NULL
      */
     public function findByUid($uid) {
         $constraints = array();
         $query = $this->createQuery();
+        $querySettings = $query->getQuerySettings() ;
+        $querySettings->setRespectStoragePage(false);
+     //   $querySettings->setRespectSysLanguage(FALSE);
+     //   $querySettings->setIgnoreEnableFields(true) ;
+        $query->setQuerySettings($querySettings) ;
         $constraints[] = $query->equals('uid', intval($uid));
         $query->matching($query->logicalAnd($constraints));
 

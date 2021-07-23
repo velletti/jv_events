@@ -107,7 +107,7 @@ class GeocoderUtility {
         // $updateFunctionCode = '' ;
         // We need this here and not in a file, because we don't need this in the head
         $js .= '
-		    if ( initZoom ) { 
+            if (typeof initAddress !== "undefined") {
 		       var address = initAddress ; 
 		    } else {
 		       var address = concatAddress();
@@ -134,7 +134,7 @@ class GeocoderUtility {
 			
 				// Set the center of the map (value not important, because we bound the markers to set the center of the map)
 				var myLatLng = {lat: 11.4712, lng: 48.1148};
-				if ( initZoom ) {
+				 if (typeof initZoom !== "undefined") {
                     map = new google.maps.Map(document.getElementById(\'map\'), {
                         zoom: initZoom ,
                         streetViewControl: false,

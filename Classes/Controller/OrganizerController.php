@@ -239,6 +239,7 @@ class OrganizerController extends BaseController
 
 
             // https://www.allplan.com.ddev.local/index.php?uid=82&eID=jv_events&tx_jvevents_ajax[organizerUid]=111&tx_jvevents_ajax[action]=activate&tx_jvevents_ajax[userUid]=1&tx_jvevents_ajax[hmac]=hmac1234&&tx_jvevents_ajax[rnd]=11234
+            // https://www.allplan.com.ddev.local/de/?uid=82&tx_jvevents_ajax[organizerUid]=111&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[action]=activate&tx_jvevents_ajax[userUid]=1&tx_jvevents_ajax[hmac]=hmac1234&&tx_jvevents_ajax[rnd]=11234
 
             $organizerUid = intval( $organizer->getUid()) ;
             $userUid = intval($GLOBALS['TSFE']->fe_user->user['uid']) ;
@@ -247,7 +248,7 @@ class OrganizerController extends BaseController
             $hmac = \TYPO3\CMS\Core\Utility\GeneralUtility::hmac( $tokenStr );
 
             $url  = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST') ;
-            $url .= "/index.php?uid=82&eID=jv_events&tx_jvevents_ajax[action]=activate" ;
+            $url .= "/de?tx_jvevents_ajax[action]=activate&tx_jvevents_ajax[controller]=ajax" ;
 
             $url .= "&tx_jvevents_ajax[organizerUid]=" . $organizerUid ;
             $url .= "&tx_jvevents_ajax[userUid]=" . $userUid ;
@@ -269,11 +270,16 @@ class OrganizerController extends BaseController
             $msg .= "\n Bei Fragen, ist ein Blick in den Hilfebereich sicher hilfreich. " ;
             $msg .= "\n" ;
             $msg .= "\n ***********************************************" ;
+            $msg .= "\nToken String: " ;
+            $msg .= "\n"  .  $tokenStr ;
+            $msg .= "\n ***********************************************" ;
 
             $html = nl2br($msg) ;
             $html .= "<br>" . "<hr><br>" . '<a href="' . $url . '"> Klick To Enable  </a>' ."\n" . "\n"  ;
 
             $msg .= "\n\n" . "Klick to Enable: \n \n" . $url ;
+
+
             $this->sendDebugEmail( "tango@velletti.de" ,"info@tangomuenchen.de", "[TANGO][NewOrganizer] - " . $organizer->getEmail() , $msg , $html) ;
 
 

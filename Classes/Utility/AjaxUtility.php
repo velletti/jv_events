@@ -22,7 +22,7 @@ class AjaxUtility {
      * @return \JVE\JvEvents\Controller\AjaxController
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException
      */
-    public function initController(array $_gp , $function ) {
+    public function initController(array $_gp , $function  ) {
         /** @var \JVE\JvEvents\Controller\AjaxController $controller */
         $controller = GeneralUtility::makeInstance('JVE\JvEvents\Controller\AjaxController' ) ;
 
@@ -63,6 +63,20 @@ class AjaxUtility {
         $controller->standaloneView->setLayoutRootPaths(array( 0 => ExtensionManagementUtility::extPath('jv_events') . 'Resources/Private/Layouts'  ));
         $controller->standaloneView->setPartialRootPaths(array( 0 => ExtensionManagementUtility::extPath('jv_events') . 'Resources/Private/Partials' ));
 
+        /** @var  \TYPO3\CMS\Extbase\Mvc\Request $request */
+        $request =  GeneralUtility::makeInstance( "TYPO3\CMS\Extbase\Mvc\Request");
+        $request->setControllerName("Ajax") ;
+        $request->setControllerActionName($function ) ;
+        $request->setControllerExtensionName( "jvevents" ) ;
+        $request->setPluginName( "events" ) ;
+
+        $controller->getControllerContext()->setRequest($request) ;
+
+        /** @var  \TYPO3\CMS\Extbase\Mvc\Response $response */
+        $response =  GeneralUtility::makeInstance( "TYPO3\CMS\Extbase\Mvc\Response");
+
+
+        $controller->getControllerContext()->setResponse($response) ;
 
 
         

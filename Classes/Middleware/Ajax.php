@@ -64,54 +64,55 @@ class Ajax implements MiddlewareInterface
         }
 
 
-        if( is_array($_gp) && key_exists("tx_jvevents_ajax" ,$_gp ) && key_exists("controller" ,$_gp['tx_jvevents_ajax'] ) ) {
-            $GLOBALS['TSFE']->set_no_cache();
+        if( is_array($_gp) && key_exists("tx_jvevents_ajax" ,$_gp ) && key_exists("action" ,$_gp['tx_jvevents_ajax']  ) ) {
 
-            $function = trim($_gp['action']) ;
+            $function = strtolower( trim($_gp['tx_jvevents_ajax']['action'])) ;
+            if( $function != "activateXX"  ) {
+                $GLOBALS['TSFE']->set_no_cache();
+                    /** @var AjaxUtility $ajaxUtility */
+                $ajaxUtility = GeneralUtility::makeInstance('JVE\JvEvents\Utility\AjaxUtility') ;
 
-            /** @var AjaxUtility $ajaxUtility */
-            $ajaxUtility = GeneralUtility::makeInstance('JVE\JvEvents\Utility\AjaxUtility') ;
+                // ToDo generate Output as before in ajax Controller here in Middleware with CORE features.
+                $controller = $ajaxUtility->initController($_gp , $function ) ;
+                $controller->initializeRepositorys() ;
 
-            // ToDo generate Output as before in ajax Controller here in Middleware with CORE features.
-            $controller = $ajaxUtility->initController($_gp , $function ) ;
-            $controller->initializeRepositorys() ;
 
-            $function .= "Action";
+                switch ($function) {
+                    case 'eventList' :
+                        $controller->eventListAction($_gp["tx_jvevents_ajax"]) ;
+                        break;
+                    case 'locationList' :
+                        $controller->locationListAction($_gp["tx_jvevents_ajax"]) ;
+                        break;
+                    case 'activate' :
+                        // $organizerUid=0 , $userUid=0 , $hmac='invalid' , $rnd = 0
+                        // this is not used anymore
+                        $organizerUid  =    key_exists( 'organizerUid' , $_gp["tx_jvevents_ajax"]) ?  $_gp["tx_jvevents_ajax"]['organizerUid'] : 0 ;
+                        $userUid  =         key_exists( 'userUid' , $_gp["tx_jvevents_ajax"]) ?  $_gp["tx_jvevents_ajax"]['userUid'] : 0 ;
+                        $hmac  =            key_exists( 'hmac' , $_gp["tx_jvevents_ajax"]) ?  $_gp["tx_jvevents_ajax"]['hmac'] : 'invalid' ;
+                        $rnd  =             key_exists( 'rnd' , $_gp["tx_jvevents_ajax"]) ?  $_gp["tx_jvevents_ajax"]['rnd'] : 0 ;
+                        $controller->activateAction( $organizerUid , $userUid , $hmac , $rnd ) ;
+                        break;
+                    case 'eventUnlink' :
+                        $controller->eventUnlinkAction($_gp["tx_jvevents_ajax"]) ;
+                        break;
+                    default:
+                        $controller->eventMenuAction($_gp["tx_jvevents_ajax"]) ;
+                        break;
+                }
 
-            switch ($function) {
-                case 'eventList' :
-                    $controller->eventListAction($_gp["tx_jvevents_ajax"]) ;
-                    break;
-                case 'locationList' :
-                    $controller->locationListAction($_gp["tx_jvevents_ajax"]) ;
-                    break;
-                case 'activate' :
-                    // $organizerUid=0 , $userUid=0 , $hmac='invalid' , $rnd = 0
-                    $organizerUid  =    key_exists( 'organizerUid' , $_gp["tx_jvevents_ajax"]) ?  $_gp["tx_jvevents_ajax"]['organizerUid'] : 0 ;
-                    $userUid  =         key_exists( 'userUid' , $_gp["tx_jvevents_ajax"]) ?  $_gp["tx_jvevents_ajax"]['userUid'] : 0 ;
-                    $hmac  =            key_exists( 'hmac' , $_gp["tx_jvevents_ajax"]) ?  $_gp["tx_jvevents_ajax"]['hmac'] : 'invalid' ;
-                    $rnd  =             key_exists( 'rnd' , $_gp["tx_jvevents_ajax"]) ?  $_gp["tx_jvevents_ajax"]['rnd'] : 0 ;
-                    $controller->activateAction( $organizerUid , $userUid , $hmac , $rnd ) ;
-                    break;
-                case 'eventUnlink' :
-                    $controller->eventUnlinkAction($_gp["tx_jvevents_ajax"]) ;
-                    break;
-                default:
-                    $controller->eventMenuAction($_gp["tx_jvevents_ajax"]) ;
-                    break;
+                die;
+
+    /*
+                $result = json_encode( $output['data']) ;
+                $body = new Stream('php://temp', 'rw');
+                $body->write($result);
+                return (new Response())
+                    ->withHeader('content-type', $output['content-type'] . '; charset=utf-8')
+                    ->withBody($body)
+                    ->withStatus($output['status']);
+    */
             }
-
-            die;
-
-/*
-            $result = json_encode( $output['data']) ;
-            $body = new Stream('php://temp', 'rw');
-            $body->write($result);
-            return (new Response())
-                ->withHeader('content-type', $output['content-type'] . '; charset=utf-8')
-                ->withBody($body)
-                ->withStatus($output['status']);
-*/
         }
         return $handler->handle($request);
     }

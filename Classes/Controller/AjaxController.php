@@ -31,7 +31,9 @@ use JVE\JvEvents\Utility\AjaxUtility;
 use JVE\JvEvents\Utility\TyposcriptUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use JVE\JvEvents\Utility\ShowAsJsonArrayUtility;
+use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 
@@ -64,7 +66,33 @@ class AjaxController extends BaseController
     public $standaloneView;
 
     public function initializeAction() {
+
+
+
         parent::initializeAction() ;
+    }
+    /**
+     * @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext
+     */
+    public function injectControllerContext( \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext) {
+
+        $this->controllerContext = $controllerContext;
+    }
+
+    /**
+     * @var \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder $uriBuilder
+     */
+    public function injectUriBuilder(  \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder $uriBuilder) {
+        $this->uriBuilder = $uriBuilder;
+    }
+
+    /**
+     * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     */
+    public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager): void
+    {
+        $this->configurationManager = $configurationManager;
     }
 
     public function initializeRepositorys(array $ts=null)
@@ -79,6 +107,10 @@ class AjaxController extends BaseController
         $this->subeventRepository        = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\SubeventRepository');
         $this->staticCountryRepository        = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\StaticCountryRepository');
 
+        $this->uriBuilder->injectConfigurationManager( $this->configurationManager);
+        $this->uriBuilder->initializeObject();
+        $this->uriBuilder->setRequest($this->controllerContext->getRequest()) ;
+        $this->response = $this->controllerContext->getResponse() ;
     }
 
     public function dispatcher()
@@ -777,7 +809,11 @@ class AjaxController extends BaseController
             $rnd = time() ;
         }
         $hmac = trim($hmac) ;
+        if( $this->settings['pageIds']['organizerAssist'] < 1 ) {
 
+            // fix this BUG : settings pageIds is not working anymore. Why ??
+             $this->settings['pageIds']['organizerAssist'] = 24 ;
+        }
         /** @var \JVE\JvEvents\Domain\Model\Organizer $organizer */
         $organizer = $this->organizerRepository->findByUidAllpages($organizerUid, FALSE, TRUE);
 
@@ -788,13 +824,30 @@ class AjaxController extends BaseController
         /** @var \JVE\JvEvents\Domain\Model\FrontendUser $user */
         $user = $userRepository->findByUid($userUid) ;
 
+
         if( !$organizer  ) {
             $this->addFlashMessage("Organizer not found by ID : " . $organizerUid , "" , \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING) ;
-            $this->redirect('assist' , "Organizer", Null , NULL , $this->settings['pageIds']['organizerAssist'] );
+            try {
+                $this->redirect('assist' , "Organizer", Null , NULL , $this->settings['pageIds']['organizerAssist'] );
+            } catch(StopActionException $e) {
+                foreach (  $this->response->getHeaders() as $header ) {
+                    header( $header) ;
+                }
+
+                die;
+            }
         }
         if( !$user ) {
             $this->addFlashMessage("User not found by ID : " . $userUid , "" , \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING) ;
-            $this->redirect('assist' , "Organizer", Null , NULL , $this->settings['pageIds']['organizerAssist'] );
+            try {
+                $this->redirect('assist' , "Organizer", Null , NULL , $this->settings['pageIds']['organizerAssist'] );
+            } catch(StopActionException $e) {
+                foreach (  $this->response->getHeaders() as $header ) {
+                    header( $header) ;
+                }
+
+                die;
+            }
         }
         $tokenStr = "activateOrg" . "-" . $organizerUid . "-" . $user->getCrdate() ."-". $userUid .  "-". $rnd ;
         $tokenId = GeneralUtility::hmac( $tokenStr );
@@ -802,13 +855,25 @@ class AjaxController extends BaseController
 
         if( $hmac != $tokenId ) {
             if ( 1==2 ) {
-                echo "Got hmac: " . $hmac ;
+                echo "<pre> "  ;
+                var_dump( $user->_getCleanProperties());
+                echo "<hr> "  ;
+                echo "<br>activateOrg-3097-1626975809-3353-1626976693 : "  ;
+                echo "<br>Got hmac: " . $hmac ;
                 echo "<br>Got token: " . $tokenStr ;
                 echo "<br>Gives: " . $tokenId ;
                 die;
             }
             $this->addFlashMessage("Hmac does not fit to: " . $tokenStr , "ERROR" , \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR) ;
-            $this->redirect('assist' , "Organizer", Null , NULL , $this->settings['pageIds']['organizerAssist'] );
+            try {
+                $this->redirect('assist' , "Organizer", Null , NULL , $this->settings['pageIds']['organizerAssist'] );
+            } catch(StopActionException $e) {
+                foreach (  $this->response->getHeaders() as $header ) {
+                    header( $header) ;
+                }
+
+                die;
+            }
 
         }
         $groups =  $user->getUsergroup()->toArray() ;
@@ -851,7 +916,15 @@ class AjaxController extends BaseController
         $this->persistenceManager->persistAll() ;
         $this->addFlashMessage("User : " . $userUid . " (" . $user->getEmail() . ") enabled | " . $msg . "  " , "Success" , \TYPO3\CMS\Core\Messaging\AbstractMessage::OK) ;
         $this->addFlashMessage("Organizer : " . $organizerUid . " (" . $organizer->getName() . ")  enabled " , \TYPO3\CMS\Core\Messaging\AbstractMessage::OK) ;
-        $this->redirect('assist' , "Organizer", Null , NULL , $this->settings['pageIds']['organizerAssist'] );
+        try {
+            $this->redirect('assist' , "Organizer", Null , NULL , $this->settings['pageIds']['organizerAssist'] );
+        } catch(StopActionException $e) {
+            foreach (  $this->response->getHeaders() as $header ) {
+                header( $header) ;
+            }
+
+            die;
+        }
 
     }
 
