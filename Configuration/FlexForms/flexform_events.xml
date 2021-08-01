@@ -46,7 +46,7 @@
 					<settings.defaultOrganizerAction>
 						<TCEforms>
 							<label>Select function</label>
-							<displayCond>FIELD:sDEF.switchableControllerActions:=:Organizer->assist;Organizer->list;Organizer->show;Organizer->new;Organizer->create;Organizer->edit;Organizer->update;Organizer->delete;</displayCond>
+							<displayCond>FIELD:sDEF.switchableControllerActions:=:Organizer->assist;Organizer->list;Organizer->activate;Organizer->show;Organizer->new;Organizer->create;Organizer->edit;Organizer->update;Organizer->delete;</displayCond>
 
 							<config>
 								<type>select</type>
@@ -703,7 +703,7 @@
 			<ROOT>
 				<TCEforms>
 					<sheetTitle>LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_organizer</sheetTitle>
-					<displayCond>FIELD:sDEF.switchableControllerActions:=:Organizer->assist;Organizer->list;Organizer->show;Organizer->new;Organizer->create;Organizer->edit;Organizer->update;Organizer->delete;</displayCond>
+					<displayCond>FIELD:sDEF.switchableControllerActions:=:Organizer->assist;Organizer->list;Organizer->activate;Organizer->show;Organizer->new;Organizer->create;Organizer->edit;Organizer->update;Organizer->delete;</displayCond>
 				</TCEforms>
 				<type>array</type>
 				<el>
