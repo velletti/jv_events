@@ -10,7 +10,7 @@ if (!defined('TYPO3_MODE')) {
 	'Events',
 	array(
 		'Event' => 'list, show, new, create, edit, update, delete, register, confirm, search,copy,cancel',
-		'Organizer' => 'list, show, new, create, edit, update, delete,assist',
+		'Organizer' => 'list, show, new, create, edit, update, delete,assist,active',
 		'Location' => 'list, show, new, create, edit, update, delete,setDefault',
 		'Registrant' => 'list, show,new,create,delete,confirm,checkQrcode',
 		'Tag' => 'list',
