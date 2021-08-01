@@ -10,30 +10,42 @@
 
     <div class="col-2 col-sm-4">
         <span id="jvevents-geo-update" class="btn btn-primary mx-2" onclick="findAddress({'address': updateAddressFromFields() }); " >
-            <i class="{fa-icon}"></i>
-            <span class="d-none d-md-inline-block">
-                <f:if condition="{translationKey}">
-                    <f:then>
-                        <f:translate key="{translationKey}">{translationKey}</f:translate>
-                    </f:then>
-                    <f:else>
-                        {label}
-                    </f:else>
-                </f:if>
-            </span>
+            <i class="{fa-icon}" title="{f:translate(key:'jv_events_model_location.press-refresh.title')}"></i>
+
+        </span>
+        <span class="d-none d-md-inline-block">
+            <f:if condition="{translationKey}">
+                <f:then>
+                    <f:translate key="{translationKey}">{translationKey}</f:translate>
+                </f:then>
+            </f:if>
         </span>
     </div>
-    <div class="col-8 col-sm-4 text-center">
+
         <f:if condition="{buttonSetPosition}">
-            <button id="jvevents-geo-getpos" type="button" class=" btn btn-outline-primary" data-target="#jvevents-geo-getpos-collapse" data-toggle="collapse">
-                <i class="fas fa-street-view mr-2"></i>
-                <span class="">
-                <f:translate key="select-position-btn">Position bestimmen</f:translate>
-            </span>
-            </button>
+            <f:then>
+                <div class="col-8 col-sm-4 text-center">
+                    <button id="jvevents-geo-getpos" type="button" class=" btn btn-outline-primary" data-target="#jvevents-geo-getpos-collapse" data-toggle="collapse">
+                        <i class="fas fa-street-view mr-2"></i>
+                        <span class="">
+                            <f:translate key="select-position-btn">Position bestimmen</f:translate>
+                        </span>
+                    </button>
+                </div>
+            </f:then>
+            <f:else>
+                <f:if condition="{label}">
+                    <f:then>
+                        <div class="col-10 col-sm-8">
+                            <f:translate key="{label}">{label}</f:translate>
+                        </div>
+                    </f:then>
+                </f:if>
+            </f:else>
         </f:if>
 
-    </div>
+
+
     <div class="col-2 col-sm-4">
         <f:if condition="{hideOkButton}">
             <f:else>

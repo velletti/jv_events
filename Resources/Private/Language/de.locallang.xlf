@@ -919,6 +919,10 @@
                 <source>Please check your input below.</source>
                  <target>Es ist ein Fehler aufgetreten. Bitte prüfen Sie ihre Eingaben in den nachfolgenden Feldern auf fehlende Angaben.</target>
             </trans-unit>
+            <trans-unit id="jv_events_model_location.press-refresh.title">
+                <source>Calculate and set map coordinates (LNG=Longitude and LAT=latitude) </source>
+                <target>Berechnen und Speichern der Karten Kooordinaten (LNG/LAT)</target>
+            </trans-unit>
 
             <trans-unit id="create.organizer.create.Headline">
                 <source>Want to have a NEW entry in Organizer list?</source>

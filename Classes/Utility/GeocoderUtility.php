@@ -200,7 +200,7 @@ class GeocoderUtility {
 					document.getElementById("jvevents-geo-ok").style.opacity = "1" ;
 				}
 				if(document.getElementById("jvevents-geo-update")) {
-					document.getElementById("jvevents-geo-update").style.opacity = ".5" ;
+					document.getElementById("jvevents-geo-update").style.opacity = ".8" ;
 				}
 		
                 if ( getCookies("tx_cookies_accepted") == "1") {
@@ -331,7 +331,7 @@ class GeocoderUtility {
                                     document.getElementById("jvevents-geo-ok").style.opacity = "1" ;
                                 }
                                 if(document.getElementById("jvevents-geo-update")) {
-                                    document.getElementById("jvevents-geo-update").style.opacity = ".5" ;
+                                    document.getElementById("jvevents-geo-update").style.opacity = ".8" ;
                                 }
                                 if ( getCookies("tx_cookies_accepted") == "1") {
                                    // Set cookie for 365 days
@@ -355,7 +355,7 @@ class GeocoderUtility {
                              * Center map on marker and zoom if needed
                              */
                             map.panTo(results[0].geometry.location);
-                            if ( initZoom) {
+                            if ( typeof initZoom !== "undefined") {
                                 map.setZoom(initZoom);
                             } else {
                                 map.setZoom(15);

@@ -3,11 +3,17 @@
  * Last Change:
  */
 jQuery(document).ready(function() {
+    if ( typeof initZoom === "undefined") {
+        let initZoom = 8 ;
+    }
 	jv_events_init() ;
     jv_events_init_AjaxMenu() ;
 
 	if( $(".jv-events-tags-edit") ){
         jv_events_init_edit_tags() ;
+    }
+	if( $("FORM#location_edit")) {
+        jv_events_init_edit_location() ;
     }
     if ( jQuery("#streetAndNr").length) {
         jQuery("#streetAndNr").on("keydown" , function( event) {
@@ -113,7 +119,25 @@ function jv_events_init_AjaxMenu() {
     }
 }
 
+function jv_events_init_edit_location() {
 
+    document.getElementById('streetAndNr').addEventListener("change", function(){
+        var address = updateAddressFromFields() ;
+        findAddress({'address': address }) ;
+    });
+    document.getElementById('zip').addEventListener("change", function(){
+        var address = updateAddressFromFields() ;
+        findAddress({'address': address }) ;
+    }) ;
+    document.getElementById('city').addEventListener("change", function(){
+        var address = updateAddressFromFields() ;
+        findAddress({'address': address }) ;
+    });
+    document.getElementById('jv_events_country').addEventListener("change", function(){
+        var address = updateAddressFromFields() ;
+        findAddress({'address': address }) ;
+    } );
+}
 
 function jv_events_init_edit_tags() {
     var jvEventsNewTags = '' ;

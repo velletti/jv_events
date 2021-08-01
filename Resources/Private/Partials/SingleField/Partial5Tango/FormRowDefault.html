@@ -34,7 +34,6 @@
 					<f:if condition="{object}">
 						<f:then>
 							<f:form.textfield class="form-control" property="{property}" id="{property}" {f:if(condition: '{defaultValue}' , then: 'value="{defaultValue}"' )} maxlength="{maxLength}" />
-
 						</f:then>
 						<f:else>
 							<f:form.textfield class="form-control" id="{property}" {defaultValueText} maxlength="{maxLength}" />

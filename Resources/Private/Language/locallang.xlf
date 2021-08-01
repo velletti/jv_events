@@ -14,7 +14,9 @@
             <trans-unit id="error.msg_error_check-input">
                 <source>Please check your input below.</source>
             </trans-unit>
-
+            <trans-unit id="jv_events_model_location.press-refresh.title">
+                <source>Calculate and set map coordinates (LNG/LAT) </source>
+            </trans-unit>
             <trans-unit id="jv_events_model_event.currency.label">
                 <source>Currency</source>
             </trans-unit>

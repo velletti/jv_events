@@ -8,7 +8,7 @@
 	</f:else>
 </f:if>
 
-
+<f:variable name="onchange">findAddress({'address': updateAddressFromFields() });</f:variable>
 <f:render partial="SingleField/Partial{layout}/FormRowDefault"
 		  arguments="{object: 'location', property:'name' , label: '' , translationKey: 'tx_jvevents_domain_model_location.name' , maxLength: 60 , mandatory: '1' }" />
 
@@ -25,7 +25,7 @@
 <hr>
 
 <f:render partial="SingleField/Partial{layout}/FormRowGeocoder"
-		  arguments="{object: 'location', location: location, property:'lng' ,  buttonSetPosition: '0' ,  property2:'lat', fa-icon: 'fas fa-sync-alt' , label: '' ,  maxLength: 30 , mandatory: '1' , hideOkButton: '1'}" />
+		  arguments="{object: 'location', location: location, property:'lng' ,  buttonSetPosition: '0' ,  property2:'lat', fa-icon: 'fas fa-sync-alt' , translationKey: '', label: 'jv_events_model_location.press-refresh.title' ,  maxLength: 30 , mandatory: '1' , hideOkButton: '1'}" />
 
 <hr>
 <div class="alert alert-info">
