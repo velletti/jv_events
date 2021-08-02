@@ -61,14 +61,14 @@ class RegisterHubspotSignal {
      * @param \JVE\Jvevents\Domain\Model\Event $event
      * @param array $settings
      *
-     * @return void
+     * @return mixed
      */
     public function createAction($registrant, $event ,  $settings)
     {
         $error = 0 ;
         if ( !is_object( $event ))  {
             $this->logToFile( "\n\n ### ERROR ### In RegisterHubspotSignal - event is not an Object!: " . var_export($event , true )  );
-            return;
+            return "";
         }
         $debugmail = "\n+++++++++++ got this data from Controller ++++++++++++++++++\n"  ;
         $debugmail .= "\nRunning on Server: " .  $_SERVER['HOSTNAME'] .  " - "  . php_uname() ;
@@ -85,7 +85,7 @@ class RegisterHubspotSignal {
                 . "\n EmConf Enable enableHubspot: " . $settings['EmConfiguration']['enableHubspot']
                 . "\n Event: " . $event->getUid() . " - Store in Hubspot: " . $event->getStoreInHubspot() );
 
-            return;
+            return "";
 
         }
 
