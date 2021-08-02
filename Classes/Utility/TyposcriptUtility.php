@@ -19,9 +19,8 @@ class TyposcriptUtility{
      *
      *                          or ( this is tested)
      *                          b) the exact Condition from YOUR Constants.ts file
-     *                          f.e. [globalVar = GP:L = 1] or [globalString = IENV:HTTP_HOST = dev.domain.com]
-     *                          As this must be an array, also multiple Conditions can be handed over:
-     *                          f.e. array( [globalVar = GP:L = 1] , [globalString = IENV:HTTP_HOST = yoursub.domain.com] )
+     *
+     *                           this must be an array, also multiple Conditions can be handed over:
      *
 	 * @param bool $getConstants default=false,  will return  Constants (all or those from an extension) instaed of Setup
 	 * @return array
