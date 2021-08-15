@@ -10,7 +10,7 @@ if (!defined('TYPO3_MODE')) {
 	'Events',
 	array(
 		'Event' => 'list, show, new, create, edit, update, delete, register, confirm, search,copy,cancel',
-		'Organizer' => 'list, show, new, create, edit, update, delete,assist,active',
+		'Organizer' => 'list, show, new, create, edit, update, delete,assist,activate',
 		'Location' => 'list, show, new, create, edit, update, delete,setDefault',
 		'Registrant' => 'list, show,new,create,delete,confirm,checkQrcode',
 		'Tag' => 'list',
@@ -18,7 +18,7 @@ if (!defined('TYPO3_MODE')) {
 	// non-cacheable actions
 	array(
 		'Event' => 'show, search, new, create, edit, update, register, confirm, delete,copy,cancel',
-        'Organizer' => 'show, new, create, edit, update, delete,assist',
+        'Organizer' => 'show, new, create, edit, update, delete,assist,activate',
 		'Registrant' => 'list,new,create,delete,confirm,checkQrcode',
 		'Location' => 'new, create, edit, update, delete,setDefault',
 		
