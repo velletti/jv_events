@@ -176,7 +176,7 @@ class ProcessCmdmap {
                     $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_jvevents_domain_model_event') ;
 
                     $queryBuilder ->update('tx_jvevents_domain_model_event')
-                        ->where( $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter(intval($eventId) , Connection::PARAM_INT )) ) ;
+                        ->where( $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter(intval($eventId) , PDO::PARAM_INT )) ) ;
 
                     if( $regevent['hidden'] == 0 ) {
                         $registeredSeats = max( 0 , $event['registered_seats'] - 1 ) ;
@@ -184,7 +184,7 @@ class ProcessCmdmap {
 
                     } else {
                         $unconfirmed_seats = max($event['unconfirmed_seats'] - 1 , 0 );
-                        $queryBuilder->set('registered_seats' , unconfirmed_seats ) ;
+                        $queryBuilder->set('registered_seats' , $unconfirmed_seats ) ;
 
                     }
                     $queryBuilder->execute() ;
