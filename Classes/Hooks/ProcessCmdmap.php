@@ -25,6 +25,7 @@ namespace JVE\JvEvents\Hooks ;
 
 use JVE\JvEvents\Utility\SlugUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class ProcessCmdmap {
@@ -176,7 +177,7 @@ class ProcessCmdmap {
                     $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_jvevents_domain_model_event') ;
 
                     $queryBuilder ->update('tx_jvevents_domain_model_event')
-                        ->where( $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter(intval($eventId) , PDO::PARAM_INT )) ) ;
+                        ->where( $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter(intval($eventId) , Connection::PARAM_INT )) ) ;
 
                     if( $regevent['hidden'] == 0 ) {
                         $registeredSeats = max( 0 , $event['registered_seats'] - 1 ) ;
