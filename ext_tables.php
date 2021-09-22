@@ -17,8 +17,6 @@ if (!defined('TYPO3_MODE')) {
     'Ajax',
     'Ajax'
 );
-$configuration = \JVE\JvEvents\Utility\EmConfigurationUtility::getEmConf();
-
 
 if (TYPO3_MODE === 'BE') {
     $EventModules = array('EventBackend' => 'list, show, new, create, edit, update, delete, register, confirm, search, resendCitrix,resendHubspot' ) ;
