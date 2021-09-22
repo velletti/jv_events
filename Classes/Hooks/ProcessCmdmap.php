@@ -24,6 +24,8 @@ namespace JVE\JvEvents\Hooks ;
  * ************************************************************* */
 
 use JVE\JvEvents\Utility\SlugUtility;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class ProcessCmdmap {
 
@@ -163,10 +165,10 @@ class ProcessCmdmap {
         if ($table == 'tx_jvevents_domain_model_registrant') {
             if($command == 'delete'){
 
-                $regevent = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $id , '*' , '' , false );
+                $regevent = BackendUtility::getRecord($table, $id , '*' , '' , false );
                 $eventId = $regevent['event'] ;
                 if( $eventId > 0 ) {
-                    $event = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('tx_jvevents_domain_model_event', $eventId );
+                    $event = BackendUtility::getRecord('tx_jvevents_domain_model_event', $eventId );
 
                     /** @var \TYPO3\CMS\Core\Database\ConnectionPool $connectionPool */
                     $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
