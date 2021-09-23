@@ -283,7 +283,7 @@ class EventBackendController extends BaseController
                 // if anybody also needs this, we should make it more flexibel ..
 
                 $lng = intval( $event->getLanguageUid()) ;
-                $ts = \Allplan\AllplanTools\Utility\TyposcriptUtility::loadTypoScriptFromScratch(
+                $ts = \JVE\JvEvents\Utility\TyposcriptUtility::loadTypoScriptFromScratch(
                     $event->getRegistrationFormPid(), "tx_jvevents_events", array('[siteLanguage("languageId") = ' . intval($lng ) . ']')
                 );
 
