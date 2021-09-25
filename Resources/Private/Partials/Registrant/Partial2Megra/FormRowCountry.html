@@ -9,7 +9,9 @@
 					</f:if>
 				</label>
 				<register:SelectStaticCountries class="form-control jv-events-req-{required}" property="country" id="jv_events_country"
-															 allowedCountries="{settings.register.allowedCountrys}" optionLabelField="cnShortLocal" sortByOptionLabel="TRUE"/>
+												allowedCountries="{settings.register.allowedCountrys}" optionLabelField="cnShortLocal"
+												sortByOptionLabel="TRUE" prependOptionLabel="-" prependOptionValue="" value=""
+				/>
 				<f:render partial="FieldError" section="Main" arguments="{for: 'registrant', field: '{FieldName}'}" />
 			</fieldset>
 		</div>
