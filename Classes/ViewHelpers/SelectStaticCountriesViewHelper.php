@@ -71,7 +71,10 @@ class SelectStaticCountriesViewHelper extends SelectStaticViewHelper {
 		$this->registerArgument('value', 'mixed', 'Value of input tag');
 		$this->registerArgument('sortByOptionLabel', 'boolean', 'If true, List will be sorted by label.', FALSE, TRUE);
 		$this->registerArgument('allowedCountries', 'array', 'Array with countries allowed to be displayed.', FALSE, array());
-		$this->registerArgument(
+        $this->registerArgument('prependOptionLabel', 'string', 'If specified, will provide an option at first position with the specified label.');
+        $this->registerArgument('prependOptionValue', 'string', 'If specified, will provide an option at first position with the specified value.');
+
+        $this->registerArgument(
 			'property',
 			'string',
 			'Name of Object Property. If used in conjunction with <f:form object="...">, "name" and "value" properties will be ignored.'
@@ -104,14 +107,14 @@ class SelectStaticCountriesViewHelper extends SelectStaticViewHelper {
 			FALSE,
 			'f3-form-error'
 		);
+
 	}
 
 	/**
 	 * Override the initialize method to load all
 	 * available countries before rendering
 	 *
-	 * @return void
-	 */
+	 * @return void	 */
 	public function initialize() {
 		parent::initialize();
 
