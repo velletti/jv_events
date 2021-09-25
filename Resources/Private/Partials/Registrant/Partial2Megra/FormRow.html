@@ -4,10 +4,10 @@
 				<label for="jv_events_{FieldName}">
 					<f:if condition="{translate}">
 						<f:then>
-							<f:translate key="{label}" default=" "/>
+							<f:translate key="{label}" default=" "/> {label2}
 						</f:then>
 						<f:else>
-							{label}
+							{label} {label2}
 						</f:else>
 					</f:if>
 
@@ -22,7 +22,17 @@
 						<f:form.textarea rows="3" class="form-control jv-events-req-{required}" id="jv_events_{FieldName}" property="{FieldName}" />
 					</f:then>
 					<f:else>
-						<f:form.textfield class="form-control jv-events-req-{required}" id="jv_events_{FieldName}" property="{FieldName}" />
+						<f:if condition="{maxlength}">
+							<f:then>
+								<f:form.textfield class="form-control jv-events-req-{required}" id="jv_events_{FieldName}"
+												  maxlength="{maxlength}" property="{FieldName}" />
+							</f:then>
+							<f:else>
+								<f:form.textfield class="form-control jv-events-req-{required}" id="jv_events_{FieldName}"
+												  property="{FieldName}" />
+							</f:else>
+						</f:if>
+
 					</f:else>
 				</f:if>
 

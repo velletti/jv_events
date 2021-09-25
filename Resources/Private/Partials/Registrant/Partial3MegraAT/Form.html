@@ -139,7 +139,8 @@
 		</div>
 
 		<div class="clearfix row">
-			<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRow" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.country', FieldName : 'country2' , settings: settings , cols: 'col-md-6' , required: '{f:if(condition: \'{settings.register.required.country2}\' , then: \'TRUE\')}'}"/>
+			<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRow" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.country' , label2: '(3 Buchstaben Code)' , FieldName : 'country2' ,
+			settings: settings , cols: 'col-md-6' , maxlength: '3',  required: '{f:if(condition: \'{settings.register.required.country2}\' , then: \'TRUE\')}'}"/>
 		</div>
 
 		<div class="clearfix">
