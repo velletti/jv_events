@@ -1352,14 +1352,11 @@ class Registrant extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     }
 
     /**
-     * @return int|null
+     * @return \DateTime|int|null
      */
-    public function getStarttime(): ?int
+    public function getStarttime(): ?\DateTime
     {
-        if(is_int($this->starttime)) {
-            return $this->starttime;
-        }
-         return  ;
+        return $this->starttime;
     }
 
     /**
