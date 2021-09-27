@@ -1352,40 +1352,50 @@ class Registrant extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getStarttime(): int
+    public function getStarttime(): ?int
     {
         if(is_int($this->starttime)) {
             return $this->starttime;
         }
-         return time() ;
+         return  ;
     }
 
     /**
-     * @param int|null $starttime
+     * @param \DateTime|int|null $starttime
      */
-    public function setStarttime(?int $starttime)
+    public function setStarttime(?DateTime $starttime)
     {
-        if(!is_int($starttime)) {
-            $starttime = time() ;
+        if( $starttime instanceof \DateTime) {
+            $this->starttime = $starttime ;
+        } elseif (is_int($starttime) ){
+            $this->starttime = date_create() ;
+            $this->starttime->setTimestamp( $starttime ) ;
         }
-        $this->starttime = $starttime;
+        $this->starttime = $starttime ;
     }
 
     /**
-     * @return int|null
+     * @return \DateTime|int|null
      */
-    public function getEndtime(): ?int
+    public function getEndtime(): ?\DateTime
     {
         return $this->endtime;
     }
 
     /**
-     * @param int|null $endtime
+     * @param \DateTime|int|null $endtime
      */
-    public function setEndtime(?int $endtime)
+    public function setEndtime(?\DateTime $endtime)
     {
+        if( $endtime instanceof \DateTime) {
+            $this->endtime = $endtime ;
+        } elseif (is_int($endtime) ){
+            $this->endtime = date_create() ;
+            $this->endtime->setTimestamp( $endtime ) ;
+        }
+
         $this->endtime = $endtime;
     }
 
