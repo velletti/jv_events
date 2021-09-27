@@ -1362,7 +1362,7 @@ class Registrant extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @param \DateTime|int|null $starttime
      */
-    public function setStarttime(?\DateTime $starttime)
+    public function setStarttime( $starttime)
     {
         if( $starttime instanceof \DateTime) {
             $this->starttime = $starttime ;
@@ -1384,7 +1384,7 @@ class Registrant extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @param \DateTime|int|null $endtime
      */
-    public function setEndtime(?\DateTime $endtime)
+    public function setEndtime( $endtime)
     {
         if( $endtime instanceof \DateTime) {
             $this->endtime = $endtime ;
