@@ -1356,29 +1356,35 @@ class Registrant extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     public function getStarttime(): int
     {
-        return $this->starttime;
+        if(is_int($this->starttime)) {
+            return $this->starttime;
+        }
+         return time() ;
     }
 
     /**
-     * @param int $starttime
+     * @param int|null $starttime
      */
-    public function setStarttime(int $starttime)
+    public function setStarttime(?int $starttime)
     {
+        if(!is_int($starttime)) {
+            $starttime = time() ;
+        }
         $this->starttime = $starttime;
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getEndtime(): int
+    public function getEndtime(): ?int
     {
         return $this->endtime;
     }
 
     /**
-     * @param int $endtime
+     * @param int|null $endtime
      */
-    public function setEndtime(int $endtime)
+    public function setEndtime(?int $endtime)
     {
         $this->endtime = $endtime;
     }
