@@ -371,7 +371,6 @@ class RegistrantController extends BaseController
             if ($registrant == null) {
                 /** @var Registrant $registrant */
                 $registrant = $this->objectManager->get("JVE\\JvEvents\\Domain\\Model\\Registrant");
-                $registrant->setStarttime(time()) ;
                 if ($userUid) {
                     $registrant->setGender(intval($GLOBALS['TSFE']->fe_user->user['gender'] + 1));
                     $registrant->setFirstName($GLOBALS['TSFE']->fe_user->user['first_name']);
