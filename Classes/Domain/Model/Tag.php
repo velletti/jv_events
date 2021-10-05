@@ -92,10 +92,31 @@ class Tag extends AbstractEntity
     /**
      * Returns the name
      *
+     * @param bool $tagShowAfterColon
      * @return string $name
      */
-    public function getName()
+    public function getName( $tagShowAfterColon=false)
     {
+        if( $tagShowAfterColon ) {
+            $this->getNameAfterColon( ) ;
+        }
+        return $this->name;
+    }
+
+    /**
+     * Returns the Last Part of the name after:
+     * Level: Beginner
+     *
+     * you will get "Beginner"
+     *
+     * @return string $name
+     */
+    public function getNameAfterColon( )
+    {
+        $posColon = strrpos( $this->name , ":" ) ;
+        if ( $posColon > 0 )   {
+            return  trim( substr( $this->name , $posColon+1 , 999)) ;
+        }
         return $this->name;
     }
     

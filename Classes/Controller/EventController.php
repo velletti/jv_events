@@ -151,11 +151,12 @@ class EventController extends BaseController
                 break;
 
             case "6":
+            case "7":
                 $eventsFilter = $this->generateFilter( $events ,  $this->settings['filter']) ;
-                $eventsFilter['box1'] = $this->generateFilterBox( $this->settings['filter']['tagbox1tags']) ;
-                $eventsFilter['box2'] = $this->generateFilterBox( $this->settings['filter']['tagbox2tags']) ;
-                $eventsFilter['box3'] = $this->generateFilterBox( $this->settings['filter']['tagbox3tags']) ;
-                $eventsFilter['box4'] = $this->generateFilterBox( $this->settings['filter']['tagbox4tags']) ;
+                $eventsFilter['box1'] = $this->generateFilterBox( $this->settings['filter']['tagbox1tags']  , $this->settings['filter']['tagShowAfterColon'] ) ;
+                $eventsFilter['box2'] = $this->generateFilterBox( $this->settings['filter']['tagbox2tags'] , $this->settings['filter']['tagShowAfterColon']) ;
+                $eventsFilter['box3'] = $this->generateFilterBox( $this->settings['filter']['tagbox3tags'] , $this->settings['filter']['tagShowAfterColon']) ;
+                $eventsFilter['box4'] = $this->generateFilterBox( $this->settings['filter']['tagbox4tags'] , $this->settings['filter']['tagShowAfterColon']) ;
                 break;
 
             default:

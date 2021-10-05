@@ -654,6 +654,10 @@
 			<source>Filter the content on this page</source>
 			<target>Filtern Sie die Inhalte dieser Seite</target>
 		</trans-unit>
+        <trans-unit id="tx_jvevents_event.filter.hintshort" approved="yes">
+            <source>Filter events</source>
+            <target>Termine filtern</target>
+        </trans-unit>
 		<trans-unit id="tx_jvevents_event.filter.reset" approved="yes">
 			<source>Reset filter</source>
 			<target>Filter zurücksetzen</target>

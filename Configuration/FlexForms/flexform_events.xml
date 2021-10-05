@@ -345,6 +345,10 @@
 										<numIndex index="0">LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.ShowFilter.AdvancedFilterWithBoxes</numIndex>
 										<numIndex index="1">6</numIndex>
 									</numIndex>
+									<numIndex index="7" type="array">
+										<numIndex index="0">LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.ShowFilter.AdvancedFilterOnLeftSide</numIndex>
+										<numIndex index="1">7</numIndex>
+									</numIndex>
 								</items>
 							</config>
 						</TCEforms>
@@ -352,7 +356,11 @@
 					<infotextFilterrow1>
 						<TCEforms>
 							<label>Show up to 3 Filterboxes</label>
-							<displayCond>FIELD:sDEFfilter.settings.ShowFilter:=:6</displayCond>
+							<displayCond>
+								<OR>
+									<numIndex index="0">FIELD:sDEFfilter.settings.ShowFilter:=:6</numIndex>
+								</OR>
+							</displayCond>
 							<config>
 								<type>none</type>
 								<size>50</size>
@@ -362,10 +370,30 @@
 							</config>
 						</TCEforms>
 					</infotextFilterrow1>
+					<settings.filter.tagShowAfterColon>
+						<TCEforms>
+							<label>Show only Tag label part after colon  (Level: Beginner => Beginner )</label>
+							<displayCond>
+								<OR>
+									<numIndex index="0">FIELD:sDEFfilter.settings.ShowFilter:=:6</numIndex>
+									<numIndex index="0">FIELD:sDEFfilter.settings.ShowFilter:=:7</numIndex>
+								</OR>
+							</displayCond>
+							<config>
+								<type>check</type>
+								<default>0</default>
+							</config>
+						</TCEforms>
+					</settings.filter.tagShowAfterColon>
 					<settings.filter.tagbox1headline>
 						<TCEforms>
 							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.plugin.filter.tagboxheadline</label>
-							<displayCond>FIELD:sDEFfilter.settings.ShowFilter:=:6</displayCond>
+							<displayCond>
+								<OR>
+									<numIndex index="0">FIELD:sDEFfilter.settings.ShowFilter:=:6</numIndex>
+									<numIndex index="1">FIELD:sDEFfilter.settings.ShowFilter:=:7</numIndex>
+								</OR>
+							</displayCond>
 							<config>
 								<type>input</type>
 							</config>
@@ -374,7 +402,11 @@
 					<settings.filter.tagbox1width>
 						<TCEforms>
 							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.plugin.filter.tagboxWidth</label>
-							<displayCond>FIELD:sDEFfilter.settings.ShowFilter:=:6</displayCond>
+							<displayCond>
+								<OR>
+									<numIndex index="0">FIELD:sDEFfilter.settings.ShowFilter:=:6</numIndex>
+								</OR>
+							</displayCond>
 							<config>
 								<type>select</type>
 								<renderType>selectSingle</renderType>
@@ -402,7 +434,12 @@
 					<settings.filter.tagbox1tags>
 						<TCEforms>
 							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.Tags</label>
-							<displayCond>FIELD:sDEFfilter.settings.ShowFilter:=:6</displayCond>
+							<displayCond>
+								<OR>
+									<numIndex index="0">FIELD:sDEFfilter.settings.ShowFilter:=:6</numIndex>
+									<numIndex index="1">FIELD:sDEFfilter.settings.ShowFilter:=:7</numIndex>
+								</OR>
+							</displayCond>
 							<config>
 								<type>select</type>
 								<renderType>selectMultipleSideBySide</renderType>
@@ -423,7 +460,12 @@
 					<settings.filter.tagbox2headline>
 						<TCEforms>
 							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.plugin.filter.tagboxheadline</label>
-							<displayCond>FIELD:sDEFfilter.settings.ShowFilter:=:6</displayCond>
+							<displayCond>
+								<OR>
+									<numIndex index="0">FIELD:sDEFfilter.settings.ShowFilter:=:6</numIndex>
+									<numIndex index="1">FIELD:sDEFfilter.settings.ShowFilter:=:7</numIndex>
+								</OR>
+							</displayCond>
 							<config>
 								<type>input</type>
 							</config>
@@ -432,7 +474,11 @@
 					<settings.filter.tagbox2width>
 						<TCEforms>
 							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.plugin.filter.tagboxWidth</label>
-							<displayCond>FIELD:sDEFfilter.settings.ShowFilter:=:6</displayCond>
+							<displayCond>
+								<OR>
+									<numIndex index="0">FIELD:sDEFfilter.settings.ShowFilter:=:6</numIndex>
+								</OR>
+							</displayCond>
 							<config>
 								<type>select</type>
 								<renderType>selectSingle</renderType>
@@ -460,7 +506,12 @@
 					<settings.filter.tagbox2tags>
 						<TCEforms>
 							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.Tags</label>
-							<displayCond>FIELD:sDEFfilter.settings.ShowFilter:=:6</displayCond>
+							<displayCond>
+								<OR>
+									<numIndex index="0">FIELD:sDEFfilter.settings.ShowFilter:=:6</numIndex>
+									<numIndex index="1">FIELD:sDEFfilter.settings.ShowFilter:=:7</numIndex>
+								</OR>
+							</displayCond>
 							<config>
 								<type>select</type>
 								<renderType>selectMultipleSideBySide</renderType>
@@ -481,7 +532,12 @@
 					<settings.filter.tagbox3headline>
 						<TCEforms>
 							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.plugin.filter.tagboxheadline</label>
-							<displayCond>FIELD:sDEFfilter.settings.ShowFilter:=:6</displayCond>
+							<displayCond>
+								<OR>
+									<numIndex index="0">FIELD:sDEFfilter.settings.ShowFilter:=:6</numIndex>
+									<numIndex index="1">FIELD:sDEFfilter.settings.ShowFilter:=:7</numIndex>
+								</OR>
+							</displayCond>
 							<config>
 								<type>input</type>
 							</config>
@@ -490,7 +546,11 @@
 					<settings.filter.tagbox3width>
 						<TCEforms>
 							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.plugin.filter.tagboxWidth</label>
-							<displayCond>FIELD:sDEFfilter.settings.ShowFilter:=:6</displayCond>
+							<displayCond>
+								<OR>
+									<numIndex index="0">FIELD:sDEFfilter.settings.ShowFilter:=:6</numIndex>
+								</OR>
+							</displayCond>
 							<config>
 								<type>select</type>
 								<renderType>selectSingle</renderType>
@@ -518,7 +578,12 @@
 					<settings.filter.tagbox3tags>
 						<TCEforms>
 							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.Tags</label>
-							<displayCond>FIELD:sDEFfilter.settings.ShowFilter:=:6</displayCond>
+							<displayCond>
+								<OR>
+									<numIndex index="0">FIELD:sDEFfilter.settings.ShowFilter:=:6</numIndex>
+									<numIndex index="1">FIELD:sDEFfilter.settings.ShowFilter:=:7</numIndex>
+								</OR>
+							</displayCond>
 							<config>
 								<type>select</type>
 								<renderType>selectMultipleSideBySide</renderType>
@@ -538,7 +603,11 @@
 					<infotextFilterrow2>
 						<TCEforms>
 							<label>Filterbox shown after Categories</label>
-							<displayCond>FIELD:sDEFfilter.settings.ShowFilter:=:6</displayCond>
+							<displayCond>
+								<OR>
+									<numIndex index="0">FIELD:sDEFfilter.settings.ShowFilter:=:6</numIndex>
+								</OR>
+							</displayCond>
 							<config>
 								<type>none</type>
 								<size>50</size>
@@ -551,7 +620,12 @@
 					<settings.filter.tagbox4headline>
 						<TCEforms>
 							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.plugin.filter.tagboxheadline</label>
-							<displayCond>FIELD:sDEFfilter.settings.ShowFilter:=:6</displayCond>
+							<displayCond>
+								<OR>
+									<numIndex index="0">FIELD:sDEFfilter.settings.ShowFilter:=:6</numIndex>
+									<numIndex index="1">FIELD:sDEFfilter.settings.ShowFilter:=:7</numIndex>
+								</OR>
+							</displayCond>
 							<config>
 								<type>input</type>
 							</config>
@@ -560,7 +634,11 @@
 					<settings.filter.tagbox4width>
 						<TCEforms>
 							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.plugin.filter.tagboxWidth</label>
-							<displayCond>FIELD:sDEFfilter.settings.ShowFilter:=:6</displayCond>
+							<displayCond>
+								<OR>
+									<numIndex index="0">FIELD:sDEFfilter.settings.ShowFilter:=:6</numIndex>
+								</OR>
+							</displayCond>
 							<config>
 								<type>select</type>
 								<renderType>selectSingle</renderType>
@@ -588,7 +666,12 @@
 					<settings.filter.tagbox4tags>
 						<TCEforms>
 							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.Tags</label>
-							<displayCond>FIELD:sDEFfilter.settings.ShowFilter:=:6</displayCond>
+							<displayCond>
+								<OR>
+									<numIndex index="0">FIELD:sDEFfilter.settings.ShowFilter:=:6</numIndex>
+									<numIndex index="1">FIELD:sDEFfilter.settings.ShowFilter:=:7</numIndex>
+								</OR>
+							</displayCond>
 							<config>
 								<type>select</type>
 								<renderType>selectMultipleSideBySide</renderType>
@@ -666,6 +749,16 @@
 
 						</TCEforms>
 					</settings.filter.hideMonthDropdown>
+					<settings.filter.hideKalenderSelector>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.hideKalenderSelector</label>
+							<config>
+								<type>check</type>
+								<default>1</default>
+							</config>
+
+						</TCEforms>
+					</settings.filter.hideKalenderSelector>
 					<settings.filter.hideOrganizerDropdown>
 						<TCEforms>
 							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.hideOrganizerDropdown</label>
@@ -695,6 +788,16 @@
 							</config>
 						</TCEforms>
 					</settings.filter.initMapZoom>
+
+					<settings.filter.onlineMapZoom>
+						<TCEforms>
+							<label>Zoom factor for Map (1= world - 15 one street) if City: Online is selected </label>
+							<config>
+								<type>input</type>
+								<default>2</default>
+							</config>
+						</TCEforms>
+					</settings.filter.onlineMapZoom>
 				</el>
 			</ROOT>
 		</sDEFfilter>

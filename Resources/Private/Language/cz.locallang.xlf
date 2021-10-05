@@ -643,6 +643,10 @@
 			<source>Filter the content on this page</source>
 			<target>Filtrovat obsah této stránky</target>
 		</trans-unit>
+		<trans-unit id="tx_jvevents_event.filter.hintshort" approved="yes">
+            <source>Filter events</source>
+            <target>Filtrovat události</target>
+        </trans-unit>
 		<trans-unit id="tx_jvevents_event.filter.reset" approved="yes">
 			<source>Reset filter</source>
 			<target>Vymazat filtr</target>

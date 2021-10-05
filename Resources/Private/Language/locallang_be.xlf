@@ -192,6 +192,9 @@
 			<trans-unit id="plugin.filter.hideMonthDropdown">
                 <source>Hide Dropdown Month, even if there is more than one Month</source>
             </trans-unit>
+            <trans-unit id="plugin.filter.hideKalenderSelector">
+                <source>Hide Calendar Selector, if selected is normaly showing this</source>
+            </trans-unit>
             <trans-unit id="plugin.filter.hideOrganizerDropdown">
                 <source>Hide Dropdown Organizer, even if there is more than one Organizer</source>
             </trans-unit>
@@ -247,7 +250,9 @@
 		<trans-unit id="plugin.filter.ShowFilter.AdvancedFilterWithBoxes">
             <source>Use Advanced Filter - Show Tags grouped </source>
         </trans-unit>
-
+		<trans-unit id="plugin.filter.ShowFilter.AdvancedFilterOnLeftSide">
+            <source>Use Advanced Filter - Show Tags on left side </source>
+        </trans-unit>
 
 		<trans-unit id="plugin.filter.ShowFilter.SimpleDateFilter">
             <source>Simple Filter only with Date</source>

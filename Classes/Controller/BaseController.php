@@ -28,6 +28,7 @@ namespace JVE\JvEvents\Controller;
 
 use JVE\JvEvents\Domain\Model\Event;
 use JVE\JvEvents\Domain\Model\Registrant;
+use JVE\JvEvents\Domain\Model\Tag;
 use JVE\JvEvents\Domain\Repository\CategoryRepository;
 use JVE\JvEvents\Domain\Repository\EventRepository;
 use JVE\JvEvents\Domain\Repository\LocationRepository;
@@ -257,14 +258,15 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         $this->persistenceManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
     }
 
-    public function generateFilterBox( $filter ) {
+    public function generateFilterBox( $filter , $tagShowAfterColon=false ) {
         $filterTags = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $filter , true);
         $tags = [] ;
         if( is_array($filterTags)) {
             foreach ($filterTags as $Id ) {
+                /** @var Tag $tag */
                 $tag = $this->tagRepository->findByUid($Id) ;
                 if( $tag ) {
-                    $tags[] = array( "id" => $Id , "title" => $tag->getName()  ) ;
+                    $tags[] = array( "id" => $Id , "title" => $tag->getName($tagShowAfterColon)  ) ;
                 }
             }
         }
@@ -344,10 +346,10 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
                 if ( is_object($obj) ) {
                     $locations[$obj->getUid()] = $obj->getName()  ;
 
-                    if(! in_array($obj->getCity() , $citys )) {
+                    if(! in_array(ucfirst($obj->getCity()) , $citys )) {
                         // no online Events in CITY Filter
                         if( intval( $obj->getLat())  != 0 || intval($obj->getLng() != 0 )) {
-                            $citys[$obj->getCity()] = $obj->getCity() ;
+                            $citys[$obj->getCity()] = ucfirst($obj->getCity()) ;
                         }
                     }
                 }
@@ -355,7 +357,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
 
             if( ! $this->settings['filter']['hideOrganizerDropdown']) {
-                /** @var \JVE\JvEvents\Domain\Model\Tag $obj */
+                /** @var \JVE\JvEvents\Domain\Model\Organizer $obj */
                 $obj = $event->getOrganizer();
                 if (is_object($obj)) {
                     if ( $this->settings['ShowFilter'] == 6 ) {
@@ -381,9 +383,9 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
                     if ( is_object($obj) ) {
                       //  if ( $filter['combinetags'] == "0" || count($filterTags) < 1 || in_array(  $obj->getUid() , $filterTags )) {
                             if ( $obj->getVisibility() < 1 ) {
-                                $tags[$obj->getUid()] = $obj->getName() ;
+                                $tags[$obj->getUid()] = $obj->getName($filter['tagShowAfterColon'] ) ;
                             }
-                            $tags2[$obj->getUid()] = array( "id" => $obj->getUid() , "title" => $obj->getName() , "visibility"  => $obj->getVisibility()) ;
+                            $tags2[$obj->getUid()] = array( "id" => $obj->getUid() , "title" => $obj->getName($filter['tagShowAfterColon'] ) , "visibility"  => $obj->getVisibility()) ;
                      //   }
                     }
                 }
@@ -464,8 +466,8 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
                 /** @var \JVE\JvEvents\Domain\Model\Tag $obj */
                 foreach ($objArray as $obj ) {
                     if ( is_object($obj) ) {
-                        $tags[$obj->getUid()] = $obj->getName() ;
-                        $tags2[$obj->getUid()] = array( "id" => $obj->getUid() , "title" => $obj->getName()  ) ;
+                        $tags[$obj->getUid()] = $obj->getName( $filter['tagShowAfterColon'] ) ;
+                        $tags2[$obj->getUid()] = array( "id" => $obj->getUid() , "title" => $obj->getName( $filter['tagShowAfterColon'] )  ) ;
                     }
                 }
             }

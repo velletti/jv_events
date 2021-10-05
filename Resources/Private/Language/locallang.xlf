@@ -650,6 +650,9 @@
             <trans-unit id="tx_jvevents_event.filter.hint">
                 <source>Filter the content on this page</source>
             </trans-unit>
+            <trans-unit id="tx_jvevents_event.filter.hintshort" approved="yes">
+                <source>Filter events</source>
+            </trans-unit>
             <trans-unit id="tx_jvevents_event.filter.resultcount">
                 <source>Hits</source>
             </trans-unit>

@@ -2,7 +2,7 @@
 
 <f:section name="main">
 	<f:variable name="lastDate">99.99.9999</f:variable>
-<f:flashMessages />
+    <f:flashMessages />
 
 	<f:render partial="Debug/CheckInstallation" arguments="{modulelist: 'TRUE' , event:event, settings: settings, debugArray: debugArray}" />
 	<f:if condition="{settings.ShowFilter}>0">
@@ -19,7 +19,19 @@
 			</f:else>
 
 		</f:if>
-		<f:render partial="Event/List/Partial{settings.LayoutList}/Filter" arguments="{eventsFilter: eventsFilter, settings: settings}"/>
+		<f:if condition="{settings.ShowFilter}==7">
+			<f:then>
+				<div class="row">
+					<div class="col-12 col-sm-3">
+						<f:render partial="Event/List/Partial{settings.LayoutList}/Filter" arguments="{eventsFilter: eventsFilter, settings: settings}"/>
+					</div>
+					<div class="col-12 col-sm-9">
+			</f:then>
+			<f:else>
+				<f:render partial="Event/List/Partial{settings.LayoutList}/Filter" arguments="{eventsFilter: eventsFilter, settings: settings}"/>
+			</f:else>
+		</f:if>
+
 	</f:if>
 
 	<div class="jv_events_{settings.LayoutList} {settings.list.additionalClass}">
@@ -33,7 +45,7 @@
 						<f:variable name="lastDate">{event.startDate -> f:format.date(format:"d.m.Y")}</f:variable>
 					</f:if>
 				</f:for>
-				<f:render section="navigation" arguments="{settings: settings, id: 'bottom'}"></f:render>
+				<f:render section="navigation" arguments="{settings: settings, id: 'bottom'}"/>
 
 				<f:if condition="{settings.withMicroFormat}">
 					<f:then>
@@ -49,6 +61,12 @@
 		</f:if>
 	</div>
 
+	<f:if condition="{settings.ShowFilter}==7">
+		<f:then>
+				</div>
+			</div>
+		</f:then>
+	</f:if>
 
 </f:section>
 

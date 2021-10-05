@@ -647,6 +647,10 @@
 			<source>Filter the content on this page</source>
 			<target>Filtrer le contenu de cette page</target>
 		</trans-unit>
+		<trans-unit id="tx_jvevents_event.filter.hintshort" approved="yes">
+            <source>Filter events</source>
+            <target>Filtrer les événements</target>
+        </trans-unit>
 		<trans-unit id="tx_jvevents_event.filter.reset" approved="yes">
 			<source>Reset filter</source>
 			<target>Réinitialiser les filtres</target>
