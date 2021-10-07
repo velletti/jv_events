@@ -258,7 +258,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         $this->persistenceManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
     }
 
-    public function generateFilterBox( $filter , $tagShowAfterColon=false ) {
+    public function generateFilterBox( $filter , $tagShowAfterColon=0 ) {
         $filterTags = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $filter , true);
         $tags = [] ;
         if( is_array($filterTags)) {
@@ -266,7 +266,11 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
                 /** @var Tag $tag */
                 $tag = $this->tagRepository->findByUid($Id) ;
                 if( $tag ) {
-                    $tags[] = array( "id" => $Id , "title" => $tag->getName($tagShowAfterColon)  ) ;
+                    if( $tagShowAfterColon > 0 ) {
+                        $tags[] = array( "id" => $Id , "title" =>  $tag->getNameAfterColon() ) ;
+                    } else {
+                        $tags[] = array( "id" => $Id , "title" => $tag->getName()  ) ;
+                    }
                 }
             }
         }

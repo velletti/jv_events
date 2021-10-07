@@ -92,14 +92,10 @@ class Tag extends AbstractEntity
     /**
      * Returns the name
      *
-     * @param bool $tagShowAfterColon
      * @return string $name
      */
-    public function getName( $tagShowAfterColon=false)
+    public function getName( )
     {
-        if( $tagShowAfterColon ) {
-            $this->getNameAfterColon( ) ;
-        }
         return $this->name;
     }
 

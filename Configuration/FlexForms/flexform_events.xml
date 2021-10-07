@@ -376,7 +376,7 @@
 							<displayCond>
 								<OR>
 									<numIndex index="0">FIELD:sDEFfilter.settings.ShowFilter:=:6</numIndex>
-									<numIndex index="0">FIELD:sDEFfilter.settings.ShowFilter:=:7</numIndex>
+									<numIndex index="1">FIELD:sDEFfilter.settings.ShowFilter:=:7</numIndex>
 								</OR>
 							</displayCond>
 							<config>
