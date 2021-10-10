@@ -319,6 +319,7 @@ class GeocoderUtility {
                                 marker = new google.maps.Marker({
                                         position: results[0].geometry.location,
                                         map: map,
+                                        zIndex: 99999,
                                         title: address.address,
                                         draggable: draggable
                                     });

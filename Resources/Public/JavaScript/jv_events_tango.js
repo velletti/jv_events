@@ -616,6 +616,10 @@ function jv_events_initOneFilter(filterName) {
 
 
 function jv_events_refreshList(){
+    if( jQuery('.tx-jv-events DIV.jv-events-row').length < 0 ) {
+        return ;
+    }
+
 	/* var fMonth= jQuery("SELECT#jv_events_filter_months") ; */
     var fMonth=false ;
 	var fTag= jQuery("SELECT#jv_events_filter_tags") ;
@@ -628,7 +632,7 @@ function jv_events_refreshList(){
     let maxLat = 9999 ;
     let minLng = 0 ;
     let maxLng = 9999 ;
-
+    let markers = false ;
     if ( fDist && fDist.val() && fDist.val().length > 0 &&  fDist.val() < 10000 ) {
         maxDist = fDist.val() ;
     } else {
@@ -645,6 +649,16 @@ function jv_events_refreshList(){
 
                     minLng = Math.min( NECorner.lng() , SWCorner.lng() ) ;
                     maxLng = Math.max( NECorner.lng() , SWCorner.lng() ) ;
+                    if( markers) {
+                        for (let i = 0; i < markers.length; i++) {
+                            markers[i].setMap(null);
+                        }
+                    }
+                    markers = [] ;
+                    var icon = {
+                        url: "https://developers.google.com/maps/documentation/javascript/examples/full/images/info-i_maps.png", // url
+                        scaledSize: new google.maps.Size(25, 25), // size
+                    };
                 }
 
 
@@ -734,6 +748,33 @@ function jv_events_refreshList(){
                 if ( minLat > 0  && minLng > 0 && maxLat < 9999 && maxLng < 9999) {
                     if (  jQuery(this).data("latitude") > maxLat ||  jQuery(this).data("latitude") < minLat || jQuery(this).data("longitude") > maxLng || jQuery(this).data("longitude") < minLng ) {
                         jQuery(this).addClass('d-none').addClass('hidden-byMapBoundary') ;
+                    } else {
+                        if( jQuery(this).data("latitude") && !isNaN(parseInt( jQuery(this).data("latitude")) ) ) {
+                            loc = new google.maps.Marker({
+                                position: { lat: jQuery(this).data("latitude") , lng: jQuery(this).data("longitude") } ,
+                                map: map,
+                                icon: icon ,
+                                zIndex: 999 ,
+                                title: "loc " + jQuery(this).data("latitude") ,
+                                draggable: false ,
+                                clickable: false
+                            });
+
+                            /*
+                            loc.addListener("click", () => {
+                                marker.setPosition(loc.getPosition()) ;
+                                console.log( "Loc: " + loc.getPosition() ) ;
+
+                                map.setZoom(13);
+                                map.panTo(loc.getPosition()) ;
+                                updatePosition() ;
+
+                            });
+                            */
+
+                            markers.push(loc);
+                        }
+
                     }
                 }
             } else {
