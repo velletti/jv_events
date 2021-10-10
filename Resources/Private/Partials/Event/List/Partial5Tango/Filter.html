@@ -504,26 +504,29 @@
             <div id="filterType7body" class="fieldsets  clearfix border-0 p-2 p-sm-0 collapse " data-minlat="" data-maxlat=""  data-minlng=""  data-maxlng="" >
 
                 <f:if condition="{settings.filter.hideKalenderSelector}">
-                    <div class="input-group date col-10 p-0 mb-4">
-                        <f:if condition="{settings.filter.startDate}">
-                            <f:then>
-                                <f:variable name="startDate">{settings.filter.overruleStartDate}</f:variable>
-                            </f:then>
-                            <f:else>
-                                <f:variable name="startDate">today</f:variable>
-                            </f:else>
-                        </f:if>
-                        <f:form.textfield
-                                name="overruleFilter[startDate]"
-                                value="{f:format.date(format:'d.m.Y', date: '{startDate}')}"
-                                id="overruleFilterStartDate"
-                                class="form-control datetimepicker clearable col-9"
-                                data="{date-type: 'date', todayBtn: 'linked' , locale: 'de' , todayHighlight: 'true' , autoclose: 'true' }"
-                        />
-                        <div class="input-group-addon btn btn-secondary">
-                            <i class="fas fa-calendar-alt"></i>
+                    <f:else>
+                        <div class="input-group date col-10 p-0 mb-4">
+                            <f:if condition="{settings.filter.startDate}">
+                                <f:then>
+                                    <f:variable name="startDate">{settings.filter.overruleStartDate}</f:variable>
+                                </f:then>
+                                <f:else>
+                                    <f:variable name="startDate">today</f:variable>
+                                </f:else>
+                            </f:if>
+                            <f:form.textfield
+                                    name="overruleFilter[startDate]"
+                                    value="{f:format.date(format:'d.m.Y', date: '{startDate}')}"
+                                    id="overruleFilterStartDate"
+                                    class="form-control datetimepicker clearable col-9"
+                                    data="{date-type: 'date', todayBtn: 'linked' , locale: 'de' , todayHighlight: 'true' , autoclose: 'true' }"
+                            />
+                            <div class="input-group-addon btn btn-secondary">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
                         </div>
-                    </div>
+                    </f:else>
+
                 </f:if>
 
                 <fieldset class="fieldsetbox5  filtersetboxWidth_2 border-0  p-0" >
