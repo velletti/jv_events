@@ -498,86 +498,44 @@
 
         <form class="clearfix" action="#" >
 
-            <div class="hints clearfix">
-                <p class="left"><f:translate key="tx_jvevents_event.filter.hintshort" /></p>
+            <div class="hints clearfix cursor-pointer " data-toggle="collapse" data-target="#filterType7body">
+                <p class="left"><f:translate key="tx_jvevents_event.filter.hintshort" /> (#<span ID="filter-resultcount-events"></span>)</p>
              </div>
-            <div class="fieldsets  clearfix border-0">
+            <div id="filterType7body" class="fieldsets  clearfix border-0 p-2 p-sm-0 collapse " data-minlat="" data-maxlat=""  data-minlng=""  data-maxlng="" >
 
-                <div class="input-group date col-10 p-0">
-                    <f:if condition="{settings.filter.startDate}">
-                        <f:then>
-                            <f:variable name="startDate">{settings.filter.overruleStartDate}</f:variable>
-                        </f:then>
-                        <f:else>
-                            <f:variable name="startDate">today</f:variable>
-                        </f:else>
-                    </f:if>
-                    <f:form.textfield
-                            name="overruleFilter[startDate]"
-                            value="{f:format.date(format:'d.m.Y', date: '{startDate}')}"
-                            id="overruleFilterStartDate"
-                            class="form-control datetimepicker clearable"
-                            data="{date-type: 'date', todayBtn: 'linked' , locale: 'de' , todayHighlight: 'true' , autoclose: 'true' }"
-                    />
-                    <div class="input-group-addon btn btn-secondary">
-                        <i class="fas fa-calendar-alt"></i>
+                <f:if condition="{settings.filter.hideKalenderSelector}">
+                    <div class="input-group date col-10 p-0 pb-4 mb-4">
+                        <f:if condition="{settings.filter.startDate}">
+                            <f:then>
+                                <f:variable name="startDate">{settings.filter.overruleStartDate}</f:variable>
+                            </f:then>
+                            <f:else>
+                                <f:variable name="startDate">today</f:variable>
+                            </f:else>
+                        </f:if>
+                        <f:form.textfield
+                                name="overruleFilter[startDate]"
+                                value="{f:format.date(format:'d.m.Y', date: '{startDate}')}"
+                                id="overruleFilterStartDate"
+                                class="form-control datetimepicker clearable col-9"
+                                data="{date-type: 'date', todayBtn: 'linked' , locale: 'de' , todayHighlight: 'true' , autoclose: 'true' }"
+                        />
+                        <div class="input-group-addon btn btn-secondary">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
                     </div>
-                </div>
-
-
-                <f:if condition="{eventsFilter.box1}">
-                    <fieldset class="fieldsetbox1 filtersetboxWidth_{settings.filter.tagbox1width} border-0">
-                        <legend>{settings.filter.tagbox1headline}</legend>
-                        <div class="checkbox" >
-                            <f:for each="{eventsFilter.box1}" as="tag">
-                                <f:variable name="tagClass">hidden d-none</f:variable>
-                                <f:if condition="{tag.visibility} < 1">
-                                    <f:variable name="tagClass"></f:variable>
-                                </f:if>
-                                <label class="{tagClass}">
-                                    <input type="checkbox"  class="jv_events_filter_tag_check" class="jv_events_filter_tag_check" id="jv_events_filter_tag-{tag.id}" value="{tag.id}">{tag.title}
-                                </label>
-
-                            </f:for>
-                        </div>
-                    </fieldset>
                 </f:if>
-                <f:if condition="{eventsFilter.box2}">
-                    <fieldset class="fieldsetbox2  filtersetboxWidth_{settings.filter.tagbox2width}">
-                        <legend>{settings.filter.tagbox2headline}</legend>
-                        <div class="checkbox" >
-                            <f:for each="{eventsFilter.box2}" as="tag">
-                                <f:variable name="tagClass">hidden d-none</f:variable>
-                                <f:if condition="{tag.visibility} < 1">
-                                    <f:variable name="tagClass"></f:variable>
-                                </f:if>
-                                <label class="{tagClass}">
-                                    <input type="checkbox" class="jv_events_filter_tag_check"  id="jv_events_filter_tag-{tag.id}" value="{tag.id}">{tag.title}
-                                </label>
 
-                            </f:for>
-                        </div>
-                    </fieldset>
-                </f:if>
-                <f:if condition="{eventsFilter.box3}">
-                    <fieldset class="fieldsetbox3  filtersetboxWidth_{settings.filter.tagbox3width}">
-                        <legend>{settings.filter.tagbox3headline}</legend>
-                        <div class="checkbox" >
-                            <f:for each="{eventsFilter.box3}" as="tag">
-                                <f:variable name="tagClass">hidden d-none</f:variable>
-                                <f:if condition="{tag.visibility} < 1">
-                                    <f:variable name="tagClass"></f:variable>
-                                </f:if>
-                                <label class="{tagClass}">
-                                    <input type="checkbox" class="jv_events_filter_tag_check"  id="jv_events_filter_tag-{tag.id}" value="{tag.id}">{tag.title}
-                                </label>
+                <fieldset class="fieldsetbox5  filtersetboxWidth_2 border-0  p-0" >
+                    <f:render partial="SingleField/Partial{settings.LayoutList}/FormRowGeocoderFilter7"
+                              arguments="{settings: settings , updateFunction: 'jv_events_refreshList();' ,
+                              buttonSetPosition: '1' , property:'lng'  ,  property2:'lat', zoom: 'zoom' ,
+                              maxLength: 30 , mandatory: '0' }" />
 
-                            </f:for>
-                        </div>
-                    </fieldset>
-                </f:if>
-            </div>
-            <div class="fieldsets  clearfix border-0">
+
+                </fieldset>
+
+
                 <f:if condition="{f:count(subject: eventsFilter.categories2)} > 1">
                     <fieldset class="fieldsetboxcat  filtersetboxWidth_1 border-0">
 
@@ -616,8 +574,63 @@
                     </fieldset>
                 </f:if>
 
+
+
+
+                <f:if condition="{eventsFilter.box1}">
+                    <fieldset class="fieldsetbox1 border-0">
+                        <legend>{settings.filter.tagbox1headline}</legend>
+                        <div class="checkbox" >
+                            <f:for each="{eventsFilter.box1}" as="tag">
+                                <f:variable name="tagClass">hidden d-none</f:variable>
+                                <f:if condition="{tag.visibility} < 1">
+                                    <f:variable name="tagClass"></f:variable>
+                                </f:if>
+                                <label class="{tagClass}">
+                                    <input type="checkbox"  class="jv_events_filter_tag_check" class="jv_events_filter_tag_check" id="jv_events_filter_tag-{tag.id}" value="{tag.id}">{tag.title}
+                                </label>
+
+                            </f:for>
+                        </div>
+                    </fieldset>
+                </f:if>
+                <f:if condition="{eventsFilter.box2}">
+                    <fieldset class="fieldsetbox2  ">
+                        <legend>{settings.filter.tagbox2headline}</legend>
+                        <div class="checkbox" >
+                            <f:for each="{eventsFilter.box2}" as="tag">
+                                <f:variable name="tagClass">hidden d-none</f:variable>
+                                <f:if condition="{tag.visibility} < 1">
+                                    <f:variable name="tagClass"></f:variable>
+                                </f:if>
+                                <label class="{tagClass}">
+                                    <input type="checkbox" class="jv_events_filter_tag_check"  id="jv_events_filter_tag-{tag.id}" value="{tag.id}">{tag.title}
+                                </label>
+
+                            </f:for>
+                        </div>
+                    </fieldset>
+                </f:if>
+                <f:if condition="{eventsFilter.box3}">
+                    <fieldset class="fieldsetbox3  ">
+                        <legend>{settings.filter.tagbox3headline}</legend>
+                        <div class="checkbox" >
+                            <f:for each="{eventsFilter.box3}" as="tag">
+                                <f:variable name="tagClass">hidden d-none</f:variable>
+                                <f:if condition="{tag.visibility} < 1">
+                                    <f:variable name="tagClass"></f:variable>
+                                </f:if>
+                                <label class="{tagClass}">
+                                    <input type="checkbox" class="jv_events_filter_tag_check"  id="jv_events_filter_tag-{tag.id}" value="{tag.id}">{tag.title}
+                                </label>
+
+                            </f:for>
+                        </div>
+                    </fieldset>
+                </f:if>
+
                 <f:if condition="{eventsFilter.box4}">
-                    <fieldset class="fieldsetbox4  filtersetboxWidth_{settings.filter.tagbox4width}">
+                    <fieldset class="fieldsetbox4  ">
                         <legend>{settings.filter.tagbox4headline}</legend>
                         <div class="checkbox" >
                             <f:for each="{eventsFilter.box4}" as="tag">
@@ -633,16 +646,9 @@
                         </div>
                     </fieldset>
                 </f:if>
-                <fieldset class="fieldsetbox5  filtersetboxWidth_2 border-0  p-0" >
-                    <f:render partial="SingleField/Partial{settings.LayoutList}/FormRowGeocoderFilter7"
-                              arguments="{settings: settings , updateFunction: 'jv_events_refreshList();' ,
-                              buttonSetPosition: '1' , property:'lng'  ,  property2:'lat', zoom: 'zoom' ,
-                              maxLength: 30 , mandatory: '0' }" />
 
 
-                </fieldset>
-
-                <fieldset class="fieldsetbox6  filtersetboxWidth_1 border-0">
+                <fieldset class="fieldsetbox6   border-0">
                     <legend><f:translate key="tx_jvevents_event.filter.morefilters" /></legend>
                     <f:if condition="{settings.filter.hideMonthDropdown}">
                         <f:else>
@@ -663,7 +669,7 @@
                             </f:if>
                         </f:else>
                     </f:if>
-                    <f:if condition="{settings.filter.hideCityDropdown}">
+                    <f:if condition="{settings.filter.hideOrganizerDropdown}">
                         <f:else>
                             <f:if condition="{f:count(subject: eventsFilter.organizers)} > 1">
                                 <div class="form-group">
@@ -675,17 +681,20 @@
                     </f:if>
                 </fieldset>
 
+
             </div>
 
         </form>
 
         <p class="filter-result-hint text-center hide  border-0" id="filter-result-hint-events">
             <p class="hide" id="filter-reset-events" style="float: right">
-                <a class="btn btn-outline-secondary btn-sm" href="#"><f:translate key="tx_jvevents_event.filter.reset" /> (<span id="filter-resultcount-events">#</span> <f:translate key="tx_jvevents_event.filter.resultcount" default="#"/>)
+                <a class="btn btn-outline-secondary btn-sm" href="#"><f:translate key="tx_jvevents_event.filter.reset" /> (<span id="all-resultcount-events">#</span> <f:translate key="tx_jvevents_event.filter.resultcount" default="#"/>)
                 </a>
             </p>
-
         </p>
+        <div class="d-none d-sm-block" id="xs-check">
+        </div>
+
 
     </div>
 </f:if>

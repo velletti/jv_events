@@ -9,13 +9,13 @@ jQuery(document).ready(function() {
 	jv_events_init() ;
     jv_events_init_AjaxMenu() ;
 
-	if( $(".jv-events-tags-edit") ){
+	if( $(".jv-events-tags-edit").length ){
         jv_events_init_edit_tags() ;
     }
-	if( $("FORM#location_edit")) {
+	if( $("FORM#location_edit").length ) {
         jv_events_init_edit_location() ;
     }
-    if ( jQuery("#streetAndNr").length) {
+    if ( jQuery("#streetAndNr").length ) {
         jQuery("#streetAndNr").on("keydown" , function( event) {
             jQuery("#jvevents-geo-update").removeClass('opacity-2') ;
             jQuery("#jvevents-geo-getpos").removeClass('opacity-1') ;
@@ -624,9 +624,39 @@ function jv_events_refreshList(){
 	var fOrg= jQuery("SELECT#jv_events_filter_organizers") ;
 	var fDist= jQuery("SELECT#jv_events_filter_distance") ;
 	var maxDist = 99999
+    let minLat = 0 ;
+    let maxLat = 9999 ;
+    let minLng = 0 ;
+    let maxLng = 9999 ;
+
     if ( fDist && fDist.val() && fDist.val().length > 0 &&  fDist.val() < 10000 ) {
         maxDist = fDist.val() ;
+    } else {
+        if (  map &&  typeof map.getBounds === 'function' ) {
+            fDist = false ;
+            var bounds = map.getBounds();
+            if ( bounds ) {
+                var NECorner = bounds.getNorthEast() ;
+                var SWCorner = bounds.getSouthWest() ;
+                if ( NECorner.lat() > SWCorner.lat() || NECorner.lat() < SWCorner.lat() ) {
+                    // if map not visible or not ready, size of boundary will be 1 pixel ..
+                    minLat = Math.min( NECorner.lat() , SWCorner.lat() ) ;
+                    maxLat = Math.max( NECorner.lat() , SWCorner.lat() ) ;
+
+                    minLng = Math.min( NECorner.lng() , SWCorner.lng() ) ;
+                    maxLng = Math.max( NECorner.lng() , SWCorner.lng() ) ;
+                }
+
+
+            }
+        }
     }
+
+    if( jQuery( "#filterType7body").length ) {
+      //  console.log ("minlat:" + minLat + " maxlat: " +  maxLat + " minlat: " + minLng + " maxlng" + maxLng ) ;
+        jQuery( "#filterType7body").data("minlat" , minLat ).data("maxlat" , maxLat ).data("minlat" , minLng ).data("maxlng" , maxLng ) ;
+    }
+
     var cCats= jQuery("#jv_events_filter_categories INPUT[type=checkbox]") ;
     var cTags= jQuery("#jv_events_filter_tags INPUT[type=checkbox]") ;
     /* var startDate= jQuery("#overruleFilterStartDate") ; */
@@ -682,7 +712,8 @@ function jv_events_refreshList(){
         }
     }
 
-
+    let resultcountEvents = 0 ;
+    let allcountEvents = 0 ;
 	jQuery('.tx-jv-events DIV.jv-events-row').each(function (i) {
      //   console.log( " ************* single row **************** UID: " + jQuery(this).data("orguid")  ) ;
 
@@ -698,12 +729,22 @@ function jv_events_refreshList(){
             lastDay = this ;
 
         } else {
-            if ( dist > maxDist  ) {
-                jQuery(this).addClass('d-none') ;
+
+            if( jQuery( "#filterType7body").length ) {
+                if ( minLat > 0  && minLng > 0 && maxLat < 9999 && maxLng < 9999) {
+                    if (  jQuery(this).data("latitude") > maxLat ||  jQuery(this).data("latitude") < minLat || jQuery(this).data("longitude") > maxLng || jQuery(this).data("longitude") < minLng ) {
+                        jQuery(this).addClass('d-none').addClass('hidden-byMapBoundary') ;
+                    }
+                }
+            } else {
+                if ( dist > maxDist  ) {
+                    jQuery(this).addClass('d-none').addClass('hidden-byMaxDist') ;
+                }
             }
+
             if( fMonth && fMonth.val() && fMonth.val().length > 0 ) {
                 if( jQuery(this).data("monthuid") && jQuery(this).data("monthuid")  !== fMonth.val() ) {
-                    jQuery(this).addClass('d-none') ;
+                    jQuery(this).addClass('d-none').addClass('hidden-byMonth') ;
                 }
             }
 
@@ -712,7 +753,7 @@ function jv_events_refreshList(){
                 if( fTags ) {
                     fTags = fTags.split(",") ;
                     if( fTags.indexOf( fTag.val() ) < 0 ) {
-                        jQuery(this).addClass('d-none') ;
+                        jQuery(this).addClass('d-none').addClass('hidden-byTags') ;
                     }
                 }
 
@@ -720,7 +761,7 @@ function jv_events_refreshList(){
             if( fCity && fCity.length > 0 ) {
                 if(  fCity.val().length > 0 ) {
                     if( jQuery(this).data("cityuid") && decodeURI (jQuery(this).data("cityuid"))  !== fCity.val() ) {
-                        jQuery(this).addClass('d-none') ;
+                        jQuery(this).addClass('d-none').addClass('hidden-byCity')  ;
                     }
                 }
             }
@@ -730,14 +771,14 @@ function jv_events_refreshList(){
                 if( fCats ) {
                     fCats = fCats.split(",") ;
                     if( fCats.indexOf( fCat.val() ) < 0 ) {
-                        jQuery(this).addClass('d-none') ;
+                        jQuery(this).addClass('d-none').addClass('hidden-byCatSelect')  ;
                     }
                 }
             }
             if( fOrg && fOrg.val() > 0 ) {
     //            console.log( " data-orguid : " + jQuery(this).data("orguid")  + " Filter: " + fOrg.val() ) ;
                 if( jQuery(this).data("orguid") && parseInt( jQuery(this).data("orguid"))  !== parseInt( fOrg.val()) ) {
-                    jQuery(this).addClass('d-none') ;
+                    jQuery(this).addClass('d-none').addClass('hidden-byOrganizer')  ;
                 }
             }
 
@@ -762,7 +803,7 @@ function jv_events_refreshList(){
 
 
                     if( needTohide ) {
-                        jQuery(this).addClass('d-none') ;
+                        jQuery(this).addClass('d-none').addClass('hidden-byTagCheck')  ;
                     }
                 }
             }
@@ -785,23 +826,26 @@ function jv_events_refreshList(){
 
                     }) ;
                     if( needTohide ) {
-                        jQuery(this).addClass('d-none') ;
+                        jQuery(this).addClass('d-none').addClass('hidden-byCatCheck') ;
                     }
                 }
             }
+
             if ( jQuery(this).hasClass('d-none')) {
                 filterIsActive = true ;
               //  console.log(" Event is hidden:" + jQuery(this).data("eventuid")) ;
             } else {
                 needTohideDay = false ;
+                resultcountEvents ++ ;
             }
         }
-
+        allcountEvents++ ;
 	});
     if( lastDay && needTohideDay ) {
         jQuery(lastDay).addClass('d-none') ;
     }
-
+    jQuery( "#filter-resultcount-events").html( resultcountEvents ) ;
+    jQuery( "#all-resultcount-events").html( allcountEvents ) ;
 
 	if ( filterIsActive ) {
 		jQuery( "#filter-events BUTTON .jv-events-filter-sub-text").addClass('d-none') ;
@@ -874,6 +918,12 @@ function jv_events_refreshList(){
       //  jv_events_pushUrl( '' ) ;
 
 	}
+    if( $("#filterType7body").length ) {
+        if( $("#xs-check").is(":visible") ) {
+            $("#filterType7body").collapse("show");
+        }
+    }
+
 
 
 }

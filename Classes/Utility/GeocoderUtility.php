@@ -165,6 +165,25 @@ class GeocoderUtility {
                     if ( zoom < 9 ) {
                       zoom = 9 ;
                     }
+                  
+                    map.setZoom( zoom ) ;
+                    updatePosition() ;
+                    
+                });
+                map.addListener( \'dblclick\', function(e) {
+				    marker.setPosition( e.latLng ) ;
+				    map.panTo(marker.getPosition()) ;
+                    var zoom = map.getZoom();
+                    if( jQuery("#jv_events_geo").length ) {
+                       if ( jQuery("#jv_events_geo").data( "doubleclickzoom" ) ) {
+                          zoom = jQuery("#jv_events_geo").data( "doubleclickzoom" ) 
+                       }
+                    }
+                    if ( zoom < 9 ) {
+                      zoom = 9 ;
+                    }
+                    
+                  
                     map.setZoom( zoom ) ;
                     updatePosition() ;
                     
@@ -290,7 +309,7 @@ class GeocoderUtility {
                             
                             if(document.getElementById("lat")) {
                                 draggable = true ;
-                                address.address += " Double Click to update Position" ;
+                                address.address += " \n\n  Click to update Position  " ;
                             } 
                             // console.log( "geometrie Location") ;
                             // console.debug( results[0].geometry.location ) ;
@@ -308,7 +327,18 @@ class GeocoderUtility {
                                 marker.addListener("drag", updatePosition);
                             }
                               marker.addListener("click", () => {
-                                map.setZoom(10);
+                                map.setZoom(9);
+                                map.panTo(marker.getPosition()) ;
+                              });
+                              
+                              marker.addListener("dblclick", () => {
+                                let doubleCLickZoom = 9 ;  
+                                if( jQuery("#jv_events_geo").length ) {
+                                   if ( jQuery("#jv_events_geo").data( "doubleclickzoom" ) ) {
+                                      doubleCLickZoom = jQuery("#jv_events_geo").data( "doubleclickzoom" ) 
+                                   }
+                                }
+                                map.setZoom(doubleCLickZoom);
                                 map.panTo(marker.getPosition()) ;
                               });
                             
