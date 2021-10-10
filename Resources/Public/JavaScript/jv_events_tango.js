@@ -632,7 +632,7 @@ function jv_events_refreshList(){
     if ( fDist && fDist.val() && fDist.val().length > 0 &&  fDist.val() < 10000 ) {
         maxDist = fDist.val() ;
     } else {
-        if (  map &&  typeof map.getBounds === 'function' ) {
+        if (  jQuery("#map").length &&  map &&  typeof map.getBounds === 'function' ) {
             fDist = false ;
             var bounds = map.getBounds();
             if ( bounds ) {
