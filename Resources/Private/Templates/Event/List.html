@@ -45,6 +45,8 @@
 						<f:variable name="lastDate">{event.startDate -> f:format.date(format:"d.m.Y")}</f:variable>
 					</f:if>
 				</f:for>
+				<f:render partial="Event/List/Partial{settings.LayoutList}/NoEvent" arguments="{settings: settings }" />
+
 				<f:render section="navigation" arguments="{settings: settings, id: 'bottom'}"/>
 
 				<f:if condition="{settings.withMicroFormat}">

@@ -830,21 +830,29 @@ function jv_events_refreshList(){
                     }
                 }
             }
-
-            if ( jQuery(this).hasClass('d-none')) {
-                filterIsActive = true ;
-              //  console.log(" Event is hidden:" + jQuery(this).data("eventuid")) ;
-            } else {
-                needTohideDay = false ;
-                resultcountEvents ++ ;
+            if ( ! jQuery(this).hasClass('jv-events-nosingleEvent')) {
+                if ( jQuery(this).hasClass('d-none')) {
+                  filterIsActive = true ;
+                //  console.log(" Event is hidden:" + jQuery(this).data("eventuid")) ;
+                } else {
+                    needTohideDay = false ;
+                    resultcountEvents ++ ;
+                }
             }
         }
-        allcountEvents++ ;
+        if ( ! jQuery(this).hasClass('jv-events-nosingleEvent')) {
+            allcountEvents++;
+        }
 	});
     if( lastDay && needTohideDay ) {
         jQuery(lastDay).addClass('d-none') ;
     }
     jQuery( "#filter-resultcount-events").html( resultcountEvents ) ;
+    if( resultcountEvents > 0 ) {
+        jQuery( "#jv-events-nosingleEvent").addClass("d-none") ;
+    } else {
+        jQuery( "#jv-events-nosingleEvent").removeClass("d-none") ;
+    }
     jQuery( "#all-resultcount-events").html( allcountEvents ) ;
 
 	if ( filterIsActive ) {
