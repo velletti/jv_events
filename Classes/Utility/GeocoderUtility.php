@@ -309,7 +309,7 @@ class GeocoderUtility {
                             
                             if(document.getElementById("lat")) {
                                 draggable = true ;
-                                address.address += " \n\n  Click to update Position  " ;
+                                address.address += "\n\n  Click to update Position  \nDouble Click to update and zoom in" ;
                             } 
                             // console.log( "geometrie Location") ;
                             // console.debug( results[0].geometry.location ) ;
