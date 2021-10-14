@@ -210,16 +210,20 @@
                                                         </button>
                                                         <span class="">Banner</span>
                                                     </f:link.page>
+                                                    <hr>Banner Startpage:<hr>
+                                                    <f:render partial="Helper/Bootstrap4/Share"  arguments="{object: 'event', event: event, emailTo: 'info@tangomuenchen.de', uri: uri, uids: 'User: {user} | Event: {object.uid} | LocationId: {object.location.uid}', settings: settings}"></f:render>
+
                                                 </f:then>
                                                 <f:else>
-                                                    <hr>Ask for a Banner:<hr>
+                                                    <hr>Banner Startpage:<hr>
                                                     <f:render partial="Helper/Bootstrap4/Share"  arguments="{object: 'event', event: event, emailTo: 'info@tangomuenchen.de', uri: uri, uids: 'User: {user} | Event: {object.uid} | LocationId: {object.location.uid}', settings: settings}"></f:render>
                                                 </f:else>
                                             </f:security.ifHasRole>
                                         </f:then>
                                         <f:else>
+                                            <hr>Banner Startpage:
                                             <span class="btn btn-outline-primary x-1  w-100 text-left">
-                                                <i class="fas fa-warning mx-2"> </i>  No Event Image -> Banner not possible!
+                                                <i class="fas fa-warning mx-2"> </i>  First add Event Image
                                             </span>
 
                                         </f:else>
