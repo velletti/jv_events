@@ -200,20 +200,20 @@ function jv_events_initOneFilter(filterName) {
         });
     }
     if ( jQuery('#jv_events_filter_' + filterName + " input[type=checkbox]").length ) {
-        console.log( "INPUT  " + filterName + " found") ;
+     //   console.log( "INPUT  " + filterName + " found") ;
         var filterVal = jv_events_GetURLParameter('tx_jvevents_events[eventsFilter][' + filterName + ']') ;
-        console.log( "filterVal = " + filterVal + " ") ;
+        //   console.log( "filterVal = " + filterVal + " ") ;
         if ( filterVal ) {
             var filterSplit =  filterVal.split(",") ;
             if(filterSplit.length > 1 ) {
-                console.log( "filterSplit.length  > 1 " ) ;
+                //         console.log( "filterSplit.length  > 1 " ) ;
                 jQuery('#jv_events_filter_' + filterName + ' input[type=checkbox]').each(function(i) {
                     if(  filterSplit.indexOf( jQuery(this).val() ) > -1 ) {
                         jQuery(this).prop("checked", true);
                     }
                 });
             } else {
-                console.log( "filterSplit.length  <= 1 " ) ;
+                //        console.log( "filterSplit.length  <= 1 " ) ;
                 jQuery('#jv_events_filter_' + filterName + ' input[type=checkbox]').each(function(i) {
                     if ("'" + jQuery(this).val() + "'" == "'" + filterVal +"'") {
                         jQuery(this).prop("checked", true);
@@ -288,7 +288,7 @@ function jv_events_refreshList(){
                 default:
                     maxDist = 9999;
             }
-            console.log( "Lat:" + userLat + " Lng: " + userLng + " maxDist:" +  maxDist ) ;
+        //    console.log( "Lat:" + userLat + " Lng: " + userLng + " maxDist:" +  maxDist ) ;
 
         }
     }
