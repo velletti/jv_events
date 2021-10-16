@@ -93,6 +93,9 @@ class LinkViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedV
         if(  $eventId > 0 ) {
             $configuration = $this->getLinkToEventItem($eventId, $settings, $configuration );
         } else {
+            if ( !$event) {
+                return '' ;
+            }
             $EventType = (int)$event->getEventType();
 
             switch ($EventType) {
