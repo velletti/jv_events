@@ -65,6 +65,7 @@ class LinkViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedV
         $this->registerTagAttribute('section', 'string', 'Anchor for links', false);
 
         $this->registerArgument('event', '\JVE\JvEvents\Domain\Model\Event', 'Event', false);
+        $this->registerArgument('eventId', 'int', 'Event as id', false);
         $this->registerArgument('settings', 'array', 'settings Array', false , array() );
         $this->registerArgument('configuration', 'array', 'configuration Array', false , array() );
         $this->registerArgument('content', 'string', ' the content', false ,'' );
@@ -82,28 +83,35 @@ class LinkViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedV
         $configuration = $this->arguments['configuration'] ;
         $this->init();
         $event = $this->arguments['event'] ;
+        $eventId = $this->arguments['eventId'] ;
         $settings = $this->arguments['settings'] ;
         $uriOnly = $this->arguments['uriOnly'] ;
         $withProtocol = $this->arguments['withProtocol'] ;
 
         $content = $this->arguments['content'] ;
 
-        $EventType = (int)$event->getEventType();
+        if(  $eventId > 0 ) {
+            $configuration = $this->getLinkToEventItem($eventId, $settings, $configuration );
+        } else {
+            $EventType = (int)$event->getEventType();
 
-        switch ($EventType) {
-            // ToDo Link to internal event page  should be 0
-            case 011:
-               // $configuration['parameter'] = $event->getInternalurl();
-                break;
-            // ToDo external Link should not be used - should be 1
-            case 111:
-             //   $configuration['parameter'] = $event->getExternalurl();
-                break;
-            // normal event record
-            default:
+            switch ($EventType) {
+                // ToDo Link to internal event page  should be 0
+                case 011:
+                    // $configuration['parameter'] = $event->getInternalurl();
+                    break;
+                // ToDo external Link should not be used - should be 1
+                case 111:
+                    //   $configuration['parameter'] = $event->getExternalurl();
+                    break;
+                // normal event record
+                default:
 
-                $configuration = $this->getLinkToEventItem($event, $settings, $configuration );
+                    $configuration = $this->getLinkToEventItem($event, $settings, $configuration );
+            }
         }
+
+
         if (isset($settings['link']['typesOpeningInNewWindow'])) {
             if (GeneralUtility::inList($settings['link']['typesOpeningInNewWindow'], $EventType)) {
                 $this->tag->addAttribute('target', '_blank');
@@ -137,14 +145,14 @@ class LinkViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedV
     /**
      * Generate the link configuration for the link to the news item
      *
-     * @param \JVE\JvEvents\Domain\Model\Event $event
+     * @param \JVE\JvEvents\Domain\Model\Event|int $event
      * @param array $settings
      * @param array $configuration
      * @return array
      */
     protected function getLinkToEventItem(
-        \JVE\JvEvents\Domain\Model\Event $event,
-        $settings,
+        $event,
+        array $settings,
         array $configuration = []
     ) {
 
@@ -165,25 +173,28 @@ class LinkViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedV
             $configuration['useCacheHash'] = 0 ;
             $configuration['noCache'] = 1 ;
         }
-        $configuration['additionalParams'] .= '&tx_jvevents_events[event]=' . ($event->getUid() );
-
         if ((int)$settings['link']['skipControllerAndAction'] !== 1) {
             $configuration['additionalParams'] .= '&tx_jvevents_events[controller]=Event' .
                 '&tx_jvevents_events[action]=show';
         }
-        $categories = $event->getEventCategory() ;
-        $catTitles = "" ;
-        if ( $categories ) {
-            /** @var  \JVE\JvEvents\Domain\Model\Category $category */
-            foreach( $categories as $category ) {
-                if( is_object($category)) {
-                    $catTitles .= $category->getTitle() . " - ";
-                }
-            }
 
+        if( is_int( $event )) {
+            $configuration['additionalParams'] .= '&tx_jvevents_events[event]=' . $event ;
+        } else {
+            $configuration['additionalParams'] .= '&tx_jvevents_events[event]=' . ($event->getUid() );
+            $categories = $event->getEventCategory() ;
+            $catTitles = "" ;
+            if ( $categories ) {
+                /** @var  \JVE\JvEvents\Domain\Model\Category $category */
+                foreach( $categories as $category ) {
+                    if( is_object($category)) {
+                        $catTitles .= $category->getTitle() . " - ";
+                    }
+                }
+
+            }
         }
-        $configuration['additionalParams'] .= '&tx_jvevents_events[eventTitle]=' . urlencode( $catTitles . $event->getName() );
-        $configuration['additionalParams'] .= '&tx_jvevents_events[date]=' . $event->getStartDate()->format( $settings['link']['dateFormat']  );
+
         return $configuration;
     }
 

@@ -1,4 +1,8 @@
 
+
+{namespace jve=JVE\JvEvents\ViewHelpers}
+<f:variable name="uri"><jve:link uriOnly="true" eventId="{output.event.eventId}" withProtocol="true" settings="{settings}" configuration="{useCacheHash: 0 }"></jve:link></f:variable>
+
     <div class="d-inline-flex float-right">
 
         <!--  ################# the third nav  loaded via AJAX to #jvEventsAjaxSingleMenu  - for Organizer   ##################### //-->
@@ -211,12 +215,12 @@
                                                         <span class="">Banner</span>
                                                     </f:link.page>
                                                     <hr>Banner Startpage:<hr>
-                                                    <f:render partial="Helper/Bootstrap4/Share"  arguments="{object: 'event', event: event, emailTo: 'info@tangomuenchen.de', uri: uri, uids: 'User: {user} | Event: {object.uid} | LocationId: {object.location.uid}', settings: settings}"></f:render>
+                                                    <f:render partial="Helper/Bootstrap4/Share"  arguments="{object: 'event', reason: 'Please activate Banner!', event: output.event, emailTo: 'info@tangomuenchen.de', uri: uri, uids: 'User: {output.feuser.uid} - {output.feuser.username} | Event: {output.event.eventId} | LocationId: {output.location.locationId}', settings: settings}"></f:render>
 
                                                 </f:then>
                                                 <f:else>
-                                                    <hr>Banner Startpage:<hr>
-                                                    <f:render partial="Helper/Bootstrap4/Share"  arguments="{object: 'event', event: event, emailTo: 'info@tangomuenchen.de', uri: uri, uids: 'User: {user} | Event: {object.uid} | LocationId: {object.location.uid}', settings: settings}"></f:render>
+                                                    <hr>Request a Startpage Banner:<hr>
+                                                    <f:render partial="Helper/Bootstrap4/Share"  arguments="{object: 'event', reason: 'Please activate Banner!', event: output.event, emailTo: 'info@tangomuenchen.de', uri: uri, uids: 'User: {output.feuser.uid} - {output.feuser.username} | Event: {output.event.eventId} | LocationId: {output.location.locationId}', settings: settings}"></f:render>
                                                 </f:else>
                                             </f:security.ifHasRole>
                                         </f:then>

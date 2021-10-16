@@ -700,7 +700,7 @@ class AjaxController extends BaseController
 
         $return = array( "main" => $returnMain , "single" => $returnSingle ) ;
         // debug : enalbe next line
-        $output['settings'] = $this->settings ;
+        // $output['settings'] = $this->settings ;
         ShowAsJsonArrayUtility::show( array( 'values' => $output , 'html' => $return ) ) ;
         die;
     }
