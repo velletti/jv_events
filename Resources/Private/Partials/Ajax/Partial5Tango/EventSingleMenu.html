@@ -203,6 +203,8 @@
                                 </div>
 
                                 <div class="col-12 pt-2">
+
+
                                     <f:if condition="{output.event.TeaserImageFrom} ==  'Event'">
                                         <f:then>
                                             <f:security.ifHasRole role="adminOrganizer">
@@ -214,14 +216,27 @@
                                                         </button>
                                                         <span class="">Banner</span>
                                                     </f:link.page>
-                                                    <hr>Banner Startpage:<hr>
-                                                    <f:render partial="Helper/Bootstrap4/Share"  arguments="{object: 'event', reason: 'Please activate Banner!', event: output.event, emailTo: 'info@tangomuenchen.de', uri: uri, uids: 'User: {output.feuser.uid} - {output.feuser.username} | Event: {output.event.eventId} | LocationId: {output.location.locationId}', settings: settings}"></f:render>
-
+                                                    <f:if condition="{output.event.banner}">
+                                                        <hr>
+                                                        Banner from <f:format.date format="d.M H:i">{output.event.banner.starttime}</f:format.date> - <f:format.date format="d.M H:i">{output.event.banner.endtime}</f:format.date><br>
+                                                        Viewed: {output.event.banner.impressions} | Clicks: {output.event.banner.clicks}<br/>
+                                                    </f:if>
                                                 </f:then>
                                                 <f:else>
-                                                    <hr>Request a Startpage Banner:<hr>
-                                                    <f:render partial="Helper/Bootstrap4/Share"  arguments="{object: 'event', reason: 'Please activate Banner!', event: output.event, emailTo: 'info@tangomuenchen.de', uri: uri, uids: 'User: {output.feuser.uid} - {output.feuser.username} | Event: {output.event.eventId} | LocationId: {output.location.locationId}', settings: settings}"></f:render>
-                                                </f:else>
+                                                    <f:if condition="{output.event.banner}">
+                                                        <f:then>
+                                                            <hr>
+                                                            Banner from <f:format.date format="d.M H:i">{output.event.banner.starttime}</f:format.date> - <f:format.date format="d.M H:i">{output.event.banner.endtime}</f:format.date><br>
+                                                            Viewed: {output.event.banner.impressions} | Clicks: {output.event.banner.clicks}<br/>
+                                                        </f:then>
+                                                        <f:else>
+                                                            <hr>Request a Startpage Banner:<hr>
+                                                            <f:render partial="Helper/Bootstrap4/Share"  arguments="{object: 'event', reason: 'Please activate Banner!', event: output.event, emailTo: 'info@tangomuenchen.de', uri: uri, uids: 'User: {output.feuser.uid} - {output.feuser.username} | Event: {output.event.eventId} | LocationId: {output.location.locationId}', settings: settings}"></f:render>
+
+                                                        </f:else>
+                                                    </f:if>
+
+                                                 </f:else>
                                             </f:security.ifHasRole>
                                         </f:then>
                                         <f:else>

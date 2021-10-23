@@ -26,9 +26,11 @@ namespace JVE\JvEvents\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use EBT\ExtensionBuilder\Exception;
 use JVE\JvEvents\Domain\Model\Location;
 use JVE\JvEvents\Utility\AjaxUtility;
 use JVE\JvEvents\Utility\TyposcriptUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use JVE\JvEvents\Utility\ShowAsJsonArrayUtility;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
@@ -661,7 +663,9 @@ class AjaxController extends BaseController
             ShowAsJsonArrayUtility::show(  $output ) ;
         }
 
-
+        if( ExtensionManagementUtility::isLoaded("jv_banners")) {
+            $output = $this->getBannerById( $output ) ;
+        }
 
         /* ************************************************************************************************************ */
         /*   render the HTML Output :
@@ -1026,6 +1030,37 @@ class AjaxController extends BaseController
             }
         }
         return $return ;
+    }
+
+    /**
+     * @return Array
+     */
+    public function getBannerById( $output )
+    {
+        if( $output['event'] && $output['event']["eventId"] > 0 ) {
+            // tx_sfbanners_domain_model_banner
+            try {
+                /** @var \TYPO3\CMS\Core\Database\ConnectionPool $connectionPool */
+                $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
+
+                $connection = $connectionPool->getConnectionForTable('tx_sfbanners_domain_model_banner') ;
+
+                /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
+                $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_sfbanners_domain_model_banner') ;
+                $row = $queryBuilder ->select('uid' , 'starttime', 'endtime', 'impressions','clicks'   ) ->from('tx_sfbanners_domain_model_banner')
+                    ->where( $queryBuilder->expr()->eq('link', $queryBuilder->createNamedParameter($output['event']["eventId"] , \PDO::PARAM_INT)) )
+                    ->orderBy("endtime" , "DESC")
+                    ->setMaxResults(1)
+                    ->execute()
+                    ->fetchAssociative();
+                if ( $row) {
+                    $output['event']['banner'] = $row ;
+                }
+            } catch (Exception $e) {
+                // ignore
+            }
+        }
+        return $output ;
     }
 
 }
