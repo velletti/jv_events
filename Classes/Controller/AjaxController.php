@@ -30,6 +30,7 @@ use EBT\ExtensionBuilder\Exception;
 use JVE\JvEvents\Domain\Model\Location;
 use JVE\JvEvents\Utility\AjaxUtility;
 use JVE\JvEvents\Utility\TyposcriptUtility;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use JVE\JvEvents\Utility\ShowAsJsonArrayUtility;
