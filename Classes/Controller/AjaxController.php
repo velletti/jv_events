@@ -1047,8 +1047,12 @@ class AjaxController extends BaseController
 
                 /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
                 $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_sfbanners_domain_model_banner') ;
+                $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
                 $row = $queryBuilder ->select('uid' , 'starttime', 'endtime', 'impressions','clicks'   ) ->from('tx_sfbanners_domain_model_banner')
                     ->where( $queryBuilder->expr()->eq('link', $queryBuilder->createNamedParameter($output['event']["eventId"] , \PDO::PARAM_INT)) )
+                    ->andWhere( $queryBuilder->expr()->eq('deleted', $queryBuilder->createNamedParameter(0 , \PDO::PARAM_INT)) )
+                    ->andWhere( $queryBuilder->expr()->eq('hidden', $queryBuilder->createNamedParameter(0 , \PDO::PARAM_INT)) )
                     ->orderBy("endtime" , "DESC")
                     ->setMaxResults(1)
                     ->execute()
