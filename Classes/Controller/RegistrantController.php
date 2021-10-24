@@ -723,6 +723,11 @@ class RegistrantController extends BaseController
                 }
             }
 			if( $event->getNotifyRegistrant()  ) {
+                if (is_object($event->getLocation())) {
+                    if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($event->getLocation()->getEmail())) {
+                        $replyto = array( $event->getLocation()->getEmail() => '=?utf-8?B?'. base64_encode( $event->getLocation()->getName() ) .'?=' ) ;
+                    }
+                }
 				if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($registrant->getEmail())) {
 					$this->settings['successMsg'] = "register_email_with_infos" ;
 

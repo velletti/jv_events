@@ -64,6 +64,7 @@
 					</f:if>
 				</f:else>
 			</f:if>
+
 		</p>
 
 		<f:if condition="{otherEvents}">
@@ -177,6 +178,8 @@
 {event.location.name}
 {event.location.streetAndNr}
 {event.location.zip} {event.location.city}
+<f:translate key="tx_jvevents_domain_model_location.email" />: <f:if condition="{event.location.email}"><f:then>{event.location.email}</f:then><f:else>{event.organizer.email}</f:else></f:if>
+
 
 <f:if condition="{otherEvents}">
 	 Weitere gebuchte Termine:
