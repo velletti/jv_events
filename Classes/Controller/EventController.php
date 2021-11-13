@@ -789,8 +789,14 @@ class EventController extends BaseController
             $this->addFlashMessage('You do not have access rights to change this data.' . $event->getUid() , '', AbstractMessage::WARNING);
         }
         $this->persistenceManager->persistAll() ;
+        $pid = $this->settings['pageIds']['showEventDetail'] ;
+        // if PID from TS settings is set: if User is not logged in-> Page with loginForm , on success -> showEventDetail  Page
+        if( $pid < 1) {
+            // else : stay on this page
+            $pid = $GLOBALS['TSFE']->id ;
 
-        $this->redirect('show' , NULL, Null , array( "event" => $event) );
+        }
+        $this->redirect('show' , NULL, Null , array( "event" => $event) ,$pid  );
 
     }
     
