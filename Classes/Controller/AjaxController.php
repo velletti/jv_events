@@ -27,6 +27,7 @@ namespace JVE\JvEvents\Controller;
  ***************************************************************/
 
 use EBT\ExtensionBuilder\Exception;
+use JVE\JvEvents\Domain\Model\Event;
 use JVE\JvEvents\Domain\Model\Location;
 use JVE\JvEvents\Utility\AjaxUtility;
 use JVE\JvEvents\Utility\TyposcriptUtility;
@@ -978,6 +979,46 @@ class AjaxController extends BaseController
         }
         ShowAsJsonArrayUtility::show(  $output ) ;
         exit ;
+    }
+
+    public function downloadIcal($arguments) {
+
+        $uid = intval( $arguments["uid"] ) ;
+        if( $uid ) {
+            /** @var Event $event */
+           $event = $this->eventRepository->findByUidAllpages($uid ,  false) ;
+            if ( $event && $event->getUid() == $uid ) {
+                $output['status'] = 200 ;
+                $output['content-type'] = "text/calendar" ;
+
+                $output['data'] = "BEGIN:VCALENDAR" . PHP_EOL
+                    ."VERSION:2.0" . PHP_EOL
+                    ."CALSCALE:GREGORIAN" . PHP_EOL
+                    ."BEGIN:VEVENT" . PHP_EOL
+                    ."SUMMARY:" .  $this->escapeIcal( $event->getName()) . PHP_EOL
+                    ."DTSTART;TZID=Europe/Berlin:" . $event->getStartUTCDateTime() . PHP_EOL
+                    ."DTEND;TZID=Europe/Berlin:" . $event->getEndUTCDateTime(). PHP_EOL
+                    ."LOCATION:" . $this->escapeIcal( $event->getLocation()->getStreetAndNr() . ", " . $event->getLocation()->getZip() . " " . $event->getLocation()->getCity() . ", " . $event->getLocation()->getCountry())  . PHP_EOL
+                    ."DESCRIPTION:" .  $this->escapeIcal(   $event->getTeaser())  . PHP_EOL
+                    ."STATUS:CONFIRMED" . PHP_EOL
+                    ."ORGANIZER:mailto:" . $event->getOrganizer()->getEmail() .  PHP_EOL
+                    ."SEQUENCE:3" . PHP_EOL
+                    ."BEGIN:VALARM" . PHP_EOL
+                    ."TRIGGER:-PT120M" . PHP_EOL
+                    ."DESCRIPTION:Tango: "  .  $this->escapeIcal( $event->getLocation()->getName()) . PHP_EOL
+                    ."ACTION:DISPLAY" . PHP_EOL
+                    ."END:VALARM" . PHP_EOL
+                    ."END:VEVENT" . PHP_EOL
+                    ."END:VCALENDAR" . PHP_EOL ;
+                return $output ;
+            }
+        }
+
+
+       return false;
+    }
+    private function escapeIcal( $text ) {
+        return htmlspecialchars(str_replace( ["," , ";" , "\r\n" , "\n"] , ["\," , "\;" , "\\n", "\\n"] , $text )) ;
     }
 
     // ########################################   functions ##################################

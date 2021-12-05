@@ -987,6 +987,29 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         $this->startTime = $startTime;
     }
+
+    public function getStartUTCDateTime() {
+
+        return  $this->startDate->format("Ymd") . "T" . date("His" , $this->startTime );
+
+    }
+
+    public function getEndUTCDateTime() {
+        if( $this->endDate ) {
+            return  $this->endDate->format("Ymd") . "T" . date("His" , $this->endTime );
+        } else {
+            if( $this->endTime ) {
+                if( $this->endTime > $this->startTime ) {
+                    return  $this->startDate->format("Ymd") . "T" . date("His" , $this->endTime );
+                }
+                return  $this->startDate->modify("+1 day")->format("Ymd") . "T" . date("His" , $this->endTime );
+            }
+            return $this->getStartUTCDateTime() ;
+        }
+
+
+
+    }
     
     /**
      * Returns the endDate

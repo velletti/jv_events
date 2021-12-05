@@ -76,12 +76,24 @@ class Ajax implements MiddlewareInterface
                 $controller = $ajaxUtility->initController($_gp , $function ) ;
                 $controller->initializeRepositorys() ;
 
-
                 switch ($function) {
-                    case 'eventList' :
+                    case 'downloadical' :
+                        $output = $controller->downloadIcal( $_gp["tx_jvevents_ajax"] ) ;
+                        if($output ) {
+                            $result = $output['data'];
+                            $body = new Stream('php://temp', 'rw');
+                            $body->write($result);
+                            return (new Response())
+                                ->withHeader('content-type', $output['content-type'] . '; charset=utf-8')
+                                ->withHeader('Content-Disposition' , 'inline; filename=calendar.ics')
+                                ->withBody($body)
+                                ->withStatus($output['status']);
+                        }
+                        break;
+                    case 'eventlist' :
                         $controller->eventListAction($_gp["tx_jvevents_ajax"]) ;
                         break;
-                    case 'locationList' :
+                    case 'locationlist' :
                         $controller->locationListAction($_gp["tx_jvevents_ajax"]) ;
                         break;
                     case 'activate' :
@@ -93,7 +105,7 @@ class Ajax implements MiddlewareInterface
                         $rnd  =             key_exists( 'rnd' , $_gp["tx_jvevents_ajax"]) ?  $_gp["tx_jvevents_ajax"]['rnd'] : 0 ;
                         $controller->activateAction( $organizerUid , $userUid , $hmac , $rnd ) ;
                         break;
-                    case 'eventUnlink' :
+                    case 'eventunlink' :
                         $controller->eventUnlinkAction($_gp["tx_jvevents_ajax"]) ;
                         break;
                     default:
@@ -101,17 +113,12 @@ class Ajax implements MiddlewareInterface
                         break;
                 }
 
-                die;
 
-    /*
-                $result = json_encode( $output['data']) ;
-                $body = new Stream('php://temp', 'rw');
-                $body->write($result);
-                return (new Response())
-                    ->withHeader('content-type', $output['content-type'] . '; charset=utf-8')
-                    ->withBody($body)
-                    ->withStatus($output['status']);
-    */
+
+
+
+
+
             }
         }
         return $handler->handle($request);

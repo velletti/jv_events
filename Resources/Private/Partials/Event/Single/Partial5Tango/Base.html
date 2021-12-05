@@ -256,7 +256,12 @@
 
 
 	</ul>
-	<a class="position-right btn btn-small btn-outline-secondary" href="#jv_events_share" data-toggle="tab"><i class="fas fa-share-alt "></i> </a>
+	<span class="position-right">
+		<f:link.page class="btn btn-small btn-outline-primary mr-1" additionalParams="{tx_jvevents_ajax: {action: 'downloadical', uid: event.uid}}">
+			<i class="fa fa-calendar-alt "></i>
+		</f:link.page>
+		<a class=" btn btn-small btn-outline-secondary" href="#jv_events_share" data-toggle="tab"><i class="fas fa-share-alt "></i> </a>
+	</span>
 	<f:comment>
 		<!-- =========================================================================================================================== -->
 		<!-- Details -->
