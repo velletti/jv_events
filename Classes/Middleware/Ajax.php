@@ -81,11 +81,12 @@ class Ajax implements MiddlewareInterface
                         $output = $controller->downloadIcal( $_gp["tx_jvevents_ajax"] ) ;
                         if($output ) {
                             $result = $output['data'];
+                            $file = $output['filename'] ? $output['filename'] : "calendar.ics" ;
                             $body = new Stream('php://temp', 'rw');
                             $body->write($result);
                             return (new Response())
                                 ->withHeader('content-type', $output['content-type'] . '; charset=utf-8')
-                                ->withHeader('Content-Disposition' , 'inline; filename=calendar.ics')
+                                ->withHeader('Content-Disposition' , 'inline; filename=' . $file )
                                 ->withBody($body)
                                 ->withStatus($output['status']);
                         }
