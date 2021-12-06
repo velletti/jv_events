@@ -112,7 +112,7 @@
 
 
                 <f:if condition="{f:count(subject: eventsFilter.tags2)} > 1">
-                    <fieldset id="jv_events_fieldset_tags"  class="row px-0 ">
+                    <fieldset id="jv_events_fieldset_tags"  class="row px-0 fieldsettags">
                         <legend class="d-none"><f:translate key="tx_jvevents_domain_model_event.tags" /></legend>
 
                         <div class="checkbox d-flex row w-100 mx-1" id="jv_events_filter_tags">
@@ -306,7 +306,7 @@
 
 
                 <f:if condition="{f:count(subject: eventsFilter.tags2)} > 1">
-                    <fieldset id="jv_events_fieldset_tags"  class="row px-0 ">
+                    <fieldset id="jv_events_fieldset_tags"  class="row px-0 fieldsettags">
                         <legend class="d-none"><f:translate key="tx_jvevents_domain_model_event.tags" /></legend>
 
                         <div class="checkbox d-flex row w-100 mx-1" id="jv_events_filter_tags">
@@ -495,7 +495,7 @@
 
 <f:if condition="{settings.ShowFilter}==7">
     <div class="filter events filterType7"  id="jv_events_filter_tags" data-combinetags="{settings.filter.combinetags}">
-
+        <f:link.page id="jv-events-filter-baseUrl" class="d-none" pageUid="{settings.pageIds.eventList}">-</f:link.page>
         <form class="clearfix" action="#" >
 
             <div class="hints clearfix cursor-pointer p-0 mb-3" data-toggle="collapse" data-target="#filterType7body">
@@ -505,7 +505,7 @@
 
                 <f:if condition="{settings.filter.hideKalenderSelector}">
                     <f:else>
-                        <div class="input-group date col-10 p-0 mb-4">
+                        <div class="input-group date col-10 p-0 mb-1">
                             <f:if condition="{settings.filter.startDate}">
                                 <f:then>
                                     <f:variable name="startDate">{settings.filter.overruleStartDate}</f:variable>
@@ -516,6 +516,7 @@
                             </f:if>
                             <f:form.textfield
                                     name="overruleFilter[startDate]"
+
                                     value="{f:format.date(format:'d.m.Y', date: '{startDate}')}"
                                     id="overruleFilterStartDate"
                                     class="form-control datetimepicker clearable col-9"
@@ -524,7 +525,20 @@
                             <div class="input-group-addon btn btn-secondary">
                                 <i class="fas fa-calendar-alt"></i>
                             </div>
+
                         </div>
+                        <div class="input-group col-12 p-0 mb-3">
+                            <input onchange="jQuery('#overruleFilterMaxDaysDisplay').html(this.value);" name="overruleFilter[maxDays]"
+                                   id="overruleFilterMaxDays" type="range" min="1" max="31" step="1"
+                                   title="# {f:translate(key: 'days', default: 'Tage')}"
+                                   value="{settings.filter.maxDays}" />
+                            <div class="input-group-addon ">
+                                <span id="overruleFilterMaxDaysDisplay" class="text-bold">{settings.filter.maxDays}</span> {f:translate(key: 'days', default: 'Tage')}
+
+                            </div>
+                        </div>
+
+
                     </f:else>
 
                 </f:if>
@@ -581,7 +595,7 @@
 
 
                 <f:if condition="{eventsFilter.box1}">
-                    <fieldset class="fieldsetbox1 border-0">
+                    <fieldset class="fieldsetbox1 fieldsettags border-0">
                         <legend>{settings.filter.tagbox1headline}</legend>
                         <div class="checkbox" >
                             <f:for each="{eventsFilter.box1}" as="tag">
@@ -598,7 +612,7 @@
                     </fieldset>
                 </f:if>
                 <f:if condition="{eventsFilter.box2}">
-                    <fieldset class="fieldsetbox2  ">
+                    <fieldset class="fieldsetbox2 fieldsettags ">
                         <legend>{settings.filter.tagbox2headline}</legend>
                         <div class="checkbox" >
                             <f:for each="{eventsFilter.box2}" as="tag">
@@ -615,7 +629,7 @@
                     </fieldset>
                 </f:if>
                 <f:if condition="{eventsFilter.box3}">
-                    <fieldset class="fieldsetbox3  ">
+                    <fieldset class="fieldsetbox3 fieldsettags ">
                         <legend>{settings.filter.tagbox3headline}</legend>
                         <div class="checkbox" >
                             <f:for each="{eventsFilter.box3}" as="tag">
@@ -633,7 +647,7 @@
                 </f:if>
 
                 <f:if condition="{eventsFilter.box4}">
-                    <fieldset class="fieldsetbox4  ">
+                    <fieldset class="fieldsetbox4 fieldsettags ">
                         <legend>{settings.filter.tagbox4headline}</legend>
                         <div class="checkbox" >
                             <f:for each="{eventsFilter.box4}" as="tag">

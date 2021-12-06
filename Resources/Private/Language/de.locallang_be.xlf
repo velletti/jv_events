@@ -113,6 +113,11 @@
 			<source>Show Event Details Page ID</source>
 			<target>zeige Veranstaltungsdetails auf folgender Seite (PID) </target>
 		</trans-unit>
+		<trans-unit id="flexforms_additional.eventListPid" approved="yes">
+            <source>Show Event Searchresults on Page ID</source>
+            <target>zeige Suchergebnisse auf folgender Seite (PID) </target>
+        </trans-unit>
+
 		<trans-unit id="flexforms_additional.layout" approved="yes">
 			<source>Select layout Style for Frontend rendering</source>
 			<target>Layout für das Frontend auswählen</target>

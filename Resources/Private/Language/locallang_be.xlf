@@ -139,6 +139,9 @@
 		<trans-unit id="flexforms_additional.detailPid">
 			<source>Show Event Details Page ID</source>
 		</trans-unit>
+		<trans-unit id="flexforms_additional.eventListPid">
+            <source>Show Event Searchresults on Page ID</source>
+        </trans-unit>
 		<trans-unit id="flexforms_additional.externalFormId">
             <source>External Form ID</source>
         </trans-unit>

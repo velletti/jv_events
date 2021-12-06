@@ -64,13 +64,14 @@ class DataAttribViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractVie
             return " " ;
         }
         $orgId = '' ;
+        $orgName = '' ;
 	    if( is_object ( $event->getOrganizer() )) {
             $orgId  = $event->getOrganizer()->getUid()  ;
             $orgName  = urlencode( trim($event->getOrganizer()->getName()))  ;
         }
 
         $result = 'data-eventuid="' . $event->getUid() . '" data-eventpid="' .  $event->getPid()
-            .   '" data-orguid="' .  $orgId  . '" '   .   '" data-orgname="' .  $orgName  . '" '
+            .   '" data-orguid="' .  $orgId  . '"  data-orgname="' .  $orgName  . '" '
             . 'data-monthuid="' . date("m.Y" , $event->getStartDate()->getTimestamp() ) . '" '
             . 'data-dayuid="' . date("d.m.Y" , $event->getStartDate()->getTimestamp() )  . '" '
         ;

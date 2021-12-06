@@ -366,6 +366,12 @@ function jv_events_init() {
     jQuery('#overruleFilterStartDate' ).change(function(i) {
         jv_events_reloadList() ;
     });
+    if( jQuery('#overruleFilterMaxDays' ).length) {
+        jQuery('#overruleFilterMaxDays' ).change(function(i) {
+            jv_events_reloadList() ;
+        });
+    }
+
     if( ! jQuery('#jv_events_filter_citys' ).length && ! jQuery('#jv_events_filter_organizers' ).length ) {
         jQuery( 'legend.jv_events_filter_more').addClass('d-none') ;
     }
@@ -430,10 +436,11 @@ function jv_events_reloadList() {
                 if ( param.substr(0,4 ) == "amp;") {
                     param = arr[i].substr( 4, 999 ) ;
                 }
-                if ( param.substr(0,5) == "chash" ) {
+                if (param.match ( /chash|cHash/)) {
                     break ;
                 }
-                if ( param.substr(0,27) != "tx_jvevents_events[overruleFilter][startDate]=" ) {
+                if ( !param.match ( /startDate|maxDays/))
+                {
                     newQuery += "&" + param ;
                 }
             }
@@ -442,6 +449,11 @@ function jv_events_reloadList() {
         }
 
         newQuery += "&tx_jvevents_events[overruleFilter][startDate]=" + jQuery("#overruleFilterStartDate").val() ;
+        if( jQuery("#overruleFilterMaxDays").length && jQuery("#overruleFilterMaxDays").val() > 0 ) {
+            let maxDays =  Math.min(  Math.max( jQuery("#overruleFilterMaxDays").val() , 1 ) , 31 ) ;
+
+            newQuery += "&tx_jvevents_events[overruleFilter][maxDays]=" + maxDays ;
+        }
         var cHash = newQuery.hashCode() ;
         // console.log( newQuery) ;
         window.location.href =  newQuery + "&cHash=" + cHash ;
@@ -672,7 +684,7 @@ function jv_events_refreshList(){
     }
 
     var cCats= jQuery("#jv_events_filter_categories INPUT[type=checkbox]") ;
-    var cTags= jQuery("#jv_events_filter_tags INPUT[type=checkbox]") ;
+    var cTags= jQuery(".fieldsettags INPUT[type=checkbox]") ;
     /* var startDate= jQuery("#overruleFilterStartDate") ; */
 
     var cTagChecked = false ;
@@ -729,8 +741,11 @@ function jv_events_refreshList(){
     let resultcountEvents = 0 ;
     let allcountEvents = 0 ;
 	jQuery('.tx-jv-events DIV.jv-events-row').each(function (i) {
-     //   console.log( " ************* single row **************** UID: " + jQuery(this).data("orguid")  ) ;
-
+	    console.log( " ************* single row **************** UID: " + jQuery(this).data("eventuid")  ) ;
+       // console.log( " ************* single row **************** Org UID: " + jQuery(this).data("orguid")  ) ;
+        console.log( " catuids on Event : " + jQuery(this).data("catuids") ) ;
+         console.log( " Lat on Event : " + jQuery(this).data("latitude") ) ;
+        console.debug( jQuery(this).data() ) ;
         var dist = PythagorasEquirectangular( userLat , userLng , jQuery(this).data("latitude") , jQuery(this).data("longitude") ) ;
         jQuery(this).find(".jv_events_dist").html(dist.toFixed(2) + " km") ;
 
@@ -823,20 +838,30 @@ function jv_events_refreshList(){
                 }
             }
 
-            if( cTagChecked  ) {
+            if( cTagChecked  === true && !jQuery(this).hasClass('d-none') ) {
                 var sTags = jQuery(this).data("taguids") ;
             //     console.log( " sTags : " + sTags ) ;
 
                 if( sTags ) {
                     sTags = "," + sTags + "," ;
                     needTohide = true ;
+                    var combineTags =  jQuery('#jv_events_filter_tags').data('combinetags') ;
                     jQuery( cTags ).each( function() {
                     //    console.log( "Tag: " + jQuery(this).val() + "checked ? : " + jQuery(this).prop("checked") ) ;
                         if ( jQuery(this).prop("checked") ) {
                     //        console.log( "position of " + jQuery(this).val() + " in string " + sTags + " = " + sTags.indexOf( "," + jQuery(this).val()   ) ) ;
                             if( sTags.indexOf( "," + jQuery(this).val() + ","  ) > -1 ) {
                                 needTohide = false ;
-                                return false ;
+                                if ( combineTags != "1") {
+                                    return false ;
+                                }
+                            } else {
+                                // console.log(" if All Tags must fit (combineTags = " + combineTags + "): we will exit and hide event " ) ;
+
+                                if ( combineTags == "1") {
+                                    needTohide = true ;
+                                    return false ;
+                                }
                             }
                         }
 
@@ -849,16 +874,16 @@ function jv_events_refreshList(){
                 }
             }
 
-            if( cCatChecked ) {
+            if( cCatChecked === true && !jQuery(this).hasClass('d-none')) {
                 var sCats = jQuery(this).data("catuids") ;
-                // console.log( " sCats : " + sCats ) ;
+                 console.log( " sCats on Event : " + sCats ) ;
                 if( sCats ) {
                     sCats = "," + sCats + "," ;
                     needTohide = true ;
                     jQuery( cCats ).each( function() {
-                        // console.log( jQuery(this).prop("checked") ) ;
+                         console.log("FormField: " + jQuery(this).val() + " " +  jQuery(this).prop("checked") ) ;
                         if ( jQuery(this).prop("checked") ) {
-                          //  console.log( "position: " + sCats.indexOf( jQuery(this).val()  ) ) ;
+                            console.log( "position: " + sCats.indexOf( jQuery(this).val()  ) ) ;
                             if( sCats.indexOf( "," + jQuery(this).val() + ","  ) > -1 ) {
                                 needTohide = false ;
                                 return false ;
