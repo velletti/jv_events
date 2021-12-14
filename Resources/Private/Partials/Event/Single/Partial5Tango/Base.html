@@ -1,5 +1,6 @@
 {namespace jve=JVE\JvEvents\ViewHelpers}
-{namespace vhs=FluidTYPO3\Vhs\ViewHelpers\Page}
+{namespace vhs=FluidTYPO3\Vhs\ViewHelpers}
+
 <f:comment>
 	<!-- =========================================================================================================================== -->
 	<!-- Place Holder for organizer menü , filled via javascript , no spinner as this function is already in main menu  ! -->
@@ -19,7 +20,13 @@
 
 <f:render partial="Helper/Flashmessages" arguments="{flashMessages: flashMessages}"/>
 
-<h1 id="jv-events-dataids" data-locationuid="{event.location.uid}" data-eventuid="{event.uid}" data-eventPid="{event.pid}">{event.name}</h1>
+<h2 id="jv-events-dataids" data-locationuid="{event.location.uid}" data-eventuid="{event.uid}" data-eventPid="{event.pid}">
+		<f:link.action action="show" arguments="{event: event.uid}">
+			{event.name}
+		</f:link.action>
+	</span>
+
+</h2>
 
 
 
@@ -547,7 +554,9 @@
 		</div>
 
         <div class="tab-pane" id="jv_events_share">
-			<f:variable name="uri"><vhs:absoluteUrl></vhs:absoluteUrl></f:variable>
+			<f:variable name="uri"><jve:link uriOnly="true" eventId="{event.uid}" withProtocol="true" settings="{settings}" configuration="{useCacheHash: 0 }"></jve:link></f:variable>
+
+
 			<div class="row">
 				<div class="col-9 col-sm-6  px-4 py-2">
 					<h3>Share</h3>
@@ -555,6 +564,10 @@
 					Einen FaceBook Button baue ich jedoch nicht ein. Sind mir zu viel Nebenwirkungen für den Datenschutz.<br>
 					In der mobilen Ansicht sind noch WhatsApp, Threema und Telegram Buttons vorhanden.<br>
 					Diese Buttons funktionieren bei mir aber nur, wenn ich <b>vorher</b> die App entsperrt habe.
+
+					<br>
+					<br>Short-URL:<br>
+					<a href="https://tangomuenchen.de/?tid={event.uid}">https://tangomuenchen.de/?tid={event.uid}</a>
 
 				</div>
 				<div class="col-3 col-sm-6 text-right py-2 pr-2">

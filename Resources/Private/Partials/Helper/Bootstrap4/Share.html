@@ -4,7 +4,7 @@
     <f:variable name="alertMsg">{f:translate(key: 'copied_to_clipboard', default: 'copied to clipboard. use STRG-V or similar to insert')}</f:variable>
     <f:variable name="date">{event.startDate -> f:format.date(format:"d.m.Y")} - {event.startTime -> jve:format.date( format:"H:i")}</f:variable>
     <f:variable name="tweet">{date} {event.location.city} {event.name} {event.teaser}</f:variable>
-    <f:variable name="tweet">{tweet -> f:format.crop(maxCharacters: '270', append: '') -> f:format.urlencode()}</f:variable>
+    <f:variable name="tweet">{tweet -> f:format.crop(maxCharacters: '240', append: '') -> f:format.urlencode()}</f:variable>
 
     <a style="font-size: 1.5em;" class="m-2 btn btn-outline-primary" href="mailto://{emailTo}?subject={reason -> f:format.urlencode()}%20{date}:%20{event.name}&body=Siehe %0D%0A %0D%0A {uri -> f:format.urlencode()} %20  %0D%0A %0D%0A  {event.name -> f:format.urlencode()} %0D%0A %0D%0A {event.teaser -> f:format.urlencode()} %0D%0A %0D%0A {f:if(condition: uids , then: '%0D%0A %0D%0A {uids}')} %0D%0A %0D%0A "><i class="fa fa-envelope"></i> </a>
     <f:if condition="{jvEventsCopyTarget}">
