@@ -794,7 +794,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
                     }
                     $attachment = $rootPath . $attachment ;
                     if ( file_exists($attachment )) {
-                        $message->attach(\Swift_Attachment::fromPath($attachment));
+                        $message->attachFromPath( $attachment) ;
                     }
                 }
             }
