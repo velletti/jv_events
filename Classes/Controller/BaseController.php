@@ -37,9 +37,13 @@ use JVE\JvEvents\Domain\Repository\RegistrantRepository;
 use JVE\JvEvents\Domain\Repository\StaticCountryRepository;
 use JVE\JvEvents\Domain\Repository\SubeventRepository;
 use JVE\JvEvents\Domain\Repository\TagRepository;
+use Symfony\Component\Mime\Part\AbstractPart;
+use Symfony\Component\Mime\Part\Multipart\AlternativePart;
+use Symfony\Component\Mime\Part\TextPart;
 use TYPO3\CMS\Core\Context\AspectInterface;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -776,7 +780,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         $emailBody = $renderer->render();
 
         /** @var $message \TYPO3\CMS\Core\Mail\MailMessage */
-        $message = $this->objectManager->get('TYPO3\\CMS\\Core\\Mail\\MailMessage');
+        $message = GeneralUtility::makeInstance(MailMessage::class);
         $message->setTo($recipient)
             ->setFrom($sender)
             ->setSubject($subject);
@@ -808,6 +812,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         } else {
             $message->html($emailBody, 'utf-8');
             $message->text($plainMsg, 'utf-8');
+
         }
 
 
