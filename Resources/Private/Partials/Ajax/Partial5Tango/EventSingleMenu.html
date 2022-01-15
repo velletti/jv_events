@@ -209,13 +209,27 @@
                                         <f:then>
                                             <f:security.ifHasRole role="adminOrganizer">
                                                 <f:then>
-                                                    <f:link.page pageUid="{settings.pageIds.bannerModul}" noCache="true" class="btn btn-outline-primary x-1  w-100 text-left" title="Add Banner for Event"
+                                                    <f:link.page pageUid="{settings.pageIds.bannerModul}" noCache="true" class="btn btn-outline-primary x-1 mb-1 w-100 text-left" title="Add Banner for Event Normmal ( 8 days before event)"
                                                                  additionalParams="{tx_jvbanners_connector: {action: 'create', controller: 'Connector' , pluginName: 'Events',  event: '{output.event.eventId}' , returnPid: '{output.returnPid}'}}">
                                                         <button class="btn btn-outline-primary btn-sm rounded-circle mx-2" href="#">
                                                             <i class="fas fa-star"></i>
                                                         </button>
-                                                        <span class="">Banner</span>
+                                                        <span class="">Banner Normal (8 days before event)</span>
                                                     </f:link.page>
+                                                    <f:link.page pageUid="{settings.pageIds.bannerModul}" noCache="true" class="btn btn-sm btn-outline-primary x-1 " title="Add Banner for Event NOW"
+                                                                 additionalParams="{tx_jvbanners_connector: {action: 'create', controller: 'Connector' , pluginName: 'Events',startindays: '1',  event: '{output.event.eventId}' , returnPid: '{output.returnPid}'}}">
+                                                        <span class="">NOW</span>
+                                                    </f:link.page>
+                                                    <span class="m-2">in</span>
+                                                    <f:for each="{0:2, 1:5, 2:7, 3:14, 4:21 , 5:30}" as="days">
+                                                        <f:link.page pageUid="{settings.pageIds.bannerModul}" noCache="true" class="btn btn-sm btn-outline-primary x-1" title="Add Banner for Event in {days} days"
+                                                                     additionalParams="{tx_jvbanners_connector: {action: 'create', controller: 'Connector' , pluginName: 'Events',startindays: '{days}',  event: '{output.event.eventId}' , returnPid: '{output.returnPid}'}}">
+                                                            <span class="">{days} days</span>
+                                                        </f:link.page>
+                                                    </f:for>
+
+
+
                                                     <f:if condition="{output.event.banner}">
                                                         <hr>
                                                         Banner from <f:format.date format="d.M H:i">{output.event.banner.starttime}</f:format.date> - <f:format.date format="d.M H:i">{output.event.banner.endtime}</f:format.date><br>
