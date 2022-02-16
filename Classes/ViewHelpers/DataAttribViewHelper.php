@@ -77,7 +77,7 @@ class DataAttribViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractVie
         ;
 
 	    $locCity = '' ;
-	    $locAddres = '' ;
+        $locAddress = '' ;
         if( is_object ( $event->getLocation() )) {
             $locCity  = urlencode( trim( $event->getLocation()->getCity() )) ;
             $locAddress  = urlencode( trim( $event->getLocation()->getZip() . " " . $event->getLocation()->getCity() . "," . $event->getLocation()->getStreetAndNr() . "," . $event->getLocation()->getCountry())) ;
@@ -85,7 +85,7 @@ class DataAttribViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractVie
             $result .= 'data-latitude="' . $event->getLocation()->getLat() . '" ' ;
         }
         $result .= 'data-cityuid="' . strip_tags($locCity ) . '" ' ;
-        $result .= 'data-address="' . strip_tags($locCity ) . '" ' ;
+        $result .= 'data-address="' . strip_tags($locAddress ) . '" ' ;
         // data-catuids data-taguids
         $catUids = '' ;
         if( is_object($event->getEventCategory() )  ) {
