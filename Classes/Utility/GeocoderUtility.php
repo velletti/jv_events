@@ -433,7 +433,9 @@ class GeocoderUtility {
 				' . $jQueryName . '("#geosearcherrormessage div").text("' . $this->getLanguageService()->getLL('geocoding.error') . ': " + message);
 			}
 			function updateMarker(address) {
-                address = address + ",DE" ;
+			    if( ! address.includes(",") {
+                   address = address + ",DE" ;
+                }
                 if ( map && map.getZoom() < 10 ) {
                     initZoom = 10 ;
                 } else {

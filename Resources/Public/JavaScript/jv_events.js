@@ -195,7 +195,13 @@ function jv_events_initOneFilter(filterName) {
         jQuery('SELECT#jv_events_filter_' + filterName ).change(function(i) {
             jv_events_refreshList() ;
             if( filterName == "citys" && jQuery("#map").length && jQuery(this).val().length > 1 ){
-                updateMarker(jQuery(this).val()) ;
+                let eventInCity = jQuery('[data-cityuid="' + jQuery(this).val() + '"]') ;
+                if( eventInCity && eventInCity.data("address") ) {
+                    updateMarker( eventInCity.data("address")) ;
+                } else {
+                    updateMarker(jQuery(this).val()) ;
+                }
+
             }
         });
     }
