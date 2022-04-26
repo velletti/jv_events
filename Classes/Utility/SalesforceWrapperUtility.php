@@ -244,7 +244,7 @@ class SalesforceWrapperUtility
     public function getData($instance_url , $access_token , $data  ) {
         $query = "SELECT Id" .  $data['what'] . " from " . $data['from']  .  " WHERE  " . $data['where'] ;
 
-        $url = $instance_url . "/services/data/v30.0/query?q=" . urlencode($query);
+        $url = $instance_url . "/services/data/v48.0/query?q=" . urlencode($query);
 
         $json_response = $this->getCurl($url , $access_token, '');
         $result = json_decode($json_response, true);
@@ -265,7 +265,7 @@ class SalesforceWrapperUtility
      * string $response   SalesForcestatus
      */
     public function curl_delete_obj($url, $access_token, $sfobj, $id) {
-        $url = $url . "/v30.0/sobjects/" . $sfobj . "/" . $id;
+        $url = $url . "/v48.0/sobjects/" . $sfobj . "/" . $id;
 
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_HEADER, false);

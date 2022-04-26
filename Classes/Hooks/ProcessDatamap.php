@@ -480,7 +480,7 @@ class ProcessDatamap {
 
         if( $this->event->getSalesForceCampaignId() ) {
             // Update
-            $url = $settings['SFREST']['instance_url'] . "/services/data/v30.0/sobjects/Campaign/" . $this->event->getSalesForceCampaignId() ;
+            $url = $settings['SFREST']['instance_url'] . "/services/data/v48.0/sobjects/Campaign/" . $this->event->getSalesForceCampaignId() ;
             $sfResponse = $this->sfConnect->getCurl($url , $settings['SFREST']['access_token'] , "204" ,  $data , true  , false )  ;
             if( is_int( $sfResponse ) && $sfResponse == 204 ) {
                 $this->flashMessage['OK'][] = "Campaign was updated in Salesforce: ! : " . $settings['SFREST']['instance_url'] . "/" . $this->event->getSalesForceCampaignId()   ;
@@ -499,7 +499,7 @@ class ProcessDatamap {
             $data['ListPricePerCampaignMember__c'] =  $this->event->getPrice() ;
 
 
-            $url = $settings['SFREST']['instance_url'] . "/services/data/v30.0/sobjects/Campaign/" ;
+            $url = $settings['SFREST']['instance_url'] . "/services/data/v48.0/sobjects/Campaign/" ;
             $sfResponse = $this->sfConnect->getCurl($url , $settings['SFREST']['access_token'] , "201" ,  $data , false , false )  ;
             $this->flashMessage['NOTICE'][] = 'Store Campaign in Salesforce: ' .var_export( $sfResponse , true )  ;
             $sfResponse = json_decode($sfResponse) ;
@@ -516,7 +516,7 @@ class ProcessDatamap {
                     // first remove automatically created stati then add our set of stati ..
                     $this->renameCampaignMemberStati( $settings['SFREST']['instance_url'] , $settings['SFREST']['access_token'] ,  $sfResponse->id ) ;
 
-                    $url = $settings['SFREST']['instance_url'] . "/services/data/v30.0/sobjects/CampaignMemberStatus/" ;
+                    $url = $settings['SFREST']['instance_url'] . "/services/data/v48.0/sobjects/CampaignMemberStatus/" ;
                     $this->createCampaignMemberStati( $url , $settings['SFREST']['access_token'] ,  $sfResponse->id ) ;
 
                     /** @var \TYPO3\CMS\Core\Mail\MailMessage $Typo3_v6mail */
@@ -592,7 +592,7 @@ class ProcessDatamap {
                         $id = $record['Id'] ;
                         unset ( $record['Id'] ) ;
 
-                        $upDate = $this->sfConnect->getCurl($url . "/services/data/v30.0/sobjects/CampaignMemberStatus/" . $id ,
+                        $upDate = $this->sfConnect->getCurl($url . "/services/data/v48.0/sobjects/CampaignMemberStatus/" . $id ,
                             $access_token , "204" ,  $record , true  , false )  ;
                         $this->flashMessage['NOTICE'][] = 'Campaign Member Stati rename : ' . $id . " to " . $record['Label'] . " => " . var_export($upDate , true );
 
