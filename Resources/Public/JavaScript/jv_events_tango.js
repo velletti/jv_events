@@ -741,11 +741,11 @@ function jv_events_refreshList(){
     let resultcountEvents = 0 ;
     let allcountEvents = 0 ;
 	jQuery('.tx-jv-events DIV.jv-events-row').each(function (i) {
-	    console.log( " ************* single row **************** UID: " + jQuery(this).data("eventuid")  ) ;
+	   // console.log( " ************* single row **************** UID: " + jQuery(this).data("eventuid")  ) ;
        // console.log( " ************* single row **************** Org UID: " + jQuery(this).data("orguid")  ) ;
-        console.log( " catuids on Event : " + jQuery(this).data("catuids") ) ;
-         console.log( " Lat on Event : " + jQuery(this).data("latitude") ) ;
-        console.debug( jQuery(this).data() ) ;
+       // console.log( " catuids on Event : " + jQuery(this).data("catuids") ) ;
+       // console.log( " Lat on Event : " + jQuery(this).data("latitude") ) ;
+       // console.debug( jQuery(thi s).data() ) ;
         var dist = PythagorasEquirectangular( userLat , userLng , jQuery(this).data("latitude") , jQuery(this).data("longitude") ) ;
         jQuery(this).find(".jv_events_dist").html(dist.toFixed(2) + " km") ;
 
@@ -876,14 +876,14 @@ function jv_events_refreshList(){
 
             if( cCatChecked === true && !jQuery(this).hasClass('d-none')) {
                 var sCats = jQuery(this).data("catuids") ;
-                 console.log( " sCats on Event : " + sCats ) ;
+                // console.log( " sCats on Event : " + sCats ) ;
                 if( sCats ) {
                     sCats = "," + sCats + "," ;
                     needTohide = true ;
                     jQuery( cCats ).each( function() {
-                         console.log("FormField: " + jQuery(this).val() + " " +  jQuery(this).prop("checked") ) ;
+                        // console.log("FormField: " + jQuery(this).val() + " " +  jQuery(this).prop("checked") ) ;
                         if ( jQuery(this).prop("checked") ) {
-                            console.log( "position: " + sCats.indexOf( jQuery(this).val()  ) ) ;
+                            // console.log( "position: " + sCats.indexOf( jQuery(this).val()  ) ) ;
                             if( sCats.indexOf( "," + jQuery(this).val() + ","  ) > -1 ) {
                                 needTohide = false ;
                                 return false ;
