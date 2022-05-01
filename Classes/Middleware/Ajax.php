@@ -157,8 +157,10 @@ class Ajax implements MiddlewareInterface
      * @return bool
      */
     public function hasBadValue( string $value ) {
-        if( strpos( $value , "'" ) > 0  ) { return true ;}
-        if( strpos( $value , ";" ) > 0  ) { return true ;}
+        $badValues= [ "'" , ";" , "("] ;
+        foreach( $badValues as $badValue) {
+            if( strpos( $value , $badValue ) > 0  ) { return true ;}
+        }
         return false ;
     }
 
