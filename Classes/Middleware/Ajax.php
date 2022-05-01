@@ -42,20 +42,20 @@ class Ajax implements MiddlewareInterface
         }
         // FIx Broken URL : https://tangov10.ddev.site/de/eventlist.html?tx_jvevents_events  but no values
         if( is_array($_gp) && key_exists("tx_jvevents_events" ,$_gp )) {
-            if (
-                ( array_key_exists( "controller" , $_gp['tx_jvevents_events'] ) && strpos( $_gp['tx_jvevents_events']['controller']  , "'" ) > 0  )
-                ||
-                ( array_key_exists( "action" , $_gp['tx_jvevents_events'] ) && strpos( $_gp['tx_jvevents_events']['action']  , "'" ) > 0  )
-                ||
-                ( array_key_exists( "event" , $_gp['tx_jvevents_events'] ) && strpos( $_gp['tx_jvevents_events']['event']  , "'" ) > 0  )
 
+            $params = [ "controller" , "action" , "event" , "registrant" , "organizer" , "location"] ;
+            foreach( $params as $param ) {
+                if ( array_key_exists( $param , $_gp['tx_jvevents_events'] ) )
+                {
+                    if( $this->hasBadValue( $_gp['tx_jvevents_events'][$param]) ) {
+                        return (new Response())
+                            ->withHeader('Location', $request->getUri()->getScheme() . "://" .$request->getUri()->getHost() )
+                            ->withStatus("301");
+                    }
 
-            )
-            {
-                return (new Response())
-                    ->withHeader('Location', $request->getUri()->getScheme() . "://" .$request->getUri()->getHost() )
-                    ->withStatus("301");
+                }
             }
+
 
             //  registrant Controller: redirect if Event ID missing or FIx if controller Name is written in Lowercase
             if(  array_key_exists( "controller" , $_gp['tx_jvevents_events'] ) && strtolower( $_gp['tx_jvevents_events']['controller'] )  == "registrant" ) {
@@ -150,6 +150,17 @@ class Ajax implements MiddlewareInterface
         return $handler->handle($request);
     }
 
+    /**
+     * check if value contain one of unwanted sign that fills log with tried  SQL injections
+     *
+     * @param string $value
+     * @return bool
+     */
+    public function hasBadValue( string $value ) {
+        if( strpos( $value , "'" ) > 0  ) { return true ;}
+        if( strpos( $value , ";" ) > 0  ) { return true ;}
+        return false ;
+    }
 
 
 
