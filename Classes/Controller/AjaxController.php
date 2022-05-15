@@ -1165,6 +1165,9 @@ class AjaxController extends BaseController
                     ->fetchAssociative();
                 if ( $row) {
                     $output['event']['banner'] = $row ;
+                    if( $row['endtime'] > time() ) {
+                        $output['event']['banner']['active'] = true ;
+                    }
                 }
             } catch (Exception $e) {
                 // ignore
