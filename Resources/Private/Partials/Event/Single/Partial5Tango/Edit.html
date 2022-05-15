@@ -39,7 +39,23 @@
                             </h4>
 
 
-                            <span >({event.location.uid}) - {event.location.name}, {event.location.streetAndNr} - {event.location.city}</span>
+                            <div class="row">
+                                <div class="col-11">
+                                    ({event.location.uid})  {event.location.name}, {event.location.streetAndNr} - {event.location.city}
+                                </div>
+                                <div class="col-1">
+                                    <span class="btn btn-secondary " title="Change to other, existing Location" data-toggle="collapse" data-target="#jveventsChangeLocation">
+                                        <span class="fas fa-map-marked-alt"></span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="collapse" id="jveventsChangeLocation">
+                                <div class="alert alert-info ml-2">
+                                    <f:render partial="Location/ChangeLocation" arguments="{_all}" />
+                                </div>
+                            </div>
+
+
                             <br>
                         </div>
 

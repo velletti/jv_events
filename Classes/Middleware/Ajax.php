@@ -93,6 +93,7 @@ class Ajax implements MiddlewareInterface
 
             $function = strtolower( trim($_gp['tx_jvevents_ajax']['action'])) ;
             if( $function != "activateXX"  ) {
+
                 $GLOBALS['TSFE']->set_no_cache();
                     /** @var AjaxUtility $ajaxUtility */
                 $ajaxUtility = GeneralUtility::makeInstance('JVE\JvEvents\Utility\AjaxUtility') ;
@@ -134,6 +135,11 @@ class Ajax implements MiddlewareInterface
                     case 'eventunlink' :
                         $controller->eventUnlinkAction($_gp["tx_jvevents_ajax"]) ;
                         break;
+                    case 'eventchangelocid' :
+
+                        $controller->eventChangeLocIdAction($_gp["tx_jvevents_ajax"]) ;
+                        break;
+
                     default:
                         $controller->eventMenuAction($_gp["tx_jvevents_ajax"]) ;
                         break;

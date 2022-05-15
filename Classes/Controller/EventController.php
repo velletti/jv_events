@@ -409,6 +409,10 @@ class EventController extends BaseController
 
                 $relatedEvents = $this->eventRepository->findByFilter($filter ) ;
                 $this->view->assign('relatedEvents', $relatedEvents );
+
+                $locations= $this->locationRepository->findByOrganizersAllpages( array(0 => $event->getOrganizer() ) , FALSE, FALSE ) ;
+                $this->view->assign('locations', $locations );
+
             } else {
                 $this->view->assign('event', FALSE );
             }

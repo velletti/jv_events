@@ -1,0 +1,40 @@
+<f:if condition="{locations}">
+    <f:then>
+        <div class="clearfix my-2">
+            <br/>
+        </div>
+        <h3 >Select one of the existing Locations: </h3>
+        <f:for each="{locations}" as="location">
+
+                <div class="row w-100 border border-left-0 my-2">
+                    <f:spaceless>
+                        <div class="col-1  text-left ml-0 pl-0">
+                            <f:if condition="{event.location.uid} == {location.uid}">
+                                <f:then>
+                                    <f:link.action pageUid="{settings.pageIds.editLocation}" action="edit" controller="Location" pluginName="Events"  class="btn btn-primary" title="{f:format.padding(padLength: '6', padString: '0',  padType:'left' , value: '{location.uid}')}" arguments="{event: '{event.uid}', 'location': '{location.uid}' , 'returnToPid': '{settings.pageIds.editEvent}'}">
+                                        <span class="fas fa-edit"></span>
+                                    </f:link.action>
+                                </f:then>
+                                <f:else>
+                                    <f:link.action pageUid="{settings.pageIds.editEvent}" action="eventChangeLocId" controller="Ajax" pluginName="Ajax" class="btn btn-secondary" title="{f:format.padding(padLength: '6', padString: '0',  padType:'left' , value: '{location.uid}')}" arguments="{event: '{event.uid}', 'location': '{location.uid}', 'returnToPid': '{settings.pageIds.editEvent}'}">
+                                        <span class="fas fa-arrows-alt-h"></span>
+                                    </f:link.action>
+                                </f:else>
+                            </f:if>
+
+                        </div>
+                        <div class="col-11  text-left">
+                            <f:format.crop maxCharacters="75">{location.name}, {location.streetAndNr} - {location.city}</f:format.crop>
+                        </div>
+                    </f:spaceless>
+                </div>
+
+        </f:for>
+
+        <hr>
+        <f:link.action pageUid="{settings.pageIds.editLocation}" action="new" controller="Location" class="btn btn-secondary" title="New" arguments="{organizer: '{organizer.uid}'}">
+            <span class="fas fa-home"></span> add new Location
+        </f:link.action>
+
+    </f:then>
+  </f:if>

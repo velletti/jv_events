@@ -933,6 +933,67 @@ class AjaxController extends BaseController
         }
 
     }
+    /**
+     * @param array|null $arguments
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
+     */
+    public function eventChangeLocIdAction( array $arguments=null ) {
+        if(!$arguments) {
+            $arguments = GeneralUtility::_GPmerged('tx_jvevents_ajax');
+        }
+        // https:/tango.ddev.local/index.php?uid=82&eID=jv_events&tx_jvevents_ajax[event]=2264&tx_jvevents_ajax[action]=eventUnlink&
+        $output['success'] = false ;
+        $output['msg'] = 'Starting Link to other Location ';
+        if( $arguments['event'] > 0 ) {
+            $output['event']['requestId'] =  $arguments['event'] ;
+            $output['msg'] = 'got Event';
+            if ( intval( $GLOBALS['TSFE']->fe_user->user['uid'] ) > 0 ) {
+                $output['event']['user'] =  intval( $GLOBALS['TSFE']->fe_user->user['uid'] ) ;
+                $output['msg'] = 'got Event and user is logged in';
+                /** @var \JVE\JvEvents\Domain\Model\Event $event */
+                $event = $this->eventRepository->findByUidAllpages( $output['event']['requestId'] , FALSE  , TRUE );
+                if( is_object($event )) {
+                    $output['msg'] = 'Found Event and user is logged in';
+                    //    $output['event']['Id'] = $event->getUid() ;
+                    $organizer = $event->getOrganizer() ;
+                    if( is_object( $organizer )) {
+                        $output['msg'] = 'got Event and has organizer';
+                        //     $output['event']['organizer'] = $organizer->getUid();
+                        if ($this->hasUserAccess($organizer)) {
+                            $output['msg'] = 'user has access';
+                            $output['event']['hasAccess'] = true ;
+                            /** @var Location $location */
+                            if( $location = $this->locationRepository->findByUidAllpages( intval($arguments['location']) , false ) ) {
+                                $output['msg'] = 'got Location from URI';
+                                if( $this->hasUserAccess ( $location->getOrganizer()) ) {
+                                    $event->setLocation( $location ) ;
+                                    $this->eventRepository->update($event) ;
+                                    $this->persistenceManager->persistAll() ;
+                                    $output['success'] = true ;
+                                    $output['msg'] = '';
+                                    // does not work - Uri is not generated !
+                                    // $this->redirect("show" , "Event" , "JvEvents", ['event' => $event->getUid() ] , intval($arguments['returnToPid'] )) ;
+
+                                    $target = GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST') . "/index.php?id=". intval($arguments['returnToPid'] ) ;
+                                    $target .= "&tx_jvevents_events%5Bevent%5D=" . $event->getUid() ;
+                                    $target .= "&tx_jvevents_events%5Baction%5D=edit"  ;
+                                    $target .= "&tx_jvevents_events%5Bcontroller%5D=Event"  ;
+                                    header("Location: " .  $target   );
+                                    exit;
+
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+
+        }
+        ShowAsJsonArrayUtility::show(  $output ) ;
+        exit ;
+    }
 
 
     /**
@@ -980,6 +1041,8 @@ class AjaxController extends BaseController
         ShowAsJsonArrayUtility::show(  $output ) ;
         exit ;
     }
+
+
 
     public function downloadIcal($arguments) {
 
