@@ -235,7 +235,8 @@ $returnArray = array(
 			'config' => array(
 				'type' => 'input',
 				'size' => 30,
-				'eval' => 'trim,required'
+				'eval' => 'trim,required',
+
 			),
 		),
         'price' => array(
@@ -565,7 +566,15 @@ $returnArray = array(
 				'size' => 7,
 				'eval' => 'date,required',
 				'checkbox' => 1,
-				'default' => time()
+				'default' => time(),
+                'fieldControl' => [
+                    'showEvent' => [
+                        'renderType' => 'showEventInFrontend'
+                    ] ,
+                     'dowloadIcal' => [
+                        'renderType' => 'getIcalLink'
+                    ]
+                ]
 			),
 		),
 		'start_time' => array(

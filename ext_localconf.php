@@ -136,6 +136,17 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1609762347] = [
     'class' => \JVE\JvEvents\FormEngine\FieldControl\EventLocationMapWizard::class
 ];
 
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1655213081] = [
+    'nodeName' => 'showEventInFrontend',
+    'priority' => 42,
+    'class' => \JVE\JvEvents\FormEngine\FieldControl\ShowEventInFrontend::class
+];
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1655213082] = [
+    'nodeName' => 'getIcalLink',
+    'priority' => 44,
+    'class' => \JVE\JvEvents\FormEngine\FieldControl\GetIcalLink::class
+];
+
 
 
 
