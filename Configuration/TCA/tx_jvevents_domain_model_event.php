@@ -73,6 +73,8 @@ $returnArray = array(
 			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
 			'config' => array(
 				'type' => 'select',
+                'eval' => 'int',
+                'default' => 0,
 				'renderType' => 'selectSingle',
 				'foreign_table' => 'sys_language',
 				'foreign_table_where' => 'ORDER BY sys_language.title',
@@ -87,6 +89,8 @@ $returnArray = array(
 			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
 			'config' => array(
 				'type' => 'select',
+                'eval' => 'int',
+                'default' => 0,
 				'renderType' => 'selectSingle',
 				'items' => array(
 					array('', 0),
@@ -1336,9 +1340,7 @@ if ( ! $configuration['enableSalesForce'] == 1 ) {
 	unset($returnArray['columns']['marketing_process_id'] ) ;
 }
 
-// if ( ! $configuration['enableSalesForceLightning'] == 1 ) {
 //    unset( $returnArray['columns']['sales_force_campaign_id']['config']['readOnly'] ) ;
-// }
 
 if ( ! $configuration['enableHubspot'] == 1 ) {
     unset($returnArray['columns']['store_in_hubspot'] ) ;

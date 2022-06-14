@@ -75,11 +75,12 @@ class ProcessCmdmap {
 	public function processCmdmap_postProcess(string $command, string $table, int $id, string $value, $Obj, $pasteUpdate, $pasteDatamap) {
         if( is_object( $Obj )) {
             if ($table == 'tx_jvevents_domain_model_event') {
+                $this->command = $command;
                 $this->id = (MathUtility::canBeInterpretedAsInteger($id)?$id:$Obj->substNEWwithIDs[$id]);
+                $extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class) ->get('jv_events');
 
-                if( $this->command == 'copy') {
-                    $this->command = $command;
-                    $extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class) ->get('jv_events');
+                if( $command == 'copy' ) {
+
 
                     $this->table = $table;
                     /** @var  ObjectManager $objectManager */

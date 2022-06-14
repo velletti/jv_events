@@ -48,6 +48,8 @@ $returnArray = array(
 			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
 			'config' => array(
 				'type' => 'select',
+                'eval' => 'int',
+                'default' => 0,
 				'renderType' => 'selectSingle',
 				'foreign_table' => 'sys_language',
 				'foreign_table_where' => 'ORDER BY sys_language.title',
@@ -62,6 +64,8 @@ $returnArray = array(
 			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
 			'config' => array(
 				'type' => 'select',
+                'eval' => 'int',
+                'default' => 0,
 				'renderType' => 'selectSingle',
 				'items' => array(
 					array('', 0),
