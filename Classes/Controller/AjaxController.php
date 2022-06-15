@@ -1053,7 +1053,7 @@ class AjaxController extends BaseController
             if ( $event && $event->getUid() == $uid ) {
                 $output['status'] = 200 ;
                 $output['content-type'] = "text/calendar" ;
-                $output['filename'] = "tango-event-import-" . date("dmy-His" ) . ".ics";
+                $output['filename'] = "event-import-" . date("dmy-His" ) . ".ics";
 
                 $output['data'] = "BEGIN:VCALENDAR" . PHP_EOL
                     ."VERSION:2.0" . PHP_EOL
