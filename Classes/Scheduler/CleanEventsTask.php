@@ -270,7 +270,7 @@ class CleanEventsTask extends AbstractTask
                     $usersData = array() ;
                     if(is_array($users)) {
                         foreach ( $users as $userUid ) {
-                            $feuser = $queryFeUser->select('uid' , 'lastlogin' , "username", 'usergroup' )->from('fe_users')->where(
+                            $feuser = $queryFeUser->select('uid' , 'lastlogin' , "username", 'usergroup' , 'is_online')->from('fe_users')->where(
                                 $queryFeUser->expr()->eq('uid' , $queryFeUser->createNamedParameter($userUid , Connection::PARAM_INT )
                                 ))->execute()->fetch() ;
                             if( $feuser) {
@@ -279,8 +279,8 @@ class CleanEventsTask extends AbstractTask
                                 if( $feuser['lastlogin'] > $lastLogin ) {
                                     $lastLogin = $feuser['lastlogin'] ;
                                 }
-                                if( $feuser['isonline'] > $lastLogin ) {
-                                    $lastLogin = $feuser['isonline'] ;
+                                if( $feuser['is_online'] > $lastLogin ) {
+                                    $lastLogin = $feuser['is_online'] ;
                                 }
                                 $userGroups = GeneralUtility::trimExplode("," , $feuser['usergroup']  ) ;
                                 if(in_array("3" , $userGroups ) ) {
@@ -406,7 +406,7 @@ class CleanEventsTask extends AbstractTask
                 $usersData = array() ;
                 if(is_array($users)) {
                     foreach ( $users as $userUid ) {
-                        $feuser = $queryFeUser->select('uid' , 'lastlogin' , "username", 'usergroup' )->from('fe_users')->where(
+                        $feuser = $queryFeUser->select('uid' , 'lastlogin' , "username", 'usergroup' , 'is_online')->from('fe_users')->where(
                             $queryFeUser->expr()->eq('uid' , $queryFeUser->createNamedParameter($userUid , Connection::PARAM_INT )
                         ))->execute()->fetch() ;
                         if( $feuser) {
@@ -414,6 +414,9 @@ class CleanEventsTask extends AbstractTask
                             $usersData[] =  $feuser ;
                             if( $feuser['lastlogin'] > $lastLogin ) {
                                 $lastLogin = $feuser['lastlogin'] ;
+                            }
+                            if( $feuser['is_online'] > $lastLogin ) {
+                                $lastLogin = $feuser['is_online'] ;
                             }
                         }
                     }
@@ -478,7 +481,7 @@ class CleanEventsTask extends AbstractTask
         }
         $debug[] = "Number of Removed canceled Events all organizer: " . $countTotalResult ;
         $debug[] = "" ;
-        $debug[] = "List of Ogranizer that should be disabled" ;
+        $debug[] = "List of Organizer that should be disabled" ;
         $debug[] =  $debug2 ;
 
         return $debug;
