@@ -259,10 +259,10 @@ class CleanEventsTask extends AbstractTask
         $queryFeUser = $connectionPool->getQueryBuilderForTable('fe_users') ;
 
         if( $organizers ) {
-            $debug[] = "Found Organizers: " . count( $organizers) . " now searching for those with lower Sorting Value than : " . 10000 ;
+            $debug[] = "Found Organizers: " . count( $organizers) . " now searching for those with lower Sorting Value than : " . 20005 ;
             /** @var Organizer $organizer */
             foreach ($organizers as $organizer ) {
-                if ( $organizer->getSorting() <  ( 10000 + 5 ) ) {
+                if ( $organizer->getSorting() <  ( 20000 + 5 ) ) {
                     $isVip = false ;
 
                     $lastLogin = 0 ;
@@ -315,50 +315,6 @@ class CleanEventsTask extends AbstractTask
             }
         }
         return $debug ;
-
-    }
-
-    private function doResortingOrganizerOld($debug ) {
-        $timeInPast  =  time() - intval( $this->resortingOrganizer ) * 60 * 60 *24 ;
-
-
-        /** @var ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
-        /** @var QueryBuilder $queryBuilder */
-        $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_jvevents_domain_model_organizer') ;
-        /** @var Connection $connection */
-        $connection = $connectionPool->getConnectionForTable('tx_jvevents_domain_model_organizer') ;
-
-
-        /** @var QueryBuilder $queryCount */
-        $queryCount = $connectionPool->getQueryBuilderForTable('tx_jvevents_domain_model_organizer');
-        $countResult = $queryCount->count( '*' )->from('tx_jvevents_domain_model_organizer' )
-            ->where( $queryBuilder->expr()->lte('latest_event',  $timeInPast ) )
-            ->andWhere($queryBuilder->expr()->gt('sorting', 20 ))
-            ->andWhere($queryBuilder->expr()->lt('sorting', 100099999 ))
-            ->execute()->fetchColumn(0) ;
-
-
-        $queryBuilder ->update('tx_jvevents_domain_model_organizer')
-            ->where( $queryBuilder->expr()->lte('latest_event',  $timeInPast ) )
-            ->andWhere($queryBuilder->expr()->gt('sorting', 20 ))
-            ->andWhere($queryBuilder->expr()->lt('sorting', 100099999 ))
-            ->set('sorting', $queryBuilder->quoteIdentifier('sorting') . " + " . $this->resortingOrganizer   , false )
-            ->set('tstamp',        $queryBuilder->quoteIdentifier('tstamp') , false )
-        ;
-
-        // $this->debugQuery($queryBuilder) ;
-
-        $queryBuilder->execute() ;
-
-        if ( !$connection->errorInfo() ) {
-            $debug[] = "Updated  sorting of '" . $countResult .  "' Organizers  with latest_event older than " . $timeInPast . " - " . date( "d.m.Y H:i" , $timeInPast ) ;
-
-            return $debug;
-        } else {
-            $debug[] = array('faultstring' => 'Line: ' . __LINE__ . ' Error on update ', 'mode' => 'update', " error " => $connection->errorInfo() );
-            return $debug ;
-        }
 
     }
 
