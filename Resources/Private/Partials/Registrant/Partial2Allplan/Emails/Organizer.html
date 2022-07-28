@@ -48,6 +48,7 @@
 			{f:translate(key: 'tx_jvevents_domain_model_registrant.gender')}:
 			<f:if condition="{registrant.gender}==1">{f:translate(key: 'register_gender_male')}</f:if>
 			<f:if condition="{registrant.gender}==2">{f:translate(key: 'register_gender_female')}</f:if>
+			<f:if condition="{registrant.gender}==3">{f:translate(key: 'register_gender_diverse')}</f:if>
 			<br/>
 			{f:translate(key: 'tx_jvevents_domain_model_registrant.title')}: {registrant.title} <br/>
 			{f:translate(key: 'tx_jvevents_domain_model_registrant.first_name')}: {registrant.firstname} <br/>
@@ -112,7 +113,7 @@ New Registrierung for Event id: {event.uid} - <f:format.date format="d.m.Y">{eve
 {f:translate(key: 'register_head_participant_data' , default:'Participants Data')}
 ID: {registrant.uid} | <f:format.date format="d.m.Y">{registrant.created}</f:format.date>
 *********************************
-{f:translate(key: 'tx_jvevents_domain_model_registrant.gender')}: 		<f:if condition="{registrant.gender}==1">{f:translate(key: 'register_gender_male')}</f:if><f:if condition="{registrant.gender}==2">{f:translate(key: 'register_gender_female')}</f:if>
+{f:translate(key: 'tx_jvevents_domain_model_registrant.gender')}: 		<f:if condition="{registrant.gender}==1">{f:translate(key: 'register_gender_male')}</f:if><f:if condition="{registrant.gender}==2">{f:translate(key: 'register_gender_female')}</f:if><f:if condition="{registrant.gender}==3">{f:translate(key: 'register_gender_diverse')}</f:if>
 
 {f:translate(key: 'tx_jvevents_domain_model_registrant.title')}: {registrant.title}
 {f:translate(key: 'tx_jvevents_domain_model_registrant.first_name')}: {registrant.firstname}

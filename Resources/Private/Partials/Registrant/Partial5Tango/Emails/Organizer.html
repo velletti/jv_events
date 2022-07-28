@@ -35,6 +35,7 @@
 		<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
 			<f:if condition="{registrant.gender}==1">{f:translate(key: 'register_gender_male')}</f:if>
 			<f:if condition="{registrant.gender}==2">{f:translate(key: 'register_gender_female')}</f:if>
+			<f:if condition="{registrant.gender}==3">{f:translate(key: 'register_gender_diverse')}</f:if>
 			<br/>
 			{registrant.firstname}  {registrant.lastname} <br/><br/>
 			{f:translate(key: 'tx_jvevents_domain_model_registrant.email')}: {registrant.email} <br/>
@@ -69,6 +70,7 @@
 
 				<f:if condition="{registrant.more1}==1">{f:translate(key: 'register_gender_male')}</f:if>
 				<f:if condition="{registrant.more1}==2">{f:translate(key: 'register_gender_female')}</f:if>
+				<f:if condition="{registrant.more1}==3">{f:translate(key: 'register_gender_diverse')}</f:if>
 				<br/>
 				 {registrant.more2}  {registrant.more3} <br/>
 			</p>
@@ -95,7 +97,7 @@ New Registrierung for Event id: {event.uid} - <f:format.date format="d.m.Y">{eve
 {f:translate(key: 'register_head_participant_data' , default:'Participants Data')}
 ID: {registrant.uid} | <f:format.date format="d.m.Y">{registrant.created}</f:format.date>
 *********************************
-{f:translate(key: 'tx_jvevents_domain_model_registrant.gender')}: 		<f:if condition="{registrant.gender}==1">{f:translate(key: 'register_gender_male')}</f:if><f:if condition="{registrant.gender}==2">{f:translate(key: 'register_gender_female')}</f:if>
+{f:translate(key: 'tx_jvevents_domain_model_registrant.gender')}: 		<f:if condition="{registrant.gender}==1">{f:translate(key: 'register_gender_male')}</f:if><f:if condition="{registrant.gender}==2">{f:translate(key: 'register_gender_female')}</f:if>	<f:if condition="{registrant.gender}==3">{f:translate(key: 'register_gender_diverse')}</f:if>
 
 {f:translate(key: 'tx_jvevents_domain_model_registrant.first_name')}: {registrant.firstname}
 {f:translate(key: 'tx_jvevents_domain_model_registrant.last_name')}: {registrant.lastname}
@@ -105,7 +107,7 @@ ID: {registrant.uid} | <f:format.date format="d.m.Y">{registrant.created}</f:for
 
 <f:if condition="{registrant.more2} || {registrant.more3}">
 *********************************
-{f:translate(key: 'tx_jvevents_domain_model_registrant.gender')}: 		<f:if condition="{registrant.more1}==1">{f:translate(key: 'register_gender_male')}</f:if><f:if condition="{registrant.more1}==2">{f:translate(key: 'register_gender_female')}</f:if>
+{f:translate(key: 'tx_jvevents_domain_model_registrant.gender')}: 		<f:if condition="{registrant.more1}==1">{f:translate(key: 'register_gender_male')}</f:if><f:if condition="{registrant.more1}==2">{f:translate(key: 'register_gender_female')}</f:if>	<f:if condition="{registrant.more1}==3">{f:translate(key: 'register_gender_diverse')}</f:if>
 
 {f:translate(key: 'tx_jvevents_domain_model_registrant.first_name')}: {registrant.more2} <br/>
 {f:translate(key: 'tx_jvevents_domain_model_registrant.last_name')}: {registrant.more3} <br/>

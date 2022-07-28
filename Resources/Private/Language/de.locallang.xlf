@@ -73,6 +73,10 @@
                 <source>Mr.</source>
                 <target>Herr</target>
             </trans-unit>
+            <trans-unit id="register_gender_diverse" approved="yes">
+                <source>Div.</source>
+                <target>Div.</target>
+            </trans-unit>
             <trans-unit id="register_gender_female_follower">
                 <source>Follower (Role woman)</source>
                 <target>Folgende(r) (Rolle Frau)</target>

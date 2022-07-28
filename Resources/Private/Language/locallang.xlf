@@ -82,6 +82,9 @@
             <trans-unit id="register_gender_male">
                 <source>Mr.</source>
             </trans-unit>
+            <trans-unit id="register_gender_diverse">
+                <source>Div.</source>
+            </trans-unit>
             <trans-unit id="register_gender_female_follower">
                 <source>Follower (Role woman)</source>
             </trans-unit>

@@ -222,11 +222,19 @@ class RegistrantController extends BaseController
             $all = false ;
             $fields = $this->settings['register']['allformFields'] ;
         }
+        switch ( $registrant->getGender() ) {
+            case 1:
+                $gender = $this->translate("register_gender_female" ) ;
+                break;
+            case 2:
+                $gender = $this->translate("register_gender_male" ) ;
+                break;
+            default:
+                $gender = $this->translate("register_gender_diverse" ) ;
+                break;
 
-        $gender = $this->translate("register_gender_female" ) ;
-        if( $registrant->getGender() < 2 ) {
-            $gender = $this->translate("register_gender_male" ) ;
         }
+
         $phone = " " . $registrant->getPhone() ;
         if ( str_replace( " " , "" , trim($phone )) == trim($phone) ) {
             $old = $phone ;

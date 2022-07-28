@@ -312,9 +312,12 @@ class RegisterSalesforceSignal {
         $jsonArray['last_name'] = trim($registrant->getLastName()) ;
 
         // ToDo Maybe need to create a kind fo mapping including translation ..
-        $jsonArray['salutation'] = "Mrs." ;
+        $jsonArray['salutation'] = "" ;
         if( $registrant->getGender() == 1) {
             $jsonArray['salutation'] = "Mr." ;
+        }
+        if( $registrant->getGender() == 2) {
+            $jsonArray['salutation'] = "Mrs." ;
         }
 
         $jsonArray['company'] = trim($registrant->getCompany()) ;

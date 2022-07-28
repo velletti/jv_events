@@ -273,10 +273,15 @@ class RegisterHubspotSignal {
         // ToDo Maybe need to create a kind fo mapping including translation ..
 
 
+        // JVE 27.7.2022 ToDo: set Correct Text for Diverse on Hubspot
 
-        $jsonArray['salutation'] = "Mrs." ;
+        $jsonArray['salutation'] = "D" ;
+
         if( $registrant->getGender() == 1) {
             $jsonArray['salutation'] = "Mr." ;
+        }
+        if( $registrant->getGender() == 2) {
+            $jsonArray['salutation'] = "Mrs." ;
         }
 
         $jsonArray['company'] = trim($registrant->getCompany()) ;
