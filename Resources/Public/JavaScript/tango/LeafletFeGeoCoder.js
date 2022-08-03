@@ -6,13 +6,13 @@
         $latitude: null,
         $longitude: null,
         $fieldLat: null,
-        $fieldLon: null,
+        $fieldLng: null,
         $fieldLatActive: null,
         $geoCodeUrl: null,
         $geoCodeUrlShort: null,
         $tilesUrl: null,
         $tilesCopy: null,
-        $zoomLevel: 10 ,
+        $zoomLevel: 12 ,
         $marker: null,
         $map: null,
         $iconClose: null
@@ -30,7 +30,7 @@
         LeafFE.$geoCodeUrl = LeafFE.$element.attr('data-geocodeurl');
         LeafFE.$geoCodeUrlShort = LeafFE.$element.attr('data-geocodeurlshort');
         LeafFE.$fieldLat = LeafFE.$element.attr('data-namelat');
-        LeafFE.$fieldLon = LeafFE.$element.attr('data-namelng');
+        LeafFE.$fieldLng = LeafFE.$element.attr('data-namelng');
         LeafFE.$fieldLatActive = LeafFE.$element.attr('data-namelat-active');
 
         // add the container to display the map as a nice overlay
@@ -59,7 +59,7 @@
         if (LeafFE.$latitude == null || LeafFE.$longitude == null) {
             LeafFE.$latitude = LeafFE.$gLatitude;
             LeafFE.$longitude = LeafFE.$gLongitude;
-            LeafFE.$zoomLevel = 10;
+            LeafFE.$zoomLevel = 5;
         }
         LeafFE.$map = L.map('t3js-location-map-container', {
             center: [LeafFE.$latitude, LeafFE.$longitude],
@@ -69,9 +69,14 @@
             attribution: LeafFE.$tilesCopy
         }).addTo(LeafFE.$map);
 
-        LeafFE.$marker = L.marker([LeafFE.$latitude, LeafFE.$longitude], {
+        var myIcon = L.icon({
+            iconUrl: '/typo3conf/ext/jv_events/Resources/Public/Css/images/marker-icon.png' ,
+            iconRetinaUrl: '/typo3conf/ext/jv_events/Resources/Public/Css/images/marker-icon-2x.png' ,
+            shadowUrl: '/typo3conf/ext/jv_events/Resources/Public/Css/images/marker-shadow.png' ,
             draggable: true
-        }).addTo(LeafFE.$map);
+        });
+
+        LeafFE.$marker = L.marker([LeafFE.$latitude, LeafFE.$longitude], { icon: myIcon }).addTo(LeafFE.$map);
 
         let position = LeafFE.$marker.getLatLng();
 
@@ -82,19 +87,15 @@
         LeafFE.$map.on('click', function (event) {
             LeafFE.$marker.setLatLng(event.latlng);
             $( LeafFE.$fieldLat ).val(LeafFE.$marker.getLatLng().lat);
-            $( LeafFE.$fieldLon ).val(LeafFE.$marker.getLatLng().lng);
+            $( LeafFE.$fieldLng ).val(LeafFE.$marker.getLatLng().lng);
         });
 
         $('#jvevents-geo-update').on('click', function () {
             // set visual coordinates to LAT LNG Fields in location Form
-            console.log( "Klicked") ;
-            console.log( "Lat Field " + LeafFE.$fieldLat ) ;
-            console.log( "Lng Field " + LeafFE.$fieldLon ) ;
-            console.log( "marker LNG: " + LeafFE.$marker.getLatLng().lat ) ;
-            console.log( "Map LNG: " + LeafFE.$longitude ) ;
+            LeafFE.$marker.setLatLngs([LeafFE.$latitude , LeafFE.$longitude ])
 
             $( LeafFE.$fieldLat ).val(LeafFE.$latitude);
-            $( LeafFE.$fieldLon ).val(LeafFE.$longitude);
+            $( LeafFE.$fieldLng ).val(LeafFE.$longitude);
             // enable also latitude, if not already done by user.
 
         });
@@ -123,7 +124,11 @@
                                         LeafFE.$longitude = value;
                                     }
                                 });
+                                $( LeafFE.$fieldLat ).val(LeafFE.$latitude);
+                                $( LeafFE.$fieldLng ).val(LeafFE.$longitude);
+                                LeafFE.$zoomLevel = 13 ;
                             }
+
                         }
                     });
                 } else {
@@ -135,9 +140,11 @@
                             LeafFE.$longitude = value;
                         }
                     });
+                    $( LeafFE.$fieldLat ).val(LeafFE.$latitude);
+                    $( LeafFE.$fieldLng ).val(LeafFE.$longitude);
+                    LeafFE.$zoomLevel = 10 ;
                 }
-                $( LeafFE.$fieldLat ).val(LeafFE.$latitude);
-                $( LeafFE.$fieldLng ).val(LeafFE.$longitude);
+
             }
         });
     };

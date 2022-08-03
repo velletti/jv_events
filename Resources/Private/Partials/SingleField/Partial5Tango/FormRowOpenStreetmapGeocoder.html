@@ -1,14 +1,14 @@
 {namespace jve=JVE\JvEvents\ViewHelpers}
 
 <div class="alert alert-warning">
-    <h3>Hinweis 3.8.2022</h3>
-    Beim Erstellen oder Ändern einer Adresse hat der Server bisher Daten von Google nutzen können, um die Position zu ermitteln.  <br>
-    Das klappt im Moment nicht, auch das zeigen der Karte klappt nur teilweise. <br>
-    Wer neue Locations braucht oder die Adresse einer Location  ändern muss, bitte ich um Geduld. Man kann die Geo Koordinaten derzeit nur von Hand eintragen.<br>
+    <h3>Hinweis 3.8.2022 - 12:00</h3>
+
+    Das Anzeigen der Karte klappt im Moment nur teilweise und die Kordinaten werden derzeit nur korrekt für bereits gespeicherte Adressen ermittelt.<br>
+    Neue oder geänderte Adressen deshalb derzeit  <b>ZWEIMAL<b> speichern!<br>
+    Man kann die Geo-Koordinaten derzeit auch von Hand eintragen, falls Probleme auftreten.<br>
     <br>
-    Um Speichern zu können, diese 2 Zahlen eintragen: <br>
-    "lon":"11.4868119"  | "lat":"48.1137516"<br>
-    und mich hinterher per Email / WhatsApp kontaktieren
+    Zum Beispiel: <br>
+    "lon":"11.47121"  | "lat":"48.11483" für den Marienplatz München <br>
 </div>
 <div class="form-group display-data row">
     <f:variable name="propertyName">{object}.{property}</f:variable>
@@ -17,8 +17,7 @@
     <f:render partial="FormErrorSingle" arguments="{property: errorProperty, field: propertyName2}"/>
 
 
-
-    <div class="col-2 col-sm-4">
+    <div class="col-2 col-sm-4 d-none">
         <span id="jvevents-geo-update" class="btn btn-primary mx-2" >
             <i class="{fa-icon}" title="{f:translate(key:'jv_events_model_location.press-refresh.title')}"></i>
         </span>
@@ -114,7 +113,7 @@
      data-lat="{location.lat}" data-log="{location.lng}"
      data-glat="48.1148263" data-glog="11.4712236"
      data-namelat="input#lat" data-namelng="input#lng"
-     data-copy="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
+     data-copy="&copy; <a target='_blank' href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
 
      data-geocodeurl="https://nominatim.openstreetmap.org/search/{location.addressEncoded}?format=json&addressdetails=1&limit=1&polygon_svg=1"
      data-geocodeurlshort="https://nominatim.openstreetmap.org/search/{location.cityEncoded}?format=json&addressdetails=1&limit=1&polygon_svg=1"
