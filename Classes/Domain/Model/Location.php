@@ -233,6 +233,29 @@ class Location extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         return $this->city;
     }
+
+    /**
+     * Returns the city but URL Endocded
+     *
+     * @return string $city
+     */
+    public function getCityEncoded()
+    {
+        return urlencode( $this->city );
+    }
+
+    /**
+     * Returns the Address  URL Endocded
+     *
+     * @return string $city
+     */
+    public function getAddressEncoded()
+    {
+        $address = preg_replace('/^([^\/]*).*$/', '$1', $this->streetAndNr ?? '') ;
+        $address .= ($this->zip ) ? (' ' . $this->zip ) : '' ;
+        $address .= ($this->city ) ? (' ' . $this->city ) : '' ;
+        return urlencode( $address  );
+    }
     
     /**
      * Sets the city
