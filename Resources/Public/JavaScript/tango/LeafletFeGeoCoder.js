@@ -30,7 +30,7 @@
         LeafFE.$geoCodeUrl = LeafFE.$element.attr('data-geocodeurl');
         LeafFE.$geoCodeUrlShort = LeafFE.$element.attr('data-geocodeurlshort');
         LeafFE.$fieldLat = LeafFE.$element.attr('data-namelat');
-        LeafFE.$fieldLon = LeafFE.$element.attr('data-namelon');
+        LeafFE.$fieldLon = LeafFE.$element.attr('data-namelng');
         LeafFE.$fieldLatActive = LeafFE.$element.attr('data-namelat-active');
 
         // add the container to display the map as a nice overlay
@@ -137,7 +137,7 @@
                     });
                 }
                 $( LeafFE.$fieldLat ).val(LeafFE.$latitude);
-                $( LeafFE.$fieldLon ).val(LeafFE.$longitude);
+                $( LeafFE.$fieldLng ).val(LeafFE.$longitude);
             }
         });
     };
