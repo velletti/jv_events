@@ -37,7 +37,9 @@
                 <f:render partial="Location/Single/Partial{settings.LayoutSingle}/FormFields" arguments="{_all}" />
 
                 <div class="text-right">
-                    <f:form.submit class="btn btn-primary" value="{f:translate(key: 'form.save', default: 'Save')}" />
+                    <f:form.submit class="btn btn-primary"
+                                   onclick=" this.submit(); return false;"
+                                   value="{f:translate(key: 'form.save', default: 'Save')}" />
                 </div>
             </f:form>
 

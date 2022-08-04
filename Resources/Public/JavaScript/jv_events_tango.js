@@ -12,9 +12,6 @@ jQuery(document).ready(function() {
 	if( $(".jv-events-tags-edit").length ){
         jv_events_init_edit_tags() ;
     }
-	if( $("FORM#location_edit").length ) {
-        jv_events_init_edit_location() ;
-    }
     if ( jQuery("#streetAndNr").length ) {
         jQuery("#streetAndNr").on("keydown" , function( event) {
             jQuery("#jvevents-geo-update").removeClass('opacity-2') ;
@@ -119,25 +116,6 @@ function jv_events_init_AjaxMenu() {
     }
 }
 
-function jv_events_init_edit_location() {
-
-    document.getElementById('streetAndNr').addEventListener("change", function(){
-        var address = updateAddressFromFields() ;
-        findAddress({'address': address }) ;
-    });
-    document.getElementById('zip').addEventListener("change", function(){
-        var address = updateAddressFromFields() ;
-        findAddress({'address': address }) ;
-    }) ;
-    document.getElementById('city').addEventListener("change", function(){
-        var address = updateAddressFromFields() ;
-        findAddress({'address': address }) ;
-    });
-    document.getElementById('jv_events_country').addEventListener("change", function(){
-        var address = updateAddressFromFields() ;
-        findAddress({'address': address }) ;
-    } );
-}
 
 function jv_events_init_edit_tags() {
     var jvEventsNewTags = '' ;

@@ -1,6 +1,7 @@
 {namespace jve=JVE\JvEvents\ViewHelpers}
+{namespace v=FluidTYPO3\Vhs\ViewHelpers}
 
-<div class="alert alert-warning">
+<div class="alert alert-warning d-none">
     <h3>Hinweis 3.8.2022 - 12:00</h3>
 
     Das Anzeigen der Karte klappt im Moment nur teilweise und die Kordinaten werden derzeit nur korrekt für bereits gespeicherte Adressen ermittelt.<br>
@@ -17,11 +18,11 @@
     <f:render partial="FormErrorSingle" arguments="{property: errorProperty, field: propertyName2}"/>
 
 
-    <div class="col-2 col-sm-4 d-none">
+    <div class="col-2 col-sm-4">
         <span id="jvevents-geo-update" class="btn btn-primary mx-2" >
             <i class="{fa-icon}" title="{f:translate(key:'jv_events_model_location.press-refresh.title')}"></i>
         </span>
-        <span class="d-none d-md-inline-block">
+        <span class="d-md-inline-block">
             <f:if condition="{translationKey}">
                 <f:then>
                     <f:translate key="{translationKey}">{translationKey}</f:translate>
@@ -115,12 +116,20 @@
      data-namelat="input#lat" data-namelng="input#lng"
      data-copy="&copy; <a target='_blank' href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
 
+     data-namezip="input#zip"
+     data-namecity="input#city"
+     data-namestreet="input#streetAndNr"
+     data-namecountry="select#jv_events_country"
+     data-geocodebase="https://nominatim.openstreetmap.org/search/"
+     data-geocodeoptions="?format=json&addressdetails=1&limit=1&polygon_svg=1"
      data-geocodeurl="https://nominatim.openstreetmap.org/search/{location.addressEncoded}?format=json&addressdetails=1&limit=1&polygon_svg=1"
      data-geocodeurlshort="https://nominatim.openstreetmap.org/search/{location.cityEncoded}?format=json&addressdetails=1&limit=1&polygon_svg=1"
 ></div>
+<v:asset.prefetch domains="nominatim.openstreetmap.org" />
+<v:asset.script path="EXT:jv_events/Resources/Public/JavaScript/leaflet-1-7-1.js" name="leaflet1" async="false" content="header"/>
+<v:asset.script path="EXT:jv_events/Resources/Public/JavaScript/tango/LeafletFeGeoCoder.js" name="leaflet2" async="false"  content="footer"/>
+<v:asset.style path="EXT:jv_events/Resources/Public/Css/leaflet-1-7-1.css" name="leaflet3"   content="header"/>
+<v:asset.style path="EXT:jv_events/Resources/Public/Css/tango/leafletFrontend.css" name="leaflet4"   content="footer"/>
 
-<script type="text/javascript" src="/typo3conf/ext/jv_events/Resources/Public/JavaScript/leaflet-1-7-1.js"></script>
-<script type="text/javascript" src="/typo3conf/ext/jv_events/Resources/Public/JavaScript/tango/LeafletFeGeoCoder.js"></script>
-<link rel="stylesheet" media="all" type="text/css" href="/typo3conf/ext/jv_events/Resources/Public/Css/leaflet-1-7-1.css" />
-<link rel="stylesheet" media="all" type="text/css" href="/typo3conf/ext/jv_events/Resources/Public/Css/tango/leafletFrontend.css" />
+
 
