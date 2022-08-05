@@ -13,6 +13,8 @@
         $fieldStreet: null,
         $fieldCountry: null,
         $mapTab: null ,
+        $movemarkerallowed: false ,
+        $addMarkerFrom: false ,
 
         $geoCodeUrl: null,
         $geoCodeUrlShort: null,
@@ -21,6 +23,7 @@
         $tilesUrl: null,
         $tilesCopy: null,
         $zoomLevel: 12 ,
+        $zoomAfterGeocode: true ,
         $marker: null,
         $map: null,
         $iconClose: null
@@ -29,18 +32,32 @@
     LeafFE.init = function (element) {
         // basic variable initialisation, uses data vars on the trigger button
         LeafFE.$element = element;
-        LeafFE.$latitude = LeafFE.$element.attr('data-lat');
-        LeafFE.$longitude = LeafFE.$element.attr('data-lng');
-        LeafFE.$gLatitude = LeafFE.$element.attr('data-glat');
-        LeafFE.$gLongitude = LeafFE.$element.attr('data-glon');
-        LeafFE.$tilesUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
-        LeafFE.$tilesCopy = LeafFE.$element.attr('data-copy');
-        LeafFE.$geoCodeBase = LeafFE.$element.attr('data-geocodebase');
+        LeafFE.$latitude        = LeafFE.$element.attr('data-lat');
+        LeafFE.$longitude       = LeafFE.$element.attr('data-lng');
+        LeafFE.$gLatitude       = LeafFE.$element.attr('data-glat');
+        LeafFE.$gLongitude      = LeafFE.$element.attr('data-glon');
+        LeafFE.$tilesUrl        = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+        LeafFE.$tilesCopy       = LeafFE.$element.attr('data-copy');
+        LeafFE.$geoCodeBase     = LeafFE.$element.attr('data-geocodebase');
         LeafFE.$geoCodeOptions  = LeafFE.$element.attr('data-geocodeoptions');
         LeafFE.$geoCodeUrl      = LeafFE.$element.attr('data-geocodeurl');
         LeafFE.$geoCodeUrlShort = LeafFE.$element.attr('data-geocodeurlshort');
         LeafFE.$fieldLat        = LeafFE.$element.attr('data-namelat');
         LeafFE.$fieldLng        = LeafFE.$element.attr('data-namelng');
+        LeafFE.$movemarkerallowed   = LeafFE.$element.attr('data-movemarkerallowed');
+        if( LeafFE.$element.attr('data-mapzoom')) {
+            LeafFE.$zoomLevel     = LeafFE.$element.attr('data-mapzoom');
+            LeafFE.$zoomAfterGeocode   = false;
+            console.log( " map Zoom after GeoCode is fix " + LeafFE.$zoomLevel  ) ;
+
+        }
+        if( LeafFE.$element.attr('data-addmarkerfrom')) {
+            console.log( " addmarkerfrom : " + LeafFE.$element.attr('data-addmarkerfrom') ) ;
+            LeafFE.$addMarkerFrom     = $( LeafFE.$element.attr('data-addmarkerfrom')) ;
+
+        }
+
+
         LeafFE.$fieldZip        = LeafFE.$element.attr('data-namezip');
         LeafFE.$fieldCity       = LeafFE.$element.attr('data-namecity');
         LeafFE.$fieldStreet     = LeafFE.$element.attr('data-namestreet');
@@ -68,104 +85,172 @@
         if (((!LeafFE.$latitude || !LeafFE.$longitude) || (LeafFE.$latitude == 0 && LeafFE.$longitude == 0)) && LeafFE.$geoCodeUrl != null) {
             LeafFE.geocode();
         }
-
+        console.log( "create map start ") ;
         // The ultimate fallback: if one of the coordinates is empty, fallback to München.
 
         if (LeafFE.$latitude == null || LeafFE.$longitude == null) {
+            console.log( " fallback ") ;
             LeafFE.$latitude = LeafFE.$gLatitude;
             LeafFE.$longitude = LeafFE.$gLongitude;
             LeafFE.$zoomLevel = 5;
         }
         LeafFE.$map = L.map('t3js-location-map-container', {
-            center: [LeafFE.$latitude, LeafFE.$longitude],
+            center: [LeafFE.$latitude , LeafFE.$longitude] ,
             zoom: LeafFE.$zoomLevel
         });
-        L.tileLayer(LeafFE.$tilesUrl, {
-            attribution: LeafFE.$tilesCopy
-        }).addTo(LeafFE.$map);
+            console.log( " map CREATED  ") ;
 
-        var myIcon = L.icon({
+            L.tileLayer(LeafFE.$tilesUrl, {
+                attribution: LeafFE.$tilesCopy
+            }).addTo(LeafFE.$map);
+
+            let myIcon = LeafFE.getIcon( false , false ) ;
+
+            LeafFE.$marker = L.marker([LeafFE.$latitude, LeafFE.$longitude], { icon: myIcon }).addTo(LeafFE.$map);
+
+            LeafFE.$marker.on('dragend', function (event) {
+                LeafFE.$marker = event.target;
+            });
+
+            if( LeafFE.$movemarkerallowed ) {
+                LeafFE.$map.on('click', function (event) {
+                    LeafFE.$map.panTo( event.latlng ) ;
+                    LeafFE.$map.setZoom(14) ;
+
+                    LeafFE.$zoomLevel = 14 ;
+
+                    LeafFE.$marker.setLatLng(event.latlng);
+                    if( $( LeafFE.$fieldLat ).length && $( LeafFE.$fieldLng ).length ) {
+                        $( LeafFE.$fieldLat ).val(LeafFE.$marker.getLatLng().lat);
+                        $( LeafFE.$fieldLng ).val(LeafFE.$marker.getLatLng().lng);
+                    }
+                    LeafFE.reInitMap() ;
+
+                }) ;
+            }
+
+
+
+
+            $('#jvevents-geo-update').on('click', function () {
+                LeafFE.updateAddress() ;
+
+                $( LeafFE.$fieldLat ).val(LeafFE.$latitude);
+                $( LeafFE.$fieldLng ).val(LeafFE.$longitude);
+                // enable also latitude, if not already done by user.
+
+            });
+            if ( $( LeafFE.$fieldCity ).length ) {
+                $(LeafFE.$fieldCity).on('change blur ', function() {
+                    LeafFE.updateAddress();
+
+                } ) ;
+            }
+
+            if ( $( LeafFE.$fieldStreet ).length ) {
+                $(LeafFE.$fieldStreet).on('change blur ', function() {
+                    LeafFE.updateAddress()  ;
+                } ) ;
+            }
+            if ( $( LeafFE.$fieldCountry ).length ) {
+                $(LeafFE.$fieldCountry).on('change blur ', function() {
+                    LeafFE.updateAddress()  ;
+                } ) ;
+            }
+
+            if ( $( LeafFE.$mapTab ).length ) {
+                $(LeafFE.$mapTab).on('click', function () {   // When tab is displayed...
+                    LeafFE.reInitMap() ;
+
+                });
+            }
+            LeafFE.getBounds() ;
+            if ( LeafFE.$addMarkerFrom ) {
+                console.log("add more markers ")
+                refreshMarker = setInterval(function () {
+                    clearInterval(refreshMarker);
+                    let myIcon2 = LeafFE.getIcon( [12,21] , [6,21] ) ;
+                    jQuery('.tx-jv-events DIV.jv-events-row').each( function (i) {
+
+                     //   L.marker([jQuery(this).data("latitude"),jQuery(this).data("longitude")], { icon: myIcon2 }).addTo(LeafFE.$map);
+                    }) ;
+
+
+
+                }, 1000);
+            }
+
+
+            LeafFE.$map.on( 'zoomstart zoom zoomend movestart move moveend' , function() {
+                LeafFE.getBounds() ;
+                jv_events_refreshList() ;
+            }) ;
+
+    };
+
+    LeafFE.reInitMap = function() {
+        if( LeafFE.$map ) {
+            console.log("remove map") ;
+            LeafFE.$map.off() ;
+            LeafFE.$map.remove() ;
+            if ($('#t3js-location-map-wrap').length) {
+                $('#t3js-location-map-wrap').remove() ;
+            }
+            $('div#map').html("") ;
+        }
+        refreshIntervalId = setInterval(function () {
+            LeafFE.addMapMarkup();
+            LeafFE.createMap() ;
+
+            LeafFE.getBounds();
+
+            clearInterval(refreshIntervalId);
+
+        }, 300);
+    } ;
+
+    LeafFE.getIcon = function( size , ancor ) {
+        if( !size ) {
+            size = [21, 40] ;
+        }
+        if( !ancor ) {
+            ancor = [10, 40];
+        }
+        return L.icon({
             iconUrl: '/typo3conf/ext/jv_events/Resources/Public/Css/images/marker-icon.png' ,
             iconRetinaUrl: '/typo3conf/ext/jv_events/Resources/Public/Css/images/marker-icon-2x.png' ,
             shadowUrl: '/typo3conf/ext/jv_events/Resources/Public/Css/images/marker-shadow.png' ,
-            iconSize: [21, 40],
-            iconAnchor: [10, 40],
+            iconSize: size,
+            iconAnchor: ancor,
             draggable: true
         });
+    };
 
-        LeafFE.$marker = L.marker([LeafFE.$latitude, LeafFE.$longitude], { icon: myIcon }).addTo(LeafFE.$map);
-
-        let position = LeafFE.$marker.getLatLng();
-
-        LeafFE.$marker.on('dragend', function (event) {
-            LeafFE.$marker = event.target;
-        });
-        LeafFE.$map.on('click', function (event) {
-            LeafFE.$marker.setLatLng(event.latlng);
-            if( $( LeafFE.$fieldLat ).length && $( LeafFE.$fieldLng ).length ) {
-                $( LeafFE.$fieldLat ).val(LeafFE.$marker.getLatLng().lat);
-                $( LeafFE.$fieldLng ).val(LeafFE.$marker.getLatLng().lng);
+    LeafFE.getBounds = function() {
+        if( jQuery( "#filterType7body").length ) {
+            var bounds = LeafFE.$map.getBounds();
+            if ( bounds ) {
+                // if map not visible or not ready, size of boundary will be 1 pixel ..
+                minLat = Math.min( bounds.getNorth() , bounds.getSouth() ) ;
+                maxLat = Math.max( bounds.getNorth() , bounds.getSouth() ) ;
+                if( minLat == maxLat) {
+                    LeafFE.reInitMap() ;
+                }
+                minLng = Math.min( bounds.getWest() , bounds.getEast()  ) ;
+                maxLng = Math.max( bounds.getWest() , bounds.getEast()  ) ;
             }
 
-            LeafFE.$map.panTo( event.latlng ) ;
-            LeafFE.$map.setZoom(14) ;
-            LeafFE.$zoomLevel = 14 ;
-        }) ;
-
-
-
-        $('#jvevents-geo-update').on('click', function () {
-            LeafFE.updateAddress() ;
-
-            $( LeafFE.$fieldLat ).val(LeafFE.$latitude);
-            $( LeafFE.$fieldLng ).val(LeafFE.$longitude);
-            // enable also latitude, if not already done by user.
-
-        });
-        if ( $( LeafFE.$fieldCity ).length ) {
-            $(LeafFE.$fieldCity).on('change blur ', function() {
-                LeafFE.updateAddress();
-
-            } ) ;
+            console.log("In Leaflet: minlat:" + minLat + " maxlat: " +  maxLat + " minlng: " + minLng + " maxlng" + maxLng ) ;
+            jQuery( "#filterType7body").data("minlat" , minLat ).data("maxlat" , maxLat ).data("minlng" , minLng ).data("maxlng" , maxLng ) ;
         }
+    } ;
 
-        if ( $( LeafFE.$fieldStreet ).length ) {
-            $(LeafFE.$fieldStreet).on('change blur ', function() {
-                LeafFE.updateAddress()  ;
-            } ) ;
-        }
-        if ( $( LeafFE.$fieldCountry ).length ) {
-            $(LeafFE.$fieldCountry).on('change blur ', function() {
-                LeafFE.updateAddress()  ;
-            } ) ;
-        }
-
-        if ( $( LeafFE.$mapTab ).length ) {
-            $(LeafFE.$mapTab).on('click', function () {   // When tab is displayed...
-                if( LeafFE.$map ) {
-                    LeafFE.$map.off() ;
-                    LeafFE.$map.remove() ;
-                    if ($('#t3js-location-map-wrap').length) {
-                        $('#t3js-location-map-wrap').remove() ;
-                    }
-                    $('div#map').html("") ;
-
-                }
-                refreshIntervalId = setInterval(function () {
-                    LeafFE.addMapMarkup();
-                    LeafFE.createMap() ;
-                    clearInterval(refreshIntervalId);
-
-                }, 300);
-
-            });
-        }
-    };
 
     LeafFE.geocode = function () {
         if ( !LeafFE.$geoCodeUrl.length || LeafFE.$geoCodeUrl == false ) {
             return ;
         }
+        console.log( " doing geocode: "  + LeafFE.$geoCodeUrl) ;
         $.ajax({
             type: 'GET',
             url: LeafFE.$geoCodeUrl,
@@ -180,6 +265,7 @@
                         dataType: 'json',
                         success: function (data) {
                             if (data.length != 0) {
+                                console.log( " not found, again  geocode: "  + LeafFE.$geoCodeUrl) ;
                                 $.each(data[0], function (key, value) {
                                     if (key == "lat") {
                                         LeafFE.$latitude = value;
@@ -195,10 +281,13 @@
                                     if( LeafFE.$marker ) {
                                         LeafFE.$marker.setLatLng({lat: LeafFE.$latitude, lon: LeafFE.$longitude})
                                     }
-                                    LeafFE.$map.setZoom(11)
+                                    if( LeafFE.$zoomAfterGeocode  ) {
+                                        LeafFE.$map.setZoom(11) ;
+                                        LeafFE.$zoomLevel = 11 ;
+                                    }
+
                                 }
 
-                                LeafFE.$zoomLevel = 11 ;
                             }
 
                         }
@@ -214,14 +303,20 @@
                     });
                     $( LeafFE.$fieldLat ).val(LeafFE.$latitude);
                     $( LeafFE.$fieldLng ).val(LeafFE.$longitude);
+                    console.log( "set Lng/LTAT ") ;
                     if(  LeafFE.$map ) {
+                        console.log( "got map ") ;
                         if( LeafFE.$marker ) {
                             LeafFE.$marker.setLatLng({lat: LeafFE.$latitude, lon: LeafFE.$longitude})
                         }
                         LeafFE.$map.panTo({lat: LeafFE.$latitude, lon: LeafFE.$longitude});
-                        LeafFE.$map.setZoom(12)
+                        if( LeafFE.$zoomAfterGeocode  ) {
+                            LeafFE.$map.setZoom(12) ;
+                            LeafFE.$zoomLevel = 12 ;
+                        }
+
                     }
-                    LeafFE.$zoomLevel = 12 ;
+
                 }
 
             }

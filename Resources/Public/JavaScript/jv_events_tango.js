@@ -623,43 +623,28 @@ function jv_events_refreshList(){
     let minLng = 0 ;
     let maxLng = 9999 ;
     let markers = false ;
-    if ( fDist && fDist.val() && fDist.val().length > 0 &&  fDist.val() < 10000 ) {
-        maxDist = fDist.val() ;
+    if (  jQuery("#map").length ) {
+
+        // to do: reset markers ..
+        let $filterType7body = jQuery( "#filterType7body") ;
+
+
+        if( $filterType7body && $filterType7body.data("minlat")
+            && $filterType7body.data("minlat") < $filterType7body.data("maxlat") && $filterType7body.data("minlng") < $filterType7body.data("maxlng") ) {
+            fDist = false;
+            minLat = $filterType7body.data("minlat") ;
+            maxLat = $filterType7body.data("maxlat") ;
+            minLng = $filterType7body.data("minlng") ;
+            maxLng = $filterType7body.data("maxlng") ;
+            console.log("In refresH : minLat:" + minLat + " maxLat: " +  maxLat + " minLng: " + minLng + " maxLng" + maxLng ) ;
+        }
+
     } else {
-        if (  jQuery("#map").length &&  map &&  typeof map.getBounds === 'function' ) {
-            fDist = false ;
-            var bounds = map.getBounds();
-            if ( bounds ) {
-                var NECorner = bounds.getNorthEast() ;
-                var SWCorner = bounds.getSouthWest() ;
-                if ( NECorner.lat() > SWCorner.lat() || NECorner.lat() < SWCorner.lat() ) {
-                    // if map not visible or not ready, size of boundary will be 1 pixel ..
-                    minLat = Math.min( NECorner.lat() , SWCorner.lat() ) ;
-                    maxLat = Math.max( NECorner.lat() , SWCorner.lat() ) ;
-
-                    minLng = Math.min( NECorner.lng() , SWCorner.lng() ) ;
-                    maxLng = Math.max( NECorner.lng() , SWCorner.lng() ) ;
-                    if( markers) {
-                        for (let i = 0; i < markers.length; i++) {
-                            markers[i].setMap(null);
-                        }
-                    }
-                    markers = [] ;
-                    var icon = {
-                        url: "https://developers.google.com/maps/documentation/javascript/examples/full/images/info-i_maps.png", // url
-                        scaledSize: new google.maps.Size(25, 25), // size
-                    };
-                }
-
-
-            }
+        if ( fDist && fDist.val() && fDist.val().length > 0 &&  fDist.val() < 10000 ) {
+            maxDist = fDist.val() ;
         }
     }
 
-    if( jQuery( "#filterType7body").length ) {
-      //  console.log ("minlat:" + minLat + " maxlat: " +  maxLat + " minlat: " + minLng + " maxlng" + maxLng ) ;
-        jQuery( "#filterType7body").data("minlat" , minLat ).data("maxlat" , maxLat ).data("minlat" , minLng ).data("maxlng" , maxLng ) ;
-    }
 
     var cCats= jQuery("#jv_events_filter_categories INPUT[type=checkbox]") ;
     var cTags= jQuery(".fieldsettags INPUT[type=checkbox]") ;
@@ -736,38 +721,10 @@ function jv_events_refreshList(){
             lastDay = this ;
 
         } else {
-
             if( jQuery( "#filterType7body").length ) {
                 if ( minLat > 0  && minLng > 0 && maxLat < 9999 && maxLng < 9999) {
                     if (  jQuery(this).data("latitude") > maxLat ||  jQuery(this).data("latitude") < minLat || jQuery(this).data("longitude") > maxLng || jQuery(this).data("longitude") < minLng ) {
                         jQuery(this).addClass('d-none').addClass('hidden-byMapBoundary') ;
-                    } else {
-                        if( jQuery(this).data("latitude") && !isNaN(parseInt( jQuery(this).data("latitude")) ) ) {
-                            loc = new google.maps.Marker({
-                                position: { lat: jQuery(this).data("latitude") , lng: jQuery(this).data("longitude") } ,
-                                map: map,
-                                icon: icon ,
-                                zIndex: 999 ,
-                                title: "loc " + jQuery(this).data("latitude") ,
-                                draggable: false ,
-                                clickable: false
-                            });
-
-                            /*
-                            loc.addListener("click", () => {
-                                marker.setPosition(loc.getPosition()) ;
-                                console.log( "Loc: " + loc.getPosition() ) ;
-
-                                map.setZoom(13);
-                                map.panTo(loc.getPosition()) ;
-                                updatePosition() ;
-
-                            });
-                            */
-
-                            markers.push(loc);
-                        }
-
                     }
                 }
             } else {
