@@ -15,7 +15,7 @@
 			</trans-unit>
 			 <trans-unit id="tx_jvevents_domain_model_event.create_event">
                 <source>Create Event</source>
-                <target>Neuer Termin</source>
+                <target>Neuer Termin</target>
             </trans-unit>
 
             <trans-unit id="register.accept_privacy" approved="yes">
