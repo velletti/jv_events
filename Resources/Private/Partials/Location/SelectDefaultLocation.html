@@ -30,7 +30,7 @@
                             </f:if>
                         </f:link.action>
                     </div>
-                    <div class="col-8  text-left">
+                    <div class="col-7  text-left">
                         <f:link.action pageUid="{settings.pageIds.editLocation}" action="setDefault" title="{location.name}, {location.streetAndNr} - {location.city}" controller="Location" class="btn text-left" arguments="{location: '{location.uid}', organizer: '{organizer.0.uid}' , oldDefault: '{defaultLocation}'}">
                             <f:format.crop maxCharacters="75">{location.name}, {location.streetAndNr} - {location.city}</f:format.crop>
                         </f:link.action>
@@ -43,6 +43,11 @@
                     <div class="col-1  text-left ml-0 pl-0">
                         <f:link.action pageUid="{settings.pageIds.editLocation}" action="edit" controller="Location" class="btn btn-{f:if(condition: '{location.defaultLocation}' , then: 'primary', else: 'secondary')}" title="{location.uid}" arguments="{location: '{location.uid}', organizer: '{organizer.0.uid}' , oldDefault: '{defaultLocation}'}">
                             <span class="fa fa-edit"></span>
+                        </f:link.action>
+                    </div>
+                    <div class="col-1  text-left ml-0 pl-0">
+                        <f:link.action pageUid="{settings.pageIds.editEvent}" action="new" controller="Event" class="btn btn-{f:if(condition: '{location.defaultLocation}' , then: 'primary', else: 'secondary')}" title="{f:translate(key: 'tx_jvevents_domain_model_event.create_event' , default: 'create Event')}" arguments="{location: '{location.uid}', organizer: '{organizer.0.uid}' , oldDefault: '{defaultLocation}'}">
+                            <span class="fa fa-calendar-alt"></span>
                         </f:link.action>
                     </div>
                     <div class="col-1  text-left ml-0 pl-0">
