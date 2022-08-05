@@ -1,16 +1,7 @@
 {namespace jve=JVE\JvEvents\ViewHelpers}
 {namespace v=FluidTYPO3\Vhs\ViewHelpers}
 
-<div class="alert alert-warning d-none">
-    <h3>Hinweis 3.8.2022 - 12:00</h3>
 
-    Das Anzeigen der Karte klappt im Moment nur teilweise und die Kordinaten werden derzeit nur korrekt für bereits gespeicherte Adressen ermittelt.<br>
-    Neue oder geänderte Adressen deshalb derzeit  <b>ZWEIMAL</b> speichern!<br>
-    Man kann die Geo-Koordinaten derzeit auch von Hand eintragen, falls Probleme auftreten.<br>
-    <br>
-    Zum Beispiel: <br>
-    "lon":"11.47121"  | "lat":"48.11483" für den Marienplatz München <br>
-</div>
 <div class="form-group display-data row">
     <f:variable name="propertyName">{object}.{property}</f:variable>
     <f:render partial="FormErrorSingle" arguments="{property: errorProperty, field: propertyName}"/>
@@ -111,7 +102,7 @@
     </div>
 </div>
 <div id="map" style="height:300px;"
-     data-lat="{location.lat}" data-log="{location.lng}"
+     data-lat="{location.lat}" data-lng="{location.lng}"
      data-glat="48.1148263" data-glog="11.4712236"
      data-namelat="input#lat" data-namelng="input#lng"
      data-copy="&copy; <a target='_blank' href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"

@@ -12,6 +12,7 @@
         $fieldCity: null,
         $fieldStreet: null,
         $fieldCountry: null,
+        $mapTab: null ,
 
         $geoCodeUrl: null,
         $geoCodeUrlShort: null,
@@ -29,22 +30,23 @@
         // basic variable initialisation, uses data vars on the trigger button
         LeafFE.$element = element;
         LeafFE.$latitude = LeafFE.$element.attr('data-lat');
-        LeafFE.$longitude = LeafFE.$element.attr('data-lon');
+        LeafFE.$longitude = LeafFE.$element.attr('data-lng');
         LeafFE.$gLatitude = LeafFE.$element.attr('data-glat');
         LeafFE.$gLongitude = LeafFE.$element.attr('data-glon');
         LeafFE.$tilesUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
         LeafFE.$tilesCopy = LeafFE.$element.attr('data-copy');
         LeafFE.$geoCodeBase = LeafFE.$element.attr('data-geocodebase');
-        LeafFE.$geoCodeOptions = LeafFE.$element.attr('data-geocodeoptions');
-        LeafFE.$geoCodeUrl = LeafFE.$element.attr('data-geocodeurl');
+        LeafFE.$geoCodeOptions  = LeafFE.$element.attr('data-geocodeoptions');
+        LeafFE.$geoCodeUrl      = LeafFE.$element.attr('data-geocodeurl');
         LeafFE.$geoCodeUrlShort = LeafFE.$element.attr('data-geocodeurlshort');
-        LeafFE.$fieldLat = LeafFE.$element.attr('data-namelat');
-        LeafFE.$fieldLng = LeafFE.$element.attr('data-namelng');
-        LeafFE.$fieldZip = LeafFE.$element.attr('data-namezip');
-        LeafFE.$fieldCity = LeafFE.$element.attr('data-namecity');
-        LeafFE.$fieldStreet = LeafFE.$element.attr('data-namestreet');
-        LeafFE.$fieldCountry = LeafFE.$element.attr('data-namecountry');
-        LeafFE.$fieldLatActive = LeafFE.$element.attr('data-namelat-active');
+        LeafFE.$fieldLat        = LeafFE.$element.attr('data-namelat');
+        LeafFE.$fieldLng        = LeafFE.$element.attr('data-namelng');
+        LeafFE.$fieldZip        = LeafFE.$element.attr('data-namezip');
+        LeafFE.$fieldCity       = LeafFE.$element.attr('data-namecity');
+        LeafFE.$fieldStreet     = LeafFE.$element.attr('data-namestreet');
+        LeafFE.$fieldCountry    = LeafFE.$element.attr('data-namecountry');
+        LeafFE.$mapTab          = LeafFE.$element.attr('data-maptab');
+        LeafFE.$fieldLatActive  = LeafFE.$element.attr('data-namelat-active');
 
         // add the container to display the map as a nice overlay
         if (!$('#t3js-location-map-wrap').length) {
@@ -100,8 +102,11 @@
         });
         LeafFE.$map.on('click', function (event) {
             LeafFE.$marker.setLatLng(event.latlng);
-            $( LeafFE.$fieldLat ).val(LeafFE.$marker.getLatLng().lat);
-            $( LeafFE.$fieldLng ).val(LeafFE.$marker.getLatLng().lng);
+            if( $( LeafFE.$fieldLat ).length && $( LeafFE.$fieldLng ).length ) {
+                $( LeafFE.$fieldLat ).val(LeafFE.$marker.getLatLng().lat);
+                $( LeafFE.$fieldLng ).val(LeafFE.$marker.getLatLng().lng);
+            }
+
             LeafFE.$map.panTo( event.latlng ) ;
             LeafFE.$map.setZoom(14) ;
             LeafFE.$zoomLevel = 14 ;
@@ -123,11 +128,7 @@
 
             } ) ;
         }
-        if ( $( LeafFE.$fieldZip ).length ) {
-            $(LeafFE.$fieldZip).on('change blur ', function() {
-                LeafFE.updateAddress()  ;
-            } ) ;
-        }
+
         if ( $( LeafFE.$fieldStreet ).length ) {
             $(LeafFE.$fieldStreet).on('change blur ', function() {
                 LeafFE.updateAddress()  ;
@@ -139,11 +140,32 @@
             } ) ;
         }
 
+        if ( $( LeafFE.$mapTab ).length ) {
+            $(LeafFE.$mapTab).on('click', function () {   // When tab is displayed...
+                if( LeafFE.$map ) {
+                    LeafFE.$map.off() ;
+                    LeafFE.$map.remove() ;
+                    if ($('#t3js-location-map-wrap').length) {
+                        $('#t3js-location-map-wrap').remove() ;
+                    }
+                    $('div#map').html("") ;
 
+                }
+                refreshIntervalId = setInterval(function () {
+                    LeafFE.addMapMarkup();
+                    LeafFE.createMap() ;
+                    clearInterval(refreshIntervalId);
 
+                }, 300);
+
+            });
+        }
     };
 
     LeafFE.geocode = function () {
+        if ( !LeafFE.$geoCodeUrl.length || LeafFE.$geoCodeUrl == false ) {
+            return ;
+        }
         $.ajax({
             type: 'GET',
             url: LeafFE.$geoCodeUrl,
