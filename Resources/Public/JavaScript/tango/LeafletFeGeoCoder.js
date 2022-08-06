@@ -48,13 +48,10 @@
         if( LeafFE.$element.attr('data-mapzoom')) {
             LeafFE.$zoomLevel     = LeafFE.$element.attr('data-mapzoom');
             LeafFE.$zoomAfterGeocode   = false;
-            console.log( " map Zoom after GeoCode is fix " + LeafFE.$zoomLevel  ) ;
 
         }
         if( LeafFE.$element.attr('data-addmarkerfrom')) {
-            console.log( " addmarkerfrom : " + LeafFE.$element.attr('data-addmarkerfrom') ) ;
             LeafFE.$addMarkerFrom     = $( LeafFE.$element.attr('data-addmarkerfrom')) ;
-
         }
 
 
@@ -85,7 +82,6 @@
         if (((!LeafFE.$latitude || !LeafFE.$longitude) || (LeafFE.$latitude == 0 && LeafFE.$longitude == 0)) && LeafFE.$geoCodeUrl != null) {
             LeafFE.geocode();
         }
-        console.log( "create map start ") ;
         // The ultimate fallback: if one of the coordinates is empty, fallback to München.
 
         if (LeafFE.$latitude == null || LeafFE.$longitude == null) {
@@ -98,7 +94,6 @@
             center: [LeafFE.$latitude , LeafFE.$longitude] ,
             zoom: LeafFE.$zoomLevel
         });
-            console.log( " map CREATED  ") ;
 
             L.tileLayer(LeafFE.$tilesUrl, {
                 attribution: LeafFE.$tilesCopy
@@ -114,17 +109,21 @@
 
             if( LeafFE.$movemarkerallowed ) {
                 LeafFE.$map.on('click', function (event) {
-                    LeafFE.$map.panTo( event.latlng ) ;
-                    LeafFE.$map.setZoom(14) ;
 
-                    LeafFE.$zoomLevel = 14 ;
 
                     LeafFE.$marker.setLatLng(event.latlng);
+
                     if( $( LeafFE.$fieldLat ).length && $( LeafFE.$fieldLng ).length ) {
+
                         $( LeafFE.$fieldLat ).val(LeafFE.$marker.getLatLng().lat);
                         $( LeafFE.$fieldLng ).val(LeafFE.$marker.getLatLng().lng);
                     }
-                    LeafFE.reInitMap() ;
+                    LeafFE.$map.setView( event.latlng , 13 ) ;
+                    //LeafFE.$map.panTo( event.latlng ) ;
+                    //LeafFE.$map.setZoom(13) ;
+
+                    LeafFE.$zoomLevel = 13 ;
+                    // LeafFE.reInitMap() ;
 
                 }) ;
             }
@@ -166,18 +165,11 @@
             }
             LeafFE.getBounds() ;
             if ( LeafFE.$addMarkerFrom ) {
-                console.log("add more markers ")
-                refreshMarker = setInterval(function () {
-                    clearInterval(refreshMarker);
-                    let myIcon2 = LeafFE.getIcon( [12,21] , [6,21] ) ;
-                    jQuery('.tx-jv-events DIV.jv-events-row').each( function (i) {
-
-                     //   L.marker([jQuery(this).data("latitude"),jQuery(this).data("longitude")], { icon: myIcon2 }).addTo(LeafFE.$map);
-                    }) ;
-
-
-
-                }, 1000);
+                let myIcon2 = LeafFE.getIcon( [12,21] , [6,21] ) ;
+                // toDo add marker for each address
+                //  jQuery('.tx-jv-events DIV.jv-events-row').each( function (i) {
+                  //   L.marker([jQuery(this).data("latitude"),jQuery(this).data("longitude")], { icon: myIcon2 }).addTo(LeafFE.$map);
+                //  }) ;
             }
 
 
@@ -190,7 +182,6 @@
 
     LeafFE.reInitMap = function() {
         if( LeafFE.$map ) {
-            console.log("remove map") ;
             LeafFE.$map.off() ;
             LeafFE.$map.remove() ;
             if ($('#t3js-location-map-wrap').length) {
@@ -240,7 +231,7 @@
                 maxLng = Math.max( bounds.getWest() , bounds.getEast()  ) ;
             }
 
-            console.log("In Leaflet: minlat:" + minLat + " maxlat: " +  maxLat + " minlng: " + minLng + " maxlng" + maxLng ) ;
+            // console.log("In Leaflet: minlat:" + minLat + " maxlat: " +  maxLat + " minlng: " + minLng + " maxlng" + maxLng ) ;
             jQuery( "#filterType7body").data("minlat" , minLat ).data("maxlat" , maxLat ).data("minlng" , minLng ).data("maxlng" , maxLng ) ;
         }
     } ;
@@ -250,7 +241,6 @@
         if ( !LeafFE.$geoCodeUrl.length || LeafFE.$geoCodeUrl == false ) {
             return ;
         }
-        console.log( " doing geocode: "  + LeafFE.$geoCodeUrl) ;
         $.ajax({
             type: 'GET',
             url: LeafFE.$geoCodeUrl,
@@ -265,7 +255,6 @@
                         dataType: 'json',
                         success: function (data) {
                             if (data.length != 0) {
-                                console.log( " not found, again  geocode: "  + LeafFE.$geoCodeUrl) ;
                                 $.each(data[0], function (key, value) {
                                     if (key == "lat") {
                                         LeafFE.$latitude = value;
@@ -303,9 +292,7 @@
                     });
                     $( LeafFE.$fieldLat ).val(LeafFE.$latitude);
                     $( LeafFE.$fieldLng ).val(LeafFE.$longitude);
-                    console.log( "set Lng/LTAT ") ;
                     if(  LeafFE.$map ) {
-                        console.log( "got map ") ;
                         if( LeafFE.$marker ) {
                             LeafFE.$marker.setLatLng({lat: LeafFE.$latitude, lon: LeafFE.$longitude})
                         }
