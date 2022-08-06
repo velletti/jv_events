@@ -108,7 +108,7 @@
             });
 
             if( LeafFE.$movemarkerallowed ) {
-                LeafFE.$map.on('click', function (event) {
+                LeafFE.$map.on('click touch', function (event) {
 
 
                     LeafFE.$marker.setLatLng(event.latlng);
