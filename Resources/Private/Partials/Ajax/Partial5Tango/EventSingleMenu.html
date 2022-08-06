@@ -205,8 +205,6 @@
                                 <div class="col-12 pt-2">
 
 
-                                    <f:if condition="{output.event.TeaserImageFrom} ==  'Event'">
-                                        <f:then>
                                             <f:security.ifHasRole role="adminOrganizer">
                                                 <f:then>
                                                     <f:link.page pageUid="{settings.pageIds.bannerModul}" noCache="true" class="btn btn-outline-primary x-1 mb-1 w-100 text-left" title="Add Banner for Event Normmal ( 8 days before event)"
@@ -269,16 +267,6 @@
 
                                                  </f:else>
                                             </f:security.ifHasRole>
-                                        </f:then>
-                                        <f:else>
-                                            <hr>Banner Startpage:
-                                            <span class="btn btn-outline-primary x-1  w-100 text-left">
-                                                <i class="fas fa-warning mx-2"> </i>  First add Event Image
-                                            </span>
-
-                                        </f:else>
-                                    </f:if>
-
 
                                 </div>
                             </div>
