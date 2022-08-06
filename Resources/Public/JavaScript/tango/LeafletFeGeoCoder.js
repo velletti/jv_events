@@ -118,11 +118,11 @@
                         $( LeafFE.$fieldLat ).val(LeafFE.$marker.getLatLng().lat);
                         $( LeafFE.$fieldLng ).val(LeafFE.$marker.getLatLng().lng);
                     }
-                    LeafFE.$map.setView( event.latlng , 13 ) ;
+                    LeafFE.$map.setView( event.latlng , 12 ) ;
                     //LeafFE.$map.panTo( event.latlng ) ;
-                    //LeafFE.$map.setZoom(13) ;
+                    //LeafFE.$map.setZoom(12) ;
 
-                    LeafFE.$zoomLevel = 13 ;
+                    LeafFE.$zoomLevel = 12 ;
                     // LeafFE.reInitMap() ;
 
                 }) ;
