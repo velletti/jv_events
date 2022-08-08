@@ -23,6 +23,10 @@
             <trans-unit id="jv_events_model_event.inclusiveVat">
                 <source>incl. VAT</source>
             </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_event.create_event">
+                <source>Create Event</source>
+            </trans-unit>
+
 
             <trans-unit id="jv_events_model_location.geocoder.title">
                 <source>Geocoder (Please enter the address data first!)</source>

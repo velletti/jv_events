@@ -68,11 +68,12 @@
 
                 <f:if condition="{settings.pageIds.editEvent}">
                     <f:if condition="{output.feuser.isOrganizer}">
-                        <f:link.action pageUid="{settings.pageIds.editEvent}" class="nav-link" title="New Event" action="new" controller="Event"  pluginName="Events" arguments="{organizer: output.organizer.organizerId}">
+                        <f:link.action pageUid="{settings.pageIds.editEvent}" class="nav-link" title="{f:translate(key: 'tx_jvevents_domain_model_event.create_event' , default: 'create Event')}" action="new" controller="Event"  pluginName="Events"
+                                       arguments="{organizer: output.organizer.organizerId}">
                             <button class="btn btn-outline-primary btn-sm rounded-circle" href="#">
                                 <i class="fas fa-calendar-plus "></i>
                             </button>
-                            <span class="d-none d-md-inline-block">Neuer Termin</span>
+                            <span class="d-none d-md-inline-block">{f:translate(key: 'tx_jvevents_domain_model_event.create_event' , default: 'create Event')}</span>
                         </f:link.action>
                     </f:if>
                 </f:if>

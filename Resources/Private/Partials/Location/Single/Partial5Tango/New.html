@@ -21,7 +21,7 @@
 
                 <div class="text-right">
                     <f:form.submit class="btn btn-primary" value="{f:translate(key: 'form.save', default: 'Save')}"
-                                   onclick="findAddress({'address': updateAddressFromFields() }); this.submit()"/>
+                                   onclick=" this.submit();return false;"/>
                 </div>
             </f:form>
 
