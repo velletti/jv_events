@@ -44,11 +44,19 @@
 		<f:if condition="{events}">
 			<f:then>
 				<f:render partial="Event/List/Partial{settings.LayoutList}/HeaderEvent" arguments="{event:event, settings: settings}" />
+
 				<f:for each="{events}" as="event">
 					<f:if condition="{event.organizer.uid}">
-						<f:variable name="aktDate">{event.startDate -> f:format.date(format:"d.m.Y")}</f:variable>
-						<f:render partial="Event/List/Partial{settings.LayoutList}/SingleEvent" arguments="{event:event, settings: settings, aktDate: aktDate, lastDate: lastDate}" />
-						<f:variable name="lastDate">{event.startDate -> f:format.date(format:"d.m.Y")}</f:variable>
+						<f:if condition="{settings.ShowFilter}==7">
+							<f:then>
+								<f:render partial="Event/List/Partial{settings.LayoutList}/SingleEventFilter7" arguments="{event:event, settings: settings}" />
+							</f:then>
+							<f:else>
+								<f:variable name="aktDate">{event.startDate -> f:format.date(format:"d.m.Y")}</f:variable>
+								<f:render partial="Event/List/Partial{settings.LayoutList}/SingleEvent" arguments="{event:event, settings: settings, aktDate: aktDate, lastDate: lastDate}" />
+								<f:variable name="lastDate">{event.startDate -> f:format.date(format:"d.m.Y")}</f:variable>
+							</f:else>
+						</f:if>
 					</f:if>
 				</f:for>
 				<f:render partial="Event/List/Partial{settings.LayoutList}/NoEvent" arguments="{settings: settings }" />
