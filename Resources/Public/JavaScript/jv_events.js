@@ -302,27 +302,63 @@ function jv_events_refreshList(){
 
 
     var cCats= jQuery("#jv_events_filter_categories INPUT[type=checkbox]") ;
-    var cTags= jQuery(".jv_events_filter_tag_check") ;
+
 
     var cTagChecked = false ;
-    jQuery( cTags ).each( function() {
-        if ( jQuery(this).prop("checked") ) {
-         //   console.log("found one tag checked: " + jQuery(this).val() )
-            cTagChecked = true ;
-            return false ;
+    if( jQuery( ".filterType7").length ) {
+        var cTagChecked1 = false  ;
+        var cTags= jQuery(".fieldsetbox1 .jv_events_filter_tag_check") ;
+        if( cTags.length ) {
+
+            jQuery( cTags ).each( function() {
+                if ( jQuery(this).prop("checked") ) {
+                    cTagChecked1 = true ;
+                    cTagChecked = true ;
+                    jQuery("#toggle-accordion-1").prop("checked" , true ) ;
+                    return false ;
+                }
+
+            }) ;
+        }
+        var cTagChecked2 = false  ;
+        var cTags= jQuery(".fieldsetbox2 .jv_events_filter_tag_check") ;
+        if( cTags.length ) {
+            jQuery( cTags ).each( function() {
+                if ( jQuery(this).prop("checked") ) {
+                    cTagChecked2 = true ;
+                    cTagChecked = true ;
+                    jQuery("#toggle-accordion-2").prop("checked" , true ) ;
+                    return false ;
+                }
+
+            }) ;
         }
 
-    }) ;
+    } else {
+        var cTags= jQuery(".jv_events_filter_tag_check") ;
+        jQuery( cTags ).each( function() {
+            if ( jQuery(this).prop("checked") ) {
+             //   console.log("found one tag checked: " + jQuery(this).val() )
+                cTagChecked = true ;
+                return false ;
+            }
 
+        }) ;
+    }
     var cCatChecked = false ;
+
     jQuery( cCats ).each( function() {
         if ( jQuery(this).prop("checked") ) {
-       //     console.log("found one category checked: " + jQuery(this).val() )
+            //     console.log("found one category checked: " + jQuery(this).val() )
             cCatChecked = true ;
             return false ;
         }
 
     }) ;
+
+
+
+
     var filterIsActive = false ;
     var needTohide = false ;
     let resultcountEvents = 0 ;

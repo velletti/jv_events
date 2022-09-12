@@ -551,161 +551,229 @@
     </div>
 </f:if>
 <f:if condition="{settings.ShowFilter}==7">
+
+
     <div class="filter events filterType7"  id="jv_events_filter_tags" data-combinetags="{settings.filter.combinetags}">
 
         <form class="clearfix" action="#" >
 
             <div class="hints clearfix">
-                <p class="left"><f:translate key="tx_jvevents_event.filter.hint" /></p>
-                <p class="hide" id="filter-reset-events" style="float: right"><a href="#"><f:translate key="tx_jvevents_event.filter.reset" /> (<span id="filter-resultcount-events">#</span> <f:translate key="tx_jvevents_event.filter.resultcount" default="#"/>)</a></p>
-            </div>
-            <div class="fieldsets  clearfix">
-                <f:if condition="{eventsFilter.box1}">
-                    <fieldset class="fieldsetbox1 filtersetboxWidth_{settings.filter.tagbox1width}">
-                        <legend>{settings.filter.tagbox1headline}</legend>
-                        <div class="checkbox" >
-                            <f:for each="{eventsFilter.box1}" as="tag">
-                                <f:variable name="tagClass">hidden d-none</f:variable>
-                                <f:if condition="{tag.visibility} < 1">
-                                    <f:variable name="tagClass"></f:variable>
-                                </f:if>
-                                <label class="{tagClass}">
-                                    <input type="checkbox"  class="jv_events_filter_tag_check" class="jv_events_filter_tag_check" id="jv_events_filter_tag-{tag.id}" value="{tag.id}">{tag.title}
-                                </label>
+                <p ><f:translate key="tx_jvevents_event.filter.hint" /></p>
+             </div>
 
-                            </f:for>
+                <f:if condition="{eventsFilter.box1}">
+                    <div class="mod_accordion">
+                        <input id="toggle-accordion-1" type="checkbox">
+                        <label for="toggle-accordion-1"><span class="acc-title">{settings.filter.tagbox1headline}</span></label>
+                        <div class="slider">
+                            <fieldset class="fieldsetbox1">
+                                <legend>{settings.filter.tagbox1headline}</legend>
+
+                                <div class="checkbox" >
+                                    <f:for each="{eventsFilter.box1}" as="tag">
+                                        <f:variable name="tagClass">hidden d-none</f:variable>
+                                        <f:if condition="{tag.visibility} < 1">
+                                            <f:variable name="tagClass"></f:variable>
+                                        </f:if>
+                                        <label class="{tagClass}">
+                                            <input type="checkbox"  class="jv_events_filter_tag_check" class="jv_events_filter_tag_check" id="jv_events_filter_tag-{tag.id}" value="{tag.id}">{tag.title}
+                                        </label>
+
+                                    </f:for>
+                                </div>
+                            </fieldset>
                         </div>
-                    </fieldset>
+                    </div>
                 </f:if>
                 <f:if condition="{eventsFilter.box2}">
-                    <fieldset class="fieldsetbox2  filtersetboxWidth_{settings.filter.tagbox2width}">
-                        <legend>{settings.filter.tagbox2headline}</legend>
-                        <div class="checkbox" >
-                            <f:for each="{eventsFilter.box2}" as="tag">
-                                <f:variable name="tagClass">hidden d-none</f:variable>
-                                <f:if condition="{tag.visibility} < 1">
-                                    <f:variable name="tagClass"></f:variable>
-                                </f:if>
-                                <label class="{tagClass}">
-                                    <input type="checkbox" class="jv_events_filter_tag_check"  id="jv_events_filter_tag-{tag.id}" value="{tag.id}">{tag.title}
-                                </label>
+                    <div class="mod_accordion">
+                        <input id="toggle-accordion-2" type="checkbox">
+                        <label for="toggle-accordion-2"><span class="acc-title">{settings.filter.tagbox2headline}</span></label>
+                        <div class="slider">
 
-                            </f:for>
+                            <fieldset class="fieldsetbox2 ">
+                                <legend>{settings.filter.tagbox2headline}</legend>
+                                <div class="checkbox" >
+                                    <f:for each="{eventsFilter.box2}" as="tag">
+                                        <f:variable name="tagClass">hidden d-none</f:variable>
+                                        <f:if condition="{tag.visibility} < 1">
+                                            <f:variable name="tagClass"></f:variable>
+                                        </f:if>
+                                        <label class="{tagClass}">
+                                            <input type="checkbox" class="jv_events_filter_tag_check"  id="jv_events_filter_tag-{tag.id}" value="{tag.id}">{tag.title}
+                                        </label>
+
+                                    </f:for>
+                                </div>
+                            </fieldset>
                         </div>
-                    </fieldset>
+                    </div>
                 </f:if>
                 <f:if condition="{eventsFilter.box3}">
-                    <fieldset class="fieldsetbox3  filtersetboxWidth_{settings.filter.tagbox3width}">
-                        <legend>{settings.filter.tagbox3headline}</legend>
-                        <div class="checkbox" >
-                            <f:for each="{eventsFilter.box3}" as="tag">
-                                <f:variable name="tagClass">hidden d-none</f:variable>
-                                <f:if condition="{tag.visibility} < 1">
-                                    <f:variable name="tagClass"></f:variable>
-                                </f:if>
-                                <label class="{tagClass}">
-                                    <input type="checkbox" class="jv_events_filter_tag_check"  id="jv_events_filter_tag-{tag.id}" value="{tag.id}">{tag.title}
-                                </label>
+                    <div class="mod_accordion">
+                        <input id="toggle-accordion-3" type="checkbox">
+                        <label for="toggle-accordion-3"><span class="acc-title">{settings.filter.tagbox3headline}</span></label>
+                        <div class="slider">
+                            <fieldset class="fieldsetbox3">
+                                <legend>{settings.filter.tagbox3headline}</legend>
+                                <div class="checkbox" >
+                                    <f:for each="{eventsFilter.box3}" as="tag">
+                                        <f:variable name="tagClass">hidden d-none</f:variable>
+                                        <f:if condition="{tag.visibility} < 1">
+                                            <f:variable name="tagClass"></f:variable>
+                                        </f:if>
+                                        <label class="{tagClass}">
+                                            <input type="checkbox" class="jv_events_filter_tag_check"  id="jv_events_filter_tag-{tag.id}" value="{tag.id}">{tag.title}
+                                        </label>
 
-                            </f:for>
+                                    </f:for>
+                                </div>
+                            </fieldset>
                         </div>
-                    </fieldset>
+                    </div>
                 </f:if>
-            </div>
-            <div class="fieldsets  clearfix">
+
                 <f:if condition="{f:count(subject: eventsFilter.categories2)} > 0">
-                    <fieldset class="fieldsetboxcat  filtersetboxWidth_1">
 
-                        <legend><f:translate key="tx_jvevents_domain_model_category" /></legend>
+                    <div class="mod_accordion">
+                        <input id="toggle-accordion-cat" type="checkbox">
+                        <label for="toggle-accordion-cat"><span class="acc-title"><f:translate key="tx_jvevents_domain_model_category" /></span></label>
+                        <div class="slider">
 
-                        <div class="checkbox"  id="jv_events_filter_categories">
+                            <fieldset class="fieldsetboxcat">
 
-                            <f:for each="{eventsFilter.categories2}" as="category">
-                                <label>
-                                    <input type="checkbox" id="jv_events_filter_cat-{category.id}" value="{category.id}">{category.title}
-                                    <f:if condition="{category.description}">
-                                        <a class="info" href="#" data-toggle="modal" data-target="#jv_events_cat_modal-{category.id}"><span>Info</span></a>
-                                    </f:if>
-                                </label>
+                                <legend><f:translate key="tx_jvevents_domain_model_category" /></legend>
 
-                                <f:if condition="{category.description}">
-                                    <div id="jv_events_cat_modal-{category.id}" class="modal fade" role="dialog">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <a href="#" class="close" data-dismiss="modal">&times;</a>
-                                                    <h4>{category.title}</h4>
-                                                </div>
+                                <div class="checkbox"  id="jv_events_filter_categories">
 
-                                                <div class="modal-body">
-                                                    <f:format.nl2br>{category.description}</f:format.nl2br>
+                                    <f:for each="{eventsFilter.categories2}" as="category">
+                                        <label>
+                                            <input type="checkbox" id="jv_events_filter_cat-{category.id}" value="{category.id}">{category.title}
+                                            <f:if condition="{category.description}">
+                                                <a class="info" href="#jv_events_cat_modal-{category.id}" rel="prettyPhoto" data-toggle="modal" data-target="#jv_events_cat_modal-{category.id}"><span>Info</span></a>
+                                            </f:if>
+                                        </label>
+
+                                        <f:if condition="{category.description}">
+                                            <div id="jv_events_cat_modal-{category.id}" class="modal fade" role="dialog">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <a href="#" class="close" data-dismiss="modal">&times;</a>
+                                                            <h4>{category.title}</h4>
+                                                        </div>
+
+                                                        <div class="modal-body">
+                                                            <f:format.nl2br>{category.description}</f:format.nl2br>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
 
-                                </f:if>
-                            </f:for>
+                                        </f:if>
+                                    </f:for>
 
+                                </div>
+                            </fieldset>
                         </div>
-                    </fieldset>
+                    </div>
                 </f:if>
 
                 <f:if condition="{eventsFilter.box4}">
-                    <fieldset class="fieldsetbox4  filtersetboxWidth_{settings.filter.tagbox4width}">
-                        <legend>{settings.filter.tagbox4headline}</legend>
-                        <div class="checkbox" >
-                            <f:for each="{eventsFilter.box4}" as="tag">
-                                <f:variable name="tagClass">hidden d-none</f:variable>
-                                <f:if condition="{tag.visibility} < 1">
-                                    <f:variable name="tagClass"></f:variable>
-                                </f:if>
-                                <label class="{tagClass}">
-                                    <input type="checkbox" class="jv_events_filter_tag_check"  id="jv_events_filter_tag-{tag.id}" value="{tag.id}">{tag.title}
-                                </label>
+                    <div class="mod_accordion">
+                        <input id="toggle-accordion-4" type="checkbox">
+                        <label for="toggle-accordion-4"><span class="acc-title">{settings.filter.tagbox4headline}</span></label>
+                        <div class="slider">
+                            <fieldset class="fieldsetbox4 ">
+                                <legend>{settings.filter.tagbox4headline}</legend>
+                                <div class="checkbox" >
+                                    <f:for each="{eventsFilter.box4}" as="tag">
+                                        <f:variable name="tagClass">hidden d-none</f:variable>
+                                        <f:if condition="{tag.visibility} < 1">
+                                            <f:variable name="tagClass"></f:variable>
+                                        </f:if>
+                                        <label class="{tagClass}">
+                                            <input type="checkbox" class="jv_events_filter_tag_check"  id="jv_events_filter_tag-{tag.id}" value="{tag.id}">{tag.title}
+                                        </label>
 
-                            </f:for>
+                                    </f:for>
+                                </div>
+                            </fieldset>
                         </div>
-                    </fieldset>
-                </f:if>
-                <fieldset class="fieldsetbox5  filtersetboxWidth_2" style="padding:0;">
-                    <f:render partial="SingleField/Partial{settings.LayoutList}/FormRowGeocoderFilter6"
-                              arguments="{settings: settings , updateFunction: 'jv_events_refreshList();' ,
-                              buttonSetPosition: '1' , property:'lng'  ,  property2:'lat', zoom: 'zoom' ,
-                              maxLength: 30 , mandatory: '0' }" />
-
-
-                </fieldset>
-
-                <fieldset class="fieldsetbox6  filtersetboxWidth_1">
-                    <label for="jv_events_filter_months" class="hidden">{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_event.filter.month', default:'by month')}</label>
-                    <div class="form-group">
-                        <f:form.select property="months" class="form-control" id="jv_events_filter_months" options="{eventsFilter.months}" prependOptionLabel="{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_event.filter.month', default:'by month')}" prependOptionValue=""/>
                     </div>
-                    <legend><f:translate key="tx_jvevents_event.filter.morefilters" /></legend>
-                    <f:if condition="{f:count(subject: eventsFilter.citys)} > 1">
-                        <div class="form-group">
-                            <label for="jv_events_filter_citys" class="hidden">Ort:</label>
-                            <f:form.select property="citys" class="form-control" id="jv_events_filter_citys" sortByOptionLabel="true" options="{eventsFilter.citys}" prependOptionLabel="{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_event.filter.city' , default:'by City')}" prependOptionValue="" />
-                        </div>
-                    </f:if>
+                </f:if>
+            <f:if condition="{settings.filter.hideMonthDropdown}">
+                <f:else>
+                    <div class="mod_accordion">
+                        <input id="toggle-accordion-6" type="checkbox">
+                        <label for="toggle-accordion-6"><span class="acc-title">{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_event.filter.month', default:'by month')}</span></label>
+                        <div class="slider">
 
+                            <fieldset class="fieldsetbox6">
+                                <div class="form-group">
+                                    <f:form.select property="months" class="form-control" id="jv_events_filter_months" options="{eventsFilter.months}" prependOptionLabel="{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_event.filter.month', default:'by month')}" prependOptionValue=""/>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </f:else>
+            </f:if>
+
+            <f:if condition="{settings.filter.hideOrganizerDropdown}">
+                <f:else>
                     <f:if condition="{f:count(subject: eventsFilter.organizers)} > 1">
-                        <div class="form-group">
-                            <label for="jv_events_filter_organizers" class="hidden">Organizer:</label>
-                            <f:form.select property="organizers" class="form-control" id="jv_events_filter_organizers" sortByOptionLabel="true" options="{eventsFilter.organizers}"   prependOptionLabel="{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_event.filter.organizer' , default:'by Organizer')}" prependOptionValue=""/>
+                        <div class="mod_accordion">
+                            <input id="toggle-accordion-7" type="checkbox">
+                            <label for="toggle-accordion-7"><span class="acc-title">{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_event.filter.organizer' , default:'by Organizer')}</span></label>
+                            <div class="slider">
+                                <fieldset class="fieldsetbox7">
+                                    <div class="form-group">
+                                        <f:form.select property="organizers" class="form-control" id="jv_events_filter_organizers" sortByOptionLabel="true" options="{eventsFilter.organizers}"   prependOptionLabel="{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_event.filter.organizer' , default:'by Organizer')}" prependOptionValue=""/>
+                                    </div>
+                                </fieldset>
+                            </div>
                         </div>
                     </f:if>
-                </fieldset>
+                </f:else>
+            </f:if>
+            <f:if condition="{settings.filter.hideCityDropdown}">
+                <f:else>
 
-            </div>
+                    <f:if condition="{f:count(subject: eventsFilter.citys)} > 1">
+                        <div class="mod_accordion">
+                            <input id="toggle-accordion-8" type="checkbox">
+                            <label for="toggle-accordion-8"><span class="acc-title">{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_event.filter.city' , default:'by City')}</span></label>
+                            <div class="slider">
+                                <fieldset class="fieldsetbox8">
+                                    <div class="form-group">
+                                        <label for="jv_events_filter_citys" class="hidden">Ort:</label>
+                                        <f:form.select property="citys" class="form-control" id="jv_events_filter_citys" sortByOptionLabel="true" options="{eventsFilter.citys}" prependOptionLabel="{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_event.filter.city' , default:'by City')}" prependOptionValue="" />
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </f:if>
+
+                </f:else>
+            </f:if>
+
+
+
+
+                <fieldset class="fieldsetbox5 " style="padding:0;">
+                    <f:render partial="SingleField/Partial{settings.LayoutList}/FormRowGeocoderFilter7"
+                              arguments="{settings: settings , updateFunction: 'jv_events_refreshList();' ,
+                                  buttonSetPosition: '1' , property:'lng'  ,  property2:'lat', zoom: 'zoom' ,
+                                  maxLength: 30 , mandatory: '0' }" />
+
+
+                </fieldset>
 
         </form>
+        <div class="hints clearfix">
+            <p class="hide" id="filter-reset-events" ><a href="#"><f:translate key="tx_jvevents_event.filter.reset" /> <br>(<span id="filter-resultcount-events">#</span> <f:translate key="tx_jvevents_event.filter.resultcount" default="#"/>)</a></p>
+        </div>
 
-        <p class="filter-result-hint text-center hide" id="filter-result-hint-events">
-            <f:translate key="tx_jvevents_event.filter.resulthint" />
-            <span class="arrow"></span>
-        </p>
 
     </div>
 </f:if>

@@ -1,9 +1,18 @@
 <f:if condition="{settings.ccsFile}">
 	<style type="text/css"> @import url("{settings.ccsFile}"); </style>
 </f:if>
+<f:if condition="{settings.ShowFilter}==7">
+	<f:then>
+		<div class="tx-jv-events flex">
+			<f:render section="main" />
+		</div>
+	</f:then>
+	<f:else>
+		<div class="tx-jv-events">
+			<f:render section="main" />
+		</div>
+	</f:else>
+</f:if>
 
-<div class="tx-jv-events">
-	<f:render section="main" />
-</div>
 
 
