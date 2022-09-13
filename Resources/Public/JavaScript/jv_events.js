@@ -303,14 +303,14 @@ function jv_events_refreshList(){
 
     var cCats= jQuery("#jv_events_filter_categories INPUT[type=checkbox]") ;
 
-
+    var cTags= jQuery(".jv_events_filter_tag_check") ;
     var cTagChecked = false ;
     if( jQuery( ".filterType7").length ) {
         var cTagChecked1 = false  ;
-        var cTags= jQuery(".fieldsetbox1 .jv_events_filter_tag_check") ;
-        if( cTags.length ) {
+        var cTags1= jQuery(".fieldsetbox1 .jv_events_filter_tag_check") ;
+        if( cTags1.length ) {
 
-            jQuery( cTags ).each( function() {
+            jQuery( cTags1 ).each( function() {
                 if ( jQuery(this).prop("checked") ) {
                     cTagChecked1 = true ;
                     cTagChecked = true ;
@@ -321,9 +321,9 @@ function jv_events_refreshList(){
             }) ;
         }
         var cTagChecked2 = false  ;
-        var cTags= jQuery(".fieldsetbox2 .jv_events_filter_tag_check") ;
-        if( cTags.length ) {
-            jQuery( cTags ).each( function() {
+        var cTags2= jQuery(".fieldsetbox2 .jv_events_filter_tag_check") ;
+        if( cTags2.length ) {
+            jQuery( cTags2 ).each( function() {
                 if ( jQuery(this).prop("checked") ) {
                     cTagChecked2 = true ;
                     cTagChecked = true ;
@@ -333,9 +333,34 @@ function jv_events_refreshList(){
 
             }) ;
         }
+        var cTagChecked3= false  ;
+        var cTags3= jQuery(".fieldsetbox3 .jv_events_filter_tag_check") ;
+        if( cTags3.length ) {
+            jQuery( cTags3 ).each( function() {
+                if ( jQuery(this).prop("checked") ) {
+                    cTagChecked3 = true ;
+                    cTagChecked = true ;
+                    jQuery("#toggle-accordion-3").prop("checked" , true ) ;
+                    return false ;
+                }
 
+            }) ;
+        }
+        var cTagChecked4= false  ;
+        var cTags4= jQuery(".fieldsetbox4 .jv_events_filter_tag_check") ;
+        if( cTags4.length ) {
+            jQuery( cTags4 ).each( function() {
+                if ( jQuery(this).prop("checked") ) {
+                    cTagChecked4 = true ;
+                    cTagChecked = true ;
+                    jQuery("#toggle-accordion-4").prop("checked" , true ) ;
+                    return false ;
+                }
+
+            }) ;
+        }
     } else {
-        var cTags= jQuery(".jv_events_filter_tag_check") ;
+
         jQuery( cTags ).each( function() {
             if ( jQuery(this).prop("checked") ) {
              //   console.log("found one tag checked: " + jQuery(this).val() )
@@ -427,31 +452,92 @@ function jv_events_refreshList(){
 
             if( sTags ) {
                 sTags = "," + sTags + "," ;
-                needTohide = true ;
-                var combineTags =  jQuery('#jv_events_filter_tags').data('combinetags') ;
-                //console.log( "Combine Tags: " +  combineTags  ) ;
-                jQuery( cTags ).each( function() {
-                    // console.log( "Filter Tag: " + jQuery(this).val() + " checked ? : " + jQuery(this).prop("checked") ) ;
 
-                    if ( jQuery(this).prop("checked") ) {
-                        // console.log( "position of " + jQuery(this).val() + " in string " + sTags + " = " + sTags.indexOf( "," + jQuery(this).val()   ) ) ;
-                        if( sTags.indexOf( "," + jQuery(this).val() + ","  ) > -1 ) {
-                            needTohide = false ;
-                            // console.log(" if All Tags must fit (combineTags = " + combineTags + "): we can not exit , we need to stay in loop and check all " ) ;
-                            if ( combineTags != "1") {
-                                return false ;
+
+
+                // with filter  type 7 (on left side) we always combined search, but only between sections
+                if( jQuery( ".filterType7").length ) {
+                    var needTohide1 = false ;
+                    if( cTagChecked1 === true ) {
+                        needTohide1 = true ;
+                        jQuery( cTags1 ).each( function() {
+                            if ( jQuery(this).prop("checked") ) {
+                                if( sTags.indexOf( "," + jQuery(this).val() + ","  ) > -1 ) {
+                                    needTohide1 = false ;
+                                    return false ;
+                                }
                             }
-                        } else {
-                            // console.log(" if All Tags must fit (combineTags = " + combineTags + "): we will exit and hide event " ) ;
-                            //
-                            if ( combineTags == "1") {
-                                needTohide = true ;
-                                return false ;
+                        }) ;
+                    }
+                    var needTohide2 = false ;
+                    if( cTagChecked2 === true  ) {
+                        needTohide2 = true ;
+                        jQuery( cTags2 ).each( function() {
+                            if ( jQuery(this).prop("checked") ) {
+                                if( sTags.indexOf( "," + jQuery(this).val() + ","  ) > 1 ) {
+                                    needTohide2 = false ;
+                                    return false ;
+                                }
                             }
-                        }
+                        }) ;
+                    }
+                    var needTohide3 = false ;
+                    if( cTagChecked3 === true  ) {
+                        needTohide3 = true ;
+                        jQuery( cTags3 ).each( function() {
+                            if ( jQuery(this).prop("checked") ) {
+                                if( sTags.indexOf( "," + jQuery(this).val() + ","  ) > 1 ) {
+                                    needTohide3 = false ;
+                                    return false ;
+                                }
+                            }
+                        }) ;
+                    }
+                    var needTohide4 = false ;
+                    if( cTagChecked4 === true  ) {
+                        needTohide4 = true ;
+                        jQuery( cTags4 ).each( function() {
+                            if ( jQuery(this).prop("checked") ) {
+                                if( sTags.indexOf( "," + jQuery(this).val() + ","  ) > 1 ) {
+                                    needTohide4 = false ;
+                                    return false ;
+                                }
+                            }
+                        }) ;
+                    }
+                    if( needTohide1 || needTohide2 || needTohide3 || needTohide4 ) {
+                        var needTohide = true ;
                     }
 
-                }) ;
+
+                } else {
+                    var needTohide = true ;
+                    var combineTags =  jQuery('#jv_events_filter_tags').data('combinetags') ;
+                    //console.log( "Combine Tags: " +  combineTags  ) ;
+                    jQuery( cTags ).each( function() {
+                        // console.log( "Filter Tag: " + jQuery(this).val() + " checked ? : " + jQuery(this).prop("checked") ) ;
+
+                        if ( jQuery(this).prop("checked") ) {
+                            // console.log( "position of " + jQuery(this).val() + " in string " + sTags + " = " + sTags.indexOf( "," + jQuery(this).val()   ) ) ;
+                            if( sTags.indexOf( "," + jQuery(this).val() + ","  ) > -1 ) {
+                                needTohide = false ;
+                                // console.log(" if All Tags must fit (combineTags = " + combineTags + "): we can not exit , we need to stay in loop and check all " ) ;
+                                if ( combineTags != "1") {
+                                    return false ;
+                                }
+                            } else {
+                                // console.log(" if All Tags must fit (combineTags = " + combineTags + "): we will exit and hide event " ) ;
+                                //
+                                if ( combineTags == "1") {
+                                    needTohide = true ;
+                                    return false ;
+                                }
+                            }
+                        }
+
+                    }) ;
+                }
+
 
 
                 if( needTohide ) {
@@ -492,7 +578,7 @@ function jv_events_refreshList(){
         if ( maxDist  && !jQuery(this).hasClass('hide') ) {
             dist = PythagorasEquirectangular( userLat , userLng , jQuery(this).data("latitude") , jQuery(this).data("longitude") ) ;
             if ( dist > maxDist  ) {
-                console.log( jQuery(this).data("eventuid") + ": MaxDist " + maxDist + " > dist: " + dist ) ;
+                // console.log( jQuery(this).data("eventuid") + ": MaxDist " + maxDist + " > dist: " + dist ) ;
                 jQuery(this).addClass('hide').addClass('hidden-by-maxDist')  ;
             }
         }
