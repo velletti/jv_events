@@ -29,18 +29,24 @@ class GetIcalLink extends AbstractNode
         $paramArray = $this->data['parameterArray'];
         $resultArray = $this->initializeResultArray();
         $title = $this->getLanguageService()->sL('LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:jv_events_model_location.geocoder.title');
-        $singlePid = 111 ;
-        $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($singlePid);
 
-        $url = (string)$site->getRouter()->generateUri( $singlePid ,['_language' => max( $this->data['databaseRow']['sys_language_uid'][0],0 ) ,
-                                                      'tx_jvevents_ajax' => ['action' => 'downloadical' , 'controller' => 'Ajax' ,'uid' =>  $this->data['databaseRow']['uid']]]);
+        $configuration = \JVE\JvEvents\Utility\EmConfigurationUtility::getEmConf();
+        $singlePid = ( array_key_exists( 'DetailPid' , $configuration) && $configuration['DetailPid'] > 0 ) ? intval($configuration['DetailPid']) : 111 ;
 
-        $resultArray['title'] = "Download Ical File" ;
-        $resultArray['iconIdentifier'] = "actions-calendar" ;
-        $resultArray['linkAttributes']['class'] = "getIcalLink windowOpenUri btn-primary" ;
-        $resultArray['linkAttributes']['data-uri'] = $url ;
-        $resultArray['requireJsModules'][] = 'TYPO3/CMS/JvEvents/ShowEventInFrontend' ;
+        try {
+            $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($singlePid);
 
+            $url = (string)$site->getRouter()->generateUri( $singlePid ,['_language' => max( $this->data['databaseRow']['sys_language_uid'][0],0 ) ,
+                                                          'tx_jvevents_ajax' => ['action' => 'downloadical' , 'controller' => 'Ajax' ,'uid' =>  $this->data['databaseRow']['uid']]]);
+
+            $resultArray['title'] = "Download Ical File" ;
+            $resultArray['iconIdentifier'] = "actions-calendar" ;
+            $resultArray['linkAttributes']['class'] = "getIcalLink windowOpenUri btn-primary" ;
+            $resultArray['linkAttributes']['data-uri'] = $url ;
+            $resultArray['requireJsModules'][] = 'TYPO3/CMS/JvEvents/ShowEventInFrontend' ;
+        } catch (\Exception $e) {
+            $resultArray = [] ;
+        }
 
         return $resultArray;
     }
