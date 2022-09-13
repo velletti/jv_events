@@ -65,7 +65,11 @@
 							<f:then>
 								<f:variable name="aktDate">{event.startDate -> f:format.date(format:"d.m.Y")}</f:variable>
 
-								<f:render partial="Event/List/Partial{settings.LayoutList}/SingleEventForFilter7" arguments="{event:event, settings: settings}" />
+								<f:render partial="Event/List/Partial{settings.LayoutList}/SingleEventForFilter7" arguments="{event:event, settings: settings, aktDate: aktDate, lastDate: lastDate}" />
+								<f:variable name="lastDate">{event.startDate -> f:format.date(format:"d.m.Y")}</f:variable>
+								</f:else>
+						</f:if>
+					</f:if>}" />
 								<f:variable name="lastDate">{event.startDate -> f:format.date(format:"d.m.Y")}</f:variable>
 							</f:then>
 							<f:else>
