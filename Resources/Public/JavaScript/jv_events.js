@@ -474,7 +474,7 @@ function jv_events_refreshList(){
                         needTohide2 = true ;
                         jQuery( cTags2 ).each( function() {
                             if ( jQuery(this).prop("checked") ) {
-                                if( sTags.indexOf( "," + jQuery(this).val() + ","  ) > 1 ) {
+                                if( sTags.indexOf( "," + jQuery(this).val() + ","  ) > -1 ) {
                                     needTohide2 = false ;
                                     return false ;
                                 }
@@ -486,7 +486,7 @@ function jv_events_refreshList(){
                         needTohide3 = true ;
                         jQuery( cTags3 ).each( function() {
                             if ( jQuery(this).prop("checked") ) {
-                                if( sTags.indexOf( "," + jQuery(this).val() + ","  ) > 1 ) {
+                                if( sTags.indexOf( "," + jQuery(this).val() + ","  ) > -1 ) {
                                     needTohide3 = false ;
                                     return false ;
                                 }
@@ -498,7 +498,7 @@ function jv_events_refreshList(){
                         needTohide4 = true ;
                         jQuery( cTags4 ).each( function() {
                             if ( jQuery(this).prop("checked") ) {
-                                if( sTags.indexOf( "," + jQuery(this).val() + ","  ) > 1 ) {
+                                if( sTags.indexOf( "," + jQuery(this).val() + ","  ) > -1 ) {
                                     needTohide4 = false ;
                                     return false ;
                                 }
