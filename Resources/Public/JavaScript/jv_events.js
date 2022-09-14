@@ -375,6 +375,10 @@ function jv_events_refreshList(){
     jQuery( cCats ).each( function() {
         if ( jQuery(this).prop("checked") ) {
             //     console.log("found one category checked: " + jQuery(this).val() )
+            if(  jQuery("#toggle-accordion-cat").length ) {
+                jQuery("#toggle-accordion-cat").prop("checked" , true ) ;
+            }
+
             cCatChecked = true ;
             return false ;
         }
@@ -396,6 +400,10 @@ function jv_events_refreshList(){
             if( jQuery(this).data("monthuid")  != fMonth.val() ) {
                 jQuery(this).addClass('hide').addClass('hidden-by-fMonth') ;
             }
+            if(  jQuery("#toggle-accordion-6").length ) {
+                jQuery("#toggle-accordion-6").prop("checked" , true ) ;
+            }
+
         }
 
 
@@ -416,6 +424,9 @@ function jv_events_refreshList(){
                 if( (jQuery(this).data("cityuid")) && decodeURI (jQuery(this).data("cityuid")) != (fCity.val()) && ( parseInt( jQuery(this).data("longitude") ) != 0  )  ) {
                     jQuery(this).addClass('hide').addClass('hidden-by-fCity') ;
                 }
+                if(  jQuery("#toggle-accordion-8").length ) {
+                    jQuery("#toggle-accordion-8").prop("checked" , true ) ;
+                }
             }
         }
 
@@ -432,10 +443,13 @@ function jv_events_refreshList(){
         }
         if( fOrg && !jQuery(this).hasClass('hide') ) {
 
-            if ( $("#jv_events_filter_tags").hasClass( "filterType6") && fOrg.val() ) {
+            if ( ($("#jv_events_filter_tags").hasClass( "filterType6") || $("#jv_events_filter_tags").hasClass( "filterType7")) && fOrg.val() ) {
                //  console.log( "filterType6: forg: " + ( fOrg.val()) + " <> " + decodeURI(jQuery(this).data("orgname")) ) ;
                 if( (jQuery(this).data("orgname")) && decodeURI (jQuery(this).data("orgname")) !== (fOrg.val()) ) {
                     jQuery(this).addClass('hide').addClass('hidden-by-fOrg') ;
+                }
+                if(  jQuery("#toggle-accordion-7").length ) {
+                    jQuery("#toggle-accordion-7").prop("checked" , true ) ;
                 }
             } else {
                 if( fOrg.val() > 0 && parseInt( jQuery(this).data("orguid"))   !== parseInt( fOrg.val()) ) {
@@ -591,75 +605,71 @@ function jv_events_refreshList(){
         }
     });
 
+    jQuery( "#filter-resultcount-events").html( resultcountEvents ) ;
 
     if ( filterIsActive ) {
         jQuery( "#filter-events A").addClass('hide') ;
         jQuery( "#filter-reset-events").removeClass('hide') ;
-        jQuery( "#filter-resultcount-events").html( resultcountEvents ) ;
         jQuery( "#filter-result-hint-events").removeClass('hide') ;
-
-
-        // now change also the URL in the Browser to be able to copy the URL !!!
-        urlFilter = "" ;
-        if( fOrg ) {
-            if ( $("#jv_events_filter_tags").hasClass( "filterType6") && fOrg.val() ) {
-                urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][organizers]=" + fOrg.val() ;
-            } else {
-                if(  fOrg.val() > 0 ) {
-                    urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][organizers]=" + fOrg.val() ;
-                }
-            }
-        }
-
-
-        if( cCatChecked ) {
-
-            var catUrlFilter = '' ;
-            jQuery( cCats ).each( function() {
-                if ( jQuery(this).prop("checked") ) {
-                    catUrlFilter = catUrlFilter + jQuery(this).val() +","  ;
-                }
-            }) ;
-            urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][categories]=" +  catUrlFilter ;
-        }
-        if( cTagChecked ) {
-
-            var tagUrlFilter = '' ;
-            jQuery( cTags ).each( function() {
-                if ( jQuery(this).prop("checked") ) {
-                    tagUrlFilter = tagUrlFilter + jQuery(this).val() +","  ;
-                }
-            }) ;
-            urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][tags]=" +  tagUrlFilter ;
-        }
-
-
-        if( fCat && fCat.val() > 0 ) {
-            urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][categories]=" + fCat.val() ;
-        }
-
-        if( fTag && fTag.val() > 0 ) {
-            urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][tags]=" + fTag.val() ;
-        }
-
-        if( fCity && fCity.val() != ''  ) {
-            urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][citys]=" + fCity.val() ;
-        }
-        if( fMonth && fMonth.val() != ''  ) {
-            urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][months]=" + fMonth.val() ;
-        }
-
-        jv_events_pushUrl( urlFilter ) ;
-
 
     } else {
         jQuery( "#filter-events A").removeClass('hide') ;
         jQuery( "#filter-result-hint-events").addClass('hide') ;
 
         //   jQuery( "#filter-reset-events").addClass('hide') ;
-        // do not reset URL if not Event to hide is found.
-        //    jv_events_pushUrl( '' ) ;
     }
+
+    // now change also the URL in the Browser to be able to copy the URL !!!
+    urlFilter = "" ;
+    if( fOrg ) {
+        if ( $("#jv_events_filter_tags").hasClass( "filterType6") && fOrg.val() ) {
+            urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][organizers]=" + fOrg.val() ;
+        } else {
+            if(  fOrg.val() > 0 ) {
+                urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][organizers]=" + fOrg.val() ;
+            }
+        }
+    }
+
+
+    if( cCatChecked ) {
+
+        var catUrlFilter = '' ;
+        jQuery( cCats ).each( function() {
+            if ( jQuery(this).prop("checked") ) {
+                catUrlFilter = catUrlFilter + jQuery(this).val() +","  ;
+            }
+        }) ;
+        urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][categories]=" +  catUrlFilter ;
+    }
+    if( cTagChecked ) {
+
+        var tagUrlFilter = '' ;
+        jQuery( cTags ).each( function() {
+            if ( jQuery(this).prop("checked") ) {
+                tagUrlFilter = tagUrlFilter + jQuery(this).val() +","  ;
+            }
+        }) ;
+        urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][tags]=" +  tagUrlFilter ;
+    }
+
+
+    if( fCat && fCat.val() > 0 ) {
+        urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][categories]=" + fCat.val() ;
+    }
+
+    if( fTag && fTag.val() > 0 ) {
+        urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][tags]=" + fTag.val() ;
+    }
+
+    if( fCity && fCity.val() != ''  ) {
+        urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][citys]=" + fCity.val() ;
+    }
+    if( fMonth && fMonth.val() != ''  ) {
+        urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][months]=" + fMonth.val() ;
+    }
+
+    jv_events_pushUrl( urlFilter ) ;
 
 
 }
