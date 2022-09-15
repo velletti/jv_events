@@ -228,7 +228,7 @@
 			<f:variable name="tabDescActive">active</f:variable>
 
 			<li class="nav-item" role="presentation">
-				<a class="active mx-3" href="#jv_events_event" data-toggle="tab"><f:translate key="tx_jvevents_domain_model_event.details.tab.details" /></a>
+				<a class="active mx-3" href="#jv_events_details" data-toggle="tab"><f:translate key="tx_jvevents_domain_model_event.details.tab.details" /></a>
 			</li>
 		</f:if>
 		<f:if condition="{event.canceled}">
@@ -277,7 +277,7 @@
 
 
 	<div class="tab-content clearfix">
-		<div class="tab-pane {tabDescActive} p-3 {f:if(condition: '{event.canceled}' , then:'opacity-3')}" id="jv_events_maptab">
+		<div class="tab-pane {tabDescActive} p-3 {f:if(condition: '{event.canceled}' , then:'opacity-3')}" id="jv_events_details">
 			<div class="row">
 				<div class="col-12 col-md-8 min-height-6-lines">
 

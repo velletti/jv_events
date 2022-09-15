@@ -1,6 +1,12 @@
 {namespace jve=JVE\JvEvents\ViewHelpers}
+{namespace allplan = Allplan\AllplanSitepackage2022\ViewHelpers}
 
 <f:spaceless>
+    <f:if condition="{settings.filter.noEventsFound}">
 
+        <f:format.raw>
+            <allplan:content.record.getTtContent uid="{settings.filter.noEventsFound}" />
+        </f:format.raw>
+    </f:if>
 </f:spaceless>
 
