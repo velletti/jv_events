@@ -326,8 +326,12 @@ class AjaxController extends BaseController
                 $output['event']['noNotification'] = $event->getNotifyRegistrant() ;
 
                 if ( $site ) {
+                    try {
                     $output['event']['slug'] = (string)$site->getRouter()->generateUri( $singlePid ,['_language' => max( $event->getLanguageUid() ,0 ) ,
                         'tx_jvevents_events' => ['action' => 'show' , 'controller' => 'Event' ,'event' =>  $event->getUid() ]]);
+                    } catch( \EXCEPTION $e ) {
+                        $output['event']['slug'] = "pid=" . $singlePid . "&L=" . $event->getLanguageUid() ;
+                    }
                 }
 
 
