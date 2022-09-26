@@ -292,7 +292,7 @@ class AjaxController extends BaseController
             /** @var \JVE\JvEvents\Domain\Model\Event $event */
             $event = $this->eventRepository->findByUidAllpages( $output['event']['requestId'] , FALSE  , TRUE );
             if( is_object($event )) {
-                if ( !$output['mode'] == "onlyValues") {
+                if ( susbstring($output['mode'], 0 , 4 )  != "only" ) {
                     $event->increaseViewed();
                     $this->eventRepository->update($event) ;
                     $needToStore = TRUE ;
@@ -587,6 +587,9 @@ class AjaxController extends BaseController
 
         if ( $output['mode'] == "onlyValues") {
             unset( $output['events'] ) ;
+            ShowAsJsonArrayUtility::show(  $output ) ;
+        }
+        if ( $output['mode'] == "onlyJson") {
             ShowAsJsonArrayUtility::show(  $output ) ;
         }
 
