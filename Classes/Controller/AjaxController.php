@@ -284,7 +284,7 @@ class AjaxController extends BaseController
 
         $configuration = \JVE\JvEvents\Utility\EmConfigurationUtility::getEmConf();
         $singlePid = ( array_key_exists( 'DetailPid' , $configuration) && $configuration['DetailPid'] > 0 ) ? intval($configuration['DetailPid']) : 111 ;
-
+        $output['DetailPid'] = $singlePid  ;
         try {
             $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($singlePid);
         } catch( \Exception $e) {
@@ -502,8 +502,12 @@ class AjaxController extends BaseController
                                 $tempEventArray['LocationCity'] = $tempEvent->getLocation()->getCity();
                             }
                             if ( $site ) {
-                                $tempEventArray['slug'] = (string)$site->getRouter()->generateUri( $singlePid ,['_language' => max( $tempEvent->getLanguageUid() ,0 ) ,
-                                    'tx_jvevents_events' => ['action' => 'show' , 'controller' => 'Event' ,'event' =>  $tempEvent->getUid() ]]);
+                                try {
+                                    $tempEventArray['slug'] = (string)$site->getRouter()->generateUri( $singlePid ,['_language' => max( $tempEvent->getLanguageUid() ,0 ) ,
+                                        'tx_jvevents_events' => ['action' => 'show' , 'controller' => 'Event' ,'event' =>  $tempEvent->getUid() ]]);
+                                } catch( \EXCEPTION $e ) {
+                                    $tempEventArray['slug'] = "pid=" . $singlePid . "&L=" . $tempEvent->getLanguageUid() ;
+                                }
                             }
 
                             $output['eventsByFilter'][] = $tempEventArray;
