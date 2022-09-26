@@ -32,6 +32,7 @@ use JVE\JvEvents\Domain\Model\Location;
 use JVE\JvEvents\Utility\AjaxUtility;
 use JVE\JvEvents\Utility\TyposcriptUtility;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use JVE\JvEvents\Utility\ShowAsJsonArrayUtility;
@@ -281,6 +282,20 @@ class AjaxController extends BaseController
             $output['returnPid'] = $arguments['returnPid']  ;
         }
 
+        $configuration = \JVE\JvEvents\Utility\EmConfigurationUtility::getEmConf();
+        $singlePid = ( array_key_exists( 'DetailPid' , $configuration) && $configuration['DetailPid'] > 0 ) ? intval($configuration['DetailPid']) : 111 ;
+
+        try {
+            $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($singlePid);
+        } catch( \Exception $e) {
+            // ignore
+            $site = false ;
+        }
+
+
+
+
+
         $needToStore = FALSE ;
         /* ************************************************************************************************************ */
         /*   Get infos about: EVENT
@@ -309,6 +324,11 @@ class AjaxController extends BaseController
                 $output['event']['creationTime'] = date( "d.m.Y H:i" , $event->getCrdate() ) ;
                 $output['event']['crdate'] =  $event->getCrdate()  ;
                 $output['event']['noNotification'] = $event->getNotifyRegistrant() ;
+
+                if ( $site ) {
+                    $output['event']['slug'] = (string)$site->getRouter()->generateUri( $singlePid ,['_language' => max( $event->getLanguageUid() ,0 ) ,
+                        'tx_jvevents_events' => ['action' => 'show' , 'controller' => 'Event' ,'event' =>  $event->getUid() ]]);
+                }
 
 
                 if( $event->getNotifyRegistrant() == 0  ) {
@@ -457,7 +477,7 @@ class AjaxController extends BaseController
                 /** @var \JVE\JvEvents\Domain\Model\Event $tempEvent */
                 $tempEvent =  $events->getFirst() ;
                 if( is_object( $tempEvent )) {
-                    if ( !$output['mode'] == "onlyValues") {
+                    if ( substr($output['mode'], 0, 4 )  != "only") {
                         $tempEvent->increaseViewed();
 
                         $this->eventRepository->update($tempEvent);
@@ -476,6 +496,10 @@ class AjaxController extends BaseController
 
                             if (is_object($tempEvent->getLocation())) {
                                 $tempEventArray['LocationCity'] = $tempEvent->getLocation()->getCity();
+                            }
+                            if ( $site ) {
+                                $tempEventArray['slug'] = (string)$site->getRouter()->generateUri( $singlePid ,['_language' => max( $tempEvent->getLanguageUid() ,0 ) ,
+                                    'tx_jvevents_events' => ['action' => 'show' , 'controller' => 'Event' ,'event' =>  $tempEvent->getUid() ]]);
                             }
 
                             $output['eventsByFilter'][] = $tempEventArray;
