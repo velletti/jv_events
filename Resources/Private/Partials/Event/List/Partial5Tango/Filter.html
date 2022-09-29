@@ -582,13 +582,15 @@
                     </f:else>
 
                 </f:if>
-
-                <fieldset class="fieldsetbox5  filtersetboxWidth_2 border-0  p-0" >
-                    <f:render partial="SingleField/Partial{settings.LayoutList}/FormRowOpenStreetmapGeocoderFilter7"
-                              arguments="{settings: settings , updateFunction: 'jv_events_refreshList();' ,
+                <f:if condition="'1'=='2'">
+                    <fieldset class="fieldsetbox5  filtersetboxWidth_2 border-0  p-0" >
+                        <f:render partial="SingleField/Partial{settings.LayoutList}/FormRowOpenStreetmapGeocoderFilter7"
+                                  arguments="{settings: settings , updateFunction: 'jv_events_refreshList();' ,
                               buttonSetPosition: '1' , property:'lng'  ,  property2:'lat', zoom: 'zoom' ,
                               maxLength: 30 , mandatory: '0' }" />
-                </fieldset>
+                    </fieldset>
+                </f:if>
+
 
 
                 <f:if condition="{f:count(subject: eventsFilter.categories2)} > 1">
