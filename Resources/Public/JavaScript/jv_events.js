@@ -168,8 +168,11 @@ function jv_events_init() {
 
 
     }
-
-    jv_events_refreshList();
+    // the included map javascript will do the refesh, when map is loaded.
+    // if we refresh the eventslist before map is ready  will not work
+    if( ! jQuery("#map").length  ) {
+        jv_events_refreshList();
+    }
 }
 function jv_events_initPosition(position) {
 

@@ -372,7 +372,9 @@ function jv_events_init() {
         }
     });
 
-	jv_events_refreshList();
+    if( ! jQuery("#map").length  ) {
+        jv_events_refreshList();
+    }
 
     $('.toggle-clearToogle').bind('click' , function(e) {
         var clearTarget = $('.toggle-clearInput').data("target") ;
