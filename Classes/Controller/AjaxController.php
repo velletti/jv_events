@@ -307,7 +307,7 @@ class AjaxController extends BaseController
             /** @var \JVE\JvEvents\Domain\Model\Event $event */
             $event = $this->eventRepository->findByUidAllpages( $output['event']['requestId'] , FALSE  , TRUE );
             if( is_object($event )) {
-                if ( substring($output['mode'], 0 , 4 )  != "only" ) {
+                if ( substr($output['mode'], 0 , 4 )  != "only" ) {
                     $event->increaseViewed();
                     $this->eventRepository->update($event) ;
                     $needToStore = TRUE ;
