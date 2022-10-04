@@ -370,6 +370,10 @@
 										<numIndex index="0">LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.ShowFilter.AdvancedFilterOnLeftSide</numIndex>
 										<numIndex index="1">7</numIndex>
 									</numIndex>
+									<numIndex index="8" type="array">
+										<numIndex index="0">No Filter, starting from 2022</numIndex>
+										<numIndex index="1">8</numIndex>
+									</numIndex>
 								</items>
 							</config>
 						</TCEforms>

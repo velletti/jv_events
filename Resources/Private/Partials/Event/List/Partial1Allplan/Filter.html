@@ -551,8 +551,6 @@
     </div>
 </f:if>
 <f:if condition="{settings.ShowFilter}==7">
-
-
     <div class="filter events filterType7"  id="jv_events_filter_tags" data-combinetags="{settings.filter.combinetags}">
 
         <form class="clearfix" action="#" >
@@ -774,5 +772,12 @@
         </div>
 
 
+    </div>
+</f:if>
+
+<f:if condition="{settings.ShowFilter}==8">
+    <div class="filter events filterType8"  id="jv_events_filter_tags" data-combinetags="{settings.filter.combinetags}">
+        <div id="jv_events_geo" class="hidden d-none" data-lng="{settings.list.longitude}" data-lat="{settings.list.latitude}" data-doubleclickzoom="{settings.filter.doubleclickzoom}">
+        </div>
     </div>
 </f:if>
