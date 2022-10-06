@@ -170,6 +170,22 @@ class EventRepository extends BaseRepository
         if( $settings['filter']['organizer']  ) {
             $constraints[] = $query->equals("organizer",  $settings['filter']['organizer'] );
         }
+        //
+        if( $settings['filter']['organizers']  ) {
+            $organizers = GeneralUtility::trimExplode("," , $settings['filter']['organizers']  ) ;
+            if (is_array( $organizers) ) {
+                if( count($organizers) == 1 ) {
+                    $constraints[] = $query->equals("organizer",  $organizers[0] );
+                } else {
+                    foreach ( $organizers as $organizer ) {
+                        $constraintsOrg[]  = $query->equals("organizer",  $organizer );
+                    }
+                    $constraints[] = $query->logicalOr($constraintsOrg) ;
+                }
+                
+            }
+
+        }
 
         // $query->getQuerySettings()->setIgnoreEnableFields(FALSE) ;
 		if( $settings['filter']['skipEvent'] > 0 ) {
