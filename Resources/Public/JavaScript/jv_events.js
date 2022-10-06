@@ -1,6 +1,6 @@
 /**
  * Created by velletti on 29.09.2016.
- * Last Change: 23.6.2021
+ * Last Change: 06.10.2022
  */
 //$(window).on("load", function(){
 jQuery(document).ready(function() {
@@ -624,7 +624,7 @@ function jv_events_refreshList(){
 
     // now change also the URL in the Browser to be able to copy the URL !!!
     urlFilter = "" ;
-    if( fOrg ) {
+    if( fOrg && fOrg.length ) {
         if ( $("#jv_events_filter_tags").hasClass( "filterType6") && fOrg.val() ) {
             urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][organizers]=" + fOrg.val() ;
         } else {
@@ -665,10 +665,10 @@ function jv_events_refreshList(){
         urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][tags]=" + fTag.val() ;
     }
 
-    if( fCity && fCity.val() != '' && fCity.val() !== 'undefined'  ) {
+    if( fCity && fCity.length && fCity.val() != '' && fCity.val() !== 'undefined'  ) {
         urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][citys]=" + fCity.val() ;
     }
-    if( fMonth && fMonth.val() != '' && fMonth.val() !== 'undefined'  ) {
+    if( fMonth && fMonth.length && fMonth.val() != '' && fMonth.val() !== 'undefined'  ) {
         urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][months]=" + fMonth.val() ;
     }
 
