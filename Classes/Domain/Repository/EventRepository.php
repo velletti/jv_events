@@ -235,7 +235,7 @@ class EventRepository extends BaseRepository
         }
 
         $result = $query->execute();
-         //  $this->debugQuery($query) ;
+        // $this->debugQuery($query) ;
 
         return $result;
     }

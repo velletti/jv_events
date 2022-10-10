@@ -152,12 +152,18 @@ class EventController extends BaseController
 
             case "6":
             case "7":
-                $eventsFilter = $this->generateFilter( $events ,  $this->settings['filter']) ;
+                $eventsFilter = $this->generateFilterWithoutTagsCats( $events ,  $this->settings['filter']) ;
+                // $eventsFilter = $this->generateFilterAll(  $this->settings['filter']) ;
+                $this->debugArray[] = "After generate Filter others :" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " | Line: " . __LINE__ ;
                 $eventsFilter['box1'] = $this->generateFilterBox( $this->settings['filter']['tagbox1tags']  , intval($this->settings['filter']['tagShowAfterColon'] )) ;
+                $this->debugArray[] = "After generate Filter Tags 1 : " . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " |  Line: " . __LINE__ ;
                 $eventsFilter['box2'] = $this->generateFilterBox( $this->settings['filter']['tagbox2tags'] , intval($this->settings['filter']['tagShowAfterColon'] )) ;
+                $this->debugArray[] = "After generate Filter Tags 2 : " . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " |  Line: " . __LINE__ ;
                 $eventsFilter['box3'] = $this->generateFilterBox( $this->settings['filter']['tagbox3tags'] , intval($this->settings['filter']['tagShowAfterColon'] )) ;
+                $this->debugArray[] = "After generate Filter Tags 3 : " . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " |  Line: " . __LINE__ ;
                 $eventsFilter['box4'] = $this->generateFilterBox( $this->settings['filter']['tagbox4tags'] , intval($this->settings['filter']['tagShowAfterColon'] )) ;
-                break;
+                $this->debugArray[] = "After generate Filter Tags 4 : " . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " |  Line: " . __LINE__ ;
+            break;
 
             default:
                 $eventsFilter = $this->generateFilter( $events ,  $this->settings['filter']) ;
@@ -171,6 +177,7 @@ class EventController extends BaseController
         $this->settings['navigationDates'] = $this->eventRepository->getDateArray($this->settings , $dtz ) ;
 
         $this->view->assign('eventsFilter', $eventsFilter);
+       // $this->settings['checkInstallation'] = 2 ;
         $this->view->assign('settings', $this->settings );
         $this->debugArray[] = "before Render:" . intval(1000 * ($this->microtime_float()  - $this->timeStart ) ) . " Line: " . __LINE__ ;
         $this->view->assign('debugArray', $this->debugArray );

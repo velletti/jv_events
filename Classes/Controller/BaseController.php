@@ -448,6 +448,80 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             ) ;
     }
 
+
+    public function generateFilterWithoutTagsCats(\TYPO3\CMS\Extbase\Persistence\QueryResultInterface $events , $filter ) {
+        $locations = array() ;
+        $organizers = array() ;
+        $citys = array() ;
+        $months = array() ;
+
+        if( $this->settings['filter']['hideCityDropdown'] && $this->settings['filter']['hideMonthDropdown']
+            && $this->settings['filter']['hideOrganizerDropdown']) {
+            return array(
+                "locations" => $locations ,
+                "organizers" => $organizers ,
+                "citys" => $citys ,
+                "months" => $months ,
+            ) ;
+        }
+        /** @var Event $event */
+        $eventsArray = $events->toArray() ;
+        $this->debugArray[] = "After converting to Array :" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " | Line: " . __LINE__ ;
+
+        $x = 0 ;
+      //  while( $event = $events->getOffest($x) instanceof  \JVE\JvEvents\Domain\Model\Event ) {
+         foreach ($eventsArray as $key => $event ) {
+             $x++ ;
+            // first fill the Options for the Filters to have only options with Events
+
+            if( ! $this->settings['filter']['hideCityDropdown']) {
+                /** @var \JVE\JvEvents\Domain\Model\Location $obj */
+                $obj =  $event->getLocation() ;
+                if ( is_object($obj) ) {
+                    $locations[$obj->getUid()] = $obj->getName()  ;
+
+                    if(! in_array(ucfirst($obj->getCity()) , $citys )) {
+                        // no online Events in CITY Filter
+                        if( intval( $obj->getLat())  != 0 || intval($obj->getLng() != 0 )) {
+                            $citys[$obj->getCity()] = ucfirst($obj->getCity()) ;
+                        }
+                    }
+                }
+            }
+
+            if( ! $this->settings['filter']['hideOrganizerDropdown']) {
+                /** @var \JVE\JvEvents\Domain\Model\Organizer $obj */
+                $obj = $event->getOrganizer();
+                if (is_object($obj)) {
+                    if ( $this->settings['ShowFilter'] == 6 ) {
+                        $orgName = str_replace(" " , "+" , $obj->getName() ) ;
+                        if(! in_array($orgName , $organizers )) {
+                            $organizers[$orgName] = $obj->getName() ;
+                        }
+                    } else {
+                        $organizers[$obj->getUid()] = $obj->getName();
+                    }
+
+                }
+            }
+
+
+            unset($obj) ;
+
+            if( ! $this->settings['filter']['hideMonthDropdown']) {
+                $month = $event->getStartDate()->format("m.Y");
+                $months[$month] = $month;
+            }
+        }
+
+        return array(
+            "locations" => $locations ,
+            "organizers" => $organizers ,
+            "citys" => $citys ,
+            "months" => $months ,
+        ) ;
+    }
+
     public function generateOrgFilter($orgArray , $filter )
     {
         $tags = array();
