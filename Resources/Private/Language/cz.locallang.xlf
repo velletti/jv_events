@@ -5,6 +5,44 @@
 			<generator>LFEditor</generator>
 		</header>
 		<body>
+			<trans-unit id="month.01">
+				<source>Leden</source>
+			</trans-unit>
+			<trans-unit id="month.02">
+				<source>únor</source>
+			</trans-unit>
+			<trans-unit id="month.03">
+				<source>březen</source>
+			</trans-unit>
+			<trans-unit id="month.04">
+				<source>duben</source>
+			</trans-unit>
+			<trans-unit id="month.05">
+				<source>květen</source>
+			</trans-unit>
+			<trans-unit id="month.06">
+				<source>červen</source>
+			</trans-unit>
+
+
+			<trans-unit id="month.07">
+				<source>červenec</source>
+			</trans-unit>
+			<trans-unit id="month.08">
+				<source>srpen</source>
+			</trans-unit>
+			<trans-unit id="month.09">
+				<source>září</source>
+			</trans-unit>
+			<trans-unit id="month.10">
+				<source>říjen</source>
+			</trans-unit>
+			<trans-unit id="month.11">
+				<source>listopad</source>
+			</trans-unit>
+			<trans-unit id="month.12">
+				<source>prosinec</source>
+			</trans-unit>
 		<trans-unit id="register.accept_privacy" approved="yes">
 			<source>I have read and accept the </source>
 			<target>Četl(a) jsem a akceptuji </target>

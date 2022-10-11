@@ -5,6 +5,43 @@
 			<generator>LFEditor</generator>
 		</header>
 		<body>
+			<trans-unit id="month.01">
+				<source>Janvier</source>
+			</trans-unit>
+			<trans-unit id="month.02">
+				<source>Février</source>
+			</trans-unit>
+			<trans-unit id="month.03">
+				<source>Mars</source>
+			</trans-unit>
+			<trans-unit id="month.04">
+				<source>Avril</source>
+			</trans-unit>
+			<trans-unit id="month.05">
+				<source>Mai</source>
+			</trans-unit>
+			<trans-unit id="month.06">
+				<source>Juin</source>
+			</trans-unit>
+			<trans-unit id="month.07">
+				<source>Juillet</source>
+			</trans-unit>
+			<trans-unit id="month.08">
+				<source>Août</source>
+			</trans-unit>
+			<trans-unit id="month.09">
+				<source>Septembre</source>
+			</trans-unit>
+			<trans-unit id="month.10">
+				<source>Octobre</source>
+			</trans-unit>
+			<trans-unit id="month.11">
+				<source>Novembre</source>
+			</trans-unit>
+			<trans-unit id="month.12">
+				<source>Décembre</source>
+			</trans-unit>
+
 			<trans-unit id="jv_events_model_event.currency.label">
 				<source>Currency</source>
 				<target>Devise</target>

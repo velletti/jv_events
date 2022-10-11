@@ -152,7 +152,8 @@ class EventController extends BaseController
 
             case "6":
             case "7":
-                $eventsFilter = $this->generateFilterWithoutTagsCats( $events ,  $this->settings['filter']) ;
+              //  $eventsFilter = $this->generateFilterWithoutTagsCats( $events ,  $this->settings['filter']) ;
+                $eventsFilter = $this->generateFilter( $events ,  $this->settings['filter']) ;
                 // $eventsFilter = $this->generateFilterAll(  $this->settings['filter']) ;
                 $this->debugArray[] = "After generate Filter others :" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " | Line: " . __LINE__ ;
                 $eventsFilter['box1'] = $this->generateFilterBox( $this->settings['filter']['tagbox1tags']  , intval($this->settings['filter']['tagShowAfterColon'] )) ;

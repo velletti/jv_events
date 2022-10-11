@@ -128,19 +128,5 @@
 </f:section>
 
 <f:section name="month">
-	<f:switch expression="{f:format.date(date:startDate, format:'m')}">
-		<f:case value="1">Januar</f:case>
-		<f:case value="2">Februar</f:case>
-		<f:case value="3">März</f:case>
-		<f:case value="4">April</f:case>
-		<f:case value="5">Mai</f:case>
-		<f:case value="6">Juni</f:case>
-		<f:case value="7">Juli</f:case>
-		<f:case value="8">August</f:case>
-		<f:case value="9">September</f:case>
-		<f:case value="10">Oktober</f:case>
-		<f:case value="11">November</f:case>
-		<f:case value="12">Dezember</f:case>
-
-	</f:switch>
+	<f:translate key="month.{f:format.date(date:startDate, format:'m')}">{f:format.date(date:startDate, format:'m')}</f:translate>
 </f:section>
