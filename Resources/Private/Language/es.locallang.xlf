@@ -6,40 +6,52 @@
 		</header>
 		<body>
 			<trans-unit id="month.01">
-				<source>Enero</source>
+				<source>January</source>
+				<target>Enero</target>
 			</trans-unit>
 			<trans-unit id="month.02">
-				<source>Febrero</source>
+				<source>February</source>
+				<target>Febrero</target>
 			</trans-unit>
 			<trans-unit id="month.03">
-				<source>Marzo</source>
+				<source>March</source>
+				<target>Marzo</target>
 			</trans-unit>
 			<trans-unit id="month.04">
-				<source>Abril</source>
+				<source>April</source>
+				<target>Abril</target>
 			</trans-unit>
 			<trans-unit id="month.05">
-				<source>Mayo</source>
+				<source>May</source>
+				<target>Mayo</target>
 			</trans-unit>
 			<trans-unit id="month.06">
-				<source>Junio</source>
+				<source>June</source>
+				<target>Junio</target>
 			</trans-unit>
 			<trans-unit id="month.07">
-				<source>Julio</source>
+				<source>July</source>
+				<target>Julio</target>
 			</trans-unit>
 			<trans-unit id="month.08">
-				<source>Agosto</source>
+				<source>August</source>
+				<target>Agosto</target>
 			</trans-unit>
 			<trans-unit id="month.09">
-				<source>Septiembre</source>
+				<source>September</source>
+				<target>Septiembre</target>
 			</trans-unit>
 			<trans-unit id="month.10">
-				<source>Octubre</source>
+				<source>October</source>
+				<target>Octubre</target>
 			</trans-unit>
 			<trans-unit id="month.11">
-				<source>Noviembre</source>
+				<source>November</source>
+				<target>Noviembre</target>
 			</trans-unit>
 			<trans-unit id="month.12">
-				<source>Diciembre</source>
+				<source>December</source>
+				<target>Diciembre</target>
 			</trans-unit>
 
 			<trans-unit id="jv_events_model_event.currency.label">

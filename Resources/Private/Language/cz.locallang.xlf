@@ -1,47 +1,59 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-10-18T07:35:33Z">
+	<file source-language="en" target-language="cz" datatype="plaintext" original="messages" date="2016-10-18T07:35:33Z">
 		<header>
 			<generator>LFEditor</generator>
 		</header>
 		<body>
 			<trans-unit id="month.01">
-				<source>Leden</source>
+				<source>January</source>
+				<target>Leden</target>
 			</trans-unit>
 			<trans-unit id="month.02">
-				<source>únor</source>
+				<source>February</source>
+				<target>únor</target>
 			</trans-unit>
 			<trans-unit id="month.03">
-				<source>březen</source>
+				<source>March</source>
+				<target>březen</target>
 			</trans-unit>
 			<trans-unit id="month.04">
-				<source>duben</source>
+				<source>April</source>
+				<target>duben</target>
 			</trans-unit>
 			<trans-unit id="month.05">
-				<source>květen</source>
+				<source>May</source>
+				<target>květen</target>
 			</trans-unit>
 			<trans-unit id="month.06">
-				<source>červen</source>
+				<source>June</source>
+				<target>červen</target>
 			</trans-unit>
 
 
 			<trans-unit id="month.07">
-				<source>červenec</source>
+				<source>July</source>
+				<target>červenec</target>
 			</trans-unit>
 			<trans-unit id="month.08">
-				<source>srpen</source>
+				<source>August</source>
+				<target>srpen</target>
 			</trans-unit>
 			<trans-unit id="month.09">
-				<source>září</source>
+				<source>September</source>
+				<target>září</target>
 			</trans-unit>
 			<trans-unit id="month.10">
-				<source>říjen</source>
+				<source>October</source>
+				<target>říjen</target>
 			</trans-unit>
 			<trans-unit id="month.11">
-				<source>listopad</source>
+				<source>November</source>
+				<target>listopad</target>
 			</trans-unit>
 			<trans-unit id="month.12">
-				<source>prosinec</source>
+				<source>December</source>
+				<target>prosinec</target>
 			</trans-unit>
 		<trans-unit id="register.accept_privacy" approved="yes">
 			<source>I have read and accept the </source>

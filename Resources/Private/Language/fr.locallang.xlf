@@ -1,45 +1,57 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-10-18T07:35:33Z">
+	<file source-language="en" target-language="fr" datatype="plaintext" original="messages" date="2016-10-18T07:35:33Z">
 		<header>
 			<generator>LFEditor</generator>
 		</header>
 		<body>
 			<trans-unit id="month.01">
-				<source>Janvier</source>
+				<source>January</source>
+				<target>Janvier</target>
 			</trans-unit>
 			<trans-unit id="month.02">
-				<source>Février</source>
+				<source>February</source>
+				<target>Février</target>
 			</trans-unit>
 			<trans-unit id="month.03">
-				<source>Mars</source>
+				<source>March</source>
+				<target>Mars</target>
 			</trans-unit>
 			<trans-unit id="month.04">
-				<source>Avril</source>
+				<source>April</source>
+				<target>Avril</target>
 			</trans-unit>
 			<trans-unit id="month.05">
-				<source>Mai</source>
+				<source>May</source>
+				<target>Mai</target>
 			</trans-unit>
 			<trans-unit id="month.06">
-				<source>Juin</source>
+				<source>June</source>
+				<target>Juin</target>
 			</trans-unit>
 			<trans-unit id="month.07">
-				<source>Juillet</source>
+				<source>July</source>
+				<target>Juillet</target>
 			</trans-unit>
 			<trans-unit id="month.08">
-				<source>Août</source>
+				<source>August</source>
+				<target>Août</target>
 			</trans-unit>
 			<trans-unit id="month.09">
-				<source>Septembre</source>
+				<source>September</source>
+				<target>Septembre</target>
 			</trans-unit>
 			<trans-unit id="month.10">
-				<source>Octobre</source>
+				<source>October</source>
+				<target>Octobre</target>
 			</trans-unit>
 			<trans-unit id="month.11">
-				<source>Novembre</source>
+				<source>November</source>
+				<target>Novembre</target>
 			</trans-unit>
 			<trans-unit id="month.12">
-				<source>Décembre</source>
+				<source>December</source>
+				<target>Décembre</target>
 			</trans-unit>
 
 			<trans-unit id="jv_events_model_event.currency.label">

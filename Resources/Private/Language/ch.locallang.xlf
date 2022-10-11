@@ -5,40 +5,53 @@
 			<generator>LFEditor</generator>
 		</header>
 		<body>
+
 			<trans-unit id="month.01">
+				<source>January</source>
 				<target>Januar</target>
 			</trans-unit>
 			<trans-unit id="month.02">
+				<source>February</source>
 				<target>Februar</target>
 			</trans-unit>
 			<trans-unit id="month.03">
+				<source>March</source>
 				<target>März</target>
 			</trans-unit>
 			<trans-unit id="month.04">
+				<source>April</source>
 				<target>April</target>
 			</trans-unit>
 			<trans-unit id="month.05">
+				<source>May</source>
 				<target>Mai</target>
 			</trans-unit>
 			<trans-unit id="month.06">
+				<source>June</source>
 				<target>Juni</target>
 			</trans-unit>
 			<trans-unit id="month.07">
+				<source>July</source>
 				<target>Juli</target>
 			</trans-unit>
 			<trans-unit id="month.08">
+				<source>August</source>
 				<target>August</target>
 			</trans-unit>
 			<trans-unit id="month.09">
+				<source>September</source>
 				<target>September</target>
 			</trans-unit>
 			<trans-unit id="month.10">
+				<source>October</source>
 				<target>Oktober</target>
 			</trans-unit>
 			<trans-unit id="month.11">
+				<source>November</source>
 				<target>November</target>
 			</trans-unit>
 			<trans-unit id="month.12">
+				<source>December</source>
 				<target>Dezember</target>
 			</trans-unit>
 
