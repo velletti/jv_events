@@ -625,7 +625,7 @@ function jv_events_refreshList(){
     // now change also the URL in the Browser to be able to copy the URL !!!
     urlFilter = "" ;
     if( fOrg && fOrg.length ) {
-        if ( $("#jv_events_filter_tags").hasClass( "filterType6") && fOrg.val() ) {
+        if ( ( $("#jv_events_filter_tags").hasClass( "filterType6") || $("#jv_events_filter_tags").hasClass( "filterType7") ) && fOrg.val() ) {
             urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][organizers]=" + fOrg.val() ;
         } else {
             if(  fOrg.val() > 0 ) {
