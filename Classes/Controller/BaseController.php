@@ -364,7 +364,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
                 /** @var \JVE\JvEvents\Domain\Model\Organizer $obj */
                 $obj = $event->getOrganizer();
                 if (is_object($obj)) {
-                    if ( $this->settings['ShowFilter'] == 6 ) {
+                    if ( $this->settings['ShowFilter'] == 6 || $this->settings['ShowFilter'] == 7  ) {
                         $orgName = str_replace(" " , "+" , $obj->getName() ) ;
                         if(! in_array($orgName , $organizers )) {
                             $organizers[$orgName] = $obj->getName() ;
