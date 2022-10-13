@@ -66,13 +66,13 @@ class ProcessCmdmap {
 	 * @param string $command
 	 * @param string $table
 	 * @param int $id
-	 * @param string $value
+	 * @param mixed $value
 	 * @param mixed $Obj
 	 * @param mixed $pasteUpdate
 	 * @param mixed $pasteDatamap
 	 */
 
-	public function processCmdmap_postProcess(string $command, string $table, int $id, string $value, $Obj, $pasteUpdate, $pasteDatamap) {
+	public function processCmdmap_postProcess(string $command, string $table, int $id, $value, $Obj, $pasteUpdate, $pasteDatamap) {
         if( is_object( $Obj )) {
             if ($table == 'tx_jvevents_domain_model_event') {
                 $this->command = $command;
