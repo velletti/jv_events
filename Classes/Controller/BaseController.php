@@ -253,9 +253,9 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
 
         if( !$this->objectManager) {
-            $this->objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager') ;
+            $this->objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class) ;
         }
-        $this->persistenceManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
+        $this->persistenceManager = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class);
     }
 
     public function generateFilterBox( $filter , $tagShowAfterColon=0 ) {
@@ -666,7 +666,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     public function getEmailRenderer($templatePath = '' , $templateName = 'default' , $format='html') {
         // create another instance of Fluid
         /** @var \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
-        $renderer = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
+        $renderer = $this->objectManager->get(\TYPO3\CMS\Fluid\View\StandaloneView::class);
 
 
 
@@ -774,7 +774,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         $signature = false;
         if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('mailsignature')) {
             /** @var \Velletti\Mailsignature\Service\SignatureService $signatureService */
-            $signatureService = $this->objectManager->get("Velletti\\Mailsignature\\Service\\SignatureService");
+            $signatureService = $this->objectManager->get(\Velletti\Mailsignature\Service\SignatureService::class);
             $signature = $signatureService->getSignature($this->settings['signature']['uid']);
         }
         if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('nem_signature')) {
@@ -850,7 +850,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         $emailBody = $renderer->render();
 
         /** @var $message \TYPO3\CMS\Core\Mail\MailMessage */
-        $message = $this->objectManager->get('TYPO3\\CMS\\Core\\Mail\\MailMessage');
+        $message = $this->objectManager->get(\TYPO3\CMS\Core\Mail\MailMessage::class);
         $message->setTo($recipient)
             ->setFrom($sender)
             ->setSubject($subject);
@@ -901,7 +901,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      */
     public function sendDebugEmail($recipient,$sender ,$subject , $plainMsg , $htmlMsg = '') {
         /** @var $message \TYPO3\CMS\Core\Mail\MailMessage */
-        $message = $this->objectManager->get('TYPO3\\CMS\\Core\\Mail\\MailMessage');
+        $message = $this->objectManager->get(\TYPO3\CMS\Core\Mail\MailMessage::class);
 
 
         $returnPath = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFromAddress();

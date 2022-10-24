@@ -385,7 +385,7 @@ class EventRepository extends BaseRepository
     private function getPidContraints($constraints, $settings ,  $query)
     {
 		/** @var QueryGenerator $queryGenerator */
-		$queryGenerator = GeneralUtility::makeInstance( 'TYPO3\\CMS\\Core\\Database\\QueryGenerator' );
+		$queryGenerator = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Database\QueryGenerator::class );
 		$rGetTreeList = $queryGenerator->getTreeList( $settings['storagePid'],  $settings['recursive'], 0, 1); //Will be a string
 
         $pidList = GeneralUtility::intExplode(',', $rGetTreeList, true);

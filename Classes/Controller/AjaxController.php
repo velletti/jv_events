@@ -103,14 +103,14 @@ class AjaxController extends BaseController
     public function initializeRepositorys(array $ts=null)
     {
 
-        $this->tagRepository        = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\TagRepository');
-        $this->categoryRepository        = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\CategoryRepository');
-        $this->registrantRepository        = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\RegistrantRepository');
-        $this->locationRepository        = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\LocationRepository');
-        $this->organizerRepository        = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\OrganizerRepository');
-        $this->eventRepository        = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\EventRepository');
-        $this->subeventRepository        = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\SubeventRepository');
-        $this->staticCountryRepository        = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\StaticCountryRepository');
+        $this->tagRepository        = $this->objectManager->get(\JVE\JvEvents\Domain\Repository\TagRepository::class);
+        $this->categoryRepository        = $this->objectManager->get(\JVE\JvEvents\Domain\Repository\CategoryRepository::class);
+        $this->registrantRepository        = $this->objectManager->get(\JVE\JvEvents\Domain\Repository\RegistrantRepository::class);
+        $this->locationRepository        = $this->objectManager->get(\JVE\JvEvents\Domain\Repository\LocationRepository::class);
+        $this->organizerRepository        = $this->objectManager->get(\JVE\JvEvents\Domain\Repository\OrganizerRepository::class);
+        $this->eventRepository        = $this->objectManager->get(\JVE\JvEvents\Domain\Repository\EventRepository::class);
+        $this->subeventRepository        = $this->objectManager->get(\JVE\JvEvents\Domain\Repository\SubeventRepository::class);
+        $this->staticCountryRepository        = $this->objectManager->get(\JVE\JvEvents\Domain\Repository\StaticCountryRepository::class);
 
         $this->uriBuilder->injectConfigurationManager( $this->configurationManager);
         $this->uriBuilder->initializeObject();
@@ -144,12 +144,12 @@ class AjaxController extends BaseController
         /**
          * @var $objectManager \TYPO3\CMS\Extbase\Object\ObjectManager
          */
-        $objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
-        /** @var \TYPO3\CMS\Extbase\Mvc\Web\Request $request */
-        $request = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Mvc\Web\Request', "JVE\JvEvents\Controller\AjaxController" );
+        $objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+        /** @var \TYPO3\CMS\Extbase\Mvc\Request $request */
+        $request = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Mvc\Request::class, \JVE\JvEvents\Controller\AjaxController::class );
 
         /** @var \TYPO3\CMS\Core\Information\Typo3Version $version */
-        $version = GeneralUtility::makeInstance('TYPO3\CMS\Core\Information\Typo3Version');
+        $version = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Information\Typo3Version::class);
 
 
         if ($version->getMajorVersion() < 10) {
@@ -159,7 +159,7 @@ class AjaxController extends BaseController
             /**
              * @var $TSFE \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
              */
-            $TSFE = GeneralUtility::makeInstance('TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController', $GLOBALS['TYPO3_CONF_VARS'],
+            $TSFE = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class, $GLOBALS['TYPO3_CONF_VARS'],
                 $pid,  // pageUid Homepage
                 $type   // pageType
             );
@@ -168,24 +168,17 @@ class AjaxController extends BaseController
 
 // Important: no Cache for Ajax stuff
             $GLOBALS['TSFE']->set_no_cache("JvEvents Ajax Call" , true);
-
-            \TYPO3\CMS\Frontend\Utility\EidUtility::initLanguage();
-            \TYPO3\CMS\Frontend\Utility\EidUtility::initTCA();
-
-// Get FE User Information
-            $GLOBALS['TSFE']->initFEuser();
             $GLOBALS['TSFE']->initUserGroups();
             $GLOBALS['TSFE']->fe_user ;
 
             $GLOBALS['TSFE']->checkAlternativeIdMethods();
             $GLOBALS['TSFE']->determineId();
-            $GLOBALS['TSFE']->initTemplate();
             $GLOBALS['TSFE']->getConfigArray();
             \TYPO3\CMS\Core\Core\Bootstrap::getInstance();
 
-            $GLOBALS['TSFE']->cObj = GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
+            $GLOBALS['TSFE']->cObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
             $GLOBALS['TSFE']->settingLanguage();
-            $GLOBALS['TSFE']->settingLocale();
+            \TYPO3\CMS\Core\Localization\Locales::setSystemLocaleFromSiteLanguage($GLOBALS['TSFE']->getLanguage());
 
             // $GLOBALS['BE_USER'] =  $GLOBALS['TSFE']->initializeBackendUser() ;
             /**
@@ -209,7 +202,7 @@ class AjaxController extends BaseController
 
             $bootstrap = new \TYPO3\CMS\Extbase\Core\Bootstrap();
             $bootstrap->initialize($bootstrapConf);
-            $bootstrap->cObj = GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
+            $bootstrap->cObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
 
             $request->setControllerVendorName($ajax['vendor']);
         }
@@ -220,8 +213,8 @@ class AjaxController extends BaseController
         $request->setControllerActionName($ajax['action']);
         $request->setArguments($ajax['arguments']);
 
-        $response = $objectManager->get('TYPO3\CMS\Extbase\Mvc\ResponseInterface');
-        $dispatcher = $objectManager->get('TYPO3\CMS\Extbase\Mvc\Dispatcher');
+        $response = $objectManager->get(\TYPO3\CMS\Extbase\Mvc\ResponseInterface::class);
+        $dispatcher = $objectManager->get(\TYPO3\CMS\Extbase\Mvc\Dispatcher::class);
 
         if( key_exists('event' , $_gp)) {
             $request->setArgument('event',  intval( $_gp['event'] )) ;
@@ -861,7 +854,7 @@ class AjaxController extends BaseController
 
 
         /** @var \JVE\JvEvents\Domain\Repository\FrontendUserRepository $userRepository */
-        $userRepository = $this->objectManager->get("JVE\\JvEvents\\Domain\\Repository\\FrontendUserRepository") ;
+        $userRepository = $this->objectManager->get(\JVE\JvEvents\Domain\Repository\FrontendUserRepository::class) ;
         /** @var \JVE\JvEvents\Domain\Model\FrontendUser $user */
         $user = $userRepository->findByUid($userUid) ;
 
@@ -935,7 +928,7 @@ class AjaxController extends BaseController
         foreach ($groupsMissing as $key => $item) {
             if ( $item  ) {
                 /** @var \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserGroupRepository $userGroupRepository */
-                $userGroupRepository = $this->objectManager->get("TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserGroupRepository") ;
+                $userGroupRepository = $this->objectManager->get(\TYPO3\CMS\Extbase\Domain\Repository\FrontendUserGroupRepository::class) ;
                 $newGroup = $userGroupRepository->findByUid($key) ;
                 if( $newGroup ) {
                     if ( $msg == '' ) {
@@ -1129,7 +1122,7 @@ class AjaxController extends BaseController
 	public function generateToken($action = "action")
 	{
 		/** @var \TYPO3\CMS\Core\FormProtection\FrontendFormProtection $formClass */
-		$formClass =  $this->objectManager->get( "TYPO3\\CMS\\Core\\FormProtection\\FrontendFormProtection") ;
+		$formClass =  $this->objectManager->get( \TYPO3\CMS\Core\FormProtection\FrontendFormProtection::class) ;
 
 		return $formClass->generateToken(
 			'event', $action ,   "P" . $this->settings['pageId'] . "-L" .$this->settings['sys_language_uid']
@@ -1182,7 +1175,7 @@ class AjaxController extends BaseController
             // tx_sfbanners_domain_model_banner
             try {
                 /** @var \TYPO3\CMS\Core\Database\ConnectionPool $connectionPool */
-                $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
+                $connectionPool = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Database\ConnectionPool::class);
 
                 $connection = $connectionPool->getConnectionForTable('tx_sfbanners_domain_model_banner') ;
 

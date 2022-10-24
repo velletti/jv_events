@@ -11,7 +11,7 @@ plugin.tx_jvevents_events {
 	persistence {
 		# you can overwrite this in the Plugin ...
 		# cat=plugin.tx_jvevents_events//a; type=string; label=Default storage PID
-		storagePid =
+		storagePid = 
 	}
 	settings {
 		# change this setting to 1 after everything works
@@ -47,7 +47,7 @@ plugin.tx_jvevents_events {
 			# decide what you need or overwrite value in settings with any other Default Language Value ...
 			defaultCountry = DE
 
-			citrix{
+			citrix {
 				# if you have a ready to use oAutho Code for Citrix rest api : (only valid one Year ! )
 				# orgID = 16DigitAUTH-Id
 				# orgAUTH = readyToUseAuthCode-forOneYear
@@ -57,7 +57,7 @@ plugin.tx_jvevents_events {
 				# password = your.citrix.password
 			}
 			# Used for: CSV Export and If same registrant registers to update his Registration.
-			formFields{
+			formFields {
 				5Tango = gender,streetAndNr,firstName,lastName,zip,city,phone,email,privacy,hotprice,more1,more2,more3,hidden,confirmed
 			}
 			requiredFields {
@@ -76,14 +76,13 @@ plugin.tx_jvevents_events {
 				enabled = 0
 			}
 			secondPerson {
-			    # if set, the following 'fieldNames' are added to mandatory fields
-			    mandatory = 0
-			    # Example used in template 5Tango : if set and one of the fields contain values, registered persons are counted as couple
-			    # fieldNames = more1,more2,more3
-			    fieldNames =
+				# if set, the following 'fieldNames' are added to mandatory fields
+				mandatory = 0
+				# Example used in template 5Tango : if set and one of the fields contain values, registered persons are counted as couple
+				# fieldNames = more1,more2,more3
+				fieldNames = 
 			}
 		}
-
 	}
 }
 
@@ -99,6 +98,6 @@ module.tx_jvevents_eventmngt {
 	persistence {
 		# with this setting you can block to show all event registrations on page 0
 		# cat=module.tx_jvevents_eventmngt//a; type=string; label=Default storage PID
-		storagePid =
+		storagePid = 
 	}
 }

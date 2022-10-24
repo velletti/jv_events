@@ -51,7 +51,7 @@ class RegisterHubspotSignal {
             $this->logToFile( " \n no hapikey,  portalID, FirmID or URI set ! See : ../conf/AllplanHubspotConfiguration.php OR Typoscript Settings -> register -> hubspot: " . var_export( $config , true ))  ;
             return ;
         }
-        $this->hubspotApi = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("Allplan\\Library\\Hubspot\\Service\\Hubspot" , $config);
+        $this->hubspotApi = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Allplan\Library\Hubspot\Service\Hubspot::class , $config);
     }
 
     /**
@@ -206,7 +206,7 @@ class RegisterHubspotSignal {
             die ;
         }
         /** @var \TYPO3\CMS\Core\Mail\MailMessage $Typo3_v6mail */
-        $Typo3_v6mail = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
+        $Typo3_v6mail = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
         $Typo3_v6mail->setFrom( array( 'www@systems.allplan.com' => $_SERVER['SERVER_NAME'] ) );
         $Typo3_v6mail->setReturnPath( 'www@systems.allplan.com' );
 
@@ -221,14 +221,7 @@ class RegisterHubspotSignal {
         } else {
             $Typo3_v6mail->setSubject( "JV Events Registration Debug - " . $event->getStartDate()->format("d.m.Y") . " - " . $event->getName()  );
         }
-        /** @var Typo3Version $tt */
-        $tt = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Information\Typo3Version::class ) ;
-
-        if( $tt->getMajorVersion()  < 10 ) {
-            $Typo3_v6mail->setBody(nl2br( $debugmail ) , 'text/html'  );
-        } else {
-            $Typo3_v6mail->html( nl2br( $debugmail )  , 'utf-8'  );
-        }
+        $Typo3_v6mail->html( nl2br( $debugmail )  , 'utf-8'  );
 
         $Typo3_v6mail->send();
 
@@ -250,7 +243,7 @@ class RegisterHubspotSignal {
 
         ) ;
         /** @var \TYPO3\CMS\Core\Database\ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
+        $connectionPool = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Database\ConnectionPool::class);
 
         /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
         $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_log') ;
@@ -290,9 +283,9 @@ class RegisterHubspotSignal {
         $jsonArray['city'] = trim($registrant->getCity() ) ;
         $jsonArray['laenderkennzeichen__c'] = trim($registrant->getCountry() ) ;
 
-        $objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+        $objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
         /** @var \SJBR\StaticInfoTables\Domain\Repository\CountryRepository $countries */
-        $countries = $objectManager->get('SJBR\\StaticInfoTables\\Domain\\Repository\\CountryRepository');
+        $countries = $objectManager->get(\SJBR\StaticInfoTables\Domain\Repository\CountryRepository::class);
         /** @var \SJBR\StaticInfoTables\Domain\Model\Country $cn_short_en */
         $cn_short_en = $countries->findOneByIsoCodeA2( trim($registrant->getCountry() ) ) ;
         if( is_object($cn_short_en) ) {

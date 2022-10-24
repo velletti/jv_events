@@ -64,7 +64,7 @@ class LinkViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedV
         $this->registerUniversalTagAttributes();
         $this->registerTagAttribute('section', 'string', 'Anchor for links', false);
 
-        $this->registerArgument('event', '\JVE\JvEvents\Domain\Model\Event', 'Event', false);
+        $this->registerArgument('event', \JVE\JvEvents\Domain\Model\Event::class, 'Event', false);
         $this->registerArgument('eventId', 'int', 'Event as id', false);
         $this->registerArgument('settings', 'array', 'settings Array', false , array() );
         $this->registerArgument('configuration', 'array', 'configuration Array', false , array() );

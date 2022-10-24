@@ -93,7 +93,7 @@ class LocationController extends BaseController
 
         if ( $location==null) {
             /** @var \JVE\JvEvents\Domain\Model\Location $location */
-            $location = $this->objectManager->get("JVE\\JvEvents\\Domain\\Model\\Location");
+            $location = $this->objectManager->get(\JVE\JvEvents\Domain\Model\Location::class);
         }
         if ( $location->getUid() < 1 ) {
             $organizer = $this->getOrganizer() ;

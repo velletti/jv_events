@@ -63,7 +63,7 @@ class TeaserImgViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagB
     {
         $this->registerUniversalTagAttributes();
 
-        $this->registerArgument('event', '\JVE\JvEvents\Domain\Model\Event', 'Event', false);
+        $this->registerArgument('event', \JVE\JvEvents\Domain\Model\Event::class, 'Event', false);
         $this->registerArgument('settings', 'array', 'settings Array', false , array() );
         $this->registerArgument('configuration', 'array', 'configuration Array', false , array() );
         $this->registerArgument('withProtocol', 'boolean', ' render withProtocol https or http etc ', false ,false );

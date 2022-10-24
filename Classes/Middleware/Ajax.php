@@ -96,7 +96,7 @@ class Ajax implements MiddlewareInterface
 
                 $GLOBALS['TSFE']->set_no_cache();
                     /** @var AjaxUtility $ajaxUtility */
-                $ajaxUtility = GeneralUtility::makeInstance('JVE\JvEvents\Utility\AjaxUtility') ;
+                $ajaxUtility = GeneralUtility::makeInstance(\JVE\JvEvents\Utility\AjaxUtility::class) ;
 
                 // ToDo generate Output as before in ajax Controller here in Middleware with CORE features.
                 $controller = $ajaxUtility->initController($_gp , $function ) ;

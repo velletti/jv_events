@@ -24,7 +24,7 @@ class AjaxUtility {
      */
     public function initController(array $_gp , $function  ) {
         /** @var \JVE\JvEvents\Controller\AjaxController $controller */
-        $controller = GeneralUtility::makeInstance('JVE\JvEvents\Controller\AjaxController' ) ;
+        $controller = GeneralUtility::makeInstance(\JVE\JvEvents\Controller\AjaxController::class ) ;
 
         $controller->initializeAction() ;
 
@@ -64,7 +64,7 @@ class AjaxUtility {
         $controller->standaloneView->setPartialRootPaths(array( 0 => ExtensionManagementUtility::extPath('jv_events') . 'Resources/Private/Partials' ));
 
         /** @var  \TYPO3\CMS\Extbase\Mvc\Request $request */
-        $request =  GeneralUtility::makeInstance( "TYPO3\CMS\Extbase\Mvc\Request");
+        $request =  GeneralUtility::makeInstance( \TYPO3\CMS\Extbase\Mvc\Request::class);
         $request->setControllerName("Ajax") ;
         $request->setControllerActionName($function ) ;
         $request->setControllerExtensionName( "jvevents" ) ;
@@ -73,7 +73,7 @@ class AjaxUtility {
         $controller->getControllerContext()->setRequest($request) ;
 
         /** @var  \TYPO3\CMS\Extbase\Mvc\Response $response */
-        $response =  GeneralUtility::makeInstance( "TYPO3\CMS\Extbase\Mvc\Response");
+        $response =  GeneralUtility::makeInstance( \TYPO3\CMS\Extbase\Mvc\Response::class);
 
 
         $controller->getControllerContext()->setResponse($response) ;

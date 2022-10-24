@@ -7,13 +7,13 @@ if (!defined('TYPO3_MODE')) {
 }
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-	'JVE.jv_events' ,
+	'JvEvents' ,
 	'Events',
 	'Events'
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-    'JVE.jv_events' ,
+    'JvEvents' ,
     'Ajax',
     'Ajax'
 );
@@ -24,7 +24,7 @@ if (TYPO3_MODE === 'BE') {
 
     //       * Registers a Backend Module
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-        'JVE.jv_events' ,
+        'JvEvents' ,
         'web',	 // Make module a submodule of 'web'
         'eventmngt',	// Submodule key
         'after:List',						// Position

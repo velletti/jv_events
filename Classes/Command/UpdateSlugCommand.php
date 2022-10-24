@@ -178,7 +178,7 @@ class UpdateSlugCommand extends Command {
 	private function getQueryBuilder(string $table): QueryBuilder
     {
         /** @var ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
+        $connectionPool = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Database\ConnectionPool::class);
         /** @var QueryBuilder $queryBuilder */
         return $connectionPool->getConnectionForTable($table)->createQueryBuilder();
 	}

@@ -24,44 +24,44 @@ plugin.tx_jvevents_events {
 		#
 		ccsFile = /typo3conf/ext/jv_events/Resources/Public/Css/jv_events.css
 
-        link {
-            # Event Types that should open in a new Window
-            typesOpeningInNewWindow {
-                1 = 2
-            }
-            dateFormat = d.m.Y
+		link {
+			# Event Types that should open in a new Window
+			typesOpeningInNewWindow {
+				1 = 2
+			}
+			dateFormat = d.m.Y
 
-            # If you use RealUrl, you can skip generation of URL Parameter Controller and Action
-            skipControllerAndAction = 0
+			# If you use RealUrl, you can skip generation of URL Parameter Controller and Action
+			skipControllerAndAction = 0
 
-            detailPidDefault = 111
-            #  Overwrite default behavior
-            doNotuseCacheHash = 1
-            # overwrite the generation of a cHash if you do not want caching (f.e. if you use Registration Form and have Login users)
-            # you can add no_cache=1 .. not a good Solution but sometimes needed
-            addNoCache = 0
-        }
+			detailPidDefault = 111
+			#  Overwrite default behavior
+			doNotuseCacheHash = 1
+			# overwrite the generation of a cHash if you do not want caching (f.e. if you use Registration Form and have Login users)
+			# you can add no_cache=1 .. not a good Solution but sometimes needed
+			addNoCache = 0
+		}
 		list {
 			layouts {
 				1Allplan = 1 - List with Filters
-				2Megra   = 2 - List with Filters and Link to first related File
+				2Megra = 2 - List with Filters and Link to first related File
 			}
 			# Addional class for your list wrapper
-			additionalClass =
+			additionalClass = 
 			image {
-			     # Fallback Image for event list with complete path /fileadmin/user_upload/.. default /typo3conf/ext/jv_events/Resource/Public/Images/DefaultImage.jpg
-			     defaultImage = /typo3conf/ext/jv_events/Resources/Public/Images/defaultImage.jpg
-			     width = 240
-			     height = 180
+				# Fallback Image for event list with complete path /fileadmin/user_upload/.. default /typo3conf/ext/jv_events/Resource/Public/Images/DefaultImage.jpg
+				defaultImage = /typo3conf/ext/jv_events/Resources/Public/Images/defaultImage.jpg
+				width = 240
+				height = 180
 			}
 		}
 		single {
 			layouts {
 				1Allplan = Normal Event Information
-				2Megra   = Full Info Event
+				2Megra = Full Info Event
 			}
 			# Addional class for your single wrapper
-			additionalClass =
+			additionalClass = 
 
 			headerImage {
 				# Fallback Image for event single or with complete path /fileadmin/user_upload/..
@@ -71,29 +71,29 @@ plugin.tx_jvevents_events {
 			}
 		}
 		security.filter {
-		    maxDays = 90
+			maxDays = 90
 		}
 		# Fallback Layout for Register Emails if nothing set
 		LayoutRegister = 2Megra
 		register {
-            layouts {
-                1Allplan = Normal Event Registration
-                2Megra   = Extended Event Registration
-                3MegraAT   = Extended Event Registration mit UST Uid
-            }
-			citrix{
+			layouts {
+				1Allplan = Normal Event Registration
+				2Megra = Extended Event Registration
+				3MegraAT = Extended Event Registration mit UST Uid
+			}
+			citrix {
 				orgID = {$plugin.tx_jvevents_events.settings.register.citrix.orgID}
 				orgAUTH = {$plugin.tx_jvevents_events.settings.register.citrix.orgAUTH}
 				username = {$plugin.tx_jvevents_events.settings.register.citrix.username}
-				password = 	{$plugin.tx_jvevents_events.settings.register.citrix.password}
+				password = {$plugin.tx_jvevents_events.settings.register.citrix.password}
 			}
-			formFields{
+			formFields {
 				5Tango = {$plugin.tx_jvevents_events.settings.register.formFields.5Tango}
 			}
 			requiredFields {
-				1Allplan =	{$plugin.tx_jvevents_events.settings.register.requiredFields.1Allplan}
-				2Megra 	=	{$plugin.tx_jvevents_events.settings.register.requiredFields.2Megra}
-				3MegraAT 	=	{$plugin.tx_jvevents_events.settings.register.requiredFields.3MegraAT}
+				1Allplan = {$plugin.tx_jvevents_events.settings.register.requiredFields.1Allplan}
+				2Megra = {$plugin.tx_jvevents_events.settings.register.requiredFields.2Megra}
+				3MegraAT = {$plugin.tx_jvevents_events.settings.register.requiredFields.3MegraAT}
 			}
 			attachments {
 				# if you set this to 1 the field more6int is shown and the following files are sent
@@ -108,49 +108,46 @@ plugin.tx_jvevents_events {
 					2 = /fileadmin/user_upload/files/2017/MEGRA_Satzung_2017.pdf
 					3 = /fileadmin/user_upload/files/2017/MEGRA_Widerrufsbelehrung.pdf
 				}
-
 			}
 			secondPerson {
-                # if set, the following 'fieldNames' are added to mandatory fields
-                mandatory = {$plugin.tx_jvevents_events.settings.register.secondPerson.mandatory}
-                # Example used in template 5Tango : if set and one of the fields contain values, registered persons are counted as couple
-                # fieldNames = more1,more2,more3
-                fieldNames = {$plugin.tx_jvevents_events.settings.register.secondPerson.fieldNames}
-            }
-
+				# if set, the following 'fieldNames' are added to mandatory fields
+				mandatory = {$plugin.tx_jvevents_events.settings.register.secondPerson.mandatory}
+				# Example used in template 5Tango : if set and one of the fields contain values, registered persons are counted as couple
+				# fieldNames = more1,more2,more3
+				fieldNames = {$plugin.tx_jvevents_events.settings.register.secondPerson.fieldNames}
+			}
 
 			# If set, a user just can register only ONCE for an event with the same Email Address
 			doNotallowSameEmail = 0
 
-			allowedCountrys =	{$plugin.tx_jvevents_events.settings.register.allowedCountrys}
-			defaultCountry =	{$plugin.tx_jvevents_events.settings.register.defaultCountry}
+			allowedCountrys = {$plugin.tx_jvevents_events.settings.register.allowedCountrys}
+			defaultCountry = {$plugin.tx_jvevents_events.settings.register.defaultCountry}
 
 			senderName = {$plugin.tx_jvevents_events.settings.register.senderName}
 			senderEmail = {$plugin.tx_jvevents_events.settings.register.senderEmail}
 			termsOfUsePid = {$plugin.tx_jvevents_events.settings.register.termsOfUsePid}
 			privacyPid = {$plugin.tx_jvevents_events.settings.register.privacyPid}
-        }
-		signature{
+		}
+		signature {
 			uid = 1
 		}
 
-
 		pageIds {
-		    # insert event plugin on that page configure your own typoscript and set pid s
-		    # needed during frontend editing
-		    # page with a login FOrm is users session has got invalid
-            loginForm = 0
+			# insert event plugin on that page configure your own typoscript and set pid s
+			# needed during frontend editing
+			# page with a login FOrm is users session has got invalid
+			loginForm = 0
 
-            # page where Edit User Plugin is installed ( f.e. editUserAccount = {$plugin.tx_sfregister.settings.editPid}      )
-             editUserAccount = 0
+			# page where Edit User Plugin is installed ( f.e. editUserAccount = {$plugin.tx_sfregister.settings.editPid}      )
+			editUserAccount = 0
 
-            # page after susseccful storing an event
-           	showEventDetail = 0
+			# page after susseccful storing an event
+			showEventDetail = 0
 
-         	# pageID with plugin edit Event
-			editEvent =  0
+			# pageID with plugin edit Event
+			editEvent = 0
 
-            # pageID with plugin edit Location
+			# pageID with plugin edit Location
 			editLocation = 0
 
 			# After storing Locations and mayby on oter places, rediret to this page
@@ -161,7 +158,7 @@ plugin.tx_jvevents_events {
 			# pageID with plugin Organizer Assist
 			organizerAssist = 0
 
-            # Falback id: if not event list ID is definied, go here :
+			# Falback id: if not event list ID is definied, go here :
 			eventList = 0
 
 			# If extension jv Media Connector is installed, add page ID of the plugin Page with List controller
@@ -171,21 +168,21 @@ plugin.tx_jvevents_events {
 			rankingModul = 0
 
 			# if extension jv banners is installed, add page ID pf the Page with the bannerModul plugin
-            bannerModul = 0
+			bannerModul = 0
 
 		}
 		feEdit {
-		    enabled = 0
-		    # comma separated list of IDs
-		    organizerGroudIds = 0
-		    adminOrganizerGroudIds = 0
+			enabled = 0
+			# comma separated list of IDs
+			organizerGroudIds = 0
+			adminOrganizerGroudIds = 0
 		}
 	}
 }
 
 
 
- # Module configuration
+# Module configuration
 module.tx_jvevents_web_jveventseventmngt {
 	persistence {
 		storagePid = {$module.tx_jvevents_eventmngt.persistence.storagePid}
@@ -195,8 +192,8 @@ module.tx_jvevents_web_jveventseventmngt {
 		partialRootPaths.0 = {$module.tx_jvevents_eventmngt.view.partialRootPath}
 		layoutRootPaths.0 = {$module.tx_jvevents_eventmngt.view.layoutRootPath}
 	}
-    settings < plugin.tx_jvevents_events.settings
-    settings.LayoutRegister = 2Megra
+	settings < plugin.tx_jvevents_events.settings
+	settings.LayoutRegister = 2Megra
 
 }
 
@@ -217,7 +214,6 @@ config.tx_extbase.persistence.classes {
 			tableName = static_countries
 		}
 	}
-
 	JVE\JvEvents\Domain\Model\FrontendUser {
 		mapping {
 			tableName = fe_users
@@ -226,8 +222,6 @@ config.tx_extbase.persistence.classes {
 				disable.mapOnProperty = disable
 				crdate.mapOnProperty = crdate
 			}
-
 		}
-
 	}
 }

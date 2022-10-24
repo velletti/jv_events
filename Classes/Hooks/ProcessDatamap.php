@@ -73,10 +73,10 @@ class ProcessDatamap {
 		if ($this->table == 'tx_jvevents_domain_model_event') { //do only things when we are in the  event table
 
 			/** @var  \JVE\JvEvents\Domain\Repository\EventRepository $objectManager */
-			$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("TYPO3\\CMS\\Extbase\\Object\\ObjectManager") ;
+			$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class) ;
 
 			/** @var  \JVE\JvEvents\Domain\Repository\EventRepository $eventRepository */
-			$this->eventRepository = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\EventRepository');
+			$this->eventRepository = $this->objectManager->get(\JVE\JvEvents\Domain\Repository\EventRepository::class);
 
 
 			/** @var  \JVE\JvEvents\Domain\Model\Event $event */
@@ -297,7 +297,7 @@ class ProcessDatamap {
                                             // Automatic Migration 2019 : Update registrants that they have to be moved to hubspot
 
                                             /** @var  \JVE\JvEvents\Domain\Repository\RegistrantRepository $registrantRepository */
-                                            $registrantRepository = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\RegistrantRepository');
+                                            $registrantRepository = $this->objectManager->get(\JVE\JvEvents\Domain\Repository\RegistrantRepository::class);
 
                                             /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $registrants */
                                             $registrants = $registrantRepository->findByFilter('' , $this->event->getUid(), 0 , array() , 999 ) ;
@@ -337,7 +337,7 @@ class ProcessDatamap {
                 $this->eventRepository->update($this->event) ;
 
                 /** @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager $persistenceManager */
-                $persistenceManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
+                $persistenceManager = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class);
                 $persistenceManager->persistAll() ;
 
                 if ( !key_exists( 'WARNING' , $this->flashMessage ) && !key_exists( 'ERROR' , $this->flashMessage ) ) {
@@ -361,7 +361,7 @@ class ProcessDatamap {
         $configuration = \JVE\JvEvents\Utility\EmConfigurationUtility::getEmConf();
 
         /** @var  \JVE\JvEvents\Utility\SalesforceWrapperUtility */
-        $this->sfConnect = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JVE\\JvEvents\\Utility\\SalesforceWrapperUtility');
+        $this->sfConnect = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\JVE\JvEvents\Utility\SalesforceWrapperUtility::class);
 
         $settings = $this->sfConnect->contactSF() ;
     //    $this->flashMessage['NOTICE'][] = 'Salesforce: Connect result ! : ' . var_export( $settings , true ) ;
@@ -520,7 +520,7 @@ class ProcessDatamap {
                     $this->createCampaignMemberStati( $url , $settings['SFREST']['access_token'] ,  $sfResponse->id ) ;
 
                     /** @var \TYPO3\CMS\Core\Mail\MailMessage $Typo3_v6mail */
-                    $Typo3_v6mail = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
+                    $Typo3_v6mail = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
                     $Typo3_v6mail->setFrom( array( 'www@systems.allplan.com' => $_SERVER['SERVER_NAME'] ) );
                     $Typo3_v6mail->setReturnPath( 'www@systems.allplan.com' );
 
@@ -534,7 +534,7 @@ class ProcessDatamap {
                     $tt = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Information\Typo3Version::class ) ;
 
                     if( $tt->getMajorVersion()  < 10 ) {
-                        $Typo3_v6mail->setBody(nl2br( $settings['SFREST']['instance_url'] . "/" . $sfResponse->id . "\n\n\n" . var_export($data , true  )  ) , 'text/html'  );
+                        $Typo3_v6mail->html(nl2br( $settings['SFREST']['instance_url'] . "/" . $sfResponse->id . "\n\n\n" . var_export($data , true  )  )  );
                     } else {
                         $Typo3_v6mail->html(nl2br( $settings['SFREST']['instance_url'] . "/" . $sfResponse->id . "\n\n\n" . var_export($data , true  )  ) , 'utf-8'  );
                     }
@@ -643,19 +643,19 @@ class ProcessDatamap {
 			foreach($this->flashMessage as $type => $messageArray){
 				switch ($type) {
 					case 'NOTICE':
-						$typeInt = \TYPO3\CMS\Core\Messaging\FlashMessage::NOTICE;
+						$typeInt = \TYPO3\CMS\Core\Messaging\AbstractMessage::NOTICE;
 						break;
 					case 'INFO':
-                        $typeInt = \TYPO3\CMS\Core\Messaging\FlashMessage::INFO;
+                        $typeInt = \TYPO3\CMS\Core\Messaging\AbstractMessage::INFO;
 						break;
 					case 'OK':
-                        $typeInt = \TYPO3\CMS\Core\Messaging\FlashMessage::OK;
+                        $typeInt = \TYPO3\CMS\Core\Messaging\AbstractMessage::OK;
 						break;
 					case 'WARNING':
-                        $typeInt = \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING;
+                        $typeInt = \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING;
 						break;
 					case 'ERROR':
-                        $typeInt = \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR;
+                        $typeInt = \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR;
 						break;
 				}
 				// echo "admin: " . $this->pObj->admin . " Type : " . $typeInt ;

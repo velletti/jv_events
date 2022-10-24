@@ -1,6 +1,6 @@
 # General
 ###########################
-	# cat=General/enable/1; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.showRecurring; decription=Under developement!
+# cat=General/enable/1; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.showRecurring; decription=Under developement!
 recurring = 0
 
 # cat=General/enable/2; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.enableCitrix ; decription=Under developement!
@@ -19,7 +19,7 @@ enableHubspot = 0
 hasLoginUser = 0
 
 # cat=General/enable/4; type=string; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.adminUserGroups;description=List Of Admin Usergroup UIDs, separated with colon (,) f.e.: 1,3,16
-AdminUserGroups =
+AdminUserGroups = 
 
 # cat=General/enable/5; type=integer; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.minFormSec;description=Minimum Seconds between rendering a Form and Submitting a Form to avoid bots
 minFormSeconds = 10
@@ -35,7 +35,7 @@ doNotRespectSyslanguage = 0
 
 # Default Values
 ###########################
-	# cat=basic/default/11; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.defaultNotifyOrganizer
+# cat=basic/default/11; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.defaultNotifyOrganizer
 notifyOrganizer = 1
 
 # cat=basic/default/12; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.defaultNotifyRegistrant
@@ -81,12 +81,12 @@ fontFamily = Arial,Verdana, Helvetica, sans-serif
 imgUrl = /typo3conf/ext/jv_events/Resources/Public/Images/emailLogo.jpg
 
 # cat=Email/dims/28; type=string; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.emailImgUrl2
-imgUrl2 =
+imgUrl2 = 
 
 # Backend modules
 ###########################
 
-	# cat=advanced/enable/32; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.showIndividualMailTemplatesPerEvent
+# cat=advanced/enable/32; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.showIndividualMailTemplatesPerEvent
 showIndividualMailTemplatesPerEvent = 0
 
 # cat=advanced/dims/34; type=string; dateformat for slug generation default d-m-Y  must be valid Date Time Format of PHP
@@ -99,13 +99,13 @@ resetFieldListAfterCopy = setUnconfirmedSeats:0;setRegisteredSeats:0;setSalesFor
 useGeoLocation = 0
 
 # cat=advanced/default/6; type=text; label=Google API key;description=If you want to show a map, you need to register on Google.com and get an api KEY
-googleApiKey =
+googleApiKey = 
 
 # cat=advanced/default/7; type=text; label=Google API key DEV;description=an addition api KEY only for a TYPO3 Environment: DEVELOPMENT
-googleApiKeyDEV =
+googleApiKeyDEV = 
 
 # cat=advanced/default/8; type=text; label=Clear Cache PIDs;description=If you use Frontend editing, it will be usefull to add all pages with list View of events (comma separated)
-clearCachePids =
+clearCachePids = 
 
 # cat=advanced/default/9; type=text; label=Max Tags per Event;description=If you use Frontend editing, this will be the maximum amount of tags per event. will be checked during validation
 MaxTagsPerEvent = 5

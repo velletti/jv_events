@@ -47,7 +47,7 @@ class DataAttribViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractVie
     protected $escapeChildren = false;
 
 	public function initializeArguments() {
-		$this->registerArgument('event', '\JVE\JvEvents\Domain\Model\Event', 'Single Event', false);
+		$this->registerArgument('event', \JVE\JvEvents\Domain\Model\Event::class, 'Single Event', false);
         parent::initializeArguments() ;
 	}
 

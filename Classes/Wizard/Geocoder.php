@@ -43,12 +43,12 @@ class Geocoder extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWizardContro
 	 */
 	protected function init(){
 
-        $this->geoCoder = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("JVE\\JvEvents\\Utility\\GeocoderUtility") ;
+        $this->geoCoder = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\JVE\JvEvents\Utility\GeocoderUtility::class) ;
 
 		$this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
 
 		$this->doc->JScode = $this->geoCoder ->javascriptCode ;
-		$this->doc->addStyleSheet('The Google Geocoder',  '../typo3conf/ext/jv_events/Resources/Public/Css/geocoder.css' );
+		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class)->addCssFile('../typo3conf/ext/jv_events/Resources/Public/Css/geocoder.css', 'stylesheet', 'screen', '');
 
 	}
 

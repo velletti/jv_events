@@ -31,11 +31,11 @@ class TyposcriptUtility{
 		 * @var $pageRepository \FluidTYPO3\Vhs\Service\PageService
 		 * @var $extendedTemplateService \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService
 		 */
-		$pageService =  \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('FluidTYPO3\Vhs\Service\PageService');
+		$pageService =  \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\FluidTYPO3\Vhs\Service\PageService::class);
 
 		$rootLine = $pageService->getRootLine($pageUid);
 
-		$extendedTemplateService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\TypoScript\ExtendedTemplateService');
+		$extendedTemplateService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\ExtendedTemplateService::class);
 
 		$extendedTemplateService->tt_track = 0;
 		// $extendedTemplateService->init();

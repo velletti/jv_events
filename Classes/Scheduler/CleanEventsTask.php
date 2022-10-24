@@ -122,7 +122,7 @@ class CleanEventsTask extends AbstractTask
 
         if( GeneralUtility::validEmail( trim( $this->getDebugmail()) ) ) {
             /** @var SignatureService $mailService */
-            $mailService = GeneralUtility::makeInstance("Velletti\\Mailsignature\\Service\\SignatureService");
+            $mailService = GeneralUtility::makeInstance(\Velletti\Mailsignature\Service\SignatureService::class);
             $params = array() ;
             $params['email_fromName'] = "Debug from " .$baseUrl ;
             $params['email_from'] = "info@tangomuenchen.de";
@@ -148,7 +148,7 @@ class CleanEventsTask extends AbstractTask
 
 
         /** @var ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
+        $connectionPool = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Database\ConnectionPool::class);
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_jvevents_domain_model_registrant') ;
         /** @var Connection $connection */
@@ -192,7 +192,7 @@ class CleanEventsTask extends AbstractTask
 
 
         /** @var ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
+        $connectionPool = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Database\ConnectionPool::class);
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_jvevents_domain_model_event') ;
         /** @var Connection $connection */
@@ -254,7 +254,7 @@ class CleanEventsTask extends AbstractTask
         $organizers = $organizerRepository->findByFilterAllpages(FALSE , true ) ;
 
         /** @var ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
+        $connectionPool = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Database\ConnectionPool::class);
         /** @var QueryBuilder $queryFeUser */
         $queryFeUser = $connectionPool->getQueryBuilderForTable('fe_users') ;
 
@@ -304,7 +304,7 @@ class CleanEventsTask extends AbstractTask
                     $debug[] = "Organizer: " . $organizer->getUid() . " - " . $organizer->getName() . " Old: " . $organizer->getSorting() . " -> " . $result['newsorting'] ;
 
                     /** @var ConnectionPool $connectionPool */
-                    $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
+                    $connectionPool = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Database\ConnectionPool::class);
                     /** @var QueryBuilder $queryBuilder */
                     $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_jvevents_domain_model_organizer') ;
                     $queryBuilder->update("tx_jvevents_domain_model_organizer")->set("sorting" , $result['newsorting'])
@@ -324,7 +324,7 @@ class CleanEventsTask extends AbstractTask
         $debug[] = " *********  now uses with really last login " ;
 
         /** @var ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
+        $connectionPool = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Database\ConnectionPool::class);
         /** @var QueryBuilder $queryBuilder */
         /** @var QueryBuilder $queryBuilderUpdate */
         /** @var QueryBuilder $queryEvents */

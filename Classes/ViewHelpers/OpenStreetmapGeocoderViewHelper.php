@@ -47,7 +47,7 @@ class OpenStreetmapGeocoderViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\
     protected $escapeChildren = false;
 
     public function initializeArguments() {
-        $this->registerArgument('location', '\JVE\JvEvents\Domain\Model\Location', 'Single location', false , NULL);
+        $this->registerArgument('location', \JVE\JvEvents\Domain\Model\Location::class, 'Single location', false , NULL);
         $this->registerArgument('formfields', 'array', 'Field Array', false , NULL );
         $this->registerArgument('updateFunction', 'string', 'Name of javaScript function that should run after Update Map', false , '' );
         parent::initializeArguments() ;

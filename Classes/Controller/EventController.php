@@ -261,7 +261,7 @@ class EventController extends BaseController
 
         if ( $event==null) {
             /** @var Event $event */
-            $event = $this->objectManager->get("JVE\\JvEvents\\Domain\\Model\\Event");
+            $event = $this->objectManager->get(\JVE\JvEvents\Domain\Model\Event::class);
         }
         if ( $event->getUid() < 1 ) {
             $today = new \DateTime ;
@@ -458,7 +458,7 @@ class EventController extends BaseController
         for ( $i=1 ;$i<= $amount ; $i++) {
             /** @var Event $newEvent */
 
-            $newEvent = $this->objectManager->get( "JVE\\JvEvents\\Domain\\Model\\Event")  ;
+            $newEvent = $this->objectManager->get( \JVE\JvEvents\Domain\Model\Event::class)  ;
 
             $properties = $event->_getProperties() ;
             unset($properties['uid']) ;
@@ -916,7 +916,7 @@ class EventController extends BaseController
 	public function generateToken($action = "action"): string
     {
 		/** @var \TYPO3\CMS\Core\FormProtection\FrontendFormProtection $formClass */
-		$formClass =  $this->objectManager->get( "TYPO3\\CMS\\Core\\FormProtection\\FrontendFormProtection") ;
+		$formClass =  $this->objectManager->get( \TYPO3\CMS\Core\FormProtection\FrontendFormProtection::class) ;
 
 		return $formClass->generateToken(
 			'event', $action ,   "P" . $this->settings['pageId'] . "-L" .$this->settings['sys_language_uid']

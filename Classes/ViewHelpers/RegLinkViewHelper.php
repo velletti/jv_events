@@ -63,7 +63,7 @@ class RegLinkViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBas
     {
         $this->registerUniversalTagAttributes();
         $this->registerTagAttribute('section', 'string', 'Anchor for links', false);
-        $this->registerArgument('event', '\JVE\JvEvents\Domain\Model\Event', 'Event', false);
+        $this->registerArgument('event', \JVE\JvEvents\Domain\Model\Event::class, 'Event', false);
         $this->registerArgument('settings', 'array', 'settings Array', false , array() );
         $this->registerArgument('configuration', 'array', 'configuration Array', false , array() );
         $this->registerArgument('content', 'string', ' the content', false ,'' );
