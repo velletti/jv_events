@@ -3,7 +3,7 @@ defined('TYPO3_MODE') or die();
 // EXTKEY is not set here .. see https://docs.typo3.org/typo3cms/ExtbaseFluidBook/b-ExtbaseReference/Index.html
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-    'JVE.' . 'jv_events',
+    'JvEvents',
     'Events',
     'Events' ,
     'jvevents-plugin'
@@ -11,7 +11,7 @@ defined('TYPO3_MODE') or die();
 
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-    'JVE.' . 'jv_events',
+    'JvEvents',
     'Ajax',
     'Ajax Event Controller',
     'jvevents-plugin'

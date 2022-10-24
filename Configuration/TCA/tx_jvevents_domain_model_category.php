@@ -6,7 +6,6 @@ return array(
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',
-		'dividers2tabs' => TRUE,
 		'sortby' => 'sorting',
 		'versioningWS' => TRUE,
 		'languageField' => 'sys_language_uid',
@@ -33,7 +32,7 @@ return array(
 		'1' => array('showitem' => ''),
 	),
 	'columns' => array(
-	
+
 		'sys_language_uid' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
@@ -69,8 +68,8 @@ return array(
 				'type' => 'passthrough',
 			),
 		),
-		
-		
+
+
 		't3ver_label' => array(
 			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.versionLabel',
 			'config' => array(
@@ -140,6 +139,6 @@ return array(
 				'default' => 0
 			)
 		),
-		
+
 	),
 );## EXTENSION BUILDER DEFAULTS END TOKEN - Everything BEFORE this line is overwritten with the defaults of the extension builder
