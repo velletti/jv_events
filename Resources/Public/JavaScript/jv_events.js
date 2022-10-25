@@ -1,9 +1,10 @@
 /**
  * Created by velletti on 29.09.2016.
- * Last Change: 06.10.2022
+ * Last Change:25.10.2022 - 16:14
  */
-//$(window).on("load", function(){
-jQuery(document).ready(function() {
+//
+$(window).on("load", function(){
+// jQuery(document).ready(function() {
     jv_events_init() ;
     if ( $("#jvEventsAjaxMenu").length ) {
         jv_events_init_AjaxMenu();
@@ -116,6 +117,7 @@ function jv_events_init() {
     // https://allplan.local/index.php?id=110&L=1&no_cache=1&tx_jvevents_events[eventsFilter][categories]=4&tx_jvevents_events[eventsFilter][citys]=Ratingen
 
     $(".js-warning-disabled").hide() ;
+    $("#jv_events_geo").data("init" , "start") ;
 
     jv_events_initOneFilter('categories') ;
     jv_events_initOneFilter('locations') ;
@@ -165,14 +167,14 @@ function jv_events_init() {
                 });
             }
         }
-
-
     }
     // the included map javascript will do the refesh, when map is loaded.
     // if we refresh the eventslist before map is ready  will not work
-    if( ! jQuery("#map").length  ) {
-        jv_events_refreshList();
+    if(  jQuery("#jv_events_geo").length ) {
+        jQuery("#jv_events_geo").data("init" , "done") ;
     }
+
+    jv_events_refreshList();
 }
 function jv_events_initPosition(position) {
 
@@ -242,6 +244,13 @@ function jv_events_initOneFilter(filterName) {
 
 
 function jv_events_refreshList(){
+    if( jQuery("#jv_events_geo").length  && jQuery("#jv_events_geo").data("init" ).length ) {
+        console.log(" In Refresh: init status: " + jQuery("#jv_events_geo").data("init" ) ) ;
+        if (jQuery("#jv_events_geo").data("init" ) != "done") {
+            return ;
+        }
+
+    }
     var fMonth= jQuery("SELECT#jv_events_filter_months") ;
     var fTag= jQuery("SELECT#jv_events_filter_tags") ;
     var fCity= jQuery("SELECT#jv_events_filter_citys") ;
@@ -671,8 +680,17 @@ function jv_events_refreshList(){
     if( fMonth && fMonth.length && fMonth.val() != '' && fMonth.val() !== 'undefined'  ) {
         urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][months]=" + fMonth.val() ;
     }
+    if( jQuery("#jv_events_geo").length  && jQuery("#jv_events_geo").data("init" ).length ) {
+        if(jQuery("#jv_events_geo").data("init" ) != "done") {
+            console.log( "init != done , so no push URL Flter") ;
+        } else {
+            console.log( "init was : " +  jQuery("#jv_events_geo").data("init" )  ) ;
+            jv_events_pushUrl( urlFilter ) ;
+        }
+    } else {
+        console.log( "init did not run or data init not found."  ) ;
+    }
 
-    jv_events_pushUrl( urlFilter ) ;
 
 
 }
