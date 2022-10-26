@@ -29,14 +29,14 @@ $returnArray = array(
 		'iconfile' => 'EXT:jv_events/Resources/Public/Icons/tx_jvevents_domain_model_event.gif'
 	),
 	'types' => array(
-		'0' => array('showitem' => 'event_type,url,--palette--;;dates,--palette--;LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.entry_time_help;entryTime,
+		'0' => array('showitem' => 'event_type,url,event_button_text,--palette--;;dates,--palette--;LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.entry_time_help;entryTime,
 		   --palette--;;infos,
 		--div--;Advanced, --palette--;;language, --palette--;;advanced, --palette--;;frequent, 
 		   price,currency,--linebreak--,--palette--;LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.priceReducedHeader;priceReduced,
 		--div--;Relations, --palette--;;relations,
 		--div--;Files, teaser_image, files, files_after_reg, files_after_event,
 		--div--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.tabs.access, --palette--;;access,'),
-		'2' => array('showitem' => 'event_type,--palette--;;dates,--palette--;LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.entry_time_help;entryTime,
+		'2' => array('showitem' => 'event_type,event_button_text,--palette--;;dates,--palette--;LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.entry_time_help;entryTime,
 		   --palette--;;infos,description,
 		--div--;Advanced, --palette--;;language, --palette--;;advanced, --palette--;;frequent,
 		  price,currency,--linebreak--,--palette--;LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.priceReducedHeader;priceReduced,
@@ -238,6 +238,16 @@ $returnArray = array(
 
 			),
 		),
+        'event_button_text' => array(
+            'exclude' => 1,
+            'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.event_button_text',
+            'config' => array(
+                'type' => 'input',
+                'size' => 30,
+                'eval' => 'trim',
+            ),
+        ),
+
         'price' => array(
             'exclude' => 1,
             'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.price',

@@ -79,12 +79,27 @@
 					<f:if condition="{event.url}">
 						<f:then>
 							<f:link.typolink class="internalLink" parameter="{event.url}" title="{f:translate(key: 'tx_jvevents_domain_model_event.details.linktext')}">
-								<f:translate key="tx_jvevents_domain_model_event.details.linktext" />
+								<f:if condition="{event.eventButtonText}">
+									<f:then>
+										{event.eventButtonText}
+									</f:then>
+									<f:else>
+										<f:translate key="tx_jvevents_domain_model_event.details.linktext" />
+									</f:else>
+								</f:if>
 							</f:link.typolink>
 						</f:then>
 						<f:else>
 							<f:link.action class="internalLink" pageUid="{settings.detailPid}" noCacheHash="true" action="show" arguments="{event : event}"  title="{f:translate(key: 'tx_jvevents_domain_model_event.details.linktext')}">
-								<f:translate key="tx_jvevents_domain_model_event.details.linktext" />
+								<f:if condition="{event.eventButtonText}">
+									<f:then>
+										{event.eventButtonText}
+									</f:then>
+									<f:else>
+										<f:translate key="tx_jvevents_domain_model_event.details.linktext" />
+									</f:else>
+								</f:if>
+
 							</f:link.action>
 						</f:else>
 					</f:if>

@@ -122,6 +122,14 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $name = '';
 
     /**
+     * Short Botton to overwrite Button "Termin Details >" for single Event
+     *
+     * @var string
+     */
+    protected $eventButtonText = '';
+
+
+    /**
      * generated from Short Title and startdate of this event. Used as URL
      *
      * @var string
@@ -757,7 +765,23 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         $this->eventType = $eventType;
     }
-    
+
+    /**
+     * @return string
+     */
+    public function getEventButtonText(): string
+    {
+        return $this->eventButtonText;
+    }
+
+    /**
+     * @param string $eventButtonText
+     */
+    public function setEventButtonText(string $eventButtonText): void
+    {
+        $this->eventButtonText = $eventButtonText;
+    }
+
     /**
      * Returns the teaser
      *
@@ -767,7 +791,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         return $this->teaser;
     }
-    
+
     /**
      * Sets the teaser
      *
