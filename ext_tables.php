@@ -19,8 +19,6 @@ if (!defined('TYPO3_MODE')) {
 );
 
 if (TYPO3_MODE === 'BE') {
-    $EventModules = array('EventBackend' => 'list, show, new, create, edit, update, delete, register, confirm, search, resendCitrix,resendHubspot' ) ;
-
 
     //       * Registers a Backend Module
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
@@ -28,13 +26,14 @@ if (TYPO3_MODE === 'BE') {
         'web',	 // Make module a submodule of 'web'
         'eventmngt',	// Submodule key
         'after:List',						// Position
-        $EventModules ,
+        [  \JVE\JvEvents\Controller\EventBackendController::class  => 'list, show, new, create, edit, update, delete, register, confirm, search, resendCitrix,resendHubspot'] ,
         array(
             'access' => 'user,group',
             'icon'   => 'EXT:jv_events/ext_icon_importer.gif',
             'labels' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_eventmngt.xlf',
         )
     );
+
 
 /*
     TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
