@@ -15,8 +15,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class Flexforms {
 	public function getSettings() {
-		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-		$configurationManager = $objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
+		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+		$configurationManager = $objectManager->get(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
 		$settings = $configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT );
 
 		return $settings ;
@@ -102,7 +102,7 @@ class Flexforms {
     }
     private function getRow($table , $nameField , $lngField , $uid ) {
         /** @var ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
+        $connectionPool = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Database\ConnectionPool::class);
         $lngField = intval($lngField ) ;
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $connectionPool->getConnectionForTable($table)->createQueryBuilder();

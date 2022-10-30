@@ -32,6 +32,7 @@ use JVE\JvEvents\Domain\Model\Location;
 use JVE\JvEvents\Utility\AjaxUtility;
 use JVE\JvEvents\Utility\TyposcriptUtility;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use JVE\JvEvents\Utility\ShowAsJsonArrayUtility;
@@ -102,14 +103,14 @@ class AjaxController extends BaseController
     public function initializeRepositorys(array $ts=null)
     {
 
-        $this->tagRepository        = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\TagRepository');
-        $this->categoryRepository        = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\CategoryRepository');
-        $this->registrantRepository        = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\RegistrantRepository');
-        $this->locationRepository        = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\LocationRepository');
-        $this->organizerRepository        = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\OrganizerRepository');
-        $this->eventRepository        = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\EventRepository');
-        $this->subeventRepository        = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\SubeventRepository');
-        $this->staticCountryRepository        = $this->objectManager->get('JVE\\JvEvents\\Domain\\Repository\\StaticCountryRepository');
+        $this->tagRepository        = $this->objectManager->get(\JVE\JvEvents\Domain\Repository\TagRepository::class);
+        $this->categoryRepository        = $this->objectManager->get(\JVE\JvEvents\Domain\Repository\CategoryRepository::class);
+        $this->registrantRepository        = $this->objectManager->get(\JVE\JvEvents\Domain\Repository\RegistrantRepository::class);
+        $this->locationRepository        = $this->objectManager->get(\JVE\JvEvents\Domain\Repository\LocationRepository::class);
+        $this->organizerRepository        = $this->objectManager->get(\JVE\JvEvents\Domain\Repository\OrganizerRepository::class);
+        $this->eventRepository        = $this->objectManager->get(\JVE\JvEvents\Domain\Repository\EventRepository::class);
+        $this->subeventRepository        = $this->objectManager->get(\JVE\JvEvents\Domain\Repository\SubeventRepository::class);
+        $this->staticCountryRepository        = $this->objectManager->get(\JVE\JvEvents\Domain\Repository\StaticCountryRepository::class);
 
         $this->uriBuilder->injectConfigurationManager( $this->configurationManager);
         $this->uriBuilder->initializeObject();
@@ -143,12 +144,12 @@ class AjaxController extends BaseController
         /**
          * @var $objectManager \TYPO3\CMS\Extbase\Object\ObjectManager
          */
-        $objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
-        /** @var \TYPO3\CMS\Extbase\Mvc\Web\Request $request */
-        $request = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Mvc\Web\Request', "JVE\JvEvents\Controller\AjaxController" );
+        $objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+        /** @var \TYPO3\CMS\Extbase\Mvc\Request $request */
+        $request = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Mvc\Request::class, \JVE\JvEvents\Controller\AjaxController::class );
 
         /** @var \TYPO3\CMS\Core\Information\Typo3Version $version */
-        $version = GeneralUtility::makeInstance('TYPO3\CMS\Core\Information\Typo3Version');
+        $version = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Information\Typo3Version::class);
 
 
         if ($version->getMajorVersion() < 10) {
@@ -158,7 +159,7 @@ class AjaxController extends BaseController
             /**
              * @var $TSFE \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
              */
-            $TSFE = GeneralUtility::makeInstance('TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController', $GLOBALS['TYPO3_CONF_VARS'],
+            $TSFE = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class, $GLOBALS['TYPO3_CONF_VARS'],
                 $pid,  // pageUid Homepage
                 $type   // pageType
             );
@@ -167,24 +168,17 @@ class AjaxController extends BaseController
 
 // Important: no Cache for Ajax stuff
             $GLOBALS['TSFE']->set_no_cache("JvEvents Ajax Call" , true);
-
-            \TYPO3\CMS\Frontend\Utility\EidUtility::initLanguage();
-            \TYPO3\CMS\Frontend\Utility\EidUtility::initTCA();
-
-// Get FE User Information
-            $GLOBALS['TSFE']->initFEuser();
             $GLOBALS['TSFE']->initUserGroups();
             $GLOBALS['TSFE']->fe_user ;
 
             $GLOBALS['TSFE']->checkAlternativeIdMethods();
             $GLOBALS['TSFE']->determineId();
-            $GLOBALS['TSFE']->initTemplate();
             $GLOBALS['TSFE']->getConfigArray();
             \TYPO3\CMS\Core\Core\Bootstrap::getInstance();
 
-            $GLOBALS['TSFE']->cObj = GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
+            $GLOBALS['TSFE']->cObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
             $GLOBALS['TSFE']->settingLanguage();
-            $GLOBALS['TSFE']->settingLocale();
+            \TYPO3\CMS\Core\Localization\Locales::setSystemLocaleFromSiteLanguage($GLOBALS['TSFE']->getLanguage());
 
             // $GLOBALS['BE_USER'] =  $GLOBALS['TSFE']->initializeBackendUser() ;
             /**
@@ -208,7 +202,7 @@ class AjaxController extends BaseController
 
             $bootstrap = new \TYPO3\CMS\Extbase\Core\Bootstrap();
             $bootstrap->initialize($bootstrapConf);
-            $bootstrap->cObj = GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
+            $bootstrap->cObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
 
             $request->setControllerVendorName($ajax['vendor']);
         }
@@ -219,8 +213,8 @@ class AjaxController extends BaseController
         $request->setControllerActionName($ajax['action']);
         $request->setArguments($ajax['arguments']);
 
-        $response = $objectManager->get('TYPO3\CMS\Extbase\Mvc\ResponseInterface');
-        $dispatcher = $objectManager->get('TYPO3\CMS\Extbase\Mvc\Dispatcher');
+        $response = $objectManager->get(\TYPO3\CMS\Extbase\Mvc\ResponseInterface::class);
+        $dispatcher = $objectManager->get(\TYPO3\CMS\Extbase\Mvc\Dispatcher::class);
 
         if( key_exists('event' , $_gp)) {
             $request->setArgument('event',  intval( $_gp['event'] )) ;
@@ -281,6 +275,20 @@ class AjaxController extends BaseController
             $output['returnPid'] = $arguments['returnPid']  ;
         }
 
+        $configuration = \JVE\JvEvents\Utility\EmConfigurationUtility::getEmConf();
+        $singlePid = ( array_key_exists( 'DetailPid' , $configuration) && $configuration['DetailPid'] > 0 ) ? intval($configuration['DetailPid']) : 111 ;
+        $output['DetailPid'] = $singlePid  ;
+        try {
+            $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($singlePid);
+        } catch( \Exception $e) {
+            // ignore
+            $site = false ;
+        }
+
+
+
+
+
         $needToStore = FALSE ;
         /* ************************************************************************************************************ */
         /*   Get infos about: EVENT
@@ -292,7 +300,7 @@ class AjaxController extends BaseController
             /** @var \JVE\JvEvents\Domain\Model\Event $event */
             $event = $this->eventRepository->findByUidAllpages( $output['event']['requestId'] , FALSE  , TRUE );
             if( is_object($event )) {
-                if ( !$output['mode'] == "onlyValues") {
+                if ( substr($output['mode'], 0 , 4 )  != "only" ) {
                     $event->increaseViewed();
                     $this->eventRepository->update($event) ;
                     $needToStore = TRUE ;
@@ -309,6 +317,15 @@ class AjaxController extends BaseController
                 $output['event']['creationTime'] = date( "d.m.Y H:i" , $event->getCrdate() ) ;
                 $output['event']['crdate'] =  $event->getCrdate()  ;
                 $output['event']['noNotification'] = $event->getNotifyRegistrant() ;
+
+                if ( $site ) {
+                    try {
+                    $output['event']['slug'] = (string)$site->getRouter()->generateUri( $singlePid ,['_language' => max( $event->getLanguageUid() ,0 ) ,
+                        'tx_jvevents_events' => ['action' => 'show' , 'controller' => 'Event' ,'event' =>  $event->getUid() ]]);
+                    } catch( \EXCEPTION $e ) {
+                        $output['event']['slug'] = "pid=" . $singlePid . "&L=" . $event->getLanguageUid() ;
+                    }
+                }
 
 
                 if( $event->getNotifyRegistrant() == 0  ) {
@@ -457,7 +474,7 @@ class AjaxController extends BaseController
                 /** @var \JVE\JvEvents\Domain\Model\Event $tempEvent */
                 $tempEvent =  $events->getFirst() ;
                 if( is_object( $tempEvent )) {
-                    if ( !$output['mode'] == "onlyValues") {
+                    if ( substr($output['mode'], 0, 4 )  != "only") {
                         $tempEvent->increaseViewed();
 
                         $this->eventRepository->update($tempEvent);
@@ -476,6 +493,14 @@ class AjaxController extends BaseController
 
                             if (is_object($tempEvent->getLocation())) {
                                 $tempEventArray['LocationCity'] = $tempEvent->getLocation()->getCity();
+                            }
+                            if ( $site ) {
+                                try {
+                                    $tempEventArray['slug'] = (string)$site->getRouter()->generateUri( $singlePid ,['_language' => max( $tempEvent->getLanguageUid() ,0 ) ,
+                                        'tx_jvevents_events' => ['action' => 'show' , 'controller' => 'Event' ,'event' =>  $tempEvent->getUid() ]]);
+                                } catch( \EXCEPTION $e ) {
+                                    $tempEventArray['slug'] = "pid=" . $singlePid . "&L=" . $tempEvent->getLanguageUid() ;
+                                }
                             }
 
                             $output['eventsByFilter'][] = $tempEventArray;
@@ -587,6 +612,9 @@ class AjaxController extends BaseController
 
         if ( $output['mode'] == "onlyValues") {
             unset( $output['events'] ) ;
+            ShowAsJsonArrayUtility::show(  $output ) ;
+        }
+        if ( $output['mode'] == "onlyJson") {
             ShowAsJsonArrayUtility::show(  $output ) ;
         }
 
@@ -826,7 +854,7 @@ class AjaxController extends BaseController
 
 
         /** @var \JVE\JvEvents\Domain\Repository\FrontendUserRepository $userRepository */
-        $userRepository = $this->objectManager->get("JVE\\JvEvents\\Domain\\Repository\\FrontendUserRepository") ;
+        $userRepository = $this->objectManager->get(\JVE\JvEvents\Domain\Repository\FrontendUserRepository::class) ;
         /** @var \JVE\JvEvents\Domain\Model\FrontendUser $user */
         $user = $userRepository->findByUid($userUid) ;
 
@@ -900,7 +928,7 @@ class AjaxController extends BaseController
         foreach ($groupsMissing as $key => $item) {
             if ( $item  ) {
                 /** @var \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserGroupRepository $userGroupRepository */
-                $userGroupRepository = $this->objectManager->get("TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserGroupRepository") ;
+                $userGroupRepository = $this->objectManager->get(\TYPO3\CMS\Extbase\Domain\Repository\FrontendUserGroupRepository::class) ;
                 $newGroup = $userGroupRepository->findByUid($key) ;
                 if( $newGroup ) {
                     if ( $msg == '' ) {
@@ -932,6 +960,67 @@ class AjaxController extends BaseController
             die;
         }
 
+    }
+    /**
+     * @param array|null $arguments
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
+     */
+    public function eventChangeLocIdAction( array $arguments=null ) {
+        if(!$arguments) {
+            $arguments = GeneralUtility::_GPmerged('tx_jvevents_ajax');
+        }
+        // https:/tango.ddev.local/index.php?uid=82&eID=jv_events&tx_jvevents_ajax[event]=2264&tx_jvevents_ajax[action]=eventUnlink&
+        $output['success'] = false ;
+        $output['msg'] = 'Starting Link to other Location ';
+        if( $arguments['event'] > 0 ) {
+            $output['event']['requestId'] =  $arguments['event'] ;
+            $output['msg'] = 'got Event';
+            if ( intval( $GLOBALS['TSFE']->fe_user->user['uid'] ) > 0 ) {
+                $output['event']['user'] =  intval( $GLOBALS['TSFE']->fe_user->user['uid'] ) ;
+                $output['msg'] = 'got Event and user is logged in';
+                /** @var \JVE\JvEvents\Domain\Model\Event $event */
+                $event = $this->eventRepository->findByUidAllpages( $output['event']['requestId'] , FALSE  , TRUE );
+                if( is_object($event )) {
+                    $output['msg'] = 'Found Event and user is logged in';
+                    //    $output['event']['Id'] = $event->getUid() ;
+                    $organizer = $event->getOrganizer() ;
+                    if( is_object( $organizer )) {
+                        $output['msg'] = 'got Event and has organizer';
+                        //     $output['event']['organizer'] = $organizer->getUid();
+                        if ($this->hasUserAccess($organizer)) {
+                            $output['msg'] = 'user has access';
+                            $output['event']['hasAccess'] = true ;
+                            /** @var Location $location */
+                            if( $location = $this->locationRepository->findByUidAllpages( intval($arguments['location']) , false ) ) {
+                                $output['msg'] = 'got Location from URI';
+                                if( $this->hasUserAccess ( $location->getOrganizer()) ) {
+                                    $event->setLocation( $location ) ;
+                                    $this->eventRepository->update($event) ;
+                                    $this->persistenceManager->persistAll() ;
+                                    $output['success'] = true ;
+                                    $output['msg'] = '';
+                                    // does not work - Uri is not generated !
+                                    // $this->redirect("show" , "Event" , "JvEvents", ['event' => $event->getUid() ] , intval($arguments['returnToPid'] )) ;
+
+                                    $target = GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST') . "/index.php?id=". intval($arguments['returnToPid'] ) ;
+                                    $target .= "&tx_jvevents_events%5Bevent%5D=" . $event->getUid() ;
+                                    $target .= "&tx_jvevents_events%5Baction%5D=edit"  ;
+                                    $target .= "&tx_jvevents_events%5Bcontroller%5D=Event"  ;
+                                    header("Location: " .  $target   );
+                                    exit;
+
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+
+        }
+        ShowAsJsonArrayUtility::show(  $output ) ;
+        exit ;
     }
 
 
@@ -981,6 +1070,8 @@ class AjaxController extends BaseController
         exit ;
     }
 
+
+
     public function downloadIcal($arguments) {
 
         $uid = intval( $arguments["uid"] ) ;
@@ -990,7 +1081,7 @@ class AjaxController extends BaseController
             if ( $event && $event->getUid() == $uid ) {
                 $output['status'] = 200 ;
                 $output['content-type'] = "text/calendar" ;
-                $output['filename'] = "tango-event-import-" . date("dmy-His" ) . ".ics";
+                $output['filename'] = "event-import-" . date("dmy-His" ) . ".ics";
 
                 $output['data'] = "BEGIN:VCALENDAR" . PHP_EOL
                     ."VERSION:2.0" . PHP_EOL
@@ -1031,7 +1122,7 @@ class AjaxController extends BaseController
 	public function generateToken($action = "action")
 	{
 		/** @var \TYPO3\CMS\Core\FormProtection\FrontendFormProtection $formClass */
-		$formClass =  $this->objectManager->get( "TYPO3\\CMS\\Core\\FormProtection\\FrontendFormProtection") ;
+		$formClass =  $this->objectManager->get( \TYPO3\CMS\Core\FormProtection\FrontendFormProtection::class) ;
 
 		return $formClass->generateToken(
 			'event', $action ,   "P" . $this->settings['pageId'] . "-L" .$this->settings['sys_language_uid']
@@ -1084,7 +1175,7 @@ class AjaxController extends BaseController
             // tx_sfbanners_domain_model_banner
             try {
                 /** @var \TYPO3\CMS\Core\Database\ConnectionPool $connectionPool */
-                $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
+                $connectionPool = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Database\ConnectionPool::class);
 
                 $connection = $connectionPool->getConnectionForTable('tx_sfbanners_domain_model_banner') ;
 
@@ -1102,6 +1193,9 @@ class AjaxController extends BaseController
                     ->fetchAssociative();
                 if ( $row) {
                     $output['event']['banner'] = $row ;
+                    if( $row['endtime'] > time() ) {
+                        $output['event']['banner']['active'] = true ;
+                    }
                 }
             } catch (Exception $e) {
                 // ignore

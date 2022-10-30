@@ -6,7 +6,6 @@ return array(
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',
-		'dividers2tabs' => TRUE,
 		'versioningWS' => FALSE ,
         'default_sortby' => 'name ASC',
 		'languageField' => 'sys_language_uid',

@@ -1,10 +1,59 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-10-18T07:35:33Z">
+	<file source-language="en" target-language="fr" datatype="plaintext" original="messages" date="2016-10-18T07:35:33Z">
 		<header>
 			<generator>LFEditor</generator>
 		</header>
 		<body>
+			<trans-unit id="month.01">
+				<source>January</source>
+				<target>Janvier</target>
+			</trans-unit>
+			<trans-unit id="month.02">
+				<source>February</source>
+				<target>Février</target>
+			</trans-unit>
+			<trans-unit id="month.03">
+				<source>March</source>
+				<target>Mars</target>
+			</trans-unit>
+			<trans-unit id="month.04">
+				<source>April</source>
+				<target>Avril</target>
+			</trans-unit>
+			<trans-unit id="month.05">
+				<source>May</source>
+				<target>Mai</target>
+			</trans-unit>
+			<trans-unit id="month.06">
+				<source>June</source>
+				<target>Juin</target>
+			</trans-unit>
+			<trans-unit id="month.07">
+				<source>July</source>
+				<target>Juillet</target>
+			</trans-unit>
+			<trans-unit id="month.08">
+				<source>August</source>
+				<target>Août</target>
+			</trans-unit>
+			<trans-unit id="month.09">
+				<source>September</source>
+				<target>Septembre</target>
+			</trans-unit>
+			<trans-unit id="month.10">
+				<source>October</source>
+				<target>Octobre</target>
+			</trans-unit>
+			<trans-unit id="month.11">
+				<source>November</source>
+				<target>Novembre</target>
+			</trans-unit>
+			<trans-unit id="month.12">
+				<source>December</source>
+				<target>Décembre</target>
+			</trans-unit>
+
 			<trans-unit id="jv_events_model_event.currency.label">
 				<source>Currency</source>
 				<target>Devise</target>
@@ -75,6 +124,10 @@
 			<source>Mr.</source>
 			<target>M</target>
 		</trans-unit>
+        <trans-unit id="register_gender_diverse" approved="yes">
+            <source>Div.</source>
+            <target>D.</target>
+        </trans-unit>
 		<trans-unit id="register_head_company_data" approved="yes">
 			<source>Company Data / Invoice Address</source>
 			<target>Société / Organisme</target>

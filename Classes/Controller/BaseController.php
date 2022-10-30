@@ -37,13 +37,9 @@ use JVE\JvEvents\Domain\Repository\RegistrantRepository;
 use JVE\JvEvents\Domain\Repository\StaticCountryRepository;
 use JVE\JvEvents\Domain\Repository\SubeventRepository;
 use JVE\JvEvents\Domain\Repository\TagRepository;
-use Symfony\Component\Mime\Part\AbstractPart;
-use Symfony\Component\Mime\Part\Multipart\AlternativePart;
-use Symfony\Component\Mime\Part\TextPart;
 use TYPO3\CMS\Core\Context\AspectInterface;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Information\Typo3Version;
-use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -257,9 +253,9 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
 
         if( !$this->objectManager) {
-            $this->objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager') ;
+            $this->objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class) ;
         }
-        $this->persistenceManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
+        $this->persistenceManager = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class);
     }
 
     public function generateFilterBox( $filter , $tagShowAfterColon=0 ) {
@@ -368,7 +364,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
                 /** @var \JVE\JvEvents\Domain\Model\Organizer $obj */
                 $obj = $event->getOrganizer();
                 if (is_object($obj)) {
-                    if ( $this->settings['ShowFilter'] == 6 ) {
+                    if ( $this->settings['ShowFilter'] == 6 || $this->settings['ShowFilter'] == 7  ) {
                         $orgName = str_replace(" " , "+" , $obj->getName() ) ;
                         if(! in_array($orgName , $organizers )) {
                             $organizers[$orgName] = $obj->getName() ;
@@ -450,6 +446,80 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             "category50proz" => intval ( (count($categories2) ) / 2 ) ,
             "tag50proz" => intval ( (count($tags2) +1) / 2 )
             ) ;
+    }
+
+
+    public function generateFilterWithoutTagsCats(\TYPO3\CMS\Extbase\Persistence\QueryResultInterface $events , $filter ) {
+        $locations = array() ;
+        $organizers = array() ;
+        $citys = array() ;
+        $months = array() ;
+
+        if( $this->settings['filter']['hideCityDropdown'] && $this->settings['filter']['hideMonthDropdown']
+            && $this->settings['filter']['hideOrganizerDropdown']) {
+            return array(
+                "locations" => $locations ,
+                "organizers" => $organizers ,
+                "citys" => $citys ,
+                "months" => $months ,
+            ) ;
+        }
+        /** @var Event $event */
+        $eventsArray = $events->toArray() ;
+        $this->debugArray[] = "After converting to Array :" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " | Line: " . __LINE__ ;
+
+        $x = 0 ;
+      //  while( $event = $events->getOffest($x) instanceof  \JVE\JvEvents\Domain\Model\Event ) {
+         foreach ($eventsArray as $key => $event ) {
+             $x++ ;
+            // first fill the Options for the Filters to have only options with Events
+
+            if( ! $this->settings['filter']['hideCityDropdown']) {
+                /** @var \JVE\JvEvents\Domain\Model\Location $obj */
+                $obj =  $event->getLocation() ;
+                if ( is_object($obj) ) {
+                    $locations[$obj->getUid()] = $obj->getName()  ;
+
+                    if(! in_array(ucfirst($obj->getCity()) , $citys )) {
+                        // no online Events in CITY Filter
+                        if( intval( $obj->getLat())  != 0 || intval($obj->getLng() != 0 )) {
+                            $citys[$obj->getCity()] = ucfirst($obj->getCity()) ;
+                        }
+                    }
+                }
+            }
+
+            if( ! $this->settings['filter']['hideOrganizerDropdown']) {
+                /** @var \JVE\JvEvents\Domain\Model\Organizer $obj */
+                $obj = $event->getOrganizer();
+                if (is_object($obj)) {
+                    if ( $this->settings['ShowFilter'] == 6 ) {
+                        $orgName = str_replace(" " , "+" , $obj->getName() ) ;
+                        if(! in_array($orgName , $organizers )) {
+                            $organizers[$orgName] = $obj->getName() ;
+                        }
+                    } else {
+                        $organizers[$obj->getUid()] = $obj->getName();
+                    }
+
+                }
+            }
+
+
+            unset($obj) ;
+
+            if( ! $this->settings['filter']['hideMonthDropdown']) {
+                $month = $event->getStartDate()->format("m.Y");
+                $months[$month] = $month;
+            }
+        }
+
+        return array(
+            "locations" => $locations ,
+            "organizers" => $organizers ,
+            "citys" => $citys ,
+            "months" => $months ,
+        ) ;
     }
 
     public function generateOrgFilter($orgArray , $filter )
@@ -596,7 +666,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     public function getEmailRenderer($templatePath = '' , $templateName = 'default' , $format='html') {
         // create another instance of Fluid
         /** @var \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
-        $renderer = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
+        $renderer = $this->objectManager->get(\TYPO3\CMS\Fluid\View\StandaloneView::class);
 
 
 
@@ -704,7 +774,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         $signature = false;
         if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('mailsignature')) {
             /** @var \Velletti\Mailsignature\Service\SignatureService $signatureService */
-            $signatureService = $this->objectManager->get("Velletti\\Mailsignature\\Service\\SignatureService");
+            $signatureService = $this->objectManager->get(\Velletti\Mailsignature\Service\SignatureService::class);
             $signature = $signatureService->getSignature($this->settings['signature']['uid']);
         }
         if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('nem_signature')) {
@@ -780,7 +850,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         $emailBody = $renderer->render();
 
         /** @var $message \TYPO3\CMS\Core\Mail\MailMessage */
-        $message = GeneralUtility::makeInstance(MailMessage::class);
+        $message = $this->objectManager->get(\TYPO3\CMS\Core\Mail\MailMessage::class);
         $message->setTo($recipient)
             ->setFrom($sender)
             ->setSubject($subject);
@@ -812,7 +882,6 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         } else {
             $message->html($emailBody, 'utf-8');
             $message->text($plainMsg, 'utf-8');
-
         }
 
 
@@ -832,7 +901,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      */
     public function sendDebugEmail($recipient,$sender ,$subject , $plainMsg , $htmlMsg = '') {
         /** @var $message \TYPO3\CMS\Core\Mail\MailMessage */
-        $message = $this->objectManager->get('TYPO3\\CMS\\Core\\Mail\\MailMessage');
+        $message = $this->objectManager->get(\TYPO3\CMS\Core\Mail\MailMessage::class);
 
 
         $returnPath = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFromAddress();

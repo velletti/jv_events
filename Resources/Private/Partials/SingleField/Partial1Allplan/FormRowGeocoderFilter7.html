@@ -1,0 +1,18 @@
+{namespace jve=JVE\JvEvents\ViewHelpers}
+
+
+<div class="d-none hidden">
+        <f:variable name="propertyName">{object}.{property}</f:variable>
+        <f:render partial="FormErrorSingle" arguments="{property: errorProperty, field: propertyName}"/>
+        <f:variable name="propertyName2">{object}.{property2}</f:variable>
+        <f:render partial="FormErrorSingle" arguments="{property: errorProperty, field: propertyName2}"/>
+
+        <f:form.textfield class="form-control" readonly="readonly" property="{property}" id="{property}" maxlength="{maxLength}"/>
+        <f:form.textfield class="form-control" readonly="readonly" property="{property2}" id="{property2}" maxlength="{maxLength}"/>
+        <f:form.textfield class="form-control" readonly="readonly" property="{zoom}" id="{zoom}" value="{settings.filter.initMapZoom}" maxlength="{maxLength}"/>
+</div>
+
+<div id="map" style="height:350px; width:95%"></div>
+<jve:geocoder formfields="{input: {address: '{settings.filter.initMapAddress}' , zoom: '{settings.filter.initMapZoom}'}, return: {lat: '#lat', lng: '#lng', zoom: '#zoom'}}" updateFunction="{updateFunction}">
+
+</jve:geocoder>

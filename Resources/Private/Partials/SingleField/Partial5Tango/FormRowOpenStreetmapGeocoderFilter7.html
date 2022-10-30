@@ -1,0 +1,36 @@
+{namespace jve=JVE\JvEvents\ViewHelpers}
+
+
+<div class="d-none hidden">
+        <f:variable name="propertyName">{object}.{property}</f:variable>
+        <f:render partial="FormErrorSingle" arguments="{property: errorProperty, field: propertyName}"/>
+        <f:variable name="propertyName2">{object}.{property2}</f:variable>
+        <f:render partial="FormErrorSingle" arguments="{property: errorProperty, field: propertyName2}"/>
+
+        <f:form.textfield class="form-control" property="{property}" id="{property}" maxlength="{maxLength}"/>
+        <f:form.textfield class="form-control" property="{property2}" id="{property2}" maxlength="{maxLength}"/>
+        <f:form.textfield class="form-control"  property="{zoom}" id="{zoom}" value="{settings.filter.initMapZoom}" maxlength="{maxLength}"/>
+</div>
+
+
+<div id="map" style="height:300px;"
+     data-glat="48.1148263" data-glog="11.4712236"
+     data-lat="48.1148263" data-lng="11.4712236"
+     data-namelat="input#lat" data-namelng="input#lng"
+     data-movemarkerallowed="true"
+     data-addmarkerfrom=".tx-jv-events DIV.jv-events-row"
+
+     data-copy="&copy; <a target='_blank' href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
+
+     data-mapzoom="{settings.filter.initMapZoom}"
+     data-geocodebase="https://nominatim.openstreetmap.org/search/"
+     data-geocodeoptions="?format=json&addressdetails=1&limit=1&polygon_svg=1"
+     data-geocodeurl="https://nominatim.openstreetmap.org/search/{settings.filter.initMapAddress -> f:format.urlencode()}?format=json&addressdetails=1&limit=1&polygon_svg=1"
+     data-geocodeurlshort="https://nominatim.openstreetmap.org/search/{settings.filter.initMapAddress -> f:format.urlencode()}?format=json&addressdetails=1&limit=1&polygon_svg=1"
+></div>
+<v:asset.prefetch domains="nominatim.openstreetmap.org" />
+<v:asset.script path="EXT:jv_events/Resources/Public/JavaScript/leaflet-1-7-1.js" name="leaflet1" async="false" content="header"/>
+<v:asset.script path="EXT:jv_events/Resources/Public/JavaScript/tango/LeafletFeGeoCoder.js" name="leaflet2" async="false"  content="footer"/>
+<v:asset.style path="EXT:jv_events/Resources/Public/Css/leaflet-1-7-1.css" name="leaflet3"   content="header"/>
+<v:asset.style path="EXT:jv_events/Resources/Public/Css/tango/leafletFrontend.css" name="leaflet4"   content="footer"/>
+

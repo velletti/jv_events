@@ -47,7 +47,7 @@ class GeocoderViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewH
     protected $escapeChildren = false;
 
     public function initializeArguments() {
-        $this->registerArgument('location', '\JVE\JvEvents\Domain\Model\Location', 'Single location', false , NULL);
+        $this->registerArgument('location', \JVE\JvEvents\Domain\Model\Location::class, 'Single location', false , NULL);
         $this->registerArgument('formfields', 'array', 'Field Array', false , NULL );
         $this->registerArgument('updateFunction', 'string', 'Name of javaScript function that should run after Update Map', false , '' );
         parent::initializeArguments() ;
@@ -68,7 +68,7 @@ class GeocoderViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewH
 
 
         /** @var \JVE\JvEvents\Utility\GeocoderUtility $geoCoder */
-        $geoCoder = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("JVE\\JvEvents\\Utility\\GeocoderUtility") ;
+        $geoCoder = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\JVE\JvEvents\Utility\GeocoderUtility::class) ;
         if ( ! $formfieldIds ) {
             $formfieldIds["address"] = '#streetAndNr' ;
             $formfieldIds["zip"] = '#zip' ;

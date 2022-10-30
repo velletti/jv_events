@@ -135,6 +135,10 @@
 			<source>Name</source>
 			<target>Name der Veranstaltung</target>
 		</trans-unit>
+		<trans-unit id="tx_jvevents_domain_model_event.event_button_text">
+            <source>Overwrite the default CTA (To the event)</source>
+            <target>Überschreiben des Standard CTA (Zum Termin)</target>
+        </trans-unit>
 		<trans-unit id="tx_jvevents_domain_model_event.need_to_confirm" approved="yes">
 			<source>Need To Confirm</source>
 			<target>Anmeldungen müssen bestätigt werden</target>

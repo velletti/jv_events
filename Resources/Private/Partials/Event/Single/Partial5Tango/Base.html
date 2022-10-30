@@ -228,7 +228,7 @@
 			<f:variable name="tabDescActive">active</f:variable>
 
 			<li class="nav-item" role="presentation">
-				<a class="active mx-3" href="#jv_events_event" data-toggle="tab"><f:translate key="tx_jvevents_domain_model_event.details.tab.details" /></a>
+				<a class="active mx-3" href="#jv_events_details" data-toggle="tab"><f:translate key="tx_jvevents_domain_model_event.details.tab.details" /></a>
 			</li>
 		</f:if>
 		<f:if condition="{event.canceled}">
@@ -277,7 +277,7 @@
 
 
 	<div class="tab-content clearfix">
-		<div class="tab-pane {tabDescActive} p-3 {f:if(condition: '{event.canceled}' , then:'opacity-3')}" id="jv_events_event">
+		<div class="tab-pane {tabDescActive} p-3 {f:if(condition: '{event.canceled}' , then:'opacity-3')}" id="jv_events_details">
 			<div class="row">
 				<div class="col-12 col-md-8 min-height-6-lines">
 
@@ -419,7 +419,21 @@
 			<f:if condition="{event.location.name} == 'Online'">
 				<f:else>
 					<div class="tab-pane {tabMapActive} p-0" id="jv_events_map" >
-						<f:render partial="GoogleMapsTango" arguments="{addresses: {0:event.location}, settings:settings}" />
+						<div id="map" style="height:500px;"
+							 data-lat="{event.location.lat}"
+							 data-lng="{event.location.lng}"
+							 data-maptab='a[href="#jv_events_map"]'
+							 data-glat="48.1148263" data-glog="11.4712236"
+							 data-copy="&copy; <a target='_blank' href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
+							 data-geocodebase="false"
+							 data-geocodeoptions="false"
+						></div>
+						<v:asset.prefetch domains="nominatim.openstreetmap.org" />
+						<v:asset.script path="EXT:jv_events/Resources/Public/JavaScript/leaflet-1-7-1.js" name="leaflet1" async="false" content="header"/>
+						<v:asset.script path="EXT:jv_events/Resources/Public/JavaScript/tango/LeafletFeGeoCoder.js" name="leaflet2" async="false"  content="footer"/>
+						<v:asset.style path="EXT:jv_events/Resources/Public/Css/leaflet-1-7-1.css" name="leaflet3"   content="header"/>
+						<v:asset.style path="EXT:jv_events/Resources/Public/Css/tango/leafletFrontend.css" name="leaflet4"   content="footer"/>
+
 					</div>
 				</f:else>
 

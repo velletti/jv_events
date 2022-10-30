@@ -152,12 +152,19 @@ class EventController extends BaseController
 
             case "6":
             case "7":
+              //  $eventsFilter = $this->generateFilterWithoutTagsCats( $events ,  $this->settings['filter']) ;
                 $eventsFilter = $this->generateFilter( $events ,  $this->settings['filter']) ;
+                // $eventsFilter = $this->generateFilterAll(  $this->settings['filter']) ;
+                $this->debugArray[] = "After generate Filter others :" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " | Line: " . __LINE__ ;
                 $eventsFilter['box1'] = $this->generateFilterBox( $this->settings['filter']['tagbox1tags']  , intval($this->settings['filter']['tagShowAfterColon'] )) ;
+                $this->debugArray[] = "After generate Filter Tags 1 : " . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " |  Line: " . __LINE__ ;
                 $eventsFilter['box2'] = $this->generateFilterBox( $this->settings['filter']['tagbox2tags'] , intval($this->settings['filter']['tagShowAfterColon'] )) ;
+                $this->debugArray[] = "After generate Filter Tags 2 : " . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " |  Line: " . __LINE__ ;
                 $eventsFilter['box3'] = $this->generateFilterBox( $this->settings['filter']['tagbox3tags'] , intval($this->settings['filter']['tagShowAfterColon'] )) ;
+                $this->debugArray[] = "After generate Filter Tags 3 : " . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " |  Line: " . __LINE__ ;
                 $eventsFilter['box4'] = $this->generateFilterBox( $this->settings['filter']['tagbox4tags'] , intval($this->settings['filter']['tagShowAfterColon'] )) ;
-                break;
+                $this->debugArray[] = "After generate Filter Tags 4 : " . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " |  Line: " . __LINE__ ;
+            break;
 
             default:
                 $eventsFilter = $this->generateFilter( $events ,  $this->settings['filter']) ;
@@ -171,6 +178,7 @@ class EventController extends BaseController
         $this->settings['navigationDates'] = $this->eventRepository->getDateArray($this->settings , $dtz ) ;
 
         $this->view->assign('eventsFilter', $eventsFilter);
+       // $this->settings['checkInstallation'] = 2 ;
         $this->view->assign('settings', $this->settings );
         $this->debugArray[] = "before Render:" . intval(1000 * ($this->microtime_float()  - $this->timeStart ) ) . " Line: " . __LINE__ ;
         $this->view->assign('debugArray', $this->debugArray );
@@ -253,7 +261,7 @@ class EventController extends BaseController
 
         if ( $event==null) {
             /** @var Event $event */
-            $event = $this->objectManager->get("JVE\\JvEvents\\Domain\\Model\\Event");
+            $event = $this->objectManager->get(\JVE\JvEvents\Domain\Model\Event::class);
         }
         if ( $event->getUid() < 1 ) {
             $today = new \DateTime ;
@@ -409,6 +417,10 @@ class EventController extends BaseController
 
                 $relatedEvents = $this->eventRepository->findByFilter($filter ) ;
                 $this->view->assign('relatedEvents', $relatedEvents );
+
+                $locations= $this->locationRepository->findByOrganizersAllpages( array(0 => $event->getOrganizer() ) , FALSE, FALSE ) ;
+                $this->view->assign('locations', $locations );
+
             } else {
                 $this->view->assign('event', FALSE );
             }
@@ -446,7 +458,7 @@ class EventController extends BaseController
         for ( $i=1 ;$i<= $amount ; $i++) {
             /** @var Event $newEvent */
 
-            $newEvent = $this->objectManager->get( "JVE\\JvEvents\\Domain\\Model\\Event")  ;
+            $newEvent = $this->objectManager->get( \JVE\JvEvents\Domain\Model\Event::class)  ;
 
             $properties = $event->_getProperties() ;
             unset($properties['uid']) ;
@@ -904,7 +916,7 @@ class EventController extends BaseController
 	public function generateToken($action = "action"): string
     {
 		/** @var \TYPO3\CMS\Core\FormProtection\FrontendFormProtection $formClass */
-		$formClass =  $this->objectManager->get( "TYPO3\\CMS\\Core\\FormProtection\\FrontendFormProtection") ;
+		$formClass =  $this->objectManager->get( \TYPO3\CMS\Core\FormProtection\FrontendFormProtection::class) ;
 
 		return $formClass->generateToken(
 			'event', $action ,   "P" . $this->settings['pageId'] . "-L" .$this->settings['sys_language_uid']

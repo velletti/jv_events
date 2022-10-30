@@ -170,6 +170,22 @@ class EventRepository extends BaseRepository
         if( $settings['filter']['organizer']  ) {
             $constraints[] = $query->equals("organizer",  $settings['filter']['organizer'] );
         }
+        //
+        if( $settings['filter']['organizers']  ) {
+            $organizers = GeneralUtility::trimExplode("," , $settings['filter']['organizers']  ) ;
+            if (is_array( $organizers) ) {
+                if( count($organizers) == 1 ) {
+                    $constraints[] = $query->equals("organizer",  $organizers[0] );
+                } else {
+                    foreach ( $organizers as $organizer ) {
+                        $constraintsOrg[]  = $query->equals("organizer",  $organizer );
+                    }
+                    $constraints[] = $query->logicalOr($constraintsOrg) ;
+                }
+                
+            }
+
+        }
 
         // $query->getQuerySettings()->setIgnoreEnableFields(FALSE) ;
 		if( $settings['filter']['skipEvent'] > 0 ) {
@@ -219,7 +235,7 @@ class EventRepository extends BaseRepository
         }
 
         $result = $query->execute();
-         //  $this->debugQuery($query) ;
+        // $this->debugQuery($query) ;
 
         return $result;
     }
@@ -369,7 +385,7 @@ class EventRepository extends BaseRepository
     private function getPidContraints($constraints, $settings ,  $query)
     {
 		/** @var QueryGenerator $queryGenerator */
-		$queryGenerator = GeneralUtility::makeInstance( 'TYPO3\\CMS\\Core\\Database\\QueryGenerator' );
+		$queryGenerator = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Database\QueryGenerator::class );
 		$rGetTreeList = $queryGenerator->getTreeList( $settings['storagePid'],  $settings['recursive'], 0, 1); //Will be a string
 
         $pidList = GeneralUtility::intExplode(',', $rGetTreeList, true);

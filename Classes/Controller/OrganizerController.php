@@ -185,7 +185,7 @@ class OrganizerController extends BaseController
             }
         } else{
             /** @var \JVE\JvEvents\Domain\Model\Organizer $organizer */
-            $organizer = $this->objectManager->get("JVE\\JvEvents\\Domain\\Model\\Organizer");
+            $organizer = $this->objectManager->get(\JVE\JvEvents\Domain\Model\Organizer::class);
             // ToDo find good way to handle ID Default .. maybe a pid per User, per location or other typoscript setting
             $organizer->setPid( 13 ) ;
             $organizer->setEmail( $GLOBALS['TSFE']->fe_user->user['email'] ) ;
@@ -340,7 +340,7 @@ class OrganizerController extends BaseController
 
 
         /** @var \JVE\JvEvents\Domain\Repository\FrontendUserRepository $userRepository */
-        $userRepository = $this->objectManager->get("JVE\\JvEvents\\Domain\\Repository\\FrontendUserRepository") ;
+        $userRepository = $this->objectManager->get(\JVE\JvEvents\Domain\Repository\FrontendUserRepository::class) ;
         /** @var \JVE\JvEvents\Domain\Model\FrontendUser $user */
         $user = $userRepository->findByUid($userUid) ;
 
@@ -414,7 +414,7 @@ class OrganizerController extends BaseController
         foreach ($groupsMissing as $key => $item) {
             if ( $item  ) {
                 /** @var \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserGroupRepository $userGroupRepository */
-                $userGroupRepository = $this->objectManager->get("TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserGroupRepository") ;
+                $userGroupRepository = $this->objectManager->get(\TYPO3\CMS\Extbase\Domain\Repository\FrontendUserGroupRepository::class) ;
                 $newGroup = $userGroupRepository->findByUid($key) ;
                 if( $newGroup ) {
                     if ( $msg == '' ) {

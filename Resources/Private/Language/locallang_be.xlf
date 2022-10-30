@@ -182,6 +182,9 @@
 			<trans-unit id="plugin.filter.combineTags">
 				<source>Combine Selected Tags in Filter with AND </source>
 			</trans-unit>
+			<trans-unit id="plugin.filter.Organizer">
+                <source>Show only selected organizer(s) - default empty to show all</source>
+            </trans-unit>
             <trans-unit id="plugin.filter.Organizer.HideInactive">
 				<source>Hide organizer if no Event in the future</source>
 			</trans-unit>

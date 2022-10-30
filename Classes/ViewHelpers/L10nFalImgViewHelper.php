@@ -57,17 +57,17 @@ class L10nFalImgViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractVie
 
     public function initializeArguments()
     {
-        $this->registerArgument('event', '\JVE\JvEvents\Domain\Model\Event', 'Event', true);
+        $this->registerArgument('event', \JVE\JvEvents\Domain\Model\Event::class, 'Event', true);
         $this->registerArgument('tableFieldName', 'string', ' the tableFieldName', true  );
         parent::initializeArguments() ;
     }
 
 
 	/**
-	 * @return mixed
-	 * @throws InvalidVariableException
-	 */
-	public function render() {
+  * @return mixed
+  * @throws \TYPO3Fluid\Fluid\Core\Exception
+  */
+ public function render() {
         $event = $this->arguments['event'] ;
         $tableFieldName = $this->arguments['tableFieldName'] ;
 		$allowedTableFieldNames = [
@@ -92,7 +92,7 @@ class L10nFalImgViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractVie
 
 
         /** @var \TYPO3\CMS\Core\Database\ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
+        $connectionPool = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Database\ConnectionPool::class);
 
         $connection = $connectionPool->getConnectionForTable('tx_jvchat_room') ;
 
@@ -118,7 +118,7 @@ class L10nFalImgViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractVie
                 ->fetch();
 
 			/** @var FileReference $obj */
-			$obj =  GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileReference', $fileReferenceData);
+			$obj =  GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\FileReference::class, $fileReferenceData);
 
 			// Next line is obsolete! you can not access to non Public Properties of this OBJ
 			// $r['_file'] = $obj;

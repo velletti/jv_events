@@ -41,9 +41,9 @@
                             <f:render partial="SingleField/Partial{settings.LayoutList}/FormRowValue"
                                       arguments="{property:'streetAndNr' ,  data: '{default-cntry: \'DE\' , default-city: \'München\'}' , label: '' , translationKey: '' ,  maxLength: 80 , mandatory: '0' , data-target: '#streetAndNr' , data-toggle: 'clearInput' , fa-icon: 'fas fa-times', defaultValue: 'Marienplatz 1, München, DE' }" />
 
-                            <f:render partial="SingleField/Partial{settings.LayoutList}/FormRowGeocoder"
-                                      arguments="{object: 'location' , location: location , updateFunction: 'jv_events_refreshList();' ,  buttonSetPosition: '1' , property:'lng'  ,  property2:'lat', fa-icon: 'fas fa-search-location  mr-2' , label: 'Adresse suchen' ,  maxLength: 30 , mandatory: '1' }" />
-
+                            <f:render partial="SingleField/Partial{settings.LayoutList}/FormRowOpenStreetmapGeocoderFilter7"
+                                      arguments="{settings: settings , object: 'location' , location: location , updateFunction: 'jv_events_refreshList();' ,
+                              buttonSetPosition: '1' , property:'lng'  ,  property2:'lat', fa-icon: 'fas fa-search-location  mr-2' , label: 'Adresse suchen' ,  maxLength: 30 , mandatory: '1' }" />
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -235,9 +235,9 @@
                             <f:render partial="SingleField/Partial{settings.LayoutList}/FormRowValue"
                                       arguments="{property:'streetAndNr' ,  data: '{default-cntry: \'DE\' , default-city: \'München\'}' , label: '' , translationKey: '' ,  maxLength: 80 , mandatory: '0' , data-target: '#streetAndNr' , data-toggle: 'clearInput' , fa-icon: 'fas fa-times', defaultValue: 'Marienplatz 1, München, DE' }" />
 
-                            <f:render partial="SingleField/Partial{settings.LayoutList}/FormRowGeocoder"
-                                      arguments="{object: 'location' , location: location , updateFunction: 'jv_events_refreshList();' ,  buttonSetPosition: '1' , property:'lng'  ,  property2:'lat', fa-icon: 'fas fa-search-location  mr-2' , label: 'Adresse suchen' ,  maxLength: 30 , mandatory: '1' }" />
-
+                            <f:render partial="SingleField/Partial{settings.LayoutList}/FormRowOpenStreetmapGeocoderFilter7"
+                                      arguments="{settings: settings , object: 'location' , location: location , updateFunction: 'jv_events_refreshList();' ,
+                              buttonSetPosition: '1' , property:'lng'  ,  property2:'lat', fa-icon: 'fas fa-search-location  mr-2' , label: 'Adresse suchen' ,  maxLength: 30 , mandatory: '1' }" />
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -382,6 +382,45 @@
 
     </div>
 </f:if>
+<f:if condition="{settings.ShowFilter}==4">
+
+    <div class="filter events">
+        <f:link.page id="jv-events-filter-baseUrl" class="d-none hidden" pageUid="{settings.pageIds.eventList}">-</f:link.page>
+        <form class="clearfix" onsubmit="this.preventDefault();"  action="#">
+
+            <div id="jv-events-filter-sub" class="fieldsets">
+                <div class="row">
+
+                    <div class="col-12 col-sm-6 col-lg-3 col-xl-6">
+                        <div class="input-group date col-10 p-0">
+                            <f:if condition="{settings.filter.startDate}">
+                                <f:then>
+                                    <f:variable name="startDate">{settings.filter.overruleStartDate}</f:variable>
+                                </f:then>
+                                <f:else>
+                                    <f:variable name="startDate">today</f:variable>
+                                </f:else>
+                            </f:if>
+                            <f:form.textfield
+                                    name="overruleFilter[startDate]"
+                                    value="{f:format.date(format:'d.m.Y', date: '{startDate}')}"
+                                    id="overruleFilterStartDate"
+                                    class="form-control datetimepicker clearable"
+                                    data="{date-type: 'date', todayBtn: 'linked' , locale: 'de' , todayHighlight: 'true' , autoclose: 'true' }"
+                            />
+                            <div class="input-group-addon btn btn-default">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+</f:if>
+
 <f:if condition="{settings.ShowFilter}==5">
     <div class="filter events">
 
@@ -455,8 +494,9 @@
                     <f:render partial="SingleField/Partial{settings.LayoutList}/FormRowValue"
                               arguments="{property:'streetAndNr' ,  data: '{default-cntry: \'DE\' , default-city: \'München\'}' , label: '' , translationKey: '' ,  maxLength: 80 , mandatory: '0' , data-target: '#streetAndNr' , data-toggle: 'clearInput' , fa-icon: 'fas fa-times', defaultValue: 'Marienplatz 1, München, DE' }" />
 
-                    <f:render partial="SingleField/Partial{settings.LayoutList}/FormRowGeocoder"
-                              arguments="{object: 'location' , location: location , updateFunction: 'jv_events_refreshList();' ,  buttonSetPosition: '1' , property:'lng'  ,  property2:'lat', fa-icon: 'fas fa-search-location  mr-2' , label: 'Adresse suchen' ,  maxLength: 30 , mandatory: '1' }" />
+                    <f:render partial="SingleField/Partial{settings.LayoutList}/FormRowOpenStreetmapGeocoderFilter7"
+                              arguments="{settings: settings , object: 'location' , location: location , updateFunction: 'jv_events_refreshList();' ,
+                              buttonSetPosition: '1' , property:'lng'  ,  property2:'lat', fa-icon: 'fas fa-search-location  mr-2' , label: 'Adresse suchen' ,  maxLength: 30 , mandatory: '1' }" />
 
                 </div>
                 <div class="modal-footer">
@@ -542,15 +582,15 @@
                     </f:else>
 
                 </f:if>
-
-                <fieldset class="fieldsetbox5  filtersetboxWidth_2 border-0  p-0" >
-                    <f:render partial="SingleField/Partial{settings.LayoutList}/FormRowGeocoderFilter7"
-                              arguments="{settings: settings , updateFunction: 'jv_events_refreshList();' ,
+                <f:if condition="'1'=='2'">
+                    <fieldset class="fieldsetbox5  filtersetboxWidth_2 border-0  p-0" >
+                        <f:render partial="SingleField/Partial{settings.LayoutList}/FormRowOpenStreetmapGeocoderFilter7"
+                                  arguments="{settings: settings , updateFunction: 'jv_events_refreshList();' ,
                               buttonSetPosition: '1' , property:'lng'  ,  property2:'lat', zoom: 'zoom' ,
                               maxLength: 30 , mandatory: '0' }" />
+                    </fieldset>
+                </f:if>
 
-
-                </fieldset>
 
 
                 <f:if condition="{f:count(subject: eventsFilter.categories2)} > 1">

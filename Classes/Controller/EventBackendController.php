@@ -60,8 +60,8 @@ class EventBackendController extends BaseController
 		if (!$this->request->hasArgument('event')) {
 			// ToDo redirect to error
 		}
-        $this->citrixSlot = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("JVE\\JvEvents\\Signal\\RegisterCitrixSignal");
-        $this->hubspotSlot = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("JVE\\JvEvents\\Signal\\RegisterHubspotSignal");
+        $this->citrixSlot = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\JVE\JvEvents\Signal\RegisterCitrixSignal::class);
+        $this->hubspotSlot = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\JVE\JvEvents\Signal\RegisterHubspotSignal::class);
         parent::initializeAction() ;
 	}
     /**
@@ -86,7 +86,7 @@ class EventBackendController extends BaseController
 
         }
         if ( $recursive ) {
-            $queryGenerator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\QueryGenerator');
+            $queryGenerator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\QueryGenerator::class);
             $this->settings['storagePids'] = $queryGenerator->getTreeList($pageId, 9999, 0, 1) ;
         }
          $email = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('email');
@@ -477,7 +477,7 @@ class EventBackendController extends BaseController
 	public function generateToken($action = "action")
 	{
 		/** @var \TYPO3\CMS\Core\FormProtection\FrontendFormProtection $formClass */
-		$formClass =  $this->objectManager->get( "TYPO3\\CMS\\Core\\FormProtection\\FrontendFormProtection") ;
+		$formClass =  $this->objectManager->get( \TYPO3\CMS\Core\FormProtection\FrontendFormProtection::class) ;
 
 		return $formClass->generateToken(
 			'event', $action ,   "P" . $this->settings['pageId'] . "-L" .$this->settings['sys_language_uid']
@@ -495,7 +495,7 @@ class EventBackendController extends BaseController
             return true ;
         }
         /** @var \TYPO3\CMS\Core\Database\ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
+        $connectionPool = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Database\ConnectionPool::class);
 
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_dmail_group') ;

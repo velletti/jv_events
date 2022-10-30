@@ -53,17 +53,17 @@ class SlugUtility {
     /**
      * Checks if there are other records with the same slug that are located on the same PID or in db table if pid = 0
      *
-     * @param string $slug
+     * @param string|null $slug
      * @param string $tableName
      * @param string $field
-     * @param integer $pageId
-     * @param integer $recordId
-     * @param integer $languageId
+     * @param integer|null $pageId
+     * @param integer|null $recordId
+     * @param integer|null $languageId
      * @return bool
      */
-     public static function isUnique(string $slug, string $tableName , string $field , int $pageId , int $recordId , int $languageId): bool    {
+     public static function isUnique(?string $slug, string $tableName , string $field , ?int $pageId , ?int $recordId , ?int $languageId): bool    {
         /** @var \TYPO3\CMS\Core\Database\ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
+        $connectionPool = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Database\ConnectionPool::class);
 
         /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
         $queryBuilder = $connectionPool->getQueryBuilderForTable($tableName);

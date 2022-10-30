@@ -1,0 +1,147 @@
+{namespace jve=JVE\JvEvents\ViewHelpers}
+{namespace vhs=FluidTYPO3\Vhs\ViewHelpers}
+
+
+<div class="jv-events-singleEvent col_border {f:if(condition: event.organizer.top, then:'jv_events-top-organizer')}" {jve:dataAttrib( event: event )}>
+	<div class="list-item clearfix" data-comment="list-partial1allplan-singleEventFilter7">
+
+		<div class="date clearfix">
+			<span class="day">{f:format.date(date:event.startDate, format:'d')}</span>
+			<span class="month-year"><f:render section="month" arguments="{startDate: '{event.startDate}'}"/></span>
+			<span class="year">{event.startDate -> f:format.date(format:"Y")}</span>
+			<span class="location">{event.location.city}</span>
+			<f:if condition="{event.EventCategory}">
+				<span class="category">
+					{event.EventCategory.0.title}
+				</span>
+			</f:if>
+
+		</div>
+		{f:if(condition: event.organizer.top, then:'<span class="icon icon-signet"></span>', else: '<span class="icon icon-allplan-user-filled"></span>')}
+
+
+		<div class="data">
+
+			<div class="clearfix">
+				<p class="title">
+					<f:if condition="{event.url}">
+						<f:then>
+							<f:link.typolink class="internalLink" parameter="{event.url}">
+								<strong>
+									{event.name}
+									<f:if condition="{event.organizer.name}">
+										<br />({event.organizer.name}<f:if condition="{event.organizer.subname}"> - {event.organizer.subname}</f:if>)
+									</f:if>
+								</strong>
+								<f:if condition="{event.teaser}">
+									<br>
+									{event.teaser}
+								</f:if>
+
+							</f:link.typolink>
+						</f:then>
+						<f:else>
+							<f:link.action pageUid="{settings.detailPid}" action="show" noCacheHash="true" arguments="{event : event}">
+								<strong>
+									{event.name}
+									<f:if condition="{event.organizer.name}">
+										<br />({event.organizer.name}<f:if condition="{event.organizer.subname}"> - {event.organizer.subname}</f:if>)
+									</f:if>
+								</strong>
+								<f:if condition="{event.teaser}">
+									<br>
+									{event.teaser}
+								</f:if>
+							</f:link.action>
+						</f:else>
+					</f:if>
+				</p>
+			</div>
+
+
+			<f:if condition="{event.Tags}">
+				<ul class="tags">
+					<f:if condition="{settings.filter.tagbox2headline}">
+						<f:render section="tags" arguments="{tags: event.Tags, tagGroup: settings.filter.tagbox2headline}"></f:render>
+					</f:if>
+					<f:if condition="{settings.filter.tagbox1headline}">
+						<f:render section="tags" arguments="{tags: event.Tags, tagGroup: settings.filter.tagbox1headline}"></f:render>
+					</f:if>
+					<f:if condition="{settings.filter.tagbox4headline}">
+						<f:render section="tags" arguments="{tags: event.Tags, tagGroup: settings.filter.tagbox4headline}"></f:render>
+					</f:if>
+				</ul>
+
+			</f:if>
+
+			<div class="link">
+				<p>
+					<f:if condition="{event.url}">
+						<f:then>
+							<f:link.typolink class="internalLink" parameter="{event.url}" title="{f:translate(key: 'tx_jvevents_domain_model_event.details.linktext')}">
+								<f:if condition="{event.eventButtonText}">
+									<f:then>
+										{event.eventButtonText}
+									</f:then>
+									<f:else>
+										<f:translate key="tx_jvevents_domain_model_event.details.linktext" />
+									</f:else>
+								</f:if>
+							</f:link.typolink>
+						</f:then>
+						<f:else>
+							<f:link.action class="internalLink" pageUid="{settings.detailPid}" noCacheHash="true" action="show" arguments="{event : event}"  title="{f:translate(key: 'tx_jvevents_domain_model_event.details.linktext')}">
+								<f:if condition="{event.eventButtonText}">
+									<f:then>
+										{event.eventButtonText}
+									</f:then>
+									<f:else>
+										<f:translate key="tx_jvevents_domain_model_event.details.linktext" />
+									</f:else>
+								</f:if>
+
+							</f:link.action>
+						</f:else>
+					</f:if>
+
+
+				</p>
+			</div>
+
+		</div>
+
+
+	</div>
+</div>
+
+
+
+<f:section name="tags">
+	<f:variable name="output">false</f:variable>
+	<f:for each="{tags}" as="Tag" iteration="iteration">
+		<f:if condition="{Tag.visibility} < 2">
+			<vhs:condition.string.contains haystack="{Tag.name}" needle="{tagGroup}">
+				<f:if condition="{output}">
+					<f:then>
+						<f:variable name="output">{output}, </f:variable>
+					</f:then>
+					<f:else>
+						<f:variable name="output"><strong>{tagGroup}</strong>: </f:variable>
+					</f:else>
+				</f:if>
+
+				<f:variable name="output">{output}{vhs:format.replace(content: '{Tag.name}',  substring: '{tagGroup}: ' , replacement: '' )}</f:variable>
+			</vhs:condition.string.contains>
+
+		</f:if>
+	</f:for>
+	<f:if condition="{output}">
+		<f:then>
+			<li>{output}</li>
+		</f:then>
+	</f:if>
+</f:section>
+
+<f:section name="month">
+	<f:translate key="month.{f:format.date(date:startDate, format:'m')}">{f:format.date(date:startDate, format:'m')}</f:translate>
+</f:section>

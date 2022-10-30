@@ -163,6 +163,26 @@
 						</TCEforms>
 					</settings.filter.maxEventsPerPage>
 
+					<settings.filter.organizers>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.Organizer</label>
+							<displayCond>FIELD:sDEF.switchableControllerActions:=:Event->list;Event->search</displayCond>
+							<config>
+								<type>select</type>
+								<renderType>selectMultipleSideBySide</renderType>
+								<maxitems>100</maxitems>
+								<size>5</size>
+								<autoSizeMax>10</autoSizeMax>
+								<minitems>0</minitems>
+								<selectedListStyle>width:350px</selectedListStyle>
+								<itemListStyle>width:350px</itemListStyle>
+								<foreign_table>tx_jvevents_domain_model_organizer</foreign_table>
+								<foreign_table_where> AND  (tx_jvevents_domain_model_organizer.l10n_parent = 0 AND tx_jvevents_domain_model_organizer.sys_language_uid in(-1, 0, CAST( ###REC_FIELD_sys_language_uid### as SIGNED)) ) ORDER BY tx_jvevents_domain_model_organizer.name</foreign_table_where>
+								<allowNonIdValues>1</allowNonIdValues>
+							</config>
+						</TCEforms>
+					</settings.filter.organizers>
+
 					<settings.filter.categories>
 						<TCEforms>
 							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.Categories</label>
@@ -177,7 +197,7 @@
 								<selectedListStyle>width:350px</selectedListStyle>
 								<itemListStyle>width:350px</itemListStyle>
 								<foreign_table>tx_jvevents_domain_model_category</foreign_table>
-								<foreign_table_where>AND tx_jvevents_domain_model_category.type = 0 AND (tx_jvevents_domain_model_category.sys_language_uid = 0 OR tx_jvevents_domain_model_category.l10n_parent = 0) ORDER BY tx_jvevents_domain_model_category.sorting</foreign_table_where>
+								<foreign_table_where> AND tx_jvevents_domain_model_category.type = 0 AND (tx_jvevents_domain_model_category.l10n_parent = 0 AND tx_jvevents_domain_model_category.sys_language_uid in(-1, 0, CAST( ###REC_FIELD_sys_language_uid### as SIGNED)) ) ORDER BY tx_jvevents_domain_model_category.sorting</foreign_table_where>
 								<allowNonIdValues>1</allowNonIdValues>
 							</config>
 						</TCEforms>
@@ -212,7 +232,7 @@
 								<selectedListStyle>width:350px</selectedListStyle>
 								<itemListStyle>width:350px</itemListStyle>
 								<foreign_table>tx_jvevents_domain_model_tag</foreign_table>
-								<foreign_table_where> AND (tx_jvevents_domain_model_tag.sys_language_uid = 0 OR tx_jvevents_domain_model_tag.l10n_parent = 0) AND tx_jvevents_domain_model_tag.type=0 ORDER BY tx_jvevents_domain_model_tag.name</foreign_table_where>
+								<foreign_table_where> AND tx_jvevents_domain_model_tag.type = 0 AND (tx_jvevents_domain_model_tag.l10n_parent = 0 AND tx_jvevents_domain_model_tag.sys_language_uid in(-1, 0, CAST( ###REC_FIELD_sys_language_uid### as SIGNED)) ) ORDER BY tx_jvevents_domain_model_tag.name</foreign_table_where>
 								<allowNonIdValues>1</allowNonIdValues>
 							</config>
 						</TCEforms>
@@ -233,7 +253,7 @@
 								<selectedListStyle>width:350px</selectedListStyle>
 								<itemListStyle>width:350px</itemListStyle>
 								<foreign_table>tx_jvevents_domain_model_tag</foreign_table>
-								<foreign_table_where> AND (tx_jvevents_domain_model_tag.sys_language_uid = 0 OR tx_jvevents_domain_model_tag.l10n_parent = 0) AND tx_jvevents_domain_model_tag.type=0 ORDER BY tx_jvevents_domain_model_tag.name</foreign_table_where>
+								<foreign_table_where>  AND tx_jvevents_domain_model_tag.type = 0 AND (tx_jvevents_domain_model_tag.l10n_parent = 0 AND tx_jvevents_domain_model_tag.sys_language_uid in(-1, 0, CAST( ###REC_FIELD_sys_language_uid### as SIGNED)) ) ORDER BY tx_jvevents_domain_model_tag.name</foreign_table_where>
 								<allowNonIdValues>1</allowNonIdValues>
 							</config>
 						</TCEforms>
@@ -293,6 +313,27 @@
 						</TCEforms>
 					</settings.filter.topEvents>
 
+					<settings.filter.noEventsFound>
+						<TCEforms>
+							<exclude>0</exclude>
+							<label>Text Element that is shown at the End of the list. Usefull if no events found</label>
+							<config>
+								<type>group</type>
+								<internal_type>db</internal_type>
+								<allowed>tt_content</allowed>
+								<size>1</size>
+								<maxitems>1</maxitems>
+								<minitems>0</minitems>
+								<show_thumbs>1</show_thumbs>
+								<wizards>
+									<suggest>
+										<type>suggest</type>
+									</suggest>
+								</wizards>
+							</config>
+						</TCEforms>
+					</settings.filter.noEventsFound>
+
 
 
 				</el>
@@ -348,6 +389,10 @@
 									<numIndex index="7" type="array">
 										<numIndex index="0">LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.ShowFilter.AdvancedFilterOnLeftSide</numIndex>
 										<numIndex index="1">7</numIndex>
+									</numIndex>
+									<numIndex index="8" type="array">
+										<numIndex index="0">No Filter, starting from 2022</numIndex>
+										<numIndex index="1">8</numIndex>
 									</numIndex>
 								</items>
 							</config>
@@ -451,7 +496,7 @@
 								<selectedListStyle>width:350px</selectedListStyle>
 								<itemListStyle>width:350px</itemListStyle>
 								<foreign_table>tx_jvevents_domain_model_tag</foreign_table>
-								<foreign_table_where> AND (tx_jvevents_domain_model_tag.sys_language_uid = 0 OR tx_jvevents_domain_model_tag.l10n_parent = 0) AND tx_jvevents_domain_model_tag.type=0 ORDER BY tx_jvevents_domain_model_tag.name</foreign_table_where>
+								<foreign_table_where>  AND tx_jvevents_domain_model_tag.type = 0 AND (tx_jvevents_domain_model_tag.l10n_parent = 0 AND tx_jvevents_domain_model_tag.sys_language_uid in(-1, 0, CAST( ###REC_FIELD_sys_language_uid### as SIGNED)) ) ORDER BY tx_jvevents_domain_model_tag.name</foreign_table_where>
 								<allowNonIdValues>1</allowNonIdValues>
 							</config>
 						</TCEforms>
@@ -523,7 +568,8 @@
 								<selectedListStyle>width:350px</selectedListStyle>
 								<itemListStyle>width:350px</itemListStyle>
 								<foreign_table>tx_jvevents_domain_model_tag</foreign_table>
-								<foreign_table_where> AND (tx_jvevents_domain_model_tag.sys_language_uid = 0 OR tx_jvevents_domain_model_tag.l10n_parent = 0) AND tx_jvevents_domain_model_tag.type=0 ORDER BY tx_jvevents_domain_model_tag.name</foreign_table_where>
+								<foreign_table_where>  AND tx_jvevents_domain_model_tag.type = 0 AND (tx_jvevents_domain_model_tag.l10n_parent = 0 AND tx_jvevents_domain_model_tag.sys_language_uid in(-1, 0, CAST( ###REC_FIELD_sys_language_uid### as SIGNED)) ) ORDER BY tx_jvevents_domain_model_tag.name</foreign_table_where>
+
 								<allowNonIdValues>1</allowNonIdValues>
 							</config>
 						</TCEforms>
@@ -595,7 +641,7 @@
 								<selectedListStyle>width:350px</selectedListStyle>
 								<itemListStyle>width:350px</itemListStyle>
 								<foreign_table>tx_jvevents_domain_model_tag</foreign_table>
-								<foreign_table_where> AND (tx_jvevents_domain_model_tag.sys_language_uid = 0 OR tx_jvevents_domain_model_tag.l10n_parent = 0) AND tx_jvevents_domain_model_tag.type=0 ORDER BY tx_jvevents_domain_model_tag.name</foreign_table_where>
+								<foreign_table_where>  AND tx_jvevents_domain_model_tag.type = 0 AND (tx_jvevents_domain_model_tag.l10n_parent = 0 AND tx_jvevents_domain_model_tag.sys_language_uid in(-1, 0, CAST( ###REC_FIELD_sys_language_uid### as SIGNED)) ) ORDER BY tx_jvevents_domain_model_tag.name</foreign_table_where>
 								<allowNonIdValues>1</allowNonIdValues>
 							</config>
 						</TCEforms>
@@ -683,7 +729,7 @@
 								<selectedListStyle>width:350px</selectedListStyle>
 								<itemListStyle>width:350px</itemListStyle>
 								<foreign_table>tx_jvevents_domain_model_tag</foreign_table>
-								<foreign_table_where> AND (tx_jvevents_domain_model_tag.sys_language_uid = 0 OR tx_jvevents_domain_model_tag.l10n_parent = 0) AND tx_jvevents_domain_model_tag.type=0 ORDER BY tx_jvevents_domain_model_tag.name</foreign_table_where>
+								<foreign_table_where>  AND tx_jvevents_domain_model_tag.type = 0 AND (tx_jvevents_domain_model_tag.l10n_parent = 0 AND tx_jvevents_domain_model_tag.sys_language_uid in(-1, 0, CAST( ###REC_FIELD_sys_language_uid### as SIGNED)) ) ORDER BY tx_jvevents_domain_model_tag.name</foreign_table_where>
 								<allowNonIdValues>1</allowNonIdValues>
 							</config>
 						</TCEforms>
@@ -853,7 +899,7 @@
 								<selectedListStyle>width:350px</selectedListStyle>
 								<itemListStyle>width:350px</itemListStyle>
 								<foreign_table>tx_jvevents_domain_model_tag</foreign_table>
-								<foreign_table_where> AND (tx_jvevents_domain_model_tag.sys_language_uid = 0 OR tx_jvevents_domain_model_tag.l10n_parent = 0) AND tx_jvevents_domain_model_tag.type=2 ORDER BY tx_jvevents_domain_model_tag.name</foreign_table_where>
+								<foreign_table_where>  AND tx_jvevents_domain_model_tag.type = 2 AND (tx_jvevents_domain_model_tag.l10n_parent = 0 AND tx_jvevents_domain_model_tag.sys_language_uid in(-1, 0, CAST( ###REC_FIELD_sys_language_uid### as SIGNED)) ) ORDER BY tx_jvevents_domain_model_tag.name</foreign_table_where>
 								<allowNonIdValues>1</allowNonIdValues>
 							</config>
 						</TCEforms>
@@ -884,7 +930,7 @@
 								<selectedListStyle>width:350px</selectedListStyle>
 								<itemListStyle>width:350px</itemListStyle>
 								<foreign_table>tx_jvevents_domain_model_category</foreign_table>
-								<foreign_table_where> AND (tx_jvevents_domain_model_category.sys_language_uid = 0 OR tx_jvevents_domain_model_category.l10n_parent = 0) AND tx_jvevents_domain_model_category.type=1 ORDER BY tx_jvevents_domain_model_category.title</foreign_table_where>
+								<foreign_table_where>  AND tx_jvevents_domain_model_category.type = 1 AND (tx_jvevents_domain_model_category.l10n_parent = 0 AND tx_jvevents_domain_model_category.sys_language_uid in(-1, 0, CAST( ###REC_FIELD_sys_language_uid### as SIGNED)) ) ORDER BY tx_jvevents_domain_model_category.title</foreign_table_where>
 								<allowNonIdValues>1</allowNonIdValues>
 							</config>
 						</TCEforms>

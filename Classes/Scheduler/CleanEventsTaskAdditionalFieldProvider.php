@@ -26,10 +26,8 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
  * A task that should be run regularly that deletes
  * datasets flagged as "deleted" from the DB.
  */
-class CleanEventsTaskAdditionalFieldProvider extends  AbstractAdditionalFieldProvider implements AdditionalFieldProviderInterface
+class CleanEventsTaskAdditionalFieldProvider extends \TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider
 {
-
-
     /**
      * Gets additional fields to render in the form to add/edit a task
      *
@@ -62,7 +60,6 @@ class CleanEventsTaskAdditionalFieldProvider extends  AbstractAdditionalFieldPro
 
         return $additionalFields;
     }
-
     /**
      * @param array $additionalFields
      * @param string $name
@@ -96,7 +93,7 @@ class CleanEventsTaskAdditionalFieldProvider extends  AbstractAdditionalFieldPro
         $additionalFields['Indexer'. $name] = $formField ;
         return $additionalFields ;
     }
-     /**
+    /**
      * Validates the additional fields' values
      *
      * @param array $submittedData An array containing the data submitted by the add/edit task form
@@ -107,8 +104,6 @@ class CleanEventsTaskAdditionalFieldProvider extends  AbstractAdditionalFieldPro
     {
         return $this->validateAdditionalFieldStoragePid($submittedData['IndexerStoragePid']);
     }
-
-
     /**
      * Validates the input of period
      *
@@ -124,7 +119,7 @@ class CleanEventsTaskAdditionalFieldProvider extends  AbstractAdditionalFieldPro
             $this->addMessage(
                 //$this->getLanguageService()->sL('LLL:EXT:allplan_ke_search_extended/Resources/Private/Language/locallang_tasks.xlf:indexerTaskErrorStoragePid', true),
                 'Error Checking storagePid' ,
-                FlashMessage::ERROR
+                \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR
 
             );
             $validStoragePid = false;
@@ -132,7 +127,6 @@ class CleanEventsTaskAdditionalFieldProvider extends  AbstractAdditionalFieldPro
 
         return $validStoragePid;
     }
-
     /**
      * Takes care of saving the additional fields' values in the task's object
      *
@@ -159,8 +153,6 @@ class CleanEventsTaskAdditionalFieldProvider extends  AbstractAdditionalFieldPro
 
 
     }
-
-
     /**
      * @return array|LanguageService
      */
@@ -182,8 +174,4 @@ class CleanEventsTaskAdditionalFieldProvider extends  AbstractAdditionalFieldPro
         return $lang ;
 
     }
-
-
-
-
 }

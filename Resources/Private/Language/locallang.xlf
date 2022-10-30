@@ -5,6 +5,43 @@
 			<generator>LFEditor</generator>
 		</header>
 		<body>
+            <trans-unit id="month.01">
+                <source>January</source>
+            </trans-unit>
+            <trans-unit id="month.02">
+                <source>February</source>
+            </trans-unit>
+            <trans-unit id="month.03">
+                <source>March</source>
+            </trans-unit>
+            <trans-unit id="month.04">
+                <source>April</source>
+            </trans-unit>
+            <trans-unit id="month.05">
+                <source>May</source>
+            </trans-unit>
+            <trans-unit id="month.06">
+                <source>June</source>
+            </trans-unit>
+            <trans-unit id="month.07">
+                <source>July</source>
+            </trans-unit>
+            <trans-unit id="month.08">
+                <source>August</source>
+            </trans-unit>
+            <trans-unit id="month.09">
+                <source>September</source>
+            </trans-unit>
+            <trans-unit id="month.10">
+                <source>October</source>
+            </trans-unit>
+            <trans-unit id="month.11">
+                <source>November</source>
+            </trans-unit>
+            <trans-unit id="month.12">
+                <source>December</source>
+            </trans-unit>
+
             <trans-unit id="error.email.noMxRecord">
                 <source>Please verify your email address. Is the domain '%1' correct?</source>
             </trans-unit>
@@ -23,6 +60,10 @@
             <trans-unit id="jv_events_model_event.inclusiveVat">
                 <source>incl. VAT</source>
             </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_event.create_event">
+                <source>Create Event</source>
+            </trans-unit>
+
 
             <trans-unit id="jv_events_model_location.geocoder.title">
                 <source>Geocoder (Please enter the address data first!)</source>
@@ -81,6 +122,9 @@
             </trans-unit>
             <trans-unit id="register_gender_male">
                 <source>Mr.</source>
+            </trans-unit>
+            <trans-unit id="register_gender_diverse">
+                <source>Div.</source>
             </trans-unit>
             <trans-unit id="register_gender_female_follower">
                 <source>Follower (Role woman)</source>

@@ -14,7 +14,7 @@
         <i class="fab  fa-twitter"></i>
     </a>
     <span class="d-sm-none ">
-        <a style="font-size: 1.5em; color: #25D366;" class="m-2 btn btn-outline-success" href="whatsapp://send?text={reason -> f:format.urlencode()}%20{date}:%20{event.name}%20{uri -> f:format.urlencode()}">
+        <a style="font-size: 1.5em; color: #25D366;" class="m-2 btn btn-outline-success" href="whatsapp://send?text={reason -> f:format.urlencode()}%20{date}:%20{event.name -> f:format.urlencode()}%20{uri -> f:format.urlencode()}">
             <i class="fab fa-whatsapp"></i>
         </a>
         <a class="m-2 btn btn-outline-secondary" href="threema://compose?text={reason -> f:format.urlencode()}%20{date}:%20{event.name -> f:format.urlencode()}%20{uri -> f:format.urlencode()}">

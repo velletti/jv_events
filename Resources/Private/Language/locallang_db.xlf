@@ -152,6 +152,9 @@
             <trans-unit id="tx_jvevents_domain_model_event.name">
                 <source>Name</source>
             </trans-unit>
+             <trans-unit id="tx_jvevents_domain_model_event.event_button_text">
+                <source>Overwrite the default CTA (To the event)</source>
+            </trans-unit>
             <trans-unit id="tx_jvevents_domain_model_event.need_to_confirm">
                 <source>Need To Confirm</source>
             </trans-unit>

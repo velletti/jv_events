@@ -5,6 +5,55 @@
 			<generator>LFEditor</generator>
 		</header>
 		<body>
+			<trans-unit id="month.01">
+				<source>January</source>
+				<target>Enero</target>
+			</trans-unit>
+			<trans-unit id="month.02">
+				<source>February</source>
+				<target>Febrero</target>
+			</trans-unit>
+			<trans-unit id="month.03">
+				<source>March</source>
+				<target>Marzo</target>
+			</trans-unit>
+			<trans-unit id="month.04">
+				<source>April</source>
+				<target>Abril</target>
+			</trans-unit>
+			<trans-unit id="month.05">
+				<source>May</source>
+				<target>Mayo</target>
+			</trans-unit>
+			<trans-unit id="month.06">
+				<source>June</source>
+				<target>Junio</target>
+			</trans-unit>
+			<trans-unit id="month.07">
+				<source>July</source>
+				<target>Julio</target>
+			</trans-unit>
+			<trans-unit id="month.08">
+				<source>August</source>
+				<target>Agosto</target>
+			</trans-unit>
+			<trans-unit id="month.09">
+				<source>September</source>
+				<target>Septiembre</target>
+			</trans-unit>
+			<trans-unit id="month.10">
+				<source>October</source>
+				<target>Octubre</target>
+			</trans-unit>
+			<trans-unit id="month.11">
+				<source>November</source>
+				<target>Noviembre</target>
+			</trans-unit>
+			<trans-unit id="month.12">
+				<source>December</source>
+				<target>Diciembre</target>
+			</trans-unit>
+
 			<trans-unit id="jv_events_model_event.currency.label">
 				<source>Currency</source>
 				<target>Moneda</target>
@@ -72,6 +121,10 @@
 			<source>Mr.</source>
 			<target>Sr.</target>
 		</trans-unit>
+        <trans-unit id="register_gender_diverse" approved="yes">
+            <source>Div.</source>
+            <target>Div.</target>
+        </trans-unit>
 		<trans-unit id="register_head_company_data" approved="yes">
 			<source>Company Data / Invoice Address</source>
 			<target>Empresa / Dirección</target>

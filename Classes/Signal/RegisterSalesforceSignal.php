@@ -244,7 +244,7 @@ class RegisterSalesforceSignal {
             Die ;
         }
         /** @var \TYPO3\CMS\Core\Mail\MailMessage $Typo3_v6mail */
-        $Typo3_v6mail = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
+        $Typo3_v6mail = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
         $Typo3_v6mail->setFrom( array( 'www@systems.allplan.com' => $_SERVER['SERVER_NAME'] ) );
         $Typo3_v6mail->setReturnPath( 'www@systems.allplan.com' );
 
@@ -261,15 +261,7 @@ class RegisterSalesforceSignal {
             $Typo3_v6mail->setSubject( "JV Events Registration Debug - " . $event->getStartDate()->format("d.m.Y") . " - " . $event->getName()  );
         }
 
-
-        /** @var Typo3Version $tt */
-        $tt = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Information\Typo3Version::class ) ;
-
-        if( $tt->getMajorVersion()  < 10 ) {
-            $Typo3_v6mail->setBody(nl2br( $debugmail ) , 'text/html'  );
-        } else {
-            $Typo3_v6mail->html( nl2br( $debugmail )  , 'utf-8'  );
-        }
+        $Typo3_v6mail->html( nl2br( $debugmail )  , 'utf-8'  );
 
         $Typo3_v6mail->send();
 
@@ -292,7 +284,7 @@ class RegisterSalesforceSignal {
         ) ;
 
         /** @var \TYPO3\CMS\Core\Database\ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
+        $connectionPool = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Database\ConnectionPool::class);
 
         /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
         $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_log') ;
@@ -312,9 +304,12 @@ class RegisterSalesforceSignal {
         $jsonArray['last_name'] = trim($registrant->getLastName()) ;
 
         // ToDo Maybe need to create a kind fo mapping including translation ..
-        $jsonArray['salutation'] = "Mrs." ;
+        $jsonArray['salutation'] = "" ;
         if( $registrant->getGender() == 1) {
             $jsonArray['salutation'] = "Mr." ;
+        }
+        if( $registrant->getGender() == 2) {
+            $jsonArray['salutation'] = "Mrs." ;
         }
 
         $jsonArray['company'] = trim($registrant->getCompany()) ;

@@ -41,20 +41,45 @@ class Ajax implements MiddlewareInterface
                 ->withStatus("301");
         }
         // FIx Broken URL : https://tangov10.ddev.site/de/eventlist.html?tx_jvevents_events  but no values
-        if( is_array($_gp) && key_exists("tx_jvevents_events" ,$_gp ) &&
-            (
-                ( array_key_exists( "controller" , $_gp['tx_jvevents_events'] ) && strpos( $_gp['tx_jvevents_events']['controller']  , "'" ) > 0  )
-            ||
-                ( array_key_exists( "action" , $_gp['tx_jvevents_events'] ) && strpos( $_gp['tx_jvevents_events']['action']  , "'" ) > 0  )
-            ||
-                ( array_key_exists( "event" , $_gp['tx_jvevents_events'] ) && strpos( $_gp['tx_jvevents_events']['event']  , "'" ) > 0  )
-            )
-        )
-        {
-            return (new Response())
-                ->withHeader('Location', $request->getUri()->getScheme() . "://" .$request->getUri()->getHost() )
-                ->withStatus("301");
+        if( is_array($_gp) && key_exists("tx_jvevents_events" ,$_gp )) {
+
+            $params = [ "controller" , "action" , "event" , "registrant" , "organizer" , "location"] ;
+            foreach( $params as $param ) {
+                if ( array_key_exists( $param , $_gp['tx_jvevents_events'] ) )
+                {
+                    if( $this->hasBadValue( $_gp['tx_jvevents_events'][$param]) ) {
+                        return (new Response())
+                            ->withHeader('Location', $request->getUri()->getScheme() . "://" .$request->getUri()->getHost() )
+                            ->withStatus("301");
+                    }
+
+                }
+            }
+
+
+            //  registrant Controller: redirect if Event ID missing or FIx if controller Name is written in Lowercase
+            if(  array_key_exists( "controller" , $_gp['tx_jvevents_events'] ) && strtolower( $_gp['tx_jvevents_events']['controller'] )  == "registrant" ) {
+                $action =  array_key_exists( "action" , $_gp['tx_jvevents_events'] ) ? $_gp['tx_jvevents_events']['action'] : "" ;
+                if ( in_array($action , ['create' , 'list' , 'checkQrcode']) && (int)$_gp['tx_jvevents_events']['event'] < 0 ) {
+                    return (new Response())
+                        ->withHeader('Location', $request->getUri()->getScheme() . "://" .$request->getUri()->getHost() )
+                        ->withStatus("301");
+                }
+                if(   $_gp['tx_jvevents_events']['controller']   == "registrant") {
+                    $_gp['tx_jvevents_events']['controller'] = ucfirst( $_gp['tx_jvevents_events']['controller'] ) ;
+                    $loc =  $request->getUri()->getScheme() . "://" . $request->getUri()->getHost() . $request->getUri()->getPath() ."?" . http_build_query( $_gp ) ;
+                    return (new Response())
+                        ->withHeader('Location', $loc )
+                        ->withStatus("301");
+                }
+            }
+
         }
+
+
+
+
+
 
         if( is_array($_gp) && key_exists("tx_sfregister_create" ,$_gp ) && key_exists("action" ,$_gp['tx_sfregister_create']  )
             && $_gp['tx_sfregister_create']['action'] == "save" && !$request->getParsedBody() ) {
@@ -68,9 +93,10 @@ class Ajax implements MiddlewareInterface
 
             $function = strtolower( trim($_gp['tx_jvevents_ajax']['action'])) ;
             if( $function != "activateXX"  ) {
+
                 $GLOBALS['TSFE']->set_no_cache();
                     /** @var AjaxUtility $ajaxUtility */
-                $ajaxUtility = GeneralUtility::makeInstance('JVE\JvEvents\Utility\AjaxUtility') ;
+                $ajaxUtility = GeneralUtility::makeInstance(\JVE\JvEvents\Utility\AjaxUtility::class) ;
 
                 // ToDo generate Output as before in ajax Controller here in Middleware with CORE features.
                 $controller = $ajaxUtility->initController($_gp , $function ) ;
@@ -109,6 +135,11 @@ class Ajax implements MiddlewareInterface
                     case 'eventunlink' :
                         $controller->eventUnlinkAction($_gp["tx_jvevents_ajax"]) ;
                         break;
+                    case 'eventchangelocid' :
+
+                        $controller->eventChangeLocIdAction($_gp["tx_jvevents_ajax"]) ;
+                        break;
+
                     default:
                         $controller->eventMenuAction($_gp["tx_jvevents_ajax"]) ;
                         break;
@@ -125,6 +156,19 @@ class Ajax implements MiddlewareInterface
         return $handler->handle($request);
     }
 
+    /**
+     * check if value contain one of unwanted sign that fills log with tried  SQL injections
+     *
+     * @param string $value
+     * @return bool
+     */
+    public function hasBadValue( string $value ) {
+        $badValues= [ "'" , ";" , "("] ;
+        foreach( $badValues as $badValue) {
+            if( strpos( $value , $badValue ) > 0  ) { return true ;}
+        }
+        return false ;
+    }
 
 
 

@@ -132,6 +132,167 @@ class GeocoderUtility {
 			 */
 			function initGeoCoderMap() {
 			
+			   var styleArray = [
+                    {
+                        "elementType": "geometry",
+                        "stylers": [
+                            {
+                                "color": "#f5f5f5"
+                            }
+                        ]
+                    },
+                    {
+                        "elementType": "labels.icon",
+                        "stylers": [
+                            {
+                                "visibility": "off"
+                            }
+                        ]
+                    },
+                    {
+                        "elementType": "labels.text.fill",
+                        "stylers": [
+                            {
+                                "color": "#616161"
+                            }
+                        ]
+                    },
+                    {
+                        "elementType": "labels.text.stroke",
+                        "stylers": [
+                            {
+                                "color": "#f5f5f5"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "administrative.land_parcel",
+                        "elementType": "labels.text.fill",
+                        "stylers": [
+                            {
+                                "color": "#bdbdbd"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "poi",
+                        "elementType": "geometry",
+                        "stylers": [
+                            {
+                                "color": "#eeeeee"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "poi",
+                        "elementType": "labels.text.fill",
+                        "stylers": [
+                            {
+                                "color": "#757575"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "poi.park",
+                        "elementType": "geometry",
+                        "stylers": [
+                            {
+                                "color": "#e5e5e5"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "poi.park",
+                        "elementType": "labels.text.fill",
+                        "stylers": [
+                            {
+                                "color": "#9e9e9e"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "road",
+                        "elementType": "geometry",
+                        "stylers": [
+                            {
+                                "color": "#ffffff"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "road.arterial",
+                        "elementType": "labels.text.fill",
+                        "stylers": [
+                            {
+                                "color": "#757575"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "road.highway",
+                        "elementType": "geometry",
+                        "stylers": [
+                            {
+                                "color": "#dadada"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "road.highway",
+                        "elementType": "labels.text.fill",
+                        "stylers": [
+                            {
+                                "color": "#616161"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "road.local",
+                        "elementType": "labels.text.fill",
+                        "stylers": [
+                            {
+                                "color": "#9e9e9e"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "transit.line",
+                        "elementType": "geometry",
+                        "stylers": [
+                            {
+                                "color": "#e5e5e5"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "transit.station",
+                        "elementType": "geometry",
+                        "stylers": [
+                            {
+                                "color": "#eeeeee"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "water",
+                        "elementType": "geometry",
+                        "stylers": [
+                            {
+                                "color": "#c9c9c9"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "water",
+                        "elementType": "labels.text.fill",
+                        "stylers": [
+                            {
+                                "color": "#9e9e9e"
+                            }
+                        ]
+                    }
+                ];
+			
 				// Set the center of the map (value not important, because we bound the markers to set the center of the map)
 				var myLatLng = {lat: 11.4712, lng: 48.1148};
 				 if (typeof initZoom !== "undefined") {
@@ -140,7 +301,8 @@ class GeocoderUtility {
                         streetViewControl: false,
                         mapTypeControl: false,
                         draggableCursor: "default" ,
-                        center: myLatLng
+                        center: myLatLng,
+		                styles: styleArray
                     });
 				} else {
                     // Create the map
@@ -149,7 +311,8 @@ class GeocoderUtility {
                         streetViewControl: false,
                         mapTypeControl: false,
                         draggableCursor: "default" ,
-                        center: myLatLng
+                        center: myLatLng,
+		                 styles: styleArray
                     });
 				}
 				map.addListener( \'zoom_changed\', function() {
@@ -433,9 +596,11 @@ class GeocoderUtility {
 				' . $jQueryName . '("#geosearcherrormessage div").text("' . $this->getLanguageService()->getLL('geocoding.error') . ': " + message);
 			}
 			function updateMarker(address) {
-                address = address + ",DE" ;
+			    if( ! address.includes(",")) {
+                   address = address + ",DE" ;
+                }
                 if ( map && map.getZoom() < 10 ) {
-                    initZoom = 10 ;
+                    initZoom = 9 ;
                 } else {
                    initZoom = map.getZoom() ;
                 }

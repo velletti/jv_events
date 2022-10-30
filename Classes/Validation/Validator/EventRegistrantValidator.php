@@ -26,7 +26,7 @@ class EventRegistrantValidator extends \JVE\JvEvents\Validation\Validator\BaseVa
 		if (! $event->isIsRegistrationPossible()  ) {
 
 
-            $error = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error',
+            $error = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Error\Error::class,
                 $this->translate('register.deadline_expired_text') , time());
             $this->result->forProperty('uid')->addError($error);
 
@@ -35,7 +35,7 @@ class EventRegistrantValidator extends \JVE\JvEvents\Validation\Validator\BaseVa
 
 		// ######### darf man sich überhaupt noch anmelden .. ggf. ist inzwischen der letzte Platz weg
 		if ( $isValid && $event->isIsNoFreeSeats() ) {
-            $error = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error',
+            $error = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Error\Error::class,
                 $this->translate('register.overbooked_text') , time());
             $this->result->forProperty('uid')->addError($error);
 

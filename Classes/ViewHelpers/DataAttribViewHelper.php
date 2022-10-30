@@ -47,7 +47,7 @@ class DataAttribViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractVie
     protected $escapeChildren = false;
 
 	public function initializeArguments() {
-		$this->registerArgument('event', '\JVE\JvEvents\Domain\Model\Event', 'Single Event', false);
+		$this->registerArgument('event', \JVE\JvEvents\Domain\Model\Event::class, 'Single Event', false);
         parent::initializeArguments() ;
 	}
 
@@ -77,12 +77,15 @@ class DataAttribViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractVie
         ;
 
 	    $locCity = '' ;
+        $locAddress = '' ;
         if( is_object ( $event->getLocation() )) {
             $locCity  = urlencode( trim( $event->getLocation()->getCity() )) ;
+            $locAddress  = urlencode( trim( $event->getLocation()->getZip() . " " . $event->getLocation()->getCity() . "," . $event->getLocation()->getStreetAndNr() . "," . $event->getLocation()->getCountry())) ;
             $result .= 'data-longitude="' . $event->getLocation()->getLng() . '" ' ;
             $result .= 'data-latitude="' . $event->getLocation()->getLat() . '" ' ;
         }
         $result .= 'data-cityuid="' . strip_tags($locCity ) . '" ' ;
+        $result .= 'data-address="' . strip_tags($locAddress ) . '" ' ;
         // data-catuids data-taguids
         $catUids = '' ;
         if( is_object($event->getEventCategory() )  ) {

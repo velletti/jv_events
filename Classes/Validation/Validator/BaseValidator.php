@@ -76,8 +76,8 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
 
 	}
 	public function getSettings() {
-        $objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-        $configurationManager = $objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
+        $objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+        $configurationManager = $objectManager->get(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
         return  $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT );
 
     }
@@ -146,7 +146,7 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
 		 */
 
 		/** @var \TYPO3\CMS\Extbase\Validation\Validator\StringLengthValidator $validator */
-		$validator = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Validation\\Validator\\StringLengthValidator' );
+		$validator = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Validation\Validator\StringLengthValidator::class );
 		$validator->acceptsEmptyValues = FALSE ;
 
 		// Settings for min length check
@@ -160,7 +160,7 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
                     $errorMessage = $this->translate($customErrorMessage);
                 }
 
-                $error = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error',$errorMessage, time());
+                $error = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Error\Error::class,$errorMessage, time());
                 $this->result->forProperty($propertyName)->addError($error);
 
                 $stringLengthIsValid = false;
@@ -183,7 +183,7 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
                     $errorMessage = $this->translate($customErrorMessage);
                 }
 
-                $error = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error',$errorMessage, time());
+                $error = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Error\Error::class,$errorMessage, time());
                 $this->result->forProperty($propertyName)->addError($error);
 
                 $stringLengthIsValid = false;
@@ -215,14 +215,14 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
         /**
          * @var \TYPO3\CMS\Extbase\Error\Error $error
          */
-        $error = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error',  $errorMessage , time());
+        $error = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Error\Error::class,  $errorMessage , time());
 
         if(! filter_var($propertyValue, FILTER_VALIDATE_URL) || ! substr( strtolower($propertyValue), 0 , 4) == "http" ) {
             $isValid = false;
             /**
              * @var \TYPO3\CMS\Extbase\Error\Error $error
              */
-            $error = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error',  $errorMessage , time());
+            $error = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Error\Error::class,  $errorMessage , time());
 
             $this->result->forProperty($propertyName)->addError($error);
         } else {
@@ -232,7 +232,7 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
                  * @var \TYPO3\CMS\Extbase\Error\Error $error
                  */
                 $errorMessage = "URL is not reachable. Shure it is Correct ? if it is correct, your server is configured very strictly" ;
-                $error = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error',  $errorMessage , time());
+                $error = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Error\Error::class,  $errorMessage , time());
 
                 $this->result->forProperty($propertyName)->addError($error);
                 $isValid = false;
@@ -255,14 +255,14 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
 
 
         /** @var \TYPO3\CMS\Extbase\Validation\Validator\EmailAddressValidator $emailAddressValidator */
-        $emailAddressValidator = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Validation\\Validator\\EmailAddressValidator');
+        $emailAddressValidator = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Validation\Validator\EmailAddressValidator::class);
         $emailAddressValidator->acceptsEmptyValues = false ;
 
         if ( !$errorMessage ) {
             $errorMessage =  \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate( "validator.emailaddress.notvalid" , "extbase") ;
         }
         /** @var \TYPO3\CMS\Extbase\Error\Error $error */
-        $error = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error',  $errorMessage , time());
+        $error = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Error\Error::class,  $errorMessage , time());
 
 
 
@@ -289,7 +289,7 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
 
 		if (is_string($value) && preg_match('/^[a-z0-9_]*$/i', $value)) return $default;
         /** @var \TYPO3\CMS\Extbase\Error\Error $error */
-		$error = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error','The given subject was not a valid alphanumeric string.', time());
+		$error = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Error\Error::class,'The given subject was not a valid alphanumeric string.', time());
 		$this->result->forProperty($propertyName)->addError($error);
 
 		return FALSE;
@@ -311,7 +311,7 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
 
         if (intval($value) > 0 ) return $default;
         /** @var \TYPO3\CMS\Extbase\Error\Error $error */
-        $error = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error',$errorString , time());
+        $error = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Error\Error::class,$errorString , time());
         $this->result->forProperty($propertyName)->addError($error);
 
         return FALSE;
@@ -330,7 +330,7 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
         if( strip_tags( $value) != $value ) {
             if( $property ) {
                 /** @var \TYPO3\CMS\Extbase\Error\Error $error */
-                $error = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error', $this->translate('error.msg_error_html_code_not_allowed'), time());
+                $error = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Error\Error::class, $this->translate('error.msg_error_html_code_not_allowed'), time());
                 $this->result->forProperty($property)->addError($error);
             }
 
@@ -355,7 +355,7 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
         if (is_string($value) && preg_match('/^[0-2][0-9]:[0-5][0-9]$/i', $value)) return $isValid;
 
         /** @var \TYPO3\CMS\Extbase\Error\Error $error */
-        $error = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error','The given Time \'' . $value . '\' ('. $propertyName .') was not a valid Time value like hh:mm.', time());
+        $error = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Error\Error::class,'The given Time \'' . $value . '\' ('. $propertyName .') was not a valid Time value like hh:mm.', time());
         $this->result->forProperty($propertyName)->addError($error);
 
         return FALSE;
@@ -380,7 +380,7 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
             if (is_string($value) && preg_match('/^[0-3][0-9].[0-1][0-9].[1-2][0-9]{3}$/i', $value)) return $isValid;
         }
         /** @var \TYPO3\CMS\Extbase\Error\Error $error */
-        $error = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error','The given value \'' . $value .'\' was not a valid Date value like dd.mm.yyyy .', time());
+        $error = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Error\Error::class,'The given value \'' . $value .'\' was not a valid Date value like dd.mm.yyyy .', time());
         $this->result->forProperty($propertyName)->addError($error);
 
         return FALSE;
@@ -411,7 +411,7 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
         if ( $desc == $value ) { return $isValid ; }
 
         /** @var \TYPO3\CMS\Extbase\Error\Error $error */
-        $error = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error',$this->translate('error.msg_error_html_code_not_allowed') , time());
+        $error = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Error\Error::class,$this->translate('error.msg_error_html_code_not_allowed') , time());
         $this->result->forProperty($propertyName)->addError($error);
 
         return FALSE;
@@ -440,7 +440,7 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
 
         if( count($tagArray ) > $max ) {
             /** @var \TYPO3\CMS\Extbase\Error\Error $error */
-            $error = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error', 'Too much Tags (' . count($tagArray ) .') selected (max ' . $max . ' allowed!)' , time());
+            $error = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Error\Error::class, 'Too much Tags (' . count($tagArray ) .') selected (max ' . $max . ' allowed!)' , time());
             $this->result->forProperty($propertyName)->addError($error);
             return false ;
         }
@@ -448,7 +448,7 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
             foreach ($tagArray as $key => $tag ) {
                 if( intval($tag) < 1 ) {
                     /** @var \TYPO3\CMS\Extbase\Error\Error $error */
-                    $error = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Error\\Error', 'Tags are not selected correctly' , time());
+                    $error = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Error\Error::class, 'Tags are not selected correctly' , time());
                     $this->result->forProperty($propertyName)->addError($error);
                     return false ;
                 }

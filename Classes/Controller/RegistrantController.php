@@ -222,11 +222,19 @@ class RegistrantController extends BaseController
             $all = false ;
             $fields = $this->settings['register']['allformFields'] ;
         }
+        switch ( $registrant->getGender() ) {
+            case 1:
+                $gender = $this->translate("register_gender_female" ) ;
+                break;
+            case 2:
+                $gender = $this->translate("register_gender_male" ) ;
+                break;
+            default:
+                $gender = $this->translate("register_gender_diverse" ) ;
+                break;
 
-        $gender = $this->translate("register_gender_female" ) ;
-        if( $registrant->getGender() < 2 ) {
-            $gender = $this->translate("register_gender_male" ) ;
         }
+
         $phone = " " . $registrant->getPhone() ;
         if ( str_replace( " " , "" , trim($phone )) == trim($phone) ) {
             $old = $phone ;
@@ -370,7 +378,7 @@ class RegistrantController extends BaseController
 
             if ($registrant == null) {
                 /** @var Registrant $registrant */
-                $registrant = $this->objectManager->get("JVE\\JvEvents\\Domain\\Model\\Registrant");
+                $registrant = $this->objectManager->get(\JVE\JvEvents\Domain\Model\Registrant::class);
                 if ($userUid) {
                     $registrant->setGender(intval($GLOBALS['TSFE']->fe_user->user['gender'] + 1));
                     $registrant->setFirstName($GLOBALS['TSFE']->fe_user->user['first_name']);
@@ -631,7 +639,7 @@ class RegistrantController extends BaseController
 
 				foreach ($otherEvents as $key => $otherEvent) {
 					/** @var Registrant $newregistrant */
-					$newregistrant = $this->objectManager->get( "JVE\\JvEvents\\Domain\\Model\\Registrant")  ;
+					$newregistrant = $this->objectManager->get( \JVE\JvEvents\Domain\Model\Registrant::class)  ;
 					$properties = $registrant->_getProperties() ;
 					unset($properties['uid']) ;
 

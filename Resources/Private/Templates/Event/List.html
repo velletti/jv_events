@@ -6,43 +6,74 @@
 
 	<f:render partial="Debug/CheckInstallation" arguments="{modulelist: 'TRUE' , event:event, settings: settings, debugArray: debugArray}" />
 	<f:if condition="{settings.ShowFilter}>0">
-		<f:if condition="{settings.EmConfiguration.useGeoLocation}">
-			<f:then>
-				<div id="jv_events_geo" class="hidden d-none" data-allowed="0" data-askUser="1" data-lng="{settings.list.longitude}" data-lat="{settings.list.latitude}"  data-doubleclickzoom="{settings.filter.doubleclickzoom}">
-					GEO Position from User
-				</div>
-			</f:then>
-			<f:else>
-				<div id="jv_events_geo" class="hidden d-none" data-lng="{settings.list.longitude}" data-lat="{settings.list.latitude}" data-doubleclickzoom="{settings.filter.doubleclickzoom}">
-					GEO Position from Settings
-				</div>
-			</f:else>
-
-		</f:if>
-		<f:if condition="{settings.ShowFilter}==7">
-			<f:then>
-				<div class="row">
-					<div class="col-12 col-sm-3">
-						<f:render partial="Event/List/Partial{settings.LayoutList}/Filter" arguments="{eventsFilter: eventsFilter, settings: settings}"/>
+		<f:then>
+			<f:if condition="{settings.EmConfiguration.useGeoLocation}">
+				<f:then>
+					<div id="jv_events_geo"  data-init="notstarted"  class="hidden d-none" data-allowed="0" data-askUser="1" data-lng="{settings.list.longitude}" data-lat="{settings.list.latitude}"  data-doubleclickzoom="{settings.filter.doubleclickzoom}">
+						GEO Position from User
 					</div>
-					<div class="col-12 col-sm-9">
-			</f:then>
-			<f:else>
-				<f:render partial="Event/List/Partial{settings.LayoutList}/Filter" arguments="{eventsFilter: eventsFilter, settings: settings}"/>
-			</f:else>
-		</f:if>
+				</f:then>
+				<f:else>
+					<div id="jv_events_geo"  data-init="notstarted"  class="hidden d-none" data-lng="{settings.list.longitude}" data-lat="{settings.list.latitude}" data-doubleclickzoom="{settings.filter.doubleclickzoom}">
+						GEO Position from Settings
+					</div>
+				</f:else>
 
+			</f:if>
+			<f:if condition="{settings.LayoutList}=='1Allplan'">
+				<f:then>
+					<f:render partial="Event/List/Partial{settings.LayoutList}/Filter" arguments="{eventsFilter: eventsFilter, settings: settings}"/>
+				</f:then>
+				<f:else>
+					<f:if condition="{settings.ShowFilter}==7">
+						<f:then>
+							<div class="row">
+								<div class="col-12 col-sm-3">
+									<f:render partial="Event/List/Partial{settings.LayoutList}/Filter" arguments="{eventsFilter: eventsFilter, settings: settings}"/>
+								</div>
+								<div class="col-12 col-sm-9">
+						</f:then>
+						<f:else>
+							<f:render partial="Event/List/Partial{settings.LayoutList}/Filter" arguments="{eventsFilter: eventsFilter, settings: settings}"/>
+						</f:else>
+					</f:if>
+				</f:else>
+			</f:if>
+
+		</f:then>
+		<f:else>
+			<div id="jv_events_geo" class="hidden d-none"  data-init="notstarted"  data-lng="{settings.list.longitude}" data-lat="{settings.list.latitude}" data-doubleclickzoom="{settings.filter.doubleclickzoom}">
+				GEO Position from Settings
+			</div>
+		</f:else>
 	</f:if>
 
 	<div class="jv_events_{settings.LayoutList} {settings.list.additionalClass}">
 		<f:if condition="{events}">
 			<f:then>
+				<f:if condition="{settings.ShowFilter}==7">
+					<p class="filter-result-hint text-center hide d-none" id="filter-result-hint-events" >
+						<f:translate key="tx_jvevents_event.filter.resulthint" />
+						<span class="arrow"></span>
+					</p>
+				</f:if>
 				<f:render partial="Event/List/Partial{settings.LayoutList}/HeaderEvent" arguments="{event:event, settings: settings}" />
+
 				<f:for each="{events}" as="event">
 					<f:if condition="{event.organizer.uid}">
-						<f:variable name="aktDate">{event.startDate -> f:format.date(format:"d.m.Y")}</f:variable>
-						<f:render partial="Event/List/Partial{settings.LayoutList}/SingleEvent" arguments="{event:event, settings: settings, aktDate: aktDate, lastDate: lastDate}" />
-						<f:variable name="lastDate">{event.startDate -> f:format.date(format:"d.m.Y")}</f:variable>
+						<f:if condition="{settings.ShowFilter} > 6">
+							<f:then>
+								<f:variable name="aktDate">{event.startDate -> f:format.date(format:"d.m.Y")}</f:variable>
+								<f:render partial="Event/List/Partial{settings.LayoutList}/SingleEventForFilter{settings.ShowFilter}" arguments="{event:event, settings: settings, aktDate: aktDate, lastDate: lastDate}" />
+								<f:variable name="lastDate">{event.startDate -> f:format.date(format:"d.m.Y")}</f:variable>
+
+							</f:then>
+							<f:else>
+								<f:variable name="aktDate">{event.startDate -> f:format.date(format:"d.m.Y")}</f:variable>
+								<f:render partial="Event/List/Partial{settings.LayoutList}/SingleEvent" arguments="{event:event, settings: settings, aktDate: aktDate, lastDate: lastDate}" />
+								<f:variable name="lastDate">{event.startDate -> f:format.date(format:"d.m.Y")}</f:variable>
+							</f:else>
+						</f:if>
 					</f:if>
 				</f:for>
 				<f:render partial="Event/List/Partial{settings.LayoutList}/NoEvent" arguments="{settings: settings }" />
@@ -62,12 +93,15 @@
 			</f:else>
 		</f:if>
 	</div>
-
-	<f:if condition="{settings.ShowFilter}==7">
-		<f:then>
-				</div>
-			</div>
-		</f:then>
+	<f:if condition="{settings.LayoutList}=='1Allplan'">
+		<f:else>
+			<f:if condition="{settings.ShowFilter}==7">
+				<f:then>
+						</div>
+					</div>
+				</f:then>
+			</f:if>
+		</f:else>
 	</f:if>
 
 </f:section>

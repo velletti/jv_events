@@ -20,15 +20,24 @@
             </f:if>
             <br/>
 
-            <f:link.page pageUid="{settings.pageIds.addMedia}" noCache="true" class="nav-link  px-1" title="Add Teaser Image " additionalParams="{tx_jvmediaconnector_connector: {action: 'list', controller: 'Media' ,  reference: {id: location.uid, table: 'tx_jvevents_domain_model_location' , fieldname: 'teaser_image' , maxRelations: '1' , returnPid: settings.pageId , returnArray: {tx_jvevents_events: {action: 'edit', location: location.uid }}}}}">
+            <f:link.page pageUid="{settings.pageIds.addMedia}" noCache="true" class="nav-link  px-1" title="Add Teaser Image "
+                         additionalParams="{tx_jvmediaconnector_connector: {action: 'list', controller: 'Media' ,  reference: {id: location.uid, table: 'tx_jvevents_domain_model_location' , fieldname: 'teaser_image' , maxRelations: '1' , returnPid: settings.pageId , returnArray: {tx_jvevents_events: {action: 'edit', location: location.uid }}}}}">
                 <button class="btn btn-outline-primary btn-xs rounded-circle" href="#">
                     <i class="fas fa-image"></i>
                 </button>
                 <span class="d-none d-md-inline-block">{imageButton}</span>
             </f:link.page>
+            <f:link.action pageUid="{settings.pageIds.editEvent}" class="nav-link px-1" title="{f:translate(key: 'tx_jvevents_domain_model_event.create_event' , default: 'create Event')}" action="new" controller="Event"  pluginName="Events" arguments="{location: location.uid, organizer: location.organizer.uid}">
+                <button class="btn btn-outline-primary btn-xs rounded-circle" href="#">
+                    <i class="fas fa-calendar-plus "></i>
+                </button>
+                <span class="d-none d-md-inline-block">{f:translate(key: 'tx_jvevents_domain_model_event.create_event' , default: 'create Event')}</span>
+            </f:link.action>
             <br/>
 
             <f:render partial="FeEditHelp" arguments="{section: 'location', object: location , settings: settings , user: user}" />
+
+
         </div>
         <div class="col-md-8 equalHeight">
             <f:render partial="HasFormErrors" arguments="{object:location, debug: 'false' }" />
@@ -37,7 +46,9 @@
                 <f:render partial="Location/Single/Partial{settings.LayoutSingle}/FormFields" arguments="{_all}" />
 
                 <div class="text-right">
-                    <f:form.submit class="btn btn-primary" value="{f:translate(key: 'form.save', default: 'Save')}" />
+                    <f:form.submit class="btn btn-primary"
+                                   onclick=" this.submit(); return false;"
+                                   value="{f:translate(key: 'form.save', default: 'Save')}" />
                 </div>
             </f:form>
 

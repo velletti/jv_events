@@ -7,24 +7,25 @@
 		<f:variable name="layout">{settings.LayoutSingle}</f:variable>
 	</f:else>
 </f:if>
-
-<f:variable name="onchange">findAddress({'address': updateAddressFromFields() });</f:variable>
 <f:render partial="SingleField/Partial{layout}/FormRowDefault"
 		  arguments="{object: 'location', property:'name' , label: '' , translationKey: 'tx_jvevents_domain_model_location.name' , maxLength: 60 , mandatory: '1' }" />
 
+
+<f:render partial="SingleField/Partial{layout}/FormRowCountry"
+		  arguments="{object: 'location', property:'country' , label: '' , defaultValue: 'DE' , translationKey: 'tx_jvevents_domain_model_location.country' ,  maxLength: 2 , mandatory: '1' }" />
 <f:render partial="SingleField/Partial{layout}/FormRowDefault"
-		  arguments="{object: 'location', property:'streetAndNr' , label: '' , translationKey: 'tx_jvevents_domain_model_location.street_and_nr' ,  maxLength: 30 , mandatory: '1' }" />
+		  arguments="{object: 'location', property:'city' , label: '' , translationKey: 'tx_jvevents_domain_model_location.city' ,  maxLength: 30 , mandatory: '1' }" />
 <f:render partial="SingleField/Partial{layout}/FormRowDefault"
 		  arguments="{object: 'location', property:'zip' , label: '' , translationKey: 'tx_jvevents_domain_model_location.zip' ,  maxLength: 10 , mandatory: '' }" />
 
+
 <f:render partial="SingleField/Partial{layout}/FormRowDefault"
-		  arguments="{object: 'location', property:'city' , label: '' , translationKey: 'tx_jvevents_domain_model_location.city' ,  maxLength: 30 , mandatory: '1' }" />
-<f:render partial="SingleField/Partial{layout}/FormRowCountry"
-		  arguments="{object: 'location', property:'country' , label: '' , defaultValue: 'DE' , translationKey: 'tx_jvevents_domain_model_location.country' ,  maxLength: 2 , mandatory: '1' }" />
+		  arguments="{object: 'location', property:'streetAndNr' , label: '' , translationKey: 'tx_jvevents_domain_model_location.street_and_nr' ,  maxLength: 30 , mandatory: '1' }" />
+
 
 <hr>
 
-<f:render partial="SingleField/Partial{layout}/FormRowGeocoder"
+<f:render partial="SingleField/Partial{layout}/FormRowOpenStreetmapGeocoder"
 		  arguments="{object: 'location', location: location, property:'lng' ,  buttonSetPosition: '0' ,  property2:'lat', fa-icon: 'fas fa-sync-alt' , translationKey: '', label: 'jv_events_model_location.press-refresh.title' ,  maxLength: 30 , mandatory: '1' , hideOkButton: '1'}" />
 
 <hr>
