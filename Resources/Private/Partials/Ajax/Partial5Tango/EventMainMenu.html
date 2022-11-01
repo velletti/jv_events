@@ -22,52 +22,52 @@
                         </f:link.action>
                     </f:if>
                 </f:if>
-                <f:if condition="{settings.pageIds.eventList}">
-                    <f:if condition="{output.feuser.organizer.uid}">
-                        <f:link.action pageUid="{settings.pageIds.eventList}" class="nav-link" title="List Events" action="list" controller="Event"  pluginName="Events" additionalParams="{tx_jvevents_events: {overruleFilter: {organizer: output.feuser.organizer.uid , maxDays:365 , category: 'true' }}}">
-                            <button class="btn btn-outline-primary btn-sm rounded-circle" href="#">
-                                <i class="fas fa-list "></i>
-                            </button>
-                            <span class="d-none d-lg-inline-block">Meine Termine</span>
-                        </f:link.action>
-                    </f:if>
-                </f:if>
-                <f:if condition="{settings.pageIds.editLocation}">
-                    <f:if condition="{output.location.hasAccess} && {output.mode} != 'editLocation'">
-                        <f:link.action pageUid="{settings.pageIds.editLocation}" class="nav-link" title="Edit Location" action="edit" controller="Location"  pluginName="Events" arguments="{location: output.location.locationId}">
-                            <button class="btn btn-outline-primary btn-sm rounded-circle" href="#">
-                                <i class="fas fa-map-marked-alt "></i>
-                            </button>
-                            <span class="d-none d-lg-inline-block">Location</span>
-                        </f:link.action>
-                    </f:if>
-                </f:if>
-                <f:if condition="{settings.pageIds.editOrganizer}">
-                    <f:if condition="{output.organizer.hasAccess}">
-                        <f:if condition="{settings.pageIds.rankingModul}">
-                            <f:security.ifHasRole role="adminOrganizer">
-                                <f:link.page class="nav-link" pageUid="{settings.pageIds.rankingModul}" title="showRanging Settings" additionalParams="{tx_jvranking_pi1: {organizer: '{output.organizer.organizerId}'}}">
-                                    <button class="btn btn-outline-primary btn-sm rounded-circle" href="#">
-                                        <i class="fas fa-chart-bar "></i>
-                                    </button>
-                                </f:link.page>
-
-                            </f:security.ifHasRole>
+                <f:if condition="{output.feuser.isOrganizer}">
+                    <f:if condition="{settings.pageIds.eventList}">
+                        <f:if condition="{output.feuser.organizer.uid}">
+                            <f:link.action pageUid="{settings.pageIds.eventList}" class="nav-link" title="List Events" action="list" controller="Event"  pluginName="Events" additionalParams="{tx_jvevents_events: {overruleFilter: {organizer: output.feuser.organizer.uid , maxDays:365 , category: 'true' }}}">
+                                <button class="btn btn-outline-primary btn-sm rounded-circle" href="#">
+                                    <i class="fas fa-list "></i>
+                                </button>
+                                <span class="d-none d-lg-inline-block">Meine Termine</span>
+                            </f:link.action>
                         </f:if>
-                        <f:link.action pageUid="{settings.pageIds.editOrganizer}" class="nav-link" title="Edit organizer" action="edit" controller="Organizer" pluginName="Events" arguments="{organizer: output.organizer.organizerId, event: '-'}">
-                            <button class="btn btn-outline-primary btn-sm rounded-circle" href="#">
-                                <i class="fas fa-user "></i>
-                            </button>
-
-                            <span class="d-none d-lg-inline-block">Veranstalter</span>
-                        </f:link.action>
-
                     </f:if>
-                </f:if>
+                    <f:if condition="{settings.pageIds.editLocation}">
+                        <f:if condition="{output.location.hasAccess} && {output.mode} != 'editLocation'">
+                            <f:link.action pageUid="{settings.pageIds.editLocation}" class="nav-link" title="Edit Location" action="edit" controller="Location"  pluginName="Events" arguments="{location: output.location.locationId}">
+                                <button class="btn btn-outline-primary btn-sm rounded-circle" href="#">
+                                    <i class="fas fa-map-marked-alt "></i>
+                                </button>
+                                <span class="d-none d-lg-inline-block">Location</span>
+                            </f:link.action>
+                        </f:if>
+                    </f:if>
+                    <f:if condition="{settings.pageIds.editOrganizer}">
+                        <f:if condition="{output.organizer.hasAccess}">
+                            <f:if condition="{settings.pageIds.rankingModul}">
+                                <f:security.ifHasRole role="adminOrganizer">
+                                    <f:link.page class="nav-link" pageUid="{settings.pageIds.rankingModul}" title="showRanging Settings" additionalParams="{tx_jvranking_pi1: {organizer: '{output.organizer.organizerId}'}}">
+                                        <button class="btn btn-outline-primary btn-sm rounded-circle" href="#">
+                                            <i class="fas fa-chart-bar "></i>
+                                        </button>
+                                    </f:link.page>
 
+                                </f:security.ifHasRole>
+                            </f:if>
+                            <f:link.action pageUid="{settings.pageIds.editOrganizer}" class="nav-link" title="Edit organizer" action="edit" controller="Organizer" pluginName="Events" arguments="{organizer: output.organizer.organizerId, event: '-'}">
+                                <button class="btn btn-outline-primary btn-sm rounded-circle" href="#">
+                                    <i class="fas fa-user "></i>
+                                </button>
 
-                <f:if condition="{settings.pageIds.editEvent}">
-                    <f:if condition="{output.feuser.isOrganizer}">
+                                <span class="d-none d-lg-inline-block">Veranstalter</span>
+                            </f:link.action>
+
+                        </f:if>
+                    </f:if>
+
+                    <f:if condition="{settings.pageIds.editEvent}">
+
                         <f:link.action pageUid="{settings.pageIds.editEvent}" class="nav-link" title="{f:translate(key: 'tx_jvevents_domain_model_event.create_event' , default: 'create Event')}" action="new" controller="Event"  pluginName="Events"
                                        arguments="{organizer: output.organizer.organizerId}">
                             <button class="btn btn-outline-primary btn-sm rounded-circle" href="#">
