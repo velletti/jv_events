@@ -1,6 +1,26 @@
 <?php
-// Extension manager configuration
-## EXTENSION BUILDER DEFAULTS END TOKEN - Everything BEFORE this line is overwritten with the defaults of the extension builder
+
+defined('TYPO3') or die();
+
+
+/** @var \TYPO3\CMS\Core\Information\Typo3Version $version */
+$version = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Information\Typo3Version::class);
+
+if ($version->getMajorVersion()  < 11) {
+    // to Check if we need this
+    $lngConfig = [	'type' => 'select',
+        'renderType' => 'selectSingle',
+        'foreign_table' => 'sys_language',
+        'foreign_table_where' => 'ORDER BY sys_language.title',
+        'items' => [
+            ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', -1],
+            ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.default_value', 0]
+        ]
+    ] ;
+} else {
+    $lngConfig =  ['type' => 'language'] ;
+}
+
 
 $returnArray = array(
 	'ctrl' => array(
@@ -70,18 +90,7 @@ $returnArray = array(
 		'sys_language_uid' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
-			'config' => array(
-				'type' => 'select',
-                'eval' => 'int',
-                'default' => 0,
-				'renderType' => 'selectSingle',
-				'foreign_table' => 'sys_language',
-				'foreign_table_where' => 'ORDER BY sys_language.title',
-				'items' => array(
-					array('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', -1),
-					array('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.default_value', 0)
-				),
-			),
+			'config' => $lngConfig ,
 		),
 		'l10n_parent' => array(
 			'displayCond' => 'FIELD:sys_language_uid:>:0',
@@ -691,7 +700,6 @@ $returnArray = array(
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.registrationFormPid',
 			'config' => array(
 				'type' => 'group',
-				'internal_type' => 'db',
 				'allowed' => 'pages',
 				'foreign_table' => 'pages',
 				'size' => 1,
@@ -710,7 +718,6 @@ $returnArray = array(
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.registrationPid',
 			'config' => array(
 				'type' => 'group',
-				'internal_type' => 'db',
 				'allowed' => 'pages',
 				'foreign_table' => 'pages',
 				'size' => 1,
@@ -1122,7 +1129,6 @@ $returnArray = array(
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.organizer',
 			'config' => array(
 				'type' => 'group',
-				'internal_type' => 'db',
 
 				'allowed' => 'tx_jvevents_domain_model_organizer',
 
@@ -1164,7 +1170,6 @@ $returnArray = array(
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.location',
 			'config' => array(
 				'type' => 'group',
-				'internal_type' => 'db',
 
 				'allowed' => 'tx_jvevents_domain_model_location',
 				'size' => 1,

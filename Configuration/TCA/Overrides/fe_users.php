@@ -1,6 +1,6 @@
 <?php
 
-defined('TYPO3_MODE') or die();
+defined('TYPO3') or die();
 $GLOBALS['TCA']['fe_users']['columns']['crdate'] = [
                 'exclude' => true,
                 'label' => 'Creation Date',

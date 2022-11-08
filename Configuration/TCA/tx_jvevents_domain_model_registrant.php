@@ -1,4 +1,25 @@
 <?php
+
+defined('TYPO3') or die();
+
+/** @var \TYPO3\CMS\Core\Information\Typo3Version $version */
+$version = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Information\Typo3Version::class);
+
+if ($version->getMajorVersion()  < 11) {
+    // to Check if we need this
+    $lngConfig = [	'type' => 'select',
+        'renderType' => 'selectSingle',
+        'foreign_table' => 'sys_language',
+        'foreign_table_where' => 'ORDER BY sys_language.title',
+        'items' => [
+            ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', -1],
+            ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.default_value', 0]
+        ]
+    ] ;
+} else {
+    $lngConfig =  ['type' => 'language'] ;
+}
+
 return array(
 	'ctrl' => array(
 		'title'	=> 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_registrant',
@@ -32,16 +53,7 @@ return array(
 		'sys_language_uid' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
-			'config' => array(
-				'type' => 'select',
-				'renderType' => 'selectSingle',
-				'foreign_table' => 'sys_language',
-				'foreign_table_where' => 'ORDER BY sys_language.title',
-				'items' => array(
-					array('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', -1),
-					array('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.default_value', 0)
-				),
-			),
+			'config' => $lngConfig,
 		),
 		'l10n_parent' => array(
 			'displayCond' => 'FIELD:sys_language_uid:>:0',
