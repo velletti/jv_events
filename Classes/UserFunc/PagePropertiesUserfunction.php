@@ -12,7 +12,7 @@ class PagePropertiesUserfunction{
 	/**
 	 * Reference to the parent (calling) cObject set from TypoScript
 	 */
-	public $cObj;
+	protected $cObj;
 
     /**
      * Get the title from tx_jvevents_domain_model_event
@@ -317,6 +317,11 @@ class PagePropertiesUserfunction{
 
         return $queryBuilder;
 
+    }
+
+    public function setContentObjectRenderer(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj): void
+    {
+        $this->cObj = $cObj;
     }
 
 }

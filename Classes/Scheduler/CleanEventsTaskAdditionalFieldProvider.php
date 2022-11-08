@@ -163,7 +163,7 @@ class CleanEventsTaskAdditionalFieldProvider extends \TYPO3\CMS\Scheduler\Abstra
         }
         /** @var LanguageService $lang */
         $lang = GeneralUtility::makeInstance(LanguageService::class) ;
-        if (TYPO3_MODE === 'BE') {
+        if (\TYPO3\CMS\Core\Http\ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()) {
             $lng = $GLOBALS['BE_USER']->uc['lang'] ;
         } else {
             $lng = $GLOBALS['TSFE']->config['config']['language'] ;

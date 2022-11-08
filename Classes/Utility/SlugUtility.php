@@ -45,7 +45,7 @@ class SlugUtility {
                     return  $newValue ;
                 }
             }
-            return  $proposal . '-' . GeneralUtility::shortMD5($proposal) ;
+            return  $proposal . '-' . substr(md5($proposal), 0, 10) ;
         }
         return $proposal ;
     }

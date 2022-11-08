@@ -207,21 +207,3 @@ lib.jveventsRTE.dontConvBRtoParagraph = 1
 #
 page.includeJSFooter.jvEvents = EXT:jv_events/Resources/Public/JavaScript/jv_events.js
 
-
-config.tx_extbase.persistence.classes {
-	JVE\JvEvents\Domain\Model\StaticCountry {
-		mapping {
-			tableName = static_countries
-		}
-	}
-	JVE\JvEvents\Domain\Model\FrontendUser {
-		mapping {
-			tableName = fe_users
-			columns {
-				deleted.mapOnProperty = deleted
-				disable.mapOnProperty = disable
-				crdate.mapOnProperty = crdate
-			}
-		}
-	}
-}

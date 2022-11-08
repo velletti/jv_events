@@ -33,7 +33,7 @@ class GeocoderUtility {
     {
         /** @var \TYPO3\CMS\Core\Localization\LanguageService $lang */
         $lang = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\LanguageService::class) ;
-        if (TYPO3_MODE === 'BE') {
+        if (\TYPO3\CMS\Core\Http\ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()) {
             $lng = $GLOBALS['BE_USER']->uc['lang'] ;
         } else {
             $lng = $GLOBALS['TSFE']->config['config']['language'] ;

@@ -391,11 +391,15 @@ class CleanEventsTask extends AbstractTask
  */
                         foreach ( $usersData as $user ) {
                             $orig = $user['usergroup'];
-                            $user['usergroup'] = GeneralUtility::rmFromList( "2" , $user['usergroup']) ;
-                            $user['usergroup'] = "1," . $user['usergroup'] ;
-                            $user['usergroup'] = GeneralUtility::rmFromList( "5" , $user['usergroup']) ;
-                            $user['usergroup'] = GeneralUtility::rmFromList( "6" , $user['usergroup']) ;
-                            $user['usergroup'] = GeneralUtility::rmFromList( "7" , $user['usergroup']) ;
+
+                            $items = explode(',',  $user['usergroup'] );
+
+                            foreach ($items as $k => $v) {
+                                if ( in_array($v , [1,2,5,6,7] ) ) {
+                                    unset($items[$k]);
+                                }
+                            }
+                            $user['usergroup'] = "1," . implode(',', $items);
                             $debug[] = "Reduced Group access of user : " . $user['uid'] . " from: " . $orig ." to " .   $user['usergroup'];
 
                             $queryFeUserUpdate->update('fe_users')
