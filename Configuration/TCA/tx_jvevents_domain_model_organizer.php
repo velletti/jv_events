@@ -481,6 +481,7 @@ $returnArray = array(
             'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_organizer.accessUsers',
             'config' => array(
                 'type' => 'group',
+                'internal_type' => 'db',
                 'allowed' => 'fe_users',
                 'foreign_table' => 'fe_users',
                 'size' => 8,

@@ -700,6 +700,7 @@ $returnArray = array(
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.registrationFormPid',
 			'config' => array(
 				'type' => 'group',
+				'internal_type' => 'db',
 				'allowed' => 'pages',
 				'foreign_table' => 'pages',
 				'size' => 1,
@@ -718,6 +719,7 @@ $returnArray = array(
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.registrationPid',
 			'config' => array(
 				'type' => 'group',
+				'internal_type' => 'db',
 				'allowed' => 'pages',
 				'foreign_table' => 'pages',
 				'size' => 1,
@@ -1129,6 +1131,7 @@ $returnArray = array(
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.organizer',
 			'config' => array(
 				'type' => 'group',
+				'internal_type' => 'db',
 
 				'allowed' => 'tx_jvevents_domain_model_organizer',
 
@@ -1170,6 +1173,7 @@ $returnArray = array(
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.location',
 			'config' => array(
 				'type' => 'group',
+				'internal_type' => 'db',
 
 				'allowed' => 'tx_jvevents_domain_model_location',
 				'size' => 1,
