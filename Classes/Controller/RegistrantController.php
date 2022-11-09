@@ -4,6 +4,7 @@ namespace JVE\JvEvents\Controller;
 use JVE\JvEvents\Domain\Model\Event;
 use JVE\JvEvents\Domain\Model\Registrant;
 use JVE\JvEvents\Domain\Model\Subevent;
+use JVE\JvEvents\EventListener\RegisterHubspotUtility;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -620,21 +621,17 @@ class RegistrantController extends BaseController
 
 			$registrant->setCrdate(time() ) ;
 
-			$this->signalSlotDispatcher->dispatch(
-                __CLASS__,
-                __FUNCTION__,
-                array(
-                    'registrant' => &$registrant,
-                    'event' => &$event,
-                    'settings' => $this->settings,
-                )
-            );
             $oldReg = $registrant ;
-			$this->registrantRepository->add($registrant);
+            $this->registrantRepository->add($registrant);
+            $this->persistenceManager->persistAll();
+
+            if ( $this->settings['EmConfiguration']['enableHubspot'] > 0 ) {
+                /** @var RegisterHubspotUtility $hubspot */
+                $hubspot = GeneralUtility::makeInstance(RegisterHubspotUtility::class) ;
+                $hubspot->createAction( $registrant , $event ,  $this->settings ) ;
+            }
 
 
-
-			$this->persistenceManager->persistAll();
 			if( is_array($otherEvents)) {
 
 				foreach ($otherEvents as $key => $otherEvent) {

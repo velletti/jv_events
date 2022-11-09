@@ -1,5 +1,5 @@
 <?php
-namespace JVE\JvEvents\Signal;
+namespace JVE\JvEvents\EventListener;
 /***************************************************************
  * Copyright notice
  *
@@ -23,14 +23,16 @@ namespace JVE\JvEvents\Signal;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Core\Information\Typo3Version;
+use JVE\Jvevents\Domain\Model\Event;
+use JVE\Jvevents\Domain\Model\Registrant;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
- * Class RegisterHubspotSignal
+ * Class RegisterHubspotEvent
  *
- * @package JVE\Jvevents\Signal
+ * @package JVE\Jvevents\EventListener
  */
-class RegisterHubspotSignal {
+class RegisterHubspotUtility {
 
 
     /** @var \Allplan\Library\Hubspot\Service\Hubspot */
@@ -51,14 +53,16 @@ class RegisterHubspotSignal {
             $this->logToFile( " \n no hapikey,  portalID, FirmID or URI set ! See : ../conf/AllplanHubspotConfiguration.php OR Typoscript Settings -> register -> hubspot: " . var_export( $config , true ))  ;
             return ;
         }
-        $this->hubspotApi = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Allplan\Library\Hubspot\Service\Hubspot::class , $config);
+        if( class_exists('Allplan\Library\Hubspot\Service\Hubspot')) {
+            $this->hubspotApi = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Allplan\Library\Hubspot\Service\Hubspot::class , $config);
+        }
     }
 
     /**
      * create action settings
      *
-     * @param \JVE\Jvevents\Domain\Model\Registrant $registrant
-     * @param \JVE\Jvevents\Domain\Model\Event $event
+     * @param Registrant $registrant
+     * @param Event $event
      * @param array $settings
      *
      * @return mixed
@@ -254,7 +258,7 @@ class RegisterHubspotSignal {
     /** convertToString
      *
      * Create a string response from registrant Model
-     * @param \JVE\Jvevents\Domain\Model\Registrant $registrant
+     * @param Registrant $registrant
      * @return array
      */
     public function convertToArray(  $registrant , $lng = 0) {
