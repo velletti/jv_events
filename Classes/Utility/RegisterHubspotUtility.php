@@ -1,5 +1,5 @@
 <?php
-namespace JVE\JvEvents\EventListener;
+namespace JVE\JvEvents\Utility;
 /***************************************************************
  * Copyright notice
  *
