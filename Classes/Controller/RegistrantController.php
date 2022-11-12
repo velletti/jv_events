@@ -224,10 +224,10 @@ class RegistrantController extends BaseController
         }
         switch ( $registrant->getGender() ) {
             case 1:
-                $gender = $this->translate("register_gender_female" ) ;
+                $gender = $this->translate("register_gender_male" ) ;
                 break;
             case 2:
-                $gender = $this->translate("register_gender_male" ) ;
+                $gender = $this->translate("register_gender_female" ) ;
                 break;
             default:
                 $gender = $this->translate("register_gender_diverse" ) ;
