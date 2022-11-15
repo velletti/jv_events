@@ -152,60 +152,6 @@ class AjaxController extends BaseController
         $version = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Information\Typo3Version::class);
 
 
-        if ($version->getMajorVersion() < 10) {
-            $pid = intval(GeneralUtility::_GPmerged('uid') );
-            $type =  intval(GeneralUtility::_GPmerged('type'));
-
-            /**
-             * @var $TSFE \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
-             */
-            $TSFE = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class, $GLOBALS['TYPO3_CONF_VARS'],
-                $pid,  // pageUid Homepage
-                $type   // pageType
-            );
-            $GLOBALS['TSFE'] = $TSFE;
-
-
-// Important: no Cache for Ajax stuff
-            $GLOBALS['TSFE']->set_no_cache("JvEvents Ajax Call" , true);
-            $GLOBALS['TSFE']->initUserGroups();
-            $GLOBALS['TSFE']->fe_user ;
-
-            $GLOBALS['TSFE']->checkAlternativeIdMethods();
-            $GLOBALS['TSFE']->determineId();
-            $GLOBALS['TSFE']->getConfigArray();
-            \TYPO3\CMS\Core\Core\Bootstrap::getInstance();
-
-            $GLOBALS['TSFE']->cObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
-            $GLOBALS['TSFE']->settingLanguage();
-            \TYPO3\CMS\Core\Localization\Locales::setSystemLocaleFromSiteLanguage($GLOBALS['TSFE']->getLanguage());
-
-            // $GLOBALS['BE_USER'] =  $GLOBALS['TSFE']->initializeBackendUser() ;
-            /**
-             * Initialize Backend-User (if logged in)
-             */
-            // $GLOBALS['BE_USER'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Authentication\BackendUserAuthentication');
-            //
-
-
-            /**
-             * Initialize Database
-             */
-            $GLOBALS['TSFE']->connectToDB();
-
-            /**
-             * Initialize Extbase bootstap
-             */
-            $bootstrapConf['extensionName'] = $ajax['extensionName'];
-            $bootstrapConf['pluginName'] = $ajax['pluginName'];
-            $bootstrapConf['vendorName'] = $ajax['vendorName'];
-
-            $bootstrap = new \TYPO3\CMS\Extbase\Core\Bootstrap();
-            $bootstrap->initialize($bootstrapConf);
-            $bootstrap->cObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
-
-            $request->setControllerVendorName($ajax['vendor']);
-        }
 
         $request->setControllerExtensionName($ajax['extensionName']);
         $request->setPluginName($ajax['pluginName']);

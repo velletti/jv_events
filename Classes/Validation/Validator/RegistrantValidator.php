@@ -40,7 +40,6 @@ class RegistrantValidator extends \JVE\JvEvents\Validation\Validator\BaseValidat
 			$isValid = false ;
 		}
 
-
 		// ################ fingerprint of existing registration #######
 
 		$fingerPrint = md5(strtolower( $registrant->getEmail() . $registrant->getFirstName() . $registrant->getLastName() . $registrant->getEvent() ) );

@@ -4,11 +4,12 @@ namespace JVE\JvEvents\Controller;
 use JVE\JvEvents\Domain\Model\Event;
 use JVE\JvEvents\Domain\Model\Registrant;
 use JVE\JvEvents\Domain\Model\Subevent;
-use JVE\JvEvents\EventListener\RegisterHubspotUtility;
+use JVE\JvEvents\Utility\RegisterHubspotUtility;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Frontend\Controller\ErrorController;
 use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
 
@@ -1012,19 +1013,16 @@ class RegistrantController extends BaseController
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request
-     * @throws \Exception|\TYPO3\CMS\Extbase\Property\Exception
+     * @param RequestInterface $request
+     * @return ResponseInterface
      */
     public function processRequest(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request ):ResponseInterface
     {
         try {
-            parent::processRequest($request);
+            return parent::processRequest($request);
         }
         catch(\TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException $e) {
 
-        }
-        catch(\Exception $e) {
-            throw $e;
         }
     }
 

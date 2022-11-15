@@ -19,27 +19,27 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
 	/**
 	 * eventRepository
 	 *
-	 * @var \JVE\JvEvents\Domain\Repository\EventRepository
+	 * @var EventRepository|null
 	 */
-	protected $eventRepository = NULL;
+	protected ?EventRepository $eventRepository = null ;
 
     /**
      * @var array
      */
-	protected $unwanted =  array( "<script" , "<iframe" , "style=" , "class=" , "font:" ,"color:" ) ;
+	protected array $unwanted =  array( "<script" , "<iframe" , "style=" , "class=" , "font:" ,"color:" ) ;
 
 	/**
 	 * registrantRepository
 	 *
-	 * @var \JVE\JvEvents\Domain\Repository\RegistrantRepository
+	 * @var RegistrantRepository|null
 	 */
-	protected $registrantRepository = NULL;
+	protected ?RegistrantRepository $registrantRepository = null  ;
 
-	/** @var array   */
+	/** @var array|null   */
 	public $emConf = NULL ;
 
-	/** @var array   */
-	public $settings = NULL ;
+	/** @var array|null   */
+	public ?array $settings = NULL ;
 
 
     /**
@@ -71,6 +71,12 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
 
 		$this->settings['sys_language_uid']				=  $languageAspect->getId() ;
 
+        if ( !$this->registrantRepository ) {
+            $this->registrantRepository = GeneralUtility::makeInstance( RegistrantRepository::class) ;
+        }
+        if ( !$this->eventRepository ) {
+            $this->eventRepository = GeneralUtility::makeInstance( EventRepository::class ) ;
+        }
 
         parent::__construct() ;
 

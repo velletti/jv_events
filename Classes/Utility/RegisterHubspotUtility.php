@@ -180,13 +180,24 @@ class RegisterHubspotUtility {
         if( $settings['register']['hubspot']['formId']) {
             $formId = $settings['register']['hubspot']['formId'] ;
         }
-        /// ************************ +++++++++++++++++++++++ -------------- #####################
-        $form = $this->hubspotApi->getForm($formId) ;
-        $formFields = $this->hubspotApi->getFieldnamesFromForm( $form['data']['formFieldGroups']) ;
+        try {
+            /// ************************ +++++++++++++++++++++++ -------------- #####################
+            $form = $this->hubspotApi->getForm($formId) ;
+            if ( is_array( $form )) {
+                $formFields = $this->hubspotApi->getFieldnamesFromForm( $form['data']['formFieldGroups']) ;
+            } else {
+                $debugmail .= "\n+++++++++++ Got no FORM Fields from Hubspot for FormId  $formId !! ++++++++++++++++++\n\n"  ;
+            }
 
-        $debugmail .= "\n+++++++++++ store in Hubspot url: ++++++++++++++++++\n\n"  ;
-        $debugmail .=  $this->hubspotApi->getConfigConnectionUri() ."/" . $this->hubspotApi->getConfigConnectionPortalID(). "/" ;
-        $debugmail .=  $formId ;
+
+            $debugmail .= "\n+++++++++++ store in Hubspot url: ++++++++++++++++++\n\n"  ;
+            $debugmail .=  $this->hubspotApi->getConfigConnectionUri() ."/" . $this->hubspotApi->getConfigConnectionPortalID(). "/" ;
+            $debugmail .=  $formId ;
+        } catch ( \Exception $e) {
+            $debugmail .= "\n+++++++++++  Exception in Hubspot !! " .$e->getMessage() . " ++++++++++++++++++\n\n"  ;
+            $response['error']  = true ;
+        }
+
 
 
         // $settings['debug'] = 1 ;
@@ -199,10 +210,15 @@ class RegisterHubspotUtility {
             echo "</pre>" ;
             die;
         } else {
+            try {
             $response = $this->hubspotApi->submitForm( $formId , $data ) ;
             $debugmail .= "\n+++++++++++  Hubspot response: ++++++++++++++++++\n\n"  ;
             $debugmail .= var_export($response , true ) ;
             $registrant->setHubspotResponse($response['status']) ;
+            } catch ( \Exception $e) {
+                $debugmail .= "\n+++++++++++  Exception in Hubspot !! " .$e->getMessage() . " ++++++++++++++++++\n\n"  ;
+                $response['error']  = true ;
+            }
         }
         if ( $settings['debug'] > 1 ) {
             echo " Settings debug > 2 .. so we Die() in Line " . __LINE__ . " in File: " . __FILE__ . "<hr>";
