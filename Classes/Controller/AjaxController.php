@@ -397,7 +397,7 @@ class AjaxController extends BaseController
                 }
                 $output['event']['days'] = $event->getSubeventCount() ;
                 if( $event->getSubeventCount() > 0 ) {
-                    $querysettings = new \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings ;
+                    $querysettings =$this->subeventRepository->getTYPO3QuerySettings() ;
                     $querysettings->setStoragePageIds(array( $event->getPid() )) ;
 
                     $this->subeventRepository->setDefaultQuerySettings( $querysettings );
@@ -420,7 +420,7 @@ class AjaxController extends BaseController
                     $output['event']['moreDays'] = [] ;
                 }
                 if( $event->getMasterId() > 0 ) {
-                    $querysettings = new \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings ;
+                    $querysettings =$this->subeventRepository->getTYPO3QuerySettings() ;
                     $querysettings->setStoragePageIds(array( $event->getPid() )) ;
 
                     $this->eventRepository->setDefaultQuerySettings( $querysettings );

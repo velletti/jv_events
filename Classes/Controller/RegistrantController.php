@@ -408,7 +408,7 @@ class RegistrantController extends BaseController
             $registrant->setAddMandatoryFields($addFields);
 
 
-            $querysettings = new \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
+            $querysettings =$this->subeventRepository->getTYPO3QuerySettings() ;
             $querysettings->setStoragePageIds(array($event->getPid()));
 
             $this->subeventRepository->setDefaultQuerySettings($querysettings);
@@ -475,7 +475,7 @@ class RegistrantController extends BaseController
 
             $registrant->setOtherEvents( serialize($temp ) );
 		}
-        $querysettings = new \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings ;
+        $querysettings =$this->subeventRepository->getTYPO3QuerySettings() ;
         $querysettings->setStoragePageIds(array( $event->getPid() )) ;
 
         $this->subeventRepository->setDefaultQuerySettings( $querysettings );

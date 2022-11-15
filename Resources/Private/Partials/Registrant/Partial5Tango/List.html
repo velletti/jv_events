@@ -11,7 +11,7 @@
 	</div>
 	<f:if condition="{registrants}">
 		<div class="text-right col-6">
-			<f:link.action action="list" class="btn btn-primary" noCache="1" noCacheHash="1" arguments="{event : event.uid, hash: hash, export: 1}"> CSV Export </f:link.action>
+			<f:link.action action="list" class="btn btn-primary" noCache="1"  arguments="{event : event.uid, hash: hash, export: 1}"> CSV Export </f:link.action>
 		</div>
 		<div class="clearfix col-12">
 
@@ -65,7 +65,7 @@
 					<td>
 						<f:if condition="{registrant.hidden}">
 							<f:then>
-								<f:link.action action="delete" arguments="{registrant: registrant.uid, hash: hash , doit: '1'}" noCacheHash="true">
+								<f:link.action action="delete" arguments="{registrant: registrant.uid, hash: hash , doit: '1'}" >
 									<i class="fa fa-trash text-error" title="DELETE THIS REGISTRATION really!!!"> </i>
 								</f:link.action>
 							</f:then>
@@ -78,7 +78,7 @@
 										</f:link.action>
 									</f:then>
 									<f:else>
-										<f:link.action action="confirm" arguments="{registrant: registrant.uid, hash: hash , doit: '1'}" noCacheHash="true" pageUid="event.registrationFormPid">
+										<f:link.action action="confirm" arguments="{registrant: registrant.uid, hash: hash , doit: '1'}"  pageUid="event.registrationFormPid">
 											<i class="fa fa-envelope text-warning " title="confirm This Registration ..  "> </i>
 										</f:link.action>
 
@@ -86,7 +86,7 @@
 								</f:if>
 							</f:else>
 						</f:if>
-						<f:link.action action="new" arguments="{event: event.uid, registrant: registrant.uid, hash: hash }" controller="Registrant" noCacheHash="true">
+						<f:link.action action="new" arguments="{event: event.uid, registrant: registrant.uid, hash: hash }" controller="Registrant" >
 							<i class="fa fa-edit text-error " title="edit..  "> </i>
 						</f:link.action>
 					</td>

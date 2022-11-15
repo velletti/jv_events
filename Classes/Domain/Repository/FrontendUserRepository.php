@@ -42,7 +42,7 @@ class FrontendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\Fronte
 
     public function initializeObject() {
 
-        $querysettings = new \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
+        $querysettings =  $this->createQuery()->getQuerySettings() ;
         $querysettings->setIgnoreEnableFields(TRUE) ;
         $querysettings->setRespectStoragePage(FALSE) ;
         $querysettings->setRespectSysLanguage(FALSE) ;

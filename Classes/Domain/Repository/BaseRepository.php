@@ -76,4 +76,9 @@ class BaseRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         die;
     }
 
+    public function getTYPO3QuerySettings(): \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface
+    {
+        return $this->createQuery()->getQuerySettings() ;
+    }
+
 }

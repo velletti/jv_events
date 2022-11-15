@@ -54,6 +54,7 @@ class SubeventRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
         }
     }
 
+
     /**
      * @param integer $event
      * @param bool $toArray
@@ -62,6 +63,7 @@ class SubeventRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
     public function findByEventAllpages($event , $toArray=TRUE  )
     {
         $query = $this->createQuery();
+
     //    $query->getQuerySettings()->setRespectStoragePage(FALSE);
         $query->getQuerySettings()->setRespectSysLanguage(FALSE);
         $query->matching( $query->equals('event', $event ) ) ;

@@ -34,7 +34,6 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
 /**
@@ -200,7 +199,9 @@ class EventController extends BaseController
             $checkString = $_SERVER["SERVER_NAME"] . "-" . $event->getUid() . "-" . $event->getCrdate();
             $checkHash = hash("sha256", $checkString);
 
-            $querysettings = new Typo3QuerySettings;
+
+            //$querysettings = new Typo3QuerySettings;
+            $querysettings =$this->subeventRepository->getTYPO3QuerySettings() ;
             $querysettings->setStoragePageIds(array($event->getPid()));
 
             $this->subeventRepository->setDefaultQuerySettings($querysettings);
@@ -838,7 +839,7 @@ class EventController extends BaseController
                 $this->eventRepository->remove($event) ;
 
                 if( $masterId && $deleteFutureEvents) {
-                    $querysettings = new Typo3QuerySettings ;
+                    $querysettings =$this->subeventRepository->getTYPO3QuerySettings() ;
                     $querysettings->setStoragePageIds(array( $event->getPid() )) ;
 
                     $this->eventRepository->setDefaultQuerySettings( $querysettings );

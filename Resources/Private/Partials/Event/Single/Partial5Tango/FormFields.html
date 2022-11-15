@@ -6,7 +6,7 @@
 <f:if condition="{event.canceled}">
 	<div class="alert alert-info alert-dismissable" id="jv-events-cancelEvent-info">
 		<div class="float-right">
-			<f:link.action id="jv-events-cancelEvent-link" absolute="true" noCacheHash="true" pageUid="{settings.pageIds.editEvent}" class="nav-link" title="Cancel Event" action="cancel" controller="Event" arguments="{event: event.eventId}">
+			<f:link.action id="jv-events-cancelEvent-link" absolute="true"  pageUid="{settings.pageIds.editEvent}" class="nav-link" title="Cancel Event" action="cancel" controller="Event" arguments="{event: event.eventId}">
 				<input id="jv-events-cancelEvent"   type="checkbox" {f:if(condition: '{event.canceled}' , else : 'checked' )} data-onstyle="primary" data-offstyle="secondary" data-toggle="toggle" data-style="ios " data-on="{f:if(condition: '{event.canceled}' , else: 'Active' , then: 'activating ..' )}" data-off="{f:if(condition: '{event.canceled}' , then:'Canceled!' , else: 'Canceling ...' )}">
 			</f:link.action>
 		</div>

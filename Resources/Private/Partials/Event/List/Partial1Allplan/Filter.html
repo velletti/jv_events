@@ -128,7 +128,7 @@
 </f:if>
 
 <f:if condition="{settings.ShowFilter}==1">
-    <f:form action="list" id="jv_events_filter" object="{eventsFilter}" class="row" enctype="multipart/form-data" method="get" noCacheHash="1" additionalParams="{tx_jv_events_event: {__widget_0: {currentPage: 0}}}">
+    <f:form action="list" id="jv_events_filter" object="{eventsFilter}" class="row" enctype="multipart/form-data" method="get"  additionalParams="{tx_jv_events_event: {__widget_0: {currentPage: 0}}}">
         <div class="form-group clearfix">
             <f:if condition="{f:count(subject: eventsFilter.months)} > 1">
                 <div class="col-sm-2 col-xs-4">

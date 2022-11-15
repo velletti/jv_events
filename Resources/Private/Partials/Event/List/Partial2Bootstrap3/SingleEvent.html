@@ -15,7 +15,7 @@
 							</f:link.typolink>
 						</f:then>
 						<f:else>
-							<f:link.action pageUid="{settings.detailPid}" action="show" arguments="{event : event}" noCache="true" noCacheHash="true">
+							<f:link.action pageUid="{settings.detailPid}" action="show" arguments="{event : event}" noCache="true" >
 								<div class="date">
 									<span class="day">{f:format.date(date:event.startDate, format:'d')}</span>
 									<span class="month-year"><JVE:writeDateAbbreviation month="{f:format.date(date:event.startDate, format:'m')}"></JVE:writeDateAbbreviation></span>
@@ -35,7 +35,7 @@
 								</f:link.typolink>
 							</f:then>
 							<f:else>
-								<f:link.action  pageUid="{settings.detailPid}" action="show" arguments="{event : event}"  noCache="true" noCacheHash="true">
+								<f:link.action  pageUid="{settings.detailPid}" action="show" arguments="{event : event}"  noCache="true" >
 									{event.name}
 								</f:link.action>
 							</f:else>

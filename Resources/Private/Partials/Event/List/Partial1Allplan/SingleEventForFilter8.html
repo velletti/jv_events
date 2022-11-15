@@ -41,7 +41,7 @@
 							</f:link.typolink>
 						</f:then>
 						<f:else>
-							<f:link.action pageUid="{settings.detailPid}" action="show" noCacheHash="true" arguments="{event : event}">
+							<f:link.action pageUid="{settings.detailPid}" action="show"  arguments="{event : event}">
 								<strong>
 									{event.name}
 									<f:if condition="{event.organizer.name}">
@@ -90,7 +90,7 @@
 							</f:link.typolink>
 						</f:then>
 						<f:else>
-							<f:link.action class="internalLink" pageUid="{settings.detailPid}" noCacheHash="true" action="show" arguments="{event : event}"  title="{f:translate(key: 'tx_jvevents_domain_model_event.details.linktext')}">
+							<f:link.action class="internalLink" pageUid="{settings.detailPid}"  action="show" arguments="{event : event}"  title="{f:translate(key: 'tx_jvevents_domain_model_event.details.linktext')}">
 								<f:if condition="{event.eventButtonText}">
 									<f:then>
 										{event.eventButtonText}

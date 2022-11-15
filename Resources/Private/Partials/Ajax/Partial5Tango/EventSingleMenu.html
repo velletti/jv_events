@@ -27,7 +27,7 @@
                     </span>
 
 
-                    <f:link.action id="jv-events-cancelEvent-link" absolute="true" noCacheHash="true" pageUid="{settings.pageIds.editEvent}" class="nav-link  px-1" title="Cancel Event" action="cancel" controller="Event"  pluginName="Events" arguments="{event: output.event.eventId}">
+                    <f:link.action id="jv-events-cancelEvent-link" absolute="true"  pageUid="{settings.pageIds.editEvent}" class="nav-link  px-1" title="Cancel Event" action="cancel" controller="Event"  pluginName="Events" arguments="{event: output.event.eventId}">
                         <input id="jv-events-cancelEvent"   type="checkbox" {f:if(condition: '{output.event.canceled}' , else : 'checked' )} data-size="small" data-onstyle="primary" data-offstyle="secondary" data-toggle="toggle" data-style="ios " data-on="{f:if(condition: '{output.event.canceled}' , else: 'ON' , then: '..' )}" data-off="{f:if(condition: '{output.event.canceled}' , then:'Off' , else: '..' )}">
                     </f:link.action>
 
@@ -144,7 +144,7 @@
                     <f:variable name="deleteModalFooter">
                         <f:format.raw>
                             <f:spaceless>
-                                <f:link.action id="jv_events_delete_btn" pageUid="{settings.pageIds.editEvent}"  noCacheHash="true" class="nav-link" title="delete Event" action="delete" controller="Event" pluginName="Events"  arguments="{event: output.event.eventId , deleteFutureEvents: 0}">
+                                <f:link.action id="jv_events_delete_btn" pageUid="{settings.pageIds.editEvent}"   class="nav-link" title="delete Event" action="delete" controller="Event" pluginName="Events"  arguments="{event: output.event.eventId , deleteFutureEvents: 0}">
                                     <button class="btn btn-primary btn-sm " href="#">
                                         <i class="fas fa-trash "></i> <span class="mx-1">
                                         <f:translate key="event_delete_really_button">
@@ -152,7 +152,7 @@
                                         </f:translate></span>
                                     </button>
                                 </f:link.action>
-                                <f:link.action id="jv_events_delete_btn_all" pageUid="{settings.pageIds.editEvent}" style="display:none;" noCacheHash="true" class="nav-link" title="delete Event" action="delete" controller="Event"  pluginName="Events" arguments="{event: output.event.eventId , deleteFutureEvents: 1}">
+                                <f:link.action id="jv_events_delete_btn_all" pageUid="{settings.pageIds.editEvent}" style="display:none;"  class="nav-link" title="delete Event" action="delete" controller="Event"  pluginName="Events" arguments="{event: output.event.eventId , deleteFutureEvents: 1}">
                                     <button class="btn btn-primary btn-sm " href="#">
                                         <i class="fas fa-trash "></i> {output.event.sameMasterId}x <span class="mx-1"><f:translate key="event_delete_really_button">
                                      Delete really!
@@ -170,7 +170,7 @@
                                 <div class="row">
                                     <div class="col-12 pt-2">
 
-                                        <f:link.page pageUid="{settings.pageIds.showEventDetail}" title="Registations for Event" noCache="true" noCacheHash="true" class="btn btn-outline-primary x-1   w-100 text-left"
+                                        <f:link.page pageUid="{settings.pageIds.showEventDetail}" title="Registations for Event" noCache="true"  class="btn btn-outline-primary x-1   w-100 text-left"
                                                      additionalParams="{tx_jvevents_events: {action: 'list', controller: 'Registrant' , pluginName: 'Events',  event: '{output.event.eventId}', hash: '{settings.hash}' , export: '0'}}">
                                             <button class="btn btn-outline-primary btn-sm rounded-circle mr-2" href="#">
                                                 <i class="fas fa-users"></i>
