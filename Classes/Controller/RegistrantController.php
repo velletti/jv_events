@@ -5,6 +5,7 @@ use JVE\JvEvents\Domain\Model\Event;
 use JVE\JvEvents\Domain\Model\Registrant;
 use JVE\JvEvents\Domain\Model\Subevent;
 use JVE\JvEvents\EventListener\RegisterHubspotUtility;
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -225,10 +226,10 @@ class RegistrantController extends BaseController
         }
         switch ( $registrant->getGender() ) {
             case 1:
-                $gender = $this->translate("register_gender_female" ) ;
+                $gender = $this->translate("register_gender_male" ) ;
                 break;
             case 2:
-                $gender = $this->translate("register_gender_male" ) ;
+                $gender = $this->translate("register_gender_female" ) ;
                 break;
             default:
                 $gender = $this->translate("register_gender_diverse" ) ;
@@ -1012,13 +1013,12 @@ class RegistrantController extends BaseController
 
     /**
      * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request
-     * @param \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response
      * @throws \Exception|\TYPO3\CMS\Extbase\Property\Exception
      */
-    public function processRequest(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request, \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response)
+    public function processRequest(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request ):ResponseInterface
     {
         try {
-            parent::processRequest($request, $response);
+            parent::processRequest($request);
         }
         catch(\TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException $e) {
 
