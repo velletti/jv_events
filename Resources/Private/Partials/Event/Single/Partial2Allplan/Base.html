@@ -170,6 +170,16 @@
 			<h2><f:translate key="tx_jvevents_domain_model_event.details.tab.details" /></h2>
 
 			<div class="data clearfix">
+				<f:if condition="{event.isRegistrationPossible}">
+					<f:then>
+						<div class="text-right">
+							<event:regLink event="{event}" settings="{settings}" uriOnly="0" class="button-orange-filled">
+								{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:list.register.button.subscribe' , default:'Anmelden')}
+							</event:regLink>
+						</div>
+
+					</f:then>
+				</f:if>
 				<f:format.html parseFuncTSPath="lib.jveventsRTE">{event.description}</f:format.html>
 			</div>
 
@@ -343,7 +353,7 @@
 	<f:if condition="{event.isRegistrationPossible}">
 		<f:then>
 			<div class="text-right">
-				<event:regLink event="{event}" settings="{settings}" uriOnly="0" class="btn btn-primary">
+				<event:regLink event="{event}" settings="{settings}" uriOnly="0" class="button-orange-filled">
 					{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:list.register.button.subscribe' , default:'Anmelden')}
 				</event:regLink>
 			</div>
