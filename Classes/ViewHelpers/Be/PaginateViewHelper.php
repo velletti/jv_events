@@ -77,7 +77,6 @@ class PaginateViewHelper extends AbstractViewHelper {
      * @param array $arguments
      * @param RenderingContextInterface $renderingContext
      * @return PaginatorInterface
-     * @throws NotPaginatableException
      */
     protected static function getPaginator(
         array $arguments,
@@ -88,7 +87,6 @@ class PaginateViewHelper extends AbstractViewHelper {
         } elseif (is_a($arguments['objects'], QueryResultInterface::class)) {
             $paginatorClass = QueryResultPaginator::class;
         } else {
-            throw new NotPaginatableException('Given object is not supported for pagination', 1634132847);
         }
         return GeneralUtility::makeInstance(
             $paginatorClass,
