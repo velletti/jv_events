@@ -10,50 +10,8 @@
 	>
 
 		<f:flashMessages />
-		<script type="application/javascript">
-			$(document).ready(function() {
-				$('.tx_jvevents_citrix').click( function(event) {
-					event.preventDefault() ;
-					var thisReg = $(this)
-					$(thisReg).html( $('#jvevents-spinner-icon').html() )  ;
 
-					$.get( $(this).attr("href") , function(data , status ) {
-						$(thisReg).html($('#jvevents-close-icon').html());
-						if (data.uid) {
-							if (data.text.status) {
-								$(thisReg).html($('#jvevents-okay-icon').html());
-								$(thisReg).attr("title" , "Response Status: " . data.text.status ) ;
-							} else {
-								$(thisReg).html($('#jvevents-error-icon').html());
-								$(thisReg).attr("title" , 'error : '  . data.text.error ) ;
-							}
-						} else {
-							$(thisReg).html($('#jvevents-error-icon').html());
-							$(thisReg).attr("title" , 'undefined error' ) ;
-						}
-
-					}) ;
-				}) ;
-				$('.pagination LI A').each( function() {
-					var eventId = $("#jveventFilterForm #jvevents").val() ;
-					var recursive = $("#jveventFilterForm #recursive").val() ;
-					var onlyActual = $("#jveventFilterForm #onlyActual").val() ;
-					var addString =  "&tx_jvevents_web_jveventseventmngt[recursive]=" +  recursive ;
-					addString = addString +  "&tx_jvevents_web_jveventseventmngt[onlyActual]=" +  onlyActual ;
-					addString = addString + "&tx_jvevents_web_jveventseventmngt[event]=" +  eventId ;
-					console.log( " Addstrng= " +addString ) ;
-					console.log( " old HREF = " +$(this).attr("href"  ) ) ;
-
-					$(this).attr("href" , $(this).attr("href") + addString )  ;
-					console.log( " NEW HREF = " +$(this).attr("href"  ) ) ;
-
-				}) ;
-
-
-			}) ;
-
-		</script>
-		<div style="display:none;">
+		<div class="d-none" style="display:none;">
 			<!-- comment: Icon or messages needed for Ajax see typo3\sysext\core\Classes\Imaging\IconRegistry.php //-->
 
 
@@ -129,7 +87,7 @@
 				<jve:be.paginate objects="{registrants}" as="paginatedRegistrants" itemsPerPage="{itemsPerPage}">
 
 					<f:alias map="{pagination:paginatedRegistrants.pagination, paginator:paginatedRegistrants.paginator, name:paginatedRegistrants.name}">
-	 <hr> RENDER nAV BAR<hr>
+						<f:render partial="Backend/Pagination" arguments="{_all}" />
 					</f:alias>
 
 					<f:for each="{paginatedRegistrants.paginator.paginatedItems}" as="registrant">
