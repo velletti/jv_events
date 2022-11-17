@@ -76,7 +76,8 @@
 		</f:form>
 
 	</f:if>
-	<f:be.widget.paginate objects="{registrants}" as="paginatedRegistrants" configuration="{itemsPerPage: itemsPerPage, insertAbove: 1, maximumNumberOfLinks: 3}">
+
+	<jve:be.paginate objects="{registrants}" as="paginatedRegistrants" itemsPerPage="{itemsPerPage}">
 		<div class="row bg-primary ">
 			<div class="col-xs-1">
 
@@ -102,8 +103,8 @@
 			</div>
 		</div>
 		<div class="jvevents-entrys">
-			<f:for each="{paginatedRegistrants}" as="registrant" iteration="iterator">
 
+			<f:for each="{paginatedRegistrants.paginator.paginatedItems}" as="registrant">
 				<div class="row registrant{registrant.uid} regEvent{registrant.event}">
 					<div class="col-xs-1">
 
@@ -250,10 +251,18 @@
 						</p>
 					</div>
 				</div>
-
 			</f:for>
+
+		<f:alias map="{pagination:paginatedRegistrants.pagination, paginator:paginatedRegistrants.paginator, name:paginatedRegistrants.name}">
+
+		</f:alias>
+
+
 		</div>
-	</f:be.widget.paginate>
+
+	</jve:be.paginate>
+
+
 
 
 </f:section>

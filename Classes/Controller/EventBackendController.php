@@ -26,6 +26,7 @@ namespace JVE\JvEvents\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use JVE\JvEvents\Utility\RegisterHubspotUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -36,15 +37,11 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
  */
 class EventBackendController extends BaseController
 {
-    /**
-     * @var \JVE\JvEvents\Signal\RegisterCitrixSignal
-     */
-    protected  $citrixSlot  ;
 
     /**
-     * @var \JVE\JvEvents\Signal\RegisterHubspotSignal
+     * @var RegisterHubspotUtility
      */
-    protected  $hubspotSlot  ;
+    protected RegisterHubspotUtility $hubspot  ;
 
 
 
@@ -60,8 +57,7 @@ class EventBackendController extends BaseController
 		if (!$this->request->hasArgument('event')) {
 			// ToDo redirect to error
 		}
-        $this->citrixSlot = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\JVE\JvEvents\Signal\RegisterCitrixSignal::class);
-        $this->hubspotSlot = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\JVE\JvEvents\Signal\RegisterHubspotSignal::class);
+        $this->hubspot = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(RegisterHubspotUtility::class);
         parent::initializeAction() ;
 	}
     /**
@@ -367,7 +363,7 @@ class EventBackendController extends BaseController
                     $event->getRegistrationFormPid(), "tx_jvevents_events",array( '[siteLanguage("languageId") = ' . intval($lng ) . ']' )
                 );
 
-                $response = $this->hubspotSlot->createAction($registrant, $event, $this->settings);
+                $response = $this->hubspot->createAction($registrant, $event, $this->settings);
 
 
                 if ($response['status'] == 201 || $response['status']  == 204) {
