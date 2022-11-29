@@ -1,15 +1,10 @@
 {namespace jve=JVE\JvEvents\ViewHelpers}
-<f:layout name="Default" />
+<f:layout name="Backend" />
 
 <f:section name="main">
 	<f:render section="content" arguments="{_all}"/>
 </f:section>
 <f:section name="content">
-	<f:be.container
-			includeCssFiles="{0: '{f:uri.resource(path:\'Css/backendModule.css\')}'}"
-	>
-
-		<f:flashMessages />
 
 		<div class="d-none" style="display:none;">
 			<!-- comment: Icon or messages needed for Ajax see typo3\sysext\core\Classes\Imaging\IconRegistry.php //-->
@@ -259,6 +254,5 @@
 			</tbody>
 		</table>
 		</div>
-	</f:be.container>
 
 </f:section>
