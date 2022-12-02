@@ -2,15 +2,28 @@
 
 namespace JVE\JvEvents\Middleware;
 
+use JVE\JvEvents\Domain\Model\Location;
+use JVE\JvEvents\Domain\Repository\CategoryRepository;
+use JVE\JvEvents\Domain\Repository\EventRepository;
+use JVE\JvEvents\Domain\Repository\LocationRepository;
+use JVE\JvEvents\Domain\Repository\OrganizerRepository;
+use JVE\JvEvents\Domain\Repository\RegistrantRepository;
+use JVE\JvEvents\Domain\Repository\StaticCountryRepository;
+use JVE\JvEvents\Domain\Repository\SubeventRepository;
+use JVE\JvEvents\Domain\Repository\TagRepository;
 use JVE\JvEvents\Utility\AjaxUtility;
+use JVE\JvEvents\Utility\ShowAsJsonArrayUtility;
+use JVE\JvEvents\Utility\TyposcriptUtility;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\Stream;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 
 /**
  * Class Ajax
@@ -92,14 +105,17 @@ class Ajax implements MiddlewareInterface
         if( is_array($_gp) && key_exists("tx_jvevents_ajax" ,$_gp ) && key_exists("action" ,$_gp['tx_jvevents_ajax']  ) ) {
 
             $function = strtolower( trim($_gp['tx_jvevents_ajax']['action'])) ;
-            if( $function != "activateXX"  ) {
+            if( $function == "eventlist"  ) {
+                $this->getEventList( $_gp["tx_jvevents_ajax"] ) ;
+
+            } else {
 
                 $GLOBALS['TSFE']->set_no_cache();
                     /** @var AjaxUtility $ajaxUtility */
                 $ajaxUtility = GeneralUtility::makeInstance(\JVE\JvEvents\Utility\AjaxUtility::class) ;
 
                 // ToDo generate Output as before in ajax Controller here in Middleware with CORE features.
-                $controller = $ajaxUtility->initController($_gp , $function ) ;
+                $controller = $ajaxUtility->initController($_gp , $function , $request ) ;
                 $controller->initializeRepositorys() ;
 
                 switch ($function) {
@@ -118,8 +134,10 @@ class Ajax implements MiddlewareInterface
                         }
                         break;
                     case 'eventlist' :
+                        // ToDo : remove
                         $controller->eventListAction($_gp["tx_jvevents_ajax"]) ;
                         break;
+
                     case 'locationlist' :
                         $controller->locationListAction($_gp["tx_jvevents_ajax"]) ;
                         break;
@@ -170,6 +188,658 @@ class Ajax implements MiddlewareInterface
         return false ;
     }
 
+    /**
+     * action list
+     *
+     * @param array|null $arguments
+     * @return void
+     */
+    public function getEventList(array $arguments=Null)
+    {
+
+        $this->tagRepository        = GeneralUtility::makeInstance(\JVE\JvEvents\Domain\Repository\TagRepository::class);
+        $this->categoryRepository        = GeneralUtility::makeInstance(\JVE\JvEvents\Domain\Repository\CategoryRepository::class);
+        $this->registrantRepository        = GeneralUtility::makeInstance(\JVE\JvEvents\Domain\Repository\RegistrantRepository::class);
+        $this->locationRepository        = GeneralUtility::makeInstance(\JVE\JvEvents\Domain\Repository\LocationRepository::class);
+        $this->organizerRepository        = GeneralUtility::makeInstance(\JVE\JvEvents\Domain\Repository\OrganizerRepository::class);
+        $this->eventRepository        = GeneralUtility::makeInstance(\JVE\JvEvents\Domain\Repository\EventRepository::class);
+        $this->subeventRepository        = GeneralUtility::makeInstance(\JVE\JvEvents\Domain\Repository\SubeventRepository::class);
+        $this->staticCountryRepository        = GeneralUtility::makeInstance(\JVE\JvEvents\Domain\Repository\StaticCountryRepository::class);
+
+        if (!$arguments) {
+            $arguments = GeneralUtility::_GPmerged('tx_jvevents_ajax');
+        }
+        $pid = GeneralUtility::_GP('id');
+        $ts = TyposcriptUtility::loadTypoScriptFromScratch($pid, "tx_jvevents_events");
+        if (is_array($this->settings) && is_array($ts)) {
+            $this->settings = array_merge($ts['settings']);
+        } elseif (is_array($ts)) {
+            $this->settings = $ts['settings'];
+        }
+
+        // 6.2.2020 with teaserText and files
+        // 27.1.2021 LTS 10 : wegfall &eID=jv_events und uid, dafür Page ID der Seite mit der Liste : z.b. "id=110"
+        // https://wwwv11.allplan.com.ddev.site/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=4308&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[mode]=onlyValues
+        // wird zu :
+        // https://wwwv11.allplan.com.ddev.site/?id=110&L=1&tx_jvevents_ajax[event]=4308&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[mode]=onlyValues
 
 
+        // https://wwwv11.allplan.com.ddev.site/de/?uid=82&L=1&tx_jvevents_ajax[event]=4308&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[mode]=onlyValues
+
+        // https://wwwv11.allplan.com.ddev.site/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=94&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[rss]=1
+        // https://wwwv11.allplan.com.ddev.site/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=94&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[mode]=onlyValues
+
+        // https://www-dev.allplan.com/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=2049&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][sameCity]=&tx_jvevents_ajax[eventsFilter][skipEvent]=2049&tx_jvevents_ajax[eventsFilter][startDate]=1&tx_jvevents_ajax[rss]=1
+        // https://www-dev.allplan.com/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=2049&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][sameCity]=&tx_jvevents_ajax[eventsFilter][skipEvent]=2049&tx_jvevents_ajax[eventsFilter][startDate]=1&tx_jvevents_ajax[mode]=onlyValues
+
+        // get all Access infos, Location infos , find similar events etc
+        $output = $this->eventsListMenuSub($arguments);
+
+        if ($output['mode'] == "onlyValues") {
+            unset($output['events']);
+            ShowAsJsonArrayUtility::show($output);
+        }
+        if ($output['mode'] == "onlyJson") {
+            ShowAsJsonArrayUtility::show($output);
+        }
+
+
+
+        /* ************************************************************************************************************ */
+        /*   render the HTML Output :
+        /* ************************************************************************************************************ */
+
+        if( $this->standaloneView ) {
+            /** @var \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
+            $renderer = $this->standaloneView  ;
+            if( $arguments['rss'] ) {
+                $renderer->setTemplate("EventListRss");
+            } else {
+                $renderer->setTemplate("EventList");
+            }
+        } else {
+            /** @var \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
+            if( $arguments['rss'] ) {
+                $renderer = $this->getEmailRenderer('', '/Ajax/EventListRss' );
+            } else {
+                $renderer = $this->getEmailRenderer( '', '/Ajax/EventList' );
+            }
+        }
+
+        $layoutPath = GeneralUtility::getFileAbsFileName("typo3conf/ext/jv_events/Resources/Private/Layouts/");
+
+        $renderer->setLayoutRootPaths(array(0 => $layoutPath));
+
+        $renderer->assign('output' , $output) ;
+        $renderer->assign('settings' , $this->settings ) ;
+        $return = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" .  trim( $renderer->render() ) ;
+
+        if( $arguments['rss'] ) {
+            header_remove();
+            header("content-type: application/rss+xml;charset=utf-8") ;
+
+            //   header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+            header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+            //    header('Cache-Control: no-cache, must-revalidate');
+            //    header('Pragma: no-cache');
+            //    header('Content-Length: ' . strlen($return));
+            //  header('Content-Transfer-Encoding: 8bit');
+            echo $return ;
+            die;
+        } else {
+            header("Content-Type:application/json;charset=utf-8") ;
+            ShowAsJsonArrayUtility::show( array( 'values' => $output , 'html' => $return ) ) ;
+            die;
+        }
+    }
+
+    /**
+     * action list
+     *
+     * @return array
+     */
+    public function eventsListMenuSub(array $arguments )
+    {
+
+
+
+        //  $GLOBALS['TSFE']->fe_user->user = [ 'uid' => 476 , "username" => "jvel@test.de" , "1,2,3,4,5,6,7"] ;
+        /* ************************************************************************************************************ */
+        /*   Prepare the Output :
+        /* ************************************************************************************************************ */
+        $feuser = intval(  $GLOBALS['TSFE']->fe_user->user['uid']) ;
+
+        $output = array (
+            "requestId" =>  intval( $GLOBALS['TSFE']->id ) ,
+
+            "event" => array()  ,
+            "events" => array()  ,
+            "eventsFilter" => array()  ,
+            "eventsByFilter" => array()  ,
+            "mode" => $arguments['mode'] ,
+            "feuser" => array(
+                "uid" => $GLOBALS['TSFE']->fe_user->user['uid'] ,
+                "username" => $GLOBALS['TSFE']->fe_user->user['username'] ,
+                "usergroup" => $GLOBALS['TSFE']->fe_user->user['usergroup'] ,
+                "isOrganizer" => $this->isUserOrganizer(),
+
+            )  ,
+            "organizer" => array() ,
+            "location" => array() ,
+
+        ) ;
+        if ( $output["feuser"]["isOrganizer"]) {
+            $feuserOrganizer = $this->organizerRepository->findByUserAllpages(intval($GLOBALS['TSFE']->fe_user->user['uid']), FALSE, TRUE);
+            if ( is_object($feuserOrganizer->getFirst())) {
+                $output["feuser"]["organizer"]['uid'] = $feuserOrganizer->getFirst()->getUid() ;
+            }
+
+        }
+
+
+        if(  $arguments['returnPid']  > 0 ) {
+            $output['returnPid'] = $arguments['returnPid']  ;
+        }
+
+        $configuration = \JVE\JvEvents\Utility\EmConfigurationUtility::getEmConf();
+        $singlePid = ( array_key_exists( 'DetailPid' , $configuration) && $configuration['DetailPid'] > 0 ) ? intval($configuration['DetailPid']) : 111 ;
+        $output['DetailPid'] = $singlePid  ;
+        try {
+            $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($singlePid);
+        } catch( \Exception $e) {
+            // ignore
+            $site = false ;
+        }
+
+
+
+
+
+        $needToStore = FALSE ;
+        /* ************************************************************************************************************ */
+        /*   Get infos about: EVENT
+        /* ************************************************************************************************************ */
+
+        if( $arguments['event']  > 0 ) {
+            $output['event']['requestId'] =  $arguments['event']  ;
+
+            /** @var \JVE\JvEvents\Domain\Model\Event $event */
+            $event = $this->eventRepository->findByUidAllpages( $output['event']['requestId'] , FALSE  , TRUE );
+            if( is_object($event )) {
+                if ( substr($output['mode'], 0 , 4 )  != "only" ) {
+                    $event->increaseViewed();
+                    $this->eventRepository->update($event) ;
+                    $needToStore = TRUE ;
+                }
+
+
+                $output['event']['eventId'] = $event->getUid() ;
+                $output['event']['viewed'] = $event->getViewed();
+                $output['event']['canceled'] = $event->getCanceled();
+
+                $output['event']['startDate'] = $event->getStartDate()->format("d.m.Y") ;
+                $output['event']['startTime'] = date( "H:i" , $event->getStartTime()) ;
+                $output['event']['endTime'] = date( "H:i" , $event->getEndTime()) ;
+                $output['event']['creationTime'] = date( "d.m.Y H:i" , $event->getCrdate() ) ;
+                $output['event']['crdate'] =  $event->getCrdate()  ;
+                $output['event']['noNotification'] = $event->getNotifyRegistrant() ;
+
+                if ( $site ) {
+                    try {
+                        $output['event']['slug'] = (string)$site->getRouter()->generateUri( $singlePid ,['_language' => max( $event->getLanguageUid() ,0 ) ,
+                            'tx_jvevents_events' => ['action' => 'show' , 'controller' => 'Event' ,'event' =>  $event->getUid() ]]);
+                    } catch( \EXCEPTION $e ) {
+                        $output['event']['slug'] = "pid=" . $singlePid . "&L=" . $event->getLanguageUid() ;
+                    }
+                }
+
+
+                if( $event->getNotifyRegistrant() == 0  ) {
+                    $reminder2 = new \DateInterval("P1D") ;
+                    $reminderDate2 =  new \DateTime($event->getStartDate()->format("c")) ;
+
+                    $reminder1 = new \DateInterval("P7D") ;
+                    $reminderDate1 =  new \DateTime($event->getStartDate()->format("c")) ;
+                    $now =  new \DateTime() ;
+                    if ( $reminderDate1 > $now ) {
+                        $output['event']['reminderDate1'] =  $reminderDate1->sub( $reminder1 )->format("d.m.Y") ;
+                    }
+                    if ( $reminderDate2 > $now ) {
+                        $output['event']['reminderDate2'] =  $reminderDate2->sub( $reminder2 )->format("d.m.Y") ;
+                    }
+                }
+
+                $output['event']['name'] = $event->getName() ;
+                $output['event']['teasterText'] = $event->getTeaser();
+                $output['event']['teaserImageUrl'] = GeneralUtility::getIndpEnv("TYPO3_REQUEST_HOST")  ;
+                if (  $event->getTeaserImage() && is_object( $event->getTeaserImage()->getOriginalResource()) ) {
+                    $output['event']['TeaserImageFrom'] =  "Event" ;
+                    $output['event']['teaserImageUrl'] .=  $event->getTeaserImage()->getOriginalResource()->getPublicUrl() ;
+                } else {
+                    if( $this->settings['EmConfiguration']['imgUrl2'] ) {
+                        $output['event']['TeaserImageFrom'] =  "config-imgUrl2" ;
+                        $output['event']['teaserImageUrl'] .=  trim($this->settings['EmConfiguration']['imgUrl2']) ;
+                    } else {
+                        $output['event']['TeaserImageFrom'] =  "config-imgUrl" ;
+                        $output['event']['teaserImageUrl'] = GeneralUtility::getIndpEnv("TYPO3_REQUEST_HOST") . trim($this->settings['EmConfiguration']['imgUrl']) ;
+                    }
+                }
+                $output['event']['filesAfterReg'] = $this->getFilesArray( $event->getFilesAfterReg() )  ;
+                $output['event']['filesAfterEvent'] = $this->getFilesArray( $event->getFilesAfterEvent() )  ;
+
+
+
+                $output['event']['price'] = round( $event->getPrice() , 2 ) ;
+                $output['event']['currency'] = $event->getCurrency() ;
+                $output['event']['priceReduced'] = $event->getPriceReduced();
+                $output['event']['priceReducedText'] = $event->getPriceReducedText();
+
+                $output['event']['registration']['possible'] = $event->isIsRegistrationPossible() ;
+                $output['event']['registration']['formPid'] = $event->getRegistrationFormPid() ;
+                $output['event']['registration']['noFreeSeats'] = $event->isIsNoFreeSeats() ;
+                $output['event']['registration']['freeSeats'] = $event->getAvailableSeats() ;
+                $output['event']['registration']['freeSeatsWaitinglist'] = $event->getAvailableWaitingSeats();
+                $output['event']['registration']['registeredSeats'] = $event->getRegisteredSeats();
+                $output['event']['registration']['unconfirmedSeats'] = $event->getUnconfirmedSeats();
+
+                $output['event']['registration']['sfCampaignId'] = $event->getSalesForceCampaignId() ;
+                $output['event']['notification']['waitinglist'] = $event->getIntrotextRegistrant() ;
+                $output['event']['notification']['confirmed'] = $event->getIntrotextRegistrantConfirmed() ;
+
+                if( is_object( $event->getOrganizer() )) {
+                    $organizer = $event->getOrganizer() ;
+                    $output['event']['organizerId'] = $organizer->getUid()  ;
+                    $output['organizer']['organizerName'] = $organizer->getname()  ;
+                    $output['organizer']['organizerEmail'] = $organizer->getEmail()  ;
+                    $output['organizer']['organizerPhone'] = $organizer->getPhone()  ;
+                    $output['organizer']['organizerSFID'] = $organizer->getSalesForceUserId() ;
+                    $output['event']['registration']['registrationInfo'] = $organizer->getRegistrationInfo() ;
+                    $output['event']['hasAccess'] = $this->hasUserAccess( $organizer ) ;
+                }
+                if( is_object( $event->getLocation() )) {
+
+                    $location = $event->getLocation() ;
+                    $output['event']['locationId'] = $event->getLocation()->getUid() ;
+                }
+                $output['event']['days'] = $event->getSubeventCount() ;
+                if( $event->getSubeventCount() > 0 ) {
+                    $querysettings =$this->subeventRepository->getTYPO3QuerySettings() ;
+                    $querysettings->setStoragePageIds(array( $event->getPid() )) ;
+
+                    $this->subeventRepository->setDefaultQuerySettings( $querysettings );
+
+                    $subeventsArr = $this->subeventRepository->findByEventAllpages($event->getUid() , TRUE   ) ;
+                    /** @var \JVE\JvEvents\Domain\Model\Subevent $subevent */
+                    foreach ( $subeventsArr as $subevent) {
+                        if( is_object( $subevent )) {
+                            $temp = [] ;
+                            $temp['date'] = $subevent->getStartDate()->format("d.m.Y") ;
+                            $temp['starttime'] = date( "H:i" ,$subevent->getStartTime() ) ;
+                            $temp['endtime'] = date( "H:i" ,$subevent->getEndTime() ) ;
+                            $output['event']['moreDays'][] = $temp ;
+                            unset($temp) ;
+                        }
+
+                    }
+
+                } else {
+                    $output['event']['moreDays'] = [] ;
+                }
+                if( $event->getMasterId() > 0 ) {
+                    $querysettings =$this->subeventRepository->getTYPO3QuerySettings() ;
+                    $querysettings->setStoragePageIds(array( $event->getPid() )) ;
+
+                    $this->eventRepository->setDefaultQuerySettings( $querysettings );
+                    $filter = array() ;
+                    $filter['startDate'] = $event->getStartDate()->getTimestamp() ;
+                    $filter['maxDays'] = 999 ;
+                    $filter['skipEvent'] = $event->getUid() ;
+                    $filter['masterId']  = $event->getMasterId() ;
+
+                    $sameMaster = $this->eventRepository->findByFilter($filter ) ;
+                    $output['event']['masterId'] =  $event->getMasterId() ;
+                    $output['event']['sameMasterId'] =  $sameMaster->count()  ;
+
+                } else {
+                    $output['event']['masterId'] = false ;
+                }
+            }
+        }
+
+        if( $arguments['eventsFilter']  ) {
+
+            $output['eventsFilter'] = $arguments['eventsFilter'] ;
+
+            if ( $output['eventsFilter']['sameCity'] ) {
+                $output['eventsFilter']['citys'] = $output['event']['locationId']  ;
+                if( is_object( $location )) {
+                    $dist = intval( $output['eventsFilter']['sameCity'] ) ;
+                    if ( $dist == 1 ||  $dist > 500 || intval( $location->getLng() == 0 )) {
+                        $filter = array( "city" =>  $location->getCity() )  ;
+                    } else {
+                        $filter = $this->locationRepository->getBoundingBox(  $location->getLat() , $location->getLng() , $dist ) ;
+                    }
+
+                    $locations = $this->locationRepository->findByFilterAllpages( $filter , true , true , false , '-10 YEAR') ;
+                    if(is_array($locations)) {
+                        /** @var Location $otherLocation */
+                        foreach ($locations as $otherLocation ) {
+                            $citys[] = $otherLocation->getUid() ;
+                        }
+                        $output['eventsFilter']['citys'] = implode("," , $citys) ;
+                    }
+                }
+            }
+
+            // $this->settings['debug'] = 2 ;
+
+            /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $events */
+            $events = $this->eventRepository->findByFilter( $output['eventsFilter'], $arguments['limit'],  $this->settings );
+            if( count( $events ) > 0 ) {
+                $output['events'] = $events ;
+                /** @var \JVE\JvEvents\Domain\Model\Event $tempEvent */
+                $tempEvent =  $events->getFirst() ;
+                if( is_object( $tempEvent )) {
+                    if ( substr($output['mode'], 0, 4 )  != "only") {
+                        $tempEvent->increaseViewed();
+                        $this->eventRepository->update($tempEvent);
+                        $needToStore = TRUE;
+                        $output['events'] = $events ;
+                    } else {
+
+                        $tempEventsArray = $events->toArray() ;
+                        foreach ( $tempEventsArray as $tempEvent ) {
+
+                            $tempEventArray = [] ;
+                            $tempEventArray['uid'] = $tempEvent->getUid();
+                            $tempEventArray['name'] = $tempEvent->getName();
+                            $tempEventArray['startDate'] = $tempEvent->getStartDate()->format("d.m.Y");
+                            $tempEventArray['startTime'] = date( "H:i" , $tempEvent->getStartTime() );
+                            $tempEventArray['endTime'] =  date( "H:i" , $tempEvent->getEndTime() );
+                            $tempEventArray['teaser'] = $tempEvent->getTeaser();
+
+                            if (is_object($tempEvent->getLocation())) {
+                                $tempEventArray['LocationCity'] = $tempEvent->getLocation()->getCity();
+                            }
+                            if ( $site ) {
+                                try {
+                                    $tempEventArray['slug'] = (string)$site->getRouter()->generateUri( $singlePid ,['_language' => max( $tempEvent->getLanguageUid() ,0 ) ,
+                                        'tx_jvevents_events' => ['action' => 'show' , 'controller' => 'Event' ,'event' =>  $tempEvent->getUid() ]]);
+                                } catch( \EXCEPTION $e ) {
+                                    $tempEventArray['slug'] = "pid=" . $singlePid . "&L=" . $tempEvent->getLanguageUid() ;
+                                }
+                            }
+
+                            $output['eventsByFilter'][] = $tempEventArray;
+                            unset( $tempEventArray );
+                        }
+
+                    }
+
+
+                }
+            }
+
+        }
+        /* ************************************************************************************************************ */
+        /*   Get infos about: Location
+        /* ************************************************************************************************************ */
+        if( $arguments['location'] > 0 && !is_object($location ) ) {
+            $output['location']['requestId'] = $arguments['location'] ;
+
+            /** @var \JVE\JvEvents\Domain\Model\Event $event */
+            $location = $this->locationRepository->findByUidAllpages( $arguments['location'], FALSE, TRUE);
+
+        }
+
+        // Location is set either by Event OR by location uid from request
+        if( is_object($location )) {
+            $output['location']['locationId'] = $location->getUid() ;
+            $output['location']['locationName'] = $location->getName();
+            $output['location']['streetAndNr'] = $location->getStreetAndNr() ;
+            $output['location']['zip'] = $location->getZip() ;
+            $output['location']['city'] = $location->getCity() ;
+            $output['location']['link'] = $location->getLink() ;
+            $output['location']['description'] = $location->getDescription() ;
+            $output['location']['country'] = $location->getCountry() ;
+            $output['location']['lat'] = $location->getLat() ;
+            $output['location']['lng'] = $location->getLng() ;
+
+            if( is_object( $location->getOrganizer() )) {
+                $organizer = $location->getOrganizer() ;
+                $output['location']['organizerId'] = $organizer->getUid()  ;
+                $output['location']['organizerEmail'] = $organizer->getEmail()  ;
+                $output['location']['hasAccess'] = $this->hasUserAccess( $organizer ) ;
+
+            }
+
+        }
+        /* ************************************************************************************************************ */
+        /*   Get infos about: Organizer
+        /* ************************************************************************************************************ */
+        if(  $arguments['organizer'] > 0  && !is_object($organizer ) ) {
+            $output['organizer']['requestId'] =  $arguments['organizer'];
+
+            /** @var \JVE\JvEvents\Domain\Model\Organizer $organizer */
+            $organizer = $this->organizerRepository->findByUidAllpages(  $arguments['organizer'], FALSE, TRUE);
+        }
+
+        // Location is set either by Event OR by location uid from request
+        if( is_object($organizer )) {
+            $output['organizer']['organizerId'] = $organizer->getUid() ;
+            $output['organizer']['hasAccess'] = $this->hasUserAccess( $organizer ) ;
+
+
+
+        }
+        if( $needToStore) {
+            $this->persistenceManager->persistAll();
+        }
+        return  $output  ;
+
+    }
+
+
+    /**
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $resource
+     * @return array
+     *
+     */
+    public function getFilesArray( \TYPO3\CMS\Extbase\Persistence\ObjectStorage $resource ) {
+        /** @var \TYPO3\CMS\Extbase\Domain\Model\FileReference $tempFile */
+        $return = array() ;
+        if(is_object($resource) && $resource->count() > 0 ) {
+            foreach ($resource as $tempFile) {
+
+                try {
+                    $single = array() ;
+                    if( is_object($tempFile) && $tempFile->getOriginalResource() ) {
+                        $single['url'] =  GeneralUtility::getIndpEnv("TYPO3_REQUEST_HOST") . $tempFile->getOriginalResource()->getPublicUrl() ;
+                        $single['filename'] =  $tempFile->getOriginalResource()->getName() ;
+                        $single['title'] =  $tempFile->getOriginalResource()->getTitle() ;
+                        if(!$single['title'] ) {
+                            $single['title']  =  str_replace( "_" , " " , $tempFile->getOriginalResource()->getNameWithoutExtension() ) ;
+                        }
+                        $single['ext'] =  $tempFile->getOriginalResource()->getExtension() ;
+                        $single['mimeType'] =  $tempFile->getOriginalResource()->getMimeType() ;
+                        $single['width'] =  $tempFile->getOriginalResource()->getProperties()['width'];
+                        $single['height'] =  $tempFile->getOriginalResource()->getProperties()['height'];
+                        $single['size'] =  $tempFile->getOriginalResource()->getSize() ;
+                    }
+                    $return[] = $single ;
+                } catch(\Exception $e) {
+
+                }
+
+            }
+        }
+        return $return ;
+    }
+
+
+    /**
+     *  $eventRepository
+     * @var \JVE\JvEvents\Domain\Repository\EventRepository
+     */
+    protected $eventRepository = NULL;
+
+    /**
+     * subeventRepository
+     *
+     * @var \JVE\JvEvents\Domain\Repository\SubeventRepository
+     */
+    protected $subeventRepository = NULL;
+
+    /**
+     * staticCountryRepository
+     *
+     * @var \JVE\JvEvents\Domain\Repository\StaticCountryRepository
+     */
+    protected $staticCountryRepository = NULL;
+
+    /**
+     * organizerRepository
+     *
+     * @var \JVE\JvEvents\Domain\Repository\OrganizerRepository
+     */
+    protected $organizerRepository = NULL;
+
+
+    /**
+     * locationRepository
+     *
+     * @var \JVE\JvEvents\Domain\Repository\LocationRepository
+     */
+    protected $locationRepository = NULL;
+
+    /**
+     * persistencemanager
+     *
+     * @var PersistenceManager
+     */
+    protected $persistenceManager = NULL ;
+
+    /**
+     * registrantRepository
+     *
+     * @var \JVE\JvEvents\Domain\Repository\RegistrantRepository
+     */
+    protected $registrantRepository = NULL;
+
+
+    /**
+     * categoryRepository
+     *
+     * @var \JVE\JvEvents\Domain\Repository\CategoryRepository
+     */
+    protected $categoryRepository = NULL;
+
+    /**
+     * tagRepository
+     *
+     * @var TagRepository
+     */
+    protected $tagRepository = NULL;
+
+
+    /**
+     * @var array
+     */
+    public $debugArray ;
+
+
+    /**
+     * @var float
+     */
+    public $timeStart ;
+
+    /**
+     * @param TagRepository $tagRepository
+     */
+    public function injectTagRepository(TagRepository $tagRepository)
+    {
+        $this->tagRepository = $tagRepository;
+    }
+
+    /**
+     * @param CategoryRepository $categoryRepository
+     */
+    public function injectCategoryRepository(CategoryRepository $categoryRepository)
+    {
+        $this->categoryRepository = $categoryRepository;
+    }
+
+    /**
+     * @param RegistrantRepository $registrantRepository
+     */
+    public function injectRegistrantRepository(RegistrantRepository $registrantRepository)
+    {
+        $this->registrantRepository = $registrantRepository;
+    }
+
+    /**
+     * @param LocationRepository $locationRepository
+     */
+    public function injectLocationRepository(LocationRepository $locationRepository)
+    {
+        $this->locationRepository = $locationRepository;
+    }
+
+    /**
+     * @param OrganizerRepository $organizerRepository
+     */
+    public function injectOrganizerRepository(OrganizerRepository $organizerRepository)
+    {
+        $this->organizerRepository = $organizerRepository;
+    }
+
+    /**
+     * @param EventRepository $eventRepository
+     */
+    public function injectEventRepository(EventRepository $eventRepository)
+    {
+        $this->eventRepository = $eventRepository;
+    }
+
+    /**
+     * @param SubeventRepository $subeventRepository
+     */
+    public function injectSubeventRepository(SubeventRepository $subeventRepository)
+    {
+        $this->subeventRepository = $subeventRepository;
+    }
+
+    /**
+     * @param StaticCountryRepository $staticCountryRepository
+     */
+    public function injectStaticCountryRepository(StaticCountryRepository $staticCountryRepository)
+    {
+        $this->staticCountryRepository = $staticCountryRepository;
+    }
+
+
+
+    /**
+     * @param PersistenceManager $persistenceManager
+     */
+    public function injectPersistenceManager(PersistenceManager $persistenceManager)
+    {
+        $this->persistenceManager = $persistenceManager;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUserOrganizer() {
+        $groups = GeneralUtility::trimExplode("," , $this->settings['feEdit']['organizerGroudIds'] , TRUE ) ;
+        $feuserGroups = GeneralUtility::trimExplode("," ,  $GLOBALS['TSFE']->fe_user->user['usergroup']  , TRUE ) ;
+        foreach( $groups as $group ) {
+            if( in_array( $group  , $feuserGroups )) {
+                return true  ;
+            }
+        }
+        return false  ;
+    }
+
+    private array $settings = [] ;
 }
