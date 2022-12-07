@@ -3,6 +3,7 @@
 namespace JVE\JvEvents\Middleware;
 
 use JVE\JvEvents\Domain\Model\Location;
+use JVE\JvEvents\Domain\Model\Organizer;
 use JVE\JvEvents\Domain\Repository\CategoryRepository;
 use JVE\JvEvents\Domain\Repository\EventRepository;
 use JVE\JvEvents\Domain\Repository\LocationRepository;
@@ -23,6 +24,7 @@ use TYPO3\CMS\Core\Http\Stream;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 
 /**
@@ -378,8 +380,14 @@ class Ajax implements MiddlewareInterface
                 $output['event']['canceled'] = $event->getCanceled();
 
                 $output['event']['startDate'] = $event->getStartDate()->format("d.m.Y") ;
-                $output['event']['startTime'] = date( "H:i" , $event->getStartTime()) ;
-                $output['event']['endTime'] = date( "H:i" , $event->getEndTime()) ;
+                if  ($event->getAllDay() ) {
+                    $output['event']['allDay'] = true ;
+                } else {
+                    $output['event']['allDay'] = false ;
+                    $output['event']['startTime'] = date( "H:i" , $event->getStartTime()) ;
+                    $output['event']['endTime'] = date( "H:i" , $event->getEndTime()) ;
+                }
+
                 $output['event']['creationTime'] = date( "d.m.Y H:i" , $event->getCrdate() ) ;
                 $output['event']['crdate'] =  $event->getCrdate()  ;
                 $output['event']['noNotification'] = $event->getNotifyRegistrant() ;
@@ -554,8 +562,15 @@ class Ajax implements MiddlewareInterface
                             $tempEventArray['uid'] = $tempEvent->getUid();
                             $tempEventArray['name'] = $tempEvent->getName();
                             $tempEventArray['startDate'] = $tempEvent->getStartDate()->format("d.m.Y");
-                            $tempEventArray['startTime'] = date( "H:i" , $tempEvent->getStartTime() );
-                            $tempEventArray['endTime'] =  date( "H:i" , $tempEvent->getEndTime() );
+
+                            if  ($tempEvent->getAllDay() ) {
+                                $tempEventArray['allDay']   = true ;
+                            } else {
+                                $tempEventArray['allDay']   = false ;
+                                $tempEventArray['startTime'] = date( "H:i" , $tempEvent->getStartTime() );
+                                $tempEventArray['endTime'] =  date( "H:i" , $tempEvent->getEndTime() );
+                            }
+
                             $tempEventArray['teaser'] = $tempEvent->getTeaser();
 
                             if (is_object($tempEvent->getLocation())) {
@@ -620,7 +635,7 @@ class Ajax implements MiddlewareInterface
         if(  $arguments['organizer'] > 0  && !is_object($organizer ) ) {
             $output['organizer']['requestId'] =  $arguments['organizer'];
 
-            /** @var \JVE\JvEvents\Domain\Model\Organizer $organizer */
+            /** @var Organizer $organizer */
             $organizer = $this->organizerRepository->findByUidAllpages(  $arguments['organizer'], FALSE, TRUE);
         }
 
@@ -674,6 +689,33 @@ class Ajax implements MiddlewareInterface
             }
         }
         return $return ;
+    }
+
+    /**
+     * @param Organizer | LazyLoadingProxy  $organizer
+     * @return bool
+     */
+
+
+    public function hasUserAccess( $organizer ): bool
+    {
+        if(! is_object( $organizer ) ) {
+            return false ;
+        }
+        $feuserUid = intval( $GLOBALS['TSFE']->fe_user->user['uid'] ) ;
+        $users = GeneralUtility::trimExplode("," , $organizer->getAccessUsers() , TRUE ) ;
+        if( in_array( $feuserUid  , $users )) {
+            return true  ;
+        } else {
+            $groups = GeneralUtility::trimExplode("," , $organizer->getAccessGroups() , TRUE ) ;
+            $feuserGroups = GeneralUtility::trimExplode("," ,  $GLOBALS['TSFE']->fe_user->user['usergroup']  , TRUE ) ;
+            foreach( $groups as $group ) {
+                if( in_array( $group  , $feuserGroups )) {
+                    return true  ;
+                }
+            }
+        }
+        return false  ;
     }
 
 
