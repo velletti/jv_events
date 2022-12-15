@@ -311,14 +311,16 @@
     };
 
     LeafFE.updateAddress = function ( ) {
-        let address = $( LeafFE.$fieldCity ).length ?  $( LeafFE.$fieldCity ).val() : '' ;
-        LeafFE.$geoCodeUrlShort = LeafFE.$geoCodeBase + encodeURI( address.trim() ) + LeafFE.$geoCodeOptions ;
-        address +=  $( LeafFE.$fieldZip ).length ? ' ' + $( LeafFE.$fieldZip ).val() : '' ;
-        address += $( LeafFE.$fieldStreet ).length ? ' ' + $( LeafFE.$fieldStreet ).val() : '' ;
-        address +=  $( LeafFE.$fieldCountry ).length ? ' ' + $( LeafFE.$fieldCountry ).val() : '' ;
+        let address = $( LeafFE.$fieldCity ).length ?  '&city=' + encodeURI( $( LeafFE.$fieldCity ).val()) : '' ;
+        address +=  $( LeafFE.$fieldCountry ).length ? '&country=' +  encodeURI($( LeafFE.$fieldCountry ).val()) : '' ;
+        LeafFE.$geoCodeUrlShort = LeafFE.$geoCodeBase + LeafFE.$geoCodeOptions +  address.trim()  ;
+
+        address +=  $( LeafFE.$fieldZip ).length ? '&postalcode=' +   encodeURI($( LeafFE.$fieldZip ).val()) : '' ;
+        address += $( LeafFE.$fieldStreet ).length ? '&street=' +     encodeURI($( LeafFE.$fieldStreet ).val()) : '' ;
+
         $( LeafFE.$fieldLat ).val('');
         $( LeafFE.$fieldLng ).val('');
-        LeafFE.$geoCodeUrl = LeafFE.$geoCodeBase + encodeURI( address.trim() ) + LeafFE.$geoCodeOptions ;
+        LeafFE.$geoCodeUrl = LeafFE.$geoCodeBase + LeafFE.$geoCodeOptions + address.trim()   ;
         LeafFE.geocode();
 
     } ;
