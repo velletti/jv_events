@@ -322,8 +322,8 @@
 
     } ;
     LeafFE.updateAddress = function ( ) {
-        let address = $( LeafFE.$fieldCity ).length ?  $( LeafFE.$fieldCity ).val() : '' ;
-        LeafFE.$geoCodeUrlShort = LeafFE.$geoCodeBase + 'city=' + encodeURI( address.trim() ) + LeafFE.$geoCodeOptions ;
+        let address = $( LeafFE.$fieldCity ).length ?  'city=' + encodeURI( $( LeafFE.$fieldCity ).val()) : '' ;
+        LeafFE.$geoCodeUrlShort = LeafFE.$geoCodeBase +  address.trim() + LeafFE.$geoCodeOptions ;
 
         address +=  $( LeafFE.$fieldZip ).length ? '&postalcode=' +   encodeURI($( LeafFE.$fieldZip ).val()) : '' ;
         address += $( LeafFE.$fieldStreet ).length ? '&street=' +     encodeURI($( LeafFE.$fieldStreet ).val()) : '' ;
