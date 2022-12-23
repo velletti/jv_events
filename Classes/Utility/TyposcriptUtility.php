@@ -28,11 +28,9 @@ class TyposcriptUtility{
 	public static function loadTypoScriptFromScratch($pageUid = 0, $extKey = '' , $conditions = false , $getConstants = false  ) {
 
 		/**
-		 * @var $pageRepository \FluidTYPO3\Vhs\Service\PageService
 		 * @var $extendedTemplateService \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService
 		 */
-		$pageService =  \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\FluidTYPO3\Vhs\Service\PageService::class);
-
+        $pageService =  clone $GLOBALS['TSFE']->sys_page;
 		$rootLine = $pageService->getRootLine($pageUid);
 
 		$extendedTemplateService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\ExtendedTemplateService::class);
