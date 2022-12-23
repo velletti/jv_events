@@ -2,6 +2,9 @@
 namespace JVE\JvEvents\Utility;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\RootlineUtility;
 
 class TyposcriptUtility{
 
@@ -27,13 +30,17 @@ class TyposcriptUtility{
 	 */
 	public static function loadTypoScriptFromScratch($pageUid = 0, $extKey = '' , $conditions = false , $getConstants = false  ) {
 
-		/**
-		 * @var $extendedTemplateService \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService
-		 */
-        $pageService =  clone $GLOBALS['TSFE']->sys_page;
-		$rootLine = $pageService->getRootLine($pageUid);
 
-		$extendedTemplateService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\ExtendedTemplateService::class);
+        /**
+         * @var ExtendedTemplateService $extendedTemplateService
+         * @var RootlineUtility $rootLineUtility
+         */
+        $extendedTemplateService = GeneralUtility::makeInstance(ExtendedTemplateService::class);
+        $rootLineUtility = GeneralUtility::makeInstance(RootlineUtility::class, (int)$pageUid);
+
+        $rootLine = $rootLineUtility->get();
+
+
 
 		$extendedTemplateService->tt_track = 0;
 		// $extendedTemplateService->init();
