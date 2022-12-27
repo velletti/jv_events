@@ -495,9 +495,6 @@ class AjaxController extends BaseController
         if( is_object($organizer )) {
             $output['organizer']['organizerId'] = $organizer->getUid() ;
             $output['organizer']['hasAccess'] = $this->hasUserAccess( $organizer ) ;
-
-
-
         }
         if( $needToStore) {
             $this->persistenceManager->persistAll();
