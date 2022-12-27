@@ -707,7 +707,7 @@ function jv_events_refreshList(){
     let allcountEvents = 0 ;
 	jQuery('.tx-jv-events DIV.jv-events-row').each(function (i) {
 	   // console.log( " ************* single row **************** UID: " + jQuery(this).data("eventuid")  ) ;
-       // console.log( " ************* single row **************** Org UID: " + jQuery(this).data("orguid")  ) ;
+      //  console.log( " ************* single row **************** Org UID: " + jQuery(this).data("orguid")  ) ;
        // console.log( " catuids on Event : " + jQuery(this).data("catuids") ) ;
        // console.log( " Lat on Event : " + jQuery(this).data("latitude") ) ;
        // console.debug( jQuery(thi s).data() ) ;
@@ -777,23 +777,23 @@ function jv_events_refreshList(){
 
             if( cTagChecked  === true && !jQuery(this).hasClass('d-none') ) {
                 var sTags = jQuery(this).data("taguids") ;
-            //     console.log( " sTags : " + sTags ) ;
+                console.log( " sTags : " + sTags ) ;
 
                 if( sTags ) {
                     sTags = "," + sTags + "," ;
                     needTohide = true ;
                     var combineTags =  jQuery('#jv_events_filter_tags').data('combinetags') ;
                     jQuery( cTags ).each( function() {
-                    //    console.log( "Tag: " + jQuery(this).val() + "checked ? : " + jQuery(this).prop("checked") ) ;
+                      //  console.log( "Tag: " + jQuery(this).val() + "checked ? : " + jQuery(this).prop("checked") ) ;
                         if ( jQuery(this).prop("checked") ) {
-                    //        console.log( "position of " + jQuery(this).val() + " in string " + sTags + " = " + sTags.indexOf( "," + jQuery(this).val()   ) ) ;
+                        //    console.log( "position of " + jQuery(this).val() + " in string " + sTags + " = " + sTags.indexOf( "," + jQuery(this).val()   ) ) ;
                             if( sTags.indexOf( "," + jQuery(this).val() + ","  ) > -1 ) {
                                 needTohide = false ;
                                 if ( combineTags != "1") {
                                     return false ;
                                 }
                             } else {
-                                // console.log(" if All Tags must fit (combineTags = " + combineTags + "): we will exit and hide event " ) ;
+                             //    console.log(" if All Tags must fit (combineTags = " + combineTags + "): we will exit and hide event " ) ;
 
                                 if ( combineTags == "1") {
                                     needTohide = true ;

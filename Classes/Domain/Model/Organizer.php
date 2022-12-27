@@ -282,11 +282,23 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     }
 
     /**
+     * @param int|null $uid
+     * Set Uid
+     *
+     * @return void
+     */
+    public function setUid( ?int $uid)
+    {
+        $this->uid = $uid ;
+    }
+
+
+    /**
      * Returns the name
      *
      * @return string $name
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -297,7 +309,7 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param string $name
      * @return void
      */
-    public function setName($name)
+    public function setName(string $name)
     {
         $this->name = $name;
     }
@@ -325,7 +337,7 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @return string $email
      */
-    public function getEmail()
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -336,7 +348,7 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param string $email
      * @return void
      */
-    public function setEmail($email)
+    public function setEmail(string $email)
     {
         $this->email = $email;
     }
@@ -362,9 +374,9 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Returns the phone
      *
-     * @return string $phone
+     * @return string|null  $phone
      */
-    public function getPhone()
+    public function getPhone(): ?string
     {
         return $this->phone;
     }
@@ -372,10 +384,10 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Sets the phone
      *
-     * @param string $phone
+     * @param string|null $phone
      * @return void
      */
-    public function setPhone($phone)
+    public function setPhone(?string $phone)
     {
         $this->phone = $phone;
     }

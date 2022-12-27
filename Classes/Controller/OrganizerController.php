@@ -212,30 +212,35 @@ class OrganizerController extends BaseController
     public function createAction(\JVE\JvEvents\Domain\Model\Organizer $organizer)
     {
         if ( $GLOBALS['TSFE']->fe_user->user && $GLOBALS['TSFE']->fe_user->user['uid'] > 0 )  {
-            $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
-
-            $organizer = $this->cleanOrganizerArguments( $organizer ) ;
-
-            // special needs for tango. maybe we make this configurabale via typoscript
-            $organizer->setHidden(1) ;
-            $organizer->setPid( 13 ) ;
-            $organizer->setSorting( 99999999 ) ;
-            $organizer->setSysLanguageUid(-1 ) ;
-
-            $organizer->setAccessUsers(intval($GLOBALS['TSFE']->fe_user->user['uid'] ));
-            $organizer->setAccessGroups( $this->settings['feEdit']['adminOrganizerGroudIds'] );
-
-            $this->organizerRepository->add($organizer);
-            $this->persistenceManager->persistAll() ;
-
-            $this->cacheService->clearPageCache( array($this->settings['pageIds']['organizerAssist'])  );
-            if( $organizer->getUid()) {
-                $this->addFlashMessage('The Organizer was created with ID:' . $organizer->getUid() , '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
-
+             $isOrganizer = $this->organizerRepository->findByUserAllpages( $GLOBALS['TSFE']->fe_user->user['uid'] , true , true ) ;
+            if ( $isOrganizer ) {
+                // reloaded paged ??
+                $organizer->setUid( $isOrganizer['uid'] ) ;
             } else {
-                $this->addFlashMessage('Error: Organizer did not get an ID:' , '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
-            }
+                $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
 
+                $organizer = $this->cleanOrganizerArguments( $organizer ) ;
+
+                // special needs for tango. maybe we make this configurabale via typoscript
+                $organizer->setHidden(1) ;
+                $organizer->setPid( 13 ) ;
+                $organizer->setSorting( 99999999 ) ;
+                $organizer->setSysLanguageUid(-1 ) ;
+
+                $organizer->setAccessUsers(intval($GLOBALS['TSFE']->fe_user->user['uid'] ));
+                $organizer->setAccessGroups( $this->settings['feEdit']['adminOrganizerGroudIds'] );
+
+                $this->organizerRepository->add($organizer);
+                $this->persistenceManager->persistAll() ;
+
+                $this->cacheService->clearPageCache( array($this->settings['pageIds']['organizerAssist'])  );
+                if( $organizer->getUid()) {
+                    $this->addFlashMessage('The Organizer was created with ID:' . $organizer->getUid() , '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+
+                } else {
+                    $this->addFlashMessage('Error: Organizer did not get an ID:' , '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+                }
+            }
 
 
 
@@ -350,8 +355,9 @@ class OrganizerController extends BaseController
             try {
                 $this->redirect('assist' , "Organizer", Null , NULL , $this->settings['pageIds']['organizerAssist'] );
             } catch(StopActionException $e) {
-                foreach (  $this->response->getHeaders() as $header ) {
-                    header( $header) ;
+
+                foreach (  $e->getResponse()->getHeaders() as $header => $value ) {
+                    header( "$header:" . $value[0]) ;
                 }
 
                 die;
@@ -362,10 +368,11 @@ class OrganizerController extends BaseController
             try {
                 $this->redirect('assist' , "Organizer", Null , NULL , $this->settings['pageIds']['organizerAssist'] );
             } catch(StopActionException $e) {
-                foreach (  $this->response->getHeaders() as $header ) {
-                    header( $header) ;
+                foreach (  $e->getResponse()->getHeaders() as $header => $value ) {
+                    header( "$header:" . $value[0]) ;
                 }
 
+                die;
                 die;
             }
         }
@@ -439,9 +446,10 @@ class OrganizerController extends BaseController
         try {
             $this->redirect('assist' , "Organizer", Null , NULL , $this->settings['pageIds']['organizerAssist'] );
         } catch(StopActionException $e) {
-            foreach (  $this->response->getHeaders() as $header ) {
-                header( $header) ;
+            foreach (  $e->getResponse()->getHeaders() as $header => $value ) {
+                header( "$header:" . $value[0]) ;
             }
+
 
             die;
         }

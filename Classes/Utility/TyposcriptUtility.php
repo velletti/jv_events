@@ -2,6 +2,9 @@
 namespace JVE\JvEvents\Utility;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\RootlineUtility;
 
 class TyposcriptUtility{
 
@@ -31,9 +34,10 @@ class TyposcriptUtility{
 		 * @var $pageRepository \FluidTYPO3\Vhs\Service\PageService
 		 * @var $extendedTemplateService \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService
 		 */
-		$pageService =  \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\FluidTYPO3\Vhs\Service\PageService::class);
+        $extendedTemplateService = GeneralUtility::makeInstance(ExtendedTemplateService::class);
+        $rootLineUtility = GeneralUtility::makeInstance(RootlineUtility::class, (int)$pageUid);
 
-		$rootLine = $pageService->getRootLine($pageUid);
+        $rootLine = $rootLineUtility->get();
 
 		$extendedTemplateService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\ExtendedTemplateService::class);
 

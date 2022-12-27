@@ -44,6 +44,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
 use \TYPO3\CMS\Core\Messaging\AbstractMessage ;
+use TYPO3\CMS\Extbase\Service\CacheService;
 
 /**
  * EventController
@@ -123,9 +124,24 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
 
     /**
+     * CacheService
+     */
+
+    public $cacheService ;
+
+    /**
      * @var float
      */
     public $timeStart ;
+
+    /**
+     * @param CacheService $cacheService
+     * @return void
+     */
+    public function injectCacheService(CacheService $cacheService) {
+        $this->cacheService = $cacheService ;
+    }
+
 
     /**
      * @param TagRepository $tagRepository

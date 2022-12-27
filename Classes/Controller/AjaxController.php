@@ -85,13 +85,6 @@ class AjaxController extends BaseController
     }
 
     /**
-     * @var \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder $uriBuilder
-     */
-    public function injectUriBuilder(  \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder $uriBuilder) {
-        $this->uriBuilder = $uriBuilder;
-    }
-
-    /**
      * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
@@ -100,7 +93,7 @@ class AjaxController extends BaseController
         $this->configurationManager = $configurationManager;
     }
 
-    public function initializeRepositorys(array $ts=null)
+    public function initializeRepositorys()
     {
 
         $this->tagRepository        = $this->objectManager->get(\JVE\JvEvents\Domain\Repository\TagRepository::class);
@@ -111,11 +104,6 @@ class AjaxController extends BaseController
         $this->eventRepository        = $this->objectManager->get(\JVE\JvEvents\Domain\Repository\EventRepository::class);
         $this->subeventRepository        = $this->objectManager->get(\JVE\JvEvents\Domain\Repository\SubeventRepository::class);
         $this->staticCountryRepository        = $this->objectManager->get(\JVE\JvEvents\Domain\Repository\StaticCountryRepository::class);
-
-        $this->uriBuilder->injectConfigurationManager( $this->configurationManager);
-        $this->uriBuilder->initializeObject();
-        $this->uriBuilder->setRequest($this->controllerContext->getRequest()) ;
-        $this->response = $this->controllerContext->getResponse() ;
     }
 
     public function dispatcher()

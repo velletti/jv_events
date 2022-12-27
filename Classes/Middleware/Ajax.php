@@ -118,7 +118,7 @@ class Ajax implements MiddlewareInterface
 
                 // ToDo generate Output as before in ajax Controller here in Middleware with CORE features.
                 $controller = $ajaxUtility->initController($_gp , $function , $request ) ;
-                $controller->initializeRepositorys() ;
+                $controller->initializeRepositorys( ) ;
 
                 switch ($function) {
                     case 'downloadical' :

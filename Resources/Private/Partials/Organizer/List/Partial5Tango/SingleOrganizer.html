@@ -114,7 +114,7 @@
                             </f:link.action>
                         </f:if>
 
-                        <f:if condition="{organizer.charityLink}">
+                        <f:if condition="{organizer.charityLink} && {isactiv}">
                             <f:link.typolink class="badge badge-primary m-2 py-2 px-1" parameter="{organizer.charityLink}" title="{f:translate(key: 'donate', default: 'Spenden')}">
                                 <span class="d-md-none d-inline-block fas fa-donate fa-2x mx-1"></span>
                                 <span class="d-none d-md-inline-block">
@@ -122,8 +122,6 @@
                             </f:link.typolink>
                         </f:if>
                         <f:if condition="{settings.HideEventListLink} ">
-                            <f:then>
-                            </f:then>
                             <f:else>
                                 <f:if condition="{organizer.latestEvent -> f:format.date(format: 'Y-m-d')} > {f:format.date(date: 'now' , format: 'Y-m-d')}">
                                     <f:link.page class="badge badge-primary m-2 py-2 px-1" pageUid="{settings.pageIds.eventList}" additionalParams="{tx_jvevents_events: {overruleFilter: {organizer: '{organizer.uid}', category : 'true' , maxDays: 90}}}" title="{f:translate(key: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.EventListView', default: 'Termine')} ">
@@ -133,10 +131,7 @@
                                     </f:link.page>
                                 </f:if>
                             </f:else>
-
                         </f:if>
-
-
                     </div>
                 </div>
                 <f:if condition="{showDetails}">
