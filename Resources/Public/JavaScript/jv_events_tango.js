@@ -9,7 +9,7 @@ jQuery(document).ready(function() {
 	jv_events_init() ;
     jv_events_init_AjaxMenu() ;
 
-	if( $(".jv-events-tags-edit").length ){
+	if( $(".jv-events-cats-div").length ){
         jv_events_init_edit_tags() ;
     }
     if ( jQuery("#streetAndNr").length ) {
