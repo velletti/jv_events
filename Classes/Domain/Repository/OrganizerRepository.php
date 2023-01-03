@@ -116,7 +116,7 @@ class OrganizerRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
             $number = rand(0, 2);
 
             // if one of last 3 options, always lowest values first
-            $sorting = ($number > 1 ) ? 1 : rand(0, 1);
+            $sorting = ($number > 1 ) ? 0 : rand(0, 1);
             if ($sorting > 0) {
                 $query->setOrderings([ $fields[$number] => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING]);
             } else {
