@@ -112,8 +112,8 @@ class OrganizerRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
     {
         $query = $this->createQuery();
         if( $reverseSorting ) {
-            $fields = [ "access_users", "organizer_category" , 'sorting' , 'crdate'];
-            $number = rand(0, 3);
+            $fields = [ "access_users", "organizer_category" , 'sorting' ];
+            $number = rand(0, 2);
 
             // if one of last 3 options, always lowest values first
             $sorting = ($number > 1 ) ? 1 : rand(0, 1);
