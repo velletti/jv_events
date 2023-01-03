@@ -112,6 +112,8 @@ class OrganizerController extends BaseController
 
 
         $filter = false ;
+        $ordering = false ;
+
         if( array_key_exists( 'filterorganizer' , $this->settings)) {
             if ( array_key_exists( "tags", $this->settings['filterorganizer']))  {
                 if( count(GeneralUtility::trimExplode( "," , $this->settings['filterorganizer']['tags'] , true)  ) > 0 ) {
@@ -128,9 +130,14 @@ class OrganizerController extends BaseController
                     $filter['tstamp'] = time() - ( intval( $this->settings['filterorganizer']['latestUpdate'] ) * 3600 * 24 ) ;
                 }
             }
+            if ( array_key_exists( "reverseSorting", $this->settings['filterorganizer']) ) {
+                if(  $this->settings['filterorganizer']['reverseSorting'] > 0 ) {
+                    $ordering = true;
+                }
+            }
 
         }
-        $organizers = $this->organizerRepository->findByFilterAllpages($filter);
+        $organizers = $this->organizerRepository->findByFilterAllpages($filter ,false , false , false , $ordering );
         $this->debugArray[] = "Before Generate Array:" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " Line: " . __LINE__ ;
 
 
@@ -143,7 +150,12 @@ class OrganizerController extends BaseController
             //    var_dump($orgFilter) ;
         // die;
         */
-        $orgFilter = $this->generateOrgFilterFast(  $this->settings['filter']) ;
+        if ( array_key_exists( "respectTagVisibility", $this->settings['filterorganizer']) )  {
+            $filter['respectTagVisibility'] =  $this->settings['filterorganizer']['respectTagVisibility'] ;
+        } else {
+            $filter['respectTagVisibility'] = 1 ;
+        }
+        $orgFilter = $this->generateOrgFilterFast( $filter ) ;
         $this->view->assign('organizers', $organizers);
         $this->view->assign('orgFilter', $orgFilter);
         $this->debugArray[] = "Finished:". intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " Line: " . __LINE__ ;

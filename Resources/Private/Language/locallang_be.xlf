@@ -188,6 +188,14 @@
             <trans-unit id="plugin.filter.Organizer.HideInactive">
 				<source>Hide organizer if no Event in the future</source>
 			</trans-unit>
+			<trans-unit id="plugin.filter.Organizer.respectTagVisibility">
+                <source>Respect tags visibility settings (default true) </source>
+            </trans-unit>
+            <trans-unit id="plugin.filter.Organizer.reverseSorting">
+                <source>Reverse Sorting (default false) </source>
+            </trans-unit>
+
+
             <trans-unit id="plugin.filter.Organizer.latestUpdate">
                 <source>Hide organizer, if latest update has happen since more than given days (default 0 = ignore this filter)</source>
             </trans-unit>

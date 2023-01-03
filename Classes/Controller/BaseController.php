@@ -622,7 +622,12 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         $tags = array();
         $tags2 = array();
 
-        $allTags = $this->tagRepository->findAllonAllPages(2) ;
+        if ( array_key_exists( "tags.uid" , $filter ) && count( $filter["tags.uid"]  ) > 0  ) {
+            $allTags = $this->tagRepository->findAllonAllPagesByUids(  $filter["tags.uid"]  ) ;
+        } else {
+            $allTags = $this->tagRepository->findAllonAllPages(2 ,$filter  ) ;
+        }
+
         foreach ($allTags as $obj) {
             $tags[$obj->getUid()] = $obj->getName() ;
             $tags2[$obj->getUid()] = array( "id" => $obj->getUid() , "title" => $obj->getName()  ) ;

@@ -47,14 +47,51 @@ class TagRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
      *
      * @return array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
      */
-    public function findAllonAllPages($type= -1)
+    public function findAllonAllPages($type= -1 , $filter=[] )
     {
         $query = $this->createQuery();
         $querySettings = $query->getQuerySettings() ;
         $querySettings->setRespectStoragePage(false);
      //   $querySettings->setRespectSysLanguage(false);
         if( ($type > -1 )) {
-            $query->matching( $query->equals('type', $type) ) ;
+            if( isset( $filter['respectTagVisibility']) && $filter['respectTagVisibility'] == 1 ) {
+                $query->matching(
+                    $query->logicalAnd(
+                        $query->equals('type', $type)  ,
+                        $query->equals('visibility', 0 )
+                    )
+                ) ;
+            } else {
+                $query->matching(  $query->equals('type', $type)  ) ;
+            }
+        } elseif( isset( $filter['respectTagVisibility']) && $filter['respectTagVisibility'] == 1 ) {
+            $query->matching(   $query->equals('visibility', 0 ) ) ;
+        }
+
+        // $querySettings->setRespectSysLanguage(FALSE);
+        $query->setQuerySettings($querySettings) ;
+        $res = $query->execute() ;
+        // $this->debugQuery($query) ;
+
+        return $res ;
+    }
+
+    /**
+     * @param array $tagUids
+     *
+     * @return array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+     */
+    public function findAllonAllPagesByUids( array $tagUids)
+    {
+        $query = $this->createQuery();
+        $querySettings = $query->getQuerySettings() ;
+        $querySettings->setRespectStoragePage(false);
+        //   $querySettings->setRespectSysLanguage(false);
+        if(  count($tagUids) > 0  )  {
+
+            $query->matching(
+                    $query->in('uid', $tagUids)  ,
+            ) ;
         }
         // $querySettings->setRespectSysLanguage(FALSE);
         $query->setQuerySettings($querySettings) ;
@@ -63,6 +100,8 @@ class TagRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
 
         return $res ;
     }
+
+
 
 
 

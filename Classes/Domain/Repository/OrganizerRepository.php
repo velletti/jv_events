@@ -103,13 +103,30 @@ class OrganizerRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
      * @param array|bool $filter possible Filters
      * @param bool $toArray Result as QueryInterface or directly as Array
      * @param bool $ignoreEnableFields Ignores Hidden, Startdate, enddate but NOT deleted!
+     * @param bool|int $limit max number of organizers
+     * @param bool $reverseSorting sort descending. needed for tango mode
      * @return array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
      */
-    public function findByFilterAllpages($filter=FALSE , $toArray=FALSE , $ignoreEnableFields = FALSE , $limit=FALSE)
+    public function findByFilterAllpages($filter=FALSE , bool $toArray=FALSE , bool $ignoreEnableFields = FALSE , $limit=FALSE , $reverseSorting=false )
     {
         $query = $this->createQuery();
-        $query->setOrderings($this->defaultOrderings);
+        if( $reverseSorting ) {
+            $fields = [ "access_users", "organizer_category" , 'sorting' , 'crdate'];
+            $number = rand(0, 3);
+
+            // if one of last 3 options, always lowest values first
+            $sorting = ($number > 1 ) ? 1 : rand(0, 1);
+            if ($sorting > 0) {
+                $query->setOrderings([ $fields[$number] => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING]);
+            } else {
+                $query->setOrderings([ $fields[$number] => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING]);
+            }
+
+        } else {
+            $query->setOrderings($this->defaultOrderings);
+        }
+
 
         $querySettings = $query->getQuerySettings() ;
         $querySettings->setRespectStoragePage(false);
@@ -135,14 +152,7 @@ class OrganizerRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
                 }
             }
         }
-
         // and the normal visibility contrains , including date Time
-        /** @var \DateTime $actualTime */
-        $actualTime = new \DateTime('now' ) ;
-        $actualTime->modify('-1 YEAR') ;
-        $constraints[] = $query->greaterThanOrEqual('tstamp', $actualTime );
-
-
 
 
         if( $limit) {

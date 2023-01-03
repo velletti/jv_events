@@ -1,4 +1,4 @@
-<f:if condition="{settings.ShowFilter}">
+<f:if condition="{settings.ShowFilter} || {settings.HideEventListLink}">
 
     <div class="filter organizer" xmlns:f="http://www.w3.org/1999/html">
         <div class="hints clearfix row">
@@ -27,27 +27,7 @@
                         </div>
                     </fieldset>
                 </f:if>
-                   <f:comment>
-                       ********************   actually do not show categorys basic Silver etc as Filter .. ****************
-                   </f:comment>
-                <f:if condition="{f:count(subject: orgFilter.categories2)} > 9999">
-                    <fieldset id="jv_events_fieldset_categories" class="p-0">
 
-                        <legend class="d-none"><f:translate key="tx_jvevents_domain_model_category" /></legend>
-
-                        <div class="checkbox"  id="jv_events_filter_categories">
-
-                            <f:for each="{orgFilter.categories2}" as="category">
-                                <label>
-                                    <input type="checkbox" id="jv_events_filter_cat-{category.id}" value="{category.id}"><f:render partial="Organizer/Single/Partial5Tango/CategoryIcon" arguments="{uid: category.id, text: category.title}"/>
-                                    <f:if condition="{category.description}">
-                                        <a class="info" href="#" data-toggle="modal" data-target="#jv_events_cat_modal-{category.id}"><span class="fa fa-info-circle mh-sm" title="info"></span></a>
-                                    </f:if>
-                                </label>
-                            </f:for>
-                        </div>
-                    </fieldset>
-                </f:if>
             </div>
         </form>
 
@@ -55,9 +35,7 @@
             <f:translate key="tx_jvevents_event.filter.resulthint" />
             <span class="arrow"></span>
         </p>
-        <f:for each="{orgFilter.categories2}" as="category">
-            <f:render partial="Organizer/Single/Partial5Tango/CategoryModal" arguments="{category: category , id: category.id}"/>
-        </f:for>
+
 
     </div>
 </f:if>
