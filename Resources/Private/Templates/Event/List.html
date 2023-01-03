@@ -10,12 +10,10 @@
 			<f:if condition="{settings.EmConfiguration.useGeoLocation}">
 				<f:then>
 					<div id="jv_events_geo"  data-init="notstarted"  class="hidden d-none" data-allowed="0" data-askUser="1" data-lng="{settings.list.longitude}" data-lat="{settings.list.latitude}"  data-doubleclickzoom="{settings.filter.doubleclickzoom}">
-						GEO Position from User
 					</div>
 				</f:then>
 				<f:else>
 					<div id="jv_events_geo"  data-init="notstarted"  class="hidden d-none" data-lng="{settings.list.longitude}" data-lat="{settings.list.latitude}" data-doubleclickzoom="{settings.filter.doubleclickzoom}">
-						GEO Position from Settings
 					</div>
 				</f:else>
 
@@ -42,8 +40,8 @@
 
 		</f:then>
 		<f:else>
-			<div id="jv_events_geo" class="hidden d-none"  data-init="notstarted"  data-lng="{settings.list.longitude}" data-lat="{settings.list.latitude}" data-doubleclickzoom="{settings.filter.doubleclickzoom}">
-				GEO Position from Settings
+			<div id="jv_events_geo" data-info="GEO Position from Settings" class="hidden d-none"  data-init="notstarted"  data-lng="{settings.list.longitude}" data-lat="{settings.list.latitude}" data-doubleclickzoom="{settings.filter.doubleclickzoom}">
+
 			</div>
 		</f:else>
 	</f:if>
