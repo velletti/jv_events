@@ -112,14 +112,16 @@ class OrganizerRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
     {
         $query = $this->createQuery();
         if( $reverseSorting ) {
-            $fields = [ "access_users", "organizer_category" , 'sorting' ];
-            $number = rand(0, 2);
+            $fields = [ "organizer_category" , 'sorting' ];
+            $number = rand(0, 1);
 
             // if one of last 3 options, always lowest values first
-            $sorting = ($number > 1 ) ? 0 : rand(0, 1);
+            $sorting = ($number > 0 ) ? 1 : rand(0, 1);
             if ($sorting > 0) {
+                // if field sorting is used, always
                 $query->setOrderings([ $fields[$number] => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING]);
             } else {
+
                 $query->setOrderings([ $fields[$number] => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING]);
             }
 
