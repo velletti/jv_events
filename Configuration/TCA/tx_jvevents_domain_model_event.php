@@ -1395,7 +1395,7 @@ if ( $configuration['RegistrationFormPid'] > 0 ) {
     $returnArray['columns']['with_registration']['config']['default'] = 1 ;
 }
 
-if ( $configuration['Registrationid'] > 0 ) {
+if ( $configuration['RegistrationPid'] > 0 ) {
     $returnArray['columns']['registration_pid']['config']['default'] = $configuration['RegistrationPid'] ;
 }
 
