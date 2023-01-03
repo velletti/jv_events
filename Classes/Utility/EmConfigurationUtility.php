@@ -39,10 +39,10 @@ class EmConfigurationUtility
         if (!is_array($settings)) {
 			$settings = [];
 		}
-		if( $settings['fontFamiliy ']) {
-			$settings['fontFamiliy '] = str_replace("'" , "" , $settings['fontFamiliy '] ) ;
-			$settings['fontFamiliy '] = str_replace('"' , "" , $settings['fontFamiliy '] ) ;
-			$settings['fontFamiliy '] = str_replace(' ' , "" , $settings['fontFamiliy '] ) ;
+		if( isset( $settings['fontFamily ']) ) {
+			$settings['fontFamily '] = str_replace("'" , "" , $settings['fontFamily '] ) ;
+			$settings['fontFamily '] = str_replace('"' , "" , $settings['fontFamily '] ) ;
+			$settings['fontFamily '] = str_replace(' ' , "" , $settings['fontFamily '] ) ;
 		}
 		if ( $asObject ) {
 			$settingsObj = new \stdClass() ;
