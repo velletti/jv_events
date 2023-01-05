@@ -35,8 +35,10 @@ class GetIcalLink extends AbstractNode
 
         try {
             $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($singlePid);
+            $lang = max(  is_array( $this->data['databaseRow']['sys_language_uid'][0] ) ?
+                $this->data['databaseRow']['sys_language_uid'][0] : $this->data['databaseRow']['sys_language_uid'] , 0 ) ;
 
-            $url = (string)$site->getRouter()->generateUri( $singlePid ,['_language' => max( $this->data['databaseRow']['sys_language_uid'][0],0 ) ,
+            $url = (string)$site->getRouter()->generateUri( $singlePid ,['_language' => $lang ,
                                                           'tx_jvevents_ajax' => ['action' => 'downloadical' , 'controller' => 'Ajax' ,'uid' =>  $this->data['databaseRow']['uid']]]);
 
             $resultArray['title'] = "Download Ical File" ;
