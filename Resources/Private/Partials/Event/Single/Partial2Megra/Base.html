@@ -3,7 +3,7 @@
 <ul class="nav nav-tabs" role="tablist">
 	<li class="nav-tab active  px-3 py-1" role="presentation" ><a id="jv_events_event_nav" data-toggle="tab" href="#jv_events_event">Info</a></li>
 	<f:if condition="{event.location.lng}">
-		<li ><a  id="jv_events_map_nav" role="presentation" data-toggle="tab" href="#jv_events_map">Map</a></li>
+		<li class="nav-tab  px-3 py-1"><a  id="jv_events_map_nav" role="presentation" data-toggle="tab" href="#jv_events_map">Map</a></li>
 	</f:if>
 	<li  class="nav-tab  px-3 py-1"><a  id="jv_events_contact_nav" data-toggle="tab" href="#jv_events_contact">Kontakt</a></li>
 
@@ -151,7 +151,22 @@
 	</div>
 	<f:if condition="{event.location.lng}">
 		<div class="tab-pane " id="jv_events_map" >
-			<f:render partial="GoogleMaps" arguments="{addresses: {0:event.location}, settings:settings}" />
+
+			<div id="map" style="height:500px;"
+				 data-lat="{event.location.lat}"
+				 data-lng="{event.location.lng}"
+				 data-maptab='a[href="#jv_events_map"]'
+				 data-glat="48.1148263" data-glog="11.4712236"
+				 data-copy="&copy; <a target='_blank' href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
+				 data-geocodebase="false"
+				 data-geocodeoptions="false"
+			></div>
+			<v:asset.prefetch domains="nominatim.openstreetmap.org" />
+			<v:asset.script path="EXT:jv_events/Resources/Public/JavaScript/leaflet-1-7-1.js" name="leaflet1" async="false" content="header"/>
+			<v:asset.script path="EXT:jv_events/Resources/Public/JavaScript/megra/LeafletFeGeoCoder.js" name="leaflet2" async="false"  content="footer"/>
+			<v:asset.style path="EXT:jv_events/Resources/Public/Css/leaflet-1-7-1.css" name="leaflet3"   content="header"/>
+			<v:asset.style path="EXT:jv_events/Resources/Public/Css/megra/leafletFrontend.css" name="leaflet4"   content="footer"/>
+
 		</div>
 	</f:if>
 	<div class="tab-pane" id="jv_events_contact">
