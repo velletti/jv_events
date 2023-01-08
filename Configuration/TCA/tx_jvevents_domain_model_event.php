@@ -195,7 +195,7 @@ $returnArray = array(
                 'behaviour' => array(
                     'allowLanguageSynchronization' => true ,
                 ) ,
-				'size' => 13,
+				'size' => 18,
 				'eval' => 'datetime,int',
 				'checkbox' => 0,
 				'default' => 0,
@@ -572,7 +572,8 @@ $returnArray = array(
             'onChange' => 'reload' ,
 			'config' => array(
 				'type' => 'check',
-				'default' => 0
+				'default' => 0,
+
 			)
 		),
 		'start_date' => array(
@@ -581,18 +582,11 @@ $returnArray = array(
 			'config' => array(
 				'type' => 'input',
 				'renderType' => 'inputDateTime',
-				'size' => 7,
+				'size' => 13,
 				'eval' => 'date,required',
 				'checkbox' => 1,
 				'default' => time(),
-                'fieldControl' => [
-                    'showEvent' => [
-                        'renderType' => 'showEventInFrontend'
-                    ] ,
-                     'dowloadIcal' => [
-                        'renderType' => 'getIcalLink'
-                    ]
-                ]
+
 			),
 		),
 		'start_time' => array(
@@ -605,7 +599,15 @@ $returnArray = array(
 				'size' => 4,
 				'eval' => 'time,int',
 				'checkbox' => 1,
-				'default' => time()
+				'default' => time(),
+                'fieldControl' => [
+                    'showEvent' => [
+                        'renderType' => 'showEventInFrontend'
+                    ] ,
+                    'dowloadIcal' => [
+                        'renderType' => 'getIcalLink'
+                    ]
+                ]
 			)
 		),
         'entry_time' => array(
