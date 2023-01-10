@@ -883,5 +883,5 @@ class Ajax implements MiddlewareInterface
         return false  ;
     }
 
-    private array $settings = [] ;
+    private $settings  ;
 }
