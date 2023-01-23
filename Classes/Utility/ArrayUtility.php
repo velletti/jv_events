@@ -13,7 +13,7 @@ class ArrayUtility
 	 * @return mixed|null
 	 * @author Peter Benke <pbenke@allplan.com>
 	 */
-	public static function getValueByKey(?array $arguments, string $key): mixed
+	public static function getValueByKey(?array $arguments, string $key)
     {
 
 		if(empty($arguments) || !is_array($arguments)){
@@ -36,7 +36,7 @@ class ArrayUtility
 	 * @return array|bool
 	 * @author Peter Benke <pbenke@allplan.com>
 	 */
-	public static function putItemAfterAnotherItem(array $array, string $item, string $afterItem): bool|array
+	public static function putItemAfterAnotherItem(array $array, string $item, string $afterItem)
     {
 
 		if(
@@ -68,7 +68,7 @@ class ArrayUtility
 	 * @param int|string $new_value
 	 * @return array|bool
 	 */
-	public static function arrayInsertBefore($key, array &$array, $new_key, $new_value): bool|array
+	public static function arrayInsertBefore($key, array &$array, $new_key, $new_value)
     {
 		if (array_key_exists($key, $array)) {
 			$new = [];
@@ -90,7 +90,7 @@ class ArrayUtility
 	 * @param int|string $new_value
 	 * @return array|bool
 	 */
-	public static function arrayInsertAfter($key, array &$array, $new_key, $new_value): bool|array
+	public static function arrayInsertAfter($key, array &$array, $new_key, $new_value)
     {
 		if (array_key_exists($key, $array)) {
 			$new = [];
