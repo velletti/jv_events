@@ -607,9 +607,9 @@ class AjaxController extends BaseController
     {
         $pid =  GeneralUtility::_GP('id');
         $ts = TyposcriptUtility::loadTypoScriptFromScratch( $pid , "tx_jvevents_events") ;
-        if( is_array($this->settings) && is_array($ts)) {
-            $this->settings = array_merge($ts['settings']);
-        } elseif ( is_array($ts)) {
+        if( is_array($this->settings) && is_array($ts) && array_key_exists('settings' , $ts )) {
+            $this->settings = array_merge( $this->settings , $ts['settings']);
+        } elseif ( is_array($ts) && array_key_exists('settings' , $ts )) {
             $this->settings = $ts['settings'] ;
         }
 
