@@ -1014,6 +1014,7 @@ class AjaxController extends BaseController
                 $output['content-type'] = "text/calendar" ;
                 $output['filename'] = "event-import-" . date("dmy-His" ) . ".ics";
 
+
                 $output['data'] = "BEGIN:VCALENDAR" . PHP_EOL
                     ."VERSION:2.0" . PHP_EOL
                     ."CALSCALE:GREGORIAN" . PHP_EOL
@@ -1021,14 +1022,13 @@ class AjaxController extends BaseController
                     ."SUMMARY:" .  $this->escapeIcal( $event->getName()) . PHP_EOL
                     ."DTSTART;TZID=Europe/Berlin:" . $event->getStartUTCDateTime() . PHP_EOL
                     ."DTEND;TZID=Europe/Berlin:" . $event->getEndUTCDateTime(). PHP_EOL
-                    ."LOCATION:" . $this->escapeIcal( $event->getLocation()->getStreetAndNr() . ", " . $event->getLocation()->getZip() . " " . $event->getLocation()->getCity() . ", " . $event->getLocation()->getCountry())  . PHP_EOL
+                    . ($event->getLocation() ? "LOCATION:" . $this->escapeIcal( $event->getLocation()->getStreetAndNr() . ", " . $event->getLocation()->getZip() . " " . $event->getLocation()->getCity() . ", " . $event->getLocation()->getCountry())  . PHP_EOL : "LOCATION: none" . PHP_EOL )
                     ."DESCRIPTION:" .  $this->escapeIcal(   $event->getTeaser())  . PHP_EOL
                     ."STATUS:CONFIRMED" . PHP_EOL
-                    ."ORGANIZER:mailto:" . $event->getOrganizer()->getEmail() .  PHP_EOL
+                    . ( $event->getOrganizer() ? "ORGANIZER:mailto:" . $event->getOrganizer()->getEmail() .  PHP_EOL : '' )
                     ."SEQUENCE:3" . PHP_EOL
                     ."BEGIN:VALARM" . PHP_EOL
                     ."TRIGGER:-PT120M" . PHP_EOL
-                    ."DESCRIPTION:Tango: "  .  $this->escapeIcal( $event->getLocation()->getName()) . PHP_EOL
                     ."ACTION:DISPLAY" . PHP_EOL
                     ."END:VALARM" . PHP_EOL
                     ."END:VEVENT" . PHP_EOL
