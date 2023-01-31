@@ -322,15 +322,12 @@ class RegistrantController extends BaseController
                 foreach ($event->getEventCategory() as $cat) {
                     if ($cat->getBlockRegistration()) {
                         $this->settings['filter']['categories'] = $cat->getUid();
-
-                        /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $events */
+                        $this->settings['filter']['maxEvents'] = 99 ;
+                        /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface  $events */
                         $otherEvents = $this->eventRepository->findByFilter(false, false, $this->settings);
-
                     }
                 }
             }
-
-
             $checkString = $_SERVER["SERVER_NAME"] . "-" . $event->getUid() . "-" . $event->getCrdate();
             $checkHash = hash("sha256", $checkString);
 

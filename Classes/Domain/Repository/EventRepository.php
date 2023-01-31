@@ -78,7 +78,7 @@ class EventRepository extends BaseRepository
      * @param array|boolean $filter
      * @param integer|boolean $limit
      * @param array|boolean $settings
-     * @return array|QueryInterface $query
+     * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|object[]  $query
      * @throws InvalidQueryException
      * @throws Exception
      */
