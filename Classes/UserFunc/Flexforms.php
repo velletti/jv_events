@@ -88,17 +88,16 @@ class Flexforms {
             $row = $this->getRow($table , $nameField , $config['row']['sys_language_uid'] , $uid ) ;
             if( is_array(  $row ) ) {
                 if( $row['uid' ]  <> $uid ) {
-                   // $config['items'][$key][0] = "[" . $uid . "] " . $config['items'][$key][0] . " (L " . $row['sys_language_uid' ]  . " Uid: " . $row['uid' ] . " - " . $row[ $nameField ]  . ")" ;
-                    $config['items'][$key][0] = "[" . $uid . "] " . $row[ $nameField ] . " (L " . $row['sys_language_uid' ]  . " | Uid: " . $row['uid' ]  . ") <= " . $config['items'][$key][0]    ;
+                    $config['items'][$key][0] =  $row[ $nameField ] . " (L " . $row['sys_language_uid' ]  . " | Uid: " . $row['uid' ]  . ") <= " . $config['items'][$key][0] . " [" . $uid . "] "    ;
                 } else {
-                    $config['items'][$key][0] = "[" . $uid . "] " . $config['items'][$key][0] . " (only in Lang:" . $row['sys_language_uid' ]  . ")" ;
+                    $config['items'][$key][0] =  $config['items'][$key][0] . " (only in Lang:" . $row['sys_language_uid' ]  . ")" . " [" . $uid . "] " ;
                 }
             } else {
                 $row = $this->getRow($table , $nameField , -1 , $uid ) ;
                 if( !is_array(  $row ) ) {
                     $uid = false ;
                 } else {
-                    $config['items'][$key][0] = "[" . $uid . "] " .  $config['items'][$key][0] . " (all languages)" ;
+                    $config['items'][$key][0] =   $config['items'][$key][0] . " (all languages)"  . " [" . $uid . "] " ;
                 }
             }
             // remove untranslated Items so olny items for all languages or selected languages are left
@@ -109,7 +108,8 @@ class Flexforms {
             // $config['items'][$key][0] = "[" . $config['items'][$key][0] = $config['items'][$key][1] . "] ". $config['items'][$key][0] ;
 
         }
-        $config['items'] = $newItems ;
+        sort( $newItems )  ;
+        $config['items'] =  $newItems ;
         return $config ;
     }
     private function getRow($table , $nameField , $lngField , $uid ) {
