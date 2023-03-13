@@ -88,7 +88,8 @@ class Flexforms {
             $row = $this->getRow($table , $nameField , $config['row']['sys_language_uid'] , $uid ) ;
             if( is_array(  $row ) ) {
                 if( $row['uid' ]  <> $uid ) {
-                    $config['items'][$key][0] = "[" . $uid . "] " . $config['items'][$key][0] . " (L " . $row['sys_language_uid' ]  . " Uid: " . $row['uid' ] . " - " . $row[ $nameField ]  . ")" ;
+                   // $config['items'][$key][0] = "[" . $uid . "] " . $config['items'][$key][0] . " (L " . $row['sys_language_uid' ]  . " Uid: " . $row['uid' ] . " - " . $row[ $nameField ]  . ")" ;
+                    $config['items'][$key][0] = "[" . $uid . "] " . $row[ $nameField ] . " (L " . $row['sys_language_uid' ]  . " | Uid: " . $row['uid' ]  . ") <= " . $config['items'][$key][0]    ;
                 } else {
                     $config['items'][$key][0] = "[" . $uid . "] " . $config['items'][$key][0] . " (only in Lang:" . $row['sys_language_uid' ]  . ")" ;
                 }
