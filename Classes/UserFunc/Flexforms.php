@@ -8,6 +8,7 @@
 
 namespace JVE\JvEvents\UserFunc;
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -58,8 +59,16 @@ class Flexforms {
      * */
     public function TranslateMMvalues($config) {
 
-
-        if( ! is_array($config ) || $config['row']['sys_language_uid'][0] < 1  || ! is_array($config['items'])) {
+        if ( $config['row']['uid'] < 1 ) {
+            return $config ;
+        }
+        $plugin = BackendUtility::getRecord("tt_content" , $config['row']['uid'] );
+        if ( is_array( $plugin) ) {
+            $config['row'] = array_merge( $config['row'] , $plugin ) ;
+        } else {
+            return $config ;
+        }
+        if( ! is_array($config ) || $config['row']['sys_language_uid'] < 1  || ! is_array($config['items'])) {
             return $config ;
         }
 
@@ -76,22 +85,24 @@ class Flexforms {
 
         foreach ( $config['items'] as $key => $item ) {
             $uid = $item[1] ;
-            $row = $this->getRow($table , $nameField , $config['row']['sys_language_uid'][0] , $uid ) ;
+            $row = $this->getRow($table , $nameField , $config['row']['sys_language_uid'] , $uid ) ;
             if( is_array(  $row ) ) {
                 if( $row['uid' ]  <> $uid ) {
-                    $config['items'][$key][0] = $config['items'][$key][0] . " (" . $row[ $nameField ]  . ")" ;
+                    $config['items'][$key][0] = $config['items'][$key][0] . " (L " . $row['sys_language_uid' ]  . " Uid: " . $row['uid' ] . " - " . $row[ $nameField ]  . ")" ;
                 } else {
-                    $config['items'][$key][0] = $config['items'][$key][0] . " (L:" . $row['sys_language_uid' ]  . ")" ;
+                    $config['items'][$key][0] = $config['items'][$key][0] . " (only in Lang:" . $row['sys_language_uid' ]  . ")" ;
                 }
             } else {
                 $row = $this->getRow($table , $nameField , -1 , $uid ) ;
                 if( !is_array(  $row ) ) {
                     $uid = false ;
+                } else {
+                    $config['items'][$key][0] .= " (all Languages)" ;
                 }
             }
             // remove untranslated Items so olny items for all languages or selected languages are left
             if ( $uid) {
-                $newItems[] =  array ( 0 => "[" . $uid . "] " . $config['items'][$key][0] , 1 => $uid ) ;
+                $newItems[] =  array ( 0 => $config['items'][$key][0] , 1 => $uid ) ;
             }
 
             // $config['items'][$key][0] = "[" . $config['items'][$key][0] = $config['items'][$key][1] . "] ". $config['items'][$key][0] ;

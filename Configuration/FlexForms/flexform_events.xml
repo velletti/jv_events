@@ -81,9 +81,12 @@
 					</settings.LayoutList>
 
 
+
+
 					<settings.HideEventListLink>
 						<TCEforms>
 							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.HideEventListLink</label>
+							<displayCond>FIELD:sDEF.switchableControllerActions:!=:Event->list;Event->search</displayCond>
 							<config>
 								<type>check</type>
 								<default>0</default>
@@ -199,6 +202,7 @@
 								<foreign_table>tx_jvevents_domain_model_category</foreign_table>
 								<foreign_table_where> AND tx_jvevents_domain_model_category.type = 0 AND (tx_jvevents_domain_model_category.l10n_parent = 0 AND tx_jvevents_domain_model_category.sys_language_uid in(-1, 0, CAST( ###REC_FIELD_sys_language_uid### as SIGNED)) ) ORDER BY tx_jvevents_domain_model_category.sorting</foreign_table_where>
 								<allowNonIdValues>1</allowNonIdValues>
+								<itemsProcFunc>JVE\JvEvents\UserFunc\Flexforms->TranslateMMvalues</itemsProcFunc>
 							</config>
 						</TCEforms>
 
@@ -233,6 +237,7 @@
 								<itemListStyle>width:350px</itemListStyle>
 								<foreign_table>tx_jvevents_domain_model_tag</foreign_table>
 								<foreign_table_where> AND tx_jvevents_domain_model_tag.type = 0 AND (tx_jvevents_domain_model_tag.l10n_parent = 0 AND tx_jvevents_domain_model_tag.sys_language_uid in(-1, 0, CAST( ###REC_FIELD_sys_language_uid### as SIGNED)) ) ORDER BY tx_jvevents_domain_model_tag.name</foreign_table_where>
+								<itemsProcFunc>JVE\JvEvents\UserFunc\Flexforms->TranslateMMvalues</itemsProcFunc>
 								<allowNonIdValues>1</allowNonIdValues>
 							</config>
 						</TCEforms>
@@ -254,7 +259,9 @@
 								<itemListStyle>width:350px</itemListStyle>
 								<foreign_table>tx_jvevents_domain_model_tag</foreign_table>
 								<foreign_table_where>  AND tx_jvevents_domain_model_tag.type = 0 AND (tx_jvevents_domain_model_tag.l10n_parent = 0 AND tx_jvevents_domain_model_tag.sys_language_uid in(-1, 0, CAST( ###REC_FIELD_sys_language_uid### as SIGNED)) ) ORDER BY tx_jvevents_domain_model_tag.name</foreign_table_where>
+								<itemsProcFunc>JVE\JvEvents\UserFunc\Flexforms->TranslateMMvalues</itemsProcFunc>
 								<allowNonIdValues>1</allowNonIdValues>
+
 							</config>
 						</TCEforms>
 					</settings.filter.notAllowedtags>
@@ -349,6 +356,17 @@
 				</TCEforms>
 				<type>array</type>
 				<el>
+					<settings.ShowFilterInfo>
+						<TCEforms>
+						<label>Settings in this tab changes only the (used) Filteroptions!</label>
+
+							<config>
+								<type>none</type>
+								<default>(has no effect the list of filtered event)</default>
+
+							</config>
+						</TCEforms>
+					</settings.ShowFilterInfo>
 					<settings.ShowFilter>
 						<TCEforms>
 							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.ShowFilter</label>
@@ -478,7 +496,7 @@
 					</settings.filter.tagbox1width>
 					<settings.filter.tagbox1tags>
 						<TCEforms>
-							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.Tags</label>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.TagsInFilter</label>
 							<displayCond>
 								<OR>
 									<numIndex index="0">FIELD:sDEFfilter.settings.ShowFilter:=:6</numIndex>
@@ -498,6 +516,7 @@
 								<foreign_table>tx_jvevents_domain_model_tag</foreign_table>
 								<foreign_table_where>  AND tx_jvevents_domain_model_tag.type = 0 AND (tx_jvevents_domain_model_tag.l10n_parent = 0 AND tx_jvevents_domain_model_tag.sys_language_uid in(-1, 0, CAST( ###REC_FIELD_sys_language_uid### as SIGNED)) ) ORDER BY tx_jvevents_domain_model_tag.name</foreign_table_where>
 								<allowNonIdValues>1</allowNonIdValues>
+								<itemsProcFunc>JVE\JvEvents\UserFunc\Flexforms->TranslateMMvalues</itemsProcFunc>
 							</config>
 						</TCEforms>
 					</settings.filter.tagbox1tags>
@@ -569,7 +588,7 @@
 								<itemListStyle>width:350px</itemListStyle>
 								<foreign_table>tx_jvevents_domain_model_tag</foreign_table>
 								<foreign_table_where>  AND tx_jvevents_domain_model_tag.type = 0 AND (tx_jvevents_domain_model_tag.l10n_parent = 0 AND tx_jvevents_domain_model_tag.sys_language_uid in(-1, 0, CAST( ###REC_FIELD_sys_language_uid### as SIGNED)) ) ORDER BY tx_jvevents_domain_model_tag.name</foreign_table_where>
-
+								<itemsProcFunc>JVE\JvEvents\UserFunc\Flexforms->TranslateMMvalues</itemsProcFunc>
 								<allowNonIdValues>1</allowNonIdValues>
 							</config>
 						</TCEforms>
@@ -643,6 +662,7 @@
 								<foreign_table>tx_jvevents_domain_model_tag</foreign_table>
 								<foreign_table_where>  AND tx_jvevents_domain_model_tag.type = 0 AND (tx_jvevents_domain_model_tag.l10n_parent = 0 AND tx_jvevents_domain_model_tag.sys_language_uid in(-1, 0, CAST( ###REC_FIELD_sys_language_uid### as SIGNED)) ) ORDER BY tx_jvevents_domain_model_tag.name</foreign_table_where>
 								<allowNonIdValues>1</allowNonIdValues>
+								<itemsProcFunc>JVE\JvEvents\UserFunc\Flexforms->TranslateMMvalues</itemsProcFunc>
 							</config>
 						</TCEforms>
 					</settings.filter.tagbox3tags>
@@ -731,6 +751,7 @@
 								<foreign_table>tx_jvevents_domain_model_tag</foreign_table>
 								<foreign_table_where>  AND tx_jvevents_domain_model_tag.type = 0 AND (tx_jvevents_domain_model_tag.l10n_parent = 0 AND tx_jvevents_domain_model_tag.sys_language_uid in(-1, 0, CAST( ###REC_FIELD_sys_language_uid### as SIGNED)) ) ORDER BY tx_jvevents_domain_model_tag.name</foreign_table_where>
 								<allowNonIdValues>1</allowNonIdValues>
+								<itemsProcFunc>JVE\JvEvents\UserFunc\Flexforms->TranslateMMvalues</itemsProcFunc>
 							</config>
 						</TCEforms>
 					</settings.filter.tagbox4tags>
@@ -1092,6 +1113,51 @@
 				</TCEforms>
 				<type>array</type>
 				<el>
+
+
+					<!-- PID Single Page -->
+					<settings.detailPid>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms_additional.detailPid</label>
+							<config>
+								<type>group</type>
+								<internal_type>db</internal_type>
+
+								<allowed>pages</allowed>
+								<size>1</size>
+								<maxitems>1</maxitems>
+								<minitems>0</minitems>
+								<show_thumbs>1</show_thumbs>
+								<wizards>
+									<suggest>
+										<type>suggest</type>
+									</suggest>
+								</wizards>
+							</config>
+						</TCEforms>
+					</settings.detailPid>
+					<!-- PID Single Page -->
+					<settings.pageIds.eventList>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms_additional.eventListPid</label>
+							<config>
+								<type>group</type>
+								<internal_type>db</internal_type>
+
+								<allowed>pages</allowed>
+								<size>1</size>
+								<maxitems>1</maxitems>
+								<minitems>0</minitems>
+								<show_thumbs>1</show_thumbs>
+								<wizards>
+									<suggest>
+										<type>suggest</type>
+									</suggest>
+								</wizards>
+							</config>
+						</TCEforms>
+					</settings.pageIds.eventList>
+
 					<settings.storagePid>
 						<TCEforms>
 							<exclude>1</exclude>
@@ -1148,51 +1214,6 @@
 							</config>
 						</TCEforms>
 					</settings.recursive>
-
-					<!-- PID Single Page -->
-					<settings.detailPid>
-						<TCEforms>
-							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms_additional.detailPid</label>
-							<config>
-								<type>group</type>
-								<internal_type>db</internal_type>
-
-								<allowed>pages</allowed>
-								<size>1</size>
-								<maxitems>1</maxitems>
-								<minitems>0</minitems>
-								<show_thumbs>1</show_thumbs>
-								<wizards>
-									<suggest>
-										<type>suggest</type>
-									</suggest>
-								</wizards>
-							</config>
-						</TCEforms>
-					</settings.detailPid>
-					<!-- PID Single Page -->
-					<settings.pageIds.eventList>
-						<TCEforms>
-							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms_additional.eventListPid</label>
-							<config>
-								<type>group</type>
-								<internal_type>db</internal_type>
-
-								<allowed>pages</allowed>
-								<size>1</size>
-								<maxitems>1</maxitems>
-								<minitems>0</minitems>
-								<show_thumbs>1</show_thumbs>
-								<wizards>
-									<suggest>
-										<type>suggest</type>
-									</suggest>
-								</wizards>
-							</config>
-						</TCEforms>
-					</settings.pageIds.eventList>
-
-
 				</el>
 
 			</ROOT>

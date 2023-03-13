@@ -146,6 +146,11 @@
 			<source>Show Only Events with these Tags</source>
 			<target>zeige nur Veranstaltungen mit diesen Schlagworten</target>
 		</trans-unit>
+		<trans-unit id="plugin.filter.TagsInFilter" approved="yes">
+            <source>Show these Tags in Filterbox</source>
+            <target>zeige nur diese Schlagworte in der Filterbox</target>
+        </trans-unit>
+
 
 		<trans-unit id="plugin.filter.notAllowedtags">
 			<source>Show NO Events with ONE of these Tags</source>

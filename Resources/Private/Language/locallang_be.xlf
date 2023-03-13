@@ -280,6 +280,10 @@
 		<trans-unit id="plugin.filter.Tags">
 			<source>Show Only Events with these Tags</source>
 		</trans-unit>
+		<trans-unit id="plugin.filter.TagsInFilter">
+            <source>Show these Tags in Filterbox</source>
+        </trans-unit>
+
 		<trans-unit id="plugin.filter.notAllowedtags">
 			<source>Show NO Events with ONE of these Tags</source>
 		</trans-unit>
