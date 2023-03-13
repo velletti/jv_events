@@ -88,16 +88,16 @@ class Flexforms {
             $row = $this->getRow($table , $nameField , $config['row']['sys_language_uid'] , $uid ) ;
             if( is_array(  $row ) ) {
                 if( $row['uid' ]  <> $uid ) {
-                    $config['items'][$key][0] = $config['items'][$key][0] . " (L " . $row['sys_language_uid' ]  . " Uid: " . $row['uid' ] . " - " . $row[ $nameField ]  . ")" ;
+                    $config['items'][$key][0] = "[" . $uid . "] " . $config['items'][$key][0] . " (L " . $row['sys_language_uid' ]  . " Uid: " . $row['uid' ] . " - " . $row[ $nameField ]  . ")" ;
                 } else {
-                    $config['items'][$key][0] = $config['items'][$key][0] . " (only in Lang:" . $row['sys_language_uid' ]  . ")" ;
+                    $config['items'][$key][0] = "[" . $uid . "] " . $config['items'][$key][0] . " (only in Lang:" . $row['sys_language_uid' ]  . ")" ;
                 }
             } else {
                 $row = $this->getRow($table , $nameField , -1 , $uid ) ;
                 if( !is_array(  $row ) ) {
                     $uid = false ;
                 } else {
-                    $config['items'][$key][0] .= " (all Languages)" ;
+                    $config['items'][$key][0] = "[" . $uid . "] " .  $config['items'][$key][0] . " (all languages)" ;
                 }
             }
             // remove untranslated Items so olny items for all languages or selected languages are left
