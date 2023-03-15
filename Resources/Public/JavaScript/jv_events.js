@@ -140,26 +140,29 @@ function jv_events_init() {
     // Set the fieldsets to the same height
     if($('.filter').length ){
         if( $('body').hasClass('lg') ) {
-            $('.filter').each(function(){
+            if ( ! $(".filter.filterType7").length  ) {
+                $('.filter').each(function(){
 
-                var heightBiggestElement = 0;
+                    var heightBiggestElement = 0;
 
-                $(this).find('fieldset').each(function(){
+                    $(this).find('fieldset').each(function(){
 
-                    if($(this).height() > heightBiggestElement) {
-                        if ( !$(this).hasClass("fieldsetbox5")) {
-                            heightBiggestElement = $(this).height() ;
+                        if($(this).height() > heightBiggestElement) {
+                            if ( !$(this).hasClass("fieldsetbox5")) {
+                                heightBiggestElement = $(this).height() ;
+                            }
                         }
-                    }
-                });
-                $(this).find('fieldset').each(function(){
-                    $(this).css("min-height" , heightBiggestElement);
-                    if ( $('.tx-jv-events .filter').hasClass("filterType6")) {
-                        $(this).css("height", heightBiggestElement);
-                    }
-                });
+                    });
+                    $(this).find('fieldset').each(function(){
+                        $(this).css("min-height" , heightBiggestElement);
+                        if ( $('.tx-jv-events .filter').hasClass("filterType6")) {
+                            $(this).css("height", heightBiggestElement);
+                        }
+                    });
 
-            });
+                });
+            }
+
         } else {
             if($('.filter fieldset').length ){
                 $('.filter fieldset').each(function(){
