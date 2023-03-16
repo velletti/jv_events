@@ -58,11 +58,19 @@ class Flexforms {
      * https://forge.typo3.org/issues/85142
      * */
     public function TranslateMMvalues($config) {
-
+        /*
+        foreach ( $config as $key => $data ) {
+            echo "<br>" . $key ;
+            if ( $key == "table" ) {
+                var_dump( $data);
+            }
+        }
+        die;
+        */
         if ( $config['row']['uid'] < 1 ) {
             return $config ;
         }
-        $plugin = BackendUtility::getRecord("tt_content" , $config['row']['uid'] );
+        $plugin = BackendUtility::getRecord($config['table'] , $config['row']['uid'] );
         if ( is_array( $plugin) ) {
             $config['row'] = array_merge( $config['row'] , $plugin ) ;
         } else {
