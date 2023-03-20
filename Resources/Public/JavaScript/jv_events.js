@@ -139,7 +139,7 @@ function jv_events_init() {
 
     // Set the fieldsets to the same height
     if($('.filter').length ){
-        if( $('body').hasClass('lg') ) {
+        if( $('body').hasClass('lg') || $('body').hasClass('xl')) {
             if ( ! $(".filter.filterType7").length  ) {
                 $('.filter').each(function(){
 
@@ -201,16 +201,26 @@ function jv_events_initOneFilter(filterName) {
             });
         }
         jQuery('SELECT#jv_events_filter_' + filterName ).change(function(i) {
-            jv_events_refreshList() ;
-            if( filterName == "citys" && jQuery("#map").length && jQuery(this).val().length > 1 ){
+
+            if( filterName == "citys" && jQuery("#map").length && jQuery(this).val().length > 0 ){
                 let eventInCity = jQuery('[data-cityuid="' + jQuery(this).val() + '"]') ;
+                let iZoom = 9 ;
+                if( eventInCity && eventInCity.data("zoom") ) {
+                    iZoom = eventInCity.data("zoom") ;
+                }
                 if( eventInCity && eventInCity.data("address") ) {
-                    updateMarker( eventInCity.data("address")) ;
+                 //   console.log(" update Marker with Zoom Factor " + iZoom )
+                    updateMarkerDefault( eventInCity.data("address") , iZoom ) ;
                 } else {
+                  //  console.log(" update Marker without address"  )
                     updateMarker(jQuery(this).val()) ;
                 }
 
+
+            } else {
+                jv_events_refreshList() ;
             }
+
         });
     }
     if ( jQuery('#jv_events_filter_' + filterName + " input[type=checkbox]").length ) {
@@ -248,7 +258,7 @@ function jv_events_initOneFilter(filterName) {
 
 function jv_events_refreshList(){
     if( jQuery("#jv_events_geo").length  && jQuery("#jv_events_geo").data("init" ).length ) {
-        console.log(" In Refresh: init status: " + jQuery("#jv_events_geo").data("init" ) ) ;
+  //      console.log(" In Refresh: init status: " + jQuery("#jv_events_geo").data("init" ) ) ;
         if (jQuery("#jv_events_geo").data("init" ) != "done") {
             return ;
         }
@@ -309,7 +319,7 @@ function jv_events_refreshList(){
                 default:
                     maxDist = 9999;
             }
-        //    console.log( "Lat:" + userLat + " Lng: " + userLng + " maxDist:" +  maxDist ) ;
+            // console.log( "Lat:" + userLat + " Lng: " + userLng + " maxDist:" +  maxDist ) ;
 
         }
     }
@@ -410,7 +420,7 @@ function jv_events_refreshList(){
     jQuery('.tx-jv-events DIV.jv-events-singleEvent').each(function (i) {
         // console.log( " ************* event **************** UID: " + jQuery(this).data("eventuid")  ) ;
 
-        jQuery(this).removeClass('hide') ;
+        jQuery(this).removeClass('hide').removeClass('hidden-by-fMonth').removeClass('hidden-by-fTag').removeClass('hidden-by-fCity').removeClass('hidden-by-fCat').removeClass('hidden-by-maxDist') ;
         if( fMonth && fMonth.val() && fMonth.val().length > 0 ) {
             if( jQuery(this).data("monthuid")  != fMonth.val() ) {
                 jQuery(this).addClass('hide').addClass('hidden-by-fMonth') ;
@@ -436,11 +446,13 @@ function jv_events_refreshList(){
         }
         if( fCity && fCity.length > 0 && !jQuery(this).hasClass('hide')) {
             if(  fCity.val().length > 0 ) {
-                if( (jQuery(this).data("cityuid")) && decodeURI (jQuery(this).data("cityuid")) != (fCity.val()) && ( parseInt( jQuery(this).data("longitude") ) != 0  )  ) {
-                    jQuery(this).addClass('hide').addClass('hidden-by-fCity') ;
-                }
-                if(  jQuery("#toggle-accordion-8").length ) {
-                    jQuery("#toggle-accordion-8").prop("checked" , true ) ;
+                if( fCity.val() != "-") {
+                    if( (jQuery(this).data("cityuid")) && decodeURI (jQuery(this).data("cityuid")) != (fCity.val()) && ( parseInt( jQuery(this).data("longitude") ) != 0  )  ) {
+                        jQuery(this).addClass('hide').addClass('hidden-by-fCity') ;
+                    }
+                    if(  jQuery("#toggle-accordion-8").length ) {
+                        jQuery("#toggle-accordion-8").prop("checked" , true ) ;
+                    }
                 }
             }
         }

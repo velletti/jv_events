@@ -684,6 +684,10 @@
 			<source>Filter by city</source>
 			<target>Filtrer par ville</target>
 		</trans-unit>
+		<trans-unit id="tx_jvevents_event.filter.city.all">
+            <source>All citys</source>
+            <target>Tous les lieux</target>
+        </trans-unit>
 		<trans-unit id="tx_jvevents_event.filter.location" approved="yes">
 			<source>Filter by location</source>
 			<target>Filtrer par lieu</target>

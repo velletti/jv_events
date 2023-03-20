@@ -320,6 +320,7 @@ class GeocoderUtility {
                         document.getElementById("zoom").value = map.getZoom() ;
                     }
                     updatePosition() ;
+                    updateCity() ;
                 });
 				map.addListener( \'click\', function(e) {
 				    marker.setPosition( e.latLng ) ;
@@ -351,6 +352,7 @@ class GeocoderUtility {
                     updatePosition() ;
                     
                 });
+               
 			
 				// Google geocoder
 				geocoder = new google.maps.Geocoder();
@@ -442,6 +444,17 @@ class GeocoderUtility {
 				
 			    return address ;
 			}
+			function updateCity() {
+                setTimeout(function() {
+                    if( jQuery("SELECT#jv_events_filter_citys").length &&  jQuery("SELECT#jv_events_filter_citys").val() != "-") {
+                        jQuery("SELECT#jv_events_filter_citys").val("") ;
+                    } else if ( jQuery("#jv_events_geo") &&  jQuery("#jv_events_geo").data("zoom") > 0 ) {
+                     //    map.setZoom(jQuery("#jv_events_geo").data("zoom")); 
+                         
+                    }
+                }, 1500);
+                
+            }
 			/**
 			 * Finds the address
 			 */
@@ -486,33 +499,27 @@ class GeocoderUtility {
                                         title: address.address,
                                         draggable: draggable
                                     });
-                            }    
-                            if(draggable ) {
-                                marker.addListener("drag", updatePosition);
-                            }
-                              marker.addListener("click", () => {
-                                map.setZoom(9);
-                                map.panTo(marker.getPosition()) ;
-                              });
-                              
-                              marker.addListener("dblclick", () => {
-                                let doubleCLickZoom = 9 ;  
-                                if( jQuery("#jv_events_geo").length ) {
-                                   if ( jQuery("#jv_events_geo").data( "doubleclickzoom" ) ) {
-                                      doubleCLickZoom = jQuery("#jv_events_geo").data( "doubleclickzoom" ) 
-                                   }
+                               
+                                if(draggable ) {
+                                    marker.addListener("drag", updatePosition);
                                 }
-                                map.setZoom(doubleCLickZoom);
-                                map.panTo(marker.getPosition()) ;
-                              });
-                            
-                            map.addListener("zoom_changed" , updateCity ) ;
-                            
-                            function updateCity() {
-                                if( jQuery("SELECT#jv_events_filter_citys") ) {
-                                    jQuery("SELECT#jv_events_filter_citys").val("") ;
-                                }
+                                  marker.addListener("click", () => {
+                                    map.setZoom(9);
+                                    map.panTo(marker.getPosition()) ;
+                                  });
+                                  
+                                  marker.addListener("dblclick", () => {
+                                    let doubleCLickZoom = 9 ;  
+                                    if( jQuery("#jv_events_geo").length ) {
+                                       if ( jQuery("#jv_events_geo").data( "doubleclickzoom" ) ) {
+                                          doubleCLickZoom = jQuery("#jv_events_geo").data( "doubleclickzoom" ) 
+                                       }
+                                    }
+                                    map.setZoom(doubleCLickZoom);
+                                    map.panTo(marker.getPosition()) ;
+                                  });
                             }
+                            
                 
                             function updatePosition() {
                                 if(document.getElementById("lat")) {
@@ -537,9 +544,7 @@ class GeocoderUtility {
                                 }
                                 ' . $updateFunctionCode . ' 
                                 map.panTo(marker.getPosition()) ;
-                                if( jQuery("SELECT#jv_events_filter_citys") ) {
-                                    jQuery("SELECT#jv_events_filter_citys").val("") ;
-                                }
+                                updateCity() ;
                             }
                             function getCookies(name) {
                                 var v = document.cookie.match("(^|;) ?" + name + "=([^;]*)(;|$)");
@@ -605,8 +610,10 @@ class GeocoderUtility {
                    initZoom = map.getZoom() ;
                 }
                 findAddress({address: address}) ;
-               
-			    
+			}
+			function updateMarkerDefault(address , zoom ) {
+                initZoom = zoom ;
+                findAddress({address: address}) ;
 			}
             function updateMapTimer(map) {
                 clearInterval(refreshIntervalId);

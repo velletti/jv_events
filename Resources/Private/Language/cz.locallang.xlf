@@ -681,6 +681,10 @@
 			<source>Filter by city</source>
 			<target>Filtrovat podle města</target>
 		</trans-unit>
+		<trans-unit id="tx_jvevents_event.filter.city.all">
+            <source>All citys</source>
+            <target>Všechna místa</target>
+        </trans-unit>
 		<trans-unit id="tx_jvevents_event.filter.location" approved="yes">
 			<source>Filter by location</source>
 			<target>Filtrovat místa</target>

@@ -699,6 +699,10 @@
 			<source>Filter by city</source>
 			<target>Ort filtern</target>
 		</trans-unit>
+		<trans-unit id="tx_jvevents_event.filter.city.all">
+            <source>All citys</source>
+            <target>Alle Orte</target>
+        </trans-unit>
 		<trans-unit id="tx_jvevents_event.filter.location" approved="yes">
 			<source>Filter by location</source>
 			<target>Veranstaltungsort filtern</target>
