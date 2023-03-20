@@ -357,11 +357,11 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         /** @var Event $event */
         $eventsArray = $events->toArray() ;
         // while( $event instanceof  \JVE\JvEvents\Domain\Model\Event ) {
-        if( ! $this->settings['filter']['hideCityDropdown']) {
-            $citys["-"] = $this->translate("tx_jvevents_event.filter.city.all") ;
-            foreach ($eventsArray as $key => $event ) {
-                // first fill the Options for the Filters to have only options with Events
 
+        foreach ($eventsArray as $key => $event ) {
+            // first fill the Options for the Filters to have only options with Events
+            if( ! $this->settings['filter']['hideCityDropdown']) {
+                $citys["-"] = $this->translate("tx_jvevents_event.filter.city.all") ;
 
                 /** @var \JVE\JvEvents\Domain\Model\Location $obj */
                 $obj =  $event->getLocation() ;
@@ -424,7 +424,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
                     }
                 }
             }
-           
+
             unset($obj) ;
             unset($objArray) ;
 
@@ -433,6 +433,8 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
                 $months[$month] = $month;
             }
         }
+
+        // Now do sorting 
 
         $sortArray = array();
         foreach($categories2 as $key => $array) {
