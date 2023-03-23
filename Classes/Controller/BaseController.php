@@ -368,10 +368,10 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
                 if ( is_object($obj) ) {
                     $locations[$obj->getUid()] = $obj->getName()  ;
 
-                    if(! in_array(ucfirst($obj->getCity()) , $citys )) {
+                    if(! in_array( urlencode( $obj->getCity() ) , $citys )) {
                         // no online Events in CITY Filter
                         if( intval( $obj->getLat())  != 0 || intval($obj->getLng() != 0 )) {
-                            $citys[$obj->getCity()] = ucfirst($obj->getCity()) ;
+                            $citys[urlencode( $obj->getCity() )] = ucfirst($obj->getCity()) ;
                         }
                     }
                 }
@@ -434,7 +434,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             }
         }
 
-        // Now do sorting 
+        // Now do sorting
 
         $sortArray = array();
         foreach($categories2 as $key => $array) {
