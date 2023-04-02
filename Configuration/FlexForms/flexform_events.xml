@@ -956,6 +956,17 @@
 				</TCEforms>
 				<type>array</type>
 				<el>
+					<settings.location.new.defaultCity>
+						<TCEforms>
+							<label>Default City for new locations in Frontend editing</label>
+							<config>
+								<type>input</type>
+								<size>30</size>
+								<default>München</default>
+							</config>
+						</TCEforms>
+					</settings.location.new.defaultCity>
+
 					<settings.filterlocation.categories>
 						<TCEforms>
 							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.Categories</label>

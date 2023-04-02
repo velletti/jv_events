@@ -494,10 +494,12 @@
 
 					<f:if condition="{event.location.link}">
 						<f:then>
-							<div class="row">
-								<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_location.link" />:</strong></div>
-								<div class="col-md-8"><f:link.external uri="{event.location.link}" target="_blank">{event.location.link}</f:link.external></div>
-							</div>
+							<f:if condition="{event.location.link} != '-' " >
+								<div class="row">
+									<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_location.link" />:</strong></div>
+									<div class="col-md-8"><f:link.external uri="{event.location.link}" target="_blank">{event.location.link}</f:link.external></div>
+								</div>
+							</f:if>
 						</f:then>
 						<f:else>
 							<f:if condition="{event.organizer.link}">

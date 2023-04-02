@@ -95,6 +95,7 @@ class LocationController extends BaseController
             /** @var \JVE\JvEvents\Domain\Model\Location $location */
             $location = $this->objectManager->get(\JVE\JvEvents\Domain\Model\Location::class);
         }
+        $organizer= null ;
         if ( $location->getUid() < 1 ) {
             $organizer = $this->getOrganizer() ;
             if( $organizer ) {
@@ -103,7 +104,8 @@ class LocationController extends BaseController
 
             // ToDo find good way to handle ID Default .. maybe a pid per User, per location or other typoscript setting
             $location->setPid( 14 ) ;
-            $location->setCity( "München" ) ;
+            $city = $this->settings["location"]["new"]["defaultCity"] ?? "München";
+            $location->setCity( $city ) ;
             $location->setCountry( "DE" ) ;
 
         }

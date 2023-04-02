@@ -502,6 +502,9 @@
             <trans-unit id="tx_jvevents_domain_model_location.link">
                 <source>Link</source>
             </trans-unit>
+            <trans-unit id="create.location.contact_warning">
+                <source>Need a different contact info for this location? if not leave the next 3 fields empty</source>
+            </trans-unit>
 
 
 

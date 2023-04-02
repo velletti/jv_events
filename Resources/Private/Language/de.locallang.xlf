@@ -615,6 +615,10 @@
                 <source>Link</source>
                 <target>Link</target>
             </trans-unit>
+            <trans-unit id="create.location.contact_warning">
+                <source>Need a different contact info for this location? if not leave the next 3 fields empty</source>
+                <target>Wenn die nachfolgenden Felder Leer gelassen werden, werden deine normalen Kontaktdaten angezeigt. Z.b. sinnvoll die Telefon Nummer der Abendkasse statt deiner anzuzeigen.</target>
+            </trans-unit>
             <trans-unit id="tx_jvevents_domain_model_location.lng" approved="yes">
                 <source>Lng</source>
                 <target>LNG ( Longitude)</target>
