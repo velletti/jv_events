@@ -2,6 +2,7 @@
 namespace JVE\JvEvents\Controller;
 
 use JVE\JvEvents\Utility\SlugUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
@@ -31,6 +32,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
+use Velletti\Mailsignature\Service\SignatureService;
 
 /**
  * OrganizerController
@@ -289,14 +291,16 @@ class OrganizerController extends BaseController
             $msg .= "\n" . "Link: " . $organizer->getLink() ;
             $msg .= "\n\n\n" . "Description: " . $organizer->getDescription() ;
             $msg .= "\n *********************************************** " ;
-            $msg .= "\n Der  Veranstalter Account auf tangomumchen.de wurde freigeschaltet." ;
+            $msg .= "\n Der  Veranstalter Account auf '" . $_SERVER['SERVER_NAME'] .  "' wurde freigeschaltet." ;
             $msg .= "\n" ;
             $msg .= "\n Nun können Veranstaltungsorte und Termine erstellt werden." ;
-            $msg .= "\n WICHTIG: Bitte neu einloggen, damit die neuen Zugriffsrechte als Veranstalter wirksam sind." ;
+            $msg .= "\n <b>WICHTIG:</b> Bitte neu einloggen, damit die neuen Zugriffsrechte als Veranstalter wirksam sind." ;
             $msg .= "\n" ;
             $msg .= "\n Bei Fragen, ist ein Blick in den Hilfebereich sicher hilfreich. " ;
             $msg .= "\n" ;
             $msg .= "\n ***********************************************" ;
+
+            $msg .= "\nFür den Webmaster: " ;
             $msg .= "\nToken String: " ;
             $msg .= "\n"  .  $tokenStr ;
             $msg .= "\n ***********************************************" ;
@@ -304,10 +308,10 @@ class OrganizerController extends BaseController
             $html = nl2br($msg) ;
             $html .= "<br>" . "<hr><br>" . '<a href="' . $url . '"> Klick To Enable  </a>' ."\n" . "\n"  ;
 
-            $msg .= "\n\n" . "Klick to Enable Your Account: \n \n" . $url ;
+            $msg .= "\n\n" . "Klick to Enable Organizer Account: \n \n" . $url ;
+            $msg .= "\n ***********************************************" ;
 
-
-            $this->sendDebugEmail( "tango@velletti.de" ,"info@tangomuenchen.de", "[TANGO][NewOrganizer] - " . $organizer->getEmail() , $msg , $html) ;
+            $this->sendDebugEmail(  $this->settings['register']['senderEmail'] , $this->settings['register']['senderEmail'] , "[TANGO][NewOrganizer] - " . $organizer->getEmail() , $msg , $html) ;
 
 
             $this->showNoDomainMxError($organizer->getEmail() ) ;
@@ -335,8 +339,6 @@ class OrganizerController extends BaseController
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
      */
     public function activateAction($organizerUid=0 , $userUid=0 , $hmac='invalid' , $rnd = 0 ) {
-
-        // https://www.allplan.com.ddev.local/index.php?uid=82&eID=jv_events&tx_jvevents_ajax[organizerUid]=111&tx_jvevents_ajax[action]=activate&tx_jvevents_ajax[userUid]=1&tx_jvevents_ajax[hmac]=hmac1234&&tx_jvevents_ajax[rnd]=11234
 
         $organizerUid = intval($organizerUid) ;
         $userUid = intval($userUid) ;
@@ -384,7 +386,6 @@ class OrganizerController extends BaseController
                     header( "$header:" . $value[0]) ;
                 }
 
-                die;
                 die;
             }
         }
@@ -455,6 +456,36 @@ class OrganizerController extends BaseController
         $this->persistenceManager->persistAll() ;
         $this->addFlashMessage("User : " . $userUid . " (" . $user->getEmail() . ") enabled | " . $msg . "  " , "Success" , \TYPO3\CMS\Core\Messaging\AbstractMessage::OK) ;
         $this->addFlashMessage("Organizer : " . $organizerUid . " (" . $organizer->getName() . ")  enabled " , \TYPO3\CMS\Core\Messaging\AbstractMessage::OK) ;
+
+
+        $msg = "\n *********************************************** " ;
+        $msg .= "\n Der  Veranstalter Account auf '" . $_SERVER['SERVER_NAME'] .  "' wurde freigeschaltet." ;
+        $msg .= "\n\n" . "Name: " . $organizer->getName() ;
+        $msg .= "\n" . "Email: " . $organizer->getEmail() ;
+        $msg .= "\n" . "Phone: " . $organizer->getPhone() ;
+        $msg .= "\n" ;
+
+        $msg .= "\n Nun können Veranstaltungsorte und Termine erstellt werden." ;
+        $msg .= "\n <b>WICHTIG:</b> Bitte neu einloggen, damit die neuen Zugriffsrechte als Veranstalter wirksam sind." ;
+        $msg .= "\n" ;
+        $msg .= "\n Bei Fragen, ist ein Blick in den Hilfebereich sicher hilfreich. " ;
+        $msg .= "\n" ;
+        $msg .= "\n ***********************************************" ;
+
+        $html = nl2br($msg) ;
+        if (ExtensionManagementUtility::isLoaded('mailsignature')) {
+            /** @var SignatureService $signatureService */
+            $signatureService = GeneralUtility::makeInstance(SignatureService::class);
+            $signature = $signatureService->getSignature($this->settings['signature']['uid']);
+            $html .= "<br><br>" . $signature['html'] ;
+            $msg .= "\n\n" . $signature['plain'] ;
+        }
+
+
+
+
+        $this->sendDebugEmail(  $this->settings['register']['senderEmail'] , $this->settings['register']['senderEmail'] , "[TANGO][NewOrganizer] - " . $organizer->getEmail() . " activated ", $msg , $html) ;
+
         try {
             $this->redirect('assist' , "Organizer", Null , NULL , $this->settings['pageIds']['organizerAssist'] );
         } catch(StopActionException $e) {

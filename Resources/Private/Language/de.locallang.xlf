@@ -973,8 +973,8 @@
                 <target>Standort bestimmen</target>
             </trans-unit>
              <trans-unit id="error.email.noMxRecord">
-                <source>Please verify your email address. Is the domain @'%1' correct?</source>
-                 <target>Stimmt die email address wirklich? Ist das @'%1' korrekt?</target>
+                <source>Please verify your email address. Is the domain; '%s' correct?</source>
+                 <target>Stimmt die email address wirklich? Ist das: '%s' korrekt?</target>
             </trans-unit>
              <trans-unit id="error.msg_error_html_code_not_allowed">
                 <source>Please check your input. Looks as it contains unwanted HTML Code</source>
@@ -988,11 +988,31 @@
                 <source>Calculate and set map coordinates (LNG=Longitude and LAT=latitude) </source>
                 <target>Berechnen und Speichern der Karten Kooordinaten (LNG/LAT)</target>
             </trans-unit>
-
+            <trans-unit id="contact.webmaster">
+                <source>Please Contact Webmaster via</source>
+                <target>Webmaster direkt kontaktieren via </target>
+            </trans-unit>
             <trans-unit id="create.organizer.create.Headline">
                 <source>Want to have a NEW entry in Organizer list?</source>
                 <target>Du möchtest in der Veranstalterliste erscheinen?</target>
             </trans-unit>
+            <trans-unit id="create.organizer.account.notactive.headline">
+                <source>Your Organizer Account is not activated!</source>
+                <target>Der Account ist nicht als Veranstalter aktiviert!</target>
+            </trans-unit>
+            <trans-unit id="create.organizer.account.notactive.helptext1">
+                <source>Before you can add your Events, we have to check and activate your Organizer status.</source>
+                <target>Bevor Du Termine eintragen, muss Dein Account freigeschaltet werden.</target>
+            </trans-unit>
+             <trans-unit id="create.organizer.account.notactive.helptext2">
+                <source>Check of new organzers is normaly done within 2 days. If this takes more time, please be patient.</source>
+                <target>Die Prüfung und Freischaltung dauert bin der Regel bis maximal 2 Tage. Wenn es mal länger dauert, ist deine Anfrage evt. untergegangen.</target>
+            </trans-unit>
+            <trans-unit id="create.organizer.account.notactive.helptext3">
+                <source>To speed up this process</source>
+                <target>Um die Freischaltung zu beschleunigen</target>
+            </trans-unit>
+
             <trans-unit id="create.organizer.create.text">
                     <source>If you want to become a NEW Organizer, just click on this button and fill the Form</source>
                 <target>Um deine Veranstaltungen als NEUER Veranstalter einzutragen, einfach den nachfolgenden Button anklicken und das Formular ausfüllen</target>

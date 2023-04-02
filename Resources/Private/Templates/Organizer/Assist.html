@@ -120,8 +120,11 @@
 
 <f:section name="contactWebmaster">
     <div>
-        Please Contact Webmaster via: <br> <br>
-        <f:link.email class="btn btn-secondary" email="info@tangomuenchen.de?subject=[TANGO] [ID:U-{user}-O-{organizer.uid}-P-{organizer.pid}] Anfrage">info [at] tangomuenchen.de</f:link.email>
+        <f:translate key="contact.webmaster"></f:translate>
+         <br>
+        <a href="mailto:{settings.register.senderEmail}?subject=[TANGO] [ID:U-{user}-O-{organizer.uid}-P-{organizer.pid}] Anfrage Freischaltung {organizer.name}">
+            {settings.register.senderEmail}
+        </a>
     </div>
 </f:section>
 
@@ -219,11 +222,13 @@
     <div class="alert alert-warning mt-4 ">
         <h3>Organizer Status: <span class="far fa-square"> </span> <span>inactiv</span></h3>
         <p>
-            Your Account is not activated!<br>
+            <f:translate key="create.organizer.account.notactive.headline">Your Organizer Account is not activated!</f:translate><br>
             <br>
-            <b>Bevor Du Termine eintragen, muss Dein Account freigeschaltet werden.</b><br><br>
-            Die Prüfung und Freischaltung dauert bin der Regel bis maximal 2 Tage. Wenn es mal länger dauert, ist deine Anfrage evt. untergegangen. <br>
-            Um die Freischaltung zu beschleunigen:<br>
+            <b><f:translate key="create.organizer.account.notactive.helptext1"></f:translate></b>
+
+            <br><br>
+            <f:translate key="create.organizer.account.notactive.helptext2"></f:translate>
+            <br>
 
             <f:render section="contactWebmaster" arguments="{organizer: organizer.0 , settings: settings , user: user}"></f:render>
 

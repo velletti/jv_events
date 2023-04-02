@@ -40,11 +40,13 @@ use JVE\JvEvents\Domain\Repository\TagRepository;
 use TYPO3\CMS\Core\Context\AspectInterface;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
 use \TYPO3\CMS\Core\Messaging\AbstractMessage ;
 use TYPO3\CMS\Extbase\Service\CacheService;
+use Velletti\Mailsignature\Service\SignatureService;
 
 /**
  * EventController
@@ -797,19 +799,12 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         }
 
         $signature = false;
-        if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('mailsignature')) {
-            /** @var \Velletti\Mailsignature\Service\SignatureService $signatureService */
-            $signatureService = $this->objectManager->get(\Velletti\Mailsignature\Service\SignatureService::class);
+        if (ExtensionManagementUtility::isLoaded('mailsignature')) {
+            /** @var SignatureService $signatureService */
+            $signatureService = GeneralUtility::makeInstance(SignatureService::class);
             $signature = $signatureService->getSignature($this->settings['signature']['uid']);
         }
-        if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('nem_signature')) {
-            if (!$signature) {
-                /** @var \tx_nemsignature $signatureService */
-                $signatureService = $this->objectManager->get("tx_nemsignature");
-                $signature = $signatureService->getSignature($this->settings['signature']['uid']);
-            }
 
-        }
         if( $event ) {
             $querysettings =$this->subeventRepository->getTYPO3QuerySettings() ;
             $querysettings->setStoragePageIds(array( $event->getPid() )) ;
@@ -932,6 +927,8 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         $returnPath = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFromAddress();
         if ( $returnPath != "no-reply@example.com") {
             $message->setReturnPath($returnPath);
+        } else {
+            $message->setReturnPath($sender);
         }
 
         /** @var Typo3Version $tt */
