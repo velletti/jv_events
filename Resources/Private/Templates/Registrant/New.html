@@ -14,30 +14,32 @@
 
 			<f:comment> Render the Registration Form for the Event </f:comment>
 
-			<f:if condition="{event.isRegistrationPossible}">
-				<f:then>
-					<f:render partial="Registrant/Partial{settings.LayoutRegister}/Form"
-							  arguments="{event: event, settings: settings, hash: hash,  otherEvents: otherEvents, registrant: registrant}"/>
-				</f:then>
-				<f:else>
+			<f:if condition="{event.isRegistrationConfigured}">
+				<f:if condition="{event.isRegistrationPossible}">
+					<f:then>
+						<f:render partial="Registrant/Partial{settings.LayoutRegister}/Form"
+								  arguments="{event: event, settings: settings, hash: hash,  otherEvents: otherEvents, registrant: registrant}"/>
+					</f:then>
+					<f:else>
 
-					<f:if condition="{event.registrationUntil} < {event.actualTime}">
-						<f:then>
-							<h4>{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:register.registration_not_possible_text' , default:'Error')}</h4>
-							<p>{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:register.deadline_expired_text' , default:'Registration deadline has expired ')}</p>
+						<f:if condition="{event.registrationUntil} < {event.actualTime}">
+							<f:then>
+								<h4>{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:register.registration_not_possible_text' , default:'Error')}</h4>
+								<p>{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:register.deadline_expired_text' , default:'Registration deadline has expired ')}</p>
 
-						</f:then>
-						<f:else>
-							<f:if condition="{event.isNoFreeSeats}">
-								<f:then>
-									<h4>{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:register.overbooked_headline' , default:'+++overbooked+++')}</h4>
-									<p>{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:register.overbooked_text' , default:'No free seats available')}</p>
-								</f:then>
-							</f:if>
-						</f:else>
-					</f:if>
+							</f:then>
+							<f:else>
+								<f:if condition="{event.isNoFreeSeats}">
+									<f:then>
+										<h4>{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:register.overbooked_headline' , default:'+++overbooked+++')}</h4>
+										<p>{f:translate(key:'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:register.overbooked_text' , default:'No free seats available')}</p>
+									</f:then>
+								</f:if>
+							</f:else>
+						</f:if>
 
-				</f:else>
+					</f:else>
+				</f:if>
 			</f:if>
 			<div class="hidden d-none">
 				Registration possible Until: {event.registrationUntil -> event:format.date( format:"d.m.Y H:i")}
