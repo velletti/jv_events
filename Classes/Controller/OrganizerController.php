@@ -485,6 +485,7 @@ class OrganizerController extends BaseController
 
 
         $this->sendDebugEmail(  $this->settings['register']['senderEmail'] , $this->settings['register']['senderEmail'] , "[TANGO][NewOrganizer] - " . $organizer->getEmail() . " activated ", $msg , $html) ;
+        $this->sendDebugEmail(  $organizer->getEmail() , $this->settings['register']['senderEmail'] , "[TANGO][NewOrganizer] - " . $organizer->getEmail() . " activated ", $msg , $html) ;
 
         try {
             $this->redirect('assist' , "Organizer", Null , NULL , $this->settings['pageIds']['organizerAssist'] );
