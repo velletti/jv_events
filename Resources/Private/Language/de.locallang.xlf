@@ -611,6 +611,11 @@
                 <source>Lat</source>
                 <target>LAT (Latitude)</target>
             </trans-unit>
+             <trans-unit id="tx_jvevents_domain_model_location.position_not_exact">
+                <source>Position not exact enough? Zoom into the map and  click onto the correct position. Will be overwriten, if you change again the address</source>
+                <target>Position zu ungenau? Zoom in die Karte und klicke an die genaue Position. Wird jedoch beim ändern der Adresse überschrieben!</target>
+            </trans-unit>
+
             <trans-unit id="tx_jvevents_domain_model_location.link" approved="yes">
                 <source>Link</source>
                 <target>Link</target>
