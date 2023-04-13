@@ -15,53 +15,48 @@
 	<f:variable name="helpModalBody">
 		<f:format.raw>
 			<f:spaceless>
-				Bevor man Termine eintragen kann, muss man vom Webmaster freigeschaltet werden. <br>
-				Dann kann man als <b>einen</b> Veranstalter Datensatz pflegen. <br><br>
-				Wenn der Veranstalter bereits in der Liste exisitert, bitte den Webmaster kontaktieren, um dafür freigeschaltet zu werden, <b>nicht</b> einfach einen neuen anlegen!
-				Das bedeutet auch: Wenn mehrere Personen die Termine des Veranstalters pflegen sollen, kann, nach Freischaltung, jeder seinen <b>eigenen</b>b> Zugang nutzen.
+				Siehe unsere
 				<br>
-				Ein derartiger  Veranstalter kann mehrere Locations (Veranstaltungsorte) und die dort stattfindenden Termine pflegen.<br>
-				<br>
-				Derzeit gibt es <b>keine Möglichkeit</b> wiederkehrendende Termine einzutragen. Aber man kann recht einfach einen Termin <b>kopieren</b>. Auch im voraus für mehrere Wochen.<br>
-				<br>
-				<br>
-				... mehr Hilfe ist in Arbeit....
+				<f:link.page class="btn btn-outline-primary" pageUid="{settings.help.organizer.pid}"
+							 additionalParams="{'&tx_maritfaq_pi1[FaqID]': '{settings.help.organizer.faqId}'}">
+					Hilfe Seiten
+				</f:link.page>
+				<br><br>
+				Wenn dort keine passende Antwort zu finden ist, uns per E-Mail kontaktieren und die nachfolgenden IDs mitsenden<br>
+				User: {user} | Organizer: {object.uid} | Pid: {object.pid}<br>
 			</f:spaceless>
 		</f:format.raw>
 	</f:variable>
 	<f:variable name="helpModalFooter">
 		<f:format.raw>
 			<f:spaceless>
-				Your ID: U-{user}-O-{organizer.uid}-P-{organizer.pid}
+				&nbsp;
 			</f:spaceless>
 		</f:format.raw>
 	</f:variable>
-
-
 	<f:render partial="Helper/Bootstrap4/Modal" arguments="{'modalId':  'HelpModal', 'modalTitle': 'Help', 'modalBody': helpModalBody,'modalFooter': helpModalFooter,  'settings': settings}" />
-
-
-
-
-
 </f:section>
 
 <f:section name="location">
-
-
 	<f:variable name="helpModalBody">
 		<f:format.raw>
 			<f:spaceless>
-				nur Geduld .. hier gibt es irgendwann die Hilfe Texte ..
-
-
+				Siehe unsere
+				<br>
+				<f:link.page class="btn btn-outline-primary" pageUid="{settings.help.location.pid}"
+							 additionalParams="{'&tx_maritfaq_pi1[FaqID]': '{settings.help.location.faqId}'}">
+					Hilfe Seiten
+				</f:link.page>
+				<br><br>
+				Wenn dort keine passende Antwort zu finden ist, uns per E-Mail kontaktieren und die nachfolgenden IDs mitsenden<br>
+				User: {user} | LocationId: {object.uid}<br>
 			</f:spaceless>
 		</f:format.raw>
 	</f:variable>
 	<f:variable name="helpModalFooter">
 		<f:format.raw>
 			<f:spaceless>
-				Uid: {user} | LocationId: {object.uid}<br>
+				&nbsp;
 			</f:spaceless>
 		</f:format.raw>
 	</f:variable>
@@ -78,19 +73,22 @@
 	<f:variable name="helpModalBody">
 		<f:format.raw>
 			<f:spaceless>
-				Nur Geduld .. hier gibt es irgendwann die Hilfe Texte ..<br>
+				Siehe unsere
 				<br>
-				Du willst einen Banner schalten? <br>Nutze die Share Buttons, um mir die notwendigen Infos zu senden! <br>
-				<br>
-				<f:render partial="Helper/Bootstrap4/Share"  arguments="{object: 'event', event: event, emailTo: 'help@tangomuenchen.de', uri: uri, uids: 'User: {user} | Event: {object.uid} | LocationId: {object.location.uid}', settings: settings}"></f:render>
-
+				<f:link.page class="btn btn-outline-primary" pageUid="{settings.help.event.pid}"
+							 additionalParams="{'&tx_maritfaq_pi1[FaqID]': '{settings.help.event.faqId}'}">
+					Hilfe Seiten
+				</f:link.page>
+				<br><br>
+				Wenn dort keine passende Antwort zu finden ist, uns per E-Mail kontaktieren und die nachfolgenden IDs mitsenden<br>
+				User: {user} | Event: {object.uid} | LocationId: {object.location.uid}<br>
 			</f:spaceless>
 		</f:format.raw>
 	</f:variable>
 	<f:variable name="helpModalFooter">
 		<f:format.raw>
 			<f:spaceless>
-				User: {user} | Event: {object.uid} | LocationId: {object.location.uid}<br>
+				&nbsp;
 			</f:spaceless>
 		</f:format.raw>
 	</f:variable>
