@@ -417,7 +417,15 @@ class OrganizerController extends BaseController
 
         }
         $groups =  $user->getUsergroup()->toArray() ;
-        $groupsMissing = array( 2 => TRUE , 7 => TRUE ) ;
+        if ( isset($this->settings['organizer']) && isset($this->settings['organizer']['newOrgGetGroups'])
+            &&  is_array( $this->settings['organizer']['newOrgGetGroups']) && count($this->settings['organizer']['newOrgGetGroups']) > 0
+        ) {
+            foreach ( $this->settings['organizer']['newOrgGetGroups'] as $group => $groupName ) {
+                $groupsMissing[$group ] =  TRUE  ;
+            }
+        } else {
+            $groupsMissing = array( 2 => TRUE , 7 => TRUE ) ;
+        }
 
         if(is_array( $groups)) {
             /** @var \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup $group */

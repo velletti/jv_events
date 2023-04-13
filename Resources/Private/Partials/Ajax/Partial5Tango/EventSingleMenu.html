@@ -260,9 +260,10 @@
                                                                 Viewed: {output.event.banner.impressions} | Clicks: {output.event.banner.clicks}<br/>
                                                             </f:then>
                                                             <f:else>
-                                                                <hr>Request a Startpage Banner:<hr>
-                                                                <f:render partial="Helper/Bootstrap4/Share"  arguments="{object: 'event', reason: 'Please activate Banner!', event: output.event, emailTo: 'info@tangomuenchen.de', uri: uri, uids: 'User: {output.feuser.uid} - {output.feuser.username} | Event: {output.event.eventId} | LocationId: {output.location.locationId}', settings: settings}"></f:render>
-
+                                                                <f:security.ifHasRole role="BannerAllowed">
+                                                                    <hr>Request a Startpage Banner:<hr>
+                                                                    <f:render partial="Helper/Bootstrap4/Share"  arguments="{object: 'event', reason: 'Please activate Banner!', event: output.event, emailTo: 'info@tangomuenchen.de', uri: uri, uids: 'User: {output.feuser.uid} - {output.feuser.username} | Event: {output.event.eventId} | LocationId: {output.location.locationId}', settings: settings}"></f:render>
+                                                                </f:security.ifHasRole>
                                                             </f:else>
                                                         </f:if>
 

@@ -90,10 +90,12 @@
                             <f:if condition="{event.price} > 0">
                                 <span class="d-md-block d-none">{event.price} {event.currency} (<f:translate key="jv_events_model_event.inclusiveVat" />)<br></span>
                             </f:if>
-                            <div class="jv_events_dist_wrap" title="{f:translate(key:'Distance_from_position', default: 'Entfernung von der gewählten Postion bzw. Marienplatz in München')}">
-                                <span class="fas fa-map-pin"></span>
-                                <span class="jv_events_dist ml-2">.</span>
-                            </div>
+                            <f:if condition="{settings.list.showDistance}">
+                                <div class="jv_events_dist_wrap" title="{f:translate(key:'Distance_from_position', default: 'Entfernung von der gewählten Postion bzw. Marienplatz in München')}">
+                                    <span class="fas fa-map-pin"></span>
+                                    <span class="jv_events_dist ml-2">.</span>
+                                </div>
+                            </f:if>
                             <f:if condition="{settings.list.showCrdate}">
                                 <div class="small">
                                     <br>

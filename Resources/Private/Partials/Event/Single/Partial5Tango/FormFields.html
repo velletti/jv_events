@@ -63,59 +63,61 @@
 		  arguments="{object: 'event', property:'priceReducedText' , label: '' , translationKey: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.priceReducedTextLabel' ,  maxLength: 100 ,  mandatory: '0' }" />
 
 <hr>
-<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowCheckbox"
-		  arguments="{object: '', property:'withRegistration' , euro: 'false', label: '' , translationKey: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.with_registration' ,  maxLength: 20 ,  mandatory: '0' }" />
 
-<div class="mb-2 p-1 cursor-pointer border-top border-bottom " type="button" data-toggle="collapse" data-target="#jv_events_edit_register_on" aria-expanded="{f:if(condition: '{event.withRegistration} == 1' , then: 'true' , else: 'false')}" aria-controls="jv_events_edit_register_on" >
-	<i class="btn btn-outline-primary btn-sm rounded-circle mr-2" href="#"> <i class=" fa fa-wrench"> </i></i><span class="{f:if(condition: '{event.withRegistration} == 1' , else: ' d-none')}">Click here to see</span> Registration options
-</div>
-<div id="jv_events_edit_register_on"  class="border-bottom p-1 collapse {f:if(condition: '{event.withRegistration} == 1' , then: 'show', else: '')}">
-
-	<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowNumber"
-			  arguments="{object: 'event', property:'availableSeats' , euro: 'false', label: '' , translationKey: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.available_seats' ,  maxLength: 20 ,  mandatory: '0' }" />
-	<f:security.ifHasRole role="adminOrganizer">
-		<f:then>
-			<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowNumber"
-					  arguments="{object: 'event', property:'registeredSeats' , euro: 'false', label: '' , translationKey: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.registered_seats' ,  maxLength: 20 ,  mandatory: '0' }" />
-
-		</f:then>
-
-	</f:security.ifHasRole>
-
-	<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowTextfield"
-			  arguments="{object: 'event', property:'introtextRegistrantConfirmed' , label: '' , translationKey: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.introtext_registrant_confirmed' ,  maxLength: 1000 , rows: 5, mandatory: '0' }" />
-	<hr>
-
-
-	<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowNumber"
-			  arguments="{object: 'event', property:'availableWaitingSeats' , euro: 'false', label: '' , translationKey: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.available_waiting_seats' ,  maxLength: 20 ,  mandatory: '0' }" />
-	<f:security.ifHasRole role="adminOrganizer">
-		<f:then>
-			<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowNumber"
-				  arguments="{object: 'event', property:'unconfirmedSeats' , euro: 'false', label: '' , translationKey: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.unconfirmed_seats' ,  maxLength: 20 ,  mandatory: '0' }" />
-		</f:then>
-	</f:security.ifHasRole>
-
-	<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowTextfield"
-
-			  arguments="{object: 'event', property:'introtextRegistrant' , label: '' , translationKey: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.introtext_registrant' ,  maxLength: 1000 , rows: 5, mandatory: '0' }" />
-	<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowCheckboxRegpage"
-			  arguments="{object: '', property:'registrationFormPid' , label: 'with full Address' ,  value: '{event.registrationFormPid}', settings: settings }" />
-
-
-
+<f:security.ifHasRole role="RegistrationAllowed">
 	<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowCheckbox"
-			  arguments="{object: '', property:'registrationShowStatus' , euro: '', label: '' , translationKey: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.registration_show_status' ,  mandatory: '0' }" />
-	<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowSelectGenderRestriction"
-			  arguments="{object: 'event', property:'registrationGender' , euro: 'false', label: '' , translationKey: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.registration_gender' ,  mandatory: '0' }" />
+			  arguments="{object: '', property:'withRegistration' , euro: 'false', label: '' , translationKey: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.with_registration' ,  maxLength: 20 ,  mandatory: '0' }" />
 
-	<f:security.ifHasRole role="adminOrganizer">
-		<f:then>
+	<div class="mb-2 p-1 cursor-pointer border-top border-bottom " type="button" data-toggle="collapse" data-target="#jv_events_edit_register_on" aria-expanded="{f:if(condition: '{event.withRegistration} == 1' , then: 'true' , else: 'false')}" aria-controls="jv_events_edit_register_on" >
+		<i class="btn btn-outline-primary btn-sm rounded-circle mr-2" href="#"> <i class=" fa fa-wrench"> </i></i><span class="{f:if(condition: '{event.withRegistration} == 1' , else: ' d-none')}">Click here to see</span> Registration options
+	</div>
+	<div id="jv_events_edit_register_on"  class="border-bottom p-1 collapse {f:if(condition: '{event.withRegistration} == 1' , then: 'show', else: '')}">
 
-		</f:then>
-	</f:security.ifHasRole>
-</div>
+		<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowNumber"
+				  arguments="{object: 'event', property:'availableSeats' , euro: 'false', label: '' , translationKey: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.available_seats' ,  maxLength: 20 ,  mandatory: '0' }" />
+		<f:security.ifHasRole role="adminOrganizer">
+			<f:then>
+				<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowNumber"
+						  arguments="{object: 'event', property:'registeredSeats' , euro: 'false', label: '' , translationKey: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.registered_seats' ,  maxLength: 20 ,  mandatory: '0' }" />
 
+			</f:then>
+
+		</f:security.ifHasRole>
+
+		<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowTextfield"
+				  arguments="{object: 'event', property:'introtextRegistrantConfirmed' , label: '' , translationKey: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.introtext_registrant_confirmed' ,  maxLength: 1000 , rows: 5, mandatory: '0' }" />
+		<hr>
+
+
+		<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowNumber"
+				  arguments="{object: 'event', property:'availableWaitingSeats' , euro: 'false', label: '' , translationKey: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.available_waiting_seats' ,  maxLength: 20 ,  mandatory: '0' }" />
+		<f:security.ifHasRole role="adminOrganizer">
+			<f:then>
+				<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowNumber"
+					  arguments="{object: 'event', property:'unconfirmedSeats' , euro: 'false', label: '' , translationKey: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.unconfirmed_seats' ,  maxLength: 20 ,  mandatory: '0' }" />
+			</f:then>
+		</f:security.ifHasRole>
+
+		<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowTextfield"
+
+				  arguments="{object: 'event', property:'introtextRegistrant' , label: '' , translationKey: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.introtext_registrant' ,  maxLength: 1000 , rows: 5, mandatory: '0' }" />
+		<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowCheckboxRegpage"
+				  arguments="{object: '', property:'registrationFormPid' , label: 'with full Address' ,  value: '{event.registrationFormPid}', settings: settings }" />
+
+
+
+		<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowCheckbox"
+				  arguments="{object: '', property:'registrationShowStatus' , euro: '', label: '' , translationKey: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.registration_show_status' ,  mandatory: '0' }" />
+		<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowSelectGenderRestriction"
+				  arguments="{object: 'event', property:'registrationGender' , euro: 'false', label: '' , translationKey: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.registration_gender' ,  mandatory: '0' }" />
+
+		<f:security.ifHasRole role="adminOrganizer">
+			<f:then>
+
+			</f:then>
+		</f:security.ifHasRole>
+	</div>
+</f:security.ifHasRole>
 
 
 <f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowRte"

@@ -64,12 +64,12 @@
                 </f:if>
                 <f:if condition="{location.link}">
                     <f:then>
-                        <span class="fa fa-link mh-sm"></span> <f:link.external uri="{location.link}" >{location.link}</f:link.external><br>
+                        <span class="fa fa-link mh-sm"></span> <f:link.external uri="{location.link}" target="_blank">{location.link}</f:link.external><br>
                     </f:then>
                     <f:else>
                         <f:if condition="{location.organizer.link}">
                             <f:then>
-                                <span class="fa fa-link mh-sm"></span> <f:link.external uri="{location.organizer.link}" >{location.organizer.link}</f:link.external><br>
+                                <span class="fa fa-link mh-sm"></span> <f:link.external uri="{location.organizer.link}"  target="_blank">{location.organizer.link}</f:link.external><br>
                             </f:then>
                         </f:if>
                     </f:else>
