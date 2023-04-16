@@ -203,6 +203,10 @@
 			<trans-unit id="plugin.filter.hideCityDropdown">
 				<source>Hide Dropdown City, even if there is more than one Cities</source>
 			</trans-unit>
+			<trans-unit id="plugin.filter.showDropdownsFirst">
+                <source>Show Dropdown Selects as first Filter option</source>
+            </trans-unit>
+
 			<trans-unit id="plugin.filter.hideMonthDropdown">
                 <source>Hide Dropdown Month, even if there is more than one Month</source>
             </trans-unit>
