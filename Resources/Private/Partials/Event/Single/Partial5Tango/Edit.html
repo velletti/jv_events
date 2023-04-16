@@ -21,6 +21,29 @@
                     <br>
                     <br>
 
+                    <f:variable name="imageButton"><f:translate key="changeImage">Change Image</f:translate></f:variable>
+                    <f:if condition="{event.teaserImage}">
+                        <f:then>
+                            <f:image src="{event.teaserImage.uid}" class="d-block w-100 h-auto img-float rounded shadow-lg" alt="{event.teaserImage.alternative}" title="{event.teaserImage.title}" width="{settings.list.image.width}c" maxWidth="{settings.list.image.width}" maxHeight="{settings.list.image.height}" treatIdAsReference="true" />
+                        </f:then>
+                        <f:else>
+                            <f:variable name="imageButton"><f:translate key="addImage">Add Image</f:translate></f:variable>
+
+                        </f:else>
+                    </f:if>
+                    <br/>
+
+                    <f:link.page pageUid="{settings.pageIds.addMedia}" noCache="true" class="nav-link  px-1" title="Add Teaser Image "
+                                 additionalParams="{tx_jvmediaconnector_connector: {action: 'list', controller: 'Media' ,  reference: {id: event.uid, table: 'tx_jvevents_domain_model_event' , fieldname: 'teaser_image' , maxRelations: '1' , returnPid: settings.pageId , returnArray: {tx_jvevents_events: {action: 'edit', event: event.uid }}}}}">
+                        <button class="btn btn-outline-primary btn-xs rounded-circle" href="#">
+                            <i class="fas fa-image"></i>
+                        </button>
+                        <span class="d-none d-md-inline-block">{imageButton}</span>
+                    </f:link.page>
+                    <br/>
+
+
+
                     <div id="jvEventsCopyUrl{event.uid}" class="small text-white-50">{uri}</div>
                 </div>
                 <div class="col-md-8 equalHeight">
@@ -39,19 +62,27 @@
                             </h4>
 
 
-                            <div class="row mb-2">
-                                <div class="col-11">
-                                    ({event.location.uid})  {event.location.name}, {event.location.streetAndNr} - {event.location.city}
+                            <div class="alert alert-info pb-2 mb-2">
+                                <div class="row">
+                                    <div class="col-10">
+                                        <b><f:translate key="tx_jvevents_domain_model_event.location"></f:translate>:</b>
+                                        ({event.location.uid})  {event.location.name}, {event.location.streetAndNr} - {event.location.city}
+                                    </div>
+                                    <div class="col-1">
+                                        <f:link.action class="btn btn-secondary btn-sm" pageUid="{settings.pageIds.editLocation}" action="edit" controller="Location"  title="{event.location.uid} - {event.location.name}" arguments="{location: '{event.location.uid}', organizer: '{event.organizer.uid}'}">
+                                            <span class="fa fa-edit"></span>
+                                        </f:link.action>
+                                    </div>
+                                    <div class="col-1">
+                                        <span class="btn btn-secondary btn-sm" title="Change to other, existing Location" data-toggle="collapse" data-target="#jveventsChangeLocation">
+                                            <span class="fas fa-map-marked-alt"></span>
+                                        </span>
+                                    </div>
                                 </div>
-                                <div class="col-1">
-                                    <span class="btn btn-secondary " title="Change to other, existing Location" data-toggle="collapse" data-target="#jveventsChangeLocation">
-                                        <span class="fas fa-map-marked-alt"></span>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="collapse" id="jveventsChangeLocation">
-                                <div class="alert alert-info p-4">
-                                    <f:render partial="Location/ChangeLocation" arguments="{_all}" />
+                                <div class="collapse" id="jveventsChangeLocation">
+                                    <div class="alert alert-info p-4">
+                                        <f:render partial="Location/ChangeLocation" arguments="{_all}" />
+                                    </div>
                                 </div>
                             </div>
 

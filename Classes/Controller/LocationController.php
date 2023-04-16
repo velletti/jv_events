@@ -48,6 +48,15 @@ class LocationController extends BaseController
         if( !$this->request->hasArgument('location')) {
             // ToDo redirect to error
         }
+/*
+        if ( $this->request->hasArgument('location')) {
+            if ( property_exists( $this->arguments , "location")) {
+                $propertyMappingConfiguration = $this->arguments['location']->getPropertyMappingConfiguration();
+                $propertyMappingConfiguration->allowProperties('organizerUid') ;
+            }
+
+        }
+*/
         parent::initializeAction() ;
 
     }
@@ -59,12 +68,25 @@ class LocationController extends BaseController
      */
     public function listAction()
     {
-        $filter = false ;
-        if( array_key_exists( 'filterlocation' , $this->settings) && array_key_exists( "categories", $this->settings['filterlocation']))  {
-            $filter = ["locationCategory.uid" => \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode( "," , $this->settings['filterlocation']['categories'] ) ]  ;
+        $filter = []     ;
+        if( array_key_exists( 'filterlocation' , $this->settings)) {
+
+            if ( array_key_exists( "dist", $this->settings['filterlocation']))  {
+                if( intval($this->settings['filterlocation']['dist']) > 0 ) {
+                    $filter = $this->locationRepository->getBoundingBox(  $this->settings['filterlocation']['lat'], $this->settings['filterlocation']['lng'] ,  $this->settings['filterlocation']['dist']) ;
+                }
+            }
+            if ( array_key_exists( "categories", $this->settings['filterlocation']))  {
+                $filter["locationCategory.uid"] =  \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode( "," , $this->settings['filterlocation']['categories'] )   ;
+            }
         }
 
-        $locations = $this->locationRepository->findByFilterAllpages($filter);
+        $lastModified = '-1 YEAR' ;
+        if( array_key_exists( 'filterorganizer' , $this->settings) && array_key_exists( "latestUpdate", $this->settings['filterorganizer'])) {
+            $lastModified = "-" . intval($this->settings['filterlocation']['categories']) . " DAY";
+        }
+            // ($filter=FALSE , $toArray=FALSE , $ignoreEnableFields = FALSE , $limit=FALSE, $lastModified = '-1 YEAR')
+        $locations = $this->locationRepository->findByFilterAllpages($filter , false , false , false  , $lastModified);
         $this->view->assign('locations', $locations);
     }
     
@@ -220,8 +242,22 @@ class LocationController extends BaseController
         /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $categories */
         $categories = $this->categoryRepository->findAllonAllPages( '1' );
 
-        if ( $this->hasUserAccess($location->getOrganizer() )) {
+
+        if( ! $hasAccess = $this->isAdminOrganizer()  ) {
+           if( $organizer = $location->getOrganizer() ) {
+               $hasAccess = $this->hasUserAccess( $organizer ) ;
+           } else {
+               $location->setOrganizer(null) ;
+           }
+
+        } else {
+            $this->view->assign('isAdmin', true );
+            $organizers  = $this->organizerRepository->findByFilterAllpages( false , false , true , false , false ) ;
+            $this->view->assign('organizers', $organizers );
+        }
+        if ( $hasAccess ) {
             $this->view->assign('user', intval( $GLOBALS['TSFE']->fe_user->user['uid'] ) );
+
             $this->view->assign('location', $location);
             $this->view->assign('categories', $categories);
         } else {
@@ -239,7 +275,13 @@ class LocationController extends BaseController
      */
     public function updateAction(\JVE\JvEvents\Domain\Model\Location $location)
     {
-        if ( $this->hasUserAccess($location->getOrganizer() )) {
+        if( ! $hasAccess = $this->isAdminOrganizer()  ) {
+            if( $organizer = $location->getOrganizer() ) {
+                $hasAccess = $this->hasUserAccess( $organizer ) ;
+            }
+        }
+
+        if ($hasAccess ) {
             $location = $this->cleanLocationArguments( $location) ;
             $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
             $this->addFlashMessage('The object was updated. It may take some hours before it is visible', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
@@ -321,12 +363,32 @@ class LocationController extends BaseController
         $locationCat = $this->categoryRepository->findByUid($locationCatUid) ;
 
 
-        if($locationCat ) {
+        if( $locationCat ) {
             if( $location->getLocationCategory() ){
                 $location->getLocationCategory()->removeAll($location->getLocationCategory()) ;
             }
             $location->addLocationCategory($locationCat) ;
         }
+
+
+
+        if ( $this->isAdminOrganizer()) {
+            if( is_array( $locationArray['organizer'] ) && isset($locationArray['organizer']["__identity"] ) ) {
+                $orgUid = $locationArray['organizer']["__identity"]  ;
+            } else {
+                $orgUid = $locationArray['organizer'];
+            }
+            $organizer = $this->organizerRepository->findByUidAllpages(  intval( $orgUid ) , false, false  ) ;
+
+            if (  $organizer  ) {
+                $location->setOrganizer($organizer);
+            } else {
+                $location->setOrganizer(null);
+            }
+        }
+
+
+
         if( $location->getPid() < 1) {
             // ToDo find good way to handle ID Default .. maybe a pid per User, per location or other typoscript setting
             $location->setPid( 14 ) ;

@@ -47,13 +47,19 @@ plugin.tx_jvevents_events {
 				2Megra = 2 - List with Filters and Link to first related File
 			}
 			# Addional class for your list wrapper
-			additionalClass = 
+			additionalClass =
+			# Geo Cordinaten Munich Central .. can be overwritten by javascript ..
+			#latitude = 48.1374121
+			#longitude = 11.5749502
+
 			image {
 				# Fallback Image for event list with complete path /fileadmin/user_upload/.. default /typo3conf/ext/jv_events/Resource/Public/Images/DefaultImage.jpg
 				defaultImage = /typo3conf/ext/jv_events/Resources/Public/Images/defaultImage.jpg
 				width = 240
 				height = 180
 			}
+			showDistance = 1
+			showCrdate = 1
 		}
 		single {
 			layouts {
@@ -171,6 +177,25 @@ plugin.tx_jvevents_events {
 			bannerModul = 0
 
 		}
+		help {
+			image {
+				pid = 161
+				faqId = 0
+			}
+			event {
+				pid = 60
+				faqId = 460
+			}
+			location {
+				pid = 60
+				faqId = 459
+			}
+			organizer {
+				pid = 60
+				faqId = 473
+			}
+		}
+
 		feEdit {
 			enabled = 0
 			# comma separated list of IDs

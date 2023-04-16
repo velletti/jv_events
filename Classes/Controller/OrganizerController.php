@@ -85,7 +85,14 @@ class OrganizerController extends BaseController
         $this->view->assign('userData', $GLOBALS['TSFE']->fe_user->user ) ;
         $organizer = $this->organizerRepository->findByUserAllpages(intval($GLOBALS['TSFE']->fe_user->user['uid']), true, TRUE);
         if( is_array( $organizer)  && is_object( $organizer[0]) ) {
-            $locations= $this->locationRepository->findByOrganizersAllpages( array(0 => $organizer[0]->getUid()) , FALSE, FALSE ) ;
+            $organizerUids[0] = $organizer[0]->getUid() ;
+            $ignoreEnableFields = FALSE ;
+            if ( $this->isAdminOrganizer() ) {
+                // add also un-assigned Locations to the list
+                $organizerUids[] = 0 ;
+               // $ignoreEnableFields = TRUE ;  // maybe needed
+            }
+            $locations= $this->locationRepository->findByOrganizersAllpages( $organizerUids , FALSE, $ignoreEnableFields ) ;
             $this->view->assign('locations', $locations );
 
             $oldDefaultLocation = $this->locationRepository->findByOrganizersAllpages( array(0 => $organizer[0]->getUid()) , FALSE, FALSE , TRUE )->getFirst() ;

@@ -969,6 +969,20 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     }
 
     /**
+     * @return bool
+     */
+    public function isAdminOrganizer() {
+        $groups = GeneralUtility::trimExplode("," , $this->settings['feEdit']['adminOrganizerGroudIds'] , TRUE ) ;
+        $feuserGroups = GeneralUtility::trimExplode("," ,  $GLOBALS['TSFE']->fe_user->user['usergroup']  , TRUE ) ;
+        foreach( $groups as $group ) {
+            if( in_array( $group  , $feuserGroups )) {
+                return true  ;
+            }
+        }
+        return false  ;
+    }
+
+    /**
      * @param $groupId
      * @return bool
      */
@@ -1046,7 +1060,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     }
 
     protected function showNoDomainMxError($email ) {
-        if( trim($email ) == '' ) {
+        if( trim($email ) == '' || trim($email ) == '-'  ) {
             return ;
         }
         $domain  = explode('@', $email);

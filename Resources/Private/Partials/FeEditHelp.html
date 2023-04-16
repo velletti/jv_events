@@ -15,12 +15,21 @@
 	<f:variable name="helpModalBody">
 		<f:format.raw>
 			<f:spaceless>
-				Siehe unsere
-				<br>
-				<f:link.page class="btn btn-outline-primary" pageUid="{settings.help.organizer.pid}"
-							 additionalParams="{'&tx_maritfaq_pi1[FaqID]': '{settings.help.organizer.faqId}'}">
-					Hilfe Seiten
-				</f:link.page>
+				<f:if condition="{settings.help.organizer.pid}">
+					Siehe unsere
+					<br>
+					<f:link.page class="btn btn-outline-primary" pageUid="{settings.help.organizer.pid}"
+								 additionalParams="{'&tx_maritfaq_pi1[FaqID]': '{settings.help.organizer.faqId}'}">
+						Hilfe Seiten
+					</f:link.page>
+				</f:if>
+				<f:if condition="{settings.help.image.pid}">
+					<br><br>und die Tipps zum
+					<f:link.page class="btn btn-outline-primary" pageUid="{settings.help.image.pid}"
+								 additionalParams="{'&tx_maritfaq_pi1[FaqID]': '{settings.help.image.faqId}'}">
+						Hochladen von Bildern
+					</f:link.page>
+				</f:if>
 				<br><br>
 				Wenn dort keine passende Antwort zu finden ist, uns per E-Mail kontaktieren und die nachfolgenden IDs mitsenden<br>
 				User: {user} | Organizer: {object.uid} | Pid: {object.pid}<br>
@@ -47,6 +56,13 @@
 							 additionalParams="{'&tx_maritfaq_pi1[FaqID]': '{settings.help.location.faqId}'}">
 					Hilfe Seiten
 				</f:link.page>
+				<f:if condition="{settings.help.image.pid}">
+					<br><br>und die Tipps zum
+					<f:link.page class="btn btn-outline-primary" pageUid="{settings.help.image.pid}"
+								 additionalParams="{'&tx_maritfaq_pi1[FaqID]': '{settings.help.image.faqId}'}">
+						Hochladen von Bildern
+					</f:link.page>
+				</f:if>
 				<br><br>
 				Wenn dort keine passende Antwort zu finden ist, uns per E-Mail kontaktieren und die nachfolgenden IDs mitsenden<br>
 				User: {user} | LocationId: {object.uid}<br>
@@ -79,6 +95,13 @@
 							 additionalParams="{'&tx_maritfaq_pi1[FaqID]': '{settings.help.event.faqId}'}">
 					Hilfe Seiten
 				</f:link.page>
+				<f:if condition="{settings.help.image.pid}">
+					<br><br>und die Tipps zum
+					<f:link.page class="btn btn-outline-primary" pageUid="{settings.help.image.pid}"
+								 additionalParams="{'&tx_maritfaq_pi1[FaqID]': '{settings.help.image.faqId}'}">
+						Hochladen von Bildern
+					</f:link.page>
+				</f:if>
 				<br><br>
 				Wenn dort keine passende Antwort zu finden ist, uns per E-Mail kontaktieren und die nachfolgenden IDs mitsenden<br>
 				User: {user} | Event: {object.uid} | LocationId: {object.location.uid}<br>

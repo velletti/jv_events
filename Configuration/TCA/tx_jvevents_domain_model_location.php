@@ -282,9 +282,14 @@ $return = array(
 			'config' => array(
 				'type' => 'select',
 				'renderType' => 'selectSingle',
+                'items' => [
+                    ['No linked Organizer', 0],
+                    ['Registered Organizers', '--div--'],
+                ],
 				'foreign_table' => 'tx_jvevents_domain_model_organizer',
 				'minitems' => 0,
 				'maxitems' => 1,
+                'allowNonIdValues' => true
 			),
 		),
         'latest_event' => array(

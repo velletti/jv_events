@@ -18,9 +18,11 @@
                 <f:render partial="Location/List/Partial{layoutList}/Header" arguments="{settings: settings}" />
                 <f:render partial="Location/List/Partial{layoutList}/Filter" arguments="{locFilter: locFilter, settings: settings}" />
 
-                <f:for each="{locations}" as="location">
-                    <f:render partial="Location/List/Partial{layoutList}/SingleLocation" arguments="{location:location, settings: settings}" />
-                </f:for>
+                <div id="jv_events_location_list">
+                    <f:for each="{locations}" as="location">
+                        <f:render partial="Location/List/Partial{layoutList}/SingleLocation" arguments="{location:location, settings: settings}" />
+                    </f:for>
+                    </div>
             </f:then>
         </f:if>
     </div>

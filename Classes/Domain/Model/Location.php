@@ -143,7 +143,7 @@ class Location extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Organizer Id of this Location
      *
-     * @var \JVE\JvEvents\Domain\Model\Organizer
+     * @var \JVE\JvEvents\Domain\Model\Organizer|null
      */
     protected $organizer = null;
     
@@ -418,22 +418,29 @@ class Location extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Returns the organizer
      *
-     * @return \JVE\JvEvents\Domain\Model\Organizer $organizer
+     * @return ?\JVE\JvEvents\Domain\Model\Organizer $organizer
      */
     public function getOrganizer()
     {
-        return $this->organizer;
+        if( is_object ($this->organizer)) {
+            return $this->organizer;
+        }
+        return null ;
     }
     
     /**
      * Sets the organizer
      *
-     * @param \JVE\JvEvents\Domain\Model\Organizer $organizer
+     * @param \JVE\JvEvents\Domain\Model\Organizer|null  $organizer
      * @return void
      */
-    public function setOrganizer(\JVE\JvEvents\Domain\Model\Organizer $organizer)
+    public function setOrganizer(?\JVE\JvEvents\Domain\Model\Organizer $organizer)
     {
-        $this->organizer = $organizer;
+        if( is_object( $organizer )) {
+            $this->organizer = $organizer;
+        } else {
+            $this->organizer = null ;
+        }
     }
     
     /**

@@ -83,16 +83,18 @@ class LocationRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
         $querySettings->setRespectSysLanguage(FALSE);
         $querySettings->setIgnoreEnableFields($ignoreEnableFields) ;
         $query->setQuerySettings($querySettings) ;
-
+        if ( $ignoreEnableFields ) {
+        //    $constraints[] = $query->equals('organizer.uid', $organizers ) ;
+        }
         // $query->setLimit($limit) ;
         if ( $onlyDefault ) {
-            $constraints[] = $query->in('organizer.uid', $organizers ) ;
+            $constraints[] = $query->in('organizer', $organizers ) ;
             $constraints[] = $query->equals('default_location', 1 ) ;
-            $query->matching( $query->logicalAnd( $constraints ) ) ;
-        } else {
-            $query->matching( $query->in('organizer.uid', $organizers ) ) ;
-        }
 
+        } else {
+            $constraints[] = $query->in('organizer', $organizers ) ;
+        }
+        $query->matching( $query->logicalAnd( $constraints ) ) ;
         $res = $query->execute() ;
 
         // new way to debug typo3 db queries
@@ -122,7 +124,7 @@ class LocationRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
         $query->setQuerySettings($querySettings) ;
 
         $constraints = array() ;
-        if ( $filter ) {
+        if ( $filter && count($filter) > 0 ) {
             foreach ( $filter as $field => $value) {
                 if ( $field == "lng" || $field == "lat") {
                     $constraints[] = $query->greaterThanOrEqual(  $field  ,  $value[0] ) ;
@@ -134,8 +136,6 @@ class LocationRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
                         $constraints[] = $query->equals($field ,  $value ) ;
                     }
                 }
-
-
             }
         }
 

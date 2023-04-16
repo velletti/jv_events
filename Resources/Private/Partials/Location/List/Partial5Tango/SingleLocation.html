@@ -15,9 +15,20 @@
         <f:variable name="catnames">{locationCategory.title}, {catnames}</f:variable>
     </f:for>
 </f:if>
+<f:if condition="{showDetails}">
+    <f:then>
+        <f:variable name="divid">jv-events-details</f:variable>
+    </f:then>
+    <f:else>
+        <f:variable name="divid">jv-events-singleLocation-{location.uid}</f:variable>
+    </f:else>
+</f:if>
 
 <f:spaceless>
-    <div class="jv-events-singleLocation jv-events-row" data-locationuid="{location.uid}" data-orguid="{location.organizer.uid}" data-taguids="{tagids}" data-catuids="{catids}" {f:if(condition: '{showDetails}', then: ' id="jv-events-details"' )} >
+    <div id="{divid}" class="jv-events-singleLocation jv-events-row" data-uid="{location.uid}"
+         data-locationuid="{location.uid}" data-lat="{location.lat}"   data-lng="{location.lng}"
+         data-orguid="{location.organizer.uid}" data-taguids="{tagids}"
+         data-catuids="{catids}"  >
 
         <div class="card col-12 my-4 clearfix rounded-bottom">
             <div class="row">
@@ -45,14 +56,45 @@
 
                 <div class="col-12 col-md-6  order-3 order-md-2 py-2">
                     <div class="card-block">
-                        <h4 class="card-title pb-0 mb-0"><f:link.action  action="show" arguments="{location : location.uid}" >
-                            {location.name}
-                        </f:link.action></h4>
-                        <b>{location.organizer.name}</b><br><br>
-                            <f:format.crop append=" &nbsp; ... " maxCharacters="200"><f:format.stripTags allowedTags="<p><br>">
-                                    {location.description}
-                                </f:format.stripTags>
-                            </f:format.crop>
+                        <div id="map-marker-content-{location.uid}">
+                            <h4 class="card-title pb-0 mb-0"><f:link.action  action="show" arguments="{location : location.uid}" >
+                                {location.name}
+                            </f:link.action></h4>
+
+                            <f:if condition="{location.organizer.name}">
+                                <f:then>
+                                    <b>{location.organizer.name}</b><br>
+                                </f:then>
+                                <f:else>
+                                    <div class="alert alert-warning p-1">
+                                        Registrier dich als Veranstalter, um zu dieser Location Termine verwalten zu können
+                                    </div>
+                                </f:else>
+                            </f:if>
+
+                            <div class="address" itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+                                <address>
+                                    <span itemprop="streetAddress">{location.streetAndNr}</span><br>
+                                    <span itemprop="postalCode">{location.zip}</span>&nbsp;<span itemprop="addressLocality">{location.city}</span>
+                                    <f:if condition="{location.country} <> 'Deutschland'">
+                                        <br><span itemprop="addressCountry">{location.country}</span>
+                                    </f:if>
+                                </address>
+                            </div>
+                        </div>
+                        <f:if condition="{showDetails}">
+                            <f:else>
+                                <div class="small">
+                                    <f:format.crop append=" &nbsp; ... " maxCharacters="300"><f:format.stripTags allowedTags="">
+                                        {location.description}
+                                    </f:format.stripTags>
+                                    </f:format.crop>
+                                </div>
+
+                            </f:else>
+                        </f:if>
+
+
                     </div>
                 </div>
 
@@ -85,12 +127,12 @@
                         </f:if>
                         <f:if condition="{location.link}">
                             <f:then>
-                                <span class="fa fa-link mh-sm"></span> <f:link.external uri="{location.link}" >{location.link}</f:link.external>
+                                <span class="fa fa-link mh-sm"></span> <f:link.external uri="{location.link}" target="_blank">{location.link}</f:link.external>
                             </f:then>
                             <f:else>
                                 <f:if condition="{location.organizer.link}">
                                     <f:then>
-                                        <span class="fa fa-link mh-sm"></span> <f:link.external uri="{location.organizer.link}" >{location.organizer.link}</f:link.external>
+                                        <span class="fa fa-link mh-sm"></span> <f:link.external uri="{location.organizer.link}" target="_blank" >{location.organizer.link}</f:link.external>
                                     </f:then>
                                 </f:if>
                             </f:else>
@@ -100,7 +142,7 @@
                     </div>
 
 
-                    <div class="text-right position-bottom position-right">
+                    <div class="text-right position-bottom position-right mb-2">
                         <f:if condition="{showEditButton}">
                             <f:link.action class="badge badge-primary m-2 py-2" pageUid="{settings.pageIds.editLocation}" action="edit" controller="Location" arguments="{location: location.uid}">
                                 <span class="fas fa-users-cog"> </span> <span class="d-none d-sm-inline-block">{f:translate(key: 'edit', default: 'Edit')} {f:translate(key: 'tx_jvevents_domain_model_location', default: 'Location')} </span>
@@ -109,10 +151,10 @@
 
                         <f:if condition="{settings.HideEventListLink} ">
                             <f:then>
-                                <f:if condition="{location.tstamp} > 0 ">
+                                <f:if condition="{location.latestEvent} > 0 ">
                                     <div class="d-none d-sm-block text-right">
                                         <small>
-                                            <span class="fa fa-edit mh-sm"></span> <f:format.date format="d.m.Y">{location.tstamp}</f:format.date><br>
+                                            <span class="fa fa-edit mh-sm"></span> <f:format.date format="d.m.Y">{location.latestEvent}</f:format.date><br>
                                         </small>
                                     </div>
                                 </f:if>

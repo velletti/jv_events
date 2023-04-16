@@ -4,9 +4,29 @@
 		<f:variable name="layout">{settings.LayoutSingle}</f:variable>
 	</f:then>
 	<f:else>
-		<f:variable name="layout">{settings.LayoutSingle}</f:variable>
+		<f:variable name="layout">tango5</f:variable>
 	</f:else>
 </f:if>
+
+<f:if condition="{isAdmin}">
+	<f:if condition="{organizers}">
+		<div class="form-group display-data row">
+			<div class="col-12 input-group">
+				<b>
+					<f:translate key="LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_location.organizer"> </f:translate>
+				</b>: {location.organizer.name}
+			</div>
+			<div class="col-12 input-group">
+
+
+				<f:form.select id="organizer" class="form-control " property="organizer" value="{location.organizer.uid}"
+							    prependOptionValue="0"    prependOptionLabel="--none--"
+							   options="{organizers}" optionValueField="uid" optionLabelField="name"/>
+			</div>
+		</div>
+	</f:if>
+</f:if>
+
 <f:render partial="SingleField/Partial{layout}/FormRowDefault"
 		  arguments="{object: 'location', property:'name' , label: '' , translationKey: 'tx_jvevents_domain_model_location.name' , maxLength: 60 , mandatory: '1' }" />
 

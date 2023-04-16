@@ -986,8 +986,8 @@
                  <target>Stimmt die email address wirklich? Ist das: '%s' korrekt?</target>
             </trans-unit>
              <trans-unit id="error.msg_error_html_code_not_allowed">
-                <source>Please check your input. Looks as it contains unwanted HTML Code</source>
-                 <target>Bitte prüfen Sie Ihre Eingaben. Es sieht so aus, als dort HTML Code eingefügt wurde. In vielen Fällen kann der Server den Fehelr automatisch bereinigen. Dazu bitte einfach noch mal speichern. </target>
+                <source>Please check your input. Looks as it contains unwanted HTML Code. In most cases the Server can repair this, if you retry to save your input</source>
+                 <target>Bitte prüfen Sie Ihre Eingaben. Es sieht so aus, als dort HTML Code eingefügt wurde. In vielen Fällen kann der Server den Fehler automatisch bereinigen. Dazu bitte einfach noch mal speichern. </target>
             </trans-unit>
             <trans-unit id="error.msg_error_check-input">
                 <source>Please check your input below.</source>

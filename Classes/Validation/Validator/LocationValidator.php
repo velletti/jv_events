@@ -12,13 +12,13 @@ class LocationValidator extends BaseValidator {
         'link'				=> 0,
 
         'name'				=> 3,
-        'streetAndNr'		=> 3,
+        'streetAndNr'		=> 0,
         'zip'		        => 0,
-        'city'		        => 3,
+        'city'		        => 1,
         'country'		    => 2,
 
-        'lat'		        => 8,
-        'lng'		        => 8,
+        'lat'		        => 5,
+        'lng'		        => 5,
     );
 
     /**
@@ -60,7 +60,7 @@ class LocationValidator extends BaseValidator {
         $isValid = $this->securityChecks( $location->getLng() , 'lng' , $isValid ) ;
 
         $isValid = $this->securityChecks( $location->getLink() , 'link' , $isValid ) ;
-        if( $location->getLink() ) {
+        if( $location->getLink() && $location->getLink()  != "-") {
             $isValid = $this->urlIsValid( trim($location->getLink()) , 'link' , NULL , $isValid ) ;
         }
 
@@ -69,7 +69,9 @@ class LocationValidator extends BaseValidator {
 
         if( $location->getEmail() ) {
             $isValid = $this->securityChecks( $location->getEmail() , 'email' , $isValid ) ;
-            $isValid = $this->emailIsValid( trim($location->getEmail()) , 'email' , false , $isValid ) ;
+            if( $location->getEmail()!= "-") {
+                $isValid = $this->emailIsValid( trim($location->getEmail()) , 'email' , false , $isValid ) ;
+            }
         }
 
         $isValid = $this->stringLengthIsValid($this->minLength['name'] , $this->maxLength['name'] , $location->getName() , 'name' , NULL , $isValid ) ;
@@ -78,9 +80,10 @@ class LocationValidator extends BaseValidator {
         $isValid = $this->stringLengthIsValid($this->minLength['zip'] , $this->maxLength['zip'] , $location->getZip() , 'zip' , NULL , $isValid ) ;
         $isValid = $this->stringLengthIsValid($this->minLength['city'] , $this->maxLength['city'] , $location->getCity() , 'city' , NULL , $isValid ) ;
         $isValid = $this->stringLengthIsValid($this->minLength['country'] , $this->maxLength['country'] , $location->getCountry() , 'country' , NULL , $isValid ) ;
-
-        $isValid = $this->stringLengthIsValid($this->minLength['lng'] , $this->maxLength['lng'] , $location->getLng() , 'lng' , NULL , $isValid ) ;
-        $isValid = $this->stringLengthIsValid($this->minLength['lat'] , $this->maxLength['lat'] , $location->getLat() , 'lat' , NULL , $isValid ) ;
+        if ( $location->getStreetAndNr() != "-" && $location->getStreetAndNr() != '') {
+            $isValid = $this->stringLengthIsValid($this->minLength['lng'] , $this->maxLength['lng'] , $location->getLng() , 'lng' , NULL , $isValid ) ;
+            $isValid = $this->stringLengthIsValid($this->minLength['lat'] , $this->maxLength['lat'] , $location->getLat() , 'lat' , NULL , $isValid ) ;
+        }
         $isValid = $this->isHasUnwantedHtmlCodeValue( $location->getDescription() , 'description' , $isValid ) ;
 
 

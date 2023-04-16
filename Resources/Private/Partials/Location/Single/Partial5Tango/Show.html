@@ -4,7 +4,7 @@
 <f:layout name="Edit" />
 
 
-<div class="card col-12   jv-events-partial{settings.LayoutSingle}" data-locationuid="{location.uid}" data-orguid="{location.organizer.uid}" id="jv-events-dataids">
+<div class="card col-12 w-100  jv-events-partial{settings.LayoutSingle}" data-locationuid="{location.uid}" data-orguid="{location.organizer.uid}" id="jv-events-dataids">
     <div class="card-header text-white bg-primary">
         <span class="fas fa-info-circle  border-primary rounded-circle mr-2"></span>
         <span>{location.name}</span>
@@ -30,12 +30,19 @@
                 </f:if>
             </div>
             <div class="col-12 col-md-9  order-1 order-md-1 py-2">
-                <b>{location.organizer.name}</b><br><br>
-
-                {location.zip} {location.city} <br>
-                {location.streetAndNr} <br>
+                <f:if condition="{location.organizer.name}">
+                    <b>{location.organizer.name}</b><br><br>
+                </f:if>
+                <div class="address" itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+                    <address>
+                        <span itemprop="streetAddress">{location.streetAndNr}</span><br>
+                        <span itemprop="postalCode">{location.zip}</span>&nbsp;<span itemprop="addressLocality">{location.city}</span>
+                        <f:if condition="{location.country} <> 'Deutschland'">
+                            <br><span itemprop="addressCountry">{location.country}</span>
+                        </f:if>
+                    </address>
+                </div>
                 <br>
-
 
                 <f:if condition="{location.email}">
                     <f:then>
@@ -90,7 +97,23 @@
             <f:else>
                 <f:if condition="{location.lng}">
                     <br>
-                    <f:render partial="GoogleMapsTango" arguments="{addresses: {0:location}, settings:settings}" />
+                    <div class="tab-pane {tabMapActive} p-0" id="jv_events_map" >
+                        <div id="map" style="height:500px;"
+                             data-lat="{location.lat}"
+                             data-lng="{location.lng}"
+                             data-mapzoom="15"
+                             data-glat="48.1148263" data-glog="11.4712236"
+                             data-copy="&copy; <a target='_blank' href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
+                             data-geocodebase="false"
+                             data-geocodeoptions="false"
+                        ></div>
+                        <v:asset.prefetch domains="nominatim.openstreetmap.org" />
+                        <v:asset.script path="EXT:jv_events/Resources/Public/JavaScript/leaflet-1-7-1.js" name="leaflet1" async="false" content="header"/>
+                        <v:asset.script path="EXT:jv_events/Resources/Public/JavaScript/tango/LeafletFeGeoCoder.js" name="leaflet2" async="false"  content="footer"/>
+                        <v:asset.style path="EXT:jv_events/Resources/Public/Css/leaflet-1-7-1.css" name="leaflet3"   content="header"/>
+                        <v:asset.style path="EXT:jv_events/Resources/Public/Css/tango/leafletFrontend.css" name="leaflet4"   content="footer"/>
+
+                    </div>
                 </f:if>
             </f:else>
 
