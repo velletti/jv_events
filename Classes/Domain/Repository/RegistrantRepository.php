@@ -1,6 +1,9 @@
 <?php
 namespace JVE\JvEvents\Domain\Repository;
 
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
+
 /***************************************************************
  *
  *  Copyright notice
@@ -48,7 +51,7 @@ class RegistrantRepository extends \JVE\JvEvents\Domain\Repository\BaseRepositor
 	/**
 	 * @param string $fingerprint
 	 *
-	 * @return array|bool|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+	 * @return array|bool|QueryResultInterface
 	 */
 	public function getByFingerprint($fingerprint = '') {
 		if ($fingerprint == '' ) {
@@ -143,19 +146,21 @@ class RegistrantRepository extends \JVE\JvEvents\Domain\Repository\BaseRepositor
      * @param string $email
      * @param int $eventID
      * @param int $pid
-
      * @param array $settings
      * @param int $limit
      * @param array $orderings
-     * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array
+     * @return QueryResultInterface|array
      */
-    public function findByFilter($email = '', $eventID = 0, $pid = 0 , $settings=array() , $limit=1 , $orderings = array(
-        'uid' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING
+    public function findByFilter($email = '', $eventID = 0, $pid = 0 , $settings=array() , $limit=1 , array $orderings = array(
+        'uid' => QueryInterface::ORDER_DESCENDING
     ) ) {
         $query = $this->createQuery();
         $constraints = array();
-
-        $pageIds = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode( "," , $settings['storagePids'], true)  ;
+        if ( isset( $settings['storagePids'] )) {
+            $pageIds = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode( "," , $settings['storagePids'], true)  ;
+        } else {
+            $pageIds = [] ;
+        }
         if ( count($pageIds) > 0 ) {
             if($pid > 0 ) {
                 $pageIds[] = intval( $pid);

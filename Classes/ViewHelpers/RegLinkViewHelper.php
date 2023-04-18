@@ -177,7 +177,7 @@ class RegLinkViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBas
 
         }
 
-        $configuration['additionalParams'] .= '&tx_jvevents_events[event]=' . ($event->getUid() );
+        $configuration['additionalParams'] = '&tx_jvevents_events[event]=' . ($event->getUid() );
         $configuration['additionalParams'] .= '&tx_jvevents_events[eventTitle]=' . urlencode( $catTitles . $event->getName() );
         $configuration['additionalParams'] .= '&tx_jvevents_events[controller]=Registrant' . '&tx_jvevents_events[action]=new';
 

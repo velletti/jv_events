@@ -35,7 +35,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class RegisterHubspotUtility {
 
 
-    /** @var \Allplan\Library\Hubspot\Service\Hubspot */
+    /** @var \Allplan\Library\Hubspot\Service\Hubspot|null  */
     public $hubspotApi ;
 
     /**
@@ -69,6 +69,9 @@ class RegisterHubspotUtility {
      */
     public function createAction($registrant, $event ,  $settings)
     {
+        if( !class_exists('Allplan\Library\Hubspot\Service\Hubspot') || ! $this->hubspotApi ) {
+            return "";
+        }
         $error = 0 ;
         if ( !is_object( $event ))  {
             $this->logToFile( "\n\n ### ERROR ### In RegisterHubspotSignal - event is not an Object!: " . var_export($event , true )  );
@@ -118,7 +121,7 @@ class RegisterHubspotUtility {
             if (  strlen( $event->getOrganizer()->getSalesForceUserId2())  > 10 ) {
                 // overwrite it with value from organizer if it is defined and long enough to be a nearly valid SF ID (should be 16 or 19 digits ..
                 $data['comment']  .=  "\n SF Owner: " . $event->getOrganizer()->getSalesForceUserId2() . " " .  $event->getOrganizer()->getName() ;
-                $debugmail .= "\nField : SF OwnerId is taken from  getOrganizer()getSalesForceUserId2 =" . $data['OwnerId'] . " | Org: " . $event->getOrganizer()->getSalesForceUserOrg() ;
+                $debugmail .= "\nField : SF OwnerId is taken from  getOrganizer()getSalesForceUserId2 =" . $event->getOrganizer()->getSalesForceUserId2()  . " | Org: " . $event->getOrganizer()->getSalesForceUserOrg() ;
             }
             $data['comment']  .=  "\n" . \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate( "tx_jvevents_domain_model_event.organizer" , 'JvEvents' ) . ": "
                 . $event->getOrganizer()->getName() ;
@@ -151,7 +154,7 @@ class RegisterHubspotUtility {
 
         }
 
-        $data['language']  =   $settings['lang'] ;
+        $data['language']  =   $settings['lang'] ?? "de";
 
         $data['is_hidden']  =   $registrant->getHidden() ? 'true' : 'false' ;
         $data['is_confirmed']  =   $registrant->getConfirmed() ? 'true' : 'false' ;
@@ -163,8 +166,8 @@ class RegisterHubspotUtility {
         // 2019 language Key ... ggf aber auch constants die "locale_all"
         // $data['doi_language']  =   strtoupper( $settings['language'] ) ;
 
-        $hubspotutk      = $_COOKIE['hubspotutk']; //grab the cookie from the visitors browser.
-        $ip_addr         = $_SERVER['REMOTE_ADDR']; //IP address too.
+        $hubspotutk      = $_COOKIE['hubspotutk'] ?? '' ; //grab the cookie from the visitors browser.
+        $ip_addr         = $_SERVER['REMOTE_ADDR'] ?? ''; //IP address too.
         $hs_context      = array(
             'hutk' => $hubspotutk,
             'ipAddress' => $ip_addr,

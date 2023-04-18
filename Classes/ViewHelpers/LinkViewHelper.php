@@ -115,10 +115,15 @@ class LinkViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedV
         }
 
 
-        if (isset($settings['link']['typesOpeningInNewWindow'])) {
-            if (GeneralUtility::inList($settings['link']['typesOpeningInNewWindow'], $EventType)) {
+        if (isset($settings['link']['typesOpeningInNewWindow']) && isset( $EventType )) {
+            if ( is_array( $settings['link']['typesOpeningInNewWindow'] ) && in_array( $EventType , $settings['link']['typesOpeningInNewWindow'] )) {
                 $this->tag->addAttribute('target', '_blank');
+            } else {
+                if (GeneralUtility::inList( $settings['link']['typesOpeningInNewWindow'], $EventType)) {
+                    $this->tag->addAttribute('target', '_blank');
+                }
             }
+
         }
 
         if ($uriOnly) {
@@ -177,7 +182,7 @@ class LinkViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedV
             $configuration['noCache'] = 1 ;
         }
         if ((int)$settings['link']['skipControllerAndAction'] !== 1) {
-            $configuration['additionalParams'] .= '&tx_jvevents_events[controller]=Event' .
+            $configuration['additionalParams'] = '&tx_jvevents_events[controller]=Event' .
                 '&tx_jvevents_events[action]=show';
         }
 

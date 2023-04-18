@@ -333,7 +333,7 @@ class RegistrantController extends BaseController
 
             $this->settings['fe_user']['user'] = $GLOBALS['TSFE']->fe_user->user;
             $this->settings['fe_user']['organizer']['showTools'] = FALSE;
-
+            $userUid = 0 ;
             if ($GLOBALS['TSFE']->fe_user->user) {
                 $userUid = $GLOBALS['TSFE']->fe_user->user['uid'];
                 if (is_object($event->getOrganizer())) {
@@ -379,7 +379,7 @@ class RegistrantController extends BaseController
             if ($registrant == null) {
                 /** @var Registrant $registrant */
                 $registrant = $this->objectManager->get(\JVE\JvEvents\Domain\Model\Registrant::class);
-                if ($userUid) {
+                if ($userUid > 0 ) {
                     $registrant->setGender(intval($GLOBALS['TSFE']->fe_user->user['gender'] + 1));
                     $registrant->setFirstName($GLOBALS['TSFE']->fe_user->user['first_name']);
                     $registrant->setLastName($GLOBALS['TSFE']->fe_user->user['last_name']);
@@ -446,10 +446,10 @@ class RegistrantController extends BaseController
 
 		$this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
 		$otherEvents = FALSE ;
-		if ( is_array( $_POST['tx_jvevents_events']['jv_events_other_events'])) {
+		if ( isset( $_POST['tx_jvevents_events']['jv_events_other_events']) && is_array( $_POST['tx_jvevents_events']['jv_events_other_events'])) {
 		    $temp = $_POST['tx_jvevents_events']['jv_events_other_events'] ;
 
-			$registrant->setOtherEvents( serialize($_POST['tx_jvevents_events']['jv_events_other_events']) );
+			$registrant->setOtherEvents( serialize( $_POST['tx_jvevents_events']['jv_events_other_events']) );
 
 			foreach ($temp  as $key => $uid ) {
 				/** @var Event $otherEvent */
@@ -551,7 +551,7 @@ class RegistrantController extends BaseController
 			if( is_object( $oldReg ) ) {
 				// solve it by setting .. : allow Double registrations ...
 				// $this->settings['alreadyRegistered'] = TRUE ;
-                if( $this->settings['register']['doNotallowSameEmail'] ) {
+                if( isset($this->settings['register']['doNotallowSameEmail']) && $this->settings['register']['doNotallowSameEmail'] ) {
                     // this case should be blocked in validator .. !
                 } else {
                     $this->settings['alreadyRegistered'] = TRUE ;
@@ -563,12 +563,12 @@ class RegistrantController extends BaseController
 		// noraml each registration is only one Person but we can configure a second Person. if fields like more1, more2 are set
         // the registration is for 2 Persons (or maybe more)
 
-		$totalPersonCount = $this->getTotalPersonCount($registrant)['total'] ;
+		$totalPersonCount = $this->getTotalPersonCount($registrant)['total'] ?? 0 ;
 
         // set Status 0 unconfirmed || 1 Confirmed by Partizipant || 2 Confirmed by Organizer
-        if( $this->settings['alreadyRegistered'] ) {
+        if(isset($this->settings['alreadyRegistered']) && $this->settings['alreadyRegistered'] ) {
             if( is_object( $oldReg ) ) {
-                if( ! $this->settings['register']['doNotallowSameEmail'] ) {
+                if(  ! $this->settings['register']['doNotallowSameEmail'] ) {
                     // 1. we need to Check if Number registrered Persons have changed
                     $oldPersonCount = $this->getTotalPersonCount($oldReg)['total'] ;
 

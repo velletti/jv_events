@@ -75,7 +75,8 @@ class Ajax implements MiddlewareInterface
             //  registrant Controller: redirect if Event ID missing or FIx if controller Name is written in Lowercase
             if(  array_key_exists( "controller" , $_gp['tx_jvevents_events'] ) && strtolower( $_gp['tx_jvevents_events']['controller'] )  == "registrant" ) {
                 $action =  array_key_exists( "action" , $_gp['tx_jvevents_events'] ) ? $_gp['tx_jvevents_events']['action'] : "" ;
-                if ( in_array($action , ['create' , 'list' , 'checkQrcode']) && (int)$_gp['tx_jvevents_events']['event'] < 0 ) {
+                if ( in_array($action , [ 'list' , 'checkQrcode'])
+                    && ( isset($_gp['tx_jvevents_events']['event']) && (int)$_gp['tx_jvevents_events']['event'] < 0 )) {
                     return (new Response())
                         ->withHeader('Location', $request->getUri()->getScheme() . "://" .$request->getUri()->getHost() )
                         ->withStatus("301");

@@ -88,9 +88,12 @@ class EventRepository extends BaseRepository
         if ( is_array($filter)) {
             $settings['filter'] = $filter ;
         }
+        if (!isset($settings['filter']) || !is_array($settings['filter'])) {
+            $settings['filter'] = [] ;
+        }
         $query = $this->createQuery();
         $sortings = false ;
-        if( is_array($settings['list']['sorting'])) {
+        if( isset($settings['list']['sorting']) && is_array($settings['list']['sorting'])) {
             $sortings= [] ;
             foreach ($settings['list']['sorting'] as $sortField => $sort) {
                 if ( in_array($sortField , ['crdate' , 'tstamp'] )) {
@@ -115,32 +118,32 @@ class EventRepository extends BaseRepository
         $constraints = array();
 		$query->getQuerySettings()->setRespectStoragePage(false);
 
-		if ( $configuration['doNotRespectSyslanguage'] == 1 ) {
+		if ( isset($configuration['doNotRespectSyslanguage']) && $configuration['doNotRespectSyslanguage'] == 1 ) {
             $query->getQuerySettings()->setRespectSysLanguage(FALSE);
         }
 
 
         $constraintsTagsCat = array() ;
-        if( $settings['filter']['categories']  ) {
+        if( isset($settings['filter']['categories'] ) && $settings['filter']['categories']  ) {
             $constraintsTagsCat = $this->getCatContraints($constraintsTagsCat,  $settings ,  $query );
         }
-        if( $settings['filter']['tags']  ) {
+        if( isset($settings['filter']['tags']) && $settings['filter']['tags']  ) {
             $constraintsTagsCat = $this->getTagContraints($constraintsTagsCat,  $settings ,  $query );
         }
 
-        if( $settings['filter']['notAllowedtags']  ) {
+        if( isset($settings['filter']['notAllowedtags']) && $settings['filter']['notAllowedtags']  ) {
             $constraintsTagsCat = $this->getNotAllowedTagContraints($constraintsTagsCat,  $settings ,  $query );
         }
 
         // Add filter for AND event is marked as TOP Event
-        if( $settings['filter']['topEvents'] == 1 ) {
+        if( isset($settings['filter']['topEvents']) && $settings['filter']['topEvents'] == 1 ) {
             $constraintsTagsCat[] = $query->equals("top_event",  1);
             $constraints[] = $query->logicalAnd($constraintsTagsCat) ;
         } else {
 
             // Add filter for OR event is marked as TOP Event
             // all other TAG or Cat Contraints should be resolved before !!
-            if( $settings['filter']['topEvents'] == 2 ) {
+            if( isset($settings['filter']['topEvents']) &&  $settings['filter']['topEvents'] == 2 ) {
                 if( count($constraintsTagsCat) > 0 ) {
                     $constraintsTop[] = $query->logicalAnd($constraintsTagsCat);
                     $constraintsTop[] = $query->equals("top_event", 1);
@@ -155,23 +158,23 @@ class EventRepository extends BaseRepository
             }
         }
         // canceledEvent = default 0 = unset .. if set in Filter to 1 show Only canceledEvents
-        if( $settings['filter']['canceledEvents'] == "1" ) {
+        if( isset( $settings['filter']['canceledEvents']) && $settings['filter']['canceledEvents'] == "1" ) {
             $constraints[] = $query->equals("canceled",  "1");
         }
         // canceledEvent = default 0 = unset .. if set in Filter to 2 hide  canceledEvents needed for corona
-        if( $settings['filter']['canceledEvents'] == "2" ) {
+        if( isset( $settings['filter']['canceledEvents']) && $settings['filter']['canceledEvents'] == "2" ) {
             $constraints[] = $query->equals("canceled",  "0");
         }
 
-        if( $settings['filter']['masterId']  ) {
+        if( isset( $settings['filter']['masterId']) && $settings['filter']['masterId']  ) {
             $constraints[] = $query->equals("masterId",  $settings['filter']['masterId'] );
         }
 
-        if( $settings['filter']['organizer']  ) {
+        if( isset( $settings['filter']['organizer']) && $settings['filter']['organizer']  ) {
             $constraints[] = $query->equals("organizer",  $settings['filter']['organizer'] );
         }
         //
-        if( $settings['filter']['organizers']  ) {
+        if( isset( $settings['filter']['organizers']) && $settings['filter']['organizers']  ) {
             $organizers = GeneralUtility::trimExplode("," , $settings['filter']['organizers']  ) ;
             if (is_array( $organizers) ) {
                 if( count($organizers) == 1 ) {
@@ -188,17 +191,17 @@ class EventRepository extends BaseRepository
         }
 
         // $query->getQuerySettings()->setIgnoreEnableFields(FALSE) ;
-		if( $settings['filter']['skipEvent'] > 0 ) {
+		if( isset($settings['filter']['skipEvent'] ) && $settings['filter']['skipEvent'] > 0 ) {
 			$constraints[] = $query->logicalNot( $query->equals("uid" , $settings['filter']['skipEvent'])) ;
 			
 		}
-		if( $settings['storagePid'] > 0 ) {
+		if( isset( $settings['storagePid']) && $settings['storagePid'] > 0 ) {
 			$constraints = $this->getPidContraints($constraints,  $settings ,  $query );
 		}
 
 
 
-        if( $settings['filter']['citys']  ) {
+        if( isset($settings['filter']['citys']) && $settings['filter']['citys']  ) {
             $constraints[] = $query->logicalAnd( $query->in("location" , GeneralUtility::trimExplode( "," , $settings['filter']['citys'])) ) ;
         }
 /*
@@ -228,7 +231,7 @@ class EventRepository extends BaseRepository
         }
 
 
-		if( intval( $settings['filter']['maxEvents'] ) > 0 )  {
+		if( isset($settings['filter']['maxEvents'] ) && intval( $settings['filter']['maxEvents'] ) > 0 )  {
 			$query->setLimit( intval( $settings['filter']['maxEvents'])) ;
 		} elseif ($limit > 0) {
             $query->setLimit( intval( $limit )) ;

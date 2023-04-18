@@ -255,19 +255,24 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         }
 
         $required  = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode( "," , $fields , true ) ;
-        foreach( $required as $key => $field ) {
-            $this->settings['register']['required'][$field] = TRUE ;
+        if ( count($required) > 0 ) {
+            foreach( $required as $key => $field ) {
+                $this->settings['register']['required'][$field] = TRUE ;
+            }
         }
 
-        $fields = $this->settings['register']['formFields'][$layout] ;
-        $formFields  = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode( "," , $fields , true ) ;
-        if( count( $formFields ) > 0 ) {
-            foreach( $formFields as $key => $field ) {
-                if( $field) {
-                    $this->settings['register']['allformFields'][$field] = TRUE ;
+        if( isset($this->settings['register']['formFields'][$layout]) ) {
+            $fields = $this->settings['register']['formFields'][$layout] ;
+            $formFields  = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode( "," , $fields , true ) ;
+            if( count( $formFields ) > 0 ) {
+                foreach( $formFields as $key => $field ) {
+                    if( $field) {
+                        $this->settings['register']['allformFields'][$field] = TRUE ;
+                    }
                 }
             }
         }
+
 
 
         if( !$this->objectManager) {
