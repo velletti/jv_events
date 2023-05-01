@@ -395,6 +395,13 @@
 					<f:format.html parseFuncTSPath="lib.jveventsRTE">{event.location.description}</f:format.html>
 				</div>
 			</f:if>
+			<f:if condition="{event.youtubeLink}">
+				<div class="col-12 pt-2">
+					<jve:youtube uri="{event.youtubeLink}" class="btn btn-outline-secondary" settings="{settings}">
+
+					</jve:youtube>
+				</div>
+			</f:if>
 			<f:if condition="{event.lastUpdated} > 0">
 				<div class="small data clearfix pt-2 " data-userid="{event.lastUpdatedBy}">
 					<f:translate key="event.modified" default="Last Mod" />: {event.lastUpdated -> f:format.date(format:"d.m.Y")}

@@ -12,6 +12,8 @@ class EventValidator extends BaseValidator {
 		'teaser'			=> 200,
 		'introtextRegistrant'			=> 1000,
 		'introtextRegistrantConfirmed'			=> 1000,
+		'youtubeLink'			=> 120,
+		'registrationUrl'		=> 120,
 	);
 
     /**
@@ -23,6 +25,8 @@ class EventValidator extends BaseValidator {
         'teaser'			=> 5,
         'name'				=> 3,
         'link'				=> -1,
+        'youtubeLink'				=> -1,
+        'registrationUrl'				=> -1,
     );
 
 	/**
@@ -45,6 +49,8 @@ class EventValidator extends BaseValidator {
         $isValid = $this->securityChecks( $event->getEntryTimeFE() , 'entryTimeFE' , $isValid ) ;
         $isValid = $this->securityChecks( $event->getPrice() , 'price' , $isValid ) ;
         $isValid = $this->securityChecks( $event->getPriceReduced() , 'priceReduced' , $isValid ) ;
+        $isValid = $this->securityChecks( $event->getYoutubeLink() , 'youtubeLink' , $isValid ) ;
+        $isValid = $this->securityChecks( $event->getRegistrationUrl() , 'registrationUrl' , $isValid ) ;
         $isValid = $this->securityChecks( $event->getPriceReducedText() , 'priceReducedText' , $isValid ) ;
 
         $isValid = $this->isNumeric( $event->getEventCategory() , 'eventCategory' , $isValid , "No Category selected") ;
@@ -76,6 +82,16 @@ class EventValidator extends BaseValidator {
         $isValid = $this->stringLengthIsValid($this->minLength['teaser'] , $this->maxLength['teaser'] , $event->getTeaser() , 'teaser' , NULL , $isValid ) ;
         $isValid = $this->stringLengthIsValid($this->minLength['introtextRegistrant'] , $this->maxLength['introtextRegistrant'] , $event->getIntrotextRegistrant() , 'introtextRegistrant' , NULL , $isValid ) ;
         $isValid = $this->stringLengthIsValid($this->minLength['introtextRegistrantConfirmed'] , $this->maxLength['introtextRegistrantConfirmed'] , $event->getIntrotextRegistrantConfirmed() , 'introtextRegistrantConfirmed' , NULL , $isValid ) ;
+        $isValid = $this->stringLengthIsValid($this->minLength['youtubeLink'] , $this->maxLength['youtubeLink'] , $event->getYoutubeLink() , 'youtubeLink' , NULL , $isValid ) ;
+        $isValid = $this->stringLengthIsValid($this->minLength['registrationUrl'] , $this->maxLength['registrationUrl'] , $event->getRegistrationUrl() , 'registrationUrl' , NULL , $isValid ) ;
+
+        if( $event->getRegistrationUrl() ) {
+            $isValid = $this->urlIsValid( trim($event->getRegistrationUrl()) , 'registrationUrl' , NULL , $isValid ) ;
+        }
+        if( $event->getYoutubeLink() ) {
+            $isValid = $this->urlIsValid( trim($event->getYoutubeLink()) , 'youtubeLink' , NULL , $isValid ) ;
+            $isValid = $this->youtubeIsValid( trim($event->getYoutubeLink()) , 'youtubeLink' , NULL , $isValid ) ;
+        }
 
         $isValid = $this->isHasUnwantedHtmlCodeValue( $event->getDescription() , 'description' , $isValid ) ;
 

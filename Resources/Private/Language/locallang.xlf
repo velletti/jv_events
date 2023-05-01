@@ -320,6 +320,9 @@
             <trans-unit id="tx_jvevents_domain_model_event.organizer">
                 <source>Organizer</source>
             </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_event.registration_url">
+                <source>Link to registration</source>
+            </trans-unit>
             <trans-unit id="tx_jvevents_domain_model_event.registered_seats">
                 <source>Registered Seats</source>
             </trans-unit>

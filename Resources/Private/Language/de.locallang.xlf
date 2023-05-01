@@ -381,10 +381,16 @@
                 <source>Organizer</source>
                 <target>Veranstalter</target>
             </trans-unit>
+              <trans-unit id="tx_jvevents_domain_model_event.registration_url">
+                <source>Link to registration</source>
+                <target>Link zur Registrierung</target>
+            </trans-unit>
+
             <trans-unit id="tx_jvevents_domain_model_event.registered_seats" approved="yes">
                 <source>Registered Seats</source>
                 <target>Angemeldete Teilnehmer</target>
             </trans-unit>
+
             <trans-unit id="tx_jvevents_domain_model_event.registrant" approved="yes">
                 <source>Registrant</source>
                 <target>Teilnehmer</target>

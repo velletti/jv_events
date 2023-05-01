@@ -73,7 +73,7 @@ $returnArray = array(
 		'entryTime' => array('showitem' => 'entry_time'),
 		'infos' => array('showitem' => 'name, --linebreak--, teaser ,'),
 		'priceReduced' => array('showitem' => 'price_reduced,--linebreak--, price_reduced_text,'),
-		'relations' => array('showitem' => 'organizer, --linebreak--, location, --linebreak--,event_category, --linebreak--,tags '),
+		'relations' => array('showitem' => 'organizer, --linebreak--, location, --linebreak--,youtube_link, --linebreak--, event_category, --linebreak--,tags '),
 		'frequent' => array('showitem' => 'is_recurring, --linebreak--, frequency, freq_exception, --linebreak--, is_exception_for,  '),
 		'language' => array('showitem' => 'sys_language_uid, ,l10n_parent,--linebreak--,l10n_diffsource,' ),
 		'advanced' => array('showitem' => 'top_event, --linebreak--,slug,' ),
@@ -818,6 +818,32 @@ $returnArray = array(
 				'foreign_table_where' => 'ORDER BY fe_groups.title'
 			)
 		),
+
+        'youtube_link' => array(
+            'exclude' => 1,
+            'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_domain_model_organizer.youtube_link',
+            'config' => array(
+                'type' => 'input',
+                'eval' => 'trim',
+                'size' => '30',
+                'max' => '255',
+                'softref' => 'typolink,url',
+                'renderType' => 'inputLink' ,
+
+                'fieldControl' => array(
+                    'linkPopup' => array(
+                        'options' => array(
+                            'blindLinkOptions' => 'mail,file,spec,folder' ,
+                            'title' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_domain_model_organizer.youtube_link' ,
+                            'windowOpenParameters' => 'height=300,width=500,status=0,menubar=0,scrollbars=1' ,
+                        ),
+
+                    ),
+                ) ,
+            ) ,
+
+        ),
+
         'store_in_hubspot' => array(
             'exclude' => 1,
             'displayCond' => 'FIELD:with_registration:REQ:TRUE' ,

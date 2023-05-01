@@ -499,6 +499,14 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 	 */
 	protected $registrationUrl = '';
 
+    /**
+     * Link to a ypu Tube Video
+     * details
+     *
+     * @var string|null
+     */
+    protected $youtubeLink = '';
+
 
     /**
      * This event is an exception for an recurring event.
@@ -2686,6 +2694,24 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         }
         $this->registrationShowStatus = $registrationShowStatus;
     }
+
+    /**
+     * @return string|null
+     */
+    public function getYoutubeLink(): ?string
+    {
+        return $this->youtubeLink;
+    }
+
+    /**
+     * @param string|null $youtubeLink
+     */
+    public function setYoutubeLink(?string $youtubeLink): void
+    {
+        $this->youtubeLink = $youtubeLink;
+    }
+
+
 
 
 

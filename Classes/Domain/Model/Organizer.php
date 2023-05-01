@@ -123,7 +123,7 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $charityLink = '';
 
     /**
-     * Link of this organizer. Shown in Emails and as  Contact info in the event
+     * Link to a youtube Video
      * details
      *
      * @var string

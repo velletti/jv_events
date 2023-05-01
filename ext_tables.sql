@@ -48,6 +48,8 @@ CREATE TABLE tx_jvevents_domain_model_event (
 	registration_gender int(11) DEFAULT '0' NOT NULL,
 	registration_show_status tinyint(1) unsigned DEFAULT '0' NOT NULL,
 
+    youtube_link varchar(255) DEFAULT '' NOT NULL,
+
     store_in_hubspot tinyint(1) unsigned DEFAULT '0' NOT NULL,
 	sales_force_campaign_id varchar(60) DEFAULT '' NOT NULL,
 

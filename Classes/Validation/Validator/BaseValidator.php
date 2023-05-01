@@ -280,6 +280,39 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
         return $isValid ;
     }
 
+    /**
+     * YouTube URL Is valid function
+     * @param string $propertyValue
+     * @param string $propertyName
+     * @param string|boolean $errorMessage
+     * @param boolean $isValid
+     * @return boolean
+     */
+    protected function youtubeIsValid( $propertyValue, $propertyName, $errorMessage = false , $isValid=true ) {
+
+        if( trim($propertyValue) == ""  ) {
+            return $isValid ;
+        }
+
+        $videoUrl = parse_url($propertyValue);
+
+        if (array_key_exists("query", $videoUrl)) {
+            parse_str($videoUrl['query'], $params);
+            if (is_array($params)) {
+                if (strpos($propertyValue, "watch") > 0 && isset($params["v"])) {
+                    return $isValid;
+                }
+            }
+        }
+        if ( !$errorMessage ) {
+            $errorMessage =  "Link To YouTube not Valid" ;
+        }
+        /** @var \TYPO3\CMS\Extbase\Error\Error $error */
+        $error = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Error\Error::class,  $errorMessage , time());
+
+        $this->result->forProperty($propertyName)->addError($error);
+        return false  ;
+    }
 	/**
 	 * Returns TRUE, if the given property ($propertyValue) is a valid
 	 * alphanumeric string, which is defined as [a-zA-Z0-9_]*.

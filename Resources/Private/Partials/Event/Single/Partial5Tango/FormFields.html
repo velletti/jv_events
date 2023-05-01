@@ -111,14 +111,20 @@
 		<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowSelectGenderRestriction"
 				  arguments="{object: 'event', property:'registrationGender' , euro: 'false', label: '' , translationKey: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.registration_gender' ,  mandatory: '0' }" />
 
-		<f:security.ifHasRole role="adminOrganizer">
-			<f:then>
+	</div>
+	<div class="mt-2 mb-2">
 
-			</f:then>
-		</f:security.ifHasRole>
+		<b>Alternativ:</b> ein Link zu deiner Homepage direkt zur Anmeldemöglichkeit:
 	</div>
 </f:security.ifHasRole>
 
+<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowDefault"
+		  arguments="{object: 'event', property:'registrationUrl' , errorProperty: 'registrationUrl' , label: '' , translationKey: 'tx_jvevents_domain_model_event.registration_url' ,  maxLength: 120 , mandatory: false }" />
+
+<f:security.ifHasRole role="youTubeLinkAllowed">
+	<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowDefault"
+			  arguments="{object: 'event', property:'youtubeLink' , errorProperty: 'youtubeLink' , label: '' , translationKey: 'tx_jvevents_domain_model_organizer.youtube_link' ,  maxLength: 120 , mandatory: false }" />
+</f:security.ifHasRole>
 
 <f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowRte"
 		  arguments="{object: 'event', property:'description' , label: '' , translationKey: 'tx_jvevents_domain_model_event.description' , mandatory: true }" />
