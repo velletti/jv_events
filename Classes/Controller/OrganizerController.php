@@ -635,6 +635,7 @@ class OrganizerController extends BaseController
         }
         $organizer->setLink( trim($organizer->getLink())) ;
         $organizer->setCharityLink( trim($organizer->getCharityLink())) ;
+        $organizer->setYoutubeLink( trim($organizer->getYoutubeLink())) ;
         $organizer->setEmail( trim($organizer->getEmail())) ;
         $organizer->setLanguageUid( -1)  ;
         if ($organizer->getPid() < 1 ) {

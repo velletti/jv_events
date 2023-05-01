@@ -12,6 +12,7 @@ class OrganizerValidator extends BaseValidator {
 		'phone'				=> 30,
 		'link'				=> 120,
 		'charityLink'		=> 240,
+		'youtubeLink'		=> 240,
 	);
 
     /**
@@ -23,6 +24,7 @@ class OrganizerValidator extends BaseValidator {
         'phone'				=> 8,
         'link'				=> -1,
         'charityLink'		=> -1,
+        'youtubeLink'		=> -1,
     );
 
 	/**
@@ -37,8 +39,9 @@ class OrganizerValidator extends BaseValidator {
         $isValid = $this->securityChecks( $organizer->getEmail() , 'email' , $isValid ) ;
         $isValid = $this->securityChecks( $organizer->getName() , 'name' , $isValid ) ;
         $isValid = $this->securityChecks( $organizer->getPhone() , 'phone' , $isValid ) ;
-        $isValid = $this->securityChecks( $organizer->getPhone() , 'link' , $isValid ) ;
-        $isValid = $this->securityChecks( $organizer->getPhone() , 'charityLink' , $isValid ) ;
+        $isValid = $this->securityChecks( $organizer->getLink() , 'link' , $isValid ) ;
+        $isValid = $this->securityChecks( $organizer->getCharityLink() , 'charityLink' , $isValid ) ;
+        $isValid = $this->securityChecks( $organizer->getYoutubeLink() , 'youtubeLink' , $isValid ) ;
 
         $isValid = $this->emailIsValid( trim($organizer->getEmail()) , 'email' , false , $isValid ) ;
         $isValid = $this->stringLengthIsValid($this->minLength['name'] , $this->maxLength['name'] , $organizer->getName() , 'name' , NULL , $isValid ) ;
@@ -51,6 +54,9 @@ class OrganizerValidator extends BaseValidator {
         }
         if( $organizer->getCharityLink() ) {
             $isValid = $this->urlIsValid( trim($organizer->getCharityLink()) , 'charityLink' , NULL , $isValid ) ;
+        }
+        if( $organizer->getYoutubeLink() ) {
+            $isValid = $this->urlIsValid( trim($organizer->getYoutubeLink()) , 'youtubeLink' , NULL , $isValid ) ;
         }
         $isValid = $this->isHasUnwantedHtmlCodeValue( $organizer->getDescription() , 'description' , $isValid ) ;
 

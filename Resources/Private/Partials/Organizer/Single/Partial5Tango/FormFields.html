@@ -8,8 +8,15 @@
 		  arguments="{object: 'organizer', property:'phone' , errorProperty: 'organizer.phone' , label: '' , translationKey: 'tx_jvevents_domain_model_organizer.phone' ,  maxLength: 30 , mandatory: '1' }" />
 <f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowDefault"
 		  arguments="{object: 'organizer', property:'link' , errorProperty: 'organizer.link' , label: '' , translationKey: 'tx_jvevents_domain_model_organizer.link' ,  maxLength: 120 , mandatory: false }" />
-<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowDefault"
+<div class="d-none">
+	<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowDefault"
 		  arguments="{object: 'organizer', property:'charityLink' , errorProperty: 'organizer.charityLink' , label: '' , translationKey: 'tx_jvevents_domain_model_organizer.charity_link' ,  maxLength: 120 , mandatory: false }" />
+</div>
+<f:security.ifHasRole role="youTubeLinkAllowed">
+
+	<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowDefault"
+		  arguments="{object: 'organizer', property:'youtubeLink' , errorProperty: 'youtubeLink' , label: '' , translationKey: 'tx_jvevents_domain_model_organizer.youtube_link' ,  maxLength: 120 , mandatory: false }" />
+</f:security.ifHasRole>
 
 <hr>
 

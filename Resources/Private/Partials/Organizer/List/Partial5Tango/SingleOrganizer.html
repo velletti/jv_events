@@ -147,6 +147,14 @@
                         </f:security.ifHasRole>
 
                     </div>
+
+                    <f:if condition="{organizer.youtubeLink}">
+                        <div class="col-12 order-7 py-2 bg-gradient-light ">
+                            <jve:youtube uri="{organizer.youtubeLink}" class="btn btn-outline-secondary" settings="{settings}">
+
+                            </jve:youtube>
+                        </div>
+                    </f:if>
                 </f:if>
 
             </div>

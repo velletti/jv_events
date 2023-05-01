@@ -22,6 +22,19 @@ jQuery(document).ready(function() {
             }
         })
     }
+   $("#allowYoutubeConsens").on("click" , function() {
+       // Set cookie for 365 days
+       let d = new Date();
+       d.setTime(d.getTime() + ( 24*60*60*1000 * 365));
+       let expires = 'expires=' + d.toUTCString();
+
+       document.cookie = 'tx_events_youtube_consens=true;' + expires + ';path=/';
+       window.location.reload() ;
+   }) ;
+
+
+
+
 
 }) ;
 

@@ -41,6 +41,17 @@ plugin.tx_jvevents_events {
 			# you can add no_cache=1 .. not a good Solution but sometimes needed
 			addNoCache = 0
 		}
+
+		organizer {
+			newOrgGetGroups {
+				2 = Organizer Default
+				7 = image Upload is allowed
+				# 5 = Banner Request allowed
+				# 6 = Registration internal allowed
+				# 15  = youTubeLinkAllowed
+			}
+		}
+
 		list {
 			layouts {
 				1Allplan = 1 - List with Filters
