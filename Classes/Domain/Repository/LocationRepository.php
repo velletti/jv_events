@@ -140,15 +140,18 @@ class LocationRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
         }
 
         // and the normal visibility contrains , including date Time
-        /** @var \DateTime $actualTime */
-        $actualTime = new \DateTime('now' ) ;
-        $actualTime->modify($lastModified ) ;
+        if( $lastModified ) {
+            /** @var \DateTime $actualTime */
+            $actualTime = new \DateTime('now' ) ;
+            $actualTime->modify($lastModified ) ;
 
-        $constraints[] = $query->logicalOr( [
-                                                $query->greaterThanOrEqual('tstamp', $actualTime ),
-                                                $query->greaterThanOrEqual('latest_event', $actualTime )
-                                            ]
-        );
+            $constraints[] = $query->logicalOr( [
+                    $query->greaterThanOrEqual('tstamp', $actualTime ),
+                    $query->greaterThanOrEqual('latest_event', $actualTime )
+                ]
+            );
+        }
+
         if( $limit) {
             $query->setLimit(intval($limit));
         }

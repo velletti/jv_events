@@ -83,9 +83,14 @@ class LocationController extends BaseController
 
         $lastModified = '-1 YEAR' ;
         if( array_key_exists( 'filterorganizer' , $this->settings) && array_key_exists( "latestUpdate", $this->settings['filterorganizer'])) {
-            $lastModified = "-" . intval($this->settings['filterlocation']['latestUpdate']) . " DAY";
+           if( intval( $this->settings['filterorganizer']['latestUpdate']) == 0 ) {
+               $lastModified = null ;
+           } else {
+               $lastModified = "-" . intval( $this->settings['filterorganizer']['latestUpdate']) . " DAY" ;
+           }
         }
-            // ($filter=FALSE , $toArray=FALSE , $ignoreEnableFields = FALSE , $limit=FALSE, $lastModified = '-1 YEAR')
+
+        // ($filter=FALSE , $toArray=FALSE , $ignoreEnableFields = FALSE , $limit=FALSE, $lastModified = '-1 YEAR')
         $locations = $this->locationRepository->findByFilterAllpages($filter , false , false , false  , $lastModified);
         $this->view->assign('locations', $locations);
     }
