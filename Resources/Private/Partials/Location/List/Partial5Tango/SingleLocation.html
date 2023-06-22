@@ -34,7 +34,7 @@
             <div class="row">
                 <div class="col-4  order-1 col-md-3 px-0">
 
-                    <f:link.action action="show" arguments="{location : location.uid}">
+                    <f:link.action pageUid="{settings.detailPid}" action="show" arguments="{location : location.uid}">
                             <f:if condition="{location.teaserImage}">
                                 <f:then>
                                     <jve:image alt="{location.teaserImage.alternative}" class="d-block w-100 h-auto img-float rounded shadow-lg" maxHeight="{settings.list.image.height}" maxWidth="{settings.list.image.width}" src="{location.teaserImage.uid}" title="{location.teaserImage.title}" treatIdAsReference="true" width="{settings.list.image.width}c" />
@@ -57,7 +57,7 @@
                 <div class="col-12 col-md-6  order-3 order-md-2 py-2">
                     <div class="card-block">
                         <div id="map-marker-content-{location.uid}">
-                            <h4 class="card-title pb-0 mb-0"><f:link.action  action="show" arguments="{location : location.uid}" >
+                            <h4 class="card-title pb-0 mb-0"><f:link.action  pageUid="{settings.detailPid}" action="show" arguments="{location : location.uid}" >
                                 {location.name}
                             </f:link.action></h4>
 

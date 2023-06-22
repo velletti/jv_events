@@ -14,15 +14,15 @@
             <div class="col-12  order-2 order-md-2 col-md-3 px-0">
                 <f:if condition="{location.teaserImage}">
                     <f:then>
-                        <f:image src="{location.teaserImage.uid}" class="d-block w-100 h-auto img-float rounded shadow-lg" alt="{location.teaserImage.alternative}" title="{location.teaserImage.title}" width="{settings.list.image.width}c" maxWidth="{settings.list.image.width}" maxHeight="{settings.list.image.height}" treatIdAsReference="true" />
+                        <jve:image src="{location.teaserImage.uid}" class="d-block w-100 h-auto img-float rounded shadow-lg" alt="{location.teaserImage.alternative}" title="{location.teaserImage.title}" width="{settings.list.image.width}c" maxWidth="{settings.list.image.width}" maxHeight="{settings.list.image.height}" treatIdAsReference="true" />
                     </f:then>
                     <f:else>
                         <f:if condition="{location.organizer.teaserImage}">
                             <f:then>
-                                <f:image src="{location.organizer.teaserImage.uid}" class="d-block w-100 h-auto img-float rounded shadow-lg" alt="{location.organizer.teaserImage.alternative}" title="{location.organizer.teaserImage.title}" width="{settings.list.image.width}c" maxWidth="{settings.list.image.width}" maxHeight="{settings.list.image.height}" treatIdAsReference="true" />
+                                <jve:image src="{location.organizer.teaserImage.uid}" class="d-block w-100 h-auto img-float rounded shadow-lg" alt="{location.organizer.teaserImage.alternative}" title="{location.organizer.teaserImage.title}" width="{settings.list.image.width}c" maxWidth="{settings.list.image.width}" maxHeight="{settings.list.image.height}" treatIdAsReference="true" />
                             </f:then>
                             <f:else>
-                                <f:image src="{settings.list.image.defaultImage}" class="d-block w-100 h-auto img-float rounded shadow-lg" alt="img" title="Settings: {settings.list.image.defaultImage}" width="{settings.list.image.width}c" maxWidth="{settings.list.image.width}" maxHeight="{settings.list.image.height}" treatIdAsReference="false" />
+                                <jve:image src="{settings.list.image.defaultImage}" class="d-block w-100 h-auto img-float rounded shadow-lg" alt="img" title="Settings: {settings.list.image.defaultImage}" width="{settings.list.image.width}c" maxWidth="{settings.list.image.width}" maxHeight="{settings.list.image.height}" treatIdAsReference="false" />
 
                             </f:else>
                         </f:if>

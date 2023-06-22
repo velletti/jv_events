@@ -195,7 +195,7 @@
 				<div class="col-md-3">
 					<f:if condition="{event.teaserImage}">
 						<f:then>
-							<f:image src="{event.teaserImage.uid}" class="d-block w-100 h-auto img-float rounded shadow-lg" alt="{event.teaserImage.alternative}" title="{event.teaserImage.title}" width="{settings.list.image.width}c" maxWidth="{settings.list.image.width}" maxHeight="{settings.list.image.height}" treatIdAsReference="true" />
+							<jve:image src="{event.teaserImage.uid}" class="d-block w-100 h-auto img-float rounded shadow-lg" alt="{event.teaserImage.alternative}" title="{event.teaserImage.title}" width="{settings.list.image.width}c" maxWidth="{settings.list.image.width}" maxHeight="{settings.list.image.height}" treatIdAsReference="true" />
 						</f:then>
 						<f:else>
 							<div class="showToOrganizer alert alert-warning small d-none">Please add a picture to your event. use the IMAGE Button in the Top navigation</div>
