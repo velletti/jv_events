@@ -360,7 +360,11 @@ class EventController extends BaseController
             $pid = $GLOBALS['TSFE']->id ;
 
         }
-        $this->redirect($action , 'Event' , NULL , array( 'event' => $event ) , $pid );
+        try {
+            $this->redirect($action, 'Event', NULL, array('event' => $event), $pid);
+        }catch  ( \Exception $e ) {
+            $this->redirect(null, null , NULL, null , $pid);
+        }
     }
     
     /**

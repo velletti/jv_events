@@ -16,7 +16,19 @@
                         </button>
                         <span class="d-none d-md-inline-block">edit</span>
                     </f:link.action>
+                    <f:if condition="{settings.single.hideMoreButton}">
+                        <f:then>
+                            <f:if condition="{settings.pageIds.addMedia}">
+                                <f:link.page pageUid="{settings.pageIds.addMedia}" noCache="true" class="nav-link  px-1" title="Add / change Event Image " additionalParams="{tx_jvmediaconnector_connector: {action: 'list', controller: 'Media', pluginName: 'Events' ,  reference: {id: output.event.eventId, table: 'tx_jvevents_domain_model_event' , fieldname: 'teaser_image' , maxRelations: '1' , returnPid: output.returnPid , returnArray: {tx_jvevents_events: {action: 'show', event: output.event.eventId }}}}}">
+                                    <button class="btn btn-outline-primary btn-sm rounded-circle" href="#">
+                                        <i class="fas fa-image"></i>
+                                    </button>
+                                    <span class="d-none d-md-inline-block">Bild</span>
+                                </f:link.page>
 
+                            </f:if>
+                        </f:then>
+                    </f:if>
 
 
                     <span class="nav-link d-inline-block px-1" title="copy Event" >
@@ -38,21 +50,17 @@
                         <span class="d-none d-md-inline-block">delete</span>
                     </span>
 
-
-                    <span class="nav-link d-inline-block px-1 " title="more" >
-                        <button data-toggle="modal" data-target="#eventMoreModal-{output.event.uid}" class="btn btn-outline-primary btn-sm rounded-circle" href="#">
-                            <i class="fas fa-bars "></i>
-                        </button>
-                    </span>
-                    <f:variable name="copyModalBodyDisable">
-                        <f:format.raw>
-
-                            SORRY - Copy Events Feature is broken in the Moment. Be patient. soon again online
-
-                        </f:format.raw>
+                    <f:if condition="{settings.single.hideMoreButton}">
+                        <f:else>
+                              <span class="nav-link d-inline-block px-1 " title="more" >
+                                <button data-toggle="modal" data-target="#eventMoreModal-{output.event.uid}" class="btn btn-outline-primary btn-sm rounded-circle" href="#">
+                                    <i class="fas fa-bars "></i>
+                                </button>
+                            </span>
+                        </f:else>
+                    </f:if>
 
 
-                    </f:variable>
                     <f:variable name="copyModalBody">
                          <f:format.raw>
                              <f:spaceless>
@@ -168,18 +176,20 @@
                         <f:format.raw>
                             <f:spaceless>
                                 <div class="row">
-                                    <div class="col-12 pt-2">
+                                    <f:security.ifHasRole role="RegistrationAllowed">
+                                        <div class="col-12 pt-2">
 
-                                        <f:link.page pageUid="{settings.pageIds.showEventDetail}" title="Registations for Event" noCache="true"  class="btn btn-outline-primary x-1   w-100 text-left"
-                                                     additionalParams="{tx_jvevents_events: {action: 'list', controller: 'Registrant' , pluginName: 'Events',  event: '{output.event.eventId}', hash: '{settings.hash}' , export: '0'}}">
-                                            <button class="btn btn-outline-primary btn-sm rounded-circle mr-2" href="#">
-                                                <i class="fas fa-users"></i>
-                                            </button>
-                                            <span class="">{output.event.registration.registeredSeats}<f:if condition="{output.event.registration.unconfirmedSeats}"> <span title="{f:translate(key:'tx_jvevents_domain_model_event.available_waiting_seats' , default:'')}"> (+{output.event.registration.unconfirmedSeats})</span></f:if> <f:translate key="registrations" default="Anmeldungen"/></span>
-                                         </f:link.page>
-                                    </div>
-                                    <div class="col-12 pt-2">
-                                        <f:if condition="{settings.pageIds.addMedia}">
+                                            <f:link.page pageUid="{settings.pageIds.showEventDetail}" title="Registations for Event" noCache="true"  class="btn btn-outline-primary x-1   w-100 text-left"
+                                                         additionalParams="{tx_jvevents_events: {action: 'list', controller: 'Registrant' , pluginName: 'Events',  event: '{output.event.eventId}', hash: '{settings.hash}' , export: '0'}}">
+                                                <button class="btn btn-outline-primary btn-sm rounded-circle mr-2" href="#">
+                                                    <i class="fas fa-users"></i>
+                                                </button>
+                                                <span class="">{output.event.registration.registeredSeats}<f:if condition="{output.event.registration.unconfirmedSeats}"> <span title="{f:translate(key:'tx_jvevents_domain_model_event.available_waiting_seats' , default:'')}"> (+{output.event.registration.unconfirmedSeats})</span></f:if> <f:translate key="registrations" default="Anmeldungen"/></span>
+                                             </f:link.page>
+                                        </div>
+                                    </f:security.ifHasRole>
+                                    <f:if condition="{settings.pageIds.addMedia}">
+                                        <div class="col-12 pt-2">
                                             <f:link.page pageUid="{settings.pageIds.addMedia}" noCache="true" class="btn btn-outline-primary x-1  w-100 text-left" title="Add Teaser Image to Event" additionalParams="{tx_jvmediaconnector_connector: {action: 'list', controller: 'Media', pluginName: 'Events' ,  reference: {id: output.event.eventId, table: 'tx_jvevents_domain_model_event' , fieldname: 'teaser_image' , maxRelations: '1' , returnPid: output.returnPid , returnArray: {tx_jvevents_events: {action: 'show', event: output.event.eventId }}}}}">
                                                 <button class="btn btn-outline-primary btn-sm rounded-circle mr-2" href="#">
                                                     <i class="fas fa-image"></i>
@@ -193,8 +203,9 @@
                                                     </f:else>
                                                 </f:if>
                                             </f:link.page>
-                                        </f:if>
-                                    </div>
+
+                                        </div>
+                                    </f:if>
                                     <div class="col-12 pt-2">
                                         <span class="btn btn-outline-primary x-1 w-100 text-left"  >
                                              <button class="btn btn-outline-primary btn-sm rounded-circle mr-2" href="#">
@@ -202,9 +213,10 @@
                                                 </button> Event was shown {output.event.viewed} times
                                         </span>
                                     </div>
+                                    <f:if condition="{settings.pageIds.bannerModul}">
 
-                                    <div class="col-12 pt-2">
 
+                                        <div class="col-12 pt-2">
 
                                                 <f:security.ifHasRole role="adminOrganizer">
                                                     <f:then>
@@ -270,7 +282,9 @@
                                                      </f:else>
                                                 </f:security.ifHasRole>
 
-                                    </div>
+                                        </div>
+                                    </f:if>
+
                                 </div>
 
 
