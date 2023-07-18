@@ -57,6 +57,7 @@ class OpenStreetmapGeocoderViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\
 
     /**
      * Render a special sign if the field is required
+     * looks as if this is unused and all replqced with f:assrt!!!
      *
      * @return string
      */

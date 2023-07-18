@@ -84,6 +84,17 @@
                     </f:else>
                 </f:if>
                 <f:if condition="{organizer.0.lat}">
+                    <f:then>
+                        <f:if condition="{locations.0.lat}">
+                            <f:else>
+                                <div class="alert alert-warning">
+                                    <h3>Important / Wichtig</h3>
+                                    Um in der Liste der Veranstalter angezeigt zu werden, muss mind. ein Veranstaltungsort / Location erstellt sein, der als "default" markiert wurde.
+                                    Sinnvollerweise der Ort, in dem Ihr die meisten Kurse gebt. Dieser Ort muss für die Umkreissuche mit einem Punkt in der Karte markiert sein.
+                                </div>
+                            </f:else>
+                        </f:if>
+                    </f:then>
                     <f:else>
                         <div class="alert alert-warning">
                             <h3>Important / Wichtig</h3>
@@ -122,7 +133,8 @@
     <div>
         <f:translate key="contact.webmaster"></f:translate>
          <br>
-        <a href="mailto:{settings.register.senderEmail}?subject=[TANGO] [ID:U-{user}-O-{organizer.uid}-P-{organizer.pid}] Anfrage Freischaltung {organizer.name}">
+         <br>
+        <a class="btn btn-outline-secondary" href="mailto:{settings.register.senderEmail}?subject=[TANGO] [ID:U-{user}-O-{organizer.uid}-P-{organizer.pid}] Anfrage Freischaltung {organizer.name}">
             {settings.register.senderEmail}
         </a>
     </div>

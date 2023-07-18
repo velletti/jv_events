@@ -15,22 +15,26 @@ function AddressLeaflet() {
             id: 'mapbox.streets'
         }).addTo(obj.map);
 
-        var records = document.getElementById("jv_events_location_list");
-        for (var i = 0; i < records.childNodes.length; i++) {
-            var item = records.childNodes[i];
-            if ( item.getAttribute('data-lat').length && item.getAttribute('data-lng').length ) {
+        var records = document.getElementById("jv_events_location_list").children;
 
-                let myIcon = AddressLeafletGetIcon( false , false ) ;
-                var marker = L.marker([item.getAttribute('data-lat'), item.getAttribute('data-lng')], { icon: myIcon } )
-                    .addTo(obj.map)
-                    .bindPopup(document.getElementById('map-marker-content-' + item.getAttribute('data-uid')).innerHTML);
-                obj.markers.push(marker);
+        if( records.length  ) {
+            for (var i = 0; i < records.length; i++) {
+                var item = records[i];
+                if ( item.getAttribute('data-lat').length && item.getAttribute('data-lng').length ) {
+
+                    let myIcon = AddressLeafletGetIcon( false , false ) ;
+                    var marker = L.marker([item.getAttribute('data-lat'), item.getAttribute('data-lng')], { icon: myIcon } )
+                        .addTo(obj.map)
+                        .bindPopup(document.getElementById('map-marker-content-' + item.getAttribute('data-uid')).innerHTML);
+                    obj.markers.push(marker);
+                }
             }
+            var group = new L.featureGroup(obj.markers);
 
+            obj.map.fitBounds(group.getBounds() , { padding: [50, 50] });
         }
-        var group = new L.featureGroup(obj.markers);
 
-        obj.map.fitBounds(group.getBounds() , { padding: [50, 50] });
+
     };
 
     obj.openMarker = function (markerId) {
