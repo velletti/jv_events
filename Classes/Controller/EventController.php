@@ -26,13 +26,16 @@ namespace JVE\JvEvents\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use JVE\JvBanners\Utility\AssetUtility;
 use JVE\JvEvents\Domain\Model\Event;
 use JVE\JvEvents\Domain\Model\Location;
 use JVE\JvEvents\Domain\Model\Organizer;
+use JVE\JvEvents\Domain\Repository\BannerRepository;
 use JVE\JvEvents\Utility\SlugUtility;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
@@ -664,6 +667,18 @@ class EventController extends BaseController
                 try {
                     $this->eventRepository->update($event) ;
 
+                    if( ExtensionManagementUtility::isLoaded("jv_banners")) {
+                        $bannerRepository = GeneralUtility::makeInstance(BannerRepository::class);
+                        $row = $bannerRepository->getBannerByEventId( intval( $event->getUid()) );
+                        if ( $row) {
+
+                            $update['uid'] = $row['uid'];
+                            $update['hidden'] = 1;
+                            $bannerRepository->updateBanner( $update );
+                            $this->addFlashMessage('The Banner ' .  $row['uid'] . ' will be stopped also soon. (<4 h) ', '', AbstractMessage::OK);
+                        }
+                    }
+
                     // got from EM Settings
                     $clearCachePids = GeneralUtility::trimExplode("," , $this->settings['EmConfiguration']['clearCachePids']) ;
                     if( is_array($clearCachePids) && count( $clearCachePids) > 0 ) {
@@ -717,6 +732,50 @@ class EventController extends BaseController
                 if ( count($oldEventRows ) > 0 ) {
                     $oldEventRow = $oldEventRows[0] ;
                 }
+                if( ExtensionManagementUtility::isLoaded("jv_banners")) {
+
+                    // update Banner Text etc
+                    $bannerRepository = GeneralUtility::makeInstance(BannerRepository::class);
+                    $row = $bannerRepository->getBannerByEventId( intval( $event->getUid()) );
+                    if ( $row) {
+
+                        $row['title'] = $event->getName();
+                        $row['description'] = $event->getTeaser();
+                        $html = $event->getStartDate()->format("d.m.Y") . "<br>\n" ;
+                        $html .= date( "H:i" , $event->getStartTime() ) . "-" ;
+                        $html .= date( "H:i" , $event->getEndTime() ) . "<br>\n" ;
+                        if( $event->getLocation() ) {
+                            $html .= $event->getLocation()->getCity() ;
+                        }
+                        $row['html'] = $html;
+                        $bannerRepository->updateBanner( $row );
+
+                        // update image
+                        $assetData = AssetUtility::loadSysFileReference($event->getUid() , "tx_jvevents_domain_model_event" , "teaser_image") ;
+                        $imageFrom = "Event" ;
+                        if( !is_array($assetData )) {
+                            $imageFrom = "Location" ;
+
+                            $assetData = AssetUtility::loadSysFileReference($event->getLocation()->getUid() , "tx_jvevents_domain_model_location" , "teaser_image") ;
+                        }
+                        if( !is_array($assetData )) {
+                            $imageFrom = "Organizer" ;
+                            $assetData = AssetUtility::loadSysFileReference($event->getOrganizer()->getUid() , "tx_jvevents_domain_model_organizer" , "teaser_image") ;
+                        }
+                        if( is_array($assetData )) {
+                            $assetDataLink = AssetUtility::loadSysFileReference( $row['uid'] , "tx_sfbanners_domain_model_banner" , "assets") ;
+
+                            if( $assetDataLink ) {
+                                AssetUtility::updateUidLocal($assetDataLink['uid'] , ['uid_local' => $assetData['uid_local'] ] ) ;
+                            }
+
+                        }
+
+
+                        $this->addFlashMessage('The Banner ' .  $row['uid'] . ' will be updated soon. (<4 h). Changed Images may take more time.', '', AbstractMessage::OK);
+                    }
+                }
+
                 $event->setLastUpdated(time());
                 if ( intval($GLOBALS['TSFE']->fe_user->user['uid'] ) ) {
                     $event->setLastUpdatedBy(intval($GLOBALS['TSFE']->fe_user->user['uid'] ) );
@@ -840,6 +899,20 @@ class EventController extends BaseController
                 if ( intval($GLOBALS['TSFE']->fe_user->user['uid'] ) ) {
                     $event->setLastUpdatedBy(intval($GLOBALS['TSFE']->fe_user->user['uid'] ) );
                 }
+
+                if( ExtensionManagementUtility::isLoaded("jv_banners")) {
+                    $bannerRepository = GeneralUtility::makeInstance(BannerRepository::class);
+                    $row = $bannerRepository->getBannerByEventId( intval( $event->getUid()) );
+                    if ( $row) {
+
+                        $update['uid'] = $row['uid'];
+                        $update['hidden'] = 1;
+                        $update['deleted'] = 1;
+                        $bannerRepository->updateBanner( $update );
+                        $this->addFlashMessage('The Banner ' .  $row['uid'] . ' will be deleted also soon. (<4 h) ', '', AbstractMessage::OK);
+                    }
+                }
+
                 $this->eventRepository->remove($event) ;
 
                 if( $masterId && $deleteFutureEvents) {
