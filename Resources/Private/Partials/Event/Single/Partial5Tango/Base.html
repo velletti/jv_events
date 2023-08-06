@@ -224,7 +224,7 @@
 	</f:comment>
 
 	<ul class="nav nav-tabs py-2 " role="tablist">
-		<f:if condition="{event.description}">
+		<f:if condition="{event.description} || {event.teaser}">
 			<f:variable name="tabDescActive">active</f:variable>
 
 			<li class="nav-item" role="presentation">
@@ -282,7 +282,15 @@
 				<div class="col-12 col-md-8 min-height-6-lines">
 
 					<div class="data clearfix">
-						<f:format.html parseFuncTSPath="lib.jveventsRTE">{event.description}</f:format.html>
+						<f:if condition="{event.description}">
+							<f:then>
+								<f:format.html parseFuncTSPath="lib.jveventsRTE">{event.description}</f:format.html>
+							</f:then>
+							<f:else>
+								{event.teaser}
+							</f:else>
+						</f:if>
+
 					</div>
 
 					<f:if condition="{event.files}">
