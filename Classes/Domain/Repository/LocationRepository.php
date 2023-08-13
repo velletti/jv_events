@@ -178,6 +178,22 @@ class LocationRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
     }
     public function getBoundingBox($lat_degrees,$lon_degrees,$distance) {
 
+           $topLeft = $this->getBoundingBoxCoords($lat_degrees,$lon_degrees,315, $distance)  ;
+           $bottomRight = $this->getBoundingBoxCoords($lat_degrees,$lon_degrees,135, $distance)  ;
+           if ( $topLeft['lat'] > $bottomRight['lat'] ) {
+               $lat = array( $bottomRight['lat'] , $topLeft['lat'])  ;
+           } else {
+               $lat = array( $topLeft['lat'],$bottomRight['lat'])  ;
+           }
+            if ( $topLeft['lng'] > $bottomRight['lng'] ) {
+                $lng = array( $bottomRight['lng'] , $topLeft['lng'])  ;
+            } else {
+                $lng = array( $topLeft['lng'],$bottomRight['lng'])  ;
+            }
+       return array(   "lat" => $lat, "lng" => $lng);
+
+            // old Code.. Does not work with Augsburg even with 200 km
+
            //  $radius = 3963.1; // of earth in miles
             $radius = 6371; // of earth in Km
 
@@ -229,5 +245,46 @@ class LocationRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
 
             return array(   "lat" => array( $lat1,$lat2) ,
                             "lng" => array( $lon1,$lon2) );
+    }
+
+    /**
+     * Get coords for a bounding box by providing center coords and a distance
+     *
+     * ## Usage
+     *
+     * // Figure out the corners of a box surrounding our lat/lng.
+     * $d = 0.3;  // distance
+     * $path_top_right = getBoundingBoxCoords($lat, $lng, 45, $d);
+     * $path_bottom_right = getBoundingBoxCoords($lat, $lng, 135, $d);
+     * $path_bottom_left = getBoundingBoxCoords($lat, $lng, 225, $d);
+     * $path_top_left = getBoundingBoxCoords($lat, $lng, 315, $d);
+     *
+     * ## Sources
+     * <https://gist.github.com/marcus-at-localhost/39a346e7d7f872187124af9cd582f833>
+     * <http://www.sitepoint.com/forums/showthread.php?656315-adding-distance-gps-coordinates-get-bounding-box>
+     * <http://richardpeacock.com/sites/default/files/getDueCoords.php__0.txt>
+     * <http://stackoverflow.com/a/8195239/814031>
+     *
+     * @param  float   $latitude
+     * @param  float   $longitude
+     * @param  int     $bearing        315 = top left , 135 = bottom right  0 = north, 180 = south, 90 = east, 270 = west
+     * @param  int     $distance
+     * @param  string  $distance_unit   m = miles or km = kilometer
+     * @param  boolean $return_as_array
+     * @return mixed   string or array
+     */
+    function getBoundingBoxCoords($latitude, $longitude, $bearing, $distance ) {
+
+        // distance is in km.
+        $radius = 6378.1;
+
+        //	New latitude in degrees.
+        $new_latitude = rad2deg(asin(sin(deg2rad($latitude)) * cos($distance / $radius) + cos(deg2rad($latitude)) * sin($distance / $radius) * cos(deg2rad($bearing))));
+
+        //	New longitude in degrees.
+        $new_longitude = rad2deg(deg2rad($longitude) + atan2(sin(deg2rad($bearing)) * sin($distance / $radius) * cos(deg2rad($latitude)), cos($distance / $radius) - sin(deg2rad($latitude)) * sin(deg2rad($new_latitude))));
+
+        return [ 'lat' => $new_latitude , 'lng' => $new_longitude];
+
     }
 }

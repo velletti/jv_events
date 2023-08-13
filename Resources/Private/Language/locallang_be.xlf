@@ -199,6 +199,9 @@
             <trans-unit id="plugin.filter.Organizer.latestUpdate">
                 <source>Hide organizer, if latest update has happen since more than given days (default 0 = ignore this filter)</source>
             </trans-unit>
+             <trans-unit id="plugin.filter.Locations.hideList">
+                <source>Hide list, only show Map</source>
+            </trans-unit>
 
 			<trans-unit id="plugin.filter.hideCityDropdown">
 				<source>Hide Dropdown City, even if there is more than one Cities</source>

@@ -76,7 +76,7 @@ class LocationController extends BaseController
                     $filter = $this->locationRepository->getBoundingBox(  $this->settings['filterlocation']['lat'], $this->settings['filterlocation']['lng'] ,  $this->settings['filterlocation']['dist']) ;
                 }
             }
-            if ( array_key_exists( "categories", $this->settings['filterlocation']))  {
+            if ( array_key_exists( "categories", $this->settings['filterlocation']) && strlen(trim($this->settings['filterlocation']['categories'] )) > 0 )  {
                 $filter["locationCategory.uid"] =  \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode( "," , $this->settings['filterlocation']['categories'] )   ;
             }
         }

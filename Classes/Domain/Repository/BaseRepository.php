@@ -72,6 +72,9 @@ class BaseRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 
         }
         echo str_replace( $search , $replace , $querystr ) ;
+        /** @var \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult $result */
+        $result = $query->execute() ;
+        echo "<hr>Anzahl: " .  $result->count() ;
 
         die;
     }

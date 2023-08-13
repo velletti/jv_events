@@ -23,9 +23,13 @@
         <f:variable name="divid">jv-events-singleLocation-{location.uid}</f:variable>
     </f:else>
 </f:if>
+<f:variable name="hideListClass"></f:variable>
+<f:if condition="{settings.filterlocation.hideList}">
+    <f:variable name="hideListClass"> d-none hidden </f:variable>
+</f:if>
 
 <f:spaceless>
-    <div id="{divid}" class="jv-events-singleLocation jv-events-row" data-uid="{location.uid}"
+    <div id="{divid}" class="jv-events-singleLocation jv-events-row {hideListClass}" data-uid="{location.uid}"
          data-locationuid="{location.uid}" data-lat="{location.lat}"   data-lng="{location.lng}"
          data-orguid="{location.organizer.uid}" data-taguids="{tagids}"
          data-catuids="{catids}"  >
