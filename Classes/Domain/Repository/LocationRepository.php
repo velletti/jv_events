@@ -1,6 +1,8 @@
 <?php
 namespace JVE\JvEvents\Domain\Repository;
 
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+
 /***************************************************************
  *
  *  Copyright notice
@@ -72,10 +74,11 @@ class LocationRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
      * @param bool $toArray
      * @param bool $ignoreEnableFields
      * @param bool $onlyDefault
+     * @param bool $orderby
      * @return array|object
      */
 
-    public function findByOrganizersAllpages($organizers , $toArray=TRUE , $ignoreEnableFields = TRUE , $onlyDefault = FALSE )
+    public function findByOrganizersAllpages($organizers , $toArray=TRUE , $ignoreEnableFields = TRUE , $onlyDefault = FALSE , $orderby = false )
     {
         $query = $this->createQuery();
         $querySettings = $query->getQuerySettings() ;
@@ -95,6 +98,14 @@ class LocationRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
             $constraints[] = $query->in('organizer', $organizers ) ;
         }
         $query->matching( $query->logicalAnd( $constraints ) ) ;
+        if (  $orderby  ) {
+            switch ($orderby) {
+                case "latestEventDESC":
+                    $sortings['latestEvent'] = QueryInterface::ORDER_DESCENDING ;
+                    $query->setOrderings($sortings);
+                    break;
+            }
+        }
         $res = $query->execute() ;
 
         // new way to debug typo3 db queries

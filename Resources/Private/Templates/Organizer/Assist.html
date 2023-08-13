@@ -25,7 +25,7 @@
             <f:security.IfAuthenticated>
                 <f:then>
                     <div class="col-sm-4 equalHeight">
-                        <f:render partial="FeEditHelp" arguments="{section: 'organizer', organizer: organizer.0 , settings: settings , user: user}" />
+                        <f:render partial="FeEditHelp" arguments="{section: 'organizer', object: organizer.0 , settings: settings , user: user}" />
                     </div>
                     <div class="col-sm-8 equalHeight">
 
@@ -65,9 +65,7 @@
                 </f:then>
                 <f:else>
                     <f:render partial="pleaseLogin" arguments="{_all}"></f:render>
-
                 </f:else>
-
             </f:security.IfAuthenticated>
         </div>
     </div>
@@ -76,38 +74,12 @@
             <f:if condition="{organizer.0.uid}">
                 <f:if condition="{organizer.0.hidden}">
                     <f:else>
-                        <h2>
-                            <f:translate key="tx_jvevents_domain_model_event.organizer">Organizer</f:translate>
-                        </h2>
                         <f:render partial="Organizer/List/Partial{layoutList}/SingleOrganizer" arguments="{organizer:organizer.0, settings: settings, showDetails: '0' , showEditButton: '1', hideDefaultImg: '1'}" />
-                        <hr>
+                        <f:form class="form-horizontal"  action="new" name="event" object="{event}" id="event_new">
+                            <f:render partial="Location/SelectDefaultLocation" arguments="{_all}" />
+                        </f:form>
                     </f:else>
                 </f:if>
-                <f:if condition="{organizer.0.lat}">
-                    <f:then>
-                        <f:if condition="{locations.0.lat}">
-                            <f:else>
-                                <div class="alert alert-warning">
-                                    <h3>Important / Wichtig</h3>
-                                    Um in der Liste der Veranstalter angezeigt zu werden, muss mind. ein Veranstaltungsort / Location erstellt sein, der als "default" markiert wurde.
-                                    Sinnvollerweise der Ort, in dem Ihr die meisten Kurse gebt. Dieser Ort muss für die Umkreissuche mit einem Punkt in der Karte markiert sein.
-                                </div>
-                            </f:else>
-                        </f:if>
-                    </f:then>
-                    <f:else>
-                        <div class="alert alert-warning">
-                            <h3>Important / Wichtig</h3>
-                            Um in der Liste der Veranstalter angezeigt zu werden, muss mind. ein Veranstaltungsort / Location erstellt sein, der als "default" markiert wurde.
-                            Sinnvollerweise der Ort, in dem Ihr die meisten Kurse gebt. Dieser Ort muss für die Umkreissuche mit einem Punkt in der Karte markiert sein.
-                        </div>
-                    </f:else>
-                </f:if>
-
-                <f:form class="form-horizontal"  action="new" name="event" object="{event}" id="event_new">
-                    <f:render partial="Location/SelectDefaultLocation" arguments="{_all}" />
-                </f:form>
-
             </f:if>
         </f:then>
     </f:security.IfAuthenticated>
@@ -115,10 +87,12 @@
 
 
 <f:section name="oneOrganizer">
-    <div class="alert alert-info">
-        <h3>Status: <span class="far fa-check-square"> </span> <span>Aktiv</span></h3>
-        <p>Username: <b>{userData.username}</b></p>
-        <div class="text-right">
+    <div class="alert alert-info row mb-0">
+        <div class="col-md-8">
+            <h3>Status: <span class="far fa-check-square"> </span> <span>Aktiv</span></h3>
+            <p>Username: <b>{userData.username}</b></p>
+        </div>
+        <div class="col-md-4 text-right"">
             <f:link.action pageUid="{settings.pageIds.editUserAccount}" class="btn btn-primary">
                 <span class="fas fa-users-cog"> </span> <span class="hidden-xs">{f:translate(key: 'edit', default: 'Edit')} {f:translate(key: 'Account', default: 'Account')} </span>
             </f:link.action>

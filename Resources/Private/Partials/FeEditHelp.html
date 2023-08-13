@@ -16,7 +16,8 @@
 		<f:format.raw>
 			<f:spaceless>
 				<f:if condition="{settings.help.organizer.pid}">
-					Siehe unsere
+					Siehe unsere Hilfe Seiten und die Tipps zum Hochladen von Bildern
+					<br>
 					<br>
 					<f:link.page class="btn btn-outline-primary" pageUid="{settings.help.organizer.pid}"
 								 additionalParams="{'&tx_maritfaq_pi1[FaqID]': '{settings.help.organizer.faqId}'}">
@@ -24,15 +25,29 @@
 					</f:link.page>
 				</f:if>
 				<f:if condition="{settings.help.image.pid}">
-					<br><br>und die Tipps zum
-					<f:link.page class="btn btn-outline-primary" pageUid="{settings.help.image.pid}"
+					<f:link.page class="ml-2 btn btn-outline-primary" pageUid="{settings.help.image.pid}"
 								 additionalParams="{'&tx_maritfaq_pi1[FaqID]': '{settings.help.image.faqId}'}">
 						Hochladen von Bildern
 					</f:link.page>
 				</f:if>
 				<br><br>
+				<f:if condition="{object.uid}">
+					<f:then>
+						<f:if condition="{object.hidden}">
+							<f:then>
+								<f:variable name="orgStatus">unconfirmed</f:variable>
+							</f:then>
+							<f:else>
+								<f:variable name="orgStatus">Active</f:variable>
+							</f:else>
+						</f:if>
+					</f:then>
+					<f:else>
+						<f:variable name="orgStatus">Not Organizer yet</f:variable>
+					</f:else>
+				</f:if>
 				Wenn dort keine passende Antwort zu finden ist, uns per E-Mail kontaktieren und die nachfolgenden  ID-Informationen mitsenden:<br>
-				User: {user} | Organizer: {object.uid} | Pid: {object.pid}<br>
+				User: {user} | Organizer: {object.uid} | Status: {orgStatus} | Pid: {object.pid}<br>
 			</f:spaceless>
 		</f:format.raw>
 	</f:variable>

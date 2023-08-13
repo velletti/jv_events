@@ -2,21 +2,34 @@
 {namespace vhs=JVE\JvEvents\ViewHelpers}
 
 
-<div class="text-right">
-    <f:link.action pageUid="{settings.pageIds.editLocation}" action="new" controller="Location" class="btn btn-primary">
-        <span class="fas fa-plus-square"> </span> <span class="hidden-xs">{f:translate(key: 'tx_jvevents_domain_model_location.createNew', default: 'New Location')}</span>
-    </f:link.action>
-</div>
-
-
 <f:if condition="{locations}">
     <f:then>
-        <div class="clearfix my-2">
-            <br/>
+        <div class="row">
+            <div class="col-md-8">
+
+                <f:if condition="{defaultLocationUid}">
+                    <f:then>
+                        <h3 class="left">Your Locations</h3>
+                    </f:then>
+                    <f:else>
+                        <h3>Select one of the existing Locations as default: </h3>
+                        <p>if no default location is selected, you will not be be listed as Organizer!</p>
+
+                    </f:else>
+                </f:if>
+            </div>
+            <div class="col-md-4 text-right">
+                <div class="text-right">
+                    <f:link.action pageUid="{settings.pageIds.editLocation}" action="new" controller="Location" class="btn btn-primary">
+                        <span class="fas fa-plus-square"> </span> <span class="hidden-xs">{f:translate(key: 'tx_jvevents_domain_model_location.createNew', default: 'New Location')}</span>
+                    </f:link.action>
+                </div>
+            </div>
+
         </div>
-        <h3 >Select one of the existing Locations as default: </h3>
+
         <f:for each="{locations}" as="location">
-            <div class="row w-100 border border-left-0 my-2">
+            <div class="row w-100 border border-left-0 border-right-0 my-2 pt-1 ml-1">
                 <f:spaceless>
                     <div class="col-1  text-left ml-0 pl-0">
                         <f:link.action pageUid="{settings.pageIds.editLocation}" action="setDefault" controller="Location" class="btn btn-{f:if(condition: '{location.defaultLocation}' , then: 'primary', else: 'secondary')}" title="{location.uid}" arguments="{location: '{location.uid}', organizer: '{organizer.0.uid}' , oldDefault: '{defaultLocation}'}">
@@ -34,6 +47,30 @@
                         <f:link.action pageUid="{settings.pageIds.editLocation}" action="setDefault" title="{location.name}, {location.streetAndNr} - {location.city}" controller="Location" class="btn text-left" arguments="{location: '{location.uid}', organizer: '{organizer.0.uid}' , oldDefault: '{defaultLocation}'}">
                             <f:format.crop maxCharacters="75">{location.name}, {location.streetAndNr} - {location.city}</f:format.crop>
                         </f:link.action>
+
+                        <f:if condition="{location.lat} == 0">
+                            <div class="alert alert-warning mb-0">
+                                Please correct Position! Lat: {location.lat} | Lng: {location.lng}
+                            </div>
+                        </f:if>
+
+                        <f:if condition="{location.latestEvent}">
+                            <f:then>
+                                <f:if condition="{f:format.date(date: '{location.latestEvent}', format: 'Y-m-d')}  <  {f:format.date(base: 'now', date: '-90 DAYS' , format: 'Y-m-d')}">
+                                    <div class="alert alert-warning">
+                                        Unused location, latest event: <f:format.date format="d.m.Y">{location.latestEvent}</f:format.date>
+                                    </div>
+                                </f:if>
+                            </f:then>
+                           <f:else>
+                               <div class="alert alert-warning">
+                                   Unused location!
+                               </div>
+                           </f:else>
+                        </f:if>
+
+
+
                     </div>
                     <div class="col-1  text-left ml-0 pl-0">
                         <f:link.action pageUid="{settings.pageIds.editLocation}" action="show" controller="Location" class="btn btn-primary" title="{location.uid}" arguments="{location: '{location.uid}', organizer: '{organizer.0.uid}'}">
@@ -51,9 +88,18 @@
                         </f:link.action>
                     </div>
                     <div class="col-1  text-left ml-0 pl-0">
-                        <f:link.action pageUid="{settings.pageIds.editLocation}" action="delete" controller="Location" class="btn btn-secondary" title="{location.uid}" arguments="{location: '{location.uid}', organizer: '{organizer.0.uid}'}">
-                            <span class="fa fa-trash"></span>
-                        </f:link.action>
+                        <f:if condition="{f:format.date(date: '{location.latestEvent}', format: 'Y-m-d')}  <  {f:format.date(date: 'now', format: 'Y-m-d')}">
+                            <f:then>
+                                <f:link.action pageUid="{settings.pageIds.editLocation}" action="delete" controller="Location" class="btn btn-secondary" title="DELETE {location.uid}" arguments="{location: '{location.uid}', organizer: '{organizer.0.uid}'}">
+                                    <span class="fa fa-trash"></span>
+                                </f:link.action>
+                            </f:then>
+                            <f:else>
+                                <f:link.action pageUid="{settings.pageIds.eventList}" action="list" controller="Event" class="btn btn-secondary" title="Termine" arguments="{overruleFilter: {location: '{location.uid}', maxDays: '30'}}">
+                                    <span class="fa fa-list"></span>
+                                </f:link.action>
+                            </f:else>
+                        </f:if>
 
                     </div>
                 </f:spaceless>
@@ -62,6 +108,19 @@
         </f:for>
     </f:then>
     <f:else>
-        <h3>Bitte zuerst einen Veranstaltungsort erstellen</h3><br />
+        <div class="row">
+            <div class="col-md-8">
+                <h3>Bitte zuerst einen Veranstaltungsort erstellen</h3>
+            </div>
+            <div class="col-md-4">
+                <div class="text-right">
+                    <f:link.action pageUid="{settings.pageIds.editLocation}" action="new" controller="Location" class="btn btn-primary">
+                        <span class="fas fa-plus-square"> </span> <span class="hidden-xs">{f:translate(key: 'tx_jvevents_domain_model_location.createNew', default: 'New Location')}</span>
+                    </f:link.action>
+                </div>
+            </div>
+        </div>
+        <hr>
+
     </f:else>
 </f:if>

@@ -92,12 +92,12 @@ class OrganizerController extends BaseController
                 $organizerUids[] = 0 ;
                // $ignoreEnableFields = TRUE ;  // maybe needed
             }
-            $locations= $this->locationRepository->findByOrganizersAllpages( $organizerUids , FALSE, $ignoreEnableFields ) ;
+            $locations= $this->locationRepository->findByOrganizersAllpages( $organizerUids , FALSE, $ignoreEnableFields ,  false , "latestEventDESC") ;
             $this->view->assign('locations', $locations );
 
             $oldDefaultLocation = $this->locationRepository->findByOrganizersAllpages( array(0 => $organizer[0]->getUid()) , FALSE, FALSE , TRUE )->getFirst() ;
             if($oldDefaultLocation) {
-                $this->view->assign('defaultLocation', $oldDefaultLocation->getUid() );
+                $this->view->assign('defaultLocationUid', $oldDefaultLocation->getUid() );
             }
         }
 
