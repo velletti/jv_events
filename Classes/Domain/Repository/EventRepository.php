@@ -173,6 +173,9 @@ class EventRepository extends BaseRepository
         if( isset( $settings['filter']['organizer']) && $settings['filter']['organizer']  ) {
             $constraints[] = $query->equals("organizer",  $settings['filter']['organizer'] );
         }
+        if( isset( $settings['filter']['location']) && $settings['filter']['location']  ) {
+            $constraints[] = $query->equals("location",  $settings['filter']['location'] );
+        }
         //
         if( isset( $settings['filter']['organizers']) && $settings['filter']['organizers']  ) {
             $organizers = GeneralUtility::trimExplode("," , $settings['filter']['organizers']  ) ;
