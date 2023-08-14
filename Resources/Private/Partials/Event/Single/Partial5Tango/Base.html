@@ -470,7 +470,16 @@
 					<f:if condition="{event.organizer.name}">
 						<div class="row">
 							<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_organizer.name" />:</strong></div>
-							<div class="col-md-8">{event.organizer.name}</div>
+							<div class="col-md-8">
+								<f:if condition="{settings.detailPid} != {settings.pageId}">
+									<f:then>
+										<f:link.action pageUid="{settings.detailPid}" action="show" controller="Organizer" arguments="{organizer: '{event.organizer.uid}'}">{event.organizer.name}</f:link.action>
+									</f:then>
+										<f:else>
+											{event.organizer.name}
+										</f:else>
+									</f:if>
+								</div>
 						</div>
 					</f:if>
 					<f:if condition="{event.location.email}">
