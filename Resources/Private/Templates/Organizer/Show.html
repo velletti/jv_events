@@ -14,7 +14,38 @@
 
 <f:flashMessages />
 
-  <f:render partial="Organizer/Single/Partial{layoutList}/Header" arguments="{organizer:organizer, settings: settings}" />
-  <f:render partial="Organizer/List/Partial{layoutList}/SingleOrganizer" arguments="{organizer:organizer, settings: settings, showDetails: '1' }" />
+  <f:render partial="Organizer/Single/Partial{layoutList}/Header" arguments="{organizer:organizer, locations: locations, settings: settings}" />
+  <f:render partial="Organizer/List/Partial{layoutList}/SingleOrganizer" arguments="{organizer:organizer, locations: locations, settings: settings, showDetails: '1' }" />
 
+  <f:if condition="{locations}">
+    <f:then>
+
+      <div class="py-2">
+        <div id="map" style="height:500px;"
+             data-lat="{location.0.lat}"
+             data-default-lat="{settings.map.defaultPosition.lat}"
+             data-default-lng="{settings.map.defaultPosition.lng}"
+             data-lng="{location.0..lng}"
+             data-maptab='a[href="#jv_events_map"]'
+             data-glat="48.1148263" data-glog="11.4712236"
+             data-copy="&copy; <a target='_blank' href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
+             data-geocodebase="false"
+             data-geocodeoptions="false"
+             style="width:100%;min-height:300px;"
+        ></div>
+        <v:asset.prefetch domains="nominatim.openstreetmap.org" />
+        <v:asset.script path="EXT:jv_events/Resources/Public/JavaScript/leaflet-1-7-1.js" name="leaflet1" async="false" content="header"/>
+        <v:asset.script path="EXT:jv_events/Resources/Public/JavaScript/tango/LeafletLocationMap.js" name="leafletLocation" async="false"  content="footer"/>
+        <v:asset.style path="EXT:jv_events/Resources/Public/Css/leaflet-1-7-1.css" name="leaflet3"   content="header"/>
+        <v:asset.style path="EXT:jv_events/Resources/Public/Css/tango/leafletFrontend.css" name="leaflet4"   content="footer"/>
+      </div>
+
+      <div id="jv_events_location_list">
+        <f:for each="{locations}" as="location">
+          <f:render partial="Location/List/Partial{layoutList}/SingleLocation" arguments="{location:location, settings: settings , doNotLinkTitle: '1'}" />
+        </f:for>
+      </div>
+
+    </f:then>
+  </f:if>
 </f:section>

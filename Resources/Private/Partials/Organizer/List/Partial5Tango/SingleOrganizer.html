@@ -1,4 +1,13 @@
 {namespace jve=JVE\JvEvents\ViewHelpers}
+<f:if condition="{settings.LayoutList}">
+    <f:then>
+        <f:variable name="layoutList">{settings.LayoutList}</f:variable>
+    </f:then>
+    <f:else>
+        <f:variable name="layoutList">5Tango</f:variable>
+    </f:else>
+</f:if>
+
 <f:variable name="tagnames"></f:variable>
 <f:variable name="tagids"></f:variable>
 <f:variable name="catids"></f:variable>
@@ -123,12 +132,21 @@
                         </f:if>
                         <f:if condition="{settings.HideEventListLink} ">
                             <f:else>
-                                <f:if condition="{organizer.latestEvent -> f:format.date(format: 'Y-m-d')} > {f:format.date(date: 'now' , format: 'Y-m-d')}">
-                                    <f:link.page class="badge badge-primary m-2 py-2 px-1" pageUid="{settings.pageIds.eventList}" additionalParams="{tx_jvevents_events: {overruleFilter: {organizer: '{organizer.uid}', category : 'true' ,startDate:  '{nextEventOrganizer}',  maxDays: 90}}}" title="{f:translate(key: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.EventListView', default: 'Termine')} ">
-                                        <span class="d-md-none d-inline-block fas fa-calendar-alt fa-2x mx-1"></span>
-                                        <span class="d-none d-md-inline-block">
+                                <f:if condition="{showDetails}">
+                                    <f:then>
+                                        <f:if condition="{organizer.latestEvent -> f:format.date(format: 'Y-m-d')} > {f:format.date(date: 'now' , format: 'Y-m-d')}">
+                                            <f:link.page class="badge badge-primary m-2 py-2 px-1" pageUid="{settings.pageIds.eventList}" additionalParams="{tx_jvevents_events: {overruleFilter: {organizer: '{organizer.uid}', category : 'true' ,startDate:  '{nextEventOrganizer}',  maxDays: 90}}}" title="{f:translate(key: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.EventListView', default: 'Termine')} ">
+                                                <span class="d-md-none d-inline-block fas fa-calendar-alt fa-2x mx-1"></span>
+                                                <span class="d-none d-md-inline-block">
                                             <span class=" fas fa-calendar-alt mx-1"></span> {f:translate(key: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.EventListView', default: 'Termine')} >></span>
-                                    </f:link.page>
+                                            </f:link.page>
+                                        </f:if>
+                                    </f:then>
+                                    <f:else>
+                                        <f:link.action class="badge badge-primary m-2 py-2 px-1"  action="show" arguments="{organizer : organizer.uid}" >
+                                            <span class="fas fa-info-circle mx-1"></span> {f:translate(key: 'tx_jvevents_domain_model_organizer')} >>
+                                        </f:link.action>
+                                    </f:else>
                                 </f:if>
                             </f:else>
                         </f:if>
@@ -155,6 +173,9 @@
                             </jve:youtube>
                         </div>
                     </f:if>
+
+
+
                 </f:if>
 
             </div>

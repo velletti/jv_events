@@ -61,9 +61,18 @@
                 <div class="col-12 col-md-6  order-3 order-md-2 py-2">
                     <div class="card-block">
                         <div id="map-marker-content-{location.uid}">
-                            <h4 class="card-title pb-0 mb-0"><f:link.action  pageUid="{settings.detailPid}" action="show" arguments="{location : location.uid}" >
-                                {location.name}
-                            </f:link.action></h4>
+                            <h4 class="card-title pb-0 mb-0">
+                                <f:if condition="{doNotLinkTitle}">
+                                    <f:then>
+                                        {location.name}
+                                    </f:then>
+                                    <f:else>
+                                        <f:link.action  pageUid="{settings.detailPid}" action="show" arguments="{location : location.uid}" >
+                                            {location.name}
+                                        </f:link.action>
+                                    </f:else>
+                                </f:if>
+                                </h4>
 
                             <f:if condition="{location.organizer.name}">
                                 <f:then>

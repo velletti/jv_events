@@ -75,10 +75,11 @@ class LocationRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
      * @param bool $ignoreEnableFields
      * @param bool $onlyDefault
      * @param bool $orderby
+     * @param bool|string $lastModified  // f.e. '-30 day'
      * @return array|object
      */
 
-    public function findByOrganizersAllpages($organizers , $toArray=TRUE , $ignoreEnableFields = TRUE , $onlyDefault = FALSE , $orderby = false )
+    public function findByOrganizersAllpages($organizers , $toArray=TRUE , $ignoreEnableFields = TRUE , $onlyDefault = FALSE , $orderby = false , $lastModified = false )
     {
         $query = $this->createQuery();
         $querySettings = $query->getQuerySettings() ;
@@ -91,12 +92,25 @@ class LocationRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
         }
         // $query->setLimit($limit) ;
         if ( $onlyDefault ) {
-            $constraints[] = $query->in('organizer', $organizers ) ;
             $constraints[] = $query->equals('default_location', 1 ) ;
-
-        } else {
-            $constraints[] = $query->in('organizer', $organizers ) ;
         }
+        if ( count( $organizers) > 1 ) {
+            $constraints[] = $query->in('organizer', $organizers ) ;
+        } else {
+            $constraints[] = $query->equals('organizer', $organizers[0] ) ;
+        }
+        if( $lastModified ) {
+            /** @var \DateTime $actualTime */
+            $actualTime = new \DateTime('now' ) ;
+            $actualTime->modify($lastModified ) ;
+
+            $constraints[] = $query->logicalOr( [
+                    $query->greaterThanOrEqual('tstamp', $actualTime ),
+                    $query->greaterThanOrEqual('latest_event', $actualTime )
+                ]
+            );
+        }
+
         $query->matching( $query->logicalAnd( $constraints ) ) ;
         if (  $orderby  ) {
             switch ($orderby) {

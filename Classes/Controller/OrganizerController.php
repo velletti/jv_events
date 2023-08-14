@@ -199,7 +199,10 @@ class OrganizerController extends BaseController
         $nextEventOrganizer = $this->eventRepository->findByFilter(false, 1,  $this->settings )->getFirst() ;
         $this->view->assign('nextEventOrganizer', ( $nextEventOrganizer ? $nextEventOrganizer->getStartdate()->format("d.m.Y") : date("d.m.Y") ));
 
+        $organizerUids[0] = $organizer->getUid() ;
+        $locations = $this->locationRepository->findByOrganizersAllpages( $organizerUids , false, FALSE ,  false , "latestEventDESC" , '-30 DAY') ;
         $this->view->assign('organizer', $organizer);
+        $this->view->assign('locations', $locations);
     }
     
     /**
