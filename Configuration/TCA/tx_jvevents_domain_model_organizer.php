@@ -49,7 +49,7 @@ $returnArray = array(
 	'palettes' => array(
 		'data' => array('showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, --linebreak--, top , --linebreak--, name, --linebreak--,subname,--linebreak--,slug, --linebreak--,email, --linebreak--,email_cc,--linebreak--,link, --linebreak--,charity_link, --linebreak--,phone, --linebreak--,sales_force_user_id,  --linebreak--, sales_force_user_id2, sales_force_user_org,--linebreak--,description,--linebreak--,registration_info,'),
 		'relations' => array('showitem' => 'teaser_image, --linebreak--,images,  --linebreak--,youtube_link , --linebreak--,organizer_category, --linebreak--, tags,'),
-	    'access' => array('showitem' => ' starttime, endtime, --linebreak--,sorting, --linebreak--,access_users,--linebreak--, access_groups,')
+	    'access' => array('showitem' => ' starttime, endtime, latest_event, --linebreak--,sorting, --linebreak--,access_users,--linebreak--, access_groups,')
     ),
 	'columns' => array(
 
