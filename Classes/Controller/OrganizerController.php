@@ -93,7 +93,19 @@ class OrganizerController extends BaseController
                // $ignoreEnableFields = TRUE ;  // maybe needed
             }
             $locations= $this->locationRepository->findByOrganizersAllpages( $organizerUids , FALSE, $ignoreEnableFields ,  false , "latestEventDESC") ;
+
+            $filter['organizer'] =  $organizer[0]->getUid()  ;
+            $filter['canceledEvents'] = "2" ;
+            $filter['startDate'] = 1 ;
+
+            $nextEvents = $this->eventRepository->findByFilter( $filter, 50,  $this->settings ) ;
+            $nextEvent = $nextEvents->getFirst() ;
+            $nextEventCount = $nextEvents->count() ;
+
             $this->view->assign('locations', $locations );
+            $this->view->assign('nextEvent', $nextEvent );
+            $this->view->assign('nextEventOrganizer', ($nextEvent ? $nextEvent->getStartDate()->format("d.m.Y") : '' ) );
+            $this->view->assign('nextEventCount', $nextEventCount );
 
             $oldDefaultLocation = $this->locationRepository->findByOrganizersAllpages( array(0 => $organizer[0]->getUid()) , FALSE, FALSE , TRUE )->getFirst() ;
             if($oldDefaultLocation) {
@@ -182,6 +194,11 @@ class OrganizerController extends BaseController
      */
     public function showAction(\JVE\JvEvents\Domain\Model\Organizer $organizer)
     {
+        $this->settings['filter']['organizer'] =  $organizer->getUid()  ;
+        $this->settings['filter']['maxEvent'] =  1  ;
+        $nextEventOrganizer = $this->eventRepository->findByFilter(false, 1,  $this->settings )->getFirst() ;
+        $this->view->assign('nextEventOrganizer', ( $nextEventOrganizer ? $nextEventOrganizer->getStartdate()->format("d.m.Y") : date("d.m.Y") ));
+
         $this->view->assign('organizer', $organizer);
     }
     

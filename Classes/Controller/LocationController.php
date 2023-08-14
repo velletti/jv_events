@@ -105,9 +105,9 @@ class LocationController extends BaseController
     {
         $this->settings['filter']['organizer'] =  $location->getOrganizer()->getUid()  ;
         $this->settings['filter']['maxEvent'] =  1  ;
-        $nextEventLocation = $this->eventRepository->findByFilter(false, 1,  $this->settings )->getFirst() ;
-        $this->settings['filter']['location'] =  $location->getUid()  ;
         $nextEventOrganizer = $this->eventRepository->findByFilter(false, 1,  $this->settings )->getFirst() ;
+        $this->settings['filter']['location'] =  $location->getUid()  ;
+        $nextEventLocation = $this->eventRepository->findByFilter(false, 1,  $this->settings )->getFirst() ;
 
         $this->view->assign('location', $location);
         $this->view->assign('nextEventLocation', ($nextEventLocation ? $nextEventLocation->getStartdate()->format("d.m.Y") : date("d.m.Y") ));

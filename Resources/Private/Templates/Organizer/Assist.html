@@ -87,10 +87,37 @@
 
 
 <f:section name="oneOrganizer">
-    <div class="alert alert-info row mb-0">
+
+    <f:if condition="{nextEvent}">
+        <f:then>
+            <f:variable name="userClass">alert-info</f:variable>
+            <f:variable name="userIconClass"> fa-check-square</f:variable>
+            <f:variable name="userStatus">Aktiv {organizer.0.latestEvent -> f:format.date(format: 'Y-m-d')}</f:variable>
+        </f:then>
+        <f:else>
+            <f:variable name="userClass">alert-warning</f:variable>
+            <f:variable name="userIconClass"> fa-square</f:variable>
+            <f:variable name="userStatus">Passiv: </f:variable>
+        </f:else>
+    </f:if>
+
+
+    <div class="alert {userClass} row mb-0">
         <div class="col-md-8">
-            <h3>Status: <span class="far fa-check-square"> </span> <span>Aktiv</span></h3>
-            <p>Username: <b>{userData.username}</b></p>
+            <h3>Status: <span class="far {userIconClass}"> </span> <span>{userStatus}</span></h3>
+
+            <f:if condition="{nextEventCount}>0">
+                <f:then>
+                    <f:link.page class="badge badge-primary m-2 py-2 px-1" pageUid="{settings.pageIds.eventList}" additionalParams="{tx_jvevents_events: {overruleFilter: {organizer: '{organizer.uid}', category : 'true' ,startDate:  '{nextEventOrganizer}',  maxDays: 90}}}" title="{f:translate(key: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.EventListView', default: 'Termine')} ">
+                        <span> <span class=" fas fa-calendar-alt mx-1"></span> {nextEventCount} {f:translate(key: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.EventListView', default: 'Termine')} >></span>
+                    </f:link.page>
+                </f:then>
+                <f:else>
+                    Letzter Termin: {organizer.0.latestEvent -> f:format.date(format: 'd.m.Y')}
+                </f:else>
+            </f:if>
+            <br>
+            Username: <b>{userData.username}</b>
         </div>
         <div class="col-md-4 text-right"">
             <f:link.action pageUid="{settings.pageIds.editUserAccount}" class="btn btn-primary">
