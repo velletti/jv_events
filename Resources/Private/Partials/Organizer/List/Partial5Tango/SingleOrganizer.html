@@ -143,7 +143,7 @@
                                         </f:if>
                                     </f:then>
                                     <f:else>
-                                        <f:link.action class="badge badge-primary m-2 py-2 px-1"  action="show" arguments="{organizer : organizer.uid}" >
+                                        <f:link.action pageUid="{settings.detailPid}" class="badge badge-primary m-2 py-2 px-1"  action="show" arguments="{organizer : organizer.uid}" >
                                             <span class="fas fa-info-circle mx-1"></span> {f:translate(key: 'tx_jvevents_domain_model_organizer')} >>
                                         </f:link.action>
                                     </f:else>
