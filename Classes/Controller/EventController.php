@@ -34,9 +34,12 @@ use JVE\JvEvents\Domain\Repository\BannerRepository;
 use JVE\JvEvents\Utility\SlugUtility;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Http\ForwardResponse;
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
 /**
@@ -321,7 +324,6 @@ class EventController extends BaseController
      *
      * @param Event $event
      * @TYPO3\CMS\Extbase\Annotation\Validate(param="event" , validator="JVE\JvEvents\Validation\Validator\EventValidator")
-     * @return void
      */
     public function createAction(Event $event)
     {
@@ -356,7 +358,7 @@ class EventController extends BaseController
             }
 
         } else {
-            $action = false ;
+            $action = null ;
 
             $pid = $this->settings['pageIds']['loginForm'] ;
             $this->addFlashMessage('The object was NOT created. You are not logged in as Organizer.' . $event->getUid() , '', AbstractMessage::WARNING);
@@ -369,10 +371,24 @@ class EventController extends BaseController
 
         }
         try {
-            $this->redirect($action, 'Event', NULL, array('event' => $event), $pid);
-        }catch  ( \Exception $e ) {
+            /** @var UriBuilder $uriBuilder */
+
+            $uriBuilder = GeneralUtility::makeInstance( UriBuilder::class ) ;
+            $uri = "https://" . GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY') .
+                    $uriBuilder->reset()->setTargetPageUid($pid)
+                    ->setArguments([ 'tx_jvevents_events' =>
+                        ['controller' =>  'Event' , 'action' => $action , 'event' => $event->getUid() ] ])
+                    ->build() ;
+            // https://tangov10.ddev.site/de/tanzen/termin-details/event/event/show/qqqqqqq-20-08-2023.html
+
+            return (new Response())
+                ->withHeader('Location', $uri )
+                ->withStatus("200");
+
+        } catch  ( \Exception $e ) {
             $this->redirect(null, null , NULL, null , $pid);
         }
+
     }
     
     /**
