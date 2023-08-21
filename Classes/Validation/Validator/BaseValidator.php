@@ -135,72 +135,6 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
 		return $return ;
 	}
 
-	/**
-	 * stringLengthIsValid function
-	 * @param int $min
-	 * @param int $max
-	 * @param string $propertyValue
-	 * @param string $propertyName
-	 * @param string $customErrorMessage
-     * @param boolean $stringLengthIsValid
-	 * @return boolean
-	 */
-	protected function stringLengthIsValid($min, $max, $propertyValue, $propertyName, $customErrorMessage = null , $stringLengthIsValid = true ) {
-
-		/**
-		 * @var \TYPO3\CMS\Extbase\Error\Error $error
-		 */
-
-		/** @var \TYPO3\CMS\Extbase\Validation\Validator\StringLengthValidator $validator */
-		$validator = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Validation\Validator\StringLengthValidator::class );
-		$validator->acceptsEmptyValues = FALSE ;
-
-		// Settings for min length check
-		if (!empty($min)) {
-			$validator->options['minimum'] = $min;
-            $errorMessage =  \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate( "validator.stringlength.less" , "extbase" , array( $min )) ;
-            // Not valid (properties see also: /typo3/sysext/extbase/Classes/Error/Result.php)
-            if($validator->validate($propertyValue)->hasErrors()){
-
-                if(!empty($customErrorMessage)){
-                    $errorMessage = $this->translate($customErrorMessage);
-                }
-
-                $error = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Error\Error::class,$errorMessage, time());
-                $this->result->forProperty($propertyName)->addError($error);
-
-                $stringLengthIsValid = false;
-
-            }
-		}
-
-
-
-
-        // Settings for max length check
-        if (!empty($max)) {
-            $validator->options['minimum'] = NULL ;
-            $validator->options['maximum'] = $max;
-            $errorMessage =  \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate( "validator.stringlength.exceed" , "extbase" , array( $max )) ;
-            // Not valid (properties see also: /typo3/sysext/extbase/Classes/Error/Result.php)
-            if($validator->validate($propertyValue)->hasErrors()){
-
-                if(!empty($customErrorMessage)){
-                    $errorMessage = $this->translate($customErrorMessage);
-                }
-
-                $error = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Error\Error::class,$errorMessage, time());
-                $this->result->forProperty($propertyName)->addError($error);
-
-                $stringLengthIsValid = false;
-
-            }
-        }
-
-
-		return $stringLengthIsValid;
-
-	}
     /**
      * urlIsValid function
      * @param string $propertyValue
@@ -248,7 +182,6 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
 
         return $isValid ;
     }
-
     /**
      * emailIsValid function
      * @param string $propertyValue
@@ -278,6 +211,79 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
             $isValid = false;
         }
         return $isValid ;
+    }
+
+    /**
+     * stringLengthIsValid function
+     * @param int $min
+     * @param int $max
+     * @param string $propertyValue
+     * @param string $propertyName
+     * @param string|null $customErrorMessage
+
+     * @param boolean $stringLengthIsValid
+     * @param string|null $customErrorTranslated
+     * @return boolean
+     */
+    protected function stringLengthIsValid($min, $max, $propertyValue, $propertyName, $customErrorMessage = null , $stringLengthIsValid = true , $customErrorTranslated = null ) {
+
+        /**
+         * @var \TYPO3\CMS\Extbase\Error\Error $error
+         */
+
+        /** @var \TYPO3\CMS\Extbase\Validation\Validator\StringLengthValidator $validator */
+        $validator = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Validation\Validator\StringLengthValidator::class );
+        $validator->acceptsEmptyValues = FALSE ;
+
+        // Settings for min length check
+        if (!empty($min)) {
+            $validator->options['minimum'] = $min;
+            $errorMessage =  \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate( "validator.stringlength.less" , "extbase" , array( $min )) ;
+            // Not valid (properties see also: /typo3/sysext/extbase/Classes/Error/Result.php)
+            if($validator->validate($propertyValue)->hasErrors()){
+
+                if(!empty($customErrorTranslated)) {
+                    $errorMessage = $customErrorTranslated ;
+                } else {
+                    if(!empty($customErrorMessage)){
+                        $errorMessage = $this->translate($customErrorMessage);
+                    }
+                }
+
+                $error = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Error\Error::class,$errorMessage, time());
+                $this->result->forProperty($propertyName)->addError($error);
+
+                $stringLengthIsValid = false;
+
+            }
+        }
+
+
+
+
+        // Settings for max length check
+        if (!empty($max)) {
+            $validator->options['minimum'] = NULL ;
+            $validator->options['maximum'] = $max;
+            $errorMessage =  \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate( "validator.stringlength.exceed" , "extbase" , array( $max )) ;
+            // Not valid (properties see also: /typo3/sysext/extbase/Classes/Error/Result.php)
+            if($validator->validate($propertyValue)->hasErrors()){
+
+                if(!empty($customErrorMessage)){
+                    $errorMessage = $this->translate($customErrorMessage);
+                }
+
+                $error = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Error\Error::class,$errorMessage, time());
+                $this->result->forProperty($propertyName)->addError($error);
+
+                $stringLengthIsValid = false;
+
+            }
+        }
+
+
+        return $stringLengthIsValid;
+
     }
 
     /**

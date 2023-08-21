@@ -1073,7 +1073,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             if( ! checkdnsrr($domain[1], 'MX') ) {
                 $msg = sprintf( $this->translate('error.email.noMxRecord') , "@" . $domain[1] ) . " ";
 
-                $this->addFlashMessage( $msg , '', AbstractMessage::WARNING);
+                $this->addFlashMessage( $msg , 'No MX entry for Maildomain!', AbstractMessage::WARNING);
             }
         }
 

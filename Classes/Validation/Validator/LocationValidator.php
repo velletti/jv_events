@@ -81,8 +81,21 @@ class LocationValidator extends BaseValidator {
         $isValid = $this->stringLengthIsValid($this->minLength['city'] , $this->maxLength['city'] , $location->getCity() , 'city' , NULL , $isValid ) ;
         $isValid = $this->stringLengthIsValid($this->minLength['country'] , $this->maxLength['country'] , $location->getCountry() , 'country' , NULL , $isValid ) ;
         if ( $location->getStreetAndNr() != "-" && $location->getStreetAndNr() != '') {
-            $isValid = $this->stringLengthIsValid($this->minLength['lng'] , $this->maxLength['lng'] , $location->getLng() , 'lng' , NULL , $isValid ) ;
-            $isValid = $this->stringLengthIsValid($this->minLength['lat'] , $this->maxLength['lat'] , $location->getLat() , 'lat' , NULL , $isValid ) ;
+            $validBeforeLNG = $isValid ;
+
+            $custError = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:location.geocode.error' );
+            $isValid = $this->stringLengthIsValid($this->minLength['lng'] , $this->maxLength['lng'] , $location->getLng() , 'lng' ,
+                null , $isValid , $custError . " LNG= 11.575"  ) ;
+
+            if ( !$isValid && $validBeforeLNG ) {
+                $isValid = $this->stringLengthIsValid($this->minLength['lat'] , $this->maxLength['lat'] , $location->getLat() , 'lat' ,
+                    null , $isValid , " LAT= 48.137"  ) ;
+
+            } else {
+                $isValid = $this->stringLengthIsValid($this->minLength['lat'] , $this->maxLength['lat'] , $location->getLat() , 'lat' ,
+                    null , $isValid , $custError . " LAT= 48.137"  ) ;
+            }
+
         }
         $isValid = $this->isHasUnwantedHtmlCodeValue( $location->getDescription() , 'description' , $isValid ) ;
 

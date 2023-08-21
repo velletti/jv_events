@@ -506,9 +506,15 @@
                 <source>Link</source>
             </trans-unit>
             <trans-unit id="create.location.contact_warning">
-                <source>Need a different contact info for this location? Ff not leave the next 3 fields empty. But maybe helpful to show a different phone number.
-                Or enter a minis char (-) to suppress this entry.</source>
+                <source>Need a different contact info for this location? If not, leave the next 3 fields empty. But maybe helpful to show a different phone number.
+                Or enter a minus char (-) to suppress this entry.</source>
             </trans-unit>
+            <trans-unit id="location.geocode.error">
+                <source>The position on the map could not be determined.
+                You can determine the values for LAT and LNG using Google Maps and enter them here.
+                Example: </source>
+            </trans-unit>
+
 
 
 
