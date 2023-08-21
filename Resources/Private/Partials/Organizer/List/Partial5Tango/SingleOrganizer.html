@@ -30,47 +30,33 @@
         <div class="card col-12 my-4 clearfix rounded-bottom">
             <div class="row">
                 <div class="col-4  order-1 col-sm-3 px-0">
-
-                    <f:link.action action="show" arguments="{organizer : organizer.uid}">
-                            <f:if condition="{organizer.teaserImage}">
-                                <f:then>
-                                    <jve:image alt="{organizer.teaserImage.alternative}" class="d-block w-100 h-auto img-float rounded shadow-lg"
-                                               data="{orgid: organizer.uid, img:organizer.teaserImage.uid}" maxHeight="{settings.list.image.height}"
-                                               maxWidth="{settings.list.image.width}" src="{organizer.teaserImage.uid}" title="{organizer.teaserImage.title}"
-                                               treatIdAsReference="true"
-                                               width="{settings.list.image.width}c" />
-                                </f:then>
-                                <f:else>
-                                    <f:if condition="{hideDefaultImg}">
-                                        <f:then>
-                                            <f:security.ifHasRole role="7">
-                                                <div class="alert alert-secondary h-100">
-                                                    <f:link.page pageUid="{settings.pageIds.addMedia}" noCache="true" class="nav-link  px-1" title="Add Teaser Image " additionalParams="{tx_jvmediaconnector_connector: {action: 'list', controller: 'Media' ,  reference: {id: organizer.uid, table: 'tx_jvevents_domain_model_organizer' , fieldname: 'teaser_image' , maxRelations: '1' , returnPid: settings.pageId , returnArray: {tx_jvevents_events: {action: 'edit', organizer: organizer.uid }}}}}">
-                                                        <button class="btn btn-outline-primary btn-xs rounded-circle" href="#">
-                                                            <i class="fas fa-image"></i>
-                                                        </button>
-                                                        <span class="d-none d-md-inline-block mx-2"> <f:translate key="addImage">Add Image</f:translate></span>
-                                                    </f:link.page>
-                                                </div>
-                                            </f:security.ifHasRole>
-                                        </f:then>
-                                        <f:else>
-                                            <f:image src="{settings.list.image.defaultImage}" class="d-block w-100 h-auto img-float rounded shadow-lg" alt="img" title="Settings: {settings.list.image.defaultImage}" width="{settings.list.image.width}c" maxWidth="{settings.list.image.width}" maxHeight="{settings.list.image.height}" treatIdAsReference="false" />
-
-                                        </f:else>
-                                    </f:if>
-                                </f:else>
-                            </f:if>
-
-                    </f:link.action>
+                    <f:if condition="{showDetails}">
+                        <f:then>
+                            <f:render section="image" arguments="{_all}"/>
+                        </f:then>
+                        <f:else>
+                            <f:link.action action="show" arguments="{organizer : organizer.uid}">
+                                <f:render section="image" arguments="{_all}"/>
+                            </f:link.action>
+                        </f:else>
+                    </f:if>
                 </div>
 
 
                 <div class="col-12 col-sm-6  order-3 order-sm-2 py-2">
                     <div class="card-block">
-                        <h4 class="card-title"><f:link.action  action="show" arguments="{organizer : organizer.uid}" >
-                            {organizer.name}
-                        </f:link.action></h4>
+                        <h4 class="card-title">
+                            <f:if condition="{showDetails}">
+                                <f:then>
+                                    {organizer.name}
+                                </f:then>
+                                <f:else>
+                                    <f:link.action  action="show" arguments="{organizer : organizer.uid}" >
+                                        {organizer.name}
+                                    </f:link.action>
+                                </f:else>
+                            </f:if>
+                        </h4>
                         <f:if condition="{organizer.email}">
                             <span class="fa fa-envelope mh-sm"></span> <f:link.email email="{organizer.email}">{organizer.email}</f:link.email><br>
                         </f:if>
@@ -182,3 +168,35 @@
         </div>
     </div>
 </f:spaceless>
+
+<f:section name="image">
+    <f:if condition="{organizer.teaserImage}">
+        <f:then>
+            <jve:image alt="{organizer.teaserImage.alternative}" class="d-block w-100 h-auto img-float rounded shadow-lg"
+                       data="{orgid: organizer.uid, img:organizer.teaserImage.uid}" maxHeight="{settings.list.image.height}"
+                       maxWidth="{settings.list.image.width}" src="{organizer.teaserImage.uid}" title="{organizer.teaserImage.title}"
+                       treatIdAsReference="true"
+                       width="{settings.list.image.width}c" />
+        </f:then>
+        <f:else>
+            <f:if condition="{hideDefaultImg}">
+                <f:then>
+                    <f:security.ifHasRole role="7">
+                        <div class="alert alert-secondary h-100">
+                            <f:link.page pageUid="{settings.pageIds.addMedia}" noCache="true" class="nav-link  px-1" title="Add Teaser Image " additionalParams="{tx_jvmediaconnector_connector: {action: 'list', controller: 'Media' ,  reference: {id: organizer.uid, table: 'tx_jvevents_domain_model_organizer' , fieldname: 'teaser_image' , maxRelations: '1' , returnPid: settings.pageId , returnArray: {tx_jvevents_events: {action: 'edit', organizer: organizer.uid }}}}}">
+                                <button class="btn btn-outline-primary btn-xs rounded-circle" href="#">
+                                    <i class="fas fa-image"></i>
+                                </button>
+                                <span class="d-none d-md-inline-block mx-2"> <f:translate key="addImage">Add Image</f:translate></span>
+                            </f:link.page>
+                        </div>
+                    </f:security.ifHasRole>
+                </f:then>
+                <f:else>
+                    <f:image src="{settings.list.image.defaultImage}" class="d-block w-100 h-auto img-float rounded shadow-lg" alt="img" title="Settings: {settings.list.image.defaultImage}" width="{settings.list.image.width}c" maxWidth="{settings.list.image.width}" maxHeight="{settings.list.image.height}" treatIdAsReference="false" />
+
+                </f:else>
+            </f:if>
+        </f:else>
+    </f:if>
+</f:section>
