@@ -2,6 +2,7 @@
 namespace JVE\JvEvents\Controller;
 
 use JVE\JvEvents\Utility\SlugUtility;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -189,20 +190,25 @@ class OrganizerController extends BaseController
     /**
      * action show
      *
-     * @param \JVE\JvEvents\Domain\Model\Organizer $organizer
+     * @param \JVE\JvEvents\Domain\Model\Organizer|null $organizer
      * @return void
      */
-    public function showAction(\JVE\JvEvents\Domain\Model\Organizer $organizer)
+    public function showAction(?\JVE\JvEvents\Domain\Model\Organizer $organizer)
     {
-        $this->settings['filter']['organizer'] =  $organizer->getUid()  ;
-        $this->settings['filter']['maxEvent'] =  1  ;
-        $nextEventOrganizer = $this->eventRepository->findByFilter(false, 1,  $this->settings )->getFirst() ;
-        $this->view->assign('nextEventOrganizer', ( $nextEventOrganizer ? $nextEventOrganizer->getStartdate()->format("d.m.Y") : date("d.m.Y") ));
+        if( $organizer ) {
+            $this->settings['filter']['organizer'] =  $organizer->getUid()  ;
+            $this->settings['filter']['maxEvent'] =  1  ;
+            $nextEventOrganizer = $this->eventRepository->findByFilter(false, 1,  $this->settings )->getFirst() ;
+            $this->view->assign('nextEventOrganizer', ( $nextEventOrganizer ? $nextEventOrganizer->getStartdate()->format("d.m.Y") : date("d.m.Y") ));
 
-        $organizerUids[0] = $organizer->getUid() ;
-        $locations = $this->locationRepository->findByOrganizersAllpages( $organizerUids , false, FALSE ,  false , "latestEventDESC" , '-30 DAY') ;
-        $this->view->assign('organizer', $organizer);
-        $this->view->assign('locations', $locations);
+            $organizerUids[0] = $organizer->getUid() ;
+            $locations = $this->locationRepository->findByOrganizersAllpages( $organizerUids , false, FALSE ,  false , "latestEventDESC" , '-30 DAY') ;
+            $this->view->assign('organizer', $organizer);
+            $this->view->assign('locations', $locations);
+        } else {
+            $this->addFlashMessage($this->translate("error.general.entry_not_found"), "Sorry!" , AbstractMessage::WARNING) ;
+        }
+
     }
     
     /**

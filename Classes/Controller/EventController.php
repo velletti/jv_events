@@ -204,7 +204,7 @@ class EventController extends BaseController
      * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("event")
      * @return void
      */
-    public function showAction(Event $event=null)
+    public function showAction(?Event $event=null)
     {
         if( $event ) {
             $checkString = $_SERVER["SERVER_NAME"] . "-" . $event->getUid() . "-" . $event->getCrdate();
@@ -250,6 +250,9 @@ class EventController extends BaseController
 
             }
             $this->view->assign('hash', $checkHash);
+
+        } else {
+            $this->addFlashMessage($this->translate("error.general.entry_not_found"), "Sorry!" , AbstractMessage::WARNING) ;
 
         }
         $this->view->assign('settings', $this->settings);

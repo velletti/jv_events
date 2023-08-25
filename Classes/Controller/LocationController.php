@@ -2,6 +2,7 @@
 namespace JVE\JvEvents\Controller;
 
 use JVE\JvEvents\Utility\SlugUtility;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
@@ -98,20 +99,29 @@ class LocationController extends BaseController
     /**
      * action show
      *
-     * @param \JVE\JvEvents\Domain\Model\Location $location
+     * @param \JVE\JvEvents\Domain\Model\Location|null $location
      * @return void
      */
-    public function showAction(\JVE\JvEvents\Domain\Model\Location $location)
+    public function showAction(?\JVE\JvEvents\Domain\Model\Location $location)
     {
-        $this->settings['filter']['organizer'] =  $location->getOrganizer()->getUid()  ;
-        $this->settings['filter']['maxEvent'] =  1  ;
-        $nextEventOrganizer = $this->eventRepository->findByFilter(false, 1,  $this->settings )->getFirst() ;
-        $this->settings['filter']['location'] =  $location->getUid()  ;
-        $nextEventLocation = $this->eventRepository->findByFilter(false, 1,  $this->settings )->getFirst() ;
+        if ( $location ) {
+            $nextEventOrganizer = null;
+            $nextEventLocation = null;
+            $this->settings['filter']['maxEvent'] =  1  ;
 
-        $this->view->assign('location', $location);
-        $this->view->assign('nextEventLocation', ($nextEventLocation ? $nextEventLocation->getStartdate()->format("d.m.Y") : date("d.m.Y") ));
-        $this->view->assign('nextEventOrganizer', ( $nextEventOrganizer ? $nextEventOrganizer->getStartdate()->format("d.m.Y") : date("d.m.Y") ));
+            if ( $location->getOrganizer() ) {
+                $this->settings['filter']['organizer'] =  $location->getOrganizer()->getUid()  ;
+                $nextEventOrganizer = $this->eventRepository->findByFilter(false, 1,  $this->settings )->getFirst() ;
+            }
+            $this->settings['filter']['location'] =  $location->getUid()  ;
+            $nextEventLocation = $this->eventRepository->findByFilter(false, 1,  $this->settings )->getFirst() ;
+
+            $this->view->assign('location', $location);
+            $this->view->assign('nextEventLocation', ($nextEventLocation ? $nextEventLocation->getStartdate()->format("d.m.Y") : date("d.m.Y") ));
+            $this->view->assign('nextEventOrganizer', ( $nextEventOrganizer ? $nextEventOrganizer->getStartdate()->format("d.m.Y") : date("d.m.Y") ));
+        } else {
+            $this->addFlashMessage($this->translate("error.general.entry_not_found"), "Sorry!" , AbstractMessage::WARNING) ;
+        }
     }
     
     /**

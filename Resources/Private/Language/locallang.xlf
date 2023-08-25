@@ -5,6 +5,9 @@
 			<generator>LFEditor</generator>
 		</header>
 		<body>
+		    <trans-unit id="error.general.entry_not_found">
+                <source>Could not find this entry anymore</source>
+            </trans-unit>
             <trans-unit id="month.01">
                 <source>January</source>
             </trans-unit>
