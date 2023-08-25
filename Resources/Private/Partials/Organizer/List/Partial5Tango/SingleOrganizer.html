@@ -58,7 +58,7 @@
                             </f:if>
                         </h4>
                         <f:if condition="{organizer.email}">
-                            <span class="fa fa-envelope mh-sm"></span> <f:link.email email="{organizer.email}">{organizer.email}</f:link.email><br>
+                            <span class="fa fa-envelope mh-sm"></span> <f:link.external uri="mailto:{organizer.email}">{organizer.email}</f:link.external><br>
                         </f:if>
                         <f:if condition="{organizer.phone}">
                             <span class="fa fa-phone mh-sm"></span> <f:link.external uri="{organizer.phone}" defaultScheme="tel">{organizer.phone}</f:link.external><br>

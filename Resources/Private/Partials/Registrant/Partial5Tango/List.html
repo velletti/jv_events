@@ -122,7 +122,7 @@
 					</td>
 					<td>{registrant.firstName}</td>
 					<td>{registrant.lastName}</td>
-					<td><i class="fa fa-envelope  mr-2"></i><f:link.email email="{registrant.email}">{registrant.email}</f:link.email></td>
+					<td><i class="fa fa-envelope  mr-2"></i><f:link.exernal uri="mailto:{registrant.email}">{registrant.email}</f:link.exernal></td>
 					<td><i class="fa fa-phone mr-2"></i><f:link.external uri="tel:{registrant.phone}">{registrant.phone}</f:link.external> </td>
 					<td>
 						<f:if condition="{registrant.more1} == '1'">

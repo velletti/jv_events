@@ -114,7 +114,7 @@
                     <div class="small">
                         <f:if condition="{location.email}">
                             <f:then>
-                                <span class="fa fa-envelope mh-sm"></span> <f:link.email email="{location.email}">{location.email}</f:link.email><br>
+                                <span class="fa fa-envelope mh-sm"></span> <f:link.external uri="mailto:{location.email}">{location.email}</f:link.external><br>
                             </f:then>
                             <f:else>
                                 <f:if condition="{location.organizer.email}">

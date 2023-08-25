@@ -131,7 +131,7 @@ class LocationController extends BaseController
             $location = $this->objectManager->get(\JVE\JvEvents\Domain\Model\Location::class);
             $location->setLng( ($this->settings['filterlocation']['lng'] ?? '-34.5877631' ));
             $location->setLat( ($this->settings['filterlocation']['lat'] ?? '-58.4589249' ));
-            
+
         }
         $organizer= null ;
         if ( $location->getUid() < 1 ) {
