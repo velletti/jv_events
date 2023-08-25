@@ -35,7 +35,7 @@
                             <f:render section="image" arguments="{_all}"/>
                         </f:then>
                         <f:else>
-                            <f:link.action action="show" arguments="{organizer : organizer.uid}">
+                            <f:link.action pageUid="{settings.detailPid}" action="show" arguments="{organizer : organizer.uid}">
                                 <f:render section="image" arguments="{_all}"/>
                             </f:link.action>
                         </f:else>
@@ -51,7 +51,7 @@
                                     {organizer.name}
                                 </f:then>
                                 <f:else>
-                                    <f:link.action  action="show" arguments="{organizer : organizer.uid}" >
+                                    <f:link.action pageUid="{settings.detailPid}" action="show" arguments="{organizer : organizer.uid}" >
                                         {organizer.name}
                                     </f:link.action>
                                 </f:else>
