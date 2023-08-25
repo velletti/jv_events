@@ -112,10 +112,10 @@
      data-namecity="input#city"
      data-namestreet="input#streetAndNr"
      data-namecountry="select#jv_events_country"
-     data-geocodebase="https://nominatim.openstreetmap.org/search/"
+     data-geocodebase="https://nominatim.openstreetmap.org/search"
      data-geocodeoptions="?format=json&addressdetails=1&limit=1&polygon_svg=1"
-     data-geocodeurl="https://nominatim.openstreetmap.org/search/{location.addressEncoded}?format=json&addressdetails=1&limit=1&polygon_svg=1"
-     data-geocodeurlshort="https://nominatim.openstreetmap.org/search/{location.cityEncoded}?format=json&addressdetails=1&limit=1&polygon_svg=1"
+     data-geocodeurl="https://nominatim.openstreetmap.org/search?format=json&q={location.addressEncoded}&addressdetails=1&limit=1&polygon_svg=1"
+     data-geocodeurlshort="https://nominatim.openstreetmap.org/search?format=json&q={location.cityEncoded}&addressdetails=1&limit=1&polygon_svg=1"
 ></div>
 <v:asset.prefetch domains="nominatim.openstreetmap.org" />
 <v:asset.script path="EXT:jv_events/Resources/Public/JavaScript/leaflet-1-7-1.js" name="leaflet1" async="false" content="header"/>

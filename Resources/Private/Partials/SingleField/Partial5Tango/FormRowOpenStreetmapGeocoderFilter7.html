@@ -23,10 +23,10 @@
      data-copy="&copy; <a target='_blank' href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
 
      data-mapzoom="{settings.filter.initMapZoom}"
-     data-geocodebase="https://nominatim.openstreetmap.org/search/"
+     data-geocodebase="https://nominatim.openstreetmap.org/search"
      data-geocodeoptions="?format=json&addressdetails=1&limit=1&polygon_svg=1"
-     data-geocodeurl="https://nominatim.openstreetmap.org/search/{settings.filter.initMapAddress -> f:format.urlencode()}?format=json&addressdetails=1&limit=1&polygon_svg=1"
-     data-geocodeurlshort="https://nominatim.openstreetmap.org/search/{settings.filter.initMapAddress -> f:format.urlencode()}?format=json&addressdetails=1&limit=1&polygon_svg=1"
+     data-geocodeurl="https://nominatim.openstreetmap.org/search?format=json&q={settings.filter.initMapAddress -> f:format.urlencode()}&addressdetails=1&limit=1&polygon_svg=1"
+     data-geocodeurlshort="https://nominatim.openstreetmap.org/search?format=json&q={settings.filter.initMapAddress -> f:format.urlencode()}&addressdetails=1&limit=1&polygon_svg=1"
 ></div>
 <v:asset.prefetch domains="nominatim.openstreetmap.org" />
 <v:asset.script path="EXT:jv_events/Resources/Public/JavaScript/leaflet-1-7-1.js" name="leaflet1" async="false" content="header"/>

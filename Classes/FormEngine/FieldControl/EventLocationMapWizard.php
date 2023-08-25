@@ -49,7 +49,7 @@ class EventLocationMapWizard extends AbstractNode
             // if we have at least some address part (saves geocoding calls)
             if ($address) {
                 // base url
-                $geoCodeUrlBase = 'https://nominatim.openstreetmap.org/search/';
+                $geoCodeUrlBase = 'https://nominatim.openstreetmap.org/search';
                 $geoCodeUrlAddress = $address;
                 $geoCodeUrlCityOnly = ($row['city'] ?? '');
                 // urlparams for nominatim which are fixed.
