@@ -78,10 +78,14 @@
                 <source>If you like, you can give the browser access to you actual position to compute the distance to the tango locations.</source>
             </trans-unit>
             <trans-unit id="aks_for_position_browser_and_cookie">
-                <source>If you do so, the browser will ask you to get access. If you confirm this, the browser will store the geo position as Cookie on your computer. the  tangomuenchen.de and tangobayern.de itself does not store this and also will not track you by the position. Really! We do NO User tracking!</source>
+                <source>If you do so, the browser will ask you to get access. If you confirm this, the browser will store the geo position as Cookie on your computer. Our Server will use this only for filtering events for you but itself does not store this and also will not track you by the position. Really! We do NO User tracking!</source>
             </trans-unit>
-
-
+            <trans-unit id="center_map_and_select_zoom">
+                <source>You can center the map and zoom in to select locations and use this as filter</source>
+            </trans-unit>
+            <trans-unit id="store_as_cookie">
+               <source>Store as cookie</source>
+            </trans-unit>
 
             <trans-unit id="register.accept_privacy">
                 <source>I have read and accept the </source>

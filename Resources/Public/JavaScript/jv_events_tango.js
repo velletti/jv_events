@@ -395,11 +395,19 @@ function jv_events_init() {
     }) ;
 
 	// finaly
+
     $('#jv_events_filter_distance').bind("change", function() {
         $('#jv_events_filter_distance').data('donotoverrule' , 'false' ) ;
     });
 
+
 }
+
+
+function jv_events_ask_position() {
+
+}
+
 function jv_events_reloadList() {
     if ( jQuery("#overruleFilterStartDate") ) {
         var temp =  window.location.href.split("#")  ;
@@ -540,11 +548,11 @@ function jv_events_initPosition(position) {
 
 
                     if( map ) {
-                    //    console.log( "Map Object Found, place marker to coords") ;
+                        //    console.log( "Map Object Found, place marker to coords") ;
                         myPosition = new google.maps.LatLng(position.coords.latitude , position.coords.longitude);
-                      //  console.debug(position.coords)
+                        //  console.debug(position.coords)
                         map.panTo(myPosition) ;
-                     //   map.setCenter( position.coords) ;
+                        //   map.setCenter( position.coords) ;
 
                         if( marker ) {
                             marker.setPosition(myPosition) ;

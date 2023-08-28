@@ -1011,6 +1011,8 @@
 					<settings.filterlocation.lng>
 						<TCEforms>
 							<label>Center Map with Longitude</label>
+							<displayCond>FIELD:sDEFloc.settings.location.list.showMap:REQ:true</displayCond>
+
 							<config>
 								<type>input</type>
 								<default>11.5806778</default>
@@ -1021,6 +1023,7 @@
 					<settings.filterlocation.lat>
 						<TCEforms>
 							<label>Center Map with Latitude</label>
+							<displayCond>FIELD:sDEFloc.settings.location.list.showMap:REQ:true</displayCond>
 							<config>
 								<type>input</type>
 								<default>48.1407067</default>
@@ -1031,6 +1034,7 @@
 					<settings.filterlocation.dist>
 						<TCEforms>
 							<label>max Distance in Kilometer </label>
+							<displayCond>FIELD:sDEFloc.settings.location.list.showMap:REQ:true</displayCond>
 							<config>
 								<type>input</type>
 								<default>100</default>
@@ -1038,6 +1042,17 @@
 							</config>
 						</TCEforms>
 					</settings.filterlocation.dist>
+
+					<settings.location.storePostion>
+						<TCEforms>
+							<label>Show option to store Map</label>
+							<displayCond>FIELD:sDEFloc.settings.location.list.showMap:REQ:true</displayCond>
+							<config>
+								<type>check</type>
+								<default>0</default>
+							</config>
+						</TCEforms>
+					</settings.location.storePostion>
 
 					<settings.filterorganizer.latestUpdate>
 						<TCEforms>
