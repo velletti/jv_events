@@ -9,20 +9,21 @@ function AddressLeaflet() {
             lng = 11.09 ,
             zoom = 7  ,
             autoFit = true ,
-            latCookie = getCookie('tx_events_default_lat') ,
-            lngCookie = getCookie('tx_events_default_lng') ,
-            zoomCookie = getCookie('tx_events_default_zoom')
+            latCookie = AddressGetCookie('tx_events_default_lat') ,
+            lngCookie = AddressGetCookie('tx_events_default_lng') ,
+            zoomCookie = AddressGetCookie('tx_events_default_zoom')
             ;
-        console.log( "cookies Values: lat:" + latCookie + " Lng:"+ lngCookie + " Zoom:" + zoomCookie ) ;
         if ( (  latCookie != 'undefined' && latCookie != null )
             && ( lngCookie != 'undefined' && lngCookie != null )
             &&  ( zoomCookie != 'undefined' && zoomCookie != null )
         ) {
             autoFit = false ;
-            lat = AddressGetCookie('tx_events_default_lat') ;
-            lng = AddressGetCookie('tx_events_default_lng') ;
-            zoom = AddressGetCookie('tx_events_default_zoom') ;
-            console.log( "Auto fit false and use cookies: lat:" + lat + " Lng:"+ lng + " Zoom:" + zoom ) ;
+            lat = parseFloat(latCookie) ;
+            lng = parseFloat(lngCookie) ;
+            zoom = parseInt(zoomCookie) ;
+         //   console.log( "Auto fit false and use cookies: lat:" + lat + " Lng:"+ lng + " Zoom:" + zoom ) ;
+        } else {
+            jQuery("#jv_events-unset-cookies").addClass("d-none") ;
         }
         obj.map = L.map('map').setView([lat, lng], zoom);
         var mapBounds = L.latLngBounds();
@@ -60,11 +61,17 @@ function AddressLeaflet() {
         if(  jQuery("#jv_events-store-as-cookie").length  ) {
             $('#jv_events-store-as-cookie').bind("click", function () {
                 AddressStoreCookie(obj.map );
+                jQuery("#jv_events-unset-cookies").removeClass("d-none") ;
+            });
+        }
+        if(  jQuery("#jv_events-unset-cookies").length  ) {
+            $('#jv_events-unset-cookies').bind("click", function () {
+                AddressUnsetCookie(obj.map );
             });
         }
         if(  jQuery("#jv_events-ask-position").length  ) {
             $('#jv_events-ask-position').bind("click", function() {
-             //   jv_events_ask_position() ;
+                AddressAskPosition(obj.map );
             });
         }
 
@@ -77,6 +84,44 @@ function AddressLeaflet() {
 
     return obj;
 }
+AddressAskPosition = function( map ) {
+    if( location.protocol == "https:") {
+        //    console.log("location.protocol == \"https:\" ") ;
+        if (navigator.geolocation) {
+            showSpinner() ;
+            //   console.log("navigator.geolocation ") ;
+            navigator.geolocation.getCurrentPosition(AddressInitPosition , AddressErrorPosition );
+        } else {
+            jQuery('#jv_events_geo_disp_sub').removeClass("d-none") ;
+            jQuery('#jv_events_geo_disp_spinner').addClass("d-none") ;
+        }
+    }
+}
+AddressInitPosition  = function( position ) {
+    if( position && position.coords && AddressMapInstance && AddressMapInstance.map ) {
+        console.log( position.coords  )
+        AddressMapInstance.map.panTo([ position.coords.latitude, position.coords.longitude]);
+    }
+    hideSpinner() ;
+}
+AddressErrorPosition  = function( ) {
+    hideSpinner() ;
+}
+AddressUnsetCookie = function( map ) {
+    var d = new Date();
+    d.setTime(d.getTime() - ( 24*60*60*1000 ));
+    var expires = 'expires=' + d.toUTCString();
+    document.cookie = 'tx_events_filter_north=' +  '; ' + expires + ';path=/';
+    document.cookie = 'tx_events_filter_west='  +  '; ' + expires + ';path=/';
+    document.cookie = 'tx_events_filter_south=' +  '; ' + expires + ';path=/';
+    document.cookie = 'tx_events_filter_east='  +  '; ' + expires + ';path=/';
+    document.cookie = 'tx_events_default_zoom=' +  '; ' + expires + ';path=/';
+    document.cookie = 'tx_events_default_lat='  +  '; ' + expires + ';path=/';
+    document.cookie = 'tx_events_default_lng='  +  '; ' + expires + ';path=/';
+    alert("success!") ;
+    document.location.reload() ;
+
+}
 
 AddressStoreCookie = function( map ) {
     // Set cookie for 365 days
@@ -84,14 +129,13 @@ AddressStoreCookie = function( map ) {
         var d = new Date();
         d.setTime(d.getTime() + ( 24*60*60*1000 * 365));
         var expires = 'expires=' + d.toUTCString();
-        console.log( ) ;
-        document.cookie = 'tx_events_filter_north=' + map.getBounds().getNorth()  + "; " + expires + ';path=/';
-        document.cookie = 'tx_events_filter_west=' + map.getBounds().getWest()   + "; " + expires + ';path=/';
-        document.cookie = 'tx_events_filter_south=' + map.getBounds().getSouth()  + "; " + expires + ';path=/';
-        document.cookie = 'tx_events_filter_east=' + map.getBounds().getEast()  + "; " + expires + ';path=/';
-        document.cookie = 'tx_events_default_zoom=' + map.getZoom()  + "; " + expires + ';path=/';
-        document.cookie = 'tx_events_default_lat=' + map.getCenter()['lat']  + "; " + expires + ';path=/';
-        document.cookie = 'tx_events_default_lng=' + map.getCenter()['lng']  + "; " + expires + ';path=/';
+        document.cookie = 'tx_events_filter_north=' + map.getBounds().getNorth()  + '; ' + expires + ';path=/';
+        document.cookie = 'tx_events_filter_west='  + map.getBounds().getWest()   + '; ' + expires + ';path=/';
+        document.cookie = 'tx_events_filter_south=' + map.getBounds().getSouth()  + '; ' + expires + ';path=/';
+        document.cookie = 'tx_events_filter_east='  + map.getBounds().getEast()  + '; ' + expires + ';path=/';
+        document.cookie = 'tx_events_default_zoom=' + map.getZoom()  + '; ' + expires + ';path=/';
+        document.cookie = 'tx_events_default_lat='  + map.getCenter()['lat']  + '; ' + expires + ';path=/';
+        document.cookie = 'tx_events_default_lng='  + map.getCenter()['lng']  + '; ' + expires + ';path=/';
         if( $( "#jv_events-store-as-cookie-div").length ) {
             $( "#jv_events-store-as-cookie-div").html( "<b>Success!</b><br>"
                 + 'Zoom: ' +  map.getZoom() + " | " + map.getCenter()['lat'] + " / "+ map.getCenter()['lng'] );
@@ -127,20 +171,18 @@ AddressLeafletSetBounds = function( map ) {
         .data("west", map.getBounds().getWest())
         .data("north", map.getBounds().getNorth())
         .data("south", map.getBounds().getSouth())
-     //   .data("lng", map.getCenter().getLatLng()[0])
-     //   .data("lat", map.getCenter().getLatLng()[1])
         .data("zoom", map.getZoom() )
     ;
 }
 document.addEventListener("DOMContentLoaded", function () {
     if( $('#map').length ) {
-        var AddressMapInstance = AddressLeaflet();
+        AddressMapInstance = AddressLeaflet();
         AddressMapInstance.run();
 
-        AddressLeafletSetBounds(AddressMapInstance.map) ;
+    //    AddressLeafletSetBounds(AddressMapInstance.map) ;
 
         AddressMapInstance.map.on('dragend zoomend moveend', function () {
-            AddressLeafletSetBounds(AddressMapInstance.map) ;
+      //     AddressLeafletSetBounds(AddressMapInstance.map) ;
 
         });
         document.addEventListener('click', function (event) {

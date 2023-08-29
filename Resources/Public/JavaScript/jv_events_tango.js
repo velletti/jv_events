@@ -324,6 +324,7 @@ function jv_events_init() {
 	jv_events_initOneFilter('citys') ;
 	jv_events_initOneFilter('tags') ;
 	jv_events_initOneFilter('organizers') ;
+	jv_events_initOneFilter('near_to_me') ;
 
 	/* jv_events_initOneFilter('months') ; */
 	if( jQuery('#jv_events_geo').length > 0 ) {
@@ -384,6 +385,20 @@ function jv_events_init() {
             $("#jv_events_geo_disp").removeClass("d-none") ;
         }
     });
+    let latCookie = getCookie('tx_events_default_lat') ,
+        lngCookie = getCookie('tx_events_default_lng') ,
+        zoomCookie = getCookie('tx_events_default_zoom')
+    ;
+    if ( (  latCookie != 'undefined' && latCookie != null )
+        && ( lngCookie != 'undefined' && lngCookie != null )
+        &&  ( zoomCookie != 'undefined' && zoomCookie != null )
+    ) {
+        $('#jv_events_filter_near_to_me').prop("checked" , true) ;
+        $('.fieldsetbox-near-to-me').removeClass("d-none") ;
+    } else {
+        $('#jv_events_filter_near_to_me').prop("checked" , false) ;
+        $('.fieldsetbox-near-to-me').addClass("d-none") ;
+    }
 
     if( ! jQuery("#map").length  ) {
         jv_events_refreshList();
@@ -399,6 +414,8 @@ function jv_events_init() {
     $('#jv_events_filter_distance').bind("change", function() {
         $('#jv_events_filter_distance').data('donotoverrule' , 'false' ) ;
     });
+
+
 
 
 }
@@ -646,11 +663,10 @@ function jv_events_refreshList(){
     let minLng = 0 ;
     let maxLng = 9999 ;
     let markers = false ;
-    if (  jQuery("#map").length ) {
+    if (  jQuery("#map").length || $('#jv_events_filter_near_to_me').length ) {
 
         // to do: reset markers ..
         let $filterType7body = jQuery( "#filterType7body") ;
-
 
         if( $filterType7body && $filterType7body.data("minlat")
             && $filterType7body.data("minlat") < $filterType7body.data("maxlat") && $filterType7body.data("minlng") < $filterType7body.data("maxlng") ) {
@@ -659,9 +675,33 @@ function jv_events_refreshList(){
             maxLat = $filterType7body.data("maxlat") ;
             minLng = $filterType7body.data("minlng") ;
             maxLng = $filterType7body.data("maxlng") ;
-            console.log("In refresH : minLat:" + minLat + " maxLat: " +  maxLat + " minLng: " + minLng + " maxLng" + maxLng ) ;
+            // console.log("In refresH : minLat:" + minLat + " maxLat: " +  maxLat + " minLng: " + minLng + " maxLng" + maxLng ) ;
         }
-
+        // filter byUser map settings ??
+        // console.log( $('#jv_events_filter_near_to_me').prop("checked" ) ) ;
+        if ( $('#jv_events_filter_near_to_me').length && $('#jv_events_filter_near_to_me').prop("checked" )) {
+            let northCookie = getCookie('tx_events_filter_north') ,
+                southCookie = getCookie('tx_events_filter_south') ,
+                westCookie = getCookie('tx_events_filter_west') ,
+                eastCookie = getCookie('tx_events_filter_east') ;
+            // console.log("near to me") ;
+            if ( (  northCookie != 'undefined' && northCookie != null )
+                && ( southCookie != 'undefined' && southCookie != null )
+                && ( eastCookie != 'undefined' && eastCookie != null )
+                &&  ( westCookie != 'undefined' && westCookie != null )
+            ) {
+                autoFit = false ;
+                minLat = parseFloat(southCookie) ;
+                maxLat = parseFloat(northCookie) ;
+                minLng = parseFloat(westCookie) ;
+                maxLng = parseFloat(eastCookie) ;
+                // console.log( "use cookies: lat:" + minLat + " - " + maxLat + " Lng:"+ minLng +  " - " + maxLng ) ;
+            } else {
+                if ( fDist && fDist.val() && fDist.val().length > 0 &&  fDist.val() < 10000 ) {
+                    maxDist = fDist.val() ;
+                }
+            }
+        }
     } else {
         if ( fDist && fDist.val() && fDist.val().length > 0 &&  fDist.val() < 10000 ) {
             maxDist = fDist.val() ;
@@ -722,6 +762,15 @@ function jv_events_refreshList(){
         if ( !streetNrString === false && jQuery('#streetAndNr').length > 0 ) {
              jQuery('#streetAndNr').val(streetNrString) ;
         }
+    }
+
+    var cookieFilterLat = getCookie('tx_events_default_lat' ) ;
+    if ( cookieFilterLat )   {
+        userLat = parseFloat( cookieFilterLat ) ;
+    }
+    var cookieFilterLng = getCookie('tx_events_default_lng' ) ;
+    if ( cookieFilterLng )   {
+        userLng = parseFloat( cookieFilterLng ) ;
     }
 
     let resultcountEvents = 0 ;
@@ -798,7 +847,7 @@ function jv_events_refreshList(){
 
             if( cTagChecked  === true && !jQuery(this).hasClass('d-none') ) {
                 var sTags = jQuery(this).data("taguids") ;
-                console.log( " sTags : " + sTags ) ;
+                // console.log( " sTags : " + sTags ) ;
 
                 if( sTags ) {
                     sTags = "," + sTags + "," ;
@@ -919,7 +968,7 @@ function jv_events_refreshList(){
         if( fCat && fCat.val() > 0 ) {
             urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][categories]=" + fCat.val() ;
         }
-        if( fDist && parseInt( fDist.val()) !=  parseInt(fDist.data('default') )) {
+        if( fDist && parseInt( fDist.val()) !=  parseInt(fDist.data('default') ) && fDist.val() != 'undefined' ) {
             urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][distance]=" + fDist.val() ;
         }
 
