@@ -1176,7 +1176,10 @@ class EventController extends BaseController
         $organizer = $event->getOrganizer() ;
         if( is_object( $organizer )) {
             if ( $organizer->getUid() > 0 ) {
-                $organizer->setLatestEvent( $date ) ;
+                if ( $date > $organizer->getLatestEvent() ) {
+                    $organizer->setLatestEvent( $date ) ;
+                }
+
                 $organizer->setTstamp( time() ) ;
                 $this->organizerRepository->update($organizer ) ;
             }
@@ -1184,7 +1187,9 @@ class EventController extends BaseController
         $location = $event->getLocation() ;
         if( is_object( $location )) {
             if ( $location->getUid() > 0 ) {
-                $location->setLatestEvent( $date) ;
+                if ( $date > $location->getLatestEvent() ) {
+                    $location->setLatestEvent($date);
+                }
                 $this->locationRepository->update($location ) ;
             }
         }
