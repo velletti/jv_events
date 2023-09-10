@@ -467,7 +467,7 @@
 			<div class="row">
 				<div class="col-12 col-md-8">
 
-					<f:if condition="{event.organizer.name}">
+					<f:if condition="{event.organizer.name} && {event.location.email} != '-' && {event.location.phone} != '-'">
 						<div class="row">
 							<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_organizer.name" />:</strong></div>
 							<div class="col-md-8">
@@ -475,31 +475,31 @@
 									<f:then>
 										<f:link.action pageUid="{settings.detailPid}" action="show" controller="Organizer" arguments="{organizer: '{event.organizer.uid}'}">{event.organizer.name}</f:link.action>
 									</f:then>
-										<f:else>
-											{event.organizer.name}
-										</f:else>
-									</f:if>
-								</div>
+									<f:else>
+										{event.organizer.name}
+									</f:else>
+								</f:if>
+							</div>
 						</div>
 					</f:if>
-					<f:if condition="{event.location.email}">
+					<f:if condition="{event.location.email} && {event.location.email} != '-'">
 						<f:then>
 							<div class="row">
 								<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_location.email" />:</strong></div>
-								<div class="col-md-8"><f:link.external class="email" uri="mailto:{event.location.email}" /></div>
+								<div class="col-md-8" title="Email From Location"><f:link.external class="email" uri="mailto:{event.location.email}">{event.location.email}</f:link.external></div>
 							</div>
 						</f:then>
 						<f:else>
-							<f:if condition="{event.organizer.email}">
+							<f:if condition="{event.organizer.email} && {event.location.email} != '-'">
 								<div class="row">
 									<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_organizer.email" />:</strong></div>
-									<div class="col-md-8"><f:link.external class="email" uri="mailto:{event.organizer.email}" /></div>
+									<div class="col-md-8"><f:link.external class="email" uri="mailto:{event.organizer.email}" >{event.organizer.email}</f:link.external></div>
 								</div>
 							</f:if>
 						</f:else>
 					</f:if>
 
-					<f:if condition="{event.location.phone}">
+					<f:if condition="{event.location.phone} && {event.location.phone} != '-'">
 						<f:then>
 							<div class="row">
 								<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_location.phone" />:</strong></div>
@@ -507,7 +507,7 @@
 							</div>
 						</f:then>
 						<f:else>
-							<f:if condition="{event.organizer.phone}">
+							<f:if condition="{event.organizer.phone} && {event.location.phone} != '-'">
 								<div class="row">
 									<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_organizer.phone" />:</strong></div>
 									<div class="col-md-8">{event.organizer.phone}</div>
@@ -594,7 +594,7 @@
 		</div>
 
         <div class="tab-pane" id="jv_events_share">
-			<f:variable name="uri"><jve:link uriOnly="true" eventId="{event.uid}" withProtocol="true" settings="{settings}" configuration="{useCacheHash: 0 }"></jve:link></f:variable>
+			<f:variable name="uri"><jve:link uriOnly="true" eventId="{event.uid}" withProtocol="true" settings="{settings}" configuration="{useCacheHash: 0 , parameter: settings.pageIds.showEventDetail}"></jve:link></f:variable>
 
 
 			<div class="row">
