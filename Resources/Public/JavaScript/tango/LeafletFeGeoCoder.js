@@ -45,7 +45,7 @@
         LeafFE.$fieldLat        = LeafFE.$element.attr('data-namelat');
         LeafFE.$fieldLng        = LeafFE.$element.attr('data-namelng');
         LeafFE.$movemarkerallowed   = LeafFE.$element.attr('data-movemarkerallowed');
-        if( LeafFE.$element.attr('data-mapzoom')) {
+        if( LeafFE.$element.attr('data-mapzoom') && LeafFE.$element.attr('data-mapzoom') > 1 ) {
             LeafFE.$zoomLevel     = LeafFE.$element.attr('data-mapzoom');
             LeafFE.$zoomAfterGeocode   = false;
 
@@ -118,11 +118,11 @@
                         $( LeafFE.$fieldLat ).val(LeafFE.$marker.getLatLng().lat);
                         $( LeafFE.$fieldLng ).val(LeafFE.$marker.getLatLng().lng);
                     }
-                    LeafFE.$map.setView( event.latlng , 12 ) ;
+                    LeafFE.$map.setView( event.latlng , LeafFE.$zoomLevel  ) ;
                     //LeafFE.$map.panTo( event.latlng ) ;
                     //LeafFE.$map.setZoom(12) ;
 
-                    LeafFE.$zoomLevel = 12 ;
+                    LeafFE.$zoomLevel = LeafFE.$zoomLevel  ;
                     // LeafFE.reInitMap() ;
 
                 }) ;
@@ -271,8 +271,8 @@
                                         LeafFE.$marker.setLatLng({lat: LeafFE.$latitude, lon: LeafFE.$longitude})
                                     }
                                     if( LeafFE.$zoomAfterGeocode  ) {
-                                        LeafFE.$map.setZoom(11) ;
-                                        LeafFE.$zoomLevel = 11 ;
+                                        LeafFE.$map.setZoom(LeafFE.$zoomLevel ) ;
+                                        LeafFE.$zoomLevel = LeafFE.$zoomLevel  ;
                                     }
 
                                 }
@@ -298,8 +298,8 @@
                         }
                         LeafFE.$map.panTo({lat: LeafFE.$latitude, lon: LeafFE.$longitude});
                         if( LeafFE.$zoomAfterGeocode  ) {
-                            LeafFE.$map.setZoom(12) ;
-                            LeafFE.$zoomLevel = 12 ;
+                            LeafFE.$map.setZoom(LeafFE.$zoomLevel ) ;
+                            LeafFE.$zoomLevel = LeafFE.$zoomLevel  ;
                         }
 
                     }

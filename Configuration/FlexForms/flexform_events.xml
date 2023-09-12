@@ -1083,6 +1083,16 @@
 							</config>
 						</TCEforms>
 					</settings.filterlocation.hideList>
+
+					<settings.filter.doubleclickzoom>
+						<TCEforms>
+							<label>Zoom factor for Map (1= world - 15 one street) when user Double clicks, default 10 </label>
+							<config>
+								<type>input</type>
+								<default>10</default>
+							</config>
+						</TCEforms>
+					</settings.filter.doubleclickzoom>
 				</el>
 			</ROOT>
 		</sDEFloc>
