@@ -151,6 +151,9 @@
                 <f:link.page class="btn btn-small btn-warning mr-1 jv_events_danger_delete_events_link" additionalParams="{tx_jvevents_ajax: { organizer: '{organizer.0.uid}',action: 'cleanHistory', hash: '{hash}',keepDays: 30}}">
                     -30 days = Before {f:format.date(base: 'now', date: '-30 Day', format: 'd.M.Y')}
                 </f:link.page><br><br>
+                <f:link.page class="btn btn-small btn-warning mr-1 jv_events_danger_delete_events_link" additionalParams="{tx_jvevents_ajax: { organizer: '{organizer.0.uid}',action: 'cleanHistory', hash: '{hash}',keepDays: 100}}">
+                    -100 days = Before {f:format.date(base: 'now', date: '-100 Day', format: 'd.M.Y')}
+                </f:link.page><br><br>
             </div>
             <div class="col-md-6 col-12">
                 Delete my organizer data:<br><br>
