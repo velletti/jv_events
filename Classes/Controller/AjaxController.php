@@ -31,6 +31,9 @@ use JVE\JvEvents\Domain\Model\Event;
 use JVE\JvEvents\Domain\Model\Location;
 use JVE\JvEvents\Utility\AjaxUtility;
 use JVE\JvEvents\Utility\TyposcriptUtility;
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -515,13 +518,7 @@ class AjaxController extends BaseController
         if(!$arguments) {
             $arguments = GeneralUtility::_GPmerged('tx_jvevents_ajax');
         }
-        $pid =  GeneralUtility::_GP('id');
-        $ts = TyposcriptUtility::loadTypoScriptFromScratch( $pid , "tx_jvevents_events") ;
-        if( is_array($this->settings) && is_array($ts)) {
-            $this->settings = array_merge($ts['settings']);
-        } elseif ( is_array($ts)) {
-            $this->settings = $ts['settings'] ;
-        }
+        $this->initSettings();
 
         // 6.2.2020 with teaserText and files
         // 27.1.2021 LTS 10 : wegfall &eID=jv_events und uid, dafür Page ID der Seite mit der Liste : z.b. "id=110"
@@ -647,7 +644,7 @@ class AjaxController extends BaseController
             $this->settings['LayoutSingle'] = '5Tango' ;
         }
         $checkString = $_SERVER["SERVER_NAME"] . "-" . $output['event']['eventId'] . "-" . $output['event']['crdate'];
-        $checkHash = hash("sha256", $checkString);
+        $checkHash = GeneralUtility::hmac ( $checkString );
         $this->settings['hash'] =  $checkHash ;
         $this->settings['cookie'] =  $_COOKIE ;
 
@@ -670,6 +667,99 @@ class AjaxController extends BaseController
         die;
     }
 
+    public function cleanHistory(array $arguments=Null) {
+        $return = '' ;
+        if(!$arguments) {
+            $arguments = GeneralUtility::_GPmerged('tx_jvevents_ajax');
+        }
+        if(!$arguments) {
+            ShowAsJsonArrayUtility::show( array( 'status' => false , 'html' => $return ) ) ;
+            die;
+        }
+
+
+        $output = $this->locationListSub($arguments) ;
+        $organizer = false;
+        $output['organizer']['requestId'] = 0 ;
+        /* ************************************************************************************************************ */
+        /*   Get infos about: Organizer
+        /* ************************************************************************************************************ */
+        if(  isset($arguments['organizer']) && $arguments['organizer'] > 0  ) {
+            $output['organizer']['requestId'] =  $arguments['organizer'];
+
+            /** @var \JVE\JvEvents\Domain\Model\Organizer $organizer */
+            $organizer = $this->organizerRepository->findByUidAllpages(  $arguments['organizer'], FALSE, TRUE);
+        }
+
+        if(  isset($arguments['hash']) ) {
+            $checkString = $_SERVER["SERVER_NAME"] . "-" . $organizer->getUid() . "-" . $organizer->getCrdate();
+            if ( $arguments['hash'] !== GeneralUtility::hmac ( $checkString ) ) {
+                ShowAsJsonArrayUtility::show( array( 'status' => false , 'html' => 'invalid hash for Org: ' . $organizer->getUid() ) ) ;
+                die;
+            }
+
+        } else {
+            ShowAsJsonArrayUtility::show( array( 'status' => false , 'html' => 'no hash' ) ) ;
+            die;
+        }
+
+        // Location is set either by Event OR by location uid from request
+        if( is_object($organizer )) {
+            $output['organizer']['organizerId'] = $organizer->getUid() ;
+            $output['organizer']['hasAccess'] = $this->hasUserAccess( $organizer ) ;
+        } else {
+            ShowAsJsonArrayUtility::show( array( 'status' => false , 'html' => 'Organizer not found by given ID: ' .  $output['organizer']['requestId'] ) ) ;
+        }
+        $output['keepDays']  = 400 ;
+        if( isset($arguments['keepDays']) ) {
+            $output['keepDays'] = intval( $arguments['keepDays'] ) ;
+            if ( !in_array(  $output['keepDays'] , [ 0 , 7 , 30 , 100 , 400 ])) {
+                $output['keepDays'] = 400 ;
+            }
+        }
+        if ( $output['keepDays']  == 0 ) {
+            // Todo : Add confirm hash to Url, send New URL to user and ask for confirmation.
+            ShowAsJsonArrayUtility::show( array( 'status' => false , 'html' => 'To Delete ALL Events not implemented.'  )) ;
+        }
+
+        $timeInPast = time() - ( 24*3600 * $output['keepDays'] ) ;
+        $output['keepUntilFormated'] = date( "d.m.Y" , $timeInPast );
+
+        /** @var ConnectionPool $connectionPool */
+        $connectionPool = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Database\ConnectionPool::class);
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_jvevents_domain_model_event') ;
+        /** @var Connection $connection */
+        $connection = $connectionPool->getConnectionForTable('tx_jvevents_domain_model_event') ;
+
+        /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
+        $queryCount = $connectionPool->getQueryBuilderForTable('tx_jvevents_domain_model_event');
+        $output['countResult'] = $queryCount->count( '*' )->from('tx_jvevents_domain_model_event' )
+            ->where( $queryBuilder->expr()->lte('start_date',  $timeInPast ) )
+            ->andWhere($queryBuilder->expr()->lte('end_date', $timeInPast ))
+            ->andWhere($queryBuilder->expr()->eq('deleted', 0 ))
+            ->andWhere($queryBuilder->expr()->eq('organizer', $output['organizer']['requestId'] ))
+            ->execute()->fetchColumn(0) ;
+
+        if ( $output['countResult'] > 0 ) {
+            $queryBuilder ->update('tx_jvevents_domain_model_event')
+                ->where( $queryBuilder->expr()->lte('start_date',  $timeInPast ) )
+                ->andWhere($queryBuilder->expr()->lte('end_date', $timeInPast ))
+                ->andWhere($queryBuilder->expr()->eq('deleted', 0 ))
+                ->andWhere($queryBuilder->expr()->eq('organizer', $output['organizer']['requestId'] ))
+                ->set('deleted', 1 )
+                ->set('tstamp', $queryBuilder->quoteIdentifier('tstamp') , false )
+            ;
+            try {
+                $queryBuilder->execute() ;
+            } catch (\Exception $e ) {
+                ShowAsJsonArrayUtility::show( array( 'status' => false  , 'html' => $e->getMessage() ))  ;
+            }
+        }
+
+        ShowAsJsonArrayUtility::show( array( 'status' => true , 'html' => $output ) ) ;
+        die;
+    }
 
 
     public function locationListAction(array $arguments=Null) {
@@ -696,8 +786,6 @@ class AjaxController extends BaseController
                     $output['locations'] = $locations ;
                 }
             }
-
-
         }
         if( $this->standaloneView ) {
             /** @var \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
@@ -740,7 +828,8 @@ class AjaxController extends BaseController
                 "uid" => $feuser ,
                 "username" => $GLOBALS['TSFE']->fe_user->user['username'],
                 "usergroup" => $GLOBALS['TSFE']->fe_user->user['usergroup'],
-                "isOrganizer" => $this->isUserOrganizer()
+                "isOrganizer" => $this->isUserOrganizer() ,
+                "organizerGroudIds" => $this->settings['feEdit']['organizerGroudIds']
             ),
             "organizer" => array(),
             "locations" => array(),
@@ -1133,6 +1222,23 @@ class AjaxController extends BaseController
             }
         }
         return $output ;
+    }
+
+    /**
+     * @return void
+     */
+    public function initSettings(): void
+    {
+        $pid = GeneralUtility::_GP('id');
+        if ( !$pid ) {
+            $pid = $GLOBALS['TSFE']->id;
+        }
+        $ts = TyposcriptUtility::loadTypoScriptFromScratch($pid, "tx_jvevents_events");
+        if (is_array($this->settings) && is_array($ts) && is_array($ts['settings'])) {
+            $this->settings = array_merge($ts['settings']);
+        } elseif (is_array($ts) && is_array($ts['settings']) ) {
+            $this->settings = $ts['settings'];
+        }
     }
 
 }

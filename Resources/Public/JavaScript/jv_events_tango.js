@@ -38,6 +38,48 @@ jQuery(document).ready(function() {
 
 }) ;
 
+function jv_events_init_del_events() {
+    if ( $(".jv_events_danger_delete_events_link").length) {
+        $(".jv_events_danger_delete_events_link").on('click', function (event) {
+            event.preventDefault();
+            let url = $(this).attr("href") ;
+            $.ajax({
+                url: url,
+                dataType: 'json',
+                beforeSend: function () {
+                    showSpinner() ;
+                    $('#jv_events_danger_delete_events_msg').removeClass('d-none');
+
+                },
+                success: function (response) {
+                    hideSpinner() ;
+                    $('#jv_events_danger_delete_events_msg .alert').removeClass('alert-secondary');
+                    if ( response.status ) {
+                        $('#jv_events_danger_delete_events_msg .alert').addClass('alert-success');
+                        if ( response.html && response.html.countResult > -1 ) {
+                            $('#jv_events_danger_delete_events_msg .alert').html('Done. Number of Deleted entries: ' + response.html.countResult);
+                        } else {
+                            $('#jv_events_danger_delete_events_msg .alert').html('something went Wrong: ' + response.html );
+                        }
+                    } else {
+                        $('#jv_events_danger_delete_events_msg .alert').addClass('alert-warning');
+                        $('#jv_events_danger_delete_events_msg .alert').html('something went Wrong: ' + response.html );
+                    }
+                },
+                error: function (response) {
+                    $('#jv_events_danger_delete_events_msg .alert').removeClass('alert-secondary');
+                    $('#jv_events_danger_delete_events_msg .alert').addClass('alert-warning');
+                    $('#jv_events_danger_delete_events_msg .alert').html('something went Wrong');
+                    hideSpinner() ;
+                },
+                complete: function () {
+                    hideSpinner() ;
+                },
+            });
+        });
+    }
+}
+
 function jv_events_init_AjaxMenu() {
     var eventId = 0;
     var locationId = 0;
@@ -69,10 +111,11 @@ function jv_events_init_AjaxMenu() {
                 url: '/index.php',
                 data: 'id=' + ajaxCurrentPageUid + '&L=0&tx_jvevents_ajax[event]=' + eventId + '&tx_jvevents_ajax[action]=eventUnlink&tx_jvevents_ajax[controller]=Ajax',
 
-                before: function () {
-                    spinner.removeClass('d-none');
+                beforeSend: function () {
+                    showSpinner() ;
                 },
                 success: function (response) {
+                    hideSpinner() ;
                     $('.jv_events_unlink_event .iconWait').addClass('d-none');
                     $('.' + index).addClass('d-none');
                     if ( index == 'jv_events_unlink_event-9999' ) {
@@ -81,7 +124,11 @@ function jv_events_init_AjaxMenu() {
 
                 },
                 error: function (response) {
+                    hideSpinner() ;
                     alert("Error " + response.msg ) ;
+                },
+                complete: function (response) {
+                    hideSpinner() ;
                 }
             });
         });
@@ -415,7 +462,7 @@ function jv_events_init() {
         $('#jv_events_filter_distance').data('donotoverrule' , 'false' ) ;
     });
 
-
+    jv_events_init_del_events() ;
 
 
 }

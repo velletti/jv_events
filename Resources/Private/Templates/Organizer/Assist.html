@@ -119,14 +119,46 @@
             <br>
             Username: <b>{userData.username}</b>
         </div>
-        <div class="col-md-4 text-right"">
+        <div class="col-md-4 text-right">
             <f:link.action pageUid="{settings.pageIds.editUserAccount}" class="btn btn-primary">
                 <span class="fas fa-users-cog"> </span> <span class="hidden-xs">{f:translate(key: 'edit', default: 'Edit')} {f:translate(key: 'Account', default: 'Account')} </span>
             </f:link.action>
-        </div>
 
+            <f:security.ifHasRole role="mayDeleteEvents">
+                <br><br>
+                <span class="btn btn-warning" data-toggle="collapse" data-target="#jv_events_danger_delete_events_wrap" title="Dangerzone !!!">
+                    <span class="fa fa-trash"> </span>
+                </span>
+            </f:security.ifHasRole>
+
+        </div>
     </div>
 
+    <div id="jv_events_danger_delete_events_wrap" class="collapse pt-3">
+        <h3 class="mt-2">Dangerzone:</h3>
+        <div id="jv_events_danger_delete_events_msg" class="d-none">
+            <div class="alert alert-secondary">
+                Please wait.....
+            </div>
+        </div>
+        <div class="alert alert-warning row mb-0">
+
+            <div class="col-md-6 col-12">
+                Delete Old Events: <br>
+                <f:link.page class="btn btn-small btn-warning mr-1 jv_events_danger_delete_events_link" additionalParams="{tx_jvevents_ajax: { organizer: '{organizer.0.uid}',action: 'cleanHistory', hash: '{hash}',keepDays: 1}}">
+                    -1 day = Before {f:format.date(base: 'now', date: '-1 Day', format: 'd.M.Y')}
+                </f:link.page><br><br>
+                <f:link.page class="btn btn-small btn-warning mr-1 jv_events_danger_delete_events_link" additionalParams="{tx_jvevents_ajax: { organizer: '{organizer.0.uid}',action: 'cleanHistory', hash: '{hash}',keepDays: 30}}">
+                    -30 days = Before {f:format.date(base: 'now', date: '-30 Day', format: 'd.M.Y')}
+                </f:link.page><br><br>
+            </div>
+            <div class="col-md-6 col-12">
+                Delete my organizer data:<br><br>
+                ... not implemented yet. Sorry.
+                <br>
+            </div>
+        </div>
+    </div>
 
 </f:section>
 

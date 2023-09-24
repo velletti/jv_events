@@ -120,6 +120,7 @@ class Ajax implements MiddlewareInterface
                 // ToDo generate Output as before in ajax Controller here in Middleware with CORE features.
                 $controller = $ajaxUtility->initController($_gp , $function , $request ) ;
                 $controller->initializeRepositorys( ) ;
+                $controller->initSettings()  ;
 
                 switch ($function) {
                     case 'downloadical' :
@@ -139,6 +140,9 @@ class Ajax implements MiddlewareInterface
                     case 'eventlist' :
                         // ToDo : remove
                         $controller->eventListAction($_gp["tx_jvevents_ajax"]) ;
+                        break;
+                    case 'cleanhistory' :
+                        $controller->cleanHistory($_gp["tx_jvevents_ajax"]) ;
                         break;
 
                     case 'locationlist' :

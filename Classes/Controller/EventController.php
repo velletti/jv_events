@@ -208,7 +208,7 @@ class EventController extends BaseController
     {
         if( $event ) {
             $checkString = $_SERVER["SERVER_NAME"] . "-" . $event->getUid() . "-" . $event->getCrdate();
-            $checkHash = hash("sha256", $checkString);
+            $checkHash = GeneralUtility::hmac ( $checkString );
 
 
             //$querysettings = new Typo3QuerySettings;

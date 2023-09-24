@@ -108,6 +108,10 @@ class OrganizerController extends BaseController
             $this->view->assign('nextEventOrganizer', ($nextEvent ? $nextEvent->getStartDate()->format("d.m.Y") : '' ) );
             $this->view->assign('nextEventCount', $nextEventCount );
 
+            $checkString = $_SERVER["SERVER_NAME"] . "-" . $organizer[0]->getUid() . "-" . $organizer[0]->getCrdate();
+            $checkHash = GeneralUtility::hmac ( $checkString );
+            $this->view->assign('hash', $checkHash );
+
             $oldDefaultLocation = $this->locationRepository->findByOrganizersAllpages( array(0 => $organizer[0]->getUid()) , FALSE, FALSE , TRUE )->getFirst() ;
             if($oldDefaultLocation) {
                 $this->view->assign('defaultLocationUid', $oldDefaultLocation->getUid() );

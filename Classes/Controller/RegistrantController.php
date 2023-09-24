@@ -6,6 +6,7 @@ use JVE\JvEvents\Domain\Model\Registrant;
 use JVE\JvEvents\Domain\Model\Subevent;
 use JVE\JvEvents\Utility\RegisterHubspotUtility;
 use Psr\Http\Message\ResponseInterface;
+use SJBR\SrFreecap\Utility\EncryptionUtility;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -89,7 +90,7 @@ class RegistrantController extends BaseController
         $registrants = array() ;
 
         $checkString =  $_SERVER["SERVER_NAME"] . "-" . $event->getUid() . "-" . $event->getCrdate() ;
-        $checkHash = hash("sha256" , $checkString ) ;
+        $checkHash = GeneralUtility::hmac ( $checkString ) ;
 
 
         if( $checkHash ==  $hash ) {
@@ -329,8 +330,7 @@ class RegistrantController extends BaseController
                 }
             }
             $checkString = $_SERVER["SERVER_NAME"] . "-" . $event->getUid() . "-" . $event->getCrdate();
-            $checkHash = hash("sha256", $checkString);
-
+            $checkHash = GeneralUtility::hmac ( $checkString );
             $this->settings['fe_user']['user'] = $GLOBALS['TSFE']->fe_user->user;
             $this->settings['fe_user']['organizer']['showTools'] = FALSE;
             $userUid = 0 ;
@@ -514,7 +514,7 @@ class RegistrantController extends BaseController
 		$this->settings['successMsg'] = FALSE ;
 
         $checkString =  $_SERVER["SERVER_NAME"] . "-" . $event->getUid() . "-" . $event->getCrdate() ;
-        $this->settings['hash'] = hash("sha256" , $checkString ) ;
+        $this->settings['hash'] = GeneralUtility::hmac ( $checkString ) ;
 
 		$registrant->setEvent($event->getUid() );
 		if( $latestEventDate instanceof \DateTime ) {
