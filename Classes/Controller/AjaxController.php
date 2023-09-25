@@ -713,7 +713,7 @@ class AjaxController extends BaseController
         $output['keepDays']  = 400 ;
         if( isset($arguments['keepDays']) ) {
             $output['keepDays'] = intval( $arguments['keepDays'] ) ;
-            if ( !in_array(  $output['keepDays'] , [ 0 , 7 , 30 , 100 , 400 ])) {
+            if ( !in_array(  $output['keepDays'] , [ 0 , 1 , 7 , 30 , 100 , 400 ])) {
                 $output['keepDays'] = 400 ;
             }
         }
