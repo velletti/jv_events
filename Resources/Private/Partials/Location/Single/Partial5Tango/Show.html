@@ -35,7 +35,7 @@
                 </f:if>
                 <div class="address" itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
                     <address>
-                        <span itemprop="streetAddress">{location.streetAndNr}</span><br>
+                        <span itemprop="streetAddress">{location.streetAndNr} {location.additionalInfo}</span><br>
                         <span itemprop="postalCode">{location.zip}</span>&nbsp;<span itemprop="addressLocality">{location.city}</span>
                         <f:if condition="{location.country} <> 'Deutschland'">
                             <br><span itemprop="addressCountry">{location.country}</span>

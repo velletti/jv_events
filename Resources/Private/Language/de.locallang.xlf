@@ -664,6 +664,11 @@
                 <source>Street And Nr</source>
                 <target>Straße und Nr.</target>
             </trans-unit>
+             <trans-unit id="tx_jvevents_domain_model_location.additional_info" approved="yes">
+                <source>Additional info</source>
+                <target>Zusatzinfo (RG/Etage/..)</target>
+            </trans-unit>
+
             <trans-unit id="tx_jvevents_domain_model_location.zip" approved="yes">
                 <source>Zip</source>
                 <target>PLZ</target>

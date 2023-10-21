@@ -13,6 +13,7 @@ class LocationValidator extends BaseValidator {
 
         'name'				=> 3,
         'streetAndNr'		=> 0,
+        'additionalInfo'	=> 0,
         'zip'		        => 0,
         'city'		        => 1,
         'country'		    => 2,
@@ -31,6 +32,7 @@ class LocationValidator extends BaseValidator {
 
 		'name'				=> 60,
 		'streetAndNr'		=> 50,
+		'additionalInfo'	=> 50,
 		'zip'		        => 10,
 		'city'		        => 30,
 		'country'		    => 2,
@@ -52,6 +54,7 @@ class LocationValidator extends BaseValidator {
         $isValid = $this->securityChecks( $location->getName() , 'name' , $isValid ) ;
 
         $isValid = $this->securityChecks( $location->getStreetAndNr() , 'streetAndNr' , $isValid ) ;
+        $isValid = $this->securityChecks( $location->getAdditionalInfo() , 'additionalInfo' , $isValid ) ;
         $isValid = $this->securityChecks( $location->getZip() , 'zip' , $isValid ) ;
         $isValid = $this->securityChecks( $location->getCity() , 'city' , $isValid ) ;
         $isValid = $this->securityChecks( $location->getCountry() , 'country' , $isValid ) ;
@@ -77,6 +80,7 @@ class LocationValidator extends BaseValidator {
         $isValid = $this->stringLengthIsValid($this->minLength['name'] , $this->maxLength['name'] , $location->getName() , 'name' , NULL , $isValid ) ;
         $isValid = $this->stringLengthIsValid($this->minLength['phone'] , $this->maxLength['phone'] , $location->getPhone() , 'phone' , NULL , $isValid ) ;
         $isValid = $this->stringLengthIsValid($this->minLength['streetAndNr'] , $this->maxLength['streetAndNr'] , $location->getStreetAndNr() , 'streetAndNr' , NULL , $isValid ) ;
+        $isValid = $this->stringLengthIsValid($this->minLength['additionalInfo'] , $this->maxLength['additionalInfo'] , $location->getAdditionalInfo() , 'additionalInfo' , NULL , $isValid ) ;
         $isValid = $this->stringLengthIsValid($this->minLength['zip'] , $this->maxLength['zip'] , $location->getZip() , 'zip' , NULL , $isValid ) ;
         $isValid = $this->stringLengthIsValid($this->minLength['city'] , $this->maxLength['city'] , $location->getCity() , 'city' , NULL , $isValid ) ;
         $isValid = $this->stringLengthIsValid($this->minLength['country'] , $this->maxLength['country'] , $location->getCountry() , 'country' , NULL , $isValid ) ;

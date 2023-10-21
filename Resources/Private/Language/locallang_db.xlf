@@ -314,6 +314,10 @@
             <trans-unit id="tx_jvevents_domain_model_location.street_and_nr">
                 <source>Street And Nr</source>
             </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_location.additional_info">
+                <source>Additional Info</source>
+            </trans-unit>
+
             <trans-unit id="tx_jvevents_domain_model_location.zip">
                 <source>Zip</source>
             </trans-unit>

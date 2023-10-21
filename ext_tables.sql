@@ -251,6 +251,7 @@ CREATE TABLE tx_jvevents_domain_model_location (
 	slug varchar(2048),
 	teaser_image int(11) unsigned NOT NULL default '0',
 	street_and_nr varchar(255) DEFAULT '' NOT NULL,
+	additional_info varchar(255) DEFAULT '',
 	zip varchar(255) DEFAULT '' NOT NULL,
 	city varchar(255) DEFAULT '' NOT NULL,
 	country varchar(255) DEFAULT '' NOT NULL,

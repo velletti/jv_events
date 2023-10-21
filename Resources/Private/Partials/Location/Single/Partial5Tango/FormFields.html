@@ -40,7 +40,9 @@
 
 
 <f:render partial="SingleField/Partial{layout}/FormRowDefault"
-		  arguments="{object: 'location', property:'streetAndNr' , label: '' , translationKey: 'tx_jvevents_domain_model_location.street_and_nr' ,  maxLength: 30 , mandatory: '1' }" />
+		  arguments="{object: 'location', property:'streetAndNr' , label: '' , translationKey: 'tx_jvevents_domain_model_location.street_and_nr' ,  maxLength: 50 , mandatory: '1' }" />
+<f:render partial="SingleField/Partial{layout}/FormRowDefault"
+		  arguments="{object: 'location', property:'additionalInfo' , label: '' , translationKey: 'tx_jvevents_domain_model_location.additional_info' ,  maxLength: 50 , mandatory: '0' }" />
 
 
 <hr>

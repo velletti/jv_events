@@ -52,6 +52,13 @@ class Location extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @var string
      */
     protected $streetAndNr = '';
+
+    /**
+     * Additional Info to find the location
+     *
+     * @var string
+     */
+    protected $additionalInfo = '';
     
     /**
      * Zip / Postal Code
@@ -202,7 +209,20 @@ class Location extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         $this->streetAndNr = $streetAndNr;
     }
-    
+
+    public function getAdditionalInfo(): string
+    {
+        return $this->additionalInfo;
+    }
+
+    public function setAdditionalInfo(string $additionalInfo): void
+    {
+        $this->additionalInfo = $additionalInfo;
+    }
+
+
+
+
     /**
      * Returns the zip
      *
