@@ -1,0 +1,25 @@
+{namespace jve=JVE\JvEvents\ViewHelpers}
+
+<div style="display: block; float: none; clear: both; margin-top: 20px">
+    <b>
+        <f:link.action class="" pageUid="{settings.detailPid}" action="show" arguments="{event : event}" style="text-decoration: none; color:black !important; max-width:90%">
+            {event.startDate -> f:format.date(format:"D d.m.")} {event.startTime -> f:format.date(format:"H:i")}-<f:if condition="{event.endTime}"><f:then>{event.endTime -> jve:format.date( format:"H:i")}</f:then><f:else><f:translate key="tx_jvevents_domain_model_event.openEnd">Open End</f:translate></f:else></f:if> h
+            | {event.name}
+        </f:link.action>
+    </b>
+
+</div>
+
+<f:spaceless>
+    <div style="clear: both; margin-bottom: 20px">
+        {event.teaser}<br>
+        <b>{event.location.city}, {event.location.streetAndNr}</b> | T: <f:if condition="{event.location.phone} && {event.location.phone} != '-'">
+            <f:then>{event.location.phone}</f:then>
+            <f:else><f:if condition="{event.organizer.phone} && {event.location.phone} != '-'">{event.organizer.phone}</f:if></f:else>
+        </f:if> | <f:link.action class="" pageUid="{settings.detailPid}" action="show" arguments="{event : event}" style="text-decoration: none; color:black !important; font-weight: bold;">
+                ->>
+                  </f:link.action>
+    </div>
+</f:spaceless>
+<hr>
+
