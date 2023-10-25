@@ -47,6 +47,18 @@ if (!defined('TYPO3')) {
     )
 );
 
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+    'JvEvents' ,
+    'Curl',
+    array(
+        \JVE\JvEvents\Controller\CurlController::class  => 'externalEvents',
+    ),
+    // non-cacheable actions
+    array(
+        \JVE\JvEvents\Controller\CurlController::class  => 'externalEvents',
+    )
+);
+
 // Register icons
 $icons = [
     'jvevents-plugin' => 'ContentElementWizard.svg',

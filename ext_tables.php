@@ -16,6 +16,12 @@ if (!defined('TYPO3')) {
     'Ajax'
 );
 
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
+    'JvEvents' ,
+    'Curl',
+    'Events: Load events from other website via Curl'
+);
+
 if (TYPO3_MODE === 'BE') {
 
     //       * Registers a Backend Module

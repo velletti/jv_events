@@ -23,6 +23,12 @@ $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist'][$pluginSi
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue($pluginSignature, 'FILE:EXT:jv_events/Configuration/FlexForms/flexform_events.xml');
 
+$GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist']['jvevents_curl'] = 'pi_flexform';
+$GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist']['jvevents_curl'] = 'pages, recursive';
+
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue('jvevents_curl', 'FILE:EXT:jv_events/Configuration/FlexForms/flexform_curl.xml');
+
+
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
     'tt_content.pi_flexform.jvevents_events', 'EXT:jv_events/Resources/Private/Language/locallang_csh_flexforms.xlf');
 

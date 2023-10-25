@@ -16,8 +16,8 @@
 								<renderType>selectSingle</renderType>
 								<items>
 									<numIndex index="0">
-										<numIndex index="0">Ajax EventList</numIndex>
-										<numIndex index="1">Ajax->externalEvents</numIndex>
+										<numIndex index="0">Curl EventList</numIndex>
+										<numIndex index="1">Curl->externalEvents</numIndex>
 									</numIndex>
 								</items>
 							</config>
@@ -54,7 +54,7 @@
 		<sDEF2>
 			<ROOT>
 				<TCEforms>
-					<displayCond>FIELD:sDEF.switchableControllerActions:=:Ajax->externalEvents</displayCond>
+					<displayCond>FIELD:sDEF.switchableControllerActions:=:Curl->externalEvents</displayCond>
 					<sheetTitle>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.EventListView</sheetTitle>
 				</TCEforms>
 				<type>array</type>
@@ -293,7 +293,7 @@
 		<sDEFfilter>
 			<ROOT>
 				<TCEforms>
-					<displayCond>FIELD:sDEF.switchableControllerActions:=:Ajax->externalEvents</displayCond>
+					<displayCond>FIELD:sDEF.switchableControllerActions:=:Curl->externalEvents</displayCond>
 					<sheetTitle>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.EventListFilterLayout</sheetTitle>
 				</TCEforms>
 				<type>array</type>
