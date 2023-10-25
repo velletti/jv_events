@@ -1,18 +1,21 @@
 # General
 ###########################
-# cat=General/enable/1; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.showRecurring; decription=Under developement!
+# cat=General/enable/1; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.showRecurring; description=Under developement!
 recurring = 0
 
-# cat=General/enable/2; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.enableCitrix ; decription=Under developement!
+# cat=General/enable/2; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.enableCitrix ; description=Under developement!
 enableCitrix = 0
 
-# cat=General/enable/3; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.enableSalesForce; decription=Under developement!
+# cat=General/enable/3; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.enableSalesForce; description=Under developement!
 enableSalesForce = 0
 
-# cat=General/enable/3; type=boolean; label=Activate  the API for the new Salesforce Lightning version; decription=This Option is just needing during the transition phase an DEV Systems
+# cat=General/enable/3; type=boolean; label=If enabled, allow manual sorting; description=Default sorting by creation Date!
+enableOrganizerSorting = 0
+
+# cat=General/enable/3; type=boolean; label=Activate  the API for the new Salesforce Lightning version; description=This Option is just needing during the transition phase an DEV Systems
 enableSalesForceLightning = 0
 
-# cat=General/enable/3; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.enableHubspot; decription=Under developement!
+# cat=General/enable/3; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.enableHubspot; description=Under developement!
 enableHubspot = 0
 
 # cat=General/enable/4; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.hasLoginUser

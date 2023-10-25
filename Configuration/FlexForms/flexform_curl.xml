@@ -1,0 +1,874 @@
+<T3DataStructure>
+	<sheets>
+		<sDEF>
+			<ROOT>
+				<TCEforms>
+					<sheetTitle>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.Function</sheetTitle>
+				</TCEforms>
+				<type>array</type>
+				<el>
+					<switchableControllerActions>
+						<TCEforms>
+							<label>Select function</label>
+							<onChange>reload</onChange>
+							<config>
+								<type>select</type>
+								<renderType>selectSingle</renderType>
+								<items>
+									<numIndex index="0">
+										<numIndex index="0">Ajax EventList</numIndex>
+										<numIndex index="1">Ajax->externalEvents</numIndex>
+									</numIndex>
+								</items>
+							</config>
+						</TCEforms>
+					</switchableControllerActions>
+					<settings.externalUrl>
+						<TCEforms>
+							<label>External URL:</label>
+							<config>
+								<type>input</type>
+								<size>60</size>
+							</config>
+						</TCEforms>
+					</settings.externalUrl>
+					<settings.LayoutList>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms_additional.layout</label>
+							<config>
+								<type>user</type>
+								<renderType>jvEventsCustomLayoutElement</renderType>
+								<size>30</size>
+								<userFunc>JVE\JvEvents\UserFunc\Flexforms->selectLayout</userFunc>
+								<parameters>
+									<layoutType>list.</layoutType>
+								</parameters>
+							</config>
+						</TCEforms>
+					</settings.LayoutList>
+
+				</el>
+
+			</ROOT>
+		</sDEF>
+		<sDEF2>
+			<ROOT>
+				<TCEforms>
+					<displayCond>FIELD:sDEF.switchableControllerActions:=:Ajax->externalEvents</displayCond>
+					<sheetTitle>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.EventListView</sheetTitle>
+				</TCEforms>
+				<type>array</type>
+				<el>
+					<settings.filter.startDate>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.startDate</label>
+							<config>
+								<type>select</type>
+								<renderType>selectSingle</renderType>
+								<items type="array">
+									<numIndex index="0" type="array">
+										<numIndex index="0">LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.startDate.Yesterday</numIndex>
+										<numIndex index="1">-1</numIndex>
+									</numIndex>
+									<numIndex index="1" type="array">
+										<numIndex index="0">LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.startDate.Today</numIndex>
+										<numIndex index="1">0</numIndex>
+									</numIndex>
+									<numIndex index="2" type="array">
+										<numIndex index="0">LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.startDate.Tomorrow</numIndex>
+										<numIndex index="1">1</numIndex>
+									</numIndex>
+									<numIndex index="3" type="array">
+										<numIndex index="0">LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.startDate.NoRestriction</numIndex>
+										<numIndex index="1">-99999</numIndex>
+									</numIndex>
+								</items>
+
+							</config>
+						</TCEforms>
+					</settings.filter.startDate>
+					<settings.filter.maxDays>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.maxDays</label>
+							<config>
+								<type>input</type>
+								<eval>int</eval>
+							</config>
+						</TCEforms>
+					</settings.filter.maxDays>
+					<settings.filter.maxEvents>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.maxEvents</label>
+							<config>
+								<type>input</type>
+								<eval>int</eval>
+							</config>
+						</TCEforms>
+					</settings.filter.maxEvents>
+					<settings.filter.maxEventsPerPage>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.maxEventsPerPage</label>
+							<config>
+								<type>input</type>
+								<eval>int</eval>
+							</config>
+						</TCEforms>
+					</settings.filter.maxEventsPerPage>
+
+					<settings.filter.organizers>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.Organizer</label>
+							<config>
+								<type>select</type>
+								<renderType>selectMultipleSideBySide</renderType>
+								<maxitems>100</maxitems>
+								<size>5</size>
+								<autoSizeMax>10</autoSizeMax>
+								<minitems>0</minitems>
+								<selectedListStyle>width:350px</selectedListStyle>
+								<itemListStyle>width:350px</itemListStyle>
+								<foreign_table>tx_jvevents_domain_model_organizer</foreign_table>
+								<foreign_table_where> AND  (tx_jvevents_domain_model_organizer.l10n_parent = 0 AND tx_jvevents_domain_model_organizer.sys_language_uid in(-1, 0, CAST( ###REC_FIELD_sys_language_uid### as SIGNED)) ) ORDER BY tx_jvevents_domain_model_organizer.name</foreign_table_where>
+								<allowNonIdValues>1</allowNonIdValues>
+							</config>
+						</TCEforms>
+					</settings.filter.organizers>
+
+					<settings.filter.categories>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.Categories</label>
+							<config>
+								<type>select</type>
+								<renderType>selectMultipleSideBySide</renderType>
+								<maxitems>100</maxitems>
+								<size>5</size>
+								<autoSizeMax>10</autoSizeMax>
+								<minitems>0</minitems>
+								<selectedListStyle>width:350px</selectedListStyle>
+								<itemListStyle>width:350px</itemListStyle>
+								<foreign_table>tx_jvevents_domain_model_category</foreign_table>
+								<foreign_table_where> AND tx_jvevents_domain_model_category.type = 0 AND (tx_jvevents_domain_model_category.l10n_parent = 0 AND tx_jvevents_domain_model_category.sys_language_uid in(-1, 0, CAST( ###REC_FIELD_sys_language_uid### as SIGNED)) ) ORDER BY tx_jvevents_domain_model_category.sorting</foreign_table_where>
+								<allowNonIdValues>1</allowNonIdValues>
+								<itemsProcFunc>JVE\JvEvents\UserFunc\Flexforms->TranslateMMvalues</itemsProcFunc>
+							</config>
+						</TCEforms>
+
+
+					</settings.filter.categories>
+
+
+
+					<settings.filter.combinetags>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.combineTags</label>
+							<config>
+								<type>check</type>
+							</config>
+						</TCEforms>
+					</settings.filter.combinetags>
+
+					<settings.filter.tags>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.Tags</label>
+							<config>
+								<type>select</type>
+								<renderType>selectMultipleSideBySide</renderType>
+
+								<maxitems>100</maxitems>
+								<size>5</size>
+								<autoSizeMax>10</autoSizeMax>
+								<minitems>0</minitems>
+								<selectedListStyle>width:350px</selectedListStyle>
+								<itemListStyle>width:350px</itemListStyle>
+								<foreign_table>tx_jvevents_domain_model_tag</foreign_table>
+								<foreign_table_where> AND tx_jvevents_domain_model_tag.type = 0 AND (tx_jvevents_domain_model_tag.l10n_parent = 0 AND tx_jvevents_domain_model_tag.sys_language_uid in(-1, 0, CAST( ###REC_FIELD_sys_language_uid### as SIGNED)) ) ORDER BY tx_jvevents_domain_model_tag.name</foreign_table_where>
+								<itemsProcFunc>JVE\JvEvents\UserFunc\Flexforms->TranslateMMvalues</itemsProcFunc>
+								<allowNonIdValues>1</allowNonIdValues>
+							</config>
+						</TCEforms>
+					</settings.filter.tags>
+
+					<settings.filter.notAllowedtags>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.notAllowedtags</label>
+							<config>
+								<type>select</type>
+								<renderType>selectMultipleSideBySide</renderType>
+
+								<maxitems>100</maxitems>
+								<size>5</size>
+								<autoSizeMax>10</autoSizeMax>
+								<minitems>0</minitems>
+								<selectedListStyle>width:350px</selectedListStyle>
+								<itemListStyle>width:350px</itemListStyle>
+								<foreign_table>tx_jvevents_domain_model_tag</foreign_table>
+								<foreign_table_where>  AND tx_jvevents_domain_model_tag.type = 0 AND (tx_jvevents_domain_model_tag.l10n_parent = 0 AND tx_jvevents_domain_model_tag.sys_language_uid in(-1, 0, CAST( ###REC_FIELD_sys_language_uid### as SIGNED)) ) ORDER BY tx_jvevents_domain_model_tag.name</foreign_table_where>
+								<itemsProcFunc>JVE\JvEvents\UserFunc\Flexforms->TranslateMMvalues</itemsProcFunc>
+								<allowNonIdValues>1</allowNonIdValues>
+
+							</config>
+						</TCEforms>
+					</settings.filter.notAllowedtags>
+
+					<settings.filter.canceledEvents>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.canceledEvents</label>
+							<config>
+								<type>select</type>
+								<renderType>selectSingle</renderType>
+								<items type="array">
+									<numIndex index="0" type="array">
+										<numIndex index="0">LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.canceledEvents.all</numIndex>
+										<numIndex index="1">0</numIndex>
+									</numIndex>
+									<numIndex index="1" type="array">
+										<numIndex index="0">LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.canceledEvents.only</numIndex>
+										<numIndex index="1">1</numIndex>
+									</numIndex>
+									<numIndex index="2" type="array">
+										<numIndex index="0">LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.canceledEvents.hide</numIndex>
+										<numIndex index="1">2</numIndex>
+									</numIndex>
+
+								</items>
+
+							</config>
+						</TCEforms>
+					</settings.filter.canceledEvents>
+
+					<settings.filter.topEvents>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.topEvents</label>
+							<config>
+								<type>select</type>
+								<renderType>selectSingle</renderType>
+								<items type="array">
+									<numIndex index="0" type="array">
+										<numIndex index="0">LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.topEvents.all</numIndex>
+										<numIndex index="1">0</numIndex>
+									</numIndex>
+									<numIndex index="1" type="array">
+										<numIndex index="0">LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.topEvents.only</numIndex>
+										<numIndex index="1">1</numIndex>
+									</numIndex>
+									<numIndex index="2" type="array">
+										<numIndex index="0">LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.topEvents.also</numIndex>
+										<numIndex index="1">2</numIndex>
+									</numIndex>
+
+								</items>
+
+							</config>
+						</TCEforms>
+					</settings.filter.topEvents>
+
+					<settings.filter.noEventsFound>
+						<TCEforms>
+							<exclude>0</exclude>
+							<label>Text Element that is shown at the End of the list. Usefull if no events found</label>
+							<config>
+								<type>group</type>
+								<internal_type>db</internal_type>
+								<allowed>tt_content</allowed>
+								<size>1</size>
+								<maxitems>1</maxitems>
+								<minitems>0</minitems>
+								<show_thumbs>1</show_thumbs>
+								<wizards>
+									<suggest>
+										<type>suggest</type>
+									</suggest>
+								</wizards>
+							</config>
+						</TCEforms>
+					</settings.filter.noEventsFound>
+
+
+
+				</el>
+
+			</ROOT>
+		</sDEF2>
+
+		<sDEFfilter>
+			<ROOT>
+				<TCEforms>
+					<displayCond>FIELD:sDEF.switchableControllerActions:=:Ajax->externalEvents</displayCond>
+					<sheetTitle>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.EventListFilterLayout</sheetTitle>
+				</TCEforms>
+				<type>array</type>
+				<el>
+					<settings.ShowFilterInfo>
+						<TCEforms>
+						<label>Settings in this tab changes only the (used) Filteroptions!</label>
+							<config>
+								<type>none</type>
+								<default>(has no effect the list of filtered event)</default>
+
+							</config>
+						</TCEforms>
+					</settings.ShowFilterInfo>
+					<settings.ShowFilter>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.ShowFilter</label>
+							<config>
+								<type>select</type>
+								<renderType>selectSingle</renderType>
+								<items type="array">
+									<numIndex index="0" type="array">
+										<numIndex index="0">LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.ShowFilter.NoFilter</numIndex>
+										<numIndex index="1">0</numIndex>
+									</numIndex>
+									<numIndex index="1" type="array">
+										<numIndex index="0">LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.ShowFilter.SelectFilter</numIndex>
+										<numIndex index="1">1</numIndex>
+									</numIndex>
+
+									<numIndex index="2" type="array">
+										<numIndex index="0">LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.ShowFilter.AdvancedFilter</numIndex>
+										<numIndex index="1">2</numIndex>
+									</numIndex>
+									<numIndex index="3" type="array">
+										<numIndex index="0">LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.ShowFilter.AdvancedFilterWithPosition</numIndex>
+										<numIndex index="1">3</numIndex>
+									</numIndex>
+									<numIndex index="4" type="array">
+										<numIndex index="0">LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.ShowFilter.SimpleDateFilter</numIndex>
+										<numIndex index="1">4</numIndex>
+									</numIndex>
+									<numIndex index="5" type="array">
+										<numIndex index="0">LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.ShowFilter.SimpleDateFilterWithPosition</numIndex>
+										<numIndex index="1">5</numIndex>
+									</numIndex>
+									<numIndex index="6" type="array">
+										<numIndex index="0">LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.ShowFilter.AdvancedFilterWithBoxes</numIndex>
+										<numIndex index="1">6</numIndex>
+									</numIndex>
+									<numIndex index="7" type="array">
+										<numIndex index="0">LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.ShowFilter.AdvancedFilterOnLeftSide</numIndex>
+										<numIndex index="1">7</numIndex>
+									</numIndex>
+									<numIndex index="8" type="array">
+										<numIndex index="0">No Filter, starting from 2022</numIndex>
+										<numIndex index="1">8</numIndex>
+									</numIndex>
+								</items>
+							</config>
+						</TCEforms>
+					</settings.ShowFilter>
+					<infotextFilterrow1>
+						<TCEforms>
+							<label>Show up to 3 Filterboxes</label>
+							<displayCond>
+								<OR>
+									<numIndex index="0">FIELD:sDEFfilter.settings.ShowFilter:=:6</numIndex>
+								</OR>
+							</displayCond>
+							<config>
+								<type>none</type>
+								<size>50</size>
+								<rows>5</rows>
+								<default>First Row. You can add 3 filterboxes. Each Box can span up to 3 columns, but  must be in total 5
+								</default>
+							</config>
+						</TCEforms>
+					</infotextFilterrow1>
+					<settings.filter.tagShowAfterColon>
+						<TCEforms>
+							<label>Show only Tag label part after colon  (Level: Beginner => Beginner )</label>
+							<displayCond>
+								<OR>
+									<numIndex index="0">FIELD:sDEFfilter.settings.ShowFilter:=:6</numIndex>
+									<numIndex index="1">FIELD:sDEFfilter.settings.ShowFilter:=:7</numIndex>
+								</OR>
+							</displayCond>
+							<config>
+								<type>check</type>
+								<default>0</default>
+							</config>
+						</TCEforms>
+					</settings.filter.tagShowAfterColon>
+					<settings.filter.tagbox1headline>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.plugin.filter.tagboxheadline</label>
+							<displayCond>
+								<OR>
+									<numIndex index="0">FIELD:sDEFfilter.settings.ShowFilter:=:6</numIndex>
+									<numIndex index="1">FIELD:sDEFfilter.settings.ShowFilter:=:7</numIndex>
+								</OR>
+							</displayCond>
+							<config>
+								<type>input</type>
+							</config>
+						</TCEforms>
+					</settings.filter.tagbox1headline>
+					<settings.filter.tagbox1width>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.plugin.filter.tagboxWidth</label>
+							<displayCond>
+								<OR>
+									<numIndex index="0">FIELD:sDEFfilter.settings.ShowFilter:=:6</numIndex>
+								</OR>
+							</displayCond>
+							<config>
+								<type>select</type>
+								<renderType>selectSingle</renderType>
+								<items type="array">
+									<numIndex index="0" type="array">
+										<numIndex index="0">1 Column</numIndex>
+										<numIndex index="1">1</numIndex>
+									</numIndex>
+									<numIndex index="1" type="array">
+										<numIndex index="0">2 Columns</numIndex>
+										<numIndex index="1">2</numIndex>
+									</numIndex>
+									<numIndex index="2" type="array">
+										<numIndex index="0">3 Columns</numIndex>
+										<numIndex index="1">3</numIndex>
+									</numIndex>
+									<numIndex index="3" type="array">
+										<numIndex index="0">4 Column</numIndex>
+										<numIndex index="1">4</numIndex>
+									</numIndex>
+								</items>
+							</config>
+						</TCEforms>
+					</settings.filter.tagbox1width>
+					<settings.filter.tagbox1tags>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.TagsInFilter</label>
+							<displayCond>
+								<OR>
+									<numIndex index="0">FIELD:sDEFfilter.settings.ShowFilter:=:6</numIndex>
+									<numIndex index="1">FIELD:sDEFfilter.settings.ShowFilter:=:7</numIndex>
+								</OR>
+							</displayCond>
+							<config>
+								<type>select</type>
+								<renderType>selectMultipleSideBySide</renderType>
+
+								<maxitems>100</maxitems>
+								<size>3</size>
+								<autoSizeMax>10</autoSizeMax>
+								<minitems>0</minitems>
+								<selectedListStyle>width:350px</selectedListStyle>
+								<itemListStyle>width:350px</itemListStyle>
+								<foreign_table>tx_jvevents_domain_model_tag</foreign_table>
+								<foreign_table_where>  AND tx_jvevents_domain_model_tag.type = 0 AND tx_jvevents_domain_model_tag.visibility = 0 AND (tx_jvevents_domain_model_tag.l10n_parent = 0 AND tx_jvevents_domain_model_tag.sys_language_uid in(-1, 0, CAST( ###REC_FIELD_sys_language_uid### as SIGNED)) ) ORDER BY tx_jvevents_domain_model_tag.name</foreign_table_where>
+								<allowNonIdValues>1</allowNonIdValues>
+								<itemsProcFunc>JVE\JvEvents\UserFunc\Flexforms->TranslateMMvalues</itemsProcFunc>
+							</config>
+						</TCEforms>
+					</settings.filter.tagbox1tags>
+
+					<settings.filter.tagbox2headline>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.plugin.filter.tagboxheadline</label>
+							<displayCond>
+								<OR>
+									<numIndex index="0">FIELD:sDEFfilter.settings.ShowFilter:=:6</numIndex>
+									<numIndex index="1">FIELD:sDEFfilter.settings.ShowFilter:=:7</numIndex>
+								</OR>
+							</displayCond>
+							<config>
+								<type>input</type>
+							</config>
+						</TCEforms>
+					</settings.filter.tagbox2headline>
+					<settings.filter.tagbox2width>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.plugin.filter.tagboxWidth</label>
+							<displayCond>
+								<OR>
+									<numIndex index="0">FIELD:sDEFfilter.settings.ShowFilter:=:6</numIndex>
+								</OR>
+							</displayCond>
+							<config>
+								<type>select</type>
+								<renderType>selectSingle</renderType>
+								<items type="array">
+									<numIndex index="0" type="array">
+										<numIndex index="0">1 Column</numIndex>
+										<numIndex index="1">1</numIndex>
+									</numIndex>
+									<numIndex index="1" type="array">
+										<numIndex index="0">2 Columns</numIndex>
+										<numIndex index="1">2</numIndex>
+									</numIndex>
+									<numIndex index="2" type="array">
+										<numIndex index="0">3 Columns</numIndex>
+										<numIndex index="1">3</numIndex>
+									</numIndex>
+									<numIndex index="3" type="array">
+										<numIndex index="0">4 Column</numIndex>
+										<numIndex index="1">4</numIndex>
+									</numIndex>
+								</items>
+							</config>
+						</TCEforms>
+					</settings.filter.tagbox2width>
+					<settings.filter.tagbox2tags>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.Tags</label>
+							<displayCond>
+								<OR>
+									<numIndex index="0">FIELD:sDEFfilter.settings.ShowFilter:=:6</numIndex>
+									<numIndex index="1">FIELD:sDEFfilter.settings.ShowFilter:=:7</numIndex>
+								</OR>
+							</displayCond>
+							<config>
+								<type>select</type>
+								<renderType>selectMultipleSideBySide</renderType>
+
+								<maxitems>100</maxitems>
+								<size>3</size>
+								<autoSizeMax>10</autoSizeMax>
+								<minitems>0</minitems>
+								<selectedListStyle>width:350px</selectedListStyle>
+								<itemListStyle>width:350px</itemListStyle>
+								<foreign_table>tx_jvevents_domain_model_tag</foreign_table>
+								<foreign_table_where>  AND tx_jvevents_domain_model_tag.type = 0  AND tx_jvevents_domain_model_tag.visibility = 0 AND (tx_jvevents_domain_model_tag.l10n_parent = 0 AND tx_jvevents_domain_model_tag.sys_language_uid in(-1, 0, CAST( ###REC_FIELD_sys_language_uid### as SIGNED)) ) ORDER BY tx_jvevents_domain_model_tag.name</foreign_table_where>
+								<itemsProcFunc>JVE\JvEvents\UserFunc\Flexforms->TranslateMMvalues</itemsProcFunc>
+								<allowNonIdValues>1</allowNonIdValues>
+							</config>
+						</TCEforms>
+					</settings.filter.tagbox2tags>
+
+					<settings.filter.tagbox3headline>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.plugin.filter.tagboxheadline</label>
+							<displayCond>
+								<OR>
+									<numIndex index="0">FIELD:sDEFfilter.settings.ShowFilter:=:6</numIndex>
+									<numIndex index="1">FIELD:sDEFfilter.settings.ShowFilter:=:7</numIndex>
+								</OR>
+							</displayCond>
+							<config>
+								<type>input</type>
+							</config>
+						</TCEforms>
+					</settings.filter.tagbox3headline>
+					<settings.filter.tagbox3width>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.plugin.filter.tagboxWidth</label>
+							<displayCond>
+								<OR>
+									<numIndex index="0">FIELD:sDEFfilter.settings.ShowFilter:=:6</numIndex>
+								</OR>
+							</displayCond>
+							<config>
+								<type>select</type>
+								<renderType>selectSingle</renderType>
+								<items type="array">
+									<numIndex index="0" type="array">
+										<numIndex index="0">1 Column</numIndex>
+										<numIndex index="1">1</numIndex>
+									</numIndex>
+									<numIndex index="1" type="array">
+										<numIndex index="0">2 Columns</numIndex>
+										<numIndex index="1">2</numIndex>
+									</numIndex>
+									<numIndex index="2" type="array">
+										<numIndex index="0">3 Columns</numIndex>
+										<numIndex index="1">3</numIndex>
+									</numIndex>
+									<numIndex index="3" type="array">
+										<numIndex index="0">4 Column</numIndex>
+										<numIndex index="1">4</numIndex>
+									</numIndex>
+								</items>
+							</config>
+						</TCEforms>
+					</settings.filter.tagbox3width>
+					<settings.filter.tagbox3tags>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.Tags</label>
+							<displayCond>
+								<OR>
+									<numIndex index="0">FIELD:sDEFfilter.settings.ShowFilter:=:6</numIndex>
+									<numIndex index="1">FIELD:sDEFfilter.settings.ShowFilter:=:7</numIndex>
+								</OR>
+							</displayCond>
+							<config>
+								<type>select</type>
+								<renderType>selectMultipleSideBySide</renderType>
+
+								<maxitems>100</maxitems>
+								<size>3</size>
+								<autoSizeMax>10</autoSizeMax>
+								<minitems>0</minitems>
+								<selectedListStyle>width:350px</selectedListStyle>
+								<itemListStyle>width:350px</itemListStyle>
+								<foreign_table>tx_jvevents_domain_model_tag</foreign_table>
+								<foreign_table_where>  AND tx_jvevents_domain_model_tag.type = 0 AND tx_jvevents_domain_model_tag.visibility = 0 AND (tx_jvevents_domain_model_tag.l10n_parent = 0 AND tx_jvevents_domain_model_tag.sys_language_uid in(-1, 0, CAST( ###REC_FIELD_sys_language_uid### as SIGNED)) ) ORDER BY tx_jvevents_domain_model_tag.name</foreign_table_where>
+								<allowNonIdValues>1</allowNonIdValues>
+								<itemsProcFunc>JVE\JvEvents\UserFunc\Flexforms->TranslateMMvalues</itemsProcFunc>
+							</config>
+						</TCEforms>
+					</settings.filter.tagbox3tags>
+					<infotextFilterrow2>
+						<TCEforms>
+							<label>Filterbox shown after Categories</label>
+							<displayCond>
+								<OR>
+									<numIndex index="0">FIELD:sDEFfilter.settings.ShowFilter:=:6</numIndex>
+								</OR>
+							</displayCond>
+							<config>
+								<type>none</type>
+								<size>50</size>
+								<rows>5</rows>
+								<default>Second Row. You can add 1 filterbox. This Box can span up to 4 columns, only if no other filter are shown
+								</default>
+							</config>
+						</TCEforms>
+					</infotextFilterrow2>
+					<settings.filter.tagbox4headline>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.plugin.filter.tagboxheadline</label>
+							<displayCond>
+								<OR>
+									<numIndex index="0">FIELD:sDEFfilter.settings.ShowFilter:=:6</numIndex>
+									<numIndex index="1">FIELD:sDEFfilter.settings.ShowFilter:=:7</numIndex>
+								</OR>
+							</displayCond>
+							<config>
+								<type>input</type>
+							</config>
+						</TCEforms>
+					</settings.filter.tagbox4headline>
+					<settings.filter.tagbox4width>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.plugin.filter.tagboxWidth</label>
+							<displayCond>
+								<OR>
+									<numIndex index="0">FIELD:sDEFfilter.settings.ShowFilter:=:6</numIndex>
+								</OR>
+							</displayCond>
+							<config>
+								<type>select</type>
+								<renderType>selectSingle</renderType>
+								<items type="array">
+									<numIndex index="0" type="array">
+										<numIndex index="0">1 Column</numIndex>
+										<numIndex index="1">1</numIndex>
+									</numIndex>
+									<numIndex index="1" type="array">
+										<numIndex index="0">2 Columns</numIndex>
+										<numIndex index="1">2</numIndex>
+									</numIndex>
+									<numIndex index="2" type="array">
+										<numIndex index="0">3 Columns</numIndex>
+										<numIndex index="1">3</numIndex>
+									</numIndex>
+									<numIndex index="3" type="array">
+										<numIndex index="0">4 Column</numIndex>
+										<numIndex index="1">4</numIndex>
+									</numIndex>
+								</items>
+							</config>
+						</TCEforms>
+					</settings.filter.tagbox4width>
+					<settings.filter.tagbox4tags>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.Tags</label>
+							<displayCond>
+								<OR>
+									<numIndex index="0">FIELD:sDEFfilter.settings.ShowFilter:=:6</numIndex>
+									<numIndex index="1">FIELD:sDEFfilter.settings.ShowFilter:=:7</numIndex>
+								</OR>
+							</displayCond>
+							<config>
+								<type>select</type>
+								<renderType>selectMultipleSideBySide</renderType>
+
+								<maxitems>100</maxitems>
+								<size>3</size>
+								<autoSizeMax>10</autoSizeMax>
+								<minitems>0</minitems>
+								<selectedListStyle>width:350px</selectedListStyle>
+								<itemListStyle>width:350px</itemListStyle>
+								<foreign_table>tx_jvevents_domain_model_tag</foreign_table>
+								<foreign_table_where>  AND tx_jvevents_domain_model_tag.type = 0 AND tx_jvevents_domain_model_tag.visibility = 0 AND (tx_jvevents_domain_model_tag.l10n_parent = 0 AND tx_jvevents_domain_model_tag.sys_language_uid in(-1, 0, CAST( ###REC_FIELD_sys_language_uid### as SIGNED)) ) ORDER BY tx_jvevents_domain_model_tag.name</foreign_table_where>
+								<allowNonIdValues>1</allowNonIdValues>
+								<itemsProcFunc>JVE\JvEvents\UserFunc\Flexforms->TranslateMMvalues</itemsProcFunc>
+							</config>
+						</TCEforms>
+					</settings.filter.tagbox4tags>
+
+					<settings.filter.sorttags>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.sortTags</label>
+							<displayCond>FIELD:sDEF.switchableControllerActions:=:Event->list;Event->search</displayCond>
+							<config>
+								<type>select</type>
+								<renderType>selectSingle</renderType>
+								<items type="array">
+									<numIndex index="0" type="array">
+										<numIndex index="0">LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.sortTags.alfabetic</numIndex>
+										<numIndex index="1">abc</numIndex>
+									</numIndex>
+									<numIndex index="1" type="array">
+										<numIndex index="0">LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.sortTags.likeInBackend</numIndex>
+										<numIndex index="1">sorting</numIndex>
+									</numIndex>
+								</items>
+							</config>
+						</TCEforms>
+					</settings.filter.sorttags>
+
+					<settings.filter.sortcategories>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.sortCategories</label>
+							<displayCond>FIELD:sDEF.switchableControllerActions:=:Event->list;Event->search</displayCond>
+							<config>
+								<type>select</type>
+								<renderType>selectSingle</renderType>
+								<items type="array">
+									<numIndex index="0" type="array">
+										<numIndex index="0">LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.sortTags.alfabetic</numIndex>
+										<numIndex index="1">abc</numIndex>
+									</numIndex>
+									<numIndex index="1" type="array">
+										<numIndex index="0">LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.sortTags.likeInBackend</numIndex>
+										<numIndex index="1">sorting</numIndex>
+									</numIndex>
+								</items>
+							</config>
+						</TCEforms>
+					</settings.filter.sortcategories>
+
+					<settings.filter.hideCityDropdown>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.hideCityDropdown</label>
+							<config>
+								<type>check</type>
+							</config>
+
+						</TCEforms>
+					</settings.filter.hideCityDropdown>
+					<settings.filter.showDropdownsFirst>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.showDropdownsFirst</label>
+							<config>
+								<type>check</type>
+								<default>0</default>
+							</config>
+
+						</TCEforms>
+					</settings.filter.showDropdownsFirst>
+					<settings.filter.hideMonthDropdown>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.hideMonthDropdown</label>
+							<config>
+								<type>check</type>
+							</config>
+
+						</TCEforms>
+					</settings.filter.hideMonthDropdown>
+					<settings.filter.hideKalenderSelector>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.hideKalenderSelector</label>
+							<config>
+								<type>check</type>
+								<default>1</default>
+							</config>
+
+						</TCEforms>
+					</settings.filter.hideKalenderSelector>
+					<settings.filter.hideOrganizerDropdown>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.hideOrganizerDropdown</label>
+							<config>
+								<type>check</type>
+							</config>
+
+						</TCEforms>
+					</settings.filter.hideOrganizerDropdown>
+
+					<settings.filter.initMapAddress>
+						<TCEforms>
+							<label>Init Address for Map if shown</label>
+							<config>
+								<type>input</type>
+								<default>Konrad-Zuse-Platz 1,81829 München, Germany</default>
+							</config>
+						</TCEforms>
+					</settings.filter.initMapAddress>
+
+					<settings.filter.initMapZoom>
+						<TCEforms>
+							<label>Init Zoom factor for Map (1= world - 15 one street) default 4 </label>
+							<config>
+								<type>input</type>
+								<default>4</default>
+							</config>
+						</TCEforms>
+					</settings.filter.initMapZoom>
+
+					<settings.filter.onlineMapZoom>
+						<TCEforms>
+							<label>Zoom factor for Map (1= world - 15 one street) if City: Online is selected </label>
+							<config>
+								<type>input</type>
+								<default>2</default>
+							</config>
+						</TCEforms>
+					</settings.filter.onlineMapZoom>
+					<settings.filter.doubleclickzoom>
+						<TCEforms>
+							<label>Zoom factor for Map (1= world - 15 one street) when user Double clicks, default 10 </label>
+							<config>
+								<type>input</type>
+								<default>10</default>
+							</config>
+						</TCEforms>
+					</settings.filter.doubleclickzoom>
+					<settings.filter.usersMapsettings>
+						<TCEforms>
+							<label>Filter by User Map Settings</label>
+							<config>
+								<type>check</type>
+								<default>0</default>
+							</config>
+						</TCEforms>
+					</settings.filter.usersMapsettings>
+
+				</el>
+			</ROOT>
+		</sDEFfilter>
+
+
+
+
+		<sDEF3>
+			<ROOT>
+				<TCEforms>
+					<sheetTitle>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.EventDetailView</sheetTitle>
+                    <displayCond>FIELD:sDEF.switchableControllerActions:=:Event->show;Event->new;Event->create;Event->edit;Event->update;Event->register;Event->confirm;Event->delete;Registrant->new;Registrant->create;Registrant->list;Registrant->show;Registrant->confirm;Registrant->delete;Registrant->checkQrcode;Registrant->checkQrcode</displayCond>
+
+                </TCEforms>
+				<type>array</type>
+				<el>
+
+					<settings.LayoutSingle>
+						<TCEforms>
+							<label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms_additional.layout</label>
+							<config>
+								<type>user</type>
+								<renderType>jvEventsCustomLayoutElement</renderType>
+								<size>30</size>
+								<userFunc>JVE\JvEvents\UserFunc\Flexforms->selectLayout</userFunc>
+								<parameters>
+									<layoutType>single.</layoutType>
+								</parameters>
+							</config>
+						</TCEforms>
+					</settings.LayoutSingle>
+				</el>
+
+			</ROOT>
+		</sDEF3>
+
+	</sheets>
+</T3DataStructure>

@@ -27,7 +27,7 @@ $returnArray = array(
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',
-	//	'sortby' => 'sorting',
+		'sortby' => 'sorting',
         'default_sortby' => 'crdate DESC',
 		'versioningWS' => TRUE,
 
@@ -654,7 +654,9 @@ if ( $configuration['hasLoginUser'] != 1 ) {
     unset($returnArray['columns']['access'] ) ;
     unset($returnArray['columns']['registration_access'] ) ;
 }
-
+if ( ! $configuration['enableOrganizerSorting'] == "1" ) {
+    unset( $returnArray['ctrl']['sortby'] ) ;
+}
 if ( $configuration['enableSalesForce'] != 1 && $configuration['enableHubspot'] != 1  ) {
     unset($returnArray['columns']['sales_force_user_id'] ) ;
     unset($returnArray['columns']['sales_force_user_id2'] ) ;
