@@ -92,8 +92,8 @@ class CurlController extends BaseController
         /** @var QueryResultInterface $events */
 
         $events = $this->getEventsViaCurl($this->settings );
-        var_dump($events);
-        die;
+       // var_dump($events);
+      // die;
         $this->view->assign('events', $events);
 
         $dtz = $this->eventRepository->getDateTimeZone() ;
