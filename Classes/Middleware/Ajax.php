@@ -566,14 +566,22 @@ class Ajax implements MiddlewareInterface
                             $tempEventArray = [] ;
                             $tempEventArray['uid'] = $tempEvent->getUid();
                             $tempEventArray['name'] = $tempEvent->getName();
+                            $tempEventArray['price'] = $tempEvent->getPrice();
                             $tempEventArray['startDate'] = $tempEvent->getStartDate()->format("d.m.Y");
-
+                            $tempEventArray['created'] = date("d.m.Y" , $tempEvent->getCrdate() );
+                            $tempEventArray['lastUpdated'] = date("d.m.Y" , $tempEvent->getLastUpdated());
+                            $tempEventArray['teaser'] = $tempEvent->getTeaser();
                             if (  $tempEvent->getTeaserImage() && is_object( $tempEvent->getTeaserImage()->getOriginalResource()) ) {
                                 $tempEventArray['TeaserImageFrom'] =  "Event" ;
-                                $tempEventArray['teaserImage']['originalResource']['publicUrl'] =  trim( GeneralUtility::getIndpEnv("TYPO3_REQUEST_HOST") , "/" ) . "/" .
+                                $tempEventArray['teaserImage'] =  trim( GeneralUtility::getIndpEnv("TYPO3_REQUEST_HOST") , "/" ) . "/" .
                                                           $tempEvent->getTeaserImage()->getOriginalResource()->getPublicUrl() ;
+                            } elseif( is_object($tempEvent->getLocation()) && $tempEvent->getLocation()->getTeaserImage()
+                                        && is_object($tempEvent->getLocation()->getTeaserImage()->getOriginalResource() ) )  {
+                                $tempEventArray['TeaserImageFrom'] =  "Location" ;
+                                $tempEventArray['teaserImage'] =  trim( GeneralUtility::getIndpEnv("TYPO3_REQUEST_HOST") , "/" ) . "/" .
+                                    $tempEvent->getLocation()->getTeaserImage()->getOriginalResource()->getPublicUrl() ;
                             } else {
-
+                                $tempEventArray['TeaserImageFrom'] =  "NotFound" ;
                             }
                             if  ($tempEvent->getAllDay() ) {
                                 $tempEventArray['allDay']   = true ;
@@ -587,10 +595,11 @@ class Ajax implements MiddlewareInterface
 
                             if (is_object($tempEvent->getLocation())) {
                                 $tempEventArray['LocationCity'] = $tempEvent->getLocation()->getCity();
-                                $tempEventArray['Location']['uid'] = $tempEvent->getLocation()->getUid();
-                                $tempEventArray['Location']['city'] = $tempEvent->getLocation()->getCity();
-                                $tempEventArray['Location']['streetAndNr'] = $tempEvent->getLocation()->getStreetAndNr();
-                                $tempEventArray['Location']['additionalInfo'] = $tempEvent->getLocation()->getAdditionalInfo();
+                                $tempEventArray['location']['uid'] = $tempEvent->getLocation()->getUid();
+                                $tempEventArray['location']['country'] = $tempEvent->getLocation()->getCountry();
+                                $tempEventArray['location']['city'] = $tempEvent->getLocation()->getCity();
+                                $tempEventArray['location']['streetAndNr'] = $tempEvent->getLocation()->getStreetAndNr();
+                                $tempEventArray['location']['additionalInfo'] = $tempEvent->getLocation()->getAdditionalInfo();
                             }
                             if ( $site ) {
                                 try {

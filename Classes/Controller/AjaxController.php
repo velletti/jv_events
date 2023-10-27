@@ -425,11 +425,32 @@ class AjaxController extends BaseController
                             $tempEventArray = [] ;
                             $tempEventArray['uid'] = $tempEvent->getUid();
                             $tempEventArray['name'] = $tempEvent->getName();
+                            $tempEventArray['price'] = $tempEvent->getPrice();
                             $tempEventArray['startDate'] = $tempEvent->getStartDate()->format("d.m.Y");
+                            $tempEventArray['created'] = date("d.m.Y" , $tempEvent->getCrdate() );
+                            $tempEventArray['lastUpdated'] = date("d.m.Y" , $tempEvent->getLastUpdated());
                             $tempEventArray['teaser'] = $tempEvent->getTeaser();
+
+                            if (  $tempEvent->getTeaserImage() && is_object( $tempEvent->getTeaserImage()->getOriginalResource()) ) {
+                                $tempEventArray['TeaserImageFrom'] =  "Event" ;
+                                $tempEventArray['teaserImage'] =  trim( GeneralUtility::getIndpEnv("TYPO3_REQUEST_HOST") , "/" ) . "/" .
+                                    $tempEvent->getTeaserImage()->getOriginalResource()->getPublicUrl() ;
+                            } elseif( is_object($tempEvent->getLocation()) && $tempEvent->getLocation()->getTeaserImage()
+                                && is_object($tempEvent->getLocation()->getTeaserImage()->getOriginalResource() ) )  {
+                                $tempEventArray['TeaserImageFrom'] =  "Location" ;
+                                $tempEventArray['teaserImage'] =  trim( GeneralUtility::getIndpEnv("TYPO3_REQUEST_HOST") , "/" ) . "/" .
+                                    $tempEvent->getLocation()->getTeaserImage()->getOriginalResource()->getPublicUrl() ;
+                            } else {
+                                $tempEventArray['TeaserImageFrom'] =  "NotFound" ;
+                            }
 
                             if (is_object($tempEvent->getLocation())) {
                                 $tempEventArray['LocationCity'] = $tempEvent->getLocation()->getCity();
+                                $tempEventArray['Location']['uid'] = $tempEvent->getLocation()->getUid();
+                                $tempEventArray['Location']['city'] = $tempEvent->getLocation()->getCity();
+                                $tempEventArray['Location']['streetAndNr'] = $tempEvent->getLocation()->getStreetAndNr();
+                                $tempEventArray['Location']['additionalInfo'] = $tempEvent->getLocation()->getAdditionalInfo();
+
                             }
                             if ( $site ) {
                                 try {

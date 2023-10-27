@@ -83,17 +83,16 @@ class CurlController extends BaseController
         }
 
         $this->settings['data']['tx_jvevents_ajax']['eventsFilter'] = $f  ;
-
-
-
+        $this->settings['data']['tx_jvevents_ajax']['limit'] =  ($this->settings['filter']['maxevents'] > 0) ? intval($this->settings['filter']['maxevents']) : 999 ;
+        $this->settings['checkInstallation'] = -1  ;
 
 
         $this->debugArray[] = "Load Events:" . intval(1000 * ($this->microtime_float()  - $this->timeStart ) ) . " Line: " . __LINE__ ;
         /** @var QueryResultInterface $events */
 
-        $events = $this->getEventsViaCurl($this->settings );
-       // var_dump($events);
-      // die;
+        $request = json_decode( $this->getEventsViaCurl($this->settings ) , true );
+        $events = ($request['eventsByFilter']) ?? null ;
+
         $this->view->assign('events', $events);
 
         $dtz = $this->eventRepository->getDateTimeZone() ;
@@ -110,9 +109,8 @@ class CurlController extends BaseController
     public function getEventsViaCurl( $settings ) {
 
         //  'https://tangov10.ddev.site/?id=110&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=1&tx_jvevents_ajax[eventsFilter][startDate]=0&tx_jvevents_ajax[mode]=onlyJson'
-        https://www.tangomuenchen.deid=150&tx_jvevents_ajax%5Baction%5D=eventList&tx_jvevents_ajax%5Bcontroller%5D=Ajax&tx_jvevents_ajax%5Bmode%5D=onlyJson&tx_jvevents_ajax%5BeventsFilter%5D%5BstartDate%5D=-1&tx_jvevents_ajax%5BeventsFilter%5D%5Bcategories%5D=3
+        https://www.tangomuenchen.de/id=150&tx_jvevents_ajax%5Baction%5D=eventList&tx_jvevents_ajax%5Bcontroller%5D=Ajax&tx_jvevents_ajax%5Bmode%5D=onlyJson&tx_jvevents_ajax%5BeventsFilter%5D%5BstartDate%5D=-1&tx_jvevents_ajax%5BeventsFilter%5D%5Bcategories%5D=3
         $url = trim( $settings["externalUrl"] )  . http_build_query( $settings['data']) ;
-
         $curl = curl_init();
 
         curl_setopt_array($curl, array(

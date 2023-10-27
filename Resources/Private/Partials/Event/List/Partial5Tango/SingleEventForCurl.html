@@ -1,0 +1,72 @@
+{namespace jve=JVE\JvEvents\ViewHelpers}
+
+<f:if condition="{aktDate} != {lastDate}">
+    <div class="alert bg-gradient-dark text-white-50 jv-events-row jvevents-newDay mt-4"><i class="fas fa-calendar-alt"> </i> {event.startDate -> f:format.date(format:"D d. M. Y")} </div>
+</f:if>
+
+<f:spaceless>
+
+    <div class="jv-events-singleEvent jv-events-row" data-uid="{event.uid}" >
+
+        <div class="card col-12 my-4 clearfix rounded-bottom {f:if(condition: '{event.canceled}', then: 'canceled' )}">
+            <div class="row">
+                <div class="col-4  order-2 col-sm-3 px-0">
+                    <f:link.external uri="{event.slug}">
+                        <f:if condition="{event.teaserImage}">
+                            <f:then>
+                                <img alt="{event.teaserImageFrom}" class="d-block w-100 h-auto img-float rounded shadow-lg" heigh="{settings.list.image.height}" width="{settings.list.image.width}" src="{event.teaserImage}" ></img>
+                            </f:then>
+                        </f:if>
+                    </f:link.external>
+
+                </div>
+
+
+                <div class="col-12 col-sm-6  order-1 order-sm-2 py-2 ">
+                    <div class="card-block min-height-6-lines jv-events-teaser-div-wrap">
+                        <h4 class="card-title max-1-line mb-0">
+                            <span class="col-10 col-sm-11 pl-0">
+                                 <f:link.external class="" uri="{event.slug}" >
+                                     {event.name}
+                                 </f:link.external>
+                            </span>
+                            <span class="position-right position-top p-2 d-sm-none"  data-toggle="collapse" data-target="#jv-events-teaser-div-{event.uid}">
+                                <span class="far fa-caret-square-down"></span>
+                            </span>
+                        </h4>
+                        <div class="collapse fade jv-events-teaser-div p-0 m-0" id="jv-events-teaser-div-{event.uid}">
+                            <p class="my-2 d-md-block d-sm-none d-xs-block max-3-lines mb-3 pb-2">
+                                <f:format.nl2br>{event.teaser}</f:format.nl2br>
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-8 col-sm-3 text-black-50   order-3 order-sm-3 py-2">
+                    {event.location.country} - {event.location.city} <br>
+                    {event.location.streetAndNr}<br>
+                    <f:if condition="{event.location.additionalInfo}">
+                        {event.location.additionalInfo}<br>
+                    </f:if>
+                    <f:if condition="{event.price}">
+                        {event.price} €<br>
+                    </f:if>
+                    <f:if condition="{settings.list.showStartTimes}">
+                        {event.startTime}-<f:if condition="{event.endTime}"><f:then>{event.endTime}</f:then><f:else><f:translate key="tx_jvevents_domain_model_event.openEnd">Open End</f:translate></f:else></f:if> h<br>
+                    </f:if>
+                    <f:if condition="{settings.list.showCrdate}">
+                        <div class="small">
+                            <br>
+                            <f:translate key="event.created" default="Erstellt am" />: {event.created}
+                            <f:if condition="{event.lastUpdated}">
+                                <br><f:translate key="event.modified" default="Letzte Änderung" />: {event.lastUpdated}
+                            </f:if>
+                        </div>
+                    </f:if>
+                </div>
+            </div>
+        </div>
+    </div>
+</f:spaceless>
+
