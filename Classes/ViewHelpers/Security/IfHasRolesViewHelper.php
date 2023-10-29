@@ -32,10 +32,10 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  *
  * ::
  *
- *    <f:security.ifHasRoles roles="'Administrator','SuperAdmin'" mode="any">
+ *    <jve:security.ifHasRoles roles="'Administrator','SuperAdmin'" mode="any">
  *        This is being shown in case the current FE user belongs to any or All Roles FE usergroup (aka role) depending on mode titled "Administrator" (case sensitive)
  *        roles will be exploded
- *    </f:security.ifHasRoles>
+ *    </jve:security.ifHasRoles>
  *
  * Everything inside the :html:`<f:security.ifHasRoles>` tag is being displayed if the
  * logged in frontend user belongs to the specified frontend user group.
@@ -46,11 +46,11 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  *
  * ::
  *
- *    <f:security.ifHasRole roles="1,3" mode="all">
+ *    <jve:security.ifHasRole roles="1,3" mode="all">
  *       This is being shown in case the current FE user belongs to all listed FE usergroup (aka role) with  uid "1" and "3"
- *    </f:security.ifHasRole>
+ *    </jve:security.ifHasRole>
  *
- * Everything inside the :html:`<f:security.ifHasRole>` tag is being displayed if the
+ * Everything inside the :html:`<jve:security.ifHasRole>` tag is being displayed if the
  * logged in frontend user belongs to the specified role. Comparison is done
  * using the ``uid`` of frontend user groups.
  *
@@ -59,14 +59,14 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  *
  * ::
  *
- *    <f:security.ifHasRoles roles="1,2" mode="all">
+ *    <jve:security.ifHasRoles roles="1,2" mode="all">
  *       <f:then>
  *          This is being shown in case you have BOTH  roles .
  *       </f:then>
  *       <f:else>
  *          This is being displayed in case you do not have the needed roles.
  *       </f:else>
- *    </f:security.ifHasRole>
+ *    </jve:security.ifHasRole>
  *
  * Everything inside the :html:`<f:then></f:then>` tag is displayed if the logged in FE user belongs to the specified role.
  * Otherwise, everything inside the :html:`<f:else></f:else>` tag is displayed.
@@ -106,6 +106,7 @@ class IfHasRolesViewHelper extends AbstractConditionViewHelper
         $groupNames = $userAspect->getGroupNames();
         $return = $allRoles ;
         foreach ( $roles as $role ) {
+            $role = trim($role , "'") ;
             if ( $allRoles ) {
                 if( MathUtility::canBeInterpretedAsInteger($role) ) {
                     if ( !in_array((int)$role, $groupIds, true)) {

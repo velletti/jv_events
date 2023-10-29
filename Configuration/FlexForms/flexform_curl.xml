@@ -25,10 +25,11 @@
 					</switchableControllerActions>
 					<settings.externalUrl>
 						<TCEforms>
-							<label>External URL:</label>
+							<label>External URLs:</label>
 							<config>
-								<type>input</type>
-								<size>60</size>
+								<type>text</type>
+								<rows>10</rows>
+								<cols>140</cols>
 							</config>
 						</TCEforms>
 					</settings.externalUrl>

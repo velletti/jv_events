@@ -1,3 +1,4 @@
+{namespace jve=JVE\JvEvents\ViewHelpers}
 
 <f:layout name="Edit" />
 
@@ -118,20 +119,38 @@
             </f:if>
             <br>
             Username: <b>{userData.username}</b>
+
         </div>
         <div class="col-md-4 text-right">
             <f:link.action pageUid="{settings.pageIds.editUserAccount}" class="btn btn-primary">
                 <span class="fas fa-users-cog"> </span> <span class="hidden-xs">{f:translate(key: 'edit', default: 'Edit')} {f:translate(key: 'Account', default: 'Account')} </span>
             </f:link.action>
-
-            <f:security.ifHasRole role="mayDeleteEvents">
-                <br><br>
-                <span class="btn btn-warning" data-toggle="collapse" data-target="#jv_events_danger_delete_events_wrap" title="Dangerzone !!!">
-                    <span class="fa fa-trash"> </span>
+            <br><br>
+            <jve:security.ifHasRoles roles="mayDeleteEvents,adminOrganizer">
+                <span class="right">
+                    <span class="btn btn-warning " data-toggle="collapse" data-target="#jv_events_danger_delete_events_wrap" title="Dangerzone !!!">
+                        <span class="fa fa-trash"> </span>
+                    </span>
                 </span>
-            </f:security.ifHasRole>
+
+            </jve:security.ifHasRoles>
+            <jve:security.ifHasRoles roles="'apiToken','adminOrganizer'">
+                 <span class="right">
+                    <span class="btn btn-secondary mr-2" data-toggle="collapse" data-target="#apiToken" title="Api Token">
+                        <span class="fa fa-eye "></span>
+                    </span>
+                </span>
+            </jve:security.ifHasRoles>
 
         </div>
+        <jve:security.ifHasRoles roles="'apiToken','adminOrganizer'">
+            <div class="col-md-12 collapsed collapse" id="apiToken">
+                <b>Your API Token:</b><br>
+                <span class="pt-1 pb-2">{apiToken}</span>
+                (changes, if password or email is changed!)
+                <f:if condition="{apiTokenValid}"> (valide) </f:if>
+            </div>
+        </jve:security.ifHasRoles>
     </div>
 
     <div id="jv_events_danger_delete_events_wrap" class="collapse pt-3">

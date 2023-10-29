@@ -58,7 +58,9 @@
                     <f:if condition="{settings.list.showCrdate}">
                         <div class="small">
                             <br>
-                            <f:translate key="event.created" default="Erstellt am" />: {event.created}
+                            <f:if condition="{event.created}">
+                                <f:translate key="event.created" default="Erstellt am" />: {event.created}
+                            </f:if>
                             <f:if condition="{event.lastUpdated}">
                                 <br><f:translate key="event.modified" default="Letzte Änderung" />: {event.lastUpdated}
                             </f:if>

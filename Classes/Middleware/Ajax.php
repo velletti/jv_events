@@ -2,6 +2,7 @@
 
 namespace JVE\JvEvents\Middleware;
 
+use JVE\JvEvents\Domain\Model\Category;
 use JVE\JvEvents\Domain\Model\Location;
 use JVE\JvEvents\Domain\Model\Organizer;
 use JVE\JvEvents\Domain\Repository\CategoryRepository;
@@ -14,6 +15,7 @@ use JVE\JvEvents\Domain\Repository\SubeventRepository;
 use JVE\JvEvents\Domain\Repository\TagRepository;
 use JVE\JvEvents\Utility\AjaxUtility;
 use JVE\JvEvents\Utility\ShowAsJsonArrayUtility;
+use JVE\JvEvents\Utility\TokenUtility;
 use JVE\JvEvents\Utility\TyposcriptUtility;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -307,8 +309,9 @@ class Ajax implements MiddlewareInterface
      */
     public function eventsListMenuSub(array $arguments )
     {
+        $isAutorized = TokenUtility::checkToken(($arguments['apiToken']) ?? null ) ;
 
-
+        $arguments['limit'] = $isAutorized ? 250 : 10 ;
 
         //  $GLOBALS['TSFE']->fe_user->user = [ 'uid' => 476 , "username" => "jvel@test.de" , "1,2,3,4,5,6,7"] ;
         /* ************************************************************************************************************ */
@@ -505,7 +508,7 @@ class Ajax implements MiddlewareInterface
                     $this->eventRepository->setDefaultQuerySettings( $querysettings );
                     $filter = array() ;
                     $filter['startDate'] = $event->getStartDate()->getTimestamp() ;
-                    $filter['maxDays'] = 999 ;
+                    $filter['maxDays']  = $isAutorized ? 365 : 30 ;
                     $filter['skipEvent'] = $event->getUid() ;
                     $filter['masterId']  = $event->getMasterId() ;
 
@@ -566,23 +569,45 @@ class Ajax implements MiddlewareInterface
                             $tempEventArray = [] ;
                             $tempEventArray['uid'] = $tempEvent->getUid();
                             $tempEventArray['name'] = $tempEvent->getName();
-                            $tempEventArray['price'] = $tempEvent->getPrice();
+                            $tempEventArray['canceled'] = $tempEvent->getCanceled();
+
                             $tempEventArray['startDate'] = $tempEvent->getStartDate()->format("d.m.Y");
-                            $tempEventArray['created'] = date("d.m.Y" , $tempEvent->getCrdate() );
-                            $tempEventArray['lastUpdated'] = date("d.m.Y" , $tempEvent->getLastUpdated());
-                            $tempEventArray['teaser'] = $tempEvent->getTeaser();
-                            if (  $tempEvent->getTeaserImage() && is_object( $tempEvent->getTeaserImage()->getOriginalResource()) ) {
-                                $tempEventArray['TeaserImageFrom'] =  "Event" ;
-                                $tempEventArray['teaserImage'] =  trim( GeneralUtility::getIndpEnv("TYPO3_REQUEST_HOST") , "/" ) . "/" .
-                                                          $tempEvent->getTeaserImage()->getOriginalResource()->getPublicUrl() ;
-                            } elseif( is_object($tempEvent->getLocation()) && $tempEvent->getLocation()->getTeaserImage()
-                                        && is_object($tempEvent->getLocation()->getTeaserImage()->getOriginalResource() ) )  {
-                                $tempEventArray['TeaserImageFrom'] =  "Location" ;
-                                $tempEventArray['teaserImage'] =  trim( GeneralUtility::getIndpEnv("TYPO3_REQUEST_HOST") , "/" ) . "/" .
-                                    $tempEvent->getLocation()->getTeaserImage()->getOriginalResource()->getPublicUrl() ;
-                            } else {
-                                $tempEventArray['TeaserImageFrom'] =  "NotFound" ;
+                            $tempEventArray['startDateTstamp'] = $tempEvent->getStartDate()->getTimestamp();
+
+                            if ( $isAutorized ) {
+                                $tempEventArray['created'] = date("d.m.Y" , $tempEvent->getCrdate() );
+                                $tempEventArray['lastUpdated'] = date("d.m.Y" , $tempEvent->getLastUpdated());
+                                $tempEventArray['price'] = $tempEvent->getPrice();
+
+                                if (  $tempEvent->getTeaserImage() && is_object( $tempEvent->getTeaserImage()->getOriginalResource()) ) {
+                                    $tempEventArray['TeaserImageFrom'] =  "Event" ;
+                                    $tempEventArray['teaserImage'] =  trim( GeneralUtility::getIndpEnv("TYPO3_REQUEST_HOST") , "/" ) . "/" .
+                                        $tempEvent->getTeaserImage()->getOriginalResource()->getPublicUrl() ;
+                                } elseif( is_object($tempEvent->getLocation()) && $tempEvent->getLocation()->getTeaserImage()
+                                    && is_object($tempEvent->getLocation()->getTeaserImage()->getOriginalResource() ) )  {
+                                    $tempEventArray['TeaserImageFrom'] =  "Location" ;
+                                    $tempEventArray['teaserImage'] =  trim( GeneralUtility::getIndpEnv("TYPO3_REQUEST_HOST") , "/" ) . "/" .
+                                        $tempEvent->getLocation()->getTeaserImage()->getOriginalResource()->getPublicUrl() ;
+                                } elseif( is_object($tempEvent->getOrganizer()) && $tempEvent->getOrganizer()->getTeaserImage()
+                                    && is_object($tempEvent->getOrganizer()->getTeaserImage()->getOriginalResource() ) )  {
+                                    $tempEventArray['TeaserImageFrom'] =  "Organizer" ;
+                                    $tempEventArray['teaserImage'] =  trim( GeneralUtility::getIndpEnv("TYPO3_REQUEST_HOST") , "/" ) . "/" .
+                                        $tempEvent->getOrganizer()->getTeaserImage()->getOriginalResource()->getPublicUrl() ;
+
+                                } else {
+                                    $tempEventArray['TeaserImageFrom'] =  "NotFound" ;
+                                }
+                                $tempEventArray['tags']=[] ;
+                                foreach ($tempEvent->getTags() as $tag) {
+                                    $tempEventArray['tags'][] = [ "uid" => $tag->getUid() , "name" => $tag->getName() ] ;
+                                }
+                                /** @var Category $category */
+                                foreach ( $tempEvent->getEventCategory() as $category) {
+                                    $tempEventArray['category'] = [ "uid" => $category->getUid() , "title" => $category->getTitle() ] ;
+                                }
+
                             }
+
                             if  ($tempEvent->getAllDay() ) {
                                 $tempEventArray['allDay']   = true ;
                             } else {
@@ -595,11 +620,15 @@ class Ajax implements MiddlewareInterface
 
                             if (is_object($tempEvent->getLocation())) {
                                 $tempEventArray['LocationCity'] = $tempEvent->getLocation()->getCity();
-                                $tempEventArray['location']['uid'] = $tempEvent->getLocation()->getUid();
-                                $tempEventArray['location']['country'] = $tempEvent->getLocation()->getCountry();
-                                $tempEventArray['location']['city'] = $tempEvent->getLocation()->getCity();
-                                $tempEventArray['location']['streetAndNr'] = $tempEvent->getLocation()->getStreetAndNr();
-                                $tempEventArray['location']['additionalInfo'] = $tempEvent->getLocation()->getAdditionalInfo();
+                                if ( $isAutorized ) {
+                                    $tempEventArray['location']['uid'] = $tempEvent->getLocation()->getUid();
+                                    $tempEventArray['location']['country'] = $tempEvent->getLocation()->getCountry();
+                                    $tempEventArray['location']['city'] = $tempEvent->getLocation()->getCity();
+                                    $tempEventArray['location']['lat'] = $tempEvent->getLocation()->getLat() ;
+                                    $tempEventArray['location']['lng'] = $tempEvent->getLocation()->getLng() ;
+                                    $tempEventArray['location']['streetAndNr'] = $tempEvent->getLocation()->getStreetAndNr();
+                                    $tempEventArray['location']['additionalInfo'] = $tempEvent->getLocation()->getAdditionalInfo();
+                                }
                             }
                             if ( $site ) {
                                 try {

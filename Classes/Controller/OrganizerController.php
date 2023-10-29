@@ -2,6 +2,7 @@
 namespace JVE\JvEvents\Controller;
 
 use JVE\JvEvents\Utility\SlugUtility;
+use JVE\JvEvents\Utility\TokenUtility;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -83,6 +84,13 @@ class OrganizerController extends BaseController
     public function assistAction()
     {
         $this->view->assign('user', intval($GLOBALS['TSFE']->fe_user->user['uid'] ) ) ;
+        if ( isset( $GLOBALS['TSFE']->fe_user->user['uid'] )) {
+            $this->view->assign('apiToken', TokenUtility::getToken( $GLOBALS['TSFE']->fe_user->user['uid']) ) ;
+            if( $this->request->hasArgument("apiToken")) {
+                $this->view->assign('apiTokenValid', TokenUtility::checkToken( $this->request->getArgument("apiToken") )) ;
+            }
+        }
+
         $this->view->assign('userData', $GLOBALS['TSFE']->fe_user->user ) ;
         $organizer = $this->organizerRepository->findByUserAllpages(intval($GLOBALS['TSFE']->fe_user->user['uid']), true, TRUE);
         if( is_array( $organizer)  && is_object( $organizer[0]) ) {

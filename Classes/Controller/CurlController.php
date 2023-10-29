@@ -32,6 +32,8 @@ use JVE\JvEvents\Domain\Model\Location;
 use JVE\JvEvents\Domain\Model\Organizer;
 use JVE\JvEvents\Domain\Repository\BannerRepository;
 use JVE\JvEvents\Utility\SlugUtility;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\Response;
@@ -88,12 +90,42 @@ class CurlController extends BaseController
 
 
         $this->debugArray[] = "Load Events:" . intval(1000 * ($this->microtime_float()  - $this->timeStart ) ) . " Line: " . __LINE__ ;
-        /** @var QueryResultInterface $events */
 
-        $request = json_decode( $this->getEventsViaCurl($this->settings ) , true );
-        $events = ($request['eventsByFilter']) ?? null ;
+        /** @var FrontendInterface $cache */
+        $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('extbase_object');
+        $cacheIdentifier = 'jv-events-curl_uid-' . (int)$GLOBALS['TSFE']->cObj->data['uid'];
 
-        $this->view->assign('events', $events);
+        if (!$cache->has($cacheIdentifier) || 1==1 ) {
+            $urls = GeneralUtility::trimExplode("\n" , $this->settings["externalUrl"] ) ;
+            $request = null;
+            if( $urls ) {
+                $requests = [] ;
+                foreach ( $urls as $key => $url ) {
+                    if (filter_var($url, FILTER_VALIDATE_URL)) {
+                        $request = json_decode($this->getEventsViaCurl($this->settings, $url), true);
+                        $events = ($request['eventsByFilter']) ?? null;
+                        if ($events) {
+                            $requests[] = $events;
+                        }
+                    }
+
+                }
+                if( $requests ){
+                    $request = call_user_func_array('array_merge', $requests);
+                    usort($request, function($a, $b) {
+                        return $a['startDateTstamp'] <=> $b['startDateTstamp'];
+                    });
+                    $lifetime = 60 * 60 * 4; // 4 hours in seconds
+                    $cache->set($cacheIdentifier, $request, [], $lifetime);
+                }
+
+            }
+
+        } else {
+            $request = $cache->get($cacheIdentifier);
+        }
+
+        $this->view->assign('events', $request);
 
         $dtz = $this->eventRepository->getDateTimeZone() ;
 
@@ -106,11 +138,11 @@ class CurlController extends BaseController
 
     }
 
-    public function getEventsViaCurl( $settings ) {
+    public function getEventsViaCurl( $settings , $url ) {
 
         //  'https://tangov10.ddev.site/?id=110&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=1&tx_jvevents_ajax[eventsFilter][startDate]=0&tx_jvevents_ajax[mode]=onlyJson'
-        https://www.tangomuenchen.de/id=150&tx_jvevents_ajax%5Baction%5D=eventList&tx_jvevents_ajax%5Bcontroller%5D=Ajax&tx_jvevents_ajax%5Bmode%5D=onlyJson&tx_jvevents_ajax%5BeventsFilter%5D%5BstartDate%5D=-1&tx_jvevents_ajax%5BeventsFilter%5D%5Bcategories%5D=3
-        $url = trim( $settings["externalUrl"] )  . http_build_query( $settings['data']) ;
+        // https://www.tangomuenchen.de/id=150&tx_jvevents_ajax%5Baction%5D=eventList&tx_jvevents_ajax%5Bcontroller%5D=Ajax&tx_jvevents_ajax%5Bmode%5D=onlyJson&tx_jvevents_ajax%5BeventsFilter%5D%5BstartDate%5D=-1&tx_jvevents_ajax%5BeventsFilter%5D%5Bcategories%5D=3
+        $url = trim( $url ) . "&" . http_build_query( $settings['data']) ;
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
