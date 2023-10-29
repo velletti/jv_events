@@ -95,7 +95,7 @@ class CurlController extends BaseController
         $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('extbase_object');
         $cacheIdentifier = 'jv-events-curl_uid-' . (int)$GLOBALS['TSFE']->cObj->data['uid'];
 
-        if (!$cache->has($cacheIdentifier) || 1==1 ) {
+        if (!$cache->has($cacheIdentifier) ) {
             $urls = GeneralUtility::trimExplode("\n" , $this->settings["externalUrl"] ) ;
             $request = null;
             if( $urls ) {
