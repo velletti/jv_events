@@ -38,6 +38,12 @@
                             <p class="my-2 d-md-block d-sm-none d-xs-block max-3-lines mb-3 pb-2">
                                 <f:format.nl2br>{event.teaser}</f:format.nl2br>
                             </p>
+                            <small class="align-text-bottom position-bottom mb-3 jv-events-tagLine">
+                                <f:variable name="tagLine">
+                                    <f:for each="{event.tags}" as="Tag" iteration="iteration">{Tag.name}<f:if condition="{iteration.isLast}"><f:else>, </f:else></f:if> </f:for>
+                                </f:variable>
+                                {tagLine}
+                            </small>
                         </div>
 
                     </div>
