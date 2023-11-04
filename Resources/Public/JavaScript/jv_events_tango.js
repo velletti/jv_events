@@ -218,6 +218,11 @@ function jv_events_init_edit_tags() {
         $(".jv-events-cats-div INPUT").each(function() {
             if ($(this).prop("checked")) {
                 $(this).parent().addClass("event-checked") ;
+                if( $(this).parent().prop("title")) {
+                    $("#tx_jvevents-Category-help").html( $(this).parent().prop("title")).addClass("alert").addClass("alert-info") ;
+                } else {
+                    $("#tx_jvevents-Category-help").html( "").removeClass("alert").removeClass("alert-info") ;
+                }
             } else {
                 $(this).parent().removeClass("event-checked") ;
             }
