@@ -31,6 +31,17 @@ jQuery(document).ready(function() {
        document.cookie = 'tx_events_youtube_consens=true;' + expires + ';path=/';
        window.location.reload() ;
    }) ;
+    $("#jv_events_allDay").on("change" , function() {
+        if ( $("#jv_events_allDay").prop("checked") ) {
+            $("#jv-events-single-day").addClass("d-none");
+
+            $("#jv-events-multi-day").removeClass("d-none");
+        } else {
+            $("#jv-events-single-day").removeClass("d-none");
+            $("#jv-events-multi-day").addClass("d-none");
+        }
+
+    });
 
 
 

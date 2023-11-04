@@ -44,6 +44,7 @@ class EventValidator extends BaseValidator {
         $isValid = $this->securityChecks( $event->getIntrotextRegistrant() , 'introtextRegistrant' , $isValid ) ;
         $isValid = $this->securityChecks( $event->getIntrotextRegistrantConfirmed() , 'introtextRegistrantConfirmed' , $isValid ) ;
         $isValid = $this->securityChecks( $event->getStartDateFE() , 'startDateFE' , $isValid ) ;
+        $isValid = $this->securityChecks( $event->getEndDateFE() , 'endDateFE' , $isValid ) ;
         $isValid = $this->securityChecks( $event->getStartTimeFE() , 'startTimeFE' , $isValid ) ;
         $isValid = $this->securityChecks( $event->getEndTimeFE() , 'endTimeFE' , $isValid ) ;
         $isValid = $this->securityChecks( $event->getEntryTimeFE() , 'entryTimeFE' , $isValid ) ;
@@ -71,13 +72,19 @@ class EventValidator extends BaseValidator {
 
         $isValid = $this->isTagArray(  $event->getTagsFE() , 'tagsFE' , $isValid ) ;
         $isValid = $this->isStringDateValue( $event->getStartDateFE() , 'startDateFE' , $isValid ) ;
-        $isValid = $this->isStringTimeValue( $event->getStartTimeFE() , 'startTimeFE' , $isValid ) ;
-        if ( trim( strlen($event->getEndTimeFE()) > 0 )) {
-            $isValid = $this->isStringTimeValue( $event->getEndTimeFE() , 'endTimeFE' , $isValid ) ;
+        if ( $event->getAllDay() ) {
+            $isValid = $this->isStringDateValue( $event->getEndDateFE() , 'endDateFE' , $isValid ) ;
+        } else {
+            $isValid = $this->isStringTimeValue( $event->getStartTimeFE() , 'startTimeFE' , $isValid ) ;
+            if ( trim( strlen($event->getEndTimeFE()) > 0 )) {
+                $isValid = $this->isStringTimeValue( $event->getEndTimeFE() , 'endTimeFE' , $isValid ) ;
+            }
+            if ( trim( strlen($event->getEntryTimeFE()) > 0 )) {
+                $isValid = $this->isStringTimeValue($event->getEntryTimeFE(), 'entryTimeFE', $isValid);
+            }
         }
-        if ( trim( strlen($event->getEntryTimeFE()) > 0 )) {
-            $isValid = $this->isStringTimeValue($event->getEntryTimeFE(), 'entryTimeFE', $isValid);
-        }
+
+
         $isValid = $this->stringLengthIsValid($this->minLength['name'] , $this->maxLength['name'] , $event->getName() , 'name' , NULL , $isValid ) ;
         $isValid = $this->stringLengthIsValid($this->minLength['teaser'] , $this->maxLength['teaser'] , $event->getTeaser() , 'teaser' , NULL , $isValid ) ;
         $isValid = $this->stringLengthIsValid($this->minLength['introtextRegistrant'] , $this->maxLength['introtextRegistrant'] , $event->getIntrotextRegistrant() , 'introtextRegistrant' , NULL , $isValid ) ;

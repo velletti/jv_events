@@ -52,9 +52,15 @@
 					<div class="row">
 
 						<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_event.date" />:</strong></div>
-						<div class="col-md-8">{event.startDate -> f:format.date(format:"d.m.Y")}
-							<f:if condition="{event.startDate < event.endDate}">
-								<f:comment>- {event.endDate -> f:format.date(format:"d.m.Y")}</f:comment>
+						<div class="col-md-8">
+							<f:if condition="{event.startDate} < {event.endDate} && {event.allDay}">
+								<f:then>
+									{event.startDate -> f:format.date(format:"d.m")} - {event.endDate -> f:format.date(format:"d.m.Y")}
+								</f:then>
+								<f:else>
+									{event.startDate -> f:format.date(format:"d.m.Y")}
+								</f:else>
+
 							</f:if>
 						</div>
 

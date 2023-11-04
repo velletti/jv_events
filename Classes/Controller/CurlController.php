@@ -83,6 +83,9 @@ class CurlController extends BaseController
         if(  $this->settings['filter']["categories"] ) {
             $f["categories"] = $this->settings['filter']["categories"] ;
         }
+        if(  $this->settings['filter']["tags"] ) {
+            $f["tags"] = $this->settings['filter']["tags"] ;
+        }
 
         $this->settings['data']['tx_jvevents_ajax']['eventsFilter'] = $f  ;
         $this->settings['data']['tx_jvevents_ajax']['limit'] =  ($this->settings['filter']['maxevents'] > 0) ? intval($this->settings['filter']['maxevents']) : 999 ;

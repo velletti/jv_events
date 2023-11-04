@@ -30,8 +30,7 @@
 
 			<f:if condition="{object}">
 				<f:then>
-					<input type="checkbox" id="{property}" property="{property}" {f:if(condition: '{checked}' , then: 'checked')} id="{property}" value="1" data-onstyle="primary" data-offstyle="secondary" data-toggle="toggle" data-style="ios " data-on="{f:if(condition: '{checked}' , else: 'YES' , then: 'no' )}" data-off="{f:if(condition: '{checked}' , then:'YES!' , else: 'no' )}"/>
-					<input type="checkbox" id="{property}" name="{name}" {f:if(condition: '{checked}' , then: 'checked')} id="{property}" value="1" data-onstyle="primary" data-offstyle="secondary" data-toggle="toggle" data-style="ios " data-on="{f:if(condition: '{checked}' , else: 'YES' , then: 'no' )}" data-off="{f:if(condition: '{checked}' , then:'YES!' , else: 'no' )}"/>
+					<input type="checkbox" id="{property}" property="{propertyName}" {f:if(condition: '{checked}' , then: 'checked')}  value="1" data-onstyle="primary" data-offstyle="secondary" data-toggle="toggle" data-style="ios " data-on="{f:if(condition: '{checked}' , else: 'YES' , then: 'no' )}" data-off="{f:if(condition: '{checked}' , then:'YES!' , else: 'no' )}"/>
 				</f:then>
 				<f:else>
 					<f:form.checkbox id="jv_events_{propertyName}" property="{property}"  value="1" data="{onstyle: 'primary' , offstyle:'secondary' , toggle: 'toggle', style:'ios', on:'{onText}', off: '{offText}'}"/>

@@ -306,22 +306,29 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * Access Start Time of this event (default TYPO3 Field ) -> this does not wrk in TYPO3 10:  int|\DateTime|NULL
-     * @var \DateTime
+     * @var \DateTime|null
      */
     protected $starttime ;
 
     /**
      * Access End Time of this event (default TYPO3 Field ) -> this does not wrk in TYPO3 10:  int|\DateTime|NULL
-     * @var \DateTime
+     * @var \DateTime|null
      */
     protected $endtime ;
 
     /**
      * End Date of this event.  var \DateTime|int does  not work in TYPO3 LTS 10
-     * @var \DateTime
+     * @var \DateTime|null
 
      */
     protected $endDate = null;
+
+    /**
+     * End Date of this event. replacement for startDate but FE = for frontend Editing
+     *
+     * @var string|null
+     */
+    protected $endDateFE = null;
     
     /**
      * End time of this event
@@ -1056,10 +1063,10 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Sets the endDate
      *
-     * @param \DateTime $endDate
+     * @param \DateTime|null $endDate
      * @return void
      */
-    public function setEndDate(\DateTime $endDate)
+    public function setEndDate(?\DateTime $endDate)
     {
         $this->endDate = $endDate;
     }
@@ -2290,6 +2297,20 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function getStartDateFE()
     {
         return $this->startDateFE;
+    }
+    /**
+     * @return string
+     */
+    public function getEndDateFE()
+    {
+        return $this->endDateFE;
+    }
+    /**
+     * @param string $endDateFE
+     */
+    public function setEndDateFE($endDateFE)
+    {
+        $this->endDateFE = $endDateFE;
     }
 
     /**

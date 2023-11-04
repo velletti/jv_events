@@ -79,7 +79,9 @@ class EventController extends BaseController
             if ( property_exists( $this->arguments , "event")) {
                 $propertyMappingConfiguration = $this->arguments['event']->getPropertyMappingConfiguration();
                 $propertyMappingConfiguration->allowProperties('changeFutureEvents') ;
+
             }
+
 
         }
 
@@ -282,6 +284,7 @@ class EventController extends BaseController
             $today = new \DateTime ;
             $today->setTime(0,0,0 , 0) ;
             $event->setStartDate( $today ) ;
+            $event->setEndDate( $today ) ;
 
             /** @var Organizer $organizer */
             $organizer = $this->getOrganizer() ;
@@ -437,6 +440,12 @@ class EventController extends BaseController
                 if ( $event->getRegistrationFormPid() == $this->settings['EmConfiguration']['RegistrationFormPid'] ) {
                     $event->setRegistrationFormPid( 0);
                 }
+                if( $event->getAllDay()) {
+                    $event->setStartTime( 1 ) ;
+                    $event->setEndTime( (3600 * 23)  + (59*60) )  ;
+                } else {
+                    $event->setEndDate( $event->getStartDate() ) ;
+                }
                 $this->view->assign('event', $event);
                 $this->view->assign('categories', $categories);
                 $this->view->assign('tags', $tags);
@@ -483,6 +492,10 @@ class EventController extends BaseController
         $newDate = new \DateTime(  ) ;
         $newDate->setTimestamp($event->getStartDate()->getTimestamp()) ;
         $newDate->setTime(0,0,0);
+
+        $newEndDate = new \DateTime(  ) ;
+        $newEndDate->setTimestamp($event->getEndDate()->getTimestamp()) ;
+        $newEndDate->setTime(0,0,0);
 
         $addDays = intval( $copy2Day  ) ;
         $diff= date_interval_create_from_date_string( $addDays  . " days") ;
@@ -539,7 +552,9 @@ class EventController extends BaseController
                 $newEvent->setMasterId( 0 ) ;
             }
             $newDate->add( $diff) ;
+            $newEndDate->add($diff) ;
             $newEvent->setStartDate($newDate ) ;
+            $newEvent->setEndDate($newEndDate ) ;
             /** @var \DateTime $newRegDate */
             $newRegDate = new \DateTime(  ) ;
             $newRegTimestamp= $newEvent->getStartDate()->getTimestamp() ;
@@ -1082,19 +1097,37 @@ class EventController extends BaseController
                 }
             }
         }
+
+        $isAllDay = $eventArray['allDay'] ? 1 : 0 ;
+        $event->setAllDay($isAllDay);
+
         $stD = \DateTime::createFromFormat('d.m.Y', $eventArray['startDateFE']  );
         $stD->setTime(0,0,0,0 ) ;
         $event->setStartDate( $stD ) ;
+        if ( $isAllDay ) {
+            echo $eventArray['endDateFE'] ;
+            $enD = \DateTime::createFromFormat('d.m.Y', $eventArray['endDateFE']  );
+            $enD->setTime(23,59,59,0 ) ;
+            $event->setEndDate( $enD ) ;
+            $event->setStartTime( 1 ) ;
+            $event->setEndTime( (3600 * 23)  + (59*60))  ;
 
-        $startT =  ( intval( substr( $eventArray['startTimeFE']  , 0,2 ) ) * 3600 )
-                    + ( intval( substr( $eventArray['startTimeFE']  , 3,2 ) ) * 60 ) ;
-        $event->setStartTime( $startT ) ;
-        if ( trim($eventArray['endTimeFE'] == "00:00")) {
-            $endT = ((3600 * 23)  + (59*60)) ;
         } else {
-            $endT =  ( intval( substr( $eventArray['endTimeFE']  , 0,2 ) ) * 3600 )
-                + ( intval( substr( $eventArray['endTimeFE']  , 3,2 ) ) * 60  ) ;
+            $event->setEndDate( $stD ) ;
+
+            $startT =  ( intval( substr( $eventArray['startTimeFE']  , 0,2 ) ) * 3600 )
+                + ( intval( substr( $eventArray['startTimeFE']  , 3,2 ) ) * 60 ) ;
+            $event->setStartTime( $startT ) ;
+
+
+            if ( trim($eventArray['endTimeFE'] == "00:00")) {
+                $endT = ((3600 * 23)  + (59*60)) ;
+            } else {
+                $endT =  ( intval( substr( $eventArray['endTimeFE']  , 0,2 ) ) * 3600 )
+                    + ( intval( substr( $eventArray['endTimeFE']  , 3,2 ) ) * 60  ) ;
+            }
         }
+
 
         $event->setEndTime( $endT ) ;
 
