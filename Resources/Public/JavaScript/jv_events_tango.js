@@ -223,6 +223,25 @@ function jv_events_init_edit_tags() {
                 } else {
                     $("#tx_jvevents-Category-help").html( "").removeClass("alert").removeClass("alert-info") ;
                 }
+                let allDay = $(this).parent().data("allow-allday") ;
+                let allDaySwith = $("#jv_events_allDay");
+                if ( parseInt(allDay) === -1 ) {
+                    if ( allDaySwith.val('').prop('checked') ) {
+                        allDaySwith.parent().toggleClass("btn-primary").toggleClass("btn-secondary").toggleClass("off")
+                    }
+                    $("#jv-events-single-day").removeClass("d-none");
+                    $("#jv-events-multi-day").addClass("d-none");
+                    allDaySwith.val('').prop('checked' , false) ;
+                } else if (  parseInt(allDay) === 1) {
+                    if ( ! allDaySwith.val('').prop('checked') ) {
+                        allDaySwith.parent().toggleClass("btn-primary").toggleClass("btn-secondary").toggleClass("off")
+                    }
+                    allDaySwith.val('1').prop('checked' , true) ;
+                    $("#jv-events-single-day").addClass("d-none");
+
+                    $("#jv-events-multi-day").removeClass("d-none");
+                }
+
             } else {
                 $(this).parent().removeClass("event-checked") ;
             }

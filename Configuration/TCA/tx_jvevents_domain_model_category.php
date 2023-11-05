@@ -41,7 +41,7 @@ return array(
 		'iconfile' =>  'EXT:jv_events/Resources/Public/Icons/tx_jvevents_domain_model_category.gif'
 	),
 	'types' => array(
-		'1' => array('showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden,--palette--;;1, title, type, description, block_registration' ,
+		'1' => array('showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden,--palette--;;1, title, type, description, block_registration,all_day' ,
                      'columnsOverrides' => array(
                          'sys_language_uid' => array(
                             // 'defaultExtras' => ';;;1-1-1'
@@ -139,9 +139,28 @@ return array(
 				),
 				'size' => 1,
 				'maxitems' => 1,
-				'eval' => 'trim'
+				'eval' => 'int'
 			),
 		),
+        'all_day' => array(
+            'exclude' => 1,
+            'displayCond' => 'FIELD:type:=:0' ,
+            'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_category.all_day',
+            'config' => array(
+                'type' => 'select',
+                'default' => '0' ,
+                'renderType' => 'selectSingle',
+                'items' => array(
+                    array('LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_category.all_day.default', '0'),
+                    array('LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_category.all_day.not_allowed', '-1'),
+                    array('LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_category.all_day.only_allowed', '1'),
+
+                ),
+                'size' => 1,
+                'maxitems' => 1,
+                'eval' => 'trim'
+            ),
+        ),
 		'block_registration' => array(
 			'exclude' => 0,
 			'displayCond' => 'FIELD:type:=:0' ,

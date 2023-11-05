@@ -40,6 +40,13 @@ class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $sorting ;
 
     /**
+     * name
+     *
+     * @var integer
+     */
+    protected $allDay ;
+
+    /**
      * title
      *
      * @var string
@@ -160,6 +167,21 @@ class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         $this->sorting = $sorting;
     }
+
+    public function getAllDay(): int
+    {
+        if( is_null($this->allDay)) {
+            return 0 ;
+        }
+        return $this->allDay;
+    }
+
+    public function setAllDay(int $allDay): void
+    {
+        $this->allDay = $allDay;
+    }
+
+
 
     
 }

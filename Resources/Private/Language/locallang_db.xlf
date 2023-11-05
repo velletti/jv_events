@@ -14,6 +14,18 @@
             <trans-unit id="tx_jvevents_domain_model_category.description">
                 <source>Description</source>
             </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_category.all_day">
+                <source>All Day Event</source>
+            </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_category.all_day.not_allowed">
+                <source>Not Allowed</source>
+            </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_category.all_day.only_allowed">
+                <source>Only Allday</source>
+            </trans-unit>
+             <trans-unit id="tx_jvevents_domain_model_category.all_day.default">
+                <source>All (default)</source>
+            </trans-unit>
 
             <trans-unit id="tx_jvevents_domain_model_organizer.latest_event">
                 <source>Latest Event</source>
