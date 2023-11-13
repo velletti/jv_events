@@ -494,7 +494,7 @@ class EventController extends BaseController
         $newDate->setTime(0,0,0);
 
         $newEndDate = new \DateTime(  ) ;
-        $newEndDate->setTimestamp($event->getEndDate()->getTimestamp()) ;
+        $newEndDate->setTimestamp( ($event->getEndDate()) ? $event->getEndDate()->getTimestamp() : $event->getStartDate()->getTimestamp()) ;
         $newEndDate->setTime(0,0,0);
 
         $addDays = intval( $copy2Day  ) ;
@@ -502,10 +502,9 @@ class EventController extends BaseController
 
         for ( $i=1 ;$i<= $amount ; $i++) {
             /** @var Event $newEvent */
+            $newEvent = GeneralUtility::makeInstance(Event::class) ;
 
-            $newEvent = $this->objectManager->get( \JVE\JvEvents\Domain\Model\Event::class)  ;
-
-            $properties = $event->_getProperties() ;
+            $properties =  $event->_getCleanProperties() ;
             unset($properties['uid']) ;
 
             // copy  most properties
