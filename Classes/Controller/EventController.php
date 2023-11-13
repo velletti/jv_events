@@ -504,7 +504,7 @@ class EventController extends BaseController
             /** @var Event $newEvent */
             $newEvent = GeneralUtility::makeInstance(Event::class) ;
 
-            $properties =  $event->_getCleanProperties() ;
+            $properties =  $event->_getProperties() ;
             unset($properties['uid']) ;
 
             // copy  most properties
