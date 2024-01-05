@@ -18,10 +18,10 @@ $EM_CONF['jv_events'] = array(
 	'author_email' => 'typo3@velletti.de',
 	'state' => 'stable',
 	'clearCacheOnLoad' => true,
-	'version' => '10.4.2',
+	'version' => '12.4.0',
 	'constraints' => array(
 		'depends' => array(
-			'typo3' => '10.4.0-11.5.99',
+			'typo3' => '12.4.0-12.4.99',
 		),
 		'conflicts' => array(
 		),
