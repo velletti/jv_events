@@ -87,7 +87,7 @@ class OrganizerRepository extends BaseRepository
             $constraints2[] = $query->logicalOr(...$constraints);
             $constraints2[] = $query->equals('deleted',  0 );
 
-            $query->matching( $query->logicalAnd(...$constraints2) ;
+            $query->matching( $query->logicalAnd(...$constraints2)) ;
         } else {
             $query->matching( $query->logicalOr(...$constraints) ) ;
         }
