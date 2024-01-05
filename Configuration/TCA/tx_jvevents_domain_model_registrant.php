@@ -1,9 +1,13 @@
 <?php
 
+use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Resource\File;
 defined('TYPO3') or die();
 
-/** @var \TYPO3\CMS\Core\Information\Typo3Version $version */
-$version = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Information\Typo3Version::class);
+/** @var Typo3Version $version */
+$version = GeneralUtility::makeInstance(Typo3Version::class);
 
 if ($version->getMajorVersion()  < 11) {
     // to Check if we need this
@@ -28,7 +32,6 @@ return array(
 		'label_alt_force' => TRUE ,
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
-		'cruser_id' => 'cruser_id',
 		'versioningWS' => TRUE,
 
 		'languageField' => 'sys_language_uid',
@@ -62,7 +65,7 @@ return array(
 				'type' => 'select',
 				'renderType' => 'selectSingle',
 				'items' => array(
-					array('', 0),
+					array('label' => '', 'value' => 0),
 				),
 				'foreign_table' => 'tx_jvevents_domain_model_registrant',
 				'foreign_table_where' => 'AND tx_jvevents_domain_model_registrant.pid=###CURRENT_PID### AND tx_jvevents_domain_model_registrant.sys_language_uid IN (-1,0)',
@@ -77,13 +80,11 @@ return array(
             'exclude' => 1,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
             'config' => array(
-                'type' => 'input',
-                'renderType' => 'inputDateTime' ,
+                'type' => 'datetime' ,
                 'behaviour' => array(
                     'allowLanguageSynchronization' => true ,
                 ) ,
                 'size' => 13,
-                'eval' => 'datetime,int',
                 'checkbox' => 0,
                 'default' => 0,
 
@@ -93,13 +94,11 @@ return array(
             'exclude' => 1,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
             'config' => array(
-                'type' => 'input',
-                'renderType' => 'inputDateTime' ,
+                'type' => 'datetime' ,
                 'behaviour' => array(
                     'allowLanguageSynchronization' => true ,
                 ) ,
                 'size' => 13,
-                'eval' => 'datetime,int',
                 'checkbox' => 0,
                 'default' => 0,
 
@@ -469,27 +468,24 @@ return array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_registrant.more6int',
 			'config' => array(
-				'type' => 'input',
-				'size' => 4,
-				'eval' => 'int'
+				'type' => 'number',
+				'size' => 4
 			)
 		),
 		'more7date' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_registrant.more7date',
 			'config' => array(
-				'type' => 'input',
-				'renderType' => 'inputDateTime',
+				'type' => 'datetime',
 				'size' => 7,
-				'eval' => 'date',
 				'checkbox' => 1,
-				'default' => time()
+				'format' => 'date'
 			),
 		),
 		'more8file' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_registrant.more8file',
-			'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
+			'config' => ExtensionManagementUtility::getFileFieldTCAConfig(
 				'more8file',
 				array(
 					'appearance' => array(
@@ -502,27 +498,27 @@ return array(
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
 						),
-						\TYPO3\CMS\Core\Resource\File::FILETYPE_TEXT => array(
+						File::FILETYPE_TEXT => array(
 							'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
 						),
-						\TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => array(
+						File::FILETYPE_IMAGE => array(
 							'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
 						),
-						\TYPO3\CMS\Core\Resource\File::FILETYPE_AUDIO => array(
+						File::FILETYPE_AUDIO => array(
 							'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
 						),
-						\TYPO3\CMS\Core\Resource\File::FILETYPE_VIDEO => array(
+						File::FILETYPE_VIDEO => array(
 							'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
 						),
-						\TYPO3\CMS\Core\Resource\File::FILETYPE_APPLICATION => array(
+						File::FILETYPE_APPLICATION => array(
 							'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'

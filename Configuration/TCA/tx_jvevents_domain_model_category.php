@@ -1,9 +1,11 @@
 <?php
 
+use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 defined('TYPO3') or die();
 
-/** @var \TYPO3\CMS\Core\Information\Typo3Version $version */
-$version = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Information\Typo3Version::class);
+/** @var Typo3Version $version */
+$version = GeneralUtility::makeInstance(Typo3Version::class);
 
 if ($version->getMajorVersion()  < 11) {
     // to Check if we need this
@@ -26,7 +28,6 @@ return array(
 		'label' => 'title',
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
-		'cruser_id' => 'cruser_id',
 		'sortby' => 'sorting',
 		'versioningWS' => TRUE,
 		'languageField' => 'sys_language_uid',
@@ -69,7 +70,7 @@ return array(
 				'type' => 'select',
 				'renderType' => 'selectSingle',
 				'items' => array(
-					array('', 0),
+					array('label' => '', 'value' => 0),
 				),
 				'foreign_table' => 'tx_jvevents_domain_model_category',
 				'foreign_table_where' => 'AND tx_jvevents_domain_model_category.pid=###CURRENT_PID### AND tx_jvevents_domain_model_category.sys_language_uid IN (-1,0)',
@@ -112,7 +113,8 @@ return array(
 			'config' => array(
 				'type' => 'input',
 				'size' => 30,
-				'eval' => 'trim,required'
+				'eval' => 'trim',
+    'required' => true
 			),
 		),
         'description' => array(
@@ -132,9 +134,9 @@ return array(
                 'onChange' => 'reload' ,
 				'renderType' => 'selectSingle',
 				'items' => array(
-					array('Event Category', '0'),
-					array('Location Category', '1'),
-					array('Organizer Category', '2'),
+					array('label' => 'Event Category', 'value' => '0'),
+					array('label' => 'Location Category', 'value' => '1'),
+					array('label' => 'Organizer Category', 'value' => '2'),
 
 				),
 				'size' => 1,
@@ -151,9 +153,9 @@ return array(
                 'default' => '0' ,
                 'renderType' => 'selectSingle',
                 'items' => array(
-                    array('LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_category.all_day.default', '0'),
-                    array('LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_category.all_day.not_allowed', '-1'),
-                    array('LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_category.all_day.only_allowed', '1'),
+                    array('label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_category.all_day.default', 'value' => '0'),
+                    array('label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_category.all_day.not_allowed', 'value' => '-1'),
+                    array('label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_category.all_day.only_allowed', 'value' => '1'),
 
                 ),
                 'size' => 1,

@@ -1,9 +1,11 @@
 <?php
 
+use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 defined('TYPO3') or die();
 
-/** @var \TYPO3\CMS\Core\Information\Typo3Version $version */
-$version = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Information\Typo3Version::class);
+/** @var Typo3Version $version */
+$version = GeneralUtility::makeInstance(Typo3Version::class);
 
 if ($version->getMajorVersion()  < 11) {
     // to Check if we need this
@@ -26,7 +28,6 @@ return array(
 		'label' => 'name',
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
-		'cruser_id' => 'cruser_id',
 		'versioningWS' => FALSE ,
         'default_sortby' => 'name ASC',
 		'languageField' => 'sys_language_uid',
@@ -61,7 +62,7 @@ return array(
 				'type' => 'select',
 				'renderType' => 'selectSingle',
 				'items' => array(
-					array('', 0),
+					array('label' => '', 'value' => 0),
 				),
 				'foreign_table' => 'tx_jvevents_domain_model_tag',
 				'foreign_table_where' => 'AND tx_jvevents_domain_model_tag.pid=###CURRENT_PID### AND tx_jvevents_domain_model_tag.sys_language_uid IN (-1,0)',
@@ -94,13 +95,11 @@ return array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
 			'config' => array(
-				'type' => 'input',
-				'renderType' => 'inputDateTime',
+				'type' => 'datetime',
 				'size' => 13,
                 'behaviour' => array(
                     'allowLanguageSynchronization' => true ,
-                ) ,
-				'eval' => 'datetime',
+                ),
 				'checkbox' => 0,
 				'default' => 0,
 			),
@@ -109,13 +108,11 @@ return array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
 			'config' => array(
-				'type' => 'input',
-                'renderType' => 'inputDateTime',
+				'type' => 'datetime',
 				'size' => 13,
                 'behaviour' => array(
                     'allowLanguageSynchronization' => true ,
-                ) ,
-				'eval' => 'datetime',
+                ),
 				'checkbox' => 0,
 				'default' => 0,
 			),
@@ -147,9 +144,9 @@ return array(
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => array(
-                    array('LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_tag.visibility.default', 0),
-                    array('LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_tag.visibility.hiddenInFilter', 1),
-                    array('LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_tag.visibility.onlyVisibleInBackend', 2),
+                    array('label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_tag.visibility.default', 'value' => 0),
+                    array('label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_tag.visibility.hiddenInFilter', 'value' => 1),
+                    array('label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_tag.visibility.onlyVisibleInBackend', 'value' => 2),
                 ),
                 'behaviour' => array(
                     'allowLanguageSynchronization' => true ,
@@ -166,9 +163,9 @@ return array(
                 'onChange' => 'reload' ,
                 'renderType' => 'selectSingle',
                 'items' => array(
-                    array('Event Tag', '0'),
-                    array('Location Tag', '1'),
-                    array('Organizer Tag', '2'),
+                    array('label' => 'Event Tag', 'value' => '0'),
+                    array('label' => 'Location Tag', 'value' => '1'),
+                    array('label' => 'Organizer Tag', 'value' => '2'),
 
                 ),
                 'size' => 1,
@@ -185,8 +182,8 @@ return array(
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
                 'items' => [
-                    ['LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_tag.all_categories', 0],
-                    ['-------', '--div--'],
+                    ['label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_tag.all_categories', 'value' => 0],
+                    ['label' => '-------', 'value' => '--div--'],
                 ],
                 'foreign_table' => 'tx_jvevents_domain_model_category',
 

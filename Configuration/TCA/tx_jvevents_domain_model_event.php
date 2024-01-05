@@ -1,10 +1,15 @@
 <?php
 
+use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Resource\File;
+use JVE\JvEvents\Utility\EmConfigurationUtility;
 defined('TYPO3') or die();
 
 
-/** @var \TYPO3\CMS\Core\Information\Typo3Version $version */
-$version = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Information\Typo3Version::class);
+/** @var Typo3Version $version */
+$version = GeneralUtility::makeInstance(Typo3Version::class);
 
 if ($version->getMajorVersion()  < 11) {
     // to Check if we need this
@@ -101,7 +106,7 @@ $returnArray = array(
                 'default' => 0,
 				'renderType' => 'selectSingle',
 				'items' => array(
-					array('', 0),
+					array('label' => '', 'value' => 0),
 				),
 				'foreign_table' => 'tx_jvevents_domain_model_event',
 				'foreign_table_where' => 'AND tx_jvevents_domain_model_event.pid=###CURRENT_PID### AND tx_jvevents_domain_model_event.sys_language_uid IN (-1,0)',
@@ -116,8 +121,7 @@ $returnArray = array(
             'exclude' => 1,
             'label' => 'Creation date',
             'config' => Array (
-                'type' => 'input',
-                'eval' => 'int',
+                'type' => 'number',
             )
         ),
         'tstamp' => Array (
@@ -138,8 +142,7 @@ $returnArray = array(
             'exclude' => 1,
             'label' => 'Last modification in Frontend by frontenduser UID',
             'config' => Array (
-                'type' => 'input',
-                'eval' => 'int',
+                'type' => 'number',
             )
         ),
 		't3ver_label' => array(
@@ -176,12 +179,11 @@ $returnArray = array(
             'exclude' => 1,
             'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.viewed',
             'config' => array(
-                'type' => 'input',
+                'type' => 'number',
                 'behaviour' => array(
                     'allowLanguageSynchronization' => true ,
                 ) ,
                 'size' => 13,
-                'eval' => 'int',
                 'default' => 0,
 
             ),
@@ -190,13 +192,11 @@ $returnArray = array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
 			'config' => array(
-				'type' => 'input',
-                'renderType' => 'inputDateTime' ,
+				'type' => 'datetime' ,
                 'behaviour' => array(
                     'allowLanguageSynchronization' => true ,
                 ) ,
 				'size' => 18,
-				'eval' => 'datetime,int',
 				'checkbox' => 0,
 				'default' => 0,
 
@@ -206,13 +206,11 @@ $returnArray = array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
 			'config' => array(
-				'type' => 'input',
-                'renderType' => 'inputDateTime' ,
+				'type' => 'datetime' ,
                 'behaviour' => array(
                     'allowLanguageSynchronization' => true ,
                 ) ,
 				'size' => 13,
-				'eval' => 'datetime,int',
 				'checkbox' => 0,
 				'default' => 0,
 
@@ -227,13 +225,13 @@ $returnArray = array(
 				'type' => 'select',
 				'renderType' => 'selectSingle',
 				'items' => array(
-					array('LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.event_type.link', 0),
-					array('LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.event_type.default', 2),
+					array('label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.event_type.link', 'value' => 0),
+					array('label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.event_type.default', 'value' => 2),
 				),
 				'size' => 1,
 				'maxitems' => 1,
 				'default' => 2,
-				'eval' => 'required'
+				'required' => true
 			),
 			'default' => 2,
 		),
@@ -243,7 +241,8 @@ $returnArray = array(
 			'config' => array(
 				'type' => 'input',
 				'size' => 30,
-				'eval' => 'trim,required',
+				'eval' => 'trim',
+    'required' => true,
 
 			),
 		),
@@ -261,9 +260,9 @@ $returnArray = array(
             'exclude' => 1,
             'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.price',
             'config' => array(
-                'type' => 'input',
+                'type' => 'number',
                 'size' => 10,
-                'eval' => 'double2'
+                'format' => 'decimal'
             ),
         ),
         'currency' => array(
@@ -273,10 +272,10 @@ $returnArray = array(
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => array(
-                    array('€ (Euro)', '€'),
-                    array('$ (Dollar)', '$'),
-                    array('£ (GDP)', '£'),
-                    array('CHF', 'CHF'),
+                    array('label' => '€ (Euro)', 'value' => '€'),
+                    array('label' => '$ (Dollar)', 'value' => '$'),
+                    array('label' => '£ (GDP)', 'value' => '£'),
+                    array('label' => 'CHF', 'value' => 'CHF'),
                 ),
                 'size' => 1,
                 'maxitems' => 1,
@@ -286,9 +285,9 @@ $returnArray = array(
             'exclude' => 1,
             'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.priceReduced',
             'config' => array(
-                'type' => 'input',
+                'type' => 'number',
                 'size' => 10,
-                'eval' => 'double2'
+                'format' => 'decimal'
             ),
         ),
         'price_reduced_text' => array(
@@ -308,9 +307,10 @@ $returnArray = array(
                 'renderType' => 'inputLink' ,
                 'size' => 30,
 				'max' => 255,
-				'eval' => 'trim,required',
+				'eval' => 'trim',
 
-				'softref' => 'typolink'
+				'softref' => 'typolink',
+    'required' => true
 			]
 		],
 
@@ -339,7 +339,7 @@ $returnArray = array(
 		'teaser_image' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.teaserImage',
-			'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
+			'config' => ExtensionManagementUtility::getFileFieldTCAConfig(
 				'teaser_image',
 				array(
 					'appearance' => array(
@@ -351,27 +351,27 @@ $returnArray = array(
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
 						),
-						\TYPO3\CMS\Core\Resource\File::FILETYPE_TEXT => array(
+						File::FILETYPE_TEXT => array(
 							'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
 						),
-						\TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => array(
+						File::FILETYPE_IMAGE => array(
 							'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
 						),
-						\TYPO3\CMS\Core\Resource\File::FILETYPE_AUDIO => array(
+						File::FILETYPE_AUDIO => array(
 							'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
 						),
-						\TYPO3\CMS\Core\Resource\File::FILETYPE_VIDEO => array(
+						File::FILETYPE_VIDEO => array(
 							'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
 						),
-						\TYPO3\CMS\Core\Resource\File::FILETYPE_APPLICATION => array(
+						File::FILETYPE_APPLICATION => array(
 							'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
@@ -385,7 +385,7 @@ $returnArray = array(
 		'images' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.images',
-			'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
+			'config' => ExtensionManagementUtility::getFileFieldTCAConfig(
 				'images',
 				array(
 					'appearance' => array(
@@ -397,27 +397,27 @@ $returnArray = array(
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
 						),
-						\TYPO3\CMS\Core\Resource\File::FILETYPE_TEXT => array(
+						File::FILETYPE_TEXT => array(
 							'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
 						),
-						\TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => array(
+						File::FILETYPE_IMAGE => array(
 							'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
 						),
-						\TYPO3\CMS\Core\Resource\File::FILETYPE_AUDIO => array(
+						File::FILETYPE_AUDIO => array(
 							'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
 						),
-						\TYPO3\CMS\Core\Resource\File::FILETYPE_VIDEO => array(
+						File::FILETYPE_VIDEO => array(
 							'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
 						),
-						\TYPO3\CMS\Core\Resource\File::FILETYPE_APPLICATION => array(
+						File::FILETYPE_APPLICATION => array(
 							'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
@@ -431,7 +431,7 @@ $returnArray = array(
 		'files' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.files',
-			'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
+			'config' => ExtensionManagementUtility::getFileFieldTCAConfig(
 				'files',
 				array(
 					'appearance' => array(
@@ -443,27 +443,27 @@ $returnArray = array(
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
 						),
-						\TYPO3\CMS\Core\Resource\File::FILETYPE_TEXT => array(
+						File::FILETYPE_TEXT => array(
 							'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
 						),
-						\TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => array(
+						File::FILETYPE_IMAGE => array(
 							'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
 						),
-						\TYPO3\CMS\Core\Resource\File::FILETYPE_AUDIO => array(
+						File::FILETYPE_AUDIO => array(
 							'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
 						),
-						\TYPO3\CMS\Core\Resource\File::FILETYPE_VIDEO => array(
+						File::FILETYPE_VIDEO => array(
 							'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
 						),
-						\TYPO3\CMS\Core\Resource\File::FILETYPE_APPLICATION => array(
+						File::FILETYPE_APPLICATION => array(
 							'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
@@ -477,7 +477,7 @@ $returnArray = array(
         'files_after_reg' => array(
             'exclude' => 1,
             'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.filesAfterReg',
-            'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
+            'config' => ExtensionManagementUtility::getFileFieldTCAConfig(
                 'files_after_reg',
                 array(
                     'appearance' => array(
@@ -489,27 +489,27 @@ $returnArray = array(
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
                         ),
-                        \TYPO3\CMS\Core\Resource\File::FILETYPE_TEXT => array(
+                        File::FILETYPE_TEXT => array(
                             'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
                         ),
-                        \TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => array(
+                        File::FILETYPE_IMAGE => array(
                             'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
                         ),
-                        \TYPO3\CMS\Core\Resource\File::FILETYPE_AUDIO => array(
+                        File::FILETYPE_AUDIO => array(
                             'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
                         ),
-                        \TYPO3\CMS\Core\Resource\File::FILETYPE_VIDEO => array(
+                        File::FILETYPE_VIDEO => array(
                             'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
                         ),
-                        \TYPO3\CMS\Core\Resource\File::FILETYPE_APPLICATION => array(
+                        File::FILETYPE_APPLICATION => array(
                             'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
@@ -523,7 +523,7 @@ $returnArray = array(
         'files_after_event' => array(
             'exclude' => 1,
             'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.filesAfterEvent',
-            'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
+            'config' => ExtensionManagementUtility::getFileFieldTCAConfig(
                 'files_after_event',
                 array(
                     'appearance' => array(
@@ -535,27 +535,27 @@ $returnArray = array(
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
                         ),
-                        \TYPO3\CMS\Core\Resource\File::FILETYPE_TEXT => array(
+                        File::FILETYPE_TEXT => array(
                             'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
                         ),
-                        \TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => array(
+                        File::FILETYPE_IMAGE => array(
                             'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
                         ),
-                        \TYPO3\CMS\Core\Resource\File::FILETYPE_AUDIO => array(
+                        File::FILETYPE_AUDIO => array(
                             'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
                         ),
-                        \TYPO3\CMS\Core\Resource\File::FILETYPE_VIDEO => array(
+                        File::FILETYPE_VIDEO => array(
                             'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
                         ),
-                        \TYPO3\CMS\Core\Resource\File::FILETYPE_APPLICATION => array(
+                        File::FILETYPE_APPLICATION => array(
                             'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
@@ -580,12 +580,11 @@ $returnArray = array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.start_date',
 			'config' => array(
-				'type' => 'input',
-				'renderType' => 'inputDateTime',
+				'type' => 'datetime',
 				'size' => 13,
-				'eval' => 'date,required',
 				'checkbox' => 1,
-				'default' => time(),
+    'format' => 'date',
+    'required' => true,
 
 			),
 		),
@@ -594,12 +593,9 @@ $returnArray = array(
 			'displayCond' => 'FIELD:all_day:REQ:FALSE' ,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.start_time',
 			'config' => array(
-				'type' => 'input',
-                'renderType' => 'inputDateTime',
+				'type' => 'datetime',
 				'size' => 4,
-				'eval' => 'time,int',
 				'checkbox' => 1,
-				'default' => time(),
                 'fieldControl' => [
                     'showEvent' => [
                         'renderType' => 'showEventInFrontend'
@@ -607,7 +603,8 @@ $returnArray = array(
                     'dowloadIcal' => [
                         'renderType' => 'getIcalLink'
                     ]
-                ]
+                ],
+                'format' => 'time'
 			)
 		),
         'entry_time' => array(
@@ -615,11 +612,10 @@ $returnArray = array(
             'displayCond' => 'FIELD:all_day:REQ:FALSE' ,
             'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.entry_time',
             'config' => array(
-                'type' => 'input',
-                'renderType' => 'inputDateTime',
+                'type' => 'datetime',
                 'size' => 4,
-                'eval' => 'time,int',
                 'checkbox' => 1,
+                'format' => 'time',
 
             )
         ),
@@ -628,11 +624,10 @@ $returnArray = array(
 
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.end_date',
 			'config' => array(
-				'type' => 'input',
-                'renderType' => 'inputDateTime',
+				'type' => 'datetime',
 				'size' => 7,
-				'eval' => 'date',
 				'checkbox' => 1,
+    'format' => 'date',
 			),
 		),
 		'end_time' => array(
@@ -640,11 +635,10 @@ $returnArray = array(
 			'displayCond' => 'FIELD:all_day:REQ:FALSE' ,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.end_time',
 			'config' => array(
-				'type' => 'input',
-                'renderType' => 'inputDateTime',
+				'type' => 'datetime',
 				'size' => 4,
-				'eval' => 'time,int',
 				'checkbox' => 1,
+    'format' => 'time',
 			)
 		),
 		'access' => array(
@@ -657,16 +651,16 @@ $returnArray = array(
 				'maxitems' => 20,
 				'items' => array(
 					array(
-						'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hide_at_login',
-						-1
+						'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hide_at_login',
+						'value' => -1
 					),
 					array(
-						'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.any_login',
-						-2
+						'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.any_login',
+						'value' => -2
 					),
 					array(
-						'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.usergroups',
-						'--div--'
+						'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.usergroups',
+						'value' => '--div--'
 					)
 				),
 				'exclusiveKeys' => '-1,-2',
@@ -702,7 +696,6 @@ $returnArray = array(
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.registrationFormPid',
 			'config' => array(
 				'type' => 'group',
-				'internal_type' => 'db',
 				'allowed' => 'pages',
 				'foreign_table' => 'pages',
 				'size' => 1,
@@ -721,7 +714,6 @@ $returnArray = array(
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.registrationPid',
 			'config' => array(
 				'type' => 'group',
-				'internal_type' => 'db',
 				'allowed' => 'pages',
 				'foreign_table' => 'pages',
 				'size' => 1,
@@ -739,10 +731,8 @@ $returnArray = array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.registration_until',
 			'config' => array(
-				'type' => 'input',
-                'renderType' => 'inputDateTime',
+				'type' => 'datetime',
 				'size' => 14,
-				'eval' => 'datetime',
 
 			),
 		),
@@ -765,24 +755,24 @@ $returnArray = array(
                 'renderType' => 'selectSingle',
                 'items' => array(
                     array(
-                        'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.registration_gender.none',
-                        0
+                        'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.registration_gender.none',
+                        'value' => 0
                     ),
                     array(
-                        'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.registration_gender.male',
-                        1
+                        'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.registration_gender.male',
+                        'value' => 1
                     ),
                     array(
-                        'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.registration_gender.female',
-                        2
+                        'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.registration_gender.female',
+                        'value' => 2
                     ),
                     array(
-                        'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.registration_gender.couples',
-                        3
+                        'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.registration_gender.couples',
+                        'value' => 3
                     ),
                     array(
-                        'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.registration_gender.single',
-                        -1
+                        'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.registration_gender.single',
+                        'value' => -1
                     ),
                 ),
                 'size' => 1,
@@ -801,16 +791,16 @@ $returnArray = array(
 				'maxitems' => 20,
 				'items' => array(
 					array(
-						'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hide_at_login',
-						-1
+						'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hide_at_login',
+						'value' => -1
 					),
 					array(
-						'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.any_login',
-						-2
+						'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.any_login',
+						'value' => -2
 					),
 					array(
-						'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.usergroups',
-						'--div--'
+						'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.usergroups',
+						'value' => '--div--'
 					)
 				),
 				'exclusiveKeys' => '-1,-2',
@@ -942,9 +932,8 @@ $returnArray = array(
 			'displayCond' => 'FIELD:with_registration:REQ:TRUE' ,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.available_seats',
 			'config' => array(
-				'type' => 'input',
-				'size' => 4,
-				'eval' => 'int'
+				'type' => 'number',
+				'size' => 4
 			)
 		),
 		'available_waiting_seats' => array(
@@ -952,9 +941,8 @@ $returnArray = array(
 			'displayCond' => 'FIELD:with_registration:REQ:TRUE' ,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.available_waiting_seats',
 			'config' => array(
-				'type' => 'input',
-				'size' => 4,
-				'eval' => 'int'
+				'type' => 'number',
+				'size' => 4
 			)
 		),
 		'registered_seats' => array(
@@ -962,9 +950,8 @@ $returnArray = array(
 			'displayCond' => 'FIELD:with_registration:REQ:TRUE' ,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.registered_seats',
 			'config' => array(
-				'type' => 'input',
-				'size' => 4,
-				'eval' => 'int'
+				'type' => 'number',
+				'size' => 4
 			)
 		),
 		'unconfirmed_seats' => array(
@@ -972,9 +959,8 @@ $returnArray = array(
 			'displayCond' => 'FIELD:with_registration:REQ:TRUE' ,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.unconfirmed_seats',
 			'config' => array(
-				'type' => 'input',
+				'type' => 'number',
 				'size' => 4,
-				'eval' => 'int',
 			),
 		),
 		'notify_organizer' => array(
@@ -1085,7 +1071,7 @@ $returnArray = array(
 				'type' => 'select',
 				'renderType' => 'selectSingle',
 				'items' => array(
-					array('-- Label --', 0),
+					array('label' => '-- Label --', 'value' => 0),
 				),
 				'size' => 1,
 				'maxitems' => 1,
@@ -1100,7 +1086,7 @@ $returnArray = array(
 				'type' => 'select',
 				'renderType' => 'selectSingle',
 				'items' => array(
-					array('-- Label --', 0),
+					array('label' => '-- Label --', 'value' => 0),
 				),
 				'size' => 1,
 				'maxitems' => 1,
@@ -1112,18 +1098,16 @@ $returnArray = array(
 			'displayCond' => 'FIELD:is_recurring:REQ:FALSE' ,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.is_exception_for',
 			'config' => array(
-				'type' => 'input',
-				'size' => 4,
-				'eval' => 'int'
+				'type' => 'number',
+				'size' => 4
 			)
 		),
         'master_id' => array(
             'exclude' => 1,
             'label' => 'Id of Master Event',
             'config' => array(
-                'type' => 'input',
-                'size' => 11,
-                'eval' => 'int'
+                'type' => 'number',
+                'size' => 11
             ),
         ),
         'subevent' => array(
@@ -1159,7 +1143,6 @@ $returnArray = array(
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.organizer',
 			'config' => array(
 				'type' => 'group',
-				'internal_type' => 'db',
 
 				'allowed' => 'tx_jvevents_domain_model_organizer',
 
@@ -1201,7 +1184,6 @@ $returnArray = array(
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.location',
 			'config' => array(
 				'type' => 'group',
-				'internal_type' => 'db',
 
 				'allowed' => 'tx_jvevents_domain_model_location',
 				'size' => 1,
@@ -1347,7 +1329,7 @@ $returnArray = array(
 	),
 );
 
-$configuration = \JVE\JvEvents\Utility\EmConfigurationUtility::getEmConf();
+$configuration = EmConfigurationUtility::getEmConf();
 
 if ( ! $configuration['notifyOrganizer'] == 1 ) {
 	$returnArray['columns']['notify_organizer']['config']['default'] = 1  ;

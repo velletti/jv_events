@@ -1,10 +1,15 @@
 <?php
 
 
+use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Resource\File;
+use SJBR\StaticInfoTables\Hook\Backend\Form\FormDataProvider\TcaSelectItemsProcessor;
 defined('TYPO3') or die();
 
-/** @var \TYPO3\CMS\Core\Information\Typo3Version $version */
-$version = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Information\Typo3Version::class);
+/** @var Typo3Version $version */
+$version = GeneralUtility::makeInstance(Typo3Version::class);
 
 if ($version->getMajorVersion()  < 11) {
     // to Check if we need this
@@ -46,7 +51,7 @@ $return = array(
 		'iconfile' => 'EXT:jv_events/Resources/Public/Icons/tx_jvevents_domain_model_location.gif'
 	),
 	'types' => array(
-		'1' => array('showitem' => 'sys_language_uid, l10n_parent,l10n_diffsource,hidden,--palette--;;1,name,slug,street_and_nr,,additional_info,zip,city,country,--palette--;;geo,teaser_image,link,email,phone,description,organizer,location_category,--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,starttime,endtime,latest_event,default_location'),
+		'1' => array('showitem' => 'sys_language_uid,l10n_parent,l10n_diffsource,hidden,--palette--;;1,name,slug,street_and_nr,additional_info,zip,city,country,--palette--;;geo,teaser_image,link,email,phone,description,organizer,location_category,--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,starttime,endtime,latest_event,default_location'),
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),
@@ -72,7 +77,7 @@ $return = array(
 				'type' => 'select',
 				'renderType' => 'selectSingle',
 				'items' => array(
-					array('', 0),
+					array('label' => '', 'value' => 0),
 				),
 				'foreign_table' => 'tx_jvevents_domain_model_location',
 				'foreign_table_where' => 'AND tx_jvevents_domain_model_location.pid=###CURRENT_PID### AND tx_jvevents_domain_model_location.sys_language_uid IN (-1,0)',
@@ -105,13 +110,11 @@ $return = array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
 			'config' => array(
-				'type' => 'input',
-                'renderType' => 'inputDateTime',
+				'type' => 'datetime',
                 'behaviour' => array(
                     'allowLanguageSynchronization' => true ,
                 ) ,
 				'size' => 13,
-				'eval' => 'datetime',
 				'checkbox' => 0,
 				'default' => 0,
 				'range' => array(
@@ -123,13 +126,11 @@ $return = array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
 			'config' => array(
-				'type' => 'input',
-                'renderType' => 'inputDateTime',
+				'type' => 'datetime',
                 'behaviour' => array(
                     'allowLanguageSynchronization' => true ,
                 ) ,
 				'size' => 13,
-				'eval' => 'datetime',
 				'checkbox' => 0,
 				'default' => 0,
 				'range' => array(
@@ -144,7 +145,8 @@ $return = array(
 			'config' => array(
 				'type' => 'input',
 				'size' => 30,
-				'eval' => 'trim,required'
+				'eval' => 'trim',
+    'required' => true
 			),
 		),
 		'street_and_nr' => array(
@@ -181,7 +183,8 @@ $return = array(
 			'config' => array(
 				'type' => 'input',
 				'size' => 30,
-				'eval' => 'trim,required'
+				'eval' => 'trim',
+    'required' => true
 			),
 		),
 		'country' => array(
@@ -293,8 +296,8 @@ $return = array(
 				'type' => 'select',
 				'renderType' => 'selectSingle',
                 'items' => [
-                    ['No linked Organizer', 0],
-                    ['Registered Organizers', '--div--'],
+                    ['label' => 'No linked Organizer', 'value' => 0],
+                    ['label' => 'Registered Organizers', 'value' => '--div--'],
                 ],
 				'foreign_table' => 'tx_jvevents_domain_model_organizer',
 				'minitems' => 0,
@@ -306,12 +309,10 @@ $return = array(
             'exclude' => 1,
             'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_location.latest_event',
             'config' => array(
-                'type' => 'input',
-                'renderType' => 'inputDateTime',
+                'type' => 'datetime',
                 'size' => 7,
-                'eval' => 'date',
                 'checkbox' => 1,
-                'default' => time()
+                'format' => 'date'
             ),
         ),
         'default_location' => array(
@@ -363,7 +364,7 @@ $return = array(
         'teaser_image' => array(
             'exclude' => 0,
             'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_location.teaserImage',
-            'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
+            'config' => ExtensionManagementUtility::getFileFieldTCAConfig(
                 'teaser_image',
                 array(
                     'appearance' => array(
@@ -375,27 +376,27 @@ $return = array(
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
                         ),
-                        \TYPO3\CMS\Core\Resource\File::FILETYPE_TEXT => array(
+                        File::FILETYPE_TEXT => array(
                             'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
                         ),
-                        \TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => array(
+                        File::FILETYPE_IMAGE => array(
                             'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
                         ),
-                        \TYPO3\CMS\Core\Resource\File::FILETYPE_AUDIO => array(
+                        File::FILETYPE_AUDIO => array(
                             'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
                         ),
-                        \TYPO3\CMS\Core\Resource\File::FILETYPE_VIDEO => array(
+                        File::FILETYPE_VIDEO => array(
                             'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
                         ),
-                        \TYPO3\CMS\Core\Resource\File::FILETYPE_APPLICATION => array(
+                        File::FILETYPE_APPLICATION => array(
                             'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
@@ -413,7 +414,7 @@ $return = array(
 /*
 * overwrite Country configuration from Free Text Field to Select
 */
-if( class_exists(\SJBR\StaticInfoTables\Hook\Backend\Form\FormDataProvider\TcaSelectItemsProcessor::class)) {
+if( class_exists(TcaSelectItemsProcessor::class)) {
 
     $return['columns']['country']['config'] = array(
         'type' => 'select',

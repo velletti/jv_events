@@ -1,9 +1,14 @@
 <?php
 
+use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Resource\File;
+use JVE\JvEvents\Utility\EmConfigurationUtility;
 defined('TYPO3') or die();
 
-/** @var \TYPO3\CMS\Core\Information\Typo3Version $version */
-$version = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Information\Typo3Version::class);
+/** @var Typo3Version $version */
+$version = GeneralUtility::makeInstance(Typo3Version::class);
 
 if ($version->getMajorVersion()  < 11) {
     // to Check if we need this
@@ -65,7 +70,7 @@ $returnArray = array(
 				'type' => 'select',
 				'renderType' => 'selectSingle',
 				'items' => array(
-					array('', 0),
+					array('label' => '', 'value' => 0),
 				),
 				'foreign_table' => 'tx_jvevents_domain_model_organizer',
 				'foreign_table_where' => 'AND tx_jvevents_domain_model_organizer.pid=###CURRENT_PID### AND tx_jvevents_domain_model_organizer.sys_language_uid IN (-1,0)',
@@ -98,13 +103,11 @@ $returnArray = array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
 			'config' => array(
-				'type' => 'input',
-                'renderType' => 'inputDateTime',
+				'type' => 'datetime',
                 'behaviour' => array(
                     'allowLanguageSynchronization' => true ,
                 ) ,
 				'size' => 13,
-				'eval' => 'datetime',
 				'checkbox' => 0,
 				'default' => 0,
 				'range' => array(
@@ -116,13 +119,11 @@ $returnArray = array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
 			'config' => array(
-				'type' => 'input',
-                'renderType' => 'inputDateTime',
+				'type' => 'datetime',
                 'behaviour' => array(
                     'allowLanguageSynchronization' => true ,
                 ) ,
 				'size' => 13,
-				'eval' => 'datetime',
 				'checkbox' => 0,
 				'default' => 0,
 				'range' => array(
@@ -134,13 +135,11 @@ $returnArray = array(
             'exclude' => 1,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.crdate',
             'config' => array(
-                'type' => 'input',
-                'renderType' => 'inputDateTime',
+                'type' => 'datetime',
                 'behaviour' => array(
                     'allowLanguageSynchronization' => true ,
                 ) ,
                 'size' => 13,
-                'eval' => 'datetime',
                 'checkbox' => 0,
                 'default' => 0,
             ),
@@ -156,9 +155,8 @@ $returnArray = array(
             'exclude' => 1,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.sorting',
             'config' => array(
-                'type' => 'input',
+                'type' => 'number',
                 'size' => 13,
-                'eval' => 'int',
             ),
         ),
 
@@ -170,7 +168,8 @@ $returnArray = array(
 			'config' => array(
 				'type' => 'input',
 				'size' => 30,
-				'eval' => 'trim,required'
+				'eval' => 'trim',
+    'required' => true
 			),
 		),
         'subname' => array(
@@ -195,7 +194,8 @@ $returnArray = array(
 			'config' => array(
 				'type' => 'input',
 				'size' => 30,
-				'eval' => 'trim,required'
+				'eval' => 'trim',
+    'required' => true
 			),
 		),
         'email_cc' => array(
@@ -244,12 +244,10 @@ $returnArray = array(
             'exclude' => 1,
             'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_organizer.latest_event',
             'config' => array(
-                'type' => 'input',
-                'renderType' => 'inputDateTime',
+                'type' => 'datetime',
                 'size' => 7,
-                'eval' => 'date',
                 'checkbox' => 1,
-                'default' => time()
+                'format' => 'date'
             ),
         ),
         'link' => array(
@@ -360,20 +358,20 @@ $returnArray = array(
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => array(
-                    array('please select', ''),
-                    array('Allplan Deutschland (300)', '300'),
-                    array('Allplan International (301)', '301'),
-                    array('Allplan Switzerland (400)', '400'),
-                    array('Allplan France (410)', '410'),
-                    array('Allplan Austria (420)', '420'),
-                    array('Allplan Italy (430)', '430'),
-                    array('Allplan Spain (440)', '440'),
-                    array('Allplan UK (460)', '460'),
-                    array('Allplan USA (470)', '470'),
-                    array('Allplan Czech Republic (610)', '610'),
-                    array('Allplan Slovakia (660)', '660'),
-                    array('Allplan Infrastructure (680)', '680'),
-                    array('Allplan Global (000)', '000'),
+                    array('label' => 'please select', 'value' => ''),
+                    array('label' => 'Allplan Deutschland (300)', 'value' => '300'),
+                    array('label' => 'Allplan International (301)', 'value' => '301'),
+                    array('label' => 'Allplan Switzerland (400)', 'value' => '400'),
+                    array('label' => 'Allplan France (410)', 'value' => '410'),
+                    array('label' => 'Allplan Austria (420)', 'value' => '420'),
+                    array('label' => 'Allplan Italy (430)', 'value' => '430'),
+                    array('label' => 'Allplan Spain (440)', 'value' => '440'),
+                    array('label' => 'Allplan UK (460)', 'value' => '460'),
+                    array('label' => 'Allplan USA (470)', 'value' => '470'),
+                    array('label' => 'Allplan Czech Republic (610)', 'value' => '610'),
+                    array('label' => 'Allplan Slovakia (660)', 'value' => '660'),
+                    array('label' => 'Allplan Infrastructure (680)', 'value' => '680'),
+                    array('label' => 'Allplan Global (000)', 'value' => '000'),
                 ),
                 'size' => 1,
                 'maxitems' => 1,
@@ -382,7 +380,7 @@ $returnArray = array(
 		'images' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_organizer.images',
-			'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
+			'config' => ExtensionManagementUtility::getFileFieldTCAConfig(
 				'images',
 				array(
 					'appearance' => array(
@@ -394,27 +392,27 @@ $returnArray = array(
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
 						),
-						\TYPO3\CMS\Core\Resource\File::FILETYPE_TEXT => array(
+						File::FILETYPE_TEXT => array(
 							'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
 						),
-						\TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => array(
+						File::FILETYPE_IMAGE => array(
 							'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
 						),
-						\TYPO3\CMS\Core\Resource\File::FILETYPE_AUDIO => array(
+						File::FILETYPE_AUDIO => array(
 							'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
 						),
-						\TYPO3\CMS\Core\Resource\File::FILETYPE_VIDEO => array(
+						File::FILETYPE_VIDEO => array(
 							'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
 						),
-						\TYPO3\CMS\Core\Resource\File::FILETYPE_APPLICATION => array(
+						File::FILETYPE_APPLICATION => array(
 							'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
@@ -461,16 +459,16 @@ $returnArray = array(
                 'maxitems' => 20,
                 'items' => array(
                     array(
-                        'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hide_at_login',
-                        -1
+                        'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hide_at_login',
+                        'value' => -1
                     ),
                     array(
-                        'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.any_login',
-                        -2
+                        'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.any_login',
+                        'value' => -2
                     ),
                     array(
-                        'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.usergroups',
-                        '--div--'
+                        'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.usergroups',
+                        'value' => '--div--'
                     )
                 ),
                 'exclusiveKeys' => '-1,-2',
@@ -483,7 +481,6 @@ $returnArray = array(
             'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_organizer.accessUsers',
             'config' => array(
                 'type' => 'group',
-                'internal_type' => 'db',
                 'allowed' => 'fe_users',
                 'foreign_table' => 'fe_users',
                 'size' => 8,
@@ -533,7 +530,7 @@ $returnArray = array(
         'teaser_image' => array(
             'exclude' => 0,
             'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_organizer.teaserImage',
-            'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
+            'config' => ExtensionManagementUtility::getFileFieldTCAConfig(
                 'teaser_image',
                 array(
                     'appearance' => array(
@@ -545,27 +542,27 @@ $returnArray = array(
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
                         ),
-                        \TYPO3\CMS\Core\Resource\File::FILETYPE_TEXT => array(
+                        File::FILETYPE_TEXT => array(
                             'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
                         ),
-                        \TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => array(
+                        File::FILETYPE_IMAGE => array(
                             'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
                         ),
-                        \TYPO3\CMS\Core\Resource\File::FILETYPE_AUDIO => array(
+                        File::FILETYPE_AUDIO => array(
                             'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
                         ),
-                        \TYPO3\CMS\Core\Resource\File::FILETYPE_VIDEO => array(
+                        File::FILETYPE_VIDEO => array(
                             'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
                         ),
-                        \TYPO3\CMS\Core\Resource\File::FILETYPE_APPLICATION => array(
+                        File::FILETYPE_APPLICATION => array(
                             'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
@@ -648,7 +645,7 @@ $returnArray = array(
         ]
     ] ;
 
-$configuration = \JVE\JvEvents\Utility\EmConfigurationUtility::getEmConf();
+$configuration = EmConfigurationUtility::getEmConf();
 
 if ( $configuration['hasLoginUser'] != 1 ) {
     unset($returnArray['columns']['access'] ) ;

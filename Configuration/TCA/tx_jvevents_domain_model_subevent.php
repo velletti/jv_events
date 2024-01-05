@@ -1,9 +1,12 @@
 <?php
 
+use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use JVE\JvEvents\UserFunc\InlineLabelService;
 defined('TYPO3') or die();
 
-/** @var \TYPO3\CMS\Core\Information\Typo3Version $version */
-$version = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Information\Typo3Version::class);
+/** @var Typo3Version $version */
+$version = GeneralUtility::makeInstance(Typo3Version::class);
 
 if ($version->getMajorVersion()  < 11) {
     // to Check if we need this
@@ -26,7 +29,7 @@ $returnArray = array(
 		'label' => '',
 		'label_alt' => 'start_date, start_time , end_time',
 		'label_alt_force' => TRUE ,
-        'formattedLabel_userFunc' => JVE\JvEvents\UserFunc\InlineLabelService::class . '->getInlineLabel',
+        'formattedLabel_userFunc' => InlineLabelService::class . '->getInlineLabel',
         'formattedLabel_userFunc_options' => [
             'tx_jvevents_domain_model_subevent' => [
                 'start_date' => "\K\W W: D d.M.Y \\f\\r\o\m",
@@ -74,7 +77,7 @@ $returnArray = array(
                 'default' => 0,
 				'renderType' => 'selectSingle',
 				'items' => array(
-					array('', 0),
+					array('label' => '', 'value' => 0),
 				),
 				'foreign_table' => 'tx_jvevents_domain_model_subevent',
 				'foreign_table_where' => 'AND tx_jvevents_domain_model_subevent.pid=###CURRENT_PID### AND tx_jvevents_domain_model_subevent.sys_language_uid IN (-1,0)',
@@ -89,8 +92,7 @@ $returnArray = array(
             'exclude' => 1,
             'label' => 'Creation date',
             'config' => Array (
-                'type' => 'input',
-                'eval' => 'int',
+                'type' => 'number',
             )
         ),
 		
@@ -114,13 +116,11 @@ $returnArray = array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
 			'config' => array(
-				'type' => 'input',
-                'renderType' => 'inputDateTime' ,
+				'type' => 'datetime' ,
                 'behaviour' => array(
                     'allowLanguageSynchronization' => true ,
                 ) ,
 				'size' => 13,
-				'eval' => 'datetime',
 				'checkbox' => 0,
 				'default' => 0,
 
@@ -130,13 +130,11 @@ $returnArray = array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
 			'config' => array(
-				'type' => 'input',
-                'renderType' => 'inputDateTime' ,
+				'type' => 'datetime' ,
                 'behaviour' => array(
                     'allowLanguageSynchronization' => true ,
                 ) ,
 				'size' => 13,
-				'eval' => 'datetime',
 				'checkbox' => 0,
 				'default' => 0,
 
@@ -157,12 +155,12 @@ $returnArray = array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.start_date',
 			'config' => array(
-				'type' => 'input',
-				'renderType' => 'inputDateTime',
+				'type' => 'datetime',
 				'size' => 7,
-				'eval' => 'date,required',
 				'checkbox' => 1,
-				'default' => 0
+				'default' => 0,
+    'format' => 'date',
+    'required' => true
 			),
 		),
 		'start_time' => array(
@@ -170,11 +168,10 @@ $returnArray = array(
 			'displayCond' => 'FIELD:all_day:REQ:FALSE' ,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.start_time',
 			'config' => array(
-				'type' => 'input',
-                'renderType' => 'inputDateTime',
+				'type' => 'datetime',
 				'size' => 4,
-				'eval' => 'time',
 				'checkbox' => 1,
+    'format' => 'time',
 			)
 		),
 		'end_time' => array(
@@ -182,11 +179,10 @@ $returnArray = array(
 			'displayCond' => 'FIELD:all_day:REQ:FALSE' ,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.end_time',
 			'config' => array(
-				'type' => 'input',
-                'renderType' => 'inputDateTime',
+				'type' => 'datetime',
 				'size' => 4,
-				'eval' => 'time',
 				'checkbox' => 1,
+    'format' => 'time',
 			)
 		),
 
