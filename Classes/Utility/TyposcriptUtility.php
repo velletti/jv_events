@@ -39,7 +39,7 @@ class TyposcriptUtility{
 
         $rootLine = $rootLineUtility->get();
 
-		$extendedTemplateService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\ExtendedTemplateService::class);
+		$extendedTemplateService = GeneralUtility::makeInstance(ExtendedTemplateService::class);
 
 		$extendedTemplateService->tt_track = 0;
 		// $extendedTemplateService->init();

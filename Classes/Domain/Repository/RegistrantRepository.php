@@ -1,6 +1,8 @@
 <?php
 namespace JVE\JvEvents\Domain\Repository;
 
+use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
@@ -32,12 +34,12 @@ use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 /**
  * The repository for Registrants
  */
-class RegistrantRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
+class RegistrantRepository extends BaseRepository
 {
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface
-	 */
-	protected $defaultQuerySettings = null ;
+  * @var QuerySettingsInterface
+  */
+ protected $defaultQuerySettings = null ;
 
 	protected $respectStoragePage = false;
 
@@ -111,7 +113,7 @@ class RegistrantRepository extends \JVE\JvEvents\Domain\Repository\BaseRepositor
 
         $query = $this->createQuery();
         // $query->getQuerySettings()->setReturnRawQueryResult(TRUE);
-        $pageIds = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode( "," , $settings['storagePids'], true)  ;
+        $pageIds = GeneralUtility::trimExplode( "," , $settings['storagePids'], true)  ;
 
         if ( $pid > 0  || count($pageIds) > 0 ) {
 
@@ -157,7 +159,7 @@ class RegistrantRepository extends \JVE\JvEvents\Domain\Repository\BaseRepositor
         $query = $this->createQuery();
         $constraints = array();
         if ( isset( $settings['storagePids'] )) {
-            $pageIds = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode( "," , $settings['storagePids'], true)  ;
+            $pageIds = GeneralUtility::trimExplode( "," , $settings['storagePids'], true)  ;
         } else {
             $pageIds = [] ;
         }
@@ -198,6 +200,11 @@ class RegistrantRepository extends \JVE\JvEvents\Domain\Repository\BaseRepositor
 
         $query->setLimit($limit);
         if(count($constraints) > 0 ) {
+            if (count($constraints) === 1) {
+                $query->matching(reset($constraints));
+            } elseif (count($constraints) >= 2) {
+                $query->matching($query->logicalAnd(...$constraints));
+            }
             $query->matching($query->logicalAnd($constraints));
         }
         // new way to debug typo3 db queries

@@ -44,20 +44,21 @@ namespace JVE\JvEvents\ViewHelpers;
  *
  *
  */
-
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use JVE\JvEvents\Domain\Model\Event;
+use TYPO3Fluid\Fluid\Core\Exception;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException;
-use TYPO3\CMS\Frontend\Page\PageRepository;
-class L10nFalImgViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper {
+class L10nFalImgViewHelper extends AbstractViewHelper {
 
 
     public function initializeArguments()
     {
-        $this->registerArgument('event', \JVE\JvEvents\Domain\Model\Event::class, 'Event', true);
+        $this->registerArgument('event', Event::class, 'Event', true);
         $this->registerArgument('tableFieldName', 'string', ' the tableFieldName', true  );
         parent::initializeArguments() ;
     }
@@ -65,7 +66,7 @@ class L10nFalImgViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractVie
 
 	/**
   * @return mixed
-  * @throws \TYPO3Fluid\Fluid\Core\Exception
+  * @throws Exception
   */
  public function render() {
         $event = $this->arguments['event'] ;
@@ -91,8 +92,8 @@ class L10nFalImgViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractVie
 
 
 
-        /** @var \TYPO3\CMS\Core\Database\ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Database\ConnectionPool::class);
+        /** @var ConnectionPool $connectionPool */
+        $connectionPool = GeneralUtility::makeInstance( ConnectionPool::class);
 
         $connection = $connectionPool->getConnectionForTable('tx_jvchat_room') ;
 
@@ -118,7 +119,7 @@ class L10nFalImgViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractVie
                 ->fetch();
 
 			/** @var FileReference $obj */
-			$obj =  GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\FileReference::class, $fileReferenceData);
+			$obj =  GeneralUtility::makeInstance(FileReference::class, $fileReferenceData);
 
 			// Next line is obsolete! you can not access to non Public Properties of this OBJ
 			// $r['_file'] = $obj;

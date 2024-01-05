@@ -1,8 +1,9 @@
 <?php
 namespace JVE\JvEvents\Utility;
 
+use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Class Geocoder
@@ -21,19 +22,18 @@ class GeocoderUtility {
      */
     public $styleSheet ;
 	/**
-	 * Geocoder constructor
-	 */
-
+     * Geocoder constructor
+     */
     /**
      * Returns an instance of LanguageService
      *
-     * @return \TYPO3\CMS\Core\Localization\LanguageService
+     * @return LanguageService
      */
     protected function getLanguageService()
     {
-        /** @var \TYPO3\CMS\Core\Localization\LanguageService $lang */
-        $lang = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\LanguageService::class) ;
-        if (\TYPO3\CMS\Core\Http\ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()) {
+        /** @var LanguageService $lang */
+        $lang = GeneralUtility::makeInstance(LanguageService::class) ;
+        if (ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()) {
             $lng = $GLOBALS['BE_USER']->uc['lang'] ;
         } else {
             $lng = $GLOBALS['TSFE']->config['config']['language'] ;
@@ -56,7 +56,7 @@ class GeocoderUtility {
 
         $this->getLanguageService()->includeLLFile('EXT:jv_events/Resources/Private/Language/locallang_be.xlf');
 
-		$googleApiKey = \JVE\JvEvents\Utility\EmConfigurationUtility::getGoogleApiKey();
+		$googleApiKey = EmConfigurationUtility::getGoogleApiKey();
         $this->javascriptCode = '<script async defer src="https://maps.googleapis.com/maps/api/js?key=' . $googleApiKey . '&callback=initGeoCoderMap"></script>';
 
 

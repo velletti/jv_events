@@ -84,13 +84,13 @@ class ProcessCmdmap {
 
                     $this->table = $table;
                     /** @var  ObjectManager $objectManager */
-                    $this->objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class) ;
+                    $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class) ;
 
                     /** @var PersistenceManager $persistenceManager */
-                    $persistenceManager1 = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class);
+                    $persistenceManager1 = $this->objectManager->get(PersistenceManager::class);
 
                     /** @var  EventRepository $eventRepository */
-                    $this->eventRepository = $this->objectManager->get(\JVE\JvEvents\Domain\Repository\EventRepository::class);
+                    $this->eventRepository = $this->objectManager->get(EventRepository::class);
 
 
                     $mapping = $Obj ->copyMappingArray['tx_jvevents_domain_model_event'] ;
@@ -171,7 +171,7 @@ class ProcessCmdmap {
                         $event = BackendUtility::getRecord('tx_jvevents_domain_model_event', $eventId );
 
                         /** @var ConnectionPool $connectionPool */
-                        $connectionPool = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Database\ConnectionPool::class);
+                        $connectionPool = GeneralUtility::makeInstance( ConnectionPool::class);
                         $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_jvevents_domain_model_event') ;
 
                         $queryBuilder ->update('tx_jvevents_domain_model_event')
@@ -186,7 +186,7 @@ class ProcessCmdmap {
                             $queryBuilder->set('registered_seats' , $unconfirmed_seats ) ;
 
                         }
-                        $queryBuilder->execute() ;
+                        $queryBuilder->executeStatement() ;
 
                     }
                 }

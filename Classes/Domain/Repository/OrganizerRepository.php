@@ -1,6 +1,9 @@
 <?php
 namespace JVE\JvEvents\Domain\Repository;
 
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
+use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 /***************************************************************
  *
  *  Copyright notice
@@ -25,18 +28,17 @@ namespace JVE\JvEvents\Domain\Repository;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * The repository for Organizers
  */
-class OrganizerRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
+class OrganizerRepository extends BaseRepository
 {
 
     /**
      * @var array
      */
     protected $defaultOrderings = array(
-        'sorting' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
+        'sorting' => QueryInterface::ORDER_ASCENDING
     );
 
     public function findByUidAllpages($uid , $toArray=TRUE , $ignoreEnableFields = TRUE )
@@ -64,8 +66,8 @@ class OrganizerRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
      * @param integer $user UID of the User
      * @param bool $toArray Result as QueryInterface or directly as Array
      * @param bool $ignoreEnableFields Ignores Hidden, Startdate, enddate but NOT deleted!
-     * @return array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
+     * @return array|QueryResultInterface
+     * @throws InvalidQueryException
      */
     public function findByUserAllpages($user , $toArray=TRUE , $ignoreEnableFields = TRUE )
     {
@@ -82,11 +84,12 @@ class OrganizerRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
         $constraints[] = $query->equals('access_users',  $user ) ;
 
         if ( $ignoreEnableFields ) {
-            $query->matching( $query->logicalAnd(
-                array( $query->logicalOr($constraints)  , $query->equals('deleted',  0 )  )
-            ) ) ;
+            $constraints2[] = $query->logicalOr(...$constraints);
+            $constraints2[] = $query->equals('deleted',  0 );
+
+            $query->matching( $query->logicalAnd(...$constraints2) ;
         } else {
-            $query->matching( $query->logicalOr($constraints) ) ;
+            $query->matching( $query->logicalOr(...$constraints) ) ;
         }
 
         $res = $query->execute() ;
@@ -105,8 +108,8 @@ class OrganizerRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
      * @param bool $ignoreEnableFields Ignores Hidden, Startdate, enddate but NOT deleted!
      * @param bool|int $limit max number of organizers
      * @param bool $reverseSorting sort descending. needed for tango mode
-     * @return array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
+     * @return array|QueryResultInterface
+     * @throws InvalidQueryException
      */
     public function findByFilterAllpages($filter=FALSE , bool $toArray=FALSE , bool $ignoreEnableFields = FALSE , $limit=FALSE , $reverseSorting=false )
     {
@@ -119,10 +122,10 @@ class OrganizerRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
             $sorting = ($number > 0 ) ? 1 : rand(0, 1);
             if ($sorting > 0) {
                 // if field sorting or tspamt is used, always  descending
-                $query->setOrderings([ $fields[$number] => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING]);
+                $query->setOrderings([ $fields[$number] => QueryInterface::ORDER_DESCENDING]);
             } else {
 
-                $query->setOrderings([ $fields[$number] => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING]);
+                $query->setOrderings([ $fields[$number] => QueryInterface::ORDER_ASCENDING]);
             }
 
         } else {
@@ -166,7 +169,12 @@ class OrganizerRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
 
         }
         if( count($constraints) > 0) {
-            $query->matching( $query->logicalAnd($constraints)) ;
+            if( count($constraints) > 1) {
+                $query->matching( $query->logicalAnd(...$constraints)) ;
+            } else {
+
+                $query->matching( reset($constraints) ) ;
+            }
         }
 
         $res = $query->execute() ;
@@ -181,8 +189,8 @@ class OrganizerRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
 
     /**
      * @param integer $sorting
-     * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
+     * @return QueryResultInterface
+     * @throws InvalidQueryException
      */
     public function findBySortingAllpages($sorting  )
     {

@@ -1,6 +1,10 @@
 <?php
 namespace JVE\JvEvents\Domain\Model;
 
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Annotation\Validate;
+use TYPO3\CMS\Extbase\Domain\Model\FileReference;
+use TYPO3\CMS\Extbase\Annotation\ORM\Cascade;
 use \TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /***************************************************************
@@ -31,7 +35,7 @@ use \TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 /**
  * Single Event
  */
-class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class Event extends AbstractEntity
 {
 
     /**
@@ -39,8 +43,8 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * default: show event details from this extension
      *
      * @var int
-     * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
      */
+    #[Validate(['validator' => 'NotEmpty'])]
     protected $eventType = 0;
 
 
@@ -117,8 +121,8 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Short Title of this event. Used in listings
      *
      * @var string
-     * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
      */
+    #[Validate(['validator' => 'NotEmpty'])]
     protected $name = '';
 
     /**
@@ -183,36 +187,36 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * An image shown together with the event. The first image may be used for listings
      * as teaser Image
      *
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FileReference>
+     * @var ObjectStorage<FileReference>
      */
     protected $images = null;
 
 	/**
-	 * Files that may be useful for this event
-	 *
-	 * @var \TYPO3\CMS\Extbase\Domain\Model\FileReference
-	 */
-	protected $teaserImage = null;
+  * Files that may be useful for this event
+  *
+  * @var FileReference
+  */
+ protected $teaserImage = null;
 
 
 	/**
      * Files that may be useful for this event
      *
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FileReference>
+     * @var ObjectStorage<FileReference>
      */
     protected $files = null;
 
     /**
      * Files that may be useful for this event
      *
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FileReference>
+     * @var ObjectStorage<FileReference>
      */
     protected $filesAfterReg = null;
 
     /**
      * Files that may be useful for this event
      *
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FileReference>
+     * @var ObjectStorage<FileReference>
      */
     protected $filesAfterEvent = null;
 
@@ -235,9 +239,9 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Start Date of this event. Mandatory
      *
-     * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
      * @var \DateTime
      */
+    #[Validate(['validator' => 'NotEmpty'])]
     protected $startDate = null;
 
     /**
@@ -637,7 +641,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * organizer
      *
-     * @var \JVE\JvEvents\Domain\Model\Organizer
+     * @var Organizer
      */
     protected $organizer = null;
 
@@ -645,29 +649,29 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Subevent (additional dates )
      *
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Subevent>
-     * @TYPO3\CMS\Extbase\Annotation\ORM\Cascade("remove")
+     * @var ObjectStorage<Subevent>
      */
+    #[Cascade(['value' => 'remove'])]
     protected $subevent = null;
 
     /**
      * location
      *
-     * @var \JVE\JvEvents\Domain\Model\Location
+     * @var Location
      */
     protected $location = null;
     
        /**
      * eventCategory
      *
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Category>
+     * @var ObjectStorage<Category>
      */
     protected $eventCategory = null;
     
     /**
      * tags
      *
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Tag>
+     * @var ObjectStorage<Tag>
      */
     protected $tags = null;
 
@@ -721,7 +725,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Returns the organizer
      *
-     * @return \JVE\JvEvents\Domain\Model\Organizer $organizer
+     * @return Organizer $organizer
      */
     public function getOrganizer()
     {
@@ -731,10 +735,10 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Sets the organizer
      *
-     * @param \JVE\JvEvents\Domain\Model\Organizer $organizer
+     * @param Organizer $organizer
      * @return void
      */
-    public function setOrganizer(\JVE\JvEvents\Domain\Model\Organizer $organizer)
+    public function setOrganizer(Organizer $organizer)
     {
         $this->organizer = $organizer;
     }
@@ -742,7 +746,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Returns the location
      *
-     * @return \JVE\JvEvents\Domain\Model\Location $location
+     * @return Location $location
      */
     public function getLocation()
     {
@@ -752,10 +756,10 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Sets the location
      *
-     * @param \JVE\JvEvents\Domain\Model\Location $location
+     * @param Location $location
      * @return void
      */
-    public function setLocation(\JVE\JvEvents\Domain\Model\Location $location)
+    public function setLocation(Location $location)
     {
         $this->location = $location;
     }
@@ -842,7 +846,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Returns the images
      *
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FileReference> $images
+     * @return ObjectStorage<FileReference> $images
      */
     public function getImages()
     {
@@ -852,40 +856,40 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Sets the images
      *
-     * @param \TYPO3\CMS\Extbase\Domain\Model\FileReference $images
+     * @param FileReference $images
      * @return void
      */
-    public function setImages(\TYPO3\CMS\Extbase\Domain\Model\FileReference $images)
+    public function setImages(FileReference $images)
     {
         $this->images = $images;
     }
 
 	/**
-	 * Returns the teaserImage
-	 *
-	 * @return \TYPO3\CMS\Extbase\Domain\Model\FileReference $teaserImage
-	 */
-	public function getTeaserImage()
+  * Returns the teaserImage
+  *
+  * @return FileReference $teaserImage
+  */
+ public function getTeaserImage()
 	{
 		return $this->teaserImage;
 	}
 
 	/**
-	 * Sets the teaserImage
-	 *
-	 * @param \TYPO3\CMS\Extbase\Domain\Model\FileReference $teaserImage
-	 * @return void
-	 */
-	public function setTeaserImage(\TYPO3\CMS\Extbase\Domain\Model\FileReference $teaserImage)
+  * Sets the teaserImage
+  *
+  * @param FileReference $teaserImage
+  * @return void
+  */
+ public function setTeaserImage(FileReference $teaserImage)
 	{
 		$this->teaserImage = $teaserImage;
 	}
 
 	/**
- * Returns the files
- *
- * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FileReference> $files
- */
+     * Returns the files
+     *
+     * @return ObjectStorage<FileReference> $files
+     */
     public function getFiles()
     {
         return $this->files;
@@ -896,10 +900,10 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Sets the files
      *
-     * @param \TYPO3\CMS\Extbase\Domain\Model\FileReference $files
+     * @param FileReference $files
      * @return void
      */
-    public function setFiles(\TYPO3\CMS\Extbase\Domain\Model\FileReference $files)
+    public function setFiles(FileReference $files)
     {
         $this->files = $files;
     }
@@ -909,7 +913,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Returns the filesAfterReg
      *
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FileReference> $files
+     * @return ObjectStorage<FileReference> $files
      */
     public function getFilesAfterReg()
     {
@@ -921,10 +925,10 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Sets the files
      *
-     * @param \TYPO3\CMS\Extbase\Domain\Model\FileReference $files
+     * @param FileReference $files
      * @return void
      */
-    public function setFilesAfterReg(\TYPO3\CMS\Extbase\Domain\Model\FileReference $files)
+    public function setFilesAfterReg(FileReference $files)
     {
         $this->filesAfterReg = $files;
     }
@@ -932,7 +936,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Returns the filesAfterEvent
      *
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FileReference> $files
+     * @return ObjectStorage<FileReference> $files
      */
     public function getFilesAfterEvent()
     {
@@ -944,10 +948,10 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Sets the filesAfterEvent
      *
-     * @param \TYPO3\CMS\Extbase\Domain\Model\FileReference $files
+     * @param FileReference $files
      * @return void
      */
-    public function setFilesAfter(\TYPO3\CMS\Extbase\Domain\Model\FileReference $files)
+    public function setFilesAfter(FileReference $files)
     {
         $this->filesAfterEvent = $files;
     }
@@ -1633,14 +1637,14 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     protected function initStorageObjects()
     {
-        $this->registrant = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-        $this->eventCategory = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-        $this->tags = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+        $this->registrant = new ObjectStorage();
+        $this->eventCategory = new ObjectStorage();
+        $this->tags = new ObjectStorage();
 
-		$this->files = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-		$this->images = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-		$this->teaserImage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-		$this->subevent = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$this->files = new ObjectStorage();
+		$this->images = new ObjectStorage();
+		$this->teaserImage = new ObjectStorage();
+		$this->subevent = new ObjectStorage();
     }
     
 
@@ -1835,10 +1839,10 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Adds a Category
      *
-     * @param \JVE\JvEvents\Domain\Model\Category $eventCategory
+     * @param Category $eventCategory
      * @return void
      */
-    public function addEventCategory(\JVE\JvEvents\Domain\Model\Category $eventCategory)
+    public function addEventCategory(Category $eventCategory)
     {
         $this->eventCategory->attach($eventCategory);
     }
@@ -1846,10 +1850,10 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Removes a Category
      *
-     * @param \JVE\JvEvents\Domain\Model\Category $eventCategoryToRemove The Category to be removed
+     * @param Category $eventCategoryToRemove The Category to be removed
      * @return void
      */
-    public function removeEventCategory(\JVE\JvEvents\Domain\Model\Category $eventCategoryToRemove)
+    public function removeEventCategory(Category $eventCategoryToRemove)
     {
         $this->eventCategory->detach($eventCategoryToRemove);
     }
@@ -1857,7 +1861,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Returns the eventCategory
      *
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Category> $eventCategory
+     * @return ObjectStorage<Category> $eventCategory
      */
     public function getEventCategory()
     {
@@ -1867,10 +1871,10 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Sets the eventCategory
      *
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Category> $eventCategory
+     * @param ObjectStorage<Category> $eventCategory
      * @return void
      */
-    public function setEventCategory(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $eventCategory)
+    public function setEventCategory(ObjectStorage $eventCategory)
     {
         $this->eventCategory = $eventCategory;
     }
@@ -1878,10 +1882,10 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Adds a Tag
      *
-     * @param \JVE\JvEvents\Domain\Model\Tag $tag
+     * @param Tag $tag
      * @return void
      */
-    public function addTag(\JVE\JvEvents\Domain\Model\Tag $tag)
+    public function addTag(Tag $tag)
     {
         $this->tags->attach($tag);
     }
@@ -1891,7 +1895,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Removes a FileReference
      *
-     * @param \TYPO3\CMS\Extbase\Domain\Model\FileReference $teaserImage
+     * @param FileReference $teaserImage
      * @return void
      */
     public function removeTeaserImage()
@@ -1903,10 +1907,10 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Removes a Tag
      *
-     * @param \JVE\JvEvents\Domain\Model\Tag $tagToRemove The Tag to be removed
+     * @param Tag $tagToRemove The Tag to be removed
      * @return void
      */
-    public function removeTag(\JVE\JvEvents\Domain\Model\Tag $tagToRemove)
+    public function removeTag(Tag $tagToRemove)
     {
         $this->tags->detach($tagToRemove);
     }
@@ -1914,7 +1918,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Returns the tags
      *
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Tag> $tags
+     * @return ObjectStorage<Tag> $tags
      */
     public function getTags()
     {
@@ -1924,10 +1928,10 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Sets the tags
      *
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Tag> $tags
+     * @param ObjectStorage<Tag> $tags
      * @return void
      */
-    public function setTags(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $tags)
+    public function setTags(ObjectStorage $tags)
     {
         $this->tags = $tags;
     }
@@ -2227,10 +2231,10 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Adds a Subevent
      *
-     * @param \JVE\JvEvents\Domain\Model\Subevent $subevent
+     * @param Subevent $subevent
      * @return void
      */
-    public function addSubevent(\JVE\JvEvents\Domain\Model\Subevent $subevent)
+    public function addSubevent(Subevent $subevent)
     {
         $this->subevent->attach($subevent);
     }
@@ -2238,10 +2242,10 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Removes a Subevent
      *
-     * @param \JVE\JvEvents\Domain\Model\Subevent $subevent ToRemove : The subevent  to be removed
+     * @param Subevent $subevent ToRemove : The subevent  to be removed
      * @return void
      */
-    public function removeSubevent(\JVE\JvEvents\Domain\Model\Subevent $subevent )
+    public function removeSubevent(Subevent $subevent )
     {
         $this->subevent->detach($subevent);
     }
@@ -2249,7 +2253,7 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Returns the Subevent
      *
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Subevent> $subevent
+     * @return ObjectStorage<Subevent> $subevent
      */
     public function getSubevent()
     {
@@ -2259,10 +2263,10 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Sets the Subevent
      *
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Subevent> $subevent
+     * @param ObjectStorage<Subevent> $subevent
      * @return void
      */
-    public function setSubevent(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $subevent)
+    public function setSubevent(ObjectStorage $subevent)
     {
         $this->subevent = $subevent;
     }

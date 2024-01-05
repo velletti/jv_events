@@ -122,7 +122,7 @@ class CleanEventsTask extends AbstractTask
 
         if( GeneralUtility::validEmail( trim( $this->getDebugmail()) ) ) {
             /** @var SignatureService $mailService */
-            $mailService = GeneralUtility::makeInstance(\Velletti\Mailsignature\Service\SignatureService::class);
+            $mailService = GeneralUtility::makeInstance(SignatureService::class);
             $params = array() ;
             $params['email_fromName'] = "Debug from " .$baseUrl ;
             $params['email_from'] = "info@tangomuenchen.de";
@@ -148,19 +148,17 @@ class CleanEventsTask extends AbstractTask
 
 
         /** @var ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Database\ConnectionPool::class);
+        $connectionPool = GeneralUtility::makeInstance( ConnectionPool::class);
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_jvevents_domain_model_registrant') ;
         /** @var Connection $connection */
         $connection = $connectionPool->getConnectionForTable('tx_jvevents_domain_model_registrant') ;
 
-        /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
+        /** @var QueryBuilder $queryBuilder */
         $queryCount = $connectionPool->getQueryBuilderForTable('tx_jvevents_domain_model_registrant');
         $countResult = $queryCount->count( '*' )->from('tx_jvevents_domain_model_registrant' )
             ->where( $queryBuilder->expr()->lte('endtime',  $timeInPast ) )
-            ->andWhere($queryBuilder->expr()->gt('endtime', 0 ))
-            ->andWhere($queryBuilder->expr()->eq('deleted', 0 ))
-            ->execute()->fetchColumn(0) ;
+            ->andWhere($queryBuilder->expr()->gt('endtime', 0 ))->andWhere($queryBuilder->expr()->eq('deleted', 0 ))->executeQuery()->fetchColumn(0) ;
 
 
 
@@ -174,7 +172,7 @@ class CleanEventsTask extends AbstractTask
 
        //  $this->debugQuery($queryBuilder) ;
 
-        $queryBuilder->execute() ;
+        $queryBuilder->executeStatement() ;
 
         if ( !$connection->errorInfo() ) {
             $debug[] = "removed  '" . $countResult . "'' registrations where events older than " . $timeInPast . " - " . date( "d.m.Y H:i" , $timeInPast ) ;
@@ -192,19 +190,17 @@ class CleanEventsTask extends AbstractTask
 
 
         /** @var ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Database\ConnectionPool::class);
+        $connectionPool = GeneralUtility::makeInstance( ConnectionPool::class);
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_jvevents_domain_model_event') ;
         /** @var Connection $connection */
         $connection = $connectionPool->getConnectionForTable('tx_jvevents_domain_model_event') ;
 
-        /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
+        /** @var QueryBuilder $queryBuilder */
         $queryCount = $connectionPool->getQueryBuilderForTable('tx_jvevents_domain_model_event');
         $countResult = $queryCount->count( '*' )->from('tx_jvevents_domain_model_event' )
             ->where( $queryBuilder->expr()->lte('start_date',  $timeInPast ) )
-            ->andWhere($queryBuilder->expr()->lte('end_date', $timeInPast ))
-            ->andWhere($queryBuilder->expr()->eq('deleted', 0 ))
-            ->execute()->fetchColumn(0) ;
+            ->andWhere($queryBuilder->expr()->lte('end_date', $timeInPast ))->andWhere($queryBuilder->expr()->eq('deleted', 0 ))->executeQuery()->fetchColumn(0) ;
 
 
 
@@ -218,7 +214,7 @@ class CleanEventsTask extends AbstractTask
 
         //  $this->debugQuery($queryBuilder) ;
 
-        $queryBuilder->execute() ;
+        $queryBuilder->executeStatement() ;
 
         if ( !$connection->errorInfo() ) {
             $debug[] = "removed  '" . $countResult . "'' Events that are older than " . $timeInPast . " - " . date( "d.m.Y H:i" , $timeInPast ) ;
@@ -254,7 +250,7 @@ class CleanEventsTask extends AbstractTask
         $organizers = $organizerRepository->findByFilterAllpages(FALSE , true ) ;
 
         /** @var ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Database\ConnectionPool::class);
+        $connectionPool = GeneralUtility::makeInstance( ConnectionPool::class);
         /** @var QueryBuilder $queryFeUser */
         $queryFeUser = $connectionPool->getQueryBuilderForTable('fe_users') ;
 
@@ -270,9 +266,8 @@ class CleanEventsTask extends AbstractTask
                     $usersData = array() ;
                     if(is_array($users)) {
                         foreach ( $users as $userUid ) {
-                            $feuser = $queryFeUser->select('uid' , 'lastlogin' , "username", 'usergroup' , 'is_online')->from('fe_users')->where(
-                                $queryFeUser->expr()->eq('uid' , $queryFeUser->createNamedParameter($userUid , Connection::PARAM_INT )
-                                ))->execute()->fetch() ;
+                            $feuser = $queryFeUser->select('uid' , 'lastlogin' , "username", 'usergroup' , 'is_online')->from('fe_users')->where($queryFeUser->expr()->eq('uid' , $queryFeUser->createNamedParameter($userUid , Connection::PARAM_INT )
+                            ))->executeQuery()->fetch() ;
                             if( $feuser) {
                                 $debug[] = "lastLogin: " . date('d.m.Y H:i' , $feuser['lastlogin'] ) . ": uid= '" . $userUid . "' - ". $feuser['username'] . " : groups: " . $feuser['usergroup'];
                                 $usersData[] =  $feuser ;
@@ -304,12 +299,10 @@ class CleanEventsTask extends AbstractTask
                     $debug[] = "Organizer: " . $organizer->getUid() . " - " . $organizer->getName() . " Old: " . $organizer->getSorting() . " -> " . $result['newsorting'] ;
 
                     /** @var ConnectionPool $connectionPool */
-                    $connectionPool = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Database\ConnectionPool::class);
+                    $connectionPool = GeneralUtility::makeInstance( ConnectionPool::class);
                     /** @var QueryBuilder $queryBuilder */
                     $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_jvevents_domain_model_organizer') ;
-                    $queryBuilder->update("tx_jvevents_domain_model_organizer")->set("sorting" , $result['newsorting'])
-                        ->where($queryBuilder->expr()->eq("uid" , $queryBuilder->createNamedParameter( $organizer->getUid() , Connection::PARAM_INT)))
-                        ->execute() ;
+                    $queryBuilder->update("tx_jvevents_domain_model_organizer")->set("sorting" , $result['newsorting'])->where($queryBuilder->expr()->eq("uid" , $queryBuilder->createNamedParameter( $organizer->getUid() , Connection::PARAM_INT)))->executeStatement() ;
                 }
 
             }
@@ -324,7 +317,7 @@ class CleanEventsTask extends AbstractTask
         $debug[] = " *********  now uses with really last login " ;
 
         /** @var ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Database\ConnectionPool::class);
+        $connectionPool = GeneralUtility::makeInstance( ConnectionPool::class);
         /** @var QueryBuilder $queryBuilder */
         /** @var QueryBuilder $queryBuilderUpdate */
         /** @var QueryBuilder $queryEvents */
@@ -350,7 +343,7 @@ class CleanEventsTask extends AbstractTask
             ->orderBy("uid")
         ;
        // $this->debugQuery($queryBuilder) ;
-        $result = $queryBuilder->execute() ;
+        $result = $queryBuilder->executeQuery() ;
         $countTotalResult = 0 ;
         $debug2 = [] ;
 
@@ -362,9 +355,8 @@ class CleanEventsTask extends AbstractTask
                 $usersData = array() ;
                 if(is_array($users)) {
                     foreach ( $users as $userUid ) {
-                        $feuser = $queryFeUser->select('uid' , 'lastlogin' , "username", 'usergroup' , 'is_online')->from('fe_users')->where(
-                            $queryFeUser->expr()->eq('uid' , $queryFeUser->createNamedParameter($userUid , Connection::PARAM_INT )
-                        ))->execute()->fetch() ;
+                        $feuser = $queryFeUser->select('uid' , 'lastlogin' , "username", 'usergroup' , 'is_online')->from('fe_users')->where($queryFeUser->expr()->eq('uid' , $queryFeUser->createNamedParameter($userUid , Connection::PARAM_INT )
+                    ))->executeQuery()->fetch() ;
                         if( $feuser) {
                             $debug[] = "lastLogin: " . date('d.m.Y H:i' , $feuser['lastlogin'] ) . ": uid= '" . $userUid . "' - ". $feuser['username'] . " : groups: " . $feuser['usergroup'];
                             $usersData[] =  $feuser ;
@@ -403,34 +395,27 @@ class CleanEventsTask extends AbstractTask
                             $debug[] = "Reduced Group access of user : " . $user['uid'] . " from: " . $orig ." to " .   $user['usergroup'];
 
                             $queryFeUserUpdate->update('fe_users')
-                                ->where( $queryBuilder->expr()->eq('uid',   $user['uid'] ))
-                                ->set('usergroup' , $user['usergroup'] )->execute();
+                                ->where( $queryBuilder->expr()->eq('uid',   $user['uid'] ))->set('usergroup', $user['usergroup'])->executeStatement();
                         }
 
 
                     } else {
                         $queryBuilderUpdate->update('tx_jvevents_domain_model_organizer')
                             ->where( $queryBuilder->expr()->eq('uid',   $row['uid'] ) )
-                            ->set('tstamp', $queryBuilder->quoteIdentifier('tstamp') , false )
-                            ->set('sorting', $queryBuilder->quoteIdentifier('sorting') . " + " . 50000   , false )
-                            ->execute() ;
+                            ->set('tstamp', $queryBuilder->quoteIdentifier('tstamp') , false )->set('sorting', $queryBuilder->quoteIdentifier('sorting') . " + " . 50000, false)->executeStatement() ;
 
                         $debug[] = "Organizer : " . $row['uid'] . " - "  . $row['name'] . " moved sorting from " . $row['sorting']  . " + 50.000 ! managed by  user(s) " . $row['access_users'] ;
                     }
                     $countResult = $queryCount->count( '*' )->from('tx_jvevents_domain_model_event' )
                         ->where($queryBuilder->expr()->eq('canceled',   1 ))
-                        ->andWhere($queryBuilder->expr()->eq('organizer' , $row['uid'] ) )
-                        ->andWhere($queryBuilder->expr()->gt('start_date' , time() ) )
-                        ->execute()->fetchColumn(0) ;
+                        ->andWhere($queryBuilder->expr()->eq('organizer' , $row['uid'] ) )->andWhere($queryBuilder->expr()->gt('start_date' , time() ))->executeQuery()->fetchColumn(0) ;
 
                     if( $countResult > 0 ) {
                         $queryEvents->update('tx_jvevents_domain_model_event')
                             ->where($queryBuilder->expr()->eq('canceled',   1 ))
                             ->andWhere($queryBuilder->expr()->eq('organizer' , $row['uid'] ) )
                             ->andWhere($queryBuilder->expr()->gt('start_date' , time() ) )
-                            ->set('deleted' , 1)
-                            ->set('tstamp', $queryBuilder->quoteIdentifier('tstamp') , false )
-                            ->execute()
+                            ->set('deleted' , 1)->set('tstamp', $queryBuilder->quoteIdentifier('tstamp'), false)->executeStatement()
                         ;
                         $debug[] = "Number of Removed canceled Events of this organizer: " . $countResult ;
                     }

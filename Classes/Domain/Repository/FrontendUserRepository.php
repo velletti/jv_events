@@ -1,6 +1,7 @@
 <?php
 namespace JVE\JvEvents\Domain\Repository;
 
+use JVE\JvEvents\Domain\Model\FrontendUser;
 /***************************************************************
 *  Copyright notice
 *
@@ -24,7 +25,6 @@ namespace JVE\JvEvents\Domain\Repository;
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-
 /**
  * License
  *
@@ -32,13 +32,11 @@ namespace JVE\JvEvents\Domain\Repository;
  * @copyright Copyright belongs to the respective authors
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  * @method findOneByEmail(string $email)
- * @method findOneByNemSfID(string $sfId)
  * @method findOneByUid(int $uid)
  * @method findOneByUsername(string $userName)
  */
-
 # class UserRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
-class FrontendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository {
+class FrontendUserRepository extends BaseRepository {
 
     public function initializeObject() {
 
@@ -53,7 +51,7 @@ class FrontendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\Fronte
     /**
      * find the logged in Frontend User and return the Details.
      * @param int $uid
-     * @return \JVE\JvEvents\Domain\Model\FrontendUser|object the current user if found, otherwise NULL
+     * @return FrontendUser|object the current user if found, otherwise NULL
      */
     public function findByUid($uid) {
         $constraints = array();
@@ -75,10 +73,10 @@ class FrontendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\Fronte
     }
 
 	/**
-	 * find the logged in Frontend User and return the Details.
-	 * @return \JVE\JvEvents\Domain\Model\FrontendUser the current user if found, otherwise NULL
-	 */
-	public function findActualUser() {
+  * find the logged in Frontend User and return the Details.
+  * @return FrontendUser the current user if found, otherwise NULL
+  */
+ public function findActualUser() {
 		$uid = (int)$GLOBALS['TSFE']->fe_user->user['uid'];
 		return $this->findByUid($uid);
 	}

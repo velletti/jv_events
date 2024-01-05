@@ -25,7 +25,23 @@ namespace JVE\JvEvents\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Core\Context\Context;
+use JVE\JvEvents\Utility\EmConfigurationUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
+use JVE\JvEvents\Domain\Model\Location;
+use JVE\JvEvents\Domain\Model\Organizer;
+use JVE\JvEvents\Domain\Model\Category;
+use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Core\Utility\MailUtility;
+use TYPO3\CMS\Core\Mail\MailMessage;
+use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
+use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
+use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use JVE\JvEvents\Domain\Model\Event;
 use JVE\JvEvents\Domain\Model\Registrant;
 use JVE\JvEvents\Domain\Model\Tag;
@@ -51,33 +67,33 @@ use Velletti\Mailsignature\Service\SignatureService;
 /**
  * EventController
  */
-class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+class BaseController extends ActionController
 {
 
     /**
      *  $eventRepository
-     * @var \JVE\JvEvents\Domain\Repository\EventRepository
+     * @var EventRepository
      */
     protected $eventRepository = NULL;
 
     /**
      * subeventRepository
      *
-     * @var \JVE\JvEvents\Domain\Repository\SubeventRepository
+     * @var SubeventRepository
      */
     protected $subeventRepository = NULL;
 
 	/**
-	 * staticCountryRepository
-	 *
-	 * @var \JVE\JvEvents\Domain\Repository\StaticCountryRepository
-	 */
-	protected $staticCountryRepository = NULL;
+  * staticCountryRepository
+  *
+  * @var StaticCountryRepository
+  */
+ protected $staticCountryRepository = NULL;
 
     /**
      * organizerRepository
      *
-     * @var \JVE\JvEvents\Domain\Repository\OrganizerRepository
+     * @var OrganizerRepository
      */
     protected $organizerRepository = NULL;
 
@@ -85,7 +101,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     /**
      * locationRepository
      *
-     * @var \JVE\JvEvents\Domain\Repository\LocationRepository
+     * @var LocationRepository
      */
     protected $locationRepository = NULL;
 
@@ -99,7 +115,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     /**
      * registrantRepository
      *
-     * @var \JVE\JvEvents\Domain\Repository\RegistrantRepository
+     * @var RegistrantRepository
      */
     protected $registrantRepository = NULL;
 
@@ -107,7 +123,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     /**
      * categoryRepository
      *
-     * @var \JVE\JvEvents\Domain\Repository\CategoryRepository
+     * @var CategoryRepository
      */
     protected $categoryRepository = NULL;
 
@@ -229,16 +245,16 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     {
           
 
-        $this->settings['register']['allowedCountrys'] 	=  \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode("," , $this->settings['register']['allowedCountrys'] , true );
+        $this->settings['register']['allowedCountrys'] 	=  GeneralUtility::trimExplode("," , $this->settings['register']['allowedCountrys'] , true );
 
         $this->settings['pageId']						=  $GLOBALS['TSFE']->id ;
-        $this->settings['servername']					=  \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST');
+        $this->settings['servername']					=  GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST');
         /** @var AspectInterface $languageAspect */
-        $languageAspect = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Context\Context::class)->getAspect('language') ;
+        $languageAspect = GeneralUtility::makeInstance(Context::class)->getAspect('language') ;
 
         $this->settings['sys_language_uid']				=  $languageAspect->getId() ;
 
-        $this->settings['EmConfiguration']	 			= \JVE\JvEvents\Utility\EmConfigurationUtility::getEmConf();
+        $this->settings['EmConfiguration']	 			= EmConfigurationUtility::getEmConf();
 
         // get the list of Required Fields for this layout and store it to the  settings Array
         // seemed faster than separate via a Viewhelper for each Field
@@ -254,7 +270,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             $fields .= "," . $this->settings['Register']['add_mandatory_fields'] ;
         }
 
-        $required  = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode( "," , $fields , true ) ;
+        $required  = GeneralUtility::trimExplode( "," , $fields , true ) ;
         if ( count($required) > 0 ) {
             foreach( $required as $key => $field ) {
                 $this->settings['register']['required'][$field] = TRUE ;
@@ -263,7 +279,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
         if( isset($this->settings['register']['formFields'][$layout]) ) {
             $fields = $this->settings['register']['formFields'][$layout] ;
-            $formFields  = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode( "," , $fields , true ) ;
+            $formFields  = GeneralUtility::trimExplode( "," , $fields , true ) ;
             if( count( $formFields ) > 0 ) {
                 foreach( $formFields as $key => $field ) {
                     if( $field) {
@@ -276,13 +292,13 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
 
         if( !$this->objectManager) {
-            $this->objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class) ;
+            $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class) ;
         }
-        $this->persistenceManager = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class);
+        $this->persistenceManager = $this->objectManager->get(PersistenceManager::class);
     }
 
     public function generateFilterBox( $filter , $tagShowAfterColon=0 ) {
-        $filterTags = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $filter , true);
+        $filterTags = GeneralUtility::intExplode(',', $filter , true);
         $tags = [] ;
         if( is_array($filterTags)) {
             foreach ($filterTags as $Id ) {
@@ -308,7 +324,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         $tags2 = array();
         $categories2 = array();
 
-        $filterTags = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $filter['tags'], true);
+        $filterTags = GeneralUtility::intExplode(',', $filter['tags'], true);
         if( is_array($filterTags)) {
             foreach ($filterTags as $Id ) {
                 $tag = $this->tagRepository->findByUid($Id) ;
@@ -316,7 +332,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             }
         }
 
-        $filterCats = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $filter['categories'], true);
+        $filterCats = GeneralUtility::intExplode(',', $filter['categories'], true);
         if( is_array($filterCats)) {
             foreach ($filterCats as $Id ) {
                 $cat = $this->categoryRepository->findByUid($Id) ;
@@ -350,7 +366,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         ) ;
     }
 
-    public function generateFilter(\TYPO3\CMS\Extbase\Persistence\QueryResultInterface $events , $filter ) {
+    public function generateFilter(QueryResultInterface $events , $filter ) {
         $locations = array() ;
         $organizers = array() ;
         $citys = array() ;
@@ -370,7 +386,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             if( ! $this->settings['filter']['hideCityDropdown']) {
                 $citys["-"] = $this->translate("tx_jvevents_event.filter.city.all") ;
 
-                /** @var \JVE\JvEvents\Domain\Model\Location $obj */
+                /** @var Location $obj */
                 $obj =  $event->getLocation() ;
                 if ( is_object($obj) ) {
                     $locations[$obj->getUid()] = $obj->getName()  ;
@@ -386,7 +402,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
 
             if( ! $this->settings['filter']['hideOrganizerDropdown']) {
-                /** @var \JVE\JvEvents\Domain\Model\Organizer $obj */
+                /** @var Organizer $obj */
                 $obj = $event->getOrganizer();
                 if (is_object($obj)) {
                     if ( $this->settings['ShowFilter'] == 6 || $this->settings['ShowFilter'] == 7  ) {
@@ -405,9 +421,9 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             $objArray =  $event->getTags() ;
             if( is_object( $objArray)) {
                 // Plugin settings: are there TAGS as filter defined in the Plugin
-                $filterTags = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $filter['tags'], true);
+                $filterTags = GeneralUtility::intExplode(',', $filter['tags'], true);
 
-                /** @var \JVE\JvEvents\Domain\Model\Tag $obj */
+                /** @var Tag $obj */
                 foreach ($objArray as $obj ) {
                     if ( is_object($obj) ) {
                       //  if ( $filter['combinetags'] == "0" || count($filterTags) < 1 || in_array(  $obj->getUid() , $filterTags )) {
@@ -423,7 +439,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             $objArray =  $event->getEventCategory() ;
 
             if( is_object( $objArray)) {
-                /** @var \JVE\JvEvents\Domain\Model\Category $obj */
+                /** @var Category $obj */
                 foreach ($objArray as $obj ) {
                     if ( is_object($obj) ) {
                         $categories[$obj->getUid()] = $obj->getTitle() ;
@@ -476,7 +492,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     }
 
 
-    public function generateFilterWithoutTagsCats(\TYPO3\CMS\Extbase\Persistence\QueryResultInterface $events , $filter ) {
+    public function generateFilterWithoutTagsCats(QueryResultInterface $events , $filter ) {
         $locations = array() ;
         $organizers = array() ;
         $citys = array() ;
@@ -502,7 +518,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             // first fill the Options for the Filters to have only options with Events
 
             if( ! $this->settings['filter']['hideCityDropdown']) {
-                /** @var \JVE\JvEvents\Domain\Model\Location $obj */
+                /** @var Location $obj */
                 $obj =  $event->getLocation() ;
                 if ( is_object($obj) ) {
                     $locations[$obj->getUid()] = $obj->getName()  ;
@@ -517,7 +533,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             }
 
             if( ! $this->settings['filter']['hideOrganizerDropdown']) {
-                /** @var \JVE\JvEvents\Domain\Model\Organizer $obj */
+                /** @var Organizer $obj */
                 $obj = $event->getOrganizer();
                 if (is_object($obj)) {
                     if ( $this->settings['ShowFilter'] == 6 ) {
@@ -558,17 +574,14 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         $years = array();
 
 
-        /** @var \JVE\JvEvents\Domain\Model\Organizer $organizer */
+        /** @var Organizer $organizer */
         foreach ($orgArray as $key => $organizer ) {
             // first fill the Options for the Filters to have only options with Organizer
-
-
-            /** @var \JVE\JvEvents\Domain\Model\Tag $obj */
-
+            /** @var Tag $obj */
             $objArray =  $organizer->getTags() ;
             if( is_object( $objArray)) {
 
-                /** @var \JVE\JvEvents\Domain\Model\Tag $obj */
+                /** @var Tag $obj */
                 foreach ($objArray as $obj ) {
                     if ( is_object($obj) ) {
                         $tags[$obj->getUid()] = $obj->getName( $filter['tagShowAfterColon'] ) ;
@@ -579,7 +592,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             $objArray =  $organizer->getOrganizerCategory() ;
 
             if( is_object( $objArray)) {
-                /** @var \JVE\JvEvents\Domain\Model\Category $obj */
+                /** @var Category $obj */
                 foreach ($objArray as $obj ) {
                     if ( is_object($obj) ) {
                         $categories[$obj->getUid()] = $obj->getTitle() ;
@@ -693,12 +706,12 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      * @param string $templateName
      * @param string $format  default html
      *
-     * @return \TYPO3\CMS\Fluid\View\StandaloneView object
+     * @return StandaloneView object
      */
     public function getEmailRenderer($templatePath = '' , $templateName = 'default' , $format='html') {
         // create another instance of Fluid
-        /** @var \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
-        $renderer = $this->objectManager->get(\TYPO3\CMS\Fluid\View\StandaloneView::class);
+        /** @var StandaloneView $renderer */
+        $renderer = $this->objectManager->get(StandaloneView::class);
 
 
 
@@ -710,17 +723,17 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         $renderer->setControllerContext($controllerContext);
 
         // override the template path with individual settings in TypoScript
-        $extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+        $extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 
         if (isset($extbaseFrameworkConfiguration['view']['partialRootPaths']) && is_array($extbaseFrameworkConfiguration['view']['partialFilesRootPaths']) ) {
             $partialPaths = $extbaseFrameworkConfiguration['view']['partialFilesRootPaths'];
         } else {
-            $partialPaths = array( 0 => \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName( "typo3conf/ext/jv_events/Resources/Private/Partials" ) ) ;
+            $partialPaths = array( 0 => GeneralUtility::getFileAbsFileName( "typo3conf/ext/jv_events/Resources/Private/Partials" ) ) ;
         }
         if (isset($extbaseFrameworkConfiguration['view']['layoutRootPaths']) && is_array($extbaseFrameworkConfiguration['view']['layoutRootPaths'])) {
             $layoutPaths = $extbaseFrameworkConfiguration['view']['layoutRootPaths'];
         } else {
-            $layoutPaths =  array( 0 => \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName( "typo3conf/ext/jv_events/Resources/Private/Layouts" )) ;
+            $layoutPaths =  array( 0 => GeneralUtility::getFileAbsFileName( "typo3conf/ext/jv_events/Resources/Private/Layouts" )) ;
         }
         # Jan 2021 : as we want to use same email layout in frontend as in backend, we need to remove "/Backend" from layout path
         #
@@ -730,9 +743,9 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         if ( $templatePath == '') {
 
 			if (isset($extbaseFrameworkConfiguration['view']['templateRootPath']) && strlen($extbaseFrameworkConfiguration['view']['templateRootPath']) > 0) {
-				$templatePath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['view']['templateRootPath'][0]);
+				$templatePath = GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['view']['templateRootPath'][0]);
             } else {
-                $templatePath =   \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName( "typo3conf/ext/jv_events/Resources/Private/Templates" );
+                $templatePath =   GeneralUtility::getFileAbsFileName( "typo3conf/ext/jv_events/Resources/Private/Templates" );
             }
         }
 
@@ -766,14 +779,14 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
     public function sendEmail(Event $event = NULL, Registrant $registrant = NULL , $partialName ='', $recipient=array() , $otherEvents=false , $replyTo=false , Registrant $oldReg = NULL )
     {
-        if (!\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($this->settings['register']['senderEmail'])) {
+        if (!GeneralUtility::validEmail($this->settings['register']['senderEmail'])) {
             throw new \Exception('plugin.jv_events.settings.register.senderEmail is not a valid Email Address. Is needed as Sender E-mail');
         }
         if( !$replyTo ) {
             $replyTo = $this->settings['register']['senderEmail'] ;
         }
 
-        $returnPath = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFromAddress();
+        $returnPath = MailUtility::getSystemFromAddress();
         if ( $returnPath == "no-reply@example.com" ) {
             $returnPath = $this->settings['register']['senderEmail'] ;
         } else {
@@ -798,7 +811,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
 
         foreach ($recipient as $key => $value ) {
-            if (!\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($key )) {
+            if (!GeneralUtility::validEmail($key )) {
                 throw new \Exception(var_export( $recipient , true ) . "( " . $key . ") " . ' is not a valid -recipient- Email Address. ');
             }
         }
@@ -818,7 +831,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             $subevents = $this->subeventRepository->findByEventAllpages($event->getUid() , FALSE ) ;
         }
 
-        /** @var \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
+        /** @var StandaloneView $renderer */
         $renderer = $this->getEmailRenderer( '' ,  '/Registrant/Email/' . $this->settings['LayoutRegister']);
 
 
@@ -843,7 +856,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
 
         // read Colors and font settings from EmConfigurationUtility as object
-        $renderer->assign('emConf', \JVE\JvEvents\Utility\EmConfigurationUtility::getEmConf(TRUE));
+        $renderer->assign('emConf', EmConfigurationUtility::getEmConf(TRUE));
         $renderer->assign('registrant', $registrant);
 
         $renderer->assign('event', $event);
@@ -875,7 +888,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         $emailBody = $renderer->render();
 
         /** @var $message \TYPO3\CMS\Core\Mail\MailMessage */
-        $message = $this->objectManager->get(\TYPO3\CMS\Core\Mail\MailMessage::class);
+        $message = $this->objectManager->get(MailMessage::class);
         $message->setTo($recipient)
             ->setFrom($sender)
             ->setSubject($subject);
@@ -883,7 +896,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         $message->setReplyTo($replyTo) ;
         $message->setReturnPath($returnPath);
 
-        $rootPath = \TYPO3\CMS\Core\Core\Environment::getPublicPath() ;
+        $rootPath = Environment::getPublicPath() ;
 
         if ( is_array( $attachments ) ) {
             if( $registrant->getMore6int() == 1  ) {
@@ -900,7 +913,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         }
 
         /** @var Typo3Version $tt */
-        $tt = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Information\Typo3Version::class ) ;
+        $tt = GeneralUtility::makeInstance( Typo3Version::class ) ;
         if( $tt->getMajorVersion()  < 10 ) {
             $message->setBody($emailBody, 'text/html');
             $message->addPart($plainMsg, 'text/plain');
@@ -926,10 +939,10 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      */
     public function sendDebugEmail($recipient,$sender ,$subject , $plainMsg , $htmlMsg = '') {
         /** @var $message \TYPO3\CMS\Core\Mail\MailMessage */
-        $message = $this->objectManager->get(\TYPO3\CMS\Core\Mail\MailMessage::class);
+        $message = $this->objectManager->get(MailMessage::class);
 
 
-        $returnPath = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFromAddress();
+        $returnPath = MailUtility::getSystemFromAddress();
         if ( $returnPath != "no-reply@example.com") {
             $message->setReturnPath($returnPath);
         } else {
@@ -937,7 +950,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         }
 
         /** @var Typo3Version $tt */
-        $tt = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Information\Typo3Version::class ) ;
+        $tt = GeneralUtility::makeInstance( Typo3Version::class ) ;
         if ( !$htmlMsg || $htmlMsg == '' ) {
             $htmlMsg =  nl2br( $plainMsg );
             $subject .= " - converted" ;
@@ -997,11 +1010,9 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     }
 
     /**
-     * @param \JVE\JvEvents\Domain\Model\Organizer | \TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy  $organizer
+     * @param Organizer|LazyLoadingProxy $organizer
      * @return bool
      */
-
-
     public function hasUserAccess( $organizer ) {
         if(! is_object( $organizer ) ) {
            return false ;
@@ -1024,22 +1035,22 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
     /**
      * @param bool $checkAccess
-     * @return array|bool|\JVE\JvEvents\Domain\Model\Organizer|object
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
+     * @return array|bool|Organizer|object
+     * @throws NoSuchArgumentException
+     * @throws InvalidQueryException
      */
     public function getOrganizer($doNotCheckAccess=true) {
         if (intval($GLOBALS['TSFE']->fe_user->user['uid']) < 1 ) {
             return false ;
         }
-        /** @var \JVE\JvEvents\Domain\Model\Organizer $organizer */
+        /** @var Organizer $organizer */
         if( $this->request->hasArgument('organizer')) {
             $id = intval($this->request->getArgument('organizer'));
         }
         if( $id > 0 ) {
             $organizer = $this->organizerRepository->findByUidAllpages($id , FALSE);
         }
-        if ($organizer instanceof \JVE\JvEvents\Domain\Model\Organizer) {
+        if ($organizer instanceof Organizer) {
             if( $doNotCheckAccess || $this->hasUserAccess($organizer) ) {
                 return $organizer ;
             }
@@ -1048,7 +1059,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         // TODo : think about a better solution how to manage that a user can be linked to more than one Organizer
         // actually it will not work
         $organizer = $this->organizerRepository->findByUserAllpages( intval($GLOBALS['TSFE']->fe_user->user['uid'])  , FALSE )->getFirst() ;
-        if ($organizer instanceof \JVE\JvEvents\Domain\Model\Organizer) {
+        if ($organizer instanceof Organizer) {
             return $organizer ;
         }
 
@@ -1061,7 +1072,7 @@ class BaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      * @return string the localized String
      */
     protected function translate($label, $arguments = NULL) {
-        return \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($label, 'JvEvents', $arguments);
+        return LocalizationUtility::translate($label, 'JvEvents', $arguments);
     }
 
     protected function showNoDomainMxError($email ) {

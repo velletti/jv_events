@@ -1,5 +1,6 @@
 <?php
 namespace JVE\JvEvents\ViewHelpers;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use JVE\JvEvents\Domain\Repository\StaticCountryRepository;
 
 /***************************************************************
@@ -42,11 +43,11 @@ use JVE\JvEvents\Domain\Repository\StaticCountryRepository;
  */
 class SelectStaticCountriesViewHelper extends SelectStaticViewHelper {
 	/**
-	 * Repository that provides the country models
-	 *
-	 * @var \JVE\JvEvents\Domain\Repository\StaticCountryRepository
-	 */
-	protected $countryRepository;
+  * Repository that provides the country models
+  *
+  * @var StaticCountryRepository
+  */
+ protected $countryRepository;
 
     /**
      * @param StaticCountryRepository $countryRepository
@@ -118,7 +119,7 @@ class SelectStaticCountriesViewHelper extends SelectStaticViewHelper {
 	public function initialize() {
 		parent::initialize();
 
-		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables')) {
+		if (ExtensionManagementUtility::isLoaded('static_info_tables')) {
 			if ($this->hasArgument('allowedCountries') && count($this->arguments['allowedCountries'])) {
 				$this->arguments['options'] = $this->countryRepository->findByCnIso2($this->arguments['allowedCountries']);
 			} else {

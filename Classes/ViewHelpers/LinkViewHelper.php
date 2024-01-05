@@ -15,6 +15,9 @@ namespace JVE\JvEvents\ViewHelpers;
  * 
  * Based on the news extension of Georg Ringer 
  */
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
+use JVE\JvEvents\Domain\Model\Event;
+use JVE\JvEvents\Domain\Model\Category;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
@@ -49,7 +52,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  * </output>
  *
  */
-class LinkViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper
+class LinkViewHelper extends AbstractTagBasedViewHelper
 {
 
     /**
@@ -64,7 +67,7 @@ class LinkViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedV
         $this->registerUniversalTagAttributes();
         $this->registerTagAttribute('section', 'string', 'Anchor for links', false);
 
-        $this->registerArgument('event', \JVE\JvEvents\Domain\Model\Event::class, 'Event', false);
+        $this->registerArgument('event', Event::class, 'Event', false);
         $this->registerArgument('eventId', 'int', 'Event as id', false);
         $this->registerArgument('settings', 'array', 'settings Array', false , array() );
         $this->registerArgument('configuration', 'array', 'configuration Array', false , array() );
@@ -153,7 +156,7 @@ class LinkViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedV
     /**
      * Generate the link configuration for the link to the news item
      *
-     * @param \JVE\JvEvents\Domain\Model\Event|int $event
+     * @param Event|int $event
      * @param array $settings
      * @param array $configuration
      * @return array
@@ -193,7 +196,7 @@ class LinkViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedV
             $categories = $event->getEventCategory() ;
             $catTitles = "" ;
             if ( $categories ) {
-                /** @var  \JVE\JvEvents\Domain\Model\Category $category */
+                /** @var Category $category */
                 foreach( $categories as $category ) {
                     if( is_object($category)) {
                         $catTitles .= $category->getTitle() . " - ";

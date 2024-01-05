@@ -1,6 +1,10 @@
 <?php
 namespace JVE\JvEvents\Domain\Model;
 
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Annotation\Validate;
+use TYPO3\CMS\Extbase\Domain\Model\FileReference;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 /***************************************************************
  *
  *  Copyright notice
@@ -25,19 +29,18 @@ namespace JVE\JvEvents\Domain\Model;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Organizer
  */
-class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class Organizer extends AbstractEntity
 {
 
     /**
      * Name of the Organizer, shown in Event lists
      *
      * @var string
-     * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
      */
+    #[Validate(['validator' => 'NotEmpty'])]
     protected $name = '';
 
     /**
@@ -59,8 +62,8 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * email to organizer on new registrations
      *
      * @var string
-     * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
      */
+    #[Validate(['validator' => 'NotEmpty'])]
     protected $email = '';
 
     /**
@@ -168,14 +171,14 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * a logo / Image for this organizer
      *
-     * @var \TYPO3\CMS\Extbase\Domain\Model\FileReference
+     * @var FileReference
      */
     protected $images = null;
 
     /**
      * Files that may be useful for this event
      *
-     * @var \TYPO3\CMS\Extbase\Domain\Model\FileReference
+     * @var FileReference
      */
     protected $teaserImage = null;
 
@@ -239,7 +242,7 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * organizerCategory
      *
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Category>
+     * @var ObjectStorage<Category>
      */
     protected $organizerCategory = null;
 
@@ -254,7 +257,7 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * tags
      *
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Tag>
+     * @var ObjectStorage<Tag>
      */
     protected $tags = null;
 
@@ -274,11 +277,11 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     protected function initStorageObjects()
     {
-        $this->organizerCategory = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-        $this->tags = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+        $this->organizerCategory = new ObjectStorage();
+        $this->tags = new ObjectStorage();
 
-        $this->images = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-        $this->teaserImage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+        $this->images = new ObjectStorage();
+        $this->teaserImage = new ObjectStorage();
     }
 
     /**
@@ -416,7 +419,7 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Returns the images
      *
-     * @return \TYPO3\CMS\Extbase\Domain\Model\FileReference $images
+     * @return FileReference $images
      */
     public function getImages()
     {
@@ -426,10 +429,10 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Sets the images
      *
-     * @param \TYPO3\CMS\Extbase\Domain\Model\FileReference $images
+     * @param FileReference $images
      * @return void
      */
-    public function setImages(\TYPO3\CMS\Extbase\Domain\Model\FileReference $images)
+    public function setImages(FileReference $images)
     {
         $this->images = $images;
     }
@@ -477,10 +480,10 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Adds a Category
      *
-     * @param \JVE\JvEvents\Domain\Model\Category $organizerCategory
+     * @param Category $organizerCategory
      * @return void
      */
-    public function addOrganizerCategory(\JVE\JvEvents\Domain\Model\Category $organizerCategory)
+    public function addOrganizerCategory(Category $organizerCategory)
     {
         $this->organizerCategory->attach($organizerCategory);
     }
@@ -488,10 +491,10 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Removes a Category
      *
-     * @param \JVE\JvEvents\Domain\Model\Category $organizerCategoryToRemove The Category to be removed
+     * @param Category $organizerCategoryToRemove The Category to be removed
      * @return void
      */
-    public function removeOrganizerCategory(\JVE\JvEvents\Domain\Model\Category $organizerCategoryToRemove)
+    public function removeOrganizerCategory(Category $organizerCategoryToRemove)
     {
         $this->organizerCategory->detach($organizerCategoryToRemove);
     }
@@ -499,7 +502,7 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Returns the organizerCategory
      *
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Category> $organizerCategory
+     * @return ObjectStorage<Category> $organizerCategory
      */
     public function getOrganizerCategory()
     {
@@ -509,10 +512,10 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Sets the organizerCategory
      *
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Category> $organizerCategory
+     * @param ObjectStorage<Category> $organizerCategory
      * @return void
      */
-    public function setOrganizerCategory(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $organizerCategory)
+    public function setOrganizerCategory(ObjectStorage $organizerCategory)
     {
         $this->organizerCategory = $organizerCategory;
     }
@@ -550,7 +553,7 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     }
 
     /**
-     * @return \TYPO3\CMS\Extbase\Domain\Model\FileReference
+     * @return FileReference
      */
     public function getTeaserImage()
     {
@@ -558,7 +561,7 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Domain\Model\FileReference $teaserImage
+     * @param FileReference $teaserImage
      */
     public function setTeaserImage($teaserImage)
     {
@@ -649,10 +652,10 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Adds a Tag
      *
-     * @param \JVE\JvEvents\Domain\Model\Tag $tag
+     * @param Tag $tag
      * @return void
      */
-    public function addTag(\JVE\JvEvents\Domain\Model\Tag $tag)
+    public function addTag(Tag $tag)
     {
         $this->tags->attach($tag);
     }
@@ -660,10 +663,10 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Removes a Tag
      *
-     * @param \JVE\JvEvents\Domain\Model\Tag $tagToRemove The Tag to be removed
+     * @param Tag $tagToRemove The Tag to be removed
      * @return void
      */
-    public function removeTag(\JVE\JvEvents\Domain\Model\Tag $tagToRemove)
+    public function removeTag(Tag $tagToRemove)
     {
         $this->tags->detach($tagToRemove);
     }
@@ -671,7 +674,7 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Returns the tags
      *
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Tag> $tags
+     * @return ObjectStorage<Tag> $tags
      */
     public function getTags()
     {
@@ -681,10 +684,10 @@ class Organizer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Sets the tags
      *
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Tag> $tags
+     * @param ObjectStorage<Tag> $tags
      * @return void
      */
-    public function setTags(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $tags)
+    public function setTags(ObjectStorage $tags)
     {
         $this->tags = $tags;
     }

@@ -1,5 +1,11 @@
 <?php
 namespace JVE\JvEvents\Domain\Repository;
+
+use TYPO3\CMS\Extbase\Persistence\Repository;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
+use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
+use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 /***************************************************************
  *
  *  Copyright notice
@@ -24,17 +30,16 @@ namespace JVE\JvEvents\Domain\Repository;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * The Base repository for event extension .
  */
-class BaseRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+class BaseRepository extends Repository
 {
     /**
-     * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
+     * @param QueryInterface $query
      */
     public function showSql($query , $file , $line ) {
-        $queryParser = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class);
+        $queryParser = $this->objectManager->get(Typo3DbQueryParser::class);
 
         $sqlquery = $queryParser->convertQueryToDoctrineQueryBuilder($query)->getSQL() ;
         echo "<html><body><h2>See File" . $file  . " Line :" . $line ." </h2><div>";
@@ -58,7 +63,7 @@ class BaseRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 
     function debugQuery($query) {
         // new way to debug typo3 db queries
-        $queryParser = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class);
+        $queryParser = $this->objectManager->get(Typo3DbQueryParser::class);
         $querystr = $queryParser->convertQueryToDoctrineQueryBuilder($query)->getSQL() ;
         echo $querystr ;
         echo "<hr>" ;
@@ -72,14 +77,14 @@ class BaseRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 
         }
         echo str_replace( $search , $replace , $querystr ) ;
-        /** @var \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult $result */
+        /** @var QueryResult $result */
         $result = $query->execute() ;
         echo "<hr>Anzahl: " .  $result->count() ;
 
         die;
     }
 
-    public function getTYPO3QuerySettings(): \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface
+    public function getTYPO3QuerySettings(): QuerySettingsInterface
     {
         return $this->createQuery()->getQuerySettings() ;
     }

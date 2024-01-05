@@ -1,5 +1,8 @@
 <?php
 namespace JVE\JvEvents\Domain\Repository;
+
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 /***************************************************************
  *
  *  Copyright notice
@@ -24,19 +27,18 @@ namespace JVE\JvEvents\Domain\Repository;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * The repository for Subevents
  */
-class SubeventRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
+class SubeventRepository extends BaseRepository
 {
 
 	/**
 	 * @var array
 	 */
 	protected $defaultOrderings = array(
-		'start_date' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING ,
-		'start_time' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
+		'start_date' => QueryInterface::ORDER_ASCENDING ,
+		'start_time' => QueryInterface::ORDER_ASCENDING
 	);
 
     public function findByUidAllpages($uid , $toArray=false )
@@ -58,7 +60,7 @@ class SubeventRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
     /**
      * @param integer $event
      * @param bool $toArray
-     * @return array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+     * @return array|QueryResultInterface
      */
     public function findByEventAllpages($event , $toArray=TRUE  )
     {

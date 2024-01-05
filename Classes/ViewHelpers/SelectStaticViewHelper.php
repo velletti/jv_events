@@ -1,5 +1,7 @@
 <?php
 namespace JVE\JvEvents\ViewHelpers;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use  TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelper;
 
 /***************************************************************
@@ -37,13 +39,13 @@ class SelectStaticViewHelper extends SelectViewHelper {
 	protected $options = array();
 
 	/**
-	 * Render the option tags.
-	 *
-	 * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
-	 * @return array an associative array of options
-	 * @todo testen
-	 */
-	protected function getOptions() {
+  * Render the option tags.
+  *
+  * @throws Exception
+  * @return array an associative array of options
+  * @todo testen
+  */
+ protected function getOptions() {
 		if (!is_array($this->arguments['options']) && !$this->arguments['options'] instanceof \Traversable) {
 			return array();
 		}
@@ -52,12 +54,12 @@ class SelectStaticViewHelper extends SelectViewHelper {
 		foreach ($optionsArgument as $key => $value) {
 			if (is_object($value)) {
 				if ($this->hasArgument('optionValueField')) {
-					$key = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($value, $this->arguments['optionValueField']);
+					$key = ObjectAccess::getPropertyPath($value, $this->arguments['optionValueField']);
 					if (is_object($key)) {
 						if (method_exists($key, '__toString')) {
 							$key = (string) $key;
 						} else {
-							throw new \TYPO3Fluid\Fluid\Core\ViewHelper\Exception(
+							throw new Exception(
 								'Identifying value for object of class "' . get_class($value) . '" was an object.', 1247827428
 							);
 						}
@@ -68,17 +70,17 @@ class SelectStaticViewHelper extends SelectViewHelper {
 				} elseif (method_exists($value, '__toString')) {
 					$key = (string) $value;
 				} else {
-					throw new \TYPO3Fluid\Fluid\Core\ViewHelper\Exception(
+					throw new Exception(
 						'No identifying value for object of class "' . get_class($value) . '" found.', 1247826696
 					);
 				}
 				if ($this->hasArgument('optionLabelField')) {
-					$value = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($value, $this->arguments['optionLabelField']);
+					$value = ObjectAccess::getPropertyPath($value, $this->arguments['optionLabelField']);
 					if (is_object($value)) {
 						if (method_exists($value, '__toString')) {
 							$value = (string) $value;
 						} else {
-							throw new \TYPO3Fluid\Fluid\Core\ViewHelper\Exception(
+							throw new Exception(
 								'Label value for object of class "' . get_class($value) . '" was an object without a __toString() method.', 1247827553
 							);
 						}

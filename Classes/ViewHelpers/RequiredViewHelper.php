@@ -1,6 +1,10 @@
 <?php
 namespace JVE\JvEvents\ViewHelpers;
 
+use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperInterface;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
@@ -13,13 +17,13 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  * <register:form.required fieldName="'username"/>
  * </code>
  */
-class RequiredViewHelper extends AbstractConditionViewHelper implements \TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperInterface  {
+class RequiredViewHelper extends AbstractConditionViewHelper implements ViewHelperInterface  {
 	/**
-	 * Configuration manager to fetch settings from
-	 *
-	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManager
-	 */
-	protected $configurationManager;
+  * Configuration manager to fetch settings from
+  *
+  * @var ConfigurationManager
+  */
+ protected $configurationManager;
 
 	/**
 	 * Settings of the plugin
@@ -36,18 +40,18 @@ class RequiredViewHelper extends AbstractConditionViewHelper implements \TYPO3Fl
 	protected $frameworkConfiguration = array();
 
 	/**
-	 * Injection of configuration manager
-	 *
-	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
-     * @throws \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException
-	 * @return void
-	 */
-	public function injectConfigurationManager(
-		\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
+  * Injection of configuration manager
+  *
+  * @param ConfigurationManagerInterface $configurationManager
+  * @throws InvalidConfigurationTypeException
+  * @return void
+  */
+ public function injectConfigurationManager(
+		ConfigurationManagerInterface $configurationManager
 	) {
 		$this->configurationManager = $configurationManager;
 		$this->settings = $this->configurationManager->getConfiguration(
-			\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS
+			ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS
 		);
 		$layout = $this->settings['LayoutRegister'] ;
         if ( $layout == '' ) { $layout = "1Allplan" ; }
@@ -58,7 +62,7 @@ class RequiredViewHelper extends AbstractConditionViewHelper implements \TYPO3Fl
         }
 		$this->settings['register']['requiredFields'] = $fields ;
 		$this->frameworkConfiguration = $this->configurationManager->getConfiguration(
-			\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK
+			ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK
 		);
 	}
 	public function initializeArguments() {

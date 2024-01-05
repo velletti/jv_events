@@ -15,6 +15,9 @@ namespace JVE\JvEvents\ViewHelpers;
  * 
  * Based on the news extension of Georg Ringer 
  */
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
+use JVE\JvEvents\Domain\Model\Event;
+use JVE\JvEvents\Domain\Model\Category;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
@@ -49,7 +52,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  * </output>
  *
  */
-class RegLinkViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper
+class RegLinkViewHelper extends AbstractTagBasedViewHelper
 {
 
     /**
@@ -63,7 +66,7 @@ class RegLinkViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBas
     {
         $this->registerUniversalTagAttributes();
         $this->registerTagAttribute('section', 'string', 'Anchor for links', false);
-        $this->registerArgument('event', \JVE\JvEvents\Domain\Model\Event::class, 'Event', false);
+        $this->registerArgument('event', Event::class, 'Event', false);
         $this->registerArgument('settings', 'array', 'settings Array', false , array() );
         $this->registerArgument('configuration', 'array', 'configuration Array', false , array() );
         $this->registerArgument('content', 'string', ' the content', false ,'' );
@@ -131,13 +134,13 @@ class RegLinkViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBas
     /**
      * Generate the link configuration for the link to the news item
      *
-     * @param \JVE\JvEvents\Domain\Model\Event $event
+     * @param Event $event
      * @param array $settings
      * @param array $configuration
      * @return array
      */
     protected function getLinkToEventRegistration(
-        \JVE\JvEvents\Domain\Model\Event $event,
+        Event $event,
         $settings,
         array $configuration = []
     ) {
@@ -168,7 +171,7 @@ class RegLinkViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBas
         $categories = $event->getEventCategory() ;
         $catTitles = "" ;
         if ( $categories ) {
-            /** @var  \JVE\JvEvents\Domain\Model\Category $category */
+            /** @var Category $category */
             foreach( $categories as $category ) {
                 if( is_object($category)) {
                     $catTitles .= $category->getTitle() . " - ";

@@ -1,6 +1,20 @@
 <?php
 namespace JVE\JvEvents\Controller;
 
+use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
+use JVE\JvEvents\Domain\Model\Organizer;
+use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
+use TYPO3\CMS\Extbase\Annotation\Validate;
+use JVE\JvEvents\Validation\Validator\OrganizerValidator;
+use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
+use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
+use JVE\JvEvents\Domain\Repository\FrontendUserRepository;
+use JVE\JvEvents\Domain\Model\FrontendUser;
+use TYPO3\CMS\Extbase\Domain\Repository\FrontendUserGroupRepository;
+use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
+use JVE\JvEvents\Domain\Model\Tag;
 use JVE\JvEvents\Utility\SlugUtility;
 use JVE\JvEvents\Utility\TokenUtility;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
@@ -71,17 +85,17 @@ class OrganizerController extends BaseController
      *
      * @return void
      */
-    public function indexAction()
+    public function indexAction(): ResponseInterface
     {
-        // maybe we need this as Overview -> Select type of Organizer -> jump to list -> Filtered by type
+        // maybe we need this as Overview -> Select type of Organizer -> jump to list -> Filtered by type return $this->htmlResponse();return $this->htmlResponse();
     }
     /**
      * action list
      *
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
+     * @throws InvalidQueryException
      * @return void
      */
-    public function assistAction()
+    public function assistAction(): ResponseInterface
     {
         $this->view->assign('user', intval($GLOBALS['TSFE']->fe_user->user['uid'] ) ) ;
         if ( isset( $GLOBALS['TSFE']->fe_user->user['uid'] )) {
@@ -130,6 +144,7 @@ class OrganizerController extends BaseController
         $this->view->assign('count', count($organizer));
         $this->view->assign('organizer', $organizer);
         $this->view->assign('isOrganizer', $this->isUserOrganizer());
+        return $this->htmlResponse();
 
     }
     /**
@@ -137,7 +152,7 @@ class OrganizerController extends BaseController
      *
      * @return void
      */
-    public function listAction()
+    public function listAction(): ResponseInterface
     {
 
 
@@ -196,16 +211,16 @@ class OrganizerController extends BaseController
 
        // echo "<pre>" ;
        // var_dump( $this->debugArray) ;
-       // die;
+       // die;return $this->htmlResponse();return $this->htmlResponse();
     }
     
     /**
      * action show
      *
-     * @param \JVE\JvEvents\Domain\Model\Organizer|null $organizer
+     * @param Organizer|null $organizer
      * @return void
      */
-    public function showAction(?\JVE\JvEvents\Domain\Model\Organizer $organizer)
+    public function showAction(?Organizer $organizer): ResponseInterface
     {
         if( $organizer ) {
             $this->settings['filter']['organizer'] =  $organizer->getUid()  ;
@@ -220,18 +235,19 @@ class OrganizerController extends BaseController
         } else {
             $this->addFlashMessage($this->translate("error.general.entry_not_found"), "Sorry!" , AbstractMessage::WARNING) ;
         }
+        return $this->htmlResponse();
 
     }
     
     /**
      * action new
-     * @param \JVE\JvEvents\Domain\Model\Organizer|Null $organizer
-     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("organizer")
+     * @param Organizer|Null $organizer
      * @return void
      */
-    public function newAction(\JVE\JvEvents\Domain\Model\Organizer $organizer = null )
+    #[IgnoreValidation(['value' => 'organizer'])]
+    public function newAction(Organizer $organizer = null ): ResponseInterface
     {
-        /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $categories */
+        /** @var QueryResultInterface $categories */
         $tags = $this->tagRepository->findAllonAllPages( '2' );
 
 
@@ -243,8 +259,8 @@ class OrganizerController extends BaseController
                 $organizer->setEmail( $GLOBALS['TSFE']->fe_user->user['email'] ) ;
             }
         } else{
-            /** @var \JVE\JvEvents\Domain\Model\Organizer $organizer */
-            $organizer = $this->objectManager->get(\JVE\JvEvents\Domain\Model\Organizer::class);
+            /** @var Organizer $organizer */
+            $organizer = $this->objectManager->get(Organizer::class);
             // ToDo find good way to handle ID Default .. maybe a pid per User, per location or other typoscript setting
             $organizer->setPid( 13 ) ;
             $organizer->setEmail( $GLOBALS['TSFE']->fe_user->user['email'] ) ;
@@ -259,16 +275,17 @@ class OrganizerController extends BaseController
 
         $this->view->assign('organizer', $organizer );
         $this->view->assign('tags', $tags);
+        return $this->htmlResponse();
     }
     
     /**
      * action create
      *
-     * @param \JVE\JvEvents\Domain\Model\Organizer $organizer
-     * @TYPO3\CMS\Extbase\Annotation\Validate(param="organizer" , validator="JVE\JvEvents\Validation\Validator\OrganizerValidator")
+     * @param Organizer $organizer
      * @return void
      */
-    public function createAction(\JVE\JvEvents\Domain\Model\Organizer $organizer)
+    #[Validate(['param' => 'organizer', 'validator' => OrganizerValidator::class])]
+    public function createAction(Organizer $organizer)
     {
         if ( $GLOBALS['TSFE']->fe_user->user && $GLOBALS['TSFE']->fe_user->user['uid'] > 0 )  {
              $isOrganizer = $this->organizerRepository->findByUserAllpages( $GLOBALS['TSFE']->fe_user->user['uid'] , true , true ) ;
@@ -294,10 +311,10 @@ class OrganizerController extends BaseController
 
                 $this->cacheService->clearPageCache( array($this->settings['pageIds']['organizerAssist'])  );
                 if( $organizer->getUid()) {
-                    $this->addFlashMessage('The Organizer was created with ID:' . $organizer->getUid() , '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+                    $this->addFlashMessage('The Organizer was created with ID:' . $organizer->getUid() , '', AbstractMessage::OK);
 
                 } else {
-                    $this->addFlashMessage('Error: Organizer did not get an ID:' , '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+                    $this->addFlashMessage('Error: Organizer did not get an ID:' , '', AbstractMessage::WARNING);
                 }
             }
 
@@ -310,9 +327,9 @@ class OrganizerController extends BaseController
             $userUid = intval($GLOBALS['TSFE']->fe_user->user['uid']) ;
             $rnd = time() ;
             $tokenStr = "activateOrg" . "-" . $organizerUid . "-" . $GLOBALS['TSFE']->fe_user->user['crdate'] ."-". $userUid .  "-". $rnd ;
-            $hmac = \TYPO3\CMS\Core\Utility\GeneralUtility::hmac( $tokenStr );
+            $hmac = GeneralUtility::hmac( $tokenStr );
 
-            $url  = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST') ;
+            $url  = GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST') ;
             /*
             $url .= "/de?tx_jvevents_ajax[action]=activate&tx_jvevents_ajax[controller]=ajax" ;
 
@@ -365,7 +382,7 @@ class OrganizerController extends BaseController
         } else {
             $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
 
-            $this->addFlashMessage('You do not have access rights to create own Organizer data.'  , '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+            $this->addFlashMessage('You do not have access rights to create own Organizer data.'  , '', AbstractMessage::WARNING);
         }
 
         $this->redirect('assist' , NULL, Null , NULL , $this->settings['pageIds']['organizerAssist'] );
@@ -380,8 +397,8 @@ class OrganizerController extends BaseController
      * @param int $rnd
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
+     * @throws IllegalObjectTypeException
+     * @throws UnknownObjectException
      */
     public function activateAction($organizerUid=0 , $userUid=0 , $hmac='invalid' , $rnd = 0 ) {
 
@@ -398,19 +415,19 @@ class OrganizerController extends BaseController
             // fix this BUG : settings pageIds is not working anymore. Why ??
             $this->settings['pageIds']['organizerAssist'] = 24 ;
         }
-        /** @var \JVE\JvEvents\Domain\Model\Organizer $organizer */
+        /** @var Organizer $organizer */
         $organizer = $this->organizerRepository->findByUidAllpages($organizerUid, FALSE, TRUE);
 
 
 
-        /** @var \JVE\JvEvents\Domain\Repository\FrontendUserRepository $userRepository */
-        $userRepository = $this->objectManager->get(\JVE\JvEvents\Domain\Repository\FrontendUserRepository::class) ;
-        /** @var \JVE\JvEvents\Domain\Model\FrontendUser $user */
+        /** @var FrontendUserRepository $userRepository */
+        $userRepository = $this->objectManager->get(FrontendUserRepository::class) ;
+        /** @var FrontendUser $user */
         $user = $userRepository->findByUid($userUid) ;
 
 
         if( !$organizer  ) {
-            $this->addFlashMessage("Organizer not found by ID : " . $organizerUid , "" , \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING) ;
+            $this->addFlashMessage("Organizer not found by ID : " . $organizerUid , "" , AbstractMessage::WARNING) ;
             try {
                 $this->redirect('assist' , "Organizer", Null , NULL , $this->settings['pageIds']['organizerAssist'] );
             } catch(StopActionException $e) {
@@ -423,7 +440,7 @@ class OrganizerController extends BaseController
             }
         }
         if( !$user ) {
-            $this->addFlashMessage("User not found by ID : " . $userUid , "" , \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING) ;
+            $this->addFlashMessage("User not found by ID : " . $userUid , "" , AbstractMessage::WARNING) ;
             try {
                 $this->redirect('assist' , "Organizer", Null , NULL , $this->settings['pageIds']['organizerAssist'] );
             } catch(StopActionException $e) {
@@ -449,7 +466,7 @@ class OrganizerController extends BaseController
                 echo "<br>Gives: " . $tokenId ;
                 die;
             }
-            $this->addFlashMessage("Hmac does not fit to: " . $tokenStr , "ERROR" , \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR) ;
+            $this->addFlashMessage("Hmac does not fit to: " . $tokenStr , "ERROR" , AbstractMessage::ERROR) ;
             try {
                 $this->redirect('assist' , "Organizer", Null , NULL , $this->settings['pageIds']['organizerAssist'] );
             } catch(StopActionException $e) {
@@ -487,7 +504,7 @@ class OrganizerController extends BaseController
         foreach ($groupsMissing as $key => $item) {
             if ( $item  ) {
                 /** @var \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserGroupRepository $userGroupRepository */
-                $userGroupRepository = $this->objectManager->get(\TYPO3\CMS\Extbase\Domain\Repository\FrontendUserGroupRepository::class) ;
+                $userGroupRepository = $this->objectManager->get(FrontendUserGroupRepository::class) ;
                 $newGroup = $userGroupRepository->findByUid($key) ;
                 if( $newGroup ) {
                     if ( $msg == '' ) {
@@ -507,8 +524,8 @@ class OrganizerController extends BaseController
         $organizer->setHidden(0) ;
         $this->organizerRepository->update( $organizer) ;
         $this->persistenceManager->persistAll() ;
-        $this->addFlashMessage("User : " . $userUid . " (" . $user->getEmail() . ") enabled | " . $msg . "  " , "Success" , \TYPO3\CMS\Core\Messaging\AbstractMessage::OK) ;
-        $this->addFlashMessage("Organizer : " . $organizerUid . " (" . $organizer->getName() . ")  enabled " , \TYPO3\CMS\Core\Messaging\AbstractMessage::OK) ;
+        $this->addFlashMessage("User : " . $userUid . " (" . $user->getEmail() . ") enabled | " . $msg . "  " , "Success" , AbstractMessage::OK) ;
+        $this->addFlashMessage("Organizer : " . $organizerUid . " (" . $organizer->getName() . ")  enabled " , AbstractMessage::OK) ;
 
 
         $msg = "\n *********************************************** " ;
@@ -556,49 +573,49 @@ class OrganizerController extends BaseController
     /**
      * action edit
      *
-     * @param \JVE\JvEvents\Domain\Model\Organizer $organizer
-     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("organizer")
+     * @param Organizer $organizer
      * @return void
      */
-    public function editAction(\JVE\JvEvents\Domain\Model\Organizer $organizer)
+    #[IgnoreValidation(['value' => 'organizer'])]
+    public function editAction(Organizer $organizer): ResponseInterface
     {
 
 
         if ( ! $this->hasUserAccess($organizer )) {
             $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
 
-            $this->addFlashMessage('No access.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
+            $this->addFlashMessage('No access.', '', AbstractMessage::ERROR);
             $this->view->assign('noAccess', TRUE );
         } else {
-            /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $categories */
+            /** @var QueryResultInterface $categories */
             $tags = $this->tagRepository->findAllonAllPages( '2' );
             $this->view->assign('tags', $tags);
             $this->view->assign('organizer', $organizer);
         }
 
         $this->view->assign('user', intval( $GLOBALS['TSFE']->fe_user->user['uid'] ) );
+        return $this->htmlResponse();
 
     }
     
     /**
      * action update
      *
-     * @param \JVE\JvEvents\Domain\Model\Organizer $organizer
-     * @TYPO3\CMS\Extbase\Annotation\Validate(param="organizer" , validator="JVE\JvEvents\Validation\Validator\OrganizerValidator")
-
+     * @param Organizer $organizer
      * @return void
      */
-    public function updateAction(\JVE\JvEvents\Domain\Model\Organizer $organizer)
+    #[Validate(['param' => 'organizer', 'validator' => OrganizerValidator::class])]
+    public function updateAction(Organizer $organizer)
     {
         if ( $this->hasUserAccess($organizer )) {
             $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
             $organizer = $this->cleanOrganizerArguments( $organizer ) ;
             $this->organizerRepository->update($organizer);
-            $this->addFlashMessage('The object was updated.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+            $this->addFlashMessage('The object was updated.', '', AbstractMessage::OK);
         } else {
             $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
 
-            $this->addFlashMessage('You do not have access rights to change this data.' . $organizer->getUid() , '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+            $this->addFlashMessage('You do not have access rights to change this data.' . $organizer->getUid() , '', AbstractMessage::WARNING);
         }
 
         $this->showNoDomainMxError($organizer->getEmail() ) ;
@@ -609,12 +626,12 @@ class OrganizerController extends BaseController
     /**
      * action delete
      *
-     * @param \JVE\JvEvents\Domain\Model\Organizer $organizer
+     * @param Organizer $organizer
      * @return void
      */
-    public function deleteAction(\JVE\JvEvents\Domain\Model\Organizer $organizer)
+    public function deleteAction(Organizer $organizer)
     {
-        $this->addFlashMessage('The object was NOT deleted. this feature is not implemented yet', 'Unfinished Feature', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
+        $this->addFlashMessage('The object was NOT deleted. this feature is not implemented yet', 'Unfinished Feature', AbstractMessage::ERROR);
      //   $this->organizerRepository->remove($organizer);
         $this->redirect('assist' , NULL, Null , NULL , $this->settings['pageIds']['organizerAssist']);
     }
@@ -623,11 +640,11 @@ class OrganizerController extends BaseController
 
 
     /**
-     * @param \JVE\JvEvents\Domain\Model\Organizer $organizer
-     * @return \JVE\JvEvents\Domain\Model\Organizer
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
+     * @param Organizer $organizer
+     * @return Organizer
+     * @throws NoSuchArgumentException
      */
-    public function cleanOrganizerArguments(\JVE\JvEvents\Domain\Model\Organizer  $organizer)
+    public function cleanOrganizerArguments(Organizer  $organizer)
     {
         // validation should be done in validatar class so we can ignore issue with wrong format
 
@@ -635,12 +652,12 @@ class OrganizerController extends BaseController
 
         // Update the Tags
         if( is_array( $organizerArray) && array_key_exists( 'tagsFE' , $organizerArray )) {
-            $organizerTagUids =  \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode("," , $organizerArray['tagsFE']) ;
+            $organizerTagUids =  GeneralUtility::trimExplode("," , $organizerArray['tagsFE']) ;
             if( is_array($organizerTagUids) && count($organizerTagUids) > 0  ) {
                 $existingTags = $organizer->getTags() ;
 
                 if ( $existingTags ) {
-                    /** @var  \JVE\JvEvents\Domain\Model\Tag $existingTag */
+                    /** @var Tag $existingTag */
                     foreach ( $existingTags as $existingTag ) {
                         if( !in_array( $existingTag->getUid()  , $organizerTagUids)) {
                             $organizer->getTags()->detach($existingTag) ;
@@ -652,7 +669,7 @@ class OrganizerController extends BaseController
                 if( is_array($organizerTagUids) && count($organizerTagUids) > 0  ) {
                     foreach ($organizerTagUids as $organizerTagUid) {
                         if( intval( $organizerTagUid ) > 0 ) {
-                            /** @var  \JVE\JvEvents\Domain\Model\Tag $organizerTag */
+                            /** @var Tag $organizerTag */
                             $organizerTag = $this->tagRepository->findByUid($organizerTagUid) ;
 
                             if($organizerTag) {

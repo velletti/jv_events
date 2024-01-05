@@ -1,6 +1,15 @@
 <?php
 namespace JVE\JvEvents\Controller;
 
+use Psr\Http\Message\ResponseInterface;
+use JVE\JvEvents\Domain\Model\Location;
+use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
+use TYPO3\CMS\Extbase\Annotation\Validate;
+use JVE\JvEvents\Validation\Validator\LocationValidator;
+use JVE\JvEvents\Domain\Model\Organizer;
+use JVE\JvEvents\Domain\Model\Event;
+use JVE\JvEvents\Domain\Model\Category;
 use JVE\JvEvents\Utility\SlugUtility;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -67,7 +76,7 @@ class LocationController extends BaseController
      *
      * @return void
      */
-    public function listAction()
+    public function listAction(): ResponseInterface
     {
         $filter = []     ;
         if( array_key_exists( 'filterlocation' , $this->settings)) {
@@ -78,7 +87,7 @@ class LocationController extends BaseController
                 }
             }
             if ( array_key_exists( "categories", $this->settings['filterlocation']) && strlen(trim($this->settings['filterlocation']['categories'] )) > 0 )  {
-                $filter["locationCategory.uid"] =  \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode( "," , $this->settings['filterlocation']['categories'] )   ;
+                $filter["locationCategory.uid"] =  GeneralUtility::trimExplode( "," , $this->settings['filterlocation']['categories'] )   ;
             }
         }
 
@@ -94,15 +103,16 @@ class LocationController extends BaseController
         // ($filter=FALSE , $toArray=FALSE , $ignoreEnableFields = FALSE , $limit=FALSE, $lastModified = '-1 YEAR')
         $locations = $this->locationRepository->findByFilterAllpages($filter , false , false , false  , $lastModified);
         $this->view->assign('locations', $locations);
+        return $this->htmlResponse();
     }
     
     /**
      * action show
      *
-     * @param \JVE\JvEvents\Domain\Model\Location|null $location
+     * @param Location|null $location
      * @return void
      */
-    public function showAction(?\JVE\JvEvents\Domain\Model\Location $location)
+    public function showAction(?Location $location): ResponseInterface
     {
         if ( $location ) {
             $nextEventOrganizer = null;
@@ -122,23 +132,24 @@ class LocationController extends BaseController
         } else {
             $this->addFlashMessage($this->translate("error.general.entry_not_found"), "Sorry!" , AbstractMessage::WARNING) ;
         }
+        return $this->htmlResponse();
     }
     
     /**
      * action new
-     * @param \JVE\JvEvents\Domain\Model\Location|Null $location
-     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("location")
+     * @param Location|Null $location
      * @return void
      */
-    public function newAction(\JVE\JvEvents\Domain\Model\Location $location=Null)
+    #[IgnoreValidation(['value' => 'location'])]
+    public function newAction(Location $location=Null): ResponseInterface
     {
-        /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $categories */
+        /** @var QueryResultInterface $categories */
         $categories = $this->categoryRepository->findAllonAllPages( '1' );
 
 
         if ( $location==null) {
-            /** @var \JVE\JvEvents\Domain\Model\Location $location */
-            $location = $this->objectManager->get(\JVE\JvEvents\Domain\Model\Location::class);
+            /** @var Location $location */
+            $location = $this->objectManager->get(Location::class);
             $location->setLng( ($this->settings['filterlocation']['lng'] ?? '-34.5877631' ));
             $location->setLat( ($this->settings['filterlocation']['lat'] ?? '-58.4589249' ));
 
@@ -164,18 +175,18 @@ class LocationController extends BaseController
             $this->view->assign('organizer', $organizer );
             $this->view->assign('categories', $categories);
         }
+        return $this->htmlResponse();
     }
     
     /**
      * action create
      *
-     * @param \JVE\JvEvents\Domain\Model\Location $location
+     * @param Location $location
      *
-     * @TYPO3\CMS\Extbase\Annotation\Validate(param="location" , validator="JVE\JvEvents\Validation\Validator\LocationValidator")
      * @return void
      */
-
-    public function createAction(\JVE\JvEvents\Domain\Model\Location $location)
+    #[Validate(['param' => 'location', 'validator' => LocationValidator::class])]
+    public function createAction(Location $location)
     {
         if( $this->request->hasArgument('location')) {
             $location = $this->cleanLocationArguments( $location) ;
@@ -198,16 +209,16 @@ class LocationController extends BaseController
                 $this->persistenceManager->persistAll() ;
 
 
-                $this->addFlashMessage('The Location was created.  It may take up some hours before it is visible', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+                $this->addFlashMessage('The Location was created.  It may take up some hours before it is visible', '', AbstractMessage::OK);
             } catch ( \Exception $e ) {
-                $this->addFlashMessage($e->getMessage() , 'Error', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+                $this->addFlashMessage($e->getMessage() , 'Error', AbstractMessage::WARNING);
 
             }
 
         } else {
 
             $pid = $this->settings['pageIds']['loginForm'] ;
-            $this->addFlashMessage('The object was NOT created. You are not logged in as Organizer.' . $location->getUid() , '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+            $this->addFlashMessage('The object was NOT created. You are not logged in as Organizer.' . $location->getUid() , '', AbstractMessage::WARNING);
             $this->redirect(null , null , NULL , NULL , $pid );
         }
 
@@ -228,13 +239,13 @@ class LocationController extends BaseController
 
     /**
      * action new
-     * @param \JVE\JvEvents\Domain\Model\Location $location
-     * @param \JVE\JvEvents\Domain\Model\Organizer $organizer
+     * @param Location $location
+     * @param Organizer $organizer
      * @param integer $oldDefault
-     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("location")
      * @return void
      */
-    public function setDefaultAction(\JVE\JvEvents\Domain\Model\Location $location , \JVE\JvEvents\Domain\Model\Organizer $organizer ,  $oldDefault= 0) {
+    #[IgnoreValidation(['value' => 'location'])]
+    public function setDefaultAction(Location $location , Organizer $organizer ,  $oldDefault= 0) {
         if ( $this->hasUserAccess($location->getOrganizer() )) {
             $location->setDefaultLocation( TRUE ) ;
             $this->locationRepository->update($location) ;
@@ -259,13 +270,13 @@ class LocationController extends BaseController
     /**
      * action edit
      *
-     * @param \JVE\JvEvents\Domain\Model\Location $location
-     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("location")
+     * @param Location $location
      * @return void
      */
-    public function editAction(\JVE\JvEvents\Domain\Model\Location $location)
+    #[IgnoreValidation(['value' => 'location'])]
+    public function editAction(Location $location): ResponseInterface
     {
-        /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $categories */
+        /** @var QueryResultInterface $categories */
         $categories = $this->categoryRepository->findAllonAllPages( '1' );
 
 
@@ -287,19 +298,20 @@ class LocationController extends BaseController
             $this->view->assign('location', $location);
             $this->view->assign('categories', $categories);
         } else {
-            $this->addFlashMessage('You do not have access rights to change this data.' , 'Error', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
-            $this->addFlashMessage('ID: ' . $location->getUid(), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+            $this->addFlashMessage('You do not have access rights to change this data.' , 'Error', AbstractMessage::WARNING);
+            $this->addFlashMessage('ID: ' . $location->getUid(), '', AbstractMessage::WARNING);
         }
+        return $this->htmlResponse();
     }
     
     /**
      * action update
      *
-     * @param \JVE\JvEvents\Domain\Model\Location $location
-     * @TYPO3\CMS\Extbase\Annotation\Validate(param="location" , validator="JVE\JvEvents\Validation\Validator\LocationValidator")
+     * @param Location $location
      * @return void
      */
-    public function updateAction(\JVE\JvEvents\Domain\Model\Location $location)
+    #[Validate(['param' => 'location', 'validator' => LocationValidator::class])]
+    public function updateAction(Location $location)
     {
         if( ! $hasAccess = $this->isAdminOrganizer()  ) {
             if( $organizer = $location->getOrganizer() ) {
@@ -310,10 +322,10 @@ class LocationController extends BaseController
         if ($hasAccess ) {
             $location = $this->cleanLocationArguments( $location) ;
             $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
-            $this->addFlashMessage('The object was updated. It may take some hours before it is visible', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+            $this->addFlashMessage('The object was updated. It may take some hours before it is visible', '', AbstractMessage::OK);
             $this->locationRepository->update($location);
         } else {
-            $this->addFlashMessage('You do not have access rights to change this data.' . $location->getUid() , '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+            $this->addFlashMessage('You do not have access rights to change this data.' . $location->getUid() , '', AbstractMessage::WARNING);
         }
         $this->showNoDomainMxError($location->getEmail() ) ;
         $this->redirect('edit' , NULL, Null , array( "location" => $location));
@@ -322,10 +334,10 @@ class LocationController extends BaseController
     /**
      * action delete
      *
-     * @param \JVE\JvEvents\Domain\Model\Location $location
+     * @param Location $location
      * @return void
      */
-    public function deleteAction(\JVE\JvEvents\Domain\Model\Location $location)
+    public function deleteAction(Location $location)
     {
         $delete = false ;
         $events = $this->eventRepository->findByLocation( $location->getUid() ) ;
@@ -341,20 +353,20 @@ class LocationController extends BaseController
                     $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
                     if ( $events->count() > 0 ) {
                         $eventIds = "Ids: " ;
-                        /** @var \JVE\JvEvents\Domain\Model\Event $event */
+                        /** @var Event $event */
                         foreach ( $events as $event) {
                             $eventIds .= $event->getUid() . ", " ;
                             $this->eventRepository->remove($event) ;
                         }
-                        $this->addFlashMessage('The following Events are deleted: ' . $eventIds, '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+                        $this->addFlashMessage('The following Events are deleted: ' . $eventIds, '', AbstractMessage::OK);
                     }
 
                     $this->locationRepository->remove($location);
-                    $this->addFlashMessage('The Location was deleted.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+                    $this->addFlashMessage('The Location was deleted.', '', AbstractMessage::OK);
 
 
                 } else {
-                    $this->addFlashMessage('You do not have access rights to change this data.' . $location->getUid() , '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+                    $this->addFlashMessage('You do not have access rights to change this data.' . $location->getUid() , '', AbstractMessage::WARNING);
                 }
 
 
@@ -368,10 +380,10 @@ class LocationController extends BaseController
     }
 
     /**
-     * @param \JVE\JvEvents\Domain\Model\Location $location
-     * @return \JVE\JvEvents\Domain\Model\Location
+     * @param Location $location
+     * @return Location
      */
-    public function cleanLocationArguments(\JVE\JvEvents\Domain\Model\Location $location) {
+    public function cleanLocationArguments(Location $location) {
 
         $desc = str_replace( array( "\n" , "\r" , "\t" ), array(" " , "" , " " ), $location->getDescription() ) ;
         $desc = strip_tags($desc , "<p><br><a><i><strong><h2><h3>") ;
@@ -385,7 +397,7 @@ class LocationController extends BaseController
         $locationArray = $this->request->getArgument('location');
         /*   +******  Update the Category  ************* */
         $locationCatUid = intval( $locationArray['locationCategory'] ) ;
-        /** @var \JVE\JvEvents\Domain\Model\Category $locationCat */
+        /** @var Category $locationCat */
         $locationCat = $this->categoryRepository->findByUid($locationCatUid) ;
 
 

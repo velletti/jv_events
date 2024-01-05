@@ -129,7 +129,7 @@ class UpdateSlugCommand extends Command {
     public function updateCommand(SymfonyStyle $io , $table , $slugField , $maxRows  ){
         $progress = false ;
         if( !$table ) { return ; }
-		$rows = $this->getQueryBuilder($table)->select("*")->from($table)->execute() ;
+		$rows = $this->getQueryBuilder($table)->select("*")->from($table)->executeQuery() ;
         $total = $rows->rowCount()  ;
         if( $total < $maxRows ) {
             $maxRows = $total ;
@@ -178,7 +178,7 @@ class UpdateSlugCommand extends Command {
 	private function getQueryBuilder(string $table): QueryBuilder
     {
         /** @var ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Database\ConnectionPool::class);
+        $connectionPool = GeneralUtility::makeInstance( ConnectionPool::class);
         /** @var QueryBuilder $queryBuilder */
         return $connectionPool->getConnectionForTable($table)->createQueryBuilder();
 	}
@@ -238,9 +238,7 @@ class UpdateSlugCommand extends Command {
     private function setSlug($table , $uid , $slugField , $slug)
     {
         $qb = $this->getQueryBuilder($table) ;
-        $qb->update($table)->set($slugField , $slug)
-            ->where($qb->expr()->eq("uid" , $qb->createNamedParameter($uid , PDO::PARAM_INT)))
-            ->execute() ;
+        $qb->update($table)->set($slugField , $slug)->where($qb->expr()->eq("uid" , $qb->createNamedParameter($uid , PDO::PARAM_INT)))->executeStatement() ;
 
     }
 

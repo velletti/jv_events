@@ -1,7 +1,8 @@
 <?php
 namespace JVE\JvEvents\Controller;
 
-
+use JVE\JvEvents\Domain\Repository\TagRepository;
+use Psr\Http\Message\ResponseInterface;
 /***************************************************************
  *
  *  Copyright notice
@@ -26,7 +27,6 @@ namespace JVE\JvEvents\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * TagController
  */
@@ -36,7 +36,7 @@ class TagController extends BaseController
     /**
      * tagRepository
      *
-     * @var \JVE\JvEvents\Domain\Repository\TagRepository
+     * @var TagRepository
      */
     protected $tagRepository = NULL;
 
@@ -59,10 +59,11 @@ class TagController extends BaseController
      *
      * @return void
      */
-    public function listAction()
+    public function listAction(): ResponseInterface
     {
         $tags = $this->tagRepository->findAll();
         $this->view->assign('tags', $tags);
+        return $this->htmlResponse();
     }
 
 }

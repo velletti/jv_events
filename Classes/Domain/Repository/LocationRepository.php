@@ -1,6 +1,7 @@
 <?php
 namespace JVE\JvEvents\Domain\Repository;
 
+use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 
 /***************************************************************
@@ -31,15 +32,15 @@ use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 /**
  * The repository for Locations
  */
-class LocationRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
+class LocationRepository extends BaseRepository
 {
 
     /**
      * @var array
      */
     protected $defaultOrderings = array(
-        'crdate' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING ,
-        'sorting' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
+        'crdate' => QueryInterface::ORDER_DESCENDING ,
+        'sorting' => QueryInterface::ORDER_ASCENDING
 
     );
 
@@ -104,11 +105,12 @@ class LocationRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
             $actualTime = new \DateTime('now' ) ;
             $actualTime->modify($lastModified ) ;
 
-            $constraints[] = $query->logicalOr( [
-                    $query->greaterThanOrEqual('tstamp', $actualTime ),
-                    $query->greaterThanOrEqual('latest_event', $actualTime )
-                ]
-            );
+            $constraints[] = $query->logicalOr($query->greaterThanOrEqual('tstamp', $actualTime ), $query->greaterThanOrEqual('latest_event', $actualTime ));
+        }
+        if (count($constraints) === 1) {
+            $query->matching(reset($constraints));
+        } elseif (count($constraints) >= 2) {
+            $query->matching($query->logicalAnd(...$constraints));
         }
 
         $query->matching( $query->logicalAnd( $constraints ) ) ;
@@ -122,14 +124,6 @@ class LocationRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
         }
         $res = $query->execute() ;
 
-        // new way to debug typo3 db queries
-        $debug = false ;
-        if ( $debug == true ) {
-            $queryParser = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class);
-            var_dump($queryParser->convertQueryToDoctrineQueryBuilder($query)->getSQL());
-             var_dump($queryParser->convertQueryToDoctrineQueryBuilder($query)->getParameters()) ;
-            die;
-        }
         if( $toArray === TRUE ) {
             return $res->toArray();
         } else {
@@ -140,7 +134,7 @@ class LocationRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
     public function findByFilterAllpages($filter=FALSE , $toArray=FALSE , $ignoreEnableFields = FALSE , $limit=FALSE, $lastModified = '-1 YEAR')
     {
         $query = $this->createQuery();
-        $query->setOrderings( [ 'organizer.sorting' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING ] );
+        $query->setOrderings( [ 'organizer.sorting' => QueryInterface::ORDER_ASCENDING ] );
 
         $querySettings = $query->getQuerySettings() ;
         $querySettings->setRespectStoragePage(false);
@@ -170,11 +164,7 @@ class LocationRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
             $actualTime = new \DateTime('now' ) ;
             $actualTime->modify($lastModified ) ;
 
-            $constraints[] = $query->logicalOr( [
-                    $query->greaterThanOrEqual('tstamp', $actualTime ),
-                    $query->greaterThanOrEqual('latest_event', $actualTime )
-                ]
-            );
+            $constraints[] = $query->logicalOr($query->greaterThanOrEqual('tstamp', $actualTime ), $query->greaterThanOrEqual('latest_event', $actualTime ));
         }
 
         if( $limit) {
@@ -183,11 +173,12 @@ class LocationRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
 
         if ( $ignoreEnableFields ) {
             $constraints[] =  $query->equals('deleted',  0 )  ;
-            $constraints[] = $query->logicalOr( [
-                $query->equals('organizer.hidden', 0 ) ,
-                $query->equals('organizer.uid', null )
-             ]
-            ) ;
+            $constraints[] = $query->logicalOr($query->equals('organizer.hidden', 0 ), $query->equals('organizer.uid', null )) ;
+        }
+        if (count($constraints) === 1) {
+            $query->matching(reset($constraints));
+        } elseif (count($constraints) >= 2) {
+            $query->matching($query->logicalAnd(...$constraints));
         }
         $query->matching( $query->logicalAnd($constraints)) ;
         $res = $query->execute() ;

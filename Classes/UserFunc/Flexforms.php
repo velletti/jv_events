@@ -8,6 +8,8 @@
 
 namespace JVE\JvEvents\UserFunc;
 
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -16,9 +18,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class Flexforms {
 	public function getSettings() {
-		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-		$configurationManager = $objectManager->get(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
-		$settings = $configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT );
+		$objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+		$configurationManager = $objectManager->get(ConfigurationManagerInterface::class);
+		$settings = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT );
 
 		return $settings ;
 	}
@@ -122,7 +124,7 @@ class Flexforms {
     }
     private function getRow($table , $nameField , $lngField , $uid ) {
         /** @var ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Database\ConnectionPool::class);
+        $connectionPool = GeneralUtility::makeInstance( ConnectionPool::class);
         $lngField = intval($lngField ) ;
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $connectionPool->getConnectionForTable($table)->createQueryBuilder();
@@ -133,13 +135,7 @@ class Flexforms {
         ) ;
         if( $lngField > 0 ) {
             $queryBuilder->andWhere(
-            $queryBuilder->expr()->orX(
-                $expr->eq('l10n_parent', intval($uid ))  ,
-                $queryBuilder->expr()->andX(
-                    $expr->eq('l10n_parent', 0 ) ,
-                    $expr->eq('uid', intval($uid ) )
-                )
-            ) )
+            $queryBuilder->expr()->or($expr->eq('l10n_parent', intval($uid )), $queryBuilder->expr()->and($expr->eq('l10n_parent', 0 ), $expr->eq('uid', intval($uid ) ))) )
             ;
 
         } elseif ($lngField < 0 ) {
@@ -147,6 +143,6 @@ class Flexforms {
         }
 
 
-        return  $queryBuilder->execute()->fetch() ;
+        return  $queryBuilder->executeQuery()->fetch() ;
     }
 }

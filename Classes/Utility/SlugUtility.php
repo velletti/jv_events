@@ -4,6 +4,9 @@
 namespace JVE\JvEvents\Utility;
 
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -62,38 +65,26 @@ class SlugUtility {
      * @return bool
      */
      public static function isUnique(?string $slug, string $tableName , string $field , ?int $pageId , ?int $recordId , ?int $languageId): bool    {
-        /** @var \TYPO3\CMS\Core\Database\ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Database\ConnectionPool::class);
+        /** @var ConnectionPool $connectionPool */
+        $connectionPool = GeneralUtility::makeInstance( ConnectionPool::class);
 
-        /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
+        /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $connectionPool->getQueryBuilderForTable($tableName);
-        $userQuery = $queryBuilder->count( '*' )->from($tableName )->where( $queryBuilder->expr()->neq('uid', $queryBuilder->createNamedParameter( $recordId , \TYPO3\CMS\Core\Database\Connection::PARAM_INT )) ) ;
+        $userQuery = $queryBuilder->count( '*' )->from($tableName )->where( $queryBuilder->expr()->neq('uid', $queryBuilder->createNamedParameter( $recordId , Connection::PARAM_INT )) ) ;
 
         $pageId = intval($pageId) ;
         if( $pageId > 0) {
-             $userQuery = $queryBuilder->andWhere( $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter( $pageId , \TYPO3\CMS\Core\Database\Connection::PARAM_INT )) ) ;
+             $userQuery = $queryBuilder->andWhere( $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter( $pageId , Connection::PARAM_INT )) ) ;
          }
          $languageId = intval($languageId) ;
          if( $languageId > -1 ) {
-             $userQuery = $queryBuilder->andWhere( $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter( $languageId , \TYPO3\CMS\Core\Database\Connection::PARAM_INT )) );
+             $userQuery = $queryBuilder->andWhere( $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter( $languageId , Connection::PARAM_INT )) );
          }
          $slug = trim($slug) ;
          if( $slug ) {
-             $userQuery = $queryBuilder->andWhere( $queryBuilder->expr()->eq($field, $queryBuilder->createNamedParameter( $slug , \TYPO3\CMS\Core\Database\Connection::PARAM_STR )) ) ;
+             $userQuery = $queryBuilder->andWhere( $queryBuilder->expr()->eq($field, $queryBuilder->createNamedParameter( $slug , Connection::PARAM_STR )) ) ;
          }
-        /*
-
-                     $querystr = $userQuery->getSQL() ;
-                     $queryParams = array_reverse ( $userQuery->getParameters()) ;
-                     foreach ($queryParams as $key => $value ) {
-                         $search[] = ":" . $key ;
-                         $replace[] = "'$value'" ;
-                     }
-                     echo str_replace( $search , $replace , $querystr ) ;
-                     echo "<hr>" . $userQuery->execute()->fetchColumn(0)  ;
-                die;
-            */
-        if ( $userQuery->execute()->fetchColumn(0)  < 1 ) {
+        if ( $userQuery->executeQuery()->fetchColumn(0)  < 1 ) {
             return true ;
         }
         return false ;

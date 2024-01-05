@@ -1,7 +1,8 @@
 <?php
 
-namespace JVE\JvEvents\Utility ;
+namespace JVE\JvEvents\Utility;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,7 +15,6 @@ namespace JVE\JvEvents\Utility ;
  *
  * The TYPO3 project - inspiring people to share!
  */
-
 class ShowAsJsonArrayUtility
 {
 
@@ -31,7 +31,7 @@ class ShowAsJsonArrayUtility
         header('Content-Type: application/json; charset=utf-8');
         header('Content-Transfer-Encoding: 8bit');
 
-        $callbackId = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP("callback");
+        $callbackId = GeneralUtility::_GP("callback");
         if ( $callbackId == '' ) {
             echo $jsonOutput;
         } else {

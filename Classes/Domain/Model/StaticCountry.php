@@ -1,5 +1,7 @@
 <?php
 namespace JVE\JvEvents\Domain\Model;
+
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 /***************************************************************
  * Copyright notice
  *
@@ -22,11 +24,10 @@ namespace JVE\JvEvents\Domain\Model;
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * A static country
  */
-class StaticCountry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+class StaticCountry extends AbstractEntity {
 	/**
 	 * ISO 3166-1 A2 Country code
 	 *

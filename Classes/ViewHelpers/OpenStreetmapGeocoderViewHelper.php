@@ -1,5 +1,8 @@
 <?php
 namespace JVE\JvEvents\ViewHelpers;
+
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use JVE\JvEvents\Domain\Model\Location;
 /***************************************************************
  * Copyright notice
  *
@@ -22,7 +25,6 @@ namespace JVE\JvEvents\ViewHelpers;
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Viewhelper to render a selectbox with values
  * in given steps from start to end value
@@ -32,7 +34,7 @@ namespace JVE\JvEvents\ViewHelpers;
  * <register:form.required fieldName="'username"/>
  * </code>
  */
-class OpenStreetmapGeocoderViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper   {
+class OpenStreetmapGeocoderViewHelper extends AbstractViewHelper   {
 
     /**
      * @var bool
@@ -47,7 +49,7 @@ class OpenStreetmapGeocoderViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\
     protected $escapeChildren = false;
 
     public function initializeArguments() {
-        $this->registerArgument('location', \JVE\JvEvents\Domain\Model\Location::class, 'Single location', false , NULL);
+        $this->registerArgument('location', Location::class, 'Single location', false , NULL);
         $this->registerArgument('formfields', 'array', 'Field Array', false , NULL );
         $this->registerArgument('updateFunction', 'string', 'Name of javaScript function that should run after Update Map', false , '' );
         parent::initializeArguments() ;

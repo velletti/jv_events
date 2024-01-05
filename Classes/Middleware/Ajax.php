@@ -2,6 +2,14 @@
 
 namespace JVE\JvEvents\Middleware;
 
+use TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException;
+use TYPO3\CMS\Fluid\View\StandaloneView;
+use JVE\JvEvents\Utility\EmConfigurationUtility;
+use JVE\JvEvents\Domain\Model\Event;
+use JVE\JvEvents\Domain\Model\Subevent;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use JVE\JvEvents\Domain\Model\Category;
 use JVE\JvEvents\Domain\Model\Location;
 use JVE\JvEvents\Domain\Model\Organizer;
@@ -36,10 +44,10 @@ use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 class Ajax implements MiddlewareInterface
 {
     /**
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Psr\Http\Server\RequestHandlerInterface $handler
-     * @return \Psr\Http\Message\ResponseInterface
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException
+     * @param ServerRequestInterface $request
+     * @param RequestHandlerInterface $handler
+     * @return ResponseInterface
+     * @throws InvalidExtensionNameException
      */
     public function process(
         ServerRequestInterface $request,
@@ -117,7 +125,7 @@ class Ajax implements MiddlewareInterface
 
                 $GLOBALS['TSFE']->set_no_cache();
                     /** @var AjaxUtility $ajaxUtility */
-                $ajaxUtility = GeneralUtility::makeInstance(\JVE\JvEvents\Utility\AjaxUtility::class) ;
+                $ajaxUtility = GeneralUtility::makeInstance(AjaxUtility::class) ;
 
                 // ToDo generate Output as before in ajax Controller here in Middleware with CORE features.
                 $controller = $ajaxUtility->initController($_gp , $function , $request ) ;
@@ -206,14 +214,14 @@ class Ajax implements MiddlewareInterface
     public function getEventList(array $arguments=Null)
     {
 
-        $this->tagRepository        = GeneralUtility::makeInstance(\JVE\JvEvents\Domain\Repository\TagRepository::class);
-        $this->categoryRepository        = GeneralUtility::makeInstance(\JVE\JvEvents\Domain\Repository\CategoryRepository::class);
-        $this->registrantRepository        = GeneralUtility::makeInstance(\JVE\JvEvents\Domain\Repository\RegistrantRepository::class);
-        $this->locationRepository        = GeneralUtility::makeInstance(\JVE\JvEvents\Domain\Repository\LocationRepository::class);
-        $this->organizerRepository        = GeneralUtility::makeInstance(\JVE\JvEvents\Domain\Repository\OrganizerRepository::class);
-        $this->eventRepository        = GeneralUtility::makeInstance(\JVE\JvEvents\Domain\Repository\EventRepository::class);
-        $this->subeventRepository        = GeneralUtility::makeInstance(\JVE\JvEvents\Domain\Repository\SubeventRepository::class);
-        $this->staticCountryRepository        = GeneralUtility::makeInstance(\JVE\JvEvents\Domain\Repository\StaticCountryRepository::class);
+        $this->tagRepository        = GeneralUtility::makeInstance(TagRepository::class);
+        $this->categoryRepository        = GeneralUtility::makeInstance(CategoryRepository::class);
+        $this->registrantRepository        = GeneralUtility::makeInstance(RegistrantRepository::class);
+        $this->locationRepository        = GeneralUtility::makeInstance(LocationRepository::class);
+        $this->organizerRepository        = GeneralUtility::makeInstance(OrganizerRepository::class);
+        $this->eventRepository        = GeneralUtility::makeInstance(EventRepository::class);
+        $this->subeventRepository        = GeneralUtility::makeInstance(SubeventRepository::class);
+        $this->staticCountryRepository        = GeneralUtility::makeInstance(StaticCountryRepository::class);
 
         if (!$arguments) {
             $arguments = GeneralUtility::_GPmerged('tx_jvevents_ajax');
@@ -259,7 +267,7 @@ class Ajax implements MiddlewareInterface
         /* ************************************************************************************************************ */
 
         if( $this->standaloneView ) {
-            /** @var \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
+            /** @var StandaloneView $renderer */
             $renderer = $this->standaloneView  ;
             if( $arguments['rss'] ) {
                 $renderer->setTemplate("EventListRss");
@@ -267,7 +275,7 @@ class Ajax implements MiddlewareInterface
                 $renderer->setTemplate("EventList");
             }
         } else {
-            /** @var \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
+            /** @var StandaloneView $renderer */
             if( $arguments['rss'] ) {
                 $renderer = $this->getEmailRenderer('', '/Ajax/EventListRss' );
             } else {
@@ -351,7 +359,7 @@ class Ajax implements MiddlewareInterface
             $output['returnPid'] = $arguments['returnPid']  ;
         }
 
-        $configuration = \JVE\JvEvents\Utility\EmConfigurationUtility::getEmConf();
+        $configuration = EmConfigurationUtility::getEmConf();
         $singlePid = ( array_key_exists( 'DetailPid' , $configuration) && $configuration['DetailPid'] > 0 ) ? intval($configuration['DetailPid']) : 111 ;
         $output['DetailPid'] = $singlePid  ;
         try {
@@ -373,7 +381,7 @@ class Ajax implements MiddlewareInterface
         if( $arguments['event']  > 0 ) {
             $output['event']['requestId'] =  $arguments['event']  ;
 
-            /** @var \JVE\JvEvents\Domain\Model\Event $event */
+            /** @var Event $event */
             $event = $this->eventRepository->findByUidAllpages( $output['event']['requestId'] , FALSE  , TRUE );
             if( is_object($event )) {
                 if ( substr($output['mode'], 0 , 4 )  != "only" ) {
@@ -485,7 +493,7 @@ class Ajax implements MiddlewareInterface
                     $this->subeventRepository->setDefaultQuerySettings( $querysettings );
 
                     $subeventsArr = $this->subeventRepository->findByEventAllpages($event->getUid() , TRUE   ) ;
-                    /** @var \JVE\JvEvents\Domain\Model\Subevent $subevent */
+                    /** @var Subevent $subevent */
                     foreach ( $subeventsArr as $subevent) {
                         if( is_object( $subevent )) {
                             $temp = [] ;
@@ -548,12 +556,11 @@ class Ajax implements MiddlewareInterface
             }
 
             // $this->settings['debug'] = 2 ;
-
-            /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $events */
+            /** @var QueryResultInterface $events */
             $events = $this->eventRepository->findByFilter( $output['eventsFilter'], $arguments['limit'],  $this->settings );
             if( count( $events ) > 0 ) {
                 $output['events'] = $events ;
-                /** @var \JVE\JvEvents\Domain\Model\Event $tempEvent */
+                /** @var Event $tempEvent */
                 $tempEvent =  $events->getFirst() ;
                 if( is_object( $tempEvent )) {
                     if ( substr($output['mode'], 0, 4 )  != "only") {
@@ -656,7 +663,7 @@ class Ajax implements MiddlewareInterface
         if( $arguments['location'] > 0 && !is_object($location ) ) {
             $output['location']['requestId'] = $arguments['location'] ;
 
-            /** @var \JVE\JvEvents\Domain\Model\Event $event */
+            /** @var Event $event */
             $location = $this->locationRepository->findByUidAllpages( $arguments['location'], FALSE, TRUE);
 
         }
@@ -710,12 +717,11 @@ class Ajax implements MiddlewareInterface
 
 
     /**
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $resource
+     * @param ObjectStorage $resource
      * @return array
-     *
      */
-    public function getFilesArray( \TYPO3\CMS\Extbase\Persistence\ObjectStorage $resource ) {
-        /** @var \TYPO3\CMS\Extbase\Domain\Model\FileReference $tempFile */
+    public function getFilesArray( ObjectStorage $resource ) {
+        /** @var FileReference $tempFile */
         $return = array() ;
         if(is_object($resource) && $resource->count() > 0 ) {
             foreach ($resource as $tempFile) {
@@ -775,21 +781,21 @@ class Ajax implements MiddlewareInterface
 
     /**
      *  $eventRepository
-     * @var \JVE\JvEvents\Domain\Repository\EventRepository
+     * @var EventRepository
      */
     protected $eventRepository = NULL;
 
     /**
      * subeventRepository
      *
-     * @var \JVE\JvEvents\Domain\Repository\SubeventRepository
+     * @var SubeventRepository
      */
     protected $subeventRepository = NULL;
 
     /**
      * staticCountryRepository
      *
-     * @var \JVE\JvEvents\Domain\Repository\StaticCountryRepository
+     * @var StaticCountryRepository
      */
     protected $staticCountryRepository = NULL;
 
@@ -804,7 +810,7 @@ class Ajax implements MiddlewareInterface
     /**
      * locationRepository
      *
-     * @var \JVE\JvEvents\Domain\Repository\LocationRepository
+     * @var LocationRepository
      */
     protected $locationRepository = NULL;
 
@@ -818,7 +824,7 @@ class Ajax implements MiddlewareInterface
     /**
      * registrantRepository
      *
-     * @var \JVE\JvEvents\Domain\Repository\RegistrantRepository
+     * @var RegistrantRepository
      */
     protected $registrantRepository = NULL;
 
@@ -826,7 +832,7 @@ class Ajax implements MiddlewareInterface
     /**
      * categoryRepository
      *
-     * @var \JVE\JvEvents\Domain\Repository\CategoryRepository
+     * @var CategoryRepository
      */
     protected $categoryRepository = NULL;
 

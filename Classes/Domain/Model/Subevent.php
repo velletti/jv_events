@@ -1,6 +1,8 @@
 <?php
 namespace JVE\JvEvents\Domain\Model;
 
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Annotation\Validate;
 /***************************************************************
  *
  *  Copyright notice
@@ -25,11 +27,10 @@ namespace JVE\JvEvents\Domain\Model;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Single Subevent
  */
-class Subevent extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+class Subevent extends AbstractEntity {
 
 
     /**
@@ -51,8 +52,8 @@ class Subevent extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
      * Start Date of this event. Mandatory
      *
      * @var \DateTime
-     * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
      */
+    #[Validate(['validator' => 'NotEmpty'])]
     protected $startDate = null;
     
     /**

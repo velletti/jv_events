@@ -13,7 +13,8 @@ namespace JVE\JvEvents\Scheduler;
  *
  * The TYPO3 project - inspiring people to share!
  */
-
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -26,13 +27,13 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
  * A task that should be run regularly that deletes
  * datasets flagged as "deleted" from the DB.
  */
-class CleanEventsTaskAdditionalFieldProvider extends \TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider
+class CleanEventsTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvider
 {
     /**
      * Gets additional fields to render in the form to add/edit a task
      *
      * @param array $taskInfo Values of the fields from the add/edit task form
-     * @param \JVE\JvEvents\Scheduler\CleanEventsTask $task The task object being edited. NULL when adding a task!
+     * @param CleanEventsTask $task The task object being edited. NULL when adding a task!
      * @param SchedulerModuleController $schedulerModule Reference to the scheduler backend module
      * @return array A two dimensional array, array('Identifier' => array('fieldId' => array('code' => '', 'label' => '', 'cshKey' => '', 'cshLabel' => ''))
      */
@@ -119,7 +120,7 @@ class CleanEventsTaskAdditionalFieldProvider extends \TYPO3\CMS\Scheduler\Abstra
             $this->addMessage(
                 //$this->getLanguageService()->sL('LLL:EXT:allplan_ke_search_extended/Resources/Private/Language/locallang_tasks.xlf:indexerTaskErrorStoragePid', true),
                 'Error Checking storagePid' ,
-                \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR
+                AbstractMessage::ERROR
 
             );
             $validStoragePid = false;
@@ -163,7 +164,7 @@ class CleanEventsTaskAdditionalFieldProvider extends \TYPO3\CMS\Scheduler\Abstra
         }
         /** @var LanguageService $lang */
         $lang = GeneralUtility::makeInstance(LanguageService::class) ;
-        if (\TYPO3\CMS\Core\Http\ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()) {
+        if (ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()) {
             $lng = $GLOBALS['BE_USER']->uc['lang'] ;
         } else {
             $lng = $GLOBALS['TSFE']->config['config']['language'] ;

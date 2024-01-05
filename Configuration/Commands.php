@@ -1,7 +1,8 @@
 <?php
 
+use JVE\JvEvents\Command\UpdateSlugCommand;
 return [
     'jvevents:updateslug' => [
-        'class' => \JVE\JvEvents\Command\UpdateSlugCommand::class,
+        'class' => UpdateSlugCommand::class,
     ],
 ];

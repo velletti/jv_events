@@ -1,5 +1,10 @@
 <?php
 namespace JVE\JvEvents\ViewHelpers;
+
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use JVE\JvEvents\Domain\Model\Location;
+use JVE\JvEvents\Utility\GeocoderUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 /***************************************************************
  * Copyright notice
  *
@@ -22,7 +27,6 @@ namespace JVE\JvEvents\ViewHelpers;
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Viewhelper to render a selectbox with values
  * in given steps from start to end value
@@ -32,7 +36,7 @@ namespace JVE\JvEvents\ViewHelpers;
  * <register:form.required fieldName="'username"/>
  * </code>
  */
-class GeocoderViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper   {
+class GeocoderViewHelper extends AbstractViewHelper   {
 
     /**
      * @var bool
@@ -47,7 +51,7 @@ class GeocoderViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewH
     protected $escapeChildren = false;
 
     public function initializeArguments() {
-        $this->registerArgument('location', \JVE\JvEvents\Domain\Model\Location::class, 'Single location', false , NULL);
+        $this->registerArgument('location', Location::class, 'Single location', false , NULL);
         $this->registerArgument('formfields', 'array', 'Field Array', false , NULL );
         $this->registerArgument('updateFunction', 'string', 'Name of javaScript function that should run after Update Map', false , '' );
         parent::initializeArguments() ;
@@ -67,8 +71,8 @@ class GeocoderViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewH
         $formfieldIds = $this->arguments['formfields'] ;
 
 
-        /** @var \JVE\JvEvents\Utility\GeocoderUtility $geoCoder */
-        $geoCoder = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\JVE\JvEvents\Utility\GeocoderUtility::class) ;
+        /** @var GeocoderUtility $geoCoder */
+        $geoCoder = GeneralUtility::makeInstance(GeocoderUtility::class) ;
         if ( ! $formfieldIds ) {
             $formfieldIds["address"] = '#streetAndNr' ;
             $formfieldIds["zip"] = '#zip' ;

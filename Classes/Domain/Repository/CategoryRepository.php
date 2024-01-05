@@ -1,7 +1,8 @@
 <?php
 namespace JVE\JvEvents\Domain\Repository;
 
-
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 /***************************************************************
  *
  *  Copyright notice
@@ -26,25 +27,24 @@ namespace JVE\JvEvents\Domain\Repository;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * The repository for Categories
  */
-class CategoryRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
+class CategoryRepository extends BaseRepository
 {
 
     /**
      * @var array
      */
     protected $defaultOrderings = array(
-        'sorting' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
+        'sorting' => QueryInterface::ORDER_ASCENDING
     );
 
     /**
      * @param int $type default -1 means all Types
      *                  1 = events 2 locations 3 = Organizer
      *                  see TCA of event model
-     * @return array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+     * @return array|QueryResultInterface
      */
     public function findAllonAllPages($type= -1)
     {

@@ -1,4 +1,5 @@
 <?php
+
 namespace JVE\JvEvents\Controller;
 
 /***************************************************************
@@ -26,6 +27,9 @@ namespace JVE\JvEvents\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
+use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\FormProtection\FrontendFormProtection;
 use JVE\JvBanners\Utility\AssetUtility;
 use JVE\JvEvents\Domain\Model\Event;
 use JVE\JvEvents\Domain\Model\Location;
@@ -51,59 +55,60 @@ class CurlController extends BaseController
 {
 
 
-	public function initializeAction() {
-        $this->timeStart = $this->microtime_float() ;
+    public function initializeAction()
+    {
+        $this->timeStart = $this->microtime_float();
 
-	    $this->debugArray[] = "Start:" . intval(1000 * $this->timeStart ) . " Line: " . __LINE__ ;
-        parent::initializeAction() ;
-        $this->debugArray[] = "Init Done:" . intval(1000 * ($this->microtime_float()  - $this->timeStart ) ) . " Line: " . __LINE__ ;
-	}
+        $this->debugArray[] = "Start:" . intval(1000 * $this->timeStart) . " Line: " . __LINE__;
+        parent::initializeAction();
+        $this->debugArray[] = "Init Done:" . intval(1000 * ($this->microtime_float() - $this->timeStart)) . " Line: " . __LINE__;
+    }
 
     /**
      * action list
      *
      * @return void
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
+     * @throws InvalidQueryException
      */
-    public function externalEventsAction()
+    public function externalEventsAction(): ResponseInterface
     {
-        $this->debugArray[] = "After Init :" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " Line: " . __LINE__ ;
-        $this->settings['filter']['distance']['doNotOverrule'] = "false" ;
+        $this->debugArray[] = "After Init :" . intval(1000 * ($this->microtime_float() - $this->timeStart)) . " Line: " . __LINE__;
+        $this->settings['filter']['distance']['doNotOverrule'] = "false";
         //  'https://tangov10.ddev.site/?id=110&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax
         //  &tx_jvevents_ajax[eventsFilter][categories]=1&tx_jvevents_ajax[eventsFilter][startDate]=0&tx_jvevents_ajax[mode]=onlyJson'
         //  'https://tangov10.ddev.site/?id=110&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=1&tx_jvevents_ajax[eventsFilter][startDate]=0&tx_jvevents_ajax[mode]=onlyJson'
 
-        $this->settings['data'] = [ "id" => 150 ] ;
-        $this->settings['data']['tx_jvevents_ajax'] = [ "action" => 'eventList' , 'controller' => 'Ajax' , 'mode' => 'onlyJson'] ;
+        $this->settings['data'] = ["id" => 150];
+        $this->settings['data']['tx_jvevents_ajax'] = ["action" => 'eventList', 'controller' => 'Ajax', 'mode' => 'onlyJson'];
 
-        $f["startDate"] = $this->settings['filter']["startDate"] ;
-        if(  $this->settings['filter']["organizers"] ) {
-            $f["organizers"] = $this->settings['filter']["organizers"] ;
+        $f["startDate"] = $this->settings['filter']["startDate"];
+        if ($this->settings['filter']["organizers"]) {
+            $f["organizers"] = $this->settings['filter']["organizers"];
         }
-        if(  $this->settings['filter']["categories"] ) {
-            $f["categories"] = $this->settings['filter']["categories"] ;
+        if ($this->settings['filter']["categories"]) {
+            $f["categories"] = $this->settings['filter']["categories"];
         }
-        if(  $this->settings['filter']["tags"] ) {
-            $f["tags"] = $this->settings['filter']["tags"] ;
+        if ($this->settings['filter']["tags"]) {
+            $f["tags"] = $this->settings['filter']["tags"];
         }
 
-        $this->settings['data']['tx_jvevents_ajax']['eventsFilter'] = $f  ;
-        $this->settings['data']['tx_jvevents_ajax']['limit'] =  ($this->settings['filter']['maxevents'] > 0) ? intval($this->settings['filter']['maxevents']) : 999 ;
-        $this->settings['checkInstallation'] = -1  ;
+        $this->settings['data']['tx_jvevents_ajax']['eventsFilter'] = $f;
+        $this->settings['data']['tx_jvevents_ajax']['limit'] = ($this->settings['filter']['maxevents'] > 0) ? intval($this->settings['filter']['maxevents']) : 999;
+        $this->settings['checkInstallation'] = -1;
 
 
-        $this->debugArray[] = "Load Events:" . intval(1000 * ($this->microtime_float()  - $this->timeStart ) ) . " Line: " . __LINE__ ;
+        $this->debugArray[] = "Load Events:" . intval(1000 * ($this->microtime_float() - $this->timeStart)) . " Line: " . __LINE__;
 
         /** @var FrontendInterface $cache */
         $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('extbase_object');
         $cacheIdentifier = 'jv-events-curl_uid-' . (int)$GLOBALS['TSFE']->cObj->data['uid'];
 
-        if (!$cache->has($cacheIdentifier) ) {
-            $urls = GeneralUtility::trimExplode("\n" , $this->settings["externalUrl"] ) ;
+        if (!$cache->has($cacheIdentifier)) {
+            $urls = GeneralUtility::trimExplode("\n", $this->settings["externalUrl"]);
             $request = null;
-            if( $urls ) {
-                $requests = [] ;
-                foreach ( $urls as $key => $url ) {
+            if ($urls) {
+                $requests = [];
+                foreach ($urls as $key => $url) {
                     if (filter_var($url, FILTER_VALIDATE_URL)) {
                         $request = json_decode($this->getEventsViaCurl($this->settings, $url), true);
                         $events = ($request['eventsByFilter']) ?? null;
@@ -113,9 +118,9 @@ class CurlController extends BaseController
                     }
 
                 }
-                if( $requests ){
+                if ($requests) {
                     $request = call_user_func_array('array_merge', $requests);
-                    usort($request, function($a, $b) {
+                    usort($request, function ($a, $b) {
                         return $a['startDateTstamp'] <=> $b['startDateTstamp'];
                     });
                     $lifetime = 60 * 60 * 4; // 4 hours in seconds
@@ -130,26 +135,28 @@ class CurlController extends BaseController
 
         $this->view->assign('events', $request);
 
-        $dtz = $this->eventRepository->getDateTimeZone() ;
+        $dtz = $this->eventRepository->getDateTimeZone();
 
-       // $this->settings['checkInstallation'] = 2 ;
-        $this->view->assign('settings', $this->settings );
-        $this->debugArray[] = "before Render:" . intval(1000 * ($this->microtime_float()  - $this->timeStart ) ) . " Line: " . __LINE__ ;
-        $this->view->assign('debugArray', $this->debugArray );
+        // $this->settings['checkInstallation'] = 2 ;
+        $this->view->assign('settings', $this->settings);
+        $this->debugArray[] = "before Render:" . intval(1000 * ($this->microtime_float() - $this->timeStart)) . " Line: " . __LINE__;
+        $this->view->assign('debugArray', $this->debugArray);
 
-        // overruleFilterStartDate Nnext
+        // overruleFilterStartDate Nnext return $this->htmlResponse();
+        return $this->htmlResponse();
 
     }
 
-    public function getEventsViaCurl( $settings , $url ) {
+    public function getEventsViaCurl($settings, $url)
+    {
 
         //  'https://tangov10.ddev.site/?id=110&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=1&tx_jvevents_ajax[eventsFilter][startDate]=0&tx_jvevents_ajax[mode]=onlyJson'
         // https://www.tangomuenchen.de/id=150&tx_jvevents_ajax%5Baction%5D=eventList&tx_jvevents_ajax%5Bcontroller%5D=Ajax&tx_jvevents_ajax%5Bmode%5D=onlyJson&tx_jvevents_ajax%5BeventsFilter%5D%5BstartDate%5D=-1&tx_jvevents_ajax%5BeventsFilter%5D%5Bcategories%5D=3
-        $url = trim( $url ) . "&" . http_build_query( $settings['data']) ;
+        $url = trim($url) . "&" . http_build_query($settings['data']);
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => $url ,
+            CURLOPT_URL => $url,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -167,21 +174,22 @@ class CurlController extends BaseController
     }
 
     // ########################################   functions ##################################
-	/**
-	 * helper for Formvalidation
-	 * @param string $action
-	 * @return string
-	 */
-	public function generateToken($action = "action"): string
+
+    /**
+     * helper for Formvalidation
+     * @param string $action
+     * @return string
+     */
+    public function generateToken($action = "action"): string
     {
-		/** @var \TYPO3\CMS\Core\FormProtection\FrontendFormProtection $formClass */
-		$formClass =  $this->objectManager->get( \TYPO3\CMS\Core\FormProtection\FrontendFormProtection::class) ;
+        /** @var FrontendFormProtection $formClass */
+        $formClass = $this->objectManager->get(FrontendFormProtection::class);
 
-		return $formClass->generateToken(
-			'event', $action ,   "P" . $this->settings['pageId'] . "-L" .$this->settings['sys_language_uid']
-		);
+        return $formClass->generateToken(
+            'event', $action, "P" . $this->settings['pageId'] . "-L" . $this->settings['sys_language_uid']
+        );
 
-	}
+    }
 
 
 }

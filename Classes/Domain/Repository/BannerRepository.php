@@ -25,9 +25,7 @@ class BannerRepository {
                 ->where( $queryBuilder->expr()->eq('link', $queryBuilder->createNamedParameter( $eventId , PDO::PARAM_INT)) )
                 ->andWhere( $queryBuilder->expr()->eq('deleted', $queryBuilder->createNamedParameter(0 , PDO::PARAM_INT)) )
                 ->andWhere( $queryBuilder->expr()->eq('hidden', $queryBuilder->createNamedParameter(0 , PDO::PARAM_INT)) )
-                ->orderBy("endtime" , "DESC")
-                ->setMaxResults(1)
-                ->execute()
+                ->orderBy("endtime" , "DESC")->setMaxResults(1)->executeQuery()
                 ->fetchAssociative();
 
             // var_dump( $queryBuilder->getSQL() );
@@ -66,7 +64,7 @@ class BannerRepository {
             // var_dump( $queryBuilder->getSQL() );
             // var_dump( $queryBuilder->getParameters() );
             // die;
-           $queryBuilder->execute();
+           $queryBuilder->executeStatement();
         } catch ( \Exception $e) {
             // ignore
             // var_dump($e->getMessage() );

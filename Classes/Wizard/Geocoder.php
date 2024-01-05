@@ -1,6 +1,12 @@
 <?php
 namespace JVE\JvEvents\Wizard;
 
+use TYPO3\CMS\Backend\Controller\Wizard\AbstractWizardController;
+use JVE\JvEvents\Utility\GeocoderUtility;
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -11,7 +17,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @package JVE\JvEvents\Wizard
  */
 
-class Geocoder extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWizardController {
+class Geocoder extends AbstractWizardController {
 
 	/**
 	 * Document template object
@@ -20,7 +26,7 @@ class Geocoder extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWizardContro
 	public $doc;
 
     /**
-     * @var \JVE\JvEvents\Utility\GeocoderUtility
+     * @var GeocoderUtility
      */
     public $geoCoder ;
 
@@ -43,12 +49,12 @@ class Geocoder extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWizardContro
 	 */
 	protected function init(){
 
-        $this->geoCoder = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\JVE\JvEvents\Utility\GeocoderUtility::class) ;
+        $this->geoCoder = GeneralUtility::makeInstance(GeocoderUtility::class) ;
 
 		$this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
 
 		$this->doc->JScode = $this->geoCoder ->javascriptCode ;
-		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class)->addCssFile('../typo3conf/ext/jv_events/Resources/Public/Css/geocoder.css', 'stylesheet', 'screen', '');
+		GeneralUtility::makeInstance(PageRenderer::class)->addCssFile('../typo3conf/ext/jv_events/Resources/Public/Css/geocoder.css', 'stylesheet', 'screen', '');
 
 	}
 
@@ -59,11 +65,11 @@ class Geocoder extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWizardContro
 	protected function getAddressDataFromDb(){
 
 		// Parameters
-		$parameters = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('P');
+		$parameters = GeneralUtility::_GP('P');
 
 		// print_r($parameters);
 
-		$addressData = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($parameters['table'], $parameters['uid']);
+		$addressData = BackendUtility::getRecord($parameters['table'], $parameters['uid']);
 
 		// If it is a new, unsaved record, we get the following parameter for uid:
 		// e.g.: [uid] => NEW57f654657625f780378440
@@ -83,13 +89,13 @@ class Geocoder extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWizardContro
 
 
 	/**
-	 * Injects the request object for the current request or subrequest
-	 * Calles by Configuration/Backend/Routes.php
-	 * @param \Psr\Http\Message\ServerRequestInterface $request
-	 * @param \Psr\Http\Message\ResponseInterface $response
-	 * @return \Psr\Http\Message\ResponseInterface
-	 */
-	public function mainAction(\Psr\Http\Message\ServerRequestInterface $request, \Psr\Http\Message\ResponseInterface $response){
+  * Injects the request object for the current request or subrequest
+  * Calles by Configuration/Backend/Routes.php
+  * @param ServerRequestInterface $request
+  * @param ResponseInterface $response
+  * @return ResponseInterface
+  */
+ public function mainAction(ServerRequestInterface $request, ResponseInterface $response){
 
 
 		$this->content = '';

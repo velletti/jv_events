@@ -22,7 +22,13 @@ namespace JVE\JvEvents\Utility;
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use Allplan\Library\Hubspot\Service\Hubspot;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Core\Mail\MailMessage;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use SJBR\StaticInfoTables\Domain\Repository\CountryRepository;
 use JVE\Jvevents\Domain\Model\Event;
 use JVE\Jvevents\Domain\Model\Registrant;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -54,7 +60,7 @@ class RegisterHubspotUtility {
             return ;
         }
         if( class_exists('Allplan\Library\Hubspot\Service\Hubspot')) {
-            $this->hubspotApi = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Allplan\Library\Hubspot\Service\Hubspot::class , $config);
+            $this->hubspotApi = GeneralUtility::makeInstance(Hubspot::class , $config);
         }
     }
 
@@ -123,13 +129,13 @@ class RegisterHubspotUtility {
                 $data['comment']  .=  "\n SF Owner: " . $event->getOrganizer()->getSalesForceUserId2() . " " .  $event->getOrganizer()->getName() ;
                 $debugmail .= "\nField : SF OwnerId is taken from  getOrganizer()getSalesForceUserId2 =" . $event->getOrganizer()->getSalesForceUserId2()  . " | Org: " . $event->getOrganizer()->getSalesForceUserOrg() ;
             }
-            $data['comment']  .=  "\n" . \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate( "tx_jvevents_domain_model_event.organizer" , 'JvEvents' ) . ": "
+            $data['comment']  .=  "\n" . LocalizationUtility::translate( "tx_jvevents_domain_model_event.organizer" , 'JvEvents' ) . ": "
                 . $event->getOrganizer()->getName() ;
             $data['comment']  .= " \n(" . $event->getOrganizer()->getEmail() . ") " ;
 
         }
         if( is_object(  $event->getLocation() )  ) {
-            $data['comment']  .= " \n\n" . \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate( "tx_jvevents_domain_model_location" , 'JvEvents' ) .  ": "
+            $data['comment']  .= " \n\n" . LocalizationUtility::translate( "tx_jvevents_domain_model_location" , 'JvEvents' ) .  ": "
                 . $event->getLocation()->getZip() . " " . $event->getLocation()->getCity() . " \n" . $event->getLocation()->getStreetAndNr() ;
         }
         $data['comment'] .= " \n\nTYPO3 Event " . $event->getUid() . " on Page: " . $event->getPid() ;
@@ -228,8 +234,8 @@ class RegisterHubspotUtility {
             echo nl2br( $debugmail ) ;
             die ;
         }
-        /** @var \TYPO3\CMS\Core\Mail\MailMessage $Typo3_v6mail */
-        $Typo3_v6mail = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
+        /** @var MailMessage $Typo3_v6mail */
+        $Typo3_v6mail = GeneralUtility::makeInstance(MailMessage::class);
         $Typo3_v6mail->setFrom( array( 'www@systems.allplan.com' => $_SERVER['SERVER_NAME'] ) );
         $Typo3_v6mail->setReturnPath( 'www@systems.allplan.com' );
 
@@ -265,13 +271,13 @@ class RegisterHubspotUtility {
             "message" => $text ,
 
         ) ;
-        /** @var \TYPO3\CMS\Core\Database\ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Database\ConnectionPool::class);
+        /** @var ConnectionPool $connectionPool */
+        $connectionPool = GeneralUtility::makeInstance( ConnectionPool::class);
 
-        /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
+        /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_log') ;
 
-        $queryBuilder->insert('sys_log')->values($insertFields)->execute()  ;
+        $queryBuilder->insert('sys_log')->values($insertFields)->executeStatement()  ;
 
     }
     /** convertToString
@@ -306,9 +312,9 @@ class RegisterHubspotUtility {
         $jsonArray['city'] = trim($registrant->getCity() ) ;
         $jsonArray['laenderkennzeichen__c'] = trim($registrant->getCountry() ) ;
 
-        $objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         /** @var \SJBR\StaticInfoTables\Domain\Repository\CountryRepository $countries */
-        $countries = $objectManager->get(\SJBR\StaticInfoTables\Domain\Repository\CountryRepository::class);
+        $countries = $objectManager->get(CountryRepository::class);
         /** @var \SJBR\StaticInfoTables\Domain\Model\Country $cn_short_en */
         $cn_short_en = $countries->findOneByIsoCodeA2( trim($registrant->getCountry() ) ) ;
         if( is_object($cn_short_en) ) {

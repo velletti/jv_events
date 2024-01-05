@@ -1,6 +1,13 @@
 <?php
 namespace JVE\JvEvents\Controller;
 
+use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
+use TYPO3\CMS\Extbase\Annotation\Validate;
+use JVE\JvEvents\Validation\Validator\RegistrantValidator;
+use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
+use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
+use TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException;
 use JVE\JvEvents\Domain\Model\Event;
 use JVE\JvEvents\Domain\Model\Registrant;
 use JVE\JvEvents\Domain\Model\Subevent;
@@ -68,11 +75,11 @@ class RegistrantController extends BaseController
     /**
      * action list
      * @param Event $event
-     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("event")
      * @param string $hash
      * @return void
      */
-    public function listAction(Event $event, $hash  )
+    #[IgnoreValidation(['value' => 'event'])]
+    public function listAction(Event $event, $hash  ): ResponseInterface
     {
         // toDo add restrictions to listing ... only for admins or the organizer himself ..
 
@@ -142,7 +149,7 @@ class RegistrantController extends BaseController
 
                 $this->addFlashMessage('Number of registrations was corrected from '
                     . $event->getRegisteredSeats() . " (+" . $event->getUnconfirmedSeats() . ") to : " . $registered . " (+" .  $waiting . ") registrations."
-                    , '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+                    , '', AbstractMessage::WARNING);
                 $event->setRegisteredSeats($registered) ;
                 $event->setUnconfirmedSeats($waiting)  ;
                 $this->eventRepository->update($event) ;
@@ -158,6 +165,7 @@ class RegistrantController extends BaseController
         $this->view->assign('error', $error);
         $this->view->assign('event', $event);
         $this->view->assign('registrants', $registrants);
+        return $this->htmlResponse();
 
     }
 
@@ -300,11 +308,11 @@ class RegistrantController extends BaseController
      *
      * @param Event $event
      * @param Registrant $registrant
-     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("event")
-     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("registrant")
      * @return void
      */
-    public function newAction(Event $event=null, Registrant $registrant=null)
+    #[IgnoreValidation(['value' => 'event'])]
+    #[IgnoreValidation(['value' => 'registrant'])]
+    public function newAction(Event $event=null, Registrant $registrant=null): ResponseInterface
     {
         $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
         if (is_object($event)) {
@@ -324,7 +332,7 @@ class RegistrantController extends BaseController
                     if ($cat->getBlockRegistration()) {
                         $this->settings['filter']['categories'] = $cat->getUid();
                         $this->settings['filter']['maxEvents'] = 99 ;
-                        /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface  $events */
+                        /** @var QueryResultInterface $events */
                         $otherEvents = $this->eventRepository->findByFilter(false, false, $this->settings);
                     }
                 }
@@ -378,7 +386,7 @@ class RegistrantController extends BaseController
 
             if ($registrant == null) {
                 /** @var Registrant $registrant */
-                $registrant = $this->objectManager->get(\JVE\JvEvents\Domain\Model\Registrant::class);
+                $registrant = $this->objectManager->get(Registrant::class);
                 if ($userUid > 0 ) {
                     $registrant->setGender(intval($GLOBALS['TSFE']->fe_user->user['gender'] + 1));
                     $registrant->setFirstName($GLOBALS['TSFE']->fe_user->user['first_name']);
@@ -428,6 +436,7 @@ class RegistrantController extends BaseController
             $this->view->assign('event', $event);
         }
         $this->view->assign('settings', $this->settings);
+        return $this->htmlResponse();
     }
 
 
@@ -435,12 +444,12 @@ class RegistrantController extends BaseController
      * action createAction
      *
      * @param Event $event
-     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("event")
      * @param Registrant $registrant
-     * @TYPO3\CMS\Extbase\Annotation\Validate(param="registrant" , validator="JVE\JvEvents\Validation\Validator\RegistrantValidator")
-	 * @return void
+     * @return void
      */
-    public function createAction(Event $event, Registrant $registrant) {
+    #[IgnoreValidation(['value' => 'event'])]
+    #[Validate(['param' => 'registrant', 'validator' => RegistrantValidator::class])]
+    public function createAction(Event $event, Registrant $registrant): ResponseInterface {
 
         $latestEventDate = $event->getStartDate() ;
 
@@ -541,7 +550,7 @@ class RegistrantController extends BaseController
 
 
 
-		/** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $existingRegistration */
+		/** @var QueryResultInterface $existingRegistration */
         $existingRegistration = $this->registrantRepository->findByFilter($registrant->getEmail() , $event->getUid() , 0 , $this->settings );
 
 
@@ -635,7 +644,7 @@ class RegistrantController extends BaseController
 
 				foreach ($otherEvents as $key => $otherEvent) {
 					/** @var Registrant $newregistrant */
-					$newregistrant = $this->objectManager->get( \JVE\JvEvents\Domain\Model\Registrant::class)  ;
+					$newregistrant = $this->objectManager->get( Registrant::class)  ;
 					$properties = $registrant->_getProperties() ;
 					unset($properties['uid']) ;
 
@@ -704,20 +713,20 @@ class RegistrantController extends BaseController
 
 
             if (is_object($event->getOrganizer())) {
-                if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($event->getOrganizer()->getEmail())) {
+                if (GeneralUtility::validEmail($event->getOrganizer()->getEmail())) {
                     $replyto = array( $event->getOrganizer()->getEmail() => '=?utf-8?B?'. base64_encode( $event->getOrganizer()->getName() ) .'?=' ) ;
                 }
                 if( $event->getNotifyOrganizer() && $replyto ) {
 
-                    if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($event->getOrganizer()->getEmail())) {
+                    if (GeneralUtility::validEmail($event->getOrganizer()->getEmail())) {
                         $this->sendEmail($event, $registrant, "Organizer" ,
                             array( $event->getOrganizer()->getEmail() => '=?utf-8?B?'. base64_encode( $event->getOrganizer()->getName() ) .'?=' ) , $otherEvents , $registrantEmail , $oldReg );
                     }
                     $ccEmails = str_replace( array("," , ";" , " " ) , array("," , "," , ",") , $event->getOrganizer()->getEmailCc() ) ;
-                    $ccEmailsArray = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode("," , $ccEmails , true ) ;
+                    $ccEmailsArray = GeneralUtility::trimExplode("," , $ccEmails , true ) ;
                     if ( count($ccEmailsArray) > 0 ) {
                         foreach ( $ccEmailsArray as $ccEmail ) {
-                            if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail( $ccEmail ) ) {
+                            if (GeneralUtility::validEmail( $ccEmail ) ) {
 
                                 $this->sendEmail($event, $registrant, "Organizer" ,
                                     array( $ccEmail => '=?utf-8?B?'. base64_encode( $event->getOrganizer()->getName() ) .'?=' ) , $otherEvents , $registrantEmail , $oldReg );
@@ -728,11 +737,11 @@ class RegistrantController extends BaseController
             }
 			if( $event->getNotifyRegistrant()  ) {
                 if (is_object($event->getLocation())) {
-                    if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($event->getLocation()->getEmail())) {
+                    if (GeneralUtility::validEmail($event->getLocation()->getEmail())) {
                         $replyto = array( $event->getLocation()->getEmail() => '=?utf-8?B?'. base64_encode( $event->getLocation()->getName() ) .'?=' ) ;
                     }
                 }
-				if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($registrant->getEmail())) {
+				if (GeneralUtility::validEmail($registrant->getEmail())) {
 					$this->settings['successMsg'] = "register_email_with_infos" ;
 
 					$this->sendEmail($event, $registrant, "Registrant" ,
@@ -753,6 +762,7 @@ class RegistrantController extends BaseController
 		}
 
         $this->view->assign('settings', $this->settings);
+        return $this->htmlResponse();
     }
 
     /**
@@ -788,7 +798,7 @@ class RegistrantController extends BaseController
                             if( $event->getNotifyRegistrant()  ) {
                                 $replyto = false ;
                                 if (is_object($event->getOrganizer())) {
-                                    if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($event->getOrganizer()->getEmail())) {
+                                    if (GeneralUtility::validEmail($event->getOrganizer()->getEmail())) {
                                         $replyto = array( $event->getOrganizer()->getEmail() => '=?utf-8?B?'. base64_encode( $event->getOrganizer()->getName() ) .'?=' ) ;
                                     }
                                 }
@@ -805,21 +815,21 @@ class RegistrantController extends BaseController
 
                                     $this->sendEmail($event, $registrant, "Registrant" ,
                                         $registrantEmail , false , $replyto );
-                                    $this->addFlashMessage('Confirmation Mail is sent registration ', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+                                    $this->addFlashMessage('Confirmation Mail is sent registration ', '', AbstractMessage::OK);
                                 }
                             }
                         } else {
-                            $this->addFlashMessage('registration was already confirmed!', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+                            $this->addFlashMessage('registration was already confirmed!', '', AbstractMessage::OK);
                         }
 
                     } else {
-                        $this->addFlashMessage('No Access ! leasee login ?? ', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
+                        $this->addFlashMessage('No Access ! leasee login ?? ', '', AbstractMessage::ERROR);
                     }
                 } else {
-                    $this->addFlashMessage('No Access ! leasee login ?? ', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
+                    $this->addFlashMessage('No Access ! leasee login ?? ', '', AbstractMessage::ERROR);
                 }
             } else {
-                $this->addFlashMessage('Could not find event (id: "' . $registrant->getEvent() . '") related to this registration ', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
+                $this->addFlashMessage('Could not find event (id: "' . $registrant->getEvent() . '") related to this registration ', '', AbstractMessage::ERROR);
 
             }
         }
@@ -831,8 +841,8 @@ class RegistrantController extends BaseController
     /**
      * @param Registrant $oldReg
      * @param Registrant $registrant
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
+     * @throws IllegalObjectTypeException
+     * @throws UnknownObjectException
      */
     public function updateOldReg(Registrant $oldReg , Registrant $registrant){
         try {
@@ -856,7 +866,7 @@ class RegistrantController extends BaseController
      * @param string $hash
      * @return void
      */
-    public function checkQrcodeAction(Event $event=null , $hash='')
+    public function checkQrcodeAction(Event $event=null , $hash=''): ResponseInterface
     {
         $registrant = false ;
 
@@ -867,6 +877,7 @@ class RegistrantController extends BaseController
         $this->view->assign('registrant', $registrant);
         $this->view->assign('event', $event);
         $this->view->assign('hash', $hash);
+        return $this->htmlResponse();
 
     }
 
@@ -877,8 +888,8 @@ class RegistrantController extends BaseController
      * @return void
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
+     * @throws IllegalObjectTypeException
+     * @throws UnknownObjectException
      */
     public function deleteAction()
     {
@@ -912,19 +923,19 @@ class RegistrantController extends BaseController
                         }
 
 
-                        $this->addFlashMessage('registration sucessful canceled', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+                        $this->addFlashMessage('registration sucessful canceled', '', AbstractMessage::OK);
                     } else {
-                        $this->addFlashMessage('You do not have access to this event registrations', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
+                        $this->addFlashMessage('You do not have access to this event registrations', '', AbstractMessage::ERROR);
                     }
                 } else {
-                    $this->addFlashMessage('You do not have access as organizer. maybe not logged in ?', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
+                    $this->addFlashMessage('You do not have access as organizer. maybe not logged in ?', '', AbstractMessage::ERROR);
                 }
             } else {
-                $this->addFlashMessage('Could not find event (id: "' . $registrant->getEvent() . '") related to this registration ', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
+                $this->addFlashMessage('Could not find event (id: "' . $registrant->getEvent() . '") related to this registration ', '', AbstractMessage::ERROR);
 
             }
         } else {
-            $this->addFlashMessage('Could not find this registration ', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
+            $this->addFlashMessage('Could not find this registration ', '', AbstractMessage::ERROR);
         }
         $this->persistenceManager->persistAll() ;
         $this->redirect("list" , null , null, array("event" => $eventUid , "hash" => $hash ) ) ;
@@ -939,9 +950,10 @@ class RegistrantController extends BaseController
      * @param Registrant $registrant
      * @return void
      */
-    public function showAction(Registrant $registrant)
+    public function showAction(Registrant $registrant): ResponseInterface
     {
         $this->view->assign('registrant', $registrant);
+        return $this->htmlResponse();
     }
 
     /**
@@ -996,7 +1008,7 @@ class RegistrantController extends BaseController
      */
     public function getRegistrantEmail(Registrant $registrant) {
         $registrantEmail = false ;
-        if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($registrant->getEmail())) {
+        if (GeneralUtility::validEmail($registrant->getEmail())) {
 
             $name = trim( $registrant->getFirstName() . " " . $registrant->getLastName())  ;
             if( strlen( $name ) < 3 ) {
@@ -1013,12 +1025,12 @@ class RegistrantController extends BaseController
      * @param RequestInterface $request
      * @return ResponseInterface
      */
-    public function processRequest(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request ):ResponseInterface
+    public function processRequest(RequestInterface $request ):ResponseInterface
     {
         try {
             return parent::processRequest($request);
         }
-        catch(\TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException $e) {
+        catch(TargetNotFoundException $e) {
 
         }
     }

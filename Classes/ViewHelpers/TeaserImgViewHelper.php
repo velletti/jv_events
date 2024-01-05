@@ -15,6 +15,8 @@ namespace JVE\JvEvents\ViewHelpers;
  *
  * Based on the news extension of Georg Ringer
  */
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
+use JVE\JvEvents\Domain\Model\Event;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
@@ -49,7 +51,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  * </output>
  *
  */
-class TeaserImgViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper
+class TeaserImgViewHelper extends AbstractTagBasedViewHelper
 {
 
     /**
@@ -63,7 +65,7 @@ class TeaserImgViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagB
     {
         $this->registerUniversalTagAttributes();
 
-        $this->registerArgument('event', \JVE\JvEvents\Domain\Model\Event::class, 'Event', false);
+        $this->registerArgument('event', Event::class, 'Event', false);
         $this->registerArgument('settings', 'array', 'settings Array', false , array() );
         $this->registerArgument('configuration', 'array', 'configuration Array', false , array() );
         $this->registerArgument('withProtocol', 'boolean', ' render withProtocol https or http etc ', false ,false );

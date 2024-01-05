@@ -1,5 +1,9 @@
 <?php
 namespace JVE\JvEvents\ViewHelpers;
+
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use JVE\JvEvents\Domain\Model\Event;
+use JVE\JvEvents\Domain\Model\Category;
 /***************************************************************
  * Copyright notice
  *
@@ -22,7 +26,6 @@ namespace JVE\JvEvents\ViewHelpers;
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Viewhelper to render a selectbox with values
  * in given steps from start to end value
@@ -32,7 +35,7 @@ namespace JVE\JvEvents\ViewHelpers;
  * <register:form.required fieldName="'username"/>
  * </code>
  */
-class DataAttribViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper   {
+class DataAttribViewHelper extends AbstractViewHelper   {
 
     /**
      * @var bool
@@ -47,7 +50,7 @@ class DataAttribViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractVie
     protected $escapeChildren = false;
 
 	public function initializeArguments() {
-		$this->registerArgument('event', \JVE\JvEvents\Domain\Model\Event::class, 'Single Event', false);
+		$this->registerArgument('event', Event::class, 'Single Event', false);
         parent::initializeArguments() ;
 	}
 
@@ -92,7 +95,7 @@ class DataAttribViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractVie
             $uidArray = $event->getEventCategory()->toArray() ;
 
             if( is_array( $uidArray  )) {
-                /** @var \JVE\JvEvents\Domain\Model\Category $cat */
+                /** @var Category $cat */
                 foreach ( $uidArray as $cat ) {
                     if ( strlen( $catUids ) > 0  ) {
                         $catUids .= "," ;
@@ -108,7 +111,7 @@ class DataAttribViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractVie
             $uidArray = $event->getTags()->toArray() ;
 
             if( is_array( $uidArray  )) {
-                /** @var \JVE\JvEvents\Domain\Model\Category $cat */
+                /** @var Category $cat */
                 foreach ( $uidArray as $cat ) {
                     if ( strlen( $tagUids ) > 0  ) {
                         $tagUids .= "," ;

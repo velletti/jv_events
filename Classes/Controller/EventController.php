@@ -25,7 +25,19 @@ namespace JVE\JvEvents\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
+use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
+use TYPO3\CMS\Extbase\Annotation\Validate;
+use JVE\JvEvents\Validation\Validator\EventValidator;
+use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
+use JVE\JvEvents\Domain\Model\Category;
+use JVE\JvEvents\Domain\Model\Tag;
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\FormProtection\FrontendFormProtection;
+use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
+use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use JVE\JvBanners\Utility\AssetUtility;
 use JVE\JvEvents\Domain\Model\Event;
 use JVE\JvEvents\Domain\Model\Location;
@@ -59,13 +71,10 @@ class EventController extends BaseController
 				// user is calling  one of the actions, that requires and event ID.
 
 			    if ( !$this->request->hasArgument('event') && !$this->request->getArgument('action') == "show") {
-			        // if no event with that ID found, redirect to show event. this will show the error message, that no event wit that id exists
-					$this->forward("show") ;
+			        return new ForwardResponse('show');
 				}
                 if ( $this->request->hasArgument('event') && $this->request->getArgument('action') == "show"  && !ctype_digit( $this->request->getArgument('event') ) ) {
-                    // if Real URl could not determine the event id and gave back the Name and Date of the Event instead of an ID
-                    //  as this will crash we do the same as above ; this will show the error message, that no event wit that id exists
-                    $this->forward("show" , null , null , array( 'action' => 'show' , 'event' => null )) ;
+                    return (new ForwardResponse('show'))->withArguments(array( 'action' => 'show' , 'event' => null ));
                 }
 
 			}
@@ -73,7 +82,7 @@ class EventController extends BaseController
 		} else {
 		    // no action is set ? prevent
 		    $this->request->setArgument('action', 'list') ;
-            $this->forward("list") ;
+            return new ForwardResponse('list');
         }
         if ( $this->request->hasArgument('event')) {
             if ( property_exists( $this->arguments , "event")) {
@@ -93,9 +102,9 @@ class EventController extends BaseController
      * action list
      *
      * @return void
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
+     * @throws InvalidQueryException
      */
-    public function listAction()
+    public function listAction(): ResponseInterface
     {
         $this->debugArray[] = "After Init :" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " Line: " . __LINE__ ;
         $this->settings['filter']['distance']['doNotOverrule'] = "false" ;
@@ -195,7 +204,7 @@ class EventController extends BaseController
         $this->debugArray[] = "before Render:" . intval(1000 * ($this->microtime_float()  - $this->timeStart ) ) . " Line: " . __LINE__ ;
         $this->view->assign('debugArray', $this->debugArray );
 
-        // overruleFilterStartDate Nnext
+        // overruleFilterStartDate Nnext return $this->htmlResponse();return $this->htmlResponse();
 
     }
     
@@ -203,10 +212,10 @@ class EventController extends BaseController
      * action show
      *
      * @param Event|null $event
-     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("event")
      * @return void
      */
-    public function showAction(?Event $event=null)
+    #[IgnoreValidation(['value' => 'event'])]
+    public function showAction(?Event $event=null): ResponseInterface
     {
         if( $event ) {
             $checkString = $_SERVER["SERVER_NAME"] . "-" . $event->getUid() . "-" . $event->getCrdate();
@@ -259,15 +268,16 @@ class EventController extends BaseController
         }
         $this->view->assign('settings', $this->settings);
 		$this->view->assign('event', $event);
+  return $this->htmlResponse();
     }
     
     /**
      * action new
      * @param Event|null $event
-     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("event")
      *
      * @return void
      */
+    #[IgnoreValidation(['value' => 'event'])]
     public function newAction(Event $event=null)
     {
         /** @var QueryResultInterface $categories */
@@ -278,7 +288,7 @@ class EventController extends BaseController
 
         if ( $event==null) {
             /** @var Event $event */
-            $event = $this->objectManager->get(\JVE\JvEvents\Domain\Model\Event::class);
+            $event = $this->objectManager->get(Event::class);
         }
         if ( $event->getUid() < 1 ) {
             $today = new \DateTime ;
@@ -329,8 +339,8 @@ class EventController extends BaseController
      * action create
      *
      * @param Event $event
-     * @TYPO3\CMS\Extbase\Annotation\Validate(param="event" , validator="JVE\JvEvents\Validation\Validator\EventValidator")
      */
+    #[Validate(['param' => 'event', 'validator' => EventValidator::class])]
     public function createAction(Event $event)
     {
         $pid = 0 ;
@@ -405,11 +415,11 @@ class EventController extends BaseController
      * @param integer $amount if set, the amount of Copys that shall be created
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
-     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("event")
+     * @throws IllegalObjectTypeException
      * @return void
      */
-    public function editAction(Event $event , $copy2Day=0 , $amount=0 )
+    #[IgnoreValidation(['value' => 'event'])]
+    public function editAction(Event $event , $copy2Day=0 , $amount=0 ): ResponseInterface
     {
 
         if($this->isUserOrganizer() ) {
@@ -468,6 +478,7 @@ class EventController extends BaseController
         } else {
             $this->view->assign('event', FALSE );
         }
+        return $this->htmlResponse();
     }
 
     /**
@@ -476,7 +487,7 @@ class EventController extends BaseController
      * @param int $amount
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
+     * @throws IllegalObjectTypeException
      */
     private function copyEvent(Event $event, $copy2Day= 0, $amount= 0 ){
         // Does the Copy Master Event already have a masterId? if not, use its uid as new  Master
@@ -569,14 +580,14 @@ class EventController extends BaseController
 
             // ++++ now copy the Categories and tags  ++++
             if( $event->getEventCategory() ) {
-                /** @var \JVE\JvEvents\Domain\Model\Category $category */
+                /** @var Category $category */
                 foreach ($event->getEventCategory() as $category ) {
                     $newEvent->addEventCategory($category) ;
                 }
             }
 
             if( $event->getTags() ) {
-                /** @var \JVE\JvEvents\Domain\Model\Tag $tag */
+                /** @var Tag $tag */
                 foreach ($event->getTags() as $tag ) {
                     if ( $tag->getNocopy() != 1 ) {
                         $newEvent->addTag($tag) ;
@@ -615,47 +626,36 @@ class EventController extends BaseController
             $slug = SlugUtility::getSlug("tx_jvevents_domain_model_event", "slug", $row  )  ;
             // $newEvent->setSlug( $slug ) ;
             // $this->eventRepository->update($newEvent) ;
-            /** @var \TYPO3\CMS\Core\Database\Connection $dbConnectionForSysRef */
+            /** @var Connection $dbConnectionForSysRef */
             $dbConnectionForSlug = $connectionPool->getConnectionForTable('tx_jvevents_domain_model_event');
 
-            /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilderEvent */
+            /** @var QueryBuilder $queryBuilderEvent */
             $queryBuilderEvent = $dbConnectionForSlug->createQueryBuilder();
-            $queryBuilderEvent->update('tx_jvevents_domain_model_event')->set('slug' , $slug )
-                ->where( $queryBuilderEvent->expr()->eq('uid' , $queryBuilderEvent->createNamedParameter( $eventUid , \PDO::PARAM_INT )) )
-                ->execute() ;
+            $queryBuilderEvent->update('tx_jvevents_domain_model_event')->set('slug' , $slug )->where($queryBuilderEvent->expr()->eq('uid' , $queryBuilderEvent->createNamedParameter( $eventUid , \PDO::PARAM_INT )))->executeStatement() ;
 
 
-            /** @var \TYPO3\CMS\Core\Database\Connection $dbConnectionForSysRef */
+            /** @var Connection $dbConnectionForSysRef */
             $dbConnectionForSysRef = $connectionPool->getConnectionForTable('sys_file_reference');
 
-            /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
+            /** @var QueryBuilder $queryBuilder */
             $queryBuilder = $dbConnectionForSysRef->createQueryBuilder();
 
             $affectedRows = $queryBuilder
                 ->select( "uid","uid_local" )
-                ->from('sys_file_reference')
-                ->where(
-                    $queryBuilder->expr()->eq('uid_foreign', $queryBuilder->createNamedParameter( $event->getUid() )),
-                    $queryBuilder->expr()->eq('tablenames', $queryBuilder->createNamedParameter( 'tx_jvevents_domain_model_event' )),
-                    $queryBuilder->expr()->eq('fieldname', $queryBuilder->createNamedParameter( 'teaser_image' ))
-
-                )
-                ->execute();
+                ->from('sys_file_reference')->where($queryBuilder->expr()->eq('uid_foreign', $queryBuilder->createNamedParameter( $event->getUid() )), $queryBuilder->expr()->eq('tablenames', $queryBuilder->createNamedParameter( 'tx_jvevents_domain_model_event' )), $queryBuilder->expr()->eq('fieldname', $queryBuilder->createNamedParameter( 'teaser_image' )))->executeQuery();
 
 
             $mediaRow = $affectedRows->fetchAssociative() ;
             if ( is_array( $mediaRow)) {
                 $affectedRows = $queryBuilder
-                    ->insert('sys_file_reference')
-                    ->values([
-                        'uid_local' => $mediaRow['uid_local'] ,
-                        'table_local' => 'sys_file'  ,
-                        'uid_foreign' => intval( $eventUid ) ,
-                        'tablenames' => 'tx_jvevents_domain_model_event'  ,
-                        'fieldname' => 'teaser_image'  ,
+                    ->insert('sys_file_reference')->values([
+                    'uid_local' => $mediaRow['uid_local'] ,
+                    'table_local' => 'sys_file'  ,
+                    'uid_foreign' => intval( $eventUid ) ,
+                    'tablenames' => 'tx_jvevents_domain_model_event'  ,
+                    'fieldname' => 'teaser_image'  ,
 
-                    ])
-                    ->execute();
+                ])->executeStatement();
             }
 
             if (  $i == $amount ) {
@@ -683,10 +683,10 @@ class EventController extends BaseController
      * @param Event $event
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
-     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("event")
+     * @throws IllegalObjectTypeException
      * @return void
      */
+    #[IgnoreValidation(['value' => 'event'])]
     public function cancelAction(Event $event)
     {
         if($this->isUserOrganizer() ) {
@@ -743,9 +743,10 @@ class EventController extends BaseController
      * action update
      *
      * @param Event $event
-     *  @TYPO3\CMS\Extbase\Annotation\Validate(param="event" , validator="JVE\JvEvents\Validation\Validator\EventValidator")
+     * 
      * @return void
      */
+    #[Validate(['param' => 'event', 'validator' => EventValidator::class])]
     public function updateAction(Event $event)
     {
 
@@ -758,13 +759,11 @@ class EventController extends BaseController
 
             try {
                 /** @var ConnectionPool $connection */
-                /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
+                /** @var QueryBuilder $queryBuilder */
                 $connection = GeneralUtility::makeInstance(ConnectionPool::class);
                 $queryBuilder = $connection->getQueryBuilderForTable('tx_jvevents_domain_model_event');
                 $oldEventRows = $queryBuilder->select('*' )
-                    ->from('tx_jvevents_domain_model_event')
-                    ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($event->getUid(), \PDO::PARAM_INT)) )
-                    ->execute()
+                    ->from('tx_jvevents_domain_model_event')->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($event->getUid(), \PDO::PARAM_INT)))->executeQuery()
                     ->fetchAllAssociative();
 
                 if ( count($oldEventRows ) > 0 ) {
@@ -1017,9 +1016,9 @@ class EventController extends BaseController
      *
      * @return void
      */
-    public function searchAction()
+    public function searchAction(): ResponseInterface
     {
-        
+        return $this->htmlResponse();
     }
 
 
@@ -1031,8 +1030,8 @@ class EventController extends BaseController
 	 */
 	public function generateToken($action = "action"): string
     {
-		/** @var \TYPO3\CMS\Core\FormProtection\FrontendFormProtection $formClass */
-		$formClass =  $this->objectManager->get( \TYPO3\CMS\Core\FormProtection\FrontendFormProtection::class) ;
+		/** @var FrontendFormProtection $formClass */
+  $formClass =  $this->objectManager->get( FrontendFormProtection::class) ;
 
 		return $formClass->generateToken(
 			'event', $action ,   "P" . $this->settings['pageId'] . "-L" .$this->settings['sys_language_uid']
@@ -1041,11 +1040,11 @@ class EventController extends BaseController
 	}
 
     /**
-     * @param Event $event
-     * @return mixed
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
-     */
-	public function cleanEventArguments(Event  $event)
+  * @param Event $event
+  * @return mixed
+  * @throws NoSuchArgumentException
+  */
+ public function cleanEventArguments(Event  $event)
     {
         // Type validation should be done in validator class so we can ignore issue with wrong format
         $eventArray = $this->request->getArgument('event');
@@ -1054,7 +1053,7 @@ class EventController extends BaseController
 
         /*   +******  Update the Category  ************* */
         $eventCatUid = intval($eventArray['eventCategory']) ;
-        /** @var \JVE\JvEvents\Domain\Model\Category $eventCat */
+        /** @var Category $eventCat */
         $eventCat = $this->categoryRepository->findByUid($eventCatUid) ;
 
         if($eventCat) {
@@ -1072,7 +1071,7 @@ class EventController extends BaseController
             $existingTagsArray = array() ;
             $notexistingTagsArray = array() ;
             if ( $existingTags ) {
-                /** @var  \JVE\JvEvents\Domain\Model\Tag $existingTag */
+                /** @var Tag $existingTag */
                 foreach ( $existingTags as $existingTag ) {
                     if( !in_array( $existingTag->getUid()  , $eventTagUids , false)) {
                         $notexistingTagsArray[] = $existingTag ;
@@ -1088,7 +1087,7 @@ class EventController extends BaseController
             }
             foreach ($eventTagUids as $eventTagUid) {
                 if( intval( $eventTagUid ) > 0 && !in_array( $eventTagUid , $existingTagsArray , false )) {
-                    /** @var  \JVE\JvEvents\Domain\Model\Tag $eventTag */
+                    /** @var Tag $eventTag */
                     $eventTag = $this->tagRepository->findByUid($eventTagUid) ;
                     if($eventTag) {
                         $event->addTag($eventTag) ;
@@ -1197,8 +1196,8 @@ class EventController extends BaseController
     /**
      * @param Event $event   The Event nneded to get Location and Organizer
      * @param \DateTime|null $date  Will used to set The Latest Events Date
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
+     * @throws IllegalObjectTypeException
+     * @throws UnknownObjectException
      */
     public function updateLatestEvent( Event $event , \DateTime $date = NULL ) {
         if( $date == NULL ) {

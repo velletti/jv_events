@@ -2,6 +2,7 @@
 namespace JVE\JvEvents\UserFunc;
 
 
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -39,14 +40,10 @@ class PagePropertiesUserfunction{
             // Check if this event is translated from a parent news
             $result = $queryBuilder
                 ->select('uid')
-                ->from('tx_jvevents_domain_model_event')
-                ->where(
-                    $queryBuilder->expr()->eq(
-                        'l10n_parent',
-                        $queryBuilder->createNamedParameter($parameters['eventUid'], \PDO::PARAM_INT)
-                    )
-                )
-                ->execute()
+                ->from('tx_jvevents_domain_model_event')->where($queryBuilder->expr()->eq(
+                'l10n_parent',
+                $queryBuilder->createNamedParameter($parameters['eventUid'], \PDO::PARAM_INT)
+            ))->executeQuery()
                 ->fetch();
 
             // Old style
@@ -103,14 +100,10 @@ class PagePropertiesUserfunction{
             // Check if this event is translated from a parent news
             $result = $queryBuilder
                 ->select('uid')
-                ->from('tx_jvevents_domain_model_event')
-                ->where(
-                    $queryBuilder->expr()->eq(
-                        'l10n_parent',
-                        $queryBuilder->createNamedParameter($parameters['eventUid'], \PDO::PARAM_INT)
-                    )
-                )
-                ->execute()
+                ->from('tx_jvevents_domain_model_event')->where($queryBuilder->expr()->eq(
+                'l10n_parent',
+                $queryBuilder->createNamedParameter($parameters['eventUid'], \PDO::PARAM_INT)
+            ))->executeQuery()
                 ->fetch();
 
             // Old style
@@ -149,16 +142,16 @@ class PagePropertiesUserfunction{
     private function getParameters() {
 
         // Get the parameters
-        $sysLanguageUid = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('L'));
-        $pageUid = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
+        $sysLanguageUid = intval(GeneralUtility::_GP('L'));
+        $pageUid = GeneralUtility::_GP('id');
 
-        $tx_news_pi1 = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('tx_news_pi1');
+        $tx_news_pi1 = GeneralUtility::_GP('tx_news_pi1');
         $newsUid = 0;
         if(isset($tx_news_pi1['news'])){
             $newsUid = intval($tx_news_pi1['news']);
         }
 
-        $tx_jvevents_events = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('tx_jvevents_events');
+        $tx_jvevents_events = GeneralUtility::_GP('tx_jvevents_events');
         $eventUid = 0;
         if(isset($tx_jvevents_events['event'])){
             $eventUid = intval($tx_jvevents_events['event']);
@@ -186,13 +179,10 @@ class PagePropertiesUserfunction{
 
         $result = $queryBuilder
             ->select('name', 'start_date')
-            ->from('tx_jvevents_domain_model_event')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'uid',
-                    $queryBuilder->createNamedParameter($eventUid, \PDO::PARAM_INT)
-                )
-            )->execute()->fetch();
+            ->from('tx_jvevents_domain_model_event')->where($queryBuilder->expr()->eq(
+            'uid',
+            $queryBuilder->createNamedParameter($eventUid, \PDO::PARAM_INT)
+        ))->executeQuery()->fetch();
 
         $title =  date('d.m.Y', $result['start_date']) . ' - ' .$result['name']  ;
 
@@ -207,11 +197,7 @@ class PagePropertiesUserfunction{
                 'tx_jvevents_domain_model_category',
                 'c',
                 $queryBuilder->expr()->eq('mm.uid_foreign', $queryBuilder->quoteIdentifier('c.uid'))
-            )
-            ->where(
-                $queryBuilder->expr()->eq('mm.uid_local', $queryBuilder->createNamedParameter($eventUid, \PDO::PARAM_INT))
-            )
-            ->execute()->fetchAll();
+            )->where($queryBuilder->expr()->eq('mm.uid_local', $queryBuilder->createNamedParameter($eventUid, \PDO::PARAM_INT)))->executeQuery()->fetchAll();
 
         // echo $queryBuilder->getSQL();
 
@@ -243,14 +229,10 @@ class PagePropertiesUserfunction{
 
         $result = $queryBuilder
             ->select('name', 'teaser', 'organizer', 'start_date')
-            ->from('tx_jvevents_domain_model_event')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'uid',
-                    $queryBuilder->createNamedParameter($eventUid, \PDO::PARAM_INT)
-                )
-            )
-            ->execute()
+            ->from('tx_jvevents_domain_model_event')->where($queryBuilder->expr()->eq(
+            'uid',
+            $queryBuilder->createNamedParameter($eventUid, \PDO::PARAM_INT)
+        ))->executeQuery()
             ->fetch();
         $meta = false;
 
@@ -274,20 +256,14 @@ class PagePropertiesUserfunction{
                 ->where(
                     $queryBuilderRef->expr()->eq('tablenames', $queryBuilderRef->createNamedParameter('tx_jvevents_domain_model_event', \PDO::PARAM_STR))
                 )->andWhere($queryBuilderRef->expr()->eq('fieldname', $queryBuilderRef->createNamedParameter('teaser_image', \PDO::PARAM_STR))
-                )->andWhere($queryBuilderRef->expr()->eq('uid_foreign', $queryBuilderRef->createNamedParameter($eventUid, \PDO::PARAM_INT))
-                )
-                ->execute()
+                )->andWhere($queryBuilderRef->expr()->eq('uid_foreign', $queryBuilderRef->createNamedParameter($eventUid, \PDO::PARAM_INT)))->executeQuery()
                 ->fetch();
 
             if (intval($sysReference['uid_local']) > 0) {
                 $queryBuilderFile = $this->getQueryBuilder('sys_file');
                 $sysFile = $queryBuilderFile
                     ->select('identifier')
-                    ->from('sys_file')
-                    ->where(
-                        $queryBuilder->expr()->eq('uid', $queryBuilderFile->createNamedParameter($sysReference['uid_local'], \PDO::PARAM_INT))
-                    )
-                    ->execute()
+                    ->from('sys_file')->where($queryBuilder->expr()->eq('uid', $queryBuilderFile->createNamedParameter($sysReference['uid_local'], \PDO::PARAM_INT)))->executeQuery()
                     ->fetch();
 
                 if (is_array($sysFile)) {
@@ -305,21 +281,21 @@ class PagePropertiesUserfunction{
     /**
      * @param string $table
      * Returns the doctrine query builder
-     * @return \TYPO3\CMS\Core\Database\Query\QueryBuilder
+     * @return QueryBuilder
      */
     private function getQueryBuilder( $table = 'pageProperties'){
 
         /**
-         * @var \TYPO3\CMS\Core\Database\ConnectionPool $connectionPool
+         * @var ConnectionPool $connectionPool
          */
-        $connectionPool = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class);
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $queryBuilder = $connectionPool->getQueryBuilderForTable($table);
 
         return $queryBuilder;
 
     }
 
-    public function setContentObjectRenderer(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj): void
+    public function setContentObjectRenderer(ContentObjectRenderer $cObj): void
     {
         $this->cObj = $cObj;
     }

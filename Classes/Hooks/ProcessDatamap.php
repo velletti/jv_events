@@ -22,7 +22,22 @@ namespace JVE\JvEvents\Hooks ;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
-
+use JVE\JvEvents\Utility\SalesforceWrapperUtility;
+use JVE\JvEvents\Domain\Repository\EventRepository;
+use JVE\JvEvents\Domain\Model\Event;
+use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use JVE\JvEvents\Utility\EmConfigurationUtility;
+use JVE\JvEvents\Domain\Repository\RegistrantRepository;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
+use JVE\JvEvents\Domain\Model\Registrant;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Core\Mail\MailMessage;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use JVE\JvEvents\Utility\SlugUtility;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -40,27 +55,28 @@ class ProcessDatamap {
 	/** @var  array */
 	protected $flashMessage = array() ;
 
-    /** @var  \JVE\JvEvents\Utility\SalesforceWrapperUtility
+    /**
+     * @var SalesforceWrapperUtility
      */
     public $sfConnect ;
 
 
-    /** @var  \JVE\JvEvents\Domain\Repository\EventRepository $this->objectManager */
-	protected $objectManager ;
+    /** @var EventRepository $this ->objectManager */
+ protected $objectManager ;
 
-	/** @var  \JVE\JvEvents\Domain\Repository\EventRepository $this->eventRepository */
-	protected $eventRepository ;
+	/** @var EventRepository $this ->eventRepository */
+ protected $eventRepository ;
 
-	/** @var  \JVE\JvEvents\Domain\Model\Event $this->event */
-	protected $event;
+	/** @var Event $this ->event */
+ protected $event;
 
 	public function processDatamap_afterDatabaseOperations($status, $table, $id, $fieldArray, $pObj) {
 		$this->pObj = $pObj;
 		$this->table = $table;
 		$this->status = $status;
 		$this->fieldArray = $fieldArray;
-		$this->id = (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($id)?$id:$this->pObj->substNEWwithIDs[$id]);
-        $this->extConf = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class) ->get('jv_events');
+		$this->id = (MathUtility::canBeInterpretedAsInteger($id)?$id:$this->pObj->substNEWwithIDs[$id]);
+        $this->extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class) ->get('jv_events');
 
         $this->main();
 	}
@@ -71,19 +87,18 @@ class ProcessDatamap {
 	public function main() {
 
 		if ($this->table == 'tx_jvevents_domain_model_event') { //do only things when we are in the  event table
+   /** @var EventRepository $objectManager */
+   $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class) ;
 
-			/** @var  \JVE\JvEvents\Domain\Repository\EventRepository $objectManager */
-			$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class) ;
-
-			/** @var  \JVE\JvEvents\Domain\Repository\EventRepository $eventRepository */
-			$this->eventRepository = $this->objectManager->get(\JVE\JvEvents\Domain\Repository\EventRepository::class);
+			/** @var EventRepository $eventRepository */
+   $this->eventRepository = $this->objectManager->get(EventRepository::class);
 
 
-			/** @var  \JVE\JvEvents\Domain\Model\Event $event */
-			$this->event = $this->eventRepository->findByUidAllpages(intval($this->id), FALSE ) ;
+			/** @var Event $event */
+   $this->event = $this->eventRepository->findByUidAllpages(intval($this->id), FALSE ) ;
 
 			$allowedError = 0 ;
-            $configuration = \JVE\JvEvents\Utility\EmConfigurationUtility::getEmConf();
+            $configuration = EmConfigurationUtility::getEmConf();
            // $this->flashMessage['INFO'][] = 'config:  !' . var_export( $configuration , true ) ;
 
 			if( is_object( $this->event ) ) {
@@ -295,15 +310,14 @@ class ProcessDatamap {
 
 
                                             // Automatic Migration 2019 : Update registrants that they have to be moved to hubspot
+                                            /** @var RegistrantRepository $registrantRepository */
+                                            $registrantRepository = $this->objectManager->get(RegistrantRepository::class);
 
-                                            /** @var  \JVE\JvEvents\Domain\Repository\RegistrantRepository $registrantRepository */
-                                            $registrantRepository = $this->objectManager->get(\JVE\JvEvents\Domain\Repository\RegistrantRepository::class);
-
-                                            /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $registrants */
+                                            /** @var QueryResultInterface $registrants */
                                             $registrants = $registrantRepository->findByFilter('' , $this->event->getUid(), 0 , array() , 999 ) ;
                                             $repairCount = 0 ;
                                             if ( $registrants->count() > 0 ) {
-                                                /** @var  \JVE\JvEvents\Domain\Model\Registrant $registrant */
+                                                /** @var Registrant $registrant */
                                                 $registrant = $registrants->getFirst() ;
                                                 $pid = $registrant->getPid() ;
                                                 while ( $repairCount < $registrants->count()  ){
@@ -328,7 +342,7 @@ class ProcessDatamap {
                     }
                 }
                 if ( $configuration['enableHubspot'] && ! $this->event->getStoreInHubspot() && $this->event->getWithRegistration() ) {
-                    $this->flashMessage['WARNING'][] = 'You should activate:  ' . \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.store_in_hubspot', 'JvEvents', NULL);;
+                    $this->flashMessage['WARNING'][] = 'You should activate:  ' . LocalizationUtility::translate('LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.store_in_hubspot', 'JvEvents', NULL);;
                 }
 
 
@@ -336,8 +350,8 @@ class ProcessDatamap {
 
                 $this->eventRepository->update($this->event) ;
 
-                /** @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager $persistenceManager */
-                $persistenceManager = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class);
+                /** @var PersistenceManager $persistenceManager */
+                $persistenceManager = $this->objectManager->get(PersistenceManager::class);
                 $persistenceManager->persistAll() ;
 
                 if ( !key_exists( 'WARNING' , $this->flashMessage ) && !key_exists( 'ERROR' , $this->flashMessage ) ) {
@@ -358,10 +372,10 @@ class ProcessDatamap {
     */
 
     private function createUpdateEventForSF2019() {
-        $configuration = \JVE\JvEvents\Utility\EmConfigurationUtility::getEmConf();
+        $configuration = EmConfigurationUtility::getEmConf();
 
-        /** @var  \JVE\JvEvents\Utility\SalesforceWrapperUtility */
-        $this->sfConnect = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\JVE\JvEvents\Utility\SalesforceWrapperUtility::class);
+        /** @var SalesforceWrapperUtility */
+        $this->sfConnect = GeneralUtility::makeInstance(SalesforceWrapperUtility::class);
 
         $settings = $this->sfConnect->contactSF() ;
     //    $this->flashMessage['NOTICE'][] = 'Salesforce: Connect result ! : ' . var_export( $settings , true ) ;
@@ -519,8 +533,8 @@ class ProcessDatamap {
                     $url = $settings['SFREST']['instance_url'] . "/services/data/v48.0/sobjects/CampaignMemberStatus/" ;
                     $this->createCampaignMemberStati( $url , $settings['SFREST']['access_token'] ,  $sfResponse->id ) ;
 
-                    /** @var \TYPO3\CMS\Core\Mail\MailMessage $Typo3_v6mail */
-                    $Typo3_v6mail = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
+                    /** @var MailMessage $Typo3_v6mail */
+                    $Typo3_v6mail = GeneralUtility::makeInstance(MailMessage::class);
                     $Typo3_v6mail->setFrom( array( 'www@systems.allplan.com' => $_SERVER['SERVER_NAME'] ) );
                     $Typo3_v6mail->setReturnPath( 'www@systems.allplan.com' );
 
@@ -531,7 +545,7 @@ class ProcessDatamap {
                         )
                     );
                     /** @var Typo3Version $tt */
-                    $tt = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Information\Typo3Version::class ) ;
+                    $tt = GeneralUtility::makeInstance( Typo3Version::class ) ;
 
                     if( $tt->getMajorVersion()  < 10 ) {
                         $Typo3_v6mail->html(nl2br( $settings['SFREST']['instance_url'] . "/" . $sfResponse->id . "\n\n\n" . var_export($data , true  )  )  );
@@ -643,19 +657,19 @@ class ProcessDatamap {
 			foreach($this->flashMessage as $type => $messageArray){
 				switch ($type) {
 					case 'NOTICE':
-						$typeInt = \TYPO3\CMS\Core\Messaging\AbstractMessage::NOTICE;
+						$typeInt = AbstractMessage::NOTICE;
 						break;
 					case 'INFO':
-                        $typeInt = \TYPO3\CMS\Core\Messaging\AbstractMessage::INFO;
+                        $typeInt = AbstractMessage::INFO;
 						break;
 					case 'OK':
-                        $typeInt = \TYPO3\CMS\Core\Messaging\AbstractMessage::OK;
+                        $typeInt = AbstractMessage::OK;
 						break;
 					case 'WARNING':
-                        $typeInt = \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING;
+                        $typeInt = AbstractMessage::WARNING;
 						break;
 					case 'ERROR':
-                        $typeInt = \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR;
+                        $typeInt = AbstractMessage::ERROR;
 						break;
 				}
 				// echo "admin: " . $this->pObj->admin . " Type : " . $typeInt ;
@@ -664,13 +678,13 @@ class ProcessDatamap {
 				{
 				    foreach ( $messageArray as $messageText ) {
                         $tempText = ( is_string( $messageText )) ? $messageText : var_export( $messageText , true )  ;
-                        $message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class,
+                        $message = GeneralUtility::makeInstance(FlashMessage::class,
                             $tempText ,
                             $type , // [optional] the header
                             $typeInt , // [optional] the severity defaults to \TYPO3\CMS\Core\Messaging\FlashMessage::OK
                             true // [optional] whether the message should be stored in the session or only in the \TYPO3\CMS\Core\Messaging\FlashMessageQueue object (default is false)
                         );
-                        $flashMessageService = $this->objectManager->get(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
+                        $flashMessageService = $this->objectManager->get(FlashMessageService::class);
                         $messageQueue = $flashMessageService->getMessageQueueByIdentifier();
                         $messageQueue->addMessage($message);
                     }

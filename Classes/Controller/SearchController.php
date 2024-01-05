@@ -25,7 +25,10 @@ namespace JVE\JvEvents\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use JVE\JvEvents\Domain\Repository\EventRepository;
+use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
+use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 
@@ -38,7 +41,7 @@ class SearchController extends BaseController
     /**
      * eventRepository
      *
-     * @var \JVE\JvEvents\Domain\Repository\EventRepository
+     * @var EventRepository
      */
     protected $eventRepository = NULL;
 
@@ -67,10 +70,10 @@ class SearchController extends BaseController
      *
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
+     * @throws IllegalObjectTypeException
      * @return void
      */
-    public function searchAction()
+    public function searchAction(): ResponseInterface
     {
 
         // @param \JVE\JvEvents\Domain\Model\Filter $filter
@@ -78,12 +81,12 @@ class SearchController extends BaseController
         $this->debugArray[] = "After Init :" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " Line: " . __LINE__ ;
 
         $this->debugArray[] = "Load :" . intval(1000 * ($this->microtime_float()  - $this->timeStart ) ) . " Line: " . __LINE__ ;
-        /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $events */
+        /** @var QueryResultInterface $events */
         // $events = $this->eventRepository->findByFilter(false, false,  $this->settings );
-
         $this->view->assign('settings', $this->settings );
         $this->debugArray[] = "before Render:" . intval(1000 * ($this->microtime_float()  - $this->timeStart ) ) . " Line: " . __LINE__ ;
         $this->view->assign('debugArray', $this->debugArray );
+        return $this->htmlResponse();
 
     }
     

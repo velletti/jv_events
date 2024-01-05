@@ -13,14 +13,14 @@ namespace JVE\JvEvents\ViewHelpers;
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 // composer require endroid/qr-code
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use Endroid\QrCode\QrCode;
 
 /**
  */
 
-class QrcodeViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper {
+class QrcodeViewHelper extends AbstractViewHelper {
 
     /**
      * As this ViewHelper renders HTML, the output must not be escaped.

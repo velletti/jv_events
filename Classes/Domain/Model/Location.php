@@ -1,6 +1,10 @@
 <?php
 namespace JVE\JvEvents\Domain\Model;
 
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Annotation\Validate;
+use TYPO3\CMS\Extbase\Domain\Model\FileReference;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 /***************************************************************
  *
  *  Copyright notice
@@ -25,19 +29,18 @@ namespace JVE\JvEvents\Domain\Model;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Location
  */
-class Location extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class Location extends AbstractEntity
 {
 
     /**
      * Name of the Location
      *
      * @var string
-     * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
      */
+    #[Validate(['validator' => 'NotEmpty'])]
     protected $name = '';
 
     /**
@@ -71,8 +74,8 @@ class Location extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Name of the City
      *
      * @var string
-     * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
      */
+    #[Validate(['validator' => 'NotEmpty'])]
     protected $city = '';
     
     /**
@@ -143,21 +146,21 @@ class Location extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Files that may be useful for this event
      *
-     * @var \TYPO3\CMS\Extbase\Domain\Model\FileReference
+     * @var FileReference
      */
     protected $teaserImage = null;
 
     /**
      * Organizer Id of this Location
      *
-     * @var \JVE\JvEvents\Domain\Model\Organizer|null
+     * @var Organizer|null
      */
     protected $organizer = null;
     
     /**
      * Organizer Id of this Location
      *
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Category>
+     * @var ObjectStorage<Category>
      */
     protected $locationCategory = null;
 
@@ -438,7 +441,7 @@ class Location extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Returns the organizer
      *
-     * @return ?\JVE\JvEvents\Domain\Model\Organizer $organizer
+     * @return ?Organizer $organizer
      */
     public function getOrganizer()
     {
@@ -451,10 +454,10 @@ class Location extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Sets the organizer
      *
-     * @param \JVE\JvEvents\Domain\Model\Organizer|null  $organizer
+     * @param Organizer|null $organizer
      * @return void
      */
-    public function setOrganizer(?\JVE\JvEvents\Domain\Model\Organizer $organizer)
+    public function setOrganizer(?Organizer $organizer)
     {
         if( is_object( $organizer )) {
             $this->organizer = $organizer;
@@ -482,16 +485,16 @@ class Location extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     protected function initStorageObjects()
     {
-        $this->locationCategory = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+        $this->locationCategory = new ObjectStorage();
     }
     
     /**
      * Adds a Category
      *
-     * @param \JVE\JvEvents\Domain\Model\Category $locationCategory
+     * @param Category $locationCategory
      * @return void
      */
-    public function addLocationCategory(\JVE\JvEvents\Domain\Model\Category $locationCategory)
+    public function addLocationCategory(Category $locationCategory)
     {
         $this->locationCategory->attach($locationCategory);
     }
@@ -499,10 +502,10 @@ class Location extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Removes a Category
      *
-     * @param \JVE\JvEvents\Domain\Model\Category $locationCategoryToRemove The Category to be removed
+     * @param Category $locationCategoryToRemove The Category to be removed
      * @return void
      */
-    public function removeLocationCategory(\JVE\JvEvents\Domain\Model\Category $locationCategoryToRemove)
+    public function removeLocationCategory(Category $locationCategoryToRemove)
     {
         $this->locationCategory->detach($locationCategoryToRemove);
     }
@@ -510,7 +513,7 @@ class Location extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Returns the locationCategory
      *
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Category> $locationCategory
+     * @return ObjectStorage<Category> $locationCategory
      */
     public function getLocationCategory()
     {
@@ -520,16 +523,16 @@ class Location extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Sets the locationCategory
      *
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\JVE\JvEvents\Domain\Model\Category> $locationCategory
+     * @param ObjectStorage<Category> $locationCategory
      * @return void
      */
-    public function setLocationCategory(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $locationCategory)
+    public function setLocationCategory(ObjectStorage $locationCategory)
     {
         $this->locationCategory = $locationCategory;
     }
 
     /**
-     * @return \TYPO3\CMS\Extbase\Domain\Model\FileReference
+     * @return FileReference
      */
     public function getTeaserImage()
     {
@@ -537,7 +540,7 @@ class Location extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Domain\Model\FileReference $teaserImage
+     * @param FileReference $teaserImage
      */
     public function setTeaserImage($teaserImage)
     {

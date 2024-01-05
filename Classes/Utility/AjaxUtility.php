@@ -4,6 +4,8 @@
 namespace JVE\JvEvents\Utility;
 
 
+use JVE\JvEvents\Controller\AjaxController;
+use TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -19,12 +21,12 @@ class AjaxUtility {
     /**
      * @param array $_gp
      * @param string $function
-     * @return \JVE\JvEvents\Controller\AjaxController
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException
+     * @return AjaxController
+     * @throws InvalidExtensionNameException
      */
     public function initController(array $_gp , $function ,$request ) {
-        /** @var \JVE\JvEvents\Controller\AjaxController $controller */
-        $controller = GeneralUtility::makeInstance(\JVE\JvEvents\Controller\AjaxController::class ) ;
+        /** @var AjaxController $controller */
+        $controller = GeneralUtility::makeInstance(AjaxController::class ) ;
 
         $controller->initializeAction() ;
 

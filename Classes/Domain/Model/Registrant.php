@@ -1,6 +1,9 @@
 <?php
 namespace JVE\JvEvents\Domain\Model;
 
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Annotation\Validate;
+use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 /***************************************************************
  *
  *  Copyright notice
@@ -25,11 +28,10 @@ namespace JVE\JvEvents\Domain\Model;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Registrant
  */
-class Registrant extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class Registrant extends AbstractEntity
 {
 	/**
 	 * uid
@@ -272,8 +274,8 @@ class Registrant extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * privacy
      *
      * @var bool
-     * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
      */
+    #[Validate(['validator' => 'NotEmpty'])]
     protected $privacy = false;
     
     /**
@@ -370,7 +372,7 @@ class Registrant extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * more8file
      *
-     * @var \TYPO3\CMS\Extbase\Domain\Model\FileReference
+     * @var FileReference
      */
     protected $more8file = null;
     
@@ -1124,7 +1126,7 @@ class Registrant extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Returns the more8file
      *
-     * @return \TYPO3\CMS\Extbase\Domain\Model\FileReference $more8file
+     * @return FileReference $more8file
      */
     public function getMore8file()
     {
@@ -1134,10 +1136,10 @@ class Registrant extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Sets the more8file
      *
-     * @param \TYPO3\CMS\Extbase\Domain\Model\FileReference $more8file
+     * @param FileReference $more8file
      * @return void
      */
-    public function setMore8file(\TYPO3\CMS\Extbase\Domain\Model\FileReference $more8file)
+    public function setMore8file(FileReference $more8file)
     {
         $this->more8file = $more8file;
     }

@@ -1,5 +1,7 @@
 <?php
 namespace JVE\JvEvents\Domain\Repository;
+
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 /***************************************************************
  * Copyright notice
  *
@@ -22,17 +24,16 @@ namespace JVE\JvEvents\Domain\Repository;
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * A repository for static info tables country
  */
-class StaticCountryRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository {
+class StaticCountryRepository extends BaseRepository {
 	/**
-	 * Find all countries despecting the storage page
-	 *
-	 * @return array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
-	 */
-	public function findAll() {
+  * Find all countries despecting the storage page
+  *
+  * @return array|QueryResultInterface
+  */
+ public function findAll() {
 		$query = $this->createQuery();
 		$query
 			->getQuerySettings()
@@ -43,11 +44,11 @@ class StaticCountryRepository extends \JVE\JvEvents\Domain\Repository\BaseReposi
 
 
     /**
-     * Find countries by iso2 codes despection the storage page
-     * @param array $cnIso2
-     * @return array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
-     */
-	public function findByCnIso2(array $cnIso2) {
+  * Find countries by iso2 codes despection the storage page
+  * @param array $cnIso2
+  * @return array|QueryResultInterface
+  */
+ public function findByCnIso2(array $cnIso2) {
 
 		$query = $this->createQuery();
 		$query

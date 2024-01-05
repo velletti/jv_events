@@ -1,7 +1,8 @@
 <?php
 namespace JVE\JvEvents\Domain\Repository;
 
-
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 /***************************************************************
  *
  *  Copyright notice
@@ -26,18 +27,17 @@ namespace JVE\JvEvents\Domain\Repository;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * The repository for Tags
  */
-class TagRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
+class TagRepository extends BaseRepository
 {
 
     /**
      * @var array
      */
     protected $defaultOrderings = array(
-        'name' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING ,
+        'name' => QueryInterface::ORDER_ASCENDING ,
     );
 
     /**
@@ -45,7 +45,7 @@ class TagRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
      *                  0 = events 1 locations 2 = Organizer
      *                  see TCA of event model
      *
-     * @return array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+     * @return array|QueryResultInterface
      */
     public function findAllonAllPages($type= -1 , $filter=[] )
     {
@@ -79,7 +79,7 @@ class TagRepository extends \JVE\JvEvents\Domain\Repository\BaseRepository
     /**
      * @param array $tagUids
      *
-     * @return array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+     * @return array|QueryResultInterface
      */
     public function findAllonAllPagesByUids( array $tagUids)
     {

@@ -1,6 +1,7 @@
 <?php
 namespace JVE\JvEvents\ViewHelpers;
 
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -27,7 +28,7 @@ class WriteDateAbbreviationViewHelper extends AbstractViewHelper{
 
 	public function render() {
         $month = $this->arguments['month'] ;
-		$abbreviation = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tx_jvevents_event.dateFormat.month.abbreviation.' . $month, 'jv_events');
+		$abbreviation = LocalizationUtility::translate('tx_jvevents_event.dateFormat.month.abbreviation.' . $month, 'jv_events');
 		return $abbreviation;
 
 	}

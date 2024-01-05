@@ -1,7 +1,8 @@
 <?php
 namespace JVE\JvEvents\Domain\Model;
 
-
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Annotation\Validate;
 /***************************************************************
  *
  *  Copyright notice
@@ -26,11 +27,10 @@ namespace JVE\JvEvents\Domain\Model;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Category
  */
-class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class Category extends AbstractEntity
 {
     /**
      * name
@@ -50,8 +50,8 @@ class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * title
      *
      * @var string
-     * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
      */
+    #[Validate(['validator' => 'NotEmpty'])]
     protected $title = '';
 
     /**
