@@ -14,9 +14,10 @@ class EventRegistrantValidator extends \JVE\JvEvents\Validation\Validator\BaseVa
 	 * Check if $value is valid
 	 *
 	 * @param  \JVE\JvEvents\Domain\Model\Event $event
-	 * @return boolean
+	 * @return void
 	 */
-	public function isValid($event) {
+	public function isValid(mixed $event):void
+    {
 		$isValid = true ;
 
         /**
@@ -41,10 +42,6 @@ class EventRegistrantValidator extends \JVE\JvEvents\Validation\Validator\BaseVa
 
             $isValid = false ;
 		}
-
-
-		return $isValid;
-
 	}
 
 }

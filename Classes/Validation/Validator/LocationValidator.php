@@ -45,9 +45,10 @@ class LocationValidator extends BaseValidator {
 	 * Check if $value is valid
 	 *
 	 * @param \JVE\JvEvents\Domain\Model\Location $location
-	 * @return boolean
+	 * @return void
 	 */
-	public function isValid($location) {
+	public function isValid(mixed $location): void
+    {
 
         $isValid = true ;
 
@@ -102,9 +103,6 @@ class LocationValidator extends BaseValidator {
 
         }
         $isValid = $this->isHasUnwantedHtmlCodeValue( $location->getDescription() , 'description' , $isValid ) ;
-
-
-		return $isValid;
 
 	}
 

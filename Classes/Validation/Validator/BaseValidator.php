@@ -14,7 +14,8 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
  * Validator for ProfileData
  *
  */
-class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
+class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator  implements ValidatorInterface
+{
 
 	/**
 	 * eventRepository
@@ -81,6 +82,18 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
         parent::__construct() ;
 
 	}
+
+
+    public function setOptions(array $options): void
+    {
+        $this->initializeDefaultOptions($options);
+    }
+
+    public function getOptions(): array
+    {
+        return $this->options;
+    }
+
 	public function getSettings() {
         $objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
         $configurationManager = $objectManager->get(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
@@ -90,11 +103,11 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
 
 	/**
 	 * Check if $value is valid
-	 * @param array $value Dummy overwritten in extending Validator
-	 * @return boolean
+	 * @param mixed $value Dummy overwritten in extending Validator
+	 * @return void
 	 */
-	public function isValid($value) {
-		return true;
+	public function isValid(mixed $value): void
+    {
 
 	}
 

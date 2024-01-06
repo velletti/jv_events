@@ -20,7 +20,7 @@ use TYPO3\CMS\Extbase\Service\ImageService;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
-class ImageViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\ImageViewHelper
+class ImageViewHelper extends TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper
 {
     /**
      * @var string

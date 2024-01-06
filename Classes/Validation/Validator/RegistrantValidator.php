@@ -16,9 +16,10 @@ class RegistrantValidator extends \JVE\JvEvents\Validation\Validator\BaseValidat
 	 * Check if $value is valid
 	 *
 	 * @param  \JVE\JvEvents\Domain\Model\Registrant $registrant
-	 * @return boolean
+	 * @return void
 	 */
-	public function isValid($registrant) {
+	public function isValid(mixed $registrant):void
+    {
 		$isValid = true ;
 
 		/**
@@ -206,9 +207,6 @@ class RegistrantValidator extends \JVE\JvEvents\Validation\Validator\BaseValidat
                 }
             }
 		}
-
-
-		return $isValid;
 
 	}
 

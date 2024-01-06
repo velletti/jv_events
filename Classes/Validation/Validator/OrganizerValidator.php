@@ -31,9 +31,10 @@ class OrganizerValidator extends BaseValidator {
 	 * Check if $value is valid
 	 *
 	 * @param \JVE\JvEvents\Domain\Model\Organizer $organizer
-	 * @return boolean
+	 * @return void
 	 */
-	public function isValid($organizer) {
+	public function isValid(mixed $organizer):void
+    {
 
         $isValid = true ;
         $isValid = $this->securityChecks( $organizer->getEmail() , 'email' , $isValid ) ;
@@ -61,9 +62,6 @@ class OrganizerValidator extends BaseValidator {
             $isValid = $this->youtubeIsValid( trim($organizer->getYoutubeLink()) , 'youtubeLink' , NULL , $isValid ) ;
         }
         $isValid = $this->isHasUnwantedHtmlCodeValue( $organizer->getDescription() , 'description' , $isValid ) ;
-
-
-		return $isValid;
 
 	}
 

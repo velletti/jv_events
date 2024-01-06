@@ -6,13 +6,15 @@ use JVE\JvEvents\Domain\Repository\OrganizerRepository;
 use JVE\JvRanking\Domain\Repository\AnswerRepository;
 use JVE\JvRanking\Domain\Repository\QuestionRepository;
 use JVE\JvRanking\Utility\RankingUtility;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Locking\Exception\LockAcquireException;
 use TYPO3\CMS\Core\Locking\Exception\LockAcquireWouldBlockException;
 use TYPO3\CMS\Core\Locking\Exception\LockCreateException;
-use TYPO3\CMS\Core\Log\Logger;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException;
@@ -21,7 +23,6 @@ use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 use TYPO3\CMS\Core\Locking\LockFactory;
 use TYPO3\CMS\Core\Locking\LockingStrategyInterface;
-use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Velletti\Mailsignature\Service\SignatureService;
 
@@ -48,9 +49,6 @@ class CleanEventsTask extends AbstractTask
 
     /** @var string email Address if set, debug output will be sent  */
     private $debugmail = '';
-
-    /** @var  Logger */
-    protected $logger;
 
     private function fetchConfiguration()
     {

@@ -34,9 +34,10 @@ class EventValidator extends BaseValidator {
 	 *
 	 * @param \JVE\JvEvents\Domain\Model\Event $event
      * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("event")
-	 * @return boolean
+	 * @return void
 	 */
-	public function isValid($event) {
+	public function isValid(mixed $event):void
+    {
         $isValid = true ;
 
         $isValid = $this->securityChecks( $event->getName() , 'name' , $isValid ) ;
@@ -101,8 +102,6 @@ class EventValidator extends BaseValidator {
         }
 
         $isValid = $this->isHasUnwantedHtmlCodeValue( $event->getDescription() , 'description' , $isValid ) ;
-
-		return $isValid;
 
 	}
 
