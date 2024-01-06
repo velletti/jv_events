@@ -102,17 +102,7 @@ class AjaxController extends BaseController
     public $standaloneView;
 
     public function initializeAction() {
-
-
-
         parent::initializeAction() ;
-    }
-    /**
-     * @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext
-     */
-    public function injectControllerContext( ControllerContext $controllerContext) {
-
-        $this->controllerContext = $controllerContext;
     }
 
     /**

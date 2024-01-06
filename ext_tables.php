@@ -22,7 +22,7 @@ if (!defined('TYPO3')) {
     'Events: Load events from other website via Curl'
 );
 
-if (TYPO3_MODE === 'BE') {
+if ($GLOBALS['TYPO3_REQUEST'] && TYPO3\CMS\Core\Http\ApplicationType::fromRequest( $GLOBALS['TYPO3_REQUEST'] )->isBackend()) {
 
     //       * Registers a Backend Module
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
