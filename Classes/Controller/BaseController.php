@@ -243,8 +243,6 @@ class BaseController extends ActionController
      */
     public function initializeAction()
     {
-          
-
         $this->settings['register']['allowedCountrys'] 	=  GeneralUtility::trimExplode("," , $this->settings['register']['allowedCountrys'] , true );
 
         $this->settings['pageId']						=  $GLOBALS['TSFE']->id ;

@@ -205,7 +205,7 @@ class RegistrantRepository extends BaseRepository
             } elseif (count($constraints) >= 2) {
                 $query->matching($query->logicalAnd(...$constraints));
             }
-            $query->matching($query->logicalAnd($constraints));
+            $query->matching($query->logicalAnd(...$constraints));
         }
         // new way to debug typo3 db queries
         //  $this->debugQuery($query) ;

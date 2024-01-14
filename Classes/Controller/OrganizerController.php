@@ -87,7 +87,9 @@ class OrganizerController extends BaseController
      */
     public function indexAction(): ResponseInterface
     {
-        // maybe we need this as Overview -> Select type of Organizer -> jump to list -> Filtered by type return $this->htmlResponse();return $this->htmlResponse();
+        // maybe we need this as Overview -> Select type of Organizer -> jump to list
+        // -> Filtered by type
+        return $this->htmlResponse();
     }
     /**
      * action list
@@ -155,7 +157,6 @@ class OrganizerController extends BaseController
     public function listAction(): ResponseInterface
     {
 
-
         $this->settings['filter']['sorttags'] = "sorting" ;
         $this->debugArray[] = "Before DB Load:" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " Line: " . __LINE__ ;
 
@@ -211,7 +212,9 @@ class OrganizerController extends BaseController
 
        // echo "<pre>" ;
        // var_dump( $this->debugArray) ;
-       // die;return $this->htmlResponse();return $this->htmlResponse();
+       // die;return $this->htmlResponse();
+
+        return $this->htmlResponse();
     }
     
     /**

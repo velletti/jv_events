@@ -138,22 +138,22 @@ class EventRepository extends BaseRepository
         // Add filter for AND event is marked as TOP Event
         if( isset($settings['filter']['topEvents']) && $settings['filter']['topEvents'] == 1 ) {
             $constraintsTagsCat[] = $query->equals("top_event",  1);
-            $constraints[] = $query->logicalAnd($constraintsTagsCat) ;
+            $constraints[] = $query->logicalAnd(...$constraintsTagsCat) ;
         } else {
 
             // Add filter for OR event is marked as TOP Event
             // all other TAG or Cat Contraints should be resolved before !!
             if( isset($settings['filter']['topEvents']) &&  $settings['filter']['topEvents'] == 2 ) {
                 if( count($constraintsTagsCat) > 0 ) {
-                    $constraintsTop[] = $query->logicalAnd($constraintsTagsCat);
+                    $constraintsTop[] = $query->logicalAnd(...$constraintsTagsCat);
                     $constraintsTop[] = $query->equals("top_event", 1);
-                    $constraints[] = $query->logicalOr($constraintsTop);
+                    $constraints[] = $query->logicalOr(...$constraintsTop);
                 } else {
                     $constraints[] = $query->equals("top_event", 1);
                 }
             } else {
                 if( count($constraintsTagsCat) > 0 ) {
-                    $constraints[] = $query->logicalAnd($constraintsTagsCat) ;
+                    $constraints[] = $query->logicalAnd(...$constraintsTagsCat) ;
                 }
             }
         }
@@ -186,7 +186,7 @@ class EventRepository extends BaseRepository
                     foreach ( $organizers as $organizer ) {
                         $constraintsOrg[]  = $query->equals("organizer",  $organizer );
                     }
-                    $constraints[] = $query->logicalOr($constraintsOrg) ;
+                    $constraints[] = $query->logicalOr(...$constraintsOrg) ;
                 }
                 
             }
@@ -222,7 +222,7 @@ class EventRepository extends BaseRepository
         $subconstraints = array() ;
         $subconstraints[] = $query->greaterThanOrEqual('endtime', $actualTime );
         $subconstraints[] = $query->lessThanOrEqual('endtime', 1 );
-        $constraints[] = $query->logicalOr($subconstraints) ;
+        $constraints[] = $query->logicalOr(...$subconstraints) ;
         $constraints[] = $query->lessThanOrEqual('starttime', $actualTime );
 
 
@@ -230,7 +230,7 @@ class EventRepository extends BaseRepository
 
 
         if (count($constraints) >  0 ) {
-            $query->matching($query->logicalAnd($constraints));
+            $query->matching($query->logicalAnd(...$constraints));
         }
 
 
@@ -262,7 +262,7 @@ class EventRepository extends BaseRepository
 
 
         $constraints[] = $query->equals("location",  $uid );
-            $query->matching($query->logicalAnd($constraints));
+            $query->matching($query->logicalAnd(...$constraints));
 
         $result = $query->execute();
         if ( 1 == 2 ) {
@@ -433,7 +433,7 @@ class EventRepository extends BaseRepository
                     $catConstraints[] = $query->equals('eventCategory.uid', $catUid);
                 }
             }
-            $constraints[] = $query->logicalOr( $catConstraints ) ;
+            $constraints[] = $query->logicalOr(... $catConstraints ) ;
 		}
 
 		return $constraints;
@@ -465,7 +465,7 @@ class EventRepository extends BaseRepository
                     $tagConstraints[] = $query->equals('tags.uid', $tagUid );
                 }
             }
-            $constraints[] = $query->logicalOr( $tagConstraints ) ;
+            $constraints[] = $query->logicalOr(... $tagConstraints ) ;
         }
 
         return $constraints;
@@ -495,7 +495,7 @@ class EventRepository extends BaseRepository
                     $tagConstraints[] = $query->logicalNot($query->contains('tags', $tagUid ));
                 }
             }
-            $constraints[] = $query->logicalAnd( $tagConstraints ) ;
+            $constraints[] = $query->logicalAnd(... $tagConstraints ) ;
         }
 
         return $constraints;

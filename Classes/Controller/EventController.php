@@ -63,7 +63,6 @@ class EventController extends BaseController
 
 	public function initializeAction() {
         $this->timeStart = $this->microtime_float() ;
-
 	    $this->debugArray[] = "Start:" . intval(1000 * $this->timeStart ) . " Line: " . __LINE__ ;
 		if ($this->request->hasArgument('action')) {
 
@@ -81,7 +80,6 @@ class EventController extends BaseController
 
 		} else {
 		    // no action is set ? prevent
-		    $this->request->setArgument('action', 'list') ;
             return new ForwardResponse('list');
         }
         if ( $this->request->hasArgument('event')) {
@@ -205,7 +203,7 @@ class EventController extends BaseController
         $this->view->assign('debugArray', $this->debugArray );
 
         // overruleFilterStartDate Nnext return $this->htmlResponse();return $this->htmlResponse();
-
+        return $this->htmlResponse();
     }
     
     /**
@@ -268,7 +266,7 @@ class EventController extends BaseController
         }
         $this->view->assign('settings', $this->settings);
 		$this->view->assign('event', $event);
-  return $this->htmlResponse();
+        return $this->htmlResponse();
     }
     
     /**
@@ -333,6 +331,7 @@ class EventController extends BaseController
             $this->view->assign('categories', $categories);
             $this->view->assign('tags', $tags);
         }
+        return $this->htmlResponse();
 	}
     
     /**
@@ -758,7 +757,7 @@ class EventController extends BaseController
             $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
 
             try {
-                /** @var ConnectionPool $connection */
+                    /** @var ConnectionPool $connection */
                 /** @var QueryBuilder $queryBuilder */
                 $connection = GeneralUtility::makeInstance(ConnectionPool::class);
                 $queryBuilder = $connection->getQueryBuilderForTable('tx_jvevents_domain_model_event');

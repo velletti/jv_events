@@ -176,9 +176,9 @@ class OrganizerRepository extends BaseRepository
                 $query->matching( reset($constraints) ) ;
             }
         }
-
+       // $this->debugQuery($query) ;
         $res = $query->execute() ;
-        //  $this->debugQuery($query) ;
+
 
         if( $toArray === TRUE ) {
             return $res->toArray();

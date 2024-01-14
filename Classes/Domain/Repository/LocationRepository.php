@@ -113,7 +113,7 @@ class LocationRepository extends BaseRepository
             $query->matching($query->logicalAnd(...$constraints));
         }
 
-        $query->matching( $query->logicalAnd( $constraints ) ) ;
+        $query->matching( $query->logicalAnd(... $constraints ) ) ;
         if (  $orderby  ) {
             switch ($orderby) {
                 case "latestEventDESC":
@@ -164,7 +164,9 @@ class LocationRepository extends BaseRepository
             $actualTime = new \DateTime('now' ) ;
             $actualTime->modify($lastModified ) ;
 
-            $constraints[] = $query->logicalOr($query->greaterThanOrEqual('tstamp', $actualTime ), $query->greaterThanOrEqual('latest_event', $actualTime ));
+            $constraintsOr[] = $query->greaterThanOrEqual('tstamp', $actualTime );
+            $constraintsOr[] = $query->greaterThanOrEqual('latest_event', $actualTime );
+            $constraints[] = $query->logicalOr(...$constraintsOr);
         }
 
         if( $limit) {
@@ -173,19 +175,21 @@ class LocationRepository extends BaseRepository
 
         if ( $ignoreEnableFields ) {
             $constraints[] =  $query->equals('deleted',  0 )  ;
-            $constraints[] = $query->logicalOr($query->equals('organizer.hidden', 0 ), $query->equals('organizer.uid', null )) ;
+            $constraintsOr = [];
+            $constraintsOr[] = $query->equals('organizer.hidden', 0 ) ;
+            $constraintsOr[] = $query->equals('organizer.uid', null );
+            $constraints[] = $query->logicalOr(...$constraintsOr ) ;
         }
         if (count($constraints) === 1) {
             $query->matching(reset($constraints));
         } elseif (count($constraints) >= 2) {
             $query->matching($query->logicalAnd(...$constraints));
         }
-        $query->matching( $query->logicalAnd($constraints)) ;
+        $query->matching( $query->logicalAnd(...$constraints)) ;
         $res = $query->execute() ;
 
         // new way to debug typo3 db queries
         // $this->debugQuery( $query) ;
-
         if( $toArray === TRUE ) {
             return $res->toArray();
         } else {

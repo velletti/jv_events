@@ -62,7 +62,7 @@ class FrontendUserRepository extends BaseRepository {
      //   $querySettings->setIgnoreEnableFields(true) ;
         $query->setQuerySettings($querySettings) ;
         $constraints[] = $query->equals('uid', intval($uid));
-        $query->matching($query->logicalAnd($constraints));
+        $query->matching($query->logicalAnd(...$constraints));
 
         // $queryParser = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class);
         // \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($queryParser->convertQueryToDoctrineQueryBuilder($query)->getSQL());

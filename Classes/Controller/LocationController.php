@@ -101,7 +101,7 @@ class LocationController extends BaseController
         }
 
         // ($filter=FALSE , $toArray=FALSE , $ignoreEnableFields = FALSE , $limit=FALSE, $lastModified = '-1 YEAR')
-        $locations = $this->locationRepository->findByFilterAllpages($filter , false , false , false  , $lastModified);
+       // $locations = $this->locationRepository->findByFilterAllpages($filter , false , false , false  , $lastModified);
         $this->view->assign('locations', $locations);
         return $this->htmlResponse();
     }
