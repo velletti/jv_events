@@ -920,10 +920,14 @@ function jv_events_refreshList(){
                     }
                 }
             }
-            if( fOrg && fOrg.val() > 0 ) {
-    //            console.log( " data-orguid : " + jQuery(this).data("orguid")  + " Filter: " + fOrg.val() ) ;
-                if( jQuery(this).data("orguid") && parseInt( jQuery(this).data("orguid"))  !== parseInt( fOrg.val()) ) {
-                    jQuery(this).addClass('d-none').addClass('hidden-byOrganizer')  ;
+            if ( ($("#jv_events_filter_tags").hasClass( "filterType6") || $("#jv_events_filter_tags").hasClass( "filterType7")) && fOrg.val() ) {
+                //  console.log( "filterType6: forg: " + ( fOrg.val()) + " <> " + decodeURI(jQuery(this).data("orgname")) ) ;
+                if( (jQuery(this).data("orgname")) && decodeURI (jQuery(this).data("orgname")) !== (fOrg.val()) ) {
+                    jQuery(this).addClass('hide d-none').addClass('hidden-by-fOrg') ;
+                }
+            } else {
+                if( fOrg.val() > 0 && parseInt( jQuery(this).data("orguid"))   !== parseInt( fOrg.val()) ) {
+                    jQuery(this).addClass('hide d-none').addClass('hidden-by-fOrg') ;
                 }
             }
 
