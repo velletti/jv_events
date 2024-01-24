@@ -738,7 +738,9 @@ function jv_events_refreshList(){
 	var fCity= jQuery("SELECT#jv_events_filter_citys") ;
 	var fCat= jQuery("SELECT#jv_events_filter_categories") ;
 	var fOrg= jQuery("SELECT#jv_events_filter_organizers") ;
-	var fDist= jQuery("SELECT#jv_events_filter_distance") ;
+   // console.log( " ************* filter **************** fOrg : " + fOrg.val()   ) ;
+
+    var fDist= jQuery("SELECT#jv_events_filter_distance") ;
 	var maxDist = 99999
     let minLat = 0 ;
     let maxLat = 9999 ;
@@ -859,7 +861,7 @@ function jv_events_refreshList(){
     let allcountEvents = 0 ;
 	jQuery('.tx-jv-events DIV.jv-events-row').each(function (i) {
 	   // console.log( " ************* single row **************** UID: " + jQuery(this).data("eventuid")  ) ;
-      //  console.log( " ************* single row **************** Org UID: " + jQuery(this).data("orguid")  ) ;
+       // console.log( " ************* single row **************** Org UID: " + jQuery(this).data("orguid")  ) ;
        // console.log( " catuids on Event : " + jQuery(this).data("catuids") ) ;
        // console.log( " Lat on Event : " + jQuery(this).data("latitude") ) ;
        // console.debug( jQuery(thi s).data() ) ;
@@ -920,12 +922,18 @@ function jv_events_refreshList(){
                     }
                 }
             }
-            if( fOrg && fOrg.val() > 0 ) {
-    //            console.log( " data-orguid : " + jQuery(this).data("orguid")  + " Filter: " + fOrg.val() ) ;
-                if( jQuery(this).data("orguid") && parseInt( jQuery(this).data("orguid"))  !== parseInt( fOrg.val()) ) {
-                    jQuery(this).addClass('d-none').addClass('hidden-byOrganizer')  ;
+            if ( ($("#jv_events_filter_tags").hasClass( "filterType6") || $("#jv_events_filter_tags").hasClass( "filterType7")) && fOrg.val() ) {
+                //  console.log( "filterType6: forg: " + ( fOrg.val()) + " <> " + decodeURI(jQuery(this).data("orgname")) ) ;
+                if( (jQuery(this).data("orgname")) && decodeURI (jQuery(this).data("orgname")) !== (fOrg.val()) ) {
+                    jQuery(this).addClass('hide d-none').addClass('hidden-by-fOrg') ;
+                }
+            } else {
+                if( fOrg.val() > 0 && parseInt( jQuery(this).data("orguid"))   !== parseInt( fOrg.val()) ) {
+                    jQuery(this).addClass('hide d-none').addClass('hidden-by-fOrg') ;
                 }
             }
+
+
 
             if( cTagChecked  === true && !jQuery(this).hasClass('d-none') ) {
                 var sTags = jQuery(this).data("taguids") ;
