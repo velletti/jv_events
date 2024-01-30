@@ -378,6 +378,10 @@ class ProcessDatamap {
         // OR $date->add(new DateInterval('P30D'));
         $startD =  $this->sfConnect->convertDate2SFdate( $start ,  $this->event->getStartTime() ) ;
 
+        // 2024 EventDate__c
+        $EventDateTime__c  = $this->event->getStartTime() > 0 ? $this->event->getStartTime() :   (12*3600) ;
+        $EventDate__c = $this->sfConnect->convertDate2SFdate( $start ,  $EventDateTime__c ) ;
+
         $endD =  $this->sfConnect->convertDate2SFdate( $end ,  $this->event->getEndTime() ) ;
         // $this->flashMessage['NOTICE'][] = 'StartDate Converted for SalesForce to ! : ' . $startD ;
 
@@ -389,8 +393,7 @@ class ProcessDatamap {
 
         $data = array(
             'IsActive' => true,
-            'Description' =>  "TYPO3 Event: " . $this->event->getUid() . " on PID: " . $this->event->getPid() . " \n\n"
-                . $this->event->getStartDate()->format("d.m.Y") . " - " . date( "H:i" ,  $this->event->getStartTime() )  . " \n"
+            'Description' =>  $this->event->getStartDate()->format("d.m.Y") . " - " . date( "H:i" ,  $this->event->getStartTime() )  . " \n"
 
                 . html_entity_decode( strip_tags( $this->event->getDescription() ) , ENT_COMPAT , 'UTF-8') ,
 
@@ -467,6 +470,9 @@ class ProcessDatamap {
         }
         $data['ExtendMemberAccess__c'] = true ;
 
+        //
+        $data['EventDate__c'] = $EventDate__c ;
+
         // a possible fallback during tests :
         //    $data['OwnerId']  = "0051w000000rsfAAAQ" ;  // that is the ID (on DEV !) of the user: allplan-dev-api@allplan.com
 
@@ -474,11 +480,19 @@ class ProcessDatamap {
             $this->flashMessage['ERROR'][] = 'Store in Salesforce: No Salesforce User ID set in Organizer Data ! : '  ;
             return ;
         }
-
         $this->flashMessage['NOTICE'][] = 'Data  : ' . var_export( $data , true ) ;
 
 
         if( $this->event->getSalesForceCampaignId() ) {
+            // Update
+
+            // j.v. 2024: Copy event in backend FIRST UPDATES in database.
+            // then hook ProcessCMDmap runs, that clears Campagne ID.
+            // so the  campaign was  updated with NEW TYPO3 ID, what is wrong.
+            // avoid this , by DO not update TYPO3 ID  in salesforce
+
+            unset( $data['Typo3Id__c']) ;
+
             // Update
             $url = $settings['SFREST']['instance_url'] . "/services/data/v48.0/sobjects/Campaign/" . $this->event->getSalesForceCampaignId() ;
             $sfResponse = $this->sfConnect->getCurl($url , $settings['SFREST']['access_token'] , "204" ,  $data , true  , false )  ;
