@@ -509,7 +509,7 @@ class ProcessDatamap {
             $data['Status']  =  'ongoing'   ;  // see https://doc.allplan.com/display/SFDOC/Event+Registration+Mapping+Tables
             // and https://doc.allplan.com/display/SFDOC/Event+Campaign+Definition maybe  replaced by "ongoing"
 
-            $data['Type'] =  'Outbound - Event'   ;
+            $data['Type'] =  'Event'   ;
             $data['ListPricePerCampaignMember__c'] =  $this->event->getPrice() ;
 
 

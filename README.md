@@ -3,6 +3,7 @@
 
 Manage Events, Seminars, Classes and registrations
 
+
 See the Documentation Folder in this extension and in the Future the Wiki pages
 
 Adding jv_events to your TYPO3 Project:
