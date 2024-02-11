@@ -480,7 +480,9 @@ class ProcessDatamap {
 
         }
         $data['ExtendMemberAccess__c'] = true ;
-
+        $data['EventDate__c'] = $EventDate__c ;
+        
+        
         // a possible fallback during tests :
         //    $data['OwnerId']  = "0051w000000rsfAAAQ" ;  // that is the ID (on DEV !) of the user: allplan-dev-api@allplan.com
 
@@ -509,7 +511,7 @@ class ProcessDatamap {
             $data['Status']  =  'ongoing'   ;  // see https://doc.allplan.com/display/SFDOC/Event+Registration+Mapping+Tables
             // and https://doc.allplan.com/display/SFDOC/Event+Campaign+Definition maybe  replaced by "ongoing"
 
-            $data['Type'] =  'Outbound - Event'   ;
+            $data['Type'] =  'Event'   ;
             $data['ListPricePerCampaignMember__c'] =  $this->event->getPrice() ;
 
 
