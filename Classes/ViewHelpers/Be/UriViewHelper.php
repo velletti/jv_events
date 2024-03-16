@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace JVE\JvEvents\ViewHelpers\Be;
+namespace JVelletti\JvEvents\ViewHelpers\Be;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Service\ExtensionService;

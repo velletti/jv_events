@@ -1,5 +1,5 @@
 <?php
-namespace JVE\JvEvents\Utility;
+namespace JVelletti\JvEvents\Utility;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;

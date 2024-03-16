@@ -1,5 +1,5 @@
 <?php
-namespace JVE\JvEvents\ViewHelpers;
+namespace JVelletti\JvEvents\ViewHelpers;
 
 use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperInterface;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
@@ -13,7 +13,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  * in given steps from start to end value
  *
  * <code title="Usage">
- * {namespace register=\JVE\JvEvents\\iewHelpers}
+ * {namespace register=\JVelletti\JvEvents\\iewHelpers}
  * <register:form.required fieldName="'username"/>
  * </code>
  */

@@ -1,22 +1,22 @@
 <?php
-namespace JVE\JvEvents\Controller;
+namespace JVelletti\JvEvents\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
-use JVE\JvEvents\Domain\Model\Organizer;
+use JVelletti\JvEvents\Domain\Model\Organizer;
 use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Annotation\Validate;
-use JVE\JvEvents\Validation\Validator\OrganizerValidator;
+use JVelletti\JvEvents\Validation\Validator\OrganizerValidator;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
-use JVE\JvEvents\Domain\Repository\FrontendUserRepository;
-use JVE\JvEvents\Domain\Model\FrontendUser;
+use JVelletti\JvEvents\Domain\Repository\FrontendUserRepository;
+use JVelletti\JvEvents\Domain\Model\FrontendUser;
 use TYPO3\CMS\Extbase\Domain\Repository\FrontendUserGroupRepository;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
-use JVE\JvEvents\Domain\Model\Tag;
-use JVE\JvEvents\Utility\SlugUtility;
-use JVE\JvEvents\Utility\TokenUtility;
+use JVelletti\JvEvents\Domain\Model\Tag;
+use JVelletti\JvEvents\Utility\SlugUtility;
+use JVelletti\JvEvents\Utility\TokenUtility;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;

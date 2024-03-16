@@ -1,10 +1,10 @@
 <?php
-namespace JVE\JvEvents\Domain\Repository;
+namespace JVelletti\JvEvents\Domain\Repository;
 
 use DateTime;
 use DateTimeZone;
 use Exception;
-use JVE\JvEvents\Utility\EmConfigurationUtility;
+use JVelletti\JvEvents\Utility\EmConfigurationUtility;
 use TYPO3\CMS\Core\Database\QueryGenerator;
 use TYPO3\CMS\CORE\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;

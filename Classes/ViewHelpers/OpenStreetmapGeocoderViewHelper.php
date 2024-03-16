@@ -1,8 +1,8 @@
 <?php
-namespace JVE\JvEvents\ViewHelpers;
+namespace JVelletti\JvEvents\ViewHelpers;
 
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use JVE\JvEvents\Domain\Model\Location;
+use JVelletti\JvEvents\Domain\Model\Location;
 /***************************************************************
  * Copyright notice
  *
@@ -30,7 +30,7 @@ use JVE\JvEvents\Domain\Model\Location;
  * in given steps from start to end value
  *
  * <code title="Usage">
- * {namespace register=\JVE\JvEvents\\iewHelpers}
+ * {namespace register=\JVelletti\JvEvents\\iewHelpers}
  * <register:form.required fieldName="'username"/>
  * </code>
  */

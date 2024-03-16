@@ -1,8 +1,8 @@
 <?php
-namespace JVE\JvEvents\Scheduler;
-use JVE\JvEvents\Domain\Model\Organizer;
-use JVE\JvEvents\Domain\Repository\EventRepository;
-use JVE\JvEvents\Domain\Repository\OrganizerRepository;
+namespace JVelletti\JvEvents\Scheduler;
+use JVelletti\JvEvents\Domain\Model\Organizer;
+use JVelletti\JvEvents\Domain\Repository\EventRepository;
+use JVelletti\JvEvents\Domain\Repository\OrganizerRepository;
 use JVE\JvRanking\Domain\Repository\AnswerRepository;
 use JVE\JvRanking\Domain\Repository\QuestionRepository;
 use JVE\JvRanking\Utility\RankingUtility;

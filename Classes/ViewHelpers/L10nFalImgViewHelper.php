@@ -1,5 +1,5 @@
 <?php
-namespace JVE\JvEvents\ViewHelpers;
+namespace JVelletti\JvEvents\ViewHelpers;
 
 /** This Viewhelper is atm necessary to fetch the localised fal images
  *
@@ -45,7 +45,7 @@ namespace JVE\JvEvents\ViewHelpers;
  *
  */
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use JVE\JvEvents\Domain\Model\Event;
+use JVelletti\JvEvents\Domain\Model\Event;
 use TYPO3Fluid\Fluid\Core\Exception;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Connection;

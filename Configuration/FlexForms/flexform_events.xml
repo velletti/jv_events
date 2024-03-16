@@ -68,7 +68,7 @@
                             <type>user</type>
                             <renderType>jvEventsCustomLayoutElement</renderType>
                             <size>30</size>
-                            <userFunc>JVE\JvEvents\UserFunc\Flexforms->selectLayout</userFunc>
+                            <userFunc>JVelletti\JvEvents\UserFunc\Flexforms->selectLayout</userFunc>
                             <parameters>
                                 <layoutType>list.</layoutType>
                             </parameters>
@@ -197,7 +197,7 @@
                                 tx_jvevents_domain_model_category.sorting
                             </foreign_table_where>
                             <allowNonIdValues>1</allowNonIdValues>
-                            <itemsProcFunc>JVE\JvEvents\UserFunc\Flexforms->TranslateMMvalues</itemsProcFunc>
+                            <itemsProcFunc>JVelletti\JvEvents\UserFunc\Flexforms->TranslateMMvalues</itemsProcFunc>
                         </config>
                     </settings.filter.categories>
                     <settings.filter.combinetags>
@@ -227,7 +227,7 @@
                                 ###REC_FIELD_sys_language_uid### as SIGNED)) ) ORDER BY
                                 tx_jvevents_domain_model_tag.name
                             </foreign_table_where>
-                            <itemsProcFunc>JVE\JvEvents\UserFunc\Flexforms->TranslateMMvalues</itemsProcFunc>
+                            <itemsProcFunc>JVelletti\JvEvents\UserFunc\Flexforms->TranslateMMvalues</itemsProcFunc>
                             <allowNonIdValues>1</allowNonIdValues>
                         </config>
                     </settings.filter.tags>
@@ -252,7 +252,7 @@
                                 ###REC_FIELD_sys_language_uid### as SIGNED)) ) ORDER BY
                                 tx_jvevents_domain_model_tag.name
                             </foreign_table_where>
-                            <itemsProcFunc>JVE\JvEvents\UserFunc\Flexforms->TranslateMMvalues</itemsProcFunc>
+                            <itemsProcFunc>JVelletti\JvEvents\UserFunc\Flexforms->TranslateMMvalues</itemsProcFunc>
                             <allowNonIdValues>1</allowNonIdValues>
                         </config>
                     </settings.filter.notAllowedtags>
@@ -516,7 +516,7 @@
                                 tx_jvevents_domain_model_tag.name
                             </foreign_table_where>
                             <allowNonIdValues>1</allowNonIdValues>
-                            <itemsProcFunc>JVE\JvEvents\UserFunc\Flexforms->TranslateMMvalues</itemsProcFunc>
+                            <itemsProcFunc>JVelletti\JvEvents\UserFunc\Flexforms->TranslateMMvalues</itemsProcFunc>
                         </config>
                     </settings.filter.tagbox1tags>
                     <settings.filter.tagbox2headline>
@@ -590,7 +590,7 @@
                                 ###REC_FIELD_sys_language_uid### as SIGNED)) ) ORDER BY
                                 tx_jvevents_domain_model_tag.name
                             </foreign_table_where>
-                            <itemsProcFunc>JVE\JvEvents\UserFunc\Flexforms->TranslateMMvalues</itemsProcFunc>
+                            <itemsProcFunc>JVelletti\JvEvents\UserFunc\Flexforms->TranslateMMvalues</itemsProcFunc>
                             <allowNonIdValues>1</allowNonIdValues>
                         </config>
                     </settings.filter.tagbox2tags>
@@ -666,7 +666,7 @@
                                 tx_jvevents_domain_model_tag.name
                             </foreign_table_where>
                             <allowNonIdValues>1</allowNonIdValues>
-                            <itemsProcFunc>JVE\JvEvents\UserFunc\Flexforms->TranslateMMvalues</itemsProcFunc>
+                            <itemsProcFunc>JVelletti\JvEvents\UserFunc\Flexforms->TranslateMMvalues</itemsProcFunc>
                         </config>
                     </settings.filter.tagbox3tags>
                     <infotextFilterrow2>
@@ -757,7 +757,7 @@
                                 tx_jvevents_domain_model_tag.name
                             </foreign_table_where>
                             <allowNonIdValues>1</allowNonIdValues>
-                            <itemsProcFunc>JVE\JvEvents\UserFunc\Flexforms->TranslateMMvalues</itemsProcFunc>
+                            <itemsProcFunc>JVelletti\JvEvents\UserFunc\Flexforms->TranslateMMvalues</itemsProcFunc>
                         </config>
                     </settings.filter.tagbox4tags>
                     <settings.filter.sorttags>
@@ -1085,7 +1085,7 @@
                             <type>user</type>
                             <renderType>jvEventsCustomLayoutElement</renderType>
                             <size>30</size>
-                            <userFunc>JVE\JvEvents\UserFunc\Flexforms->selectLayout</userFunc>
+                            <userFunc>JVelletti\JvEvents\UserFunc\Flexforms->selectLayout</userFunc>
                             <parameters>
                                 <layoutType>single.</layoutType>
                             </parameters>
@@ -1118,7 +1118,7 @@
                             <type>user</type>
                             <renderType>jvEventsCustomLayoutElement</renderType>
                             <size>30</size>
-                            <userFunc>JVE\JvEvents\UserFunc\Flexforms->selectLayout</userFunc>
+                            <userFunc>JVelletti\JvEvents\UserFunc\Flexforms->selectLayout</userFunc>
                             <parameters>
                                 <layoutType>register.</layoutType>
                             </parameters>

@@ -1,5 +1,5 @@
 <?php
-namespace JVE\JvEvents\ViewHelpers\Format;
+namespace JVelletti\JvEvents\ViewHelpers\Format;
 
 /*
  * This file is part of the TYPO3 CMS project.

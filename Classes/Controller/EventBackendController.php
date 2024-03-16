@@ -1,5 +1,5 @@
 <?php
-namespace JVE\JvEvents\Controller;
+namespace JVelletti\JvEvents\Controller;
 
 /***************************************************************
  *
@@ -30,14 +30,14 @@ use TYPO3\CMS\Core\Database\QueryGenerator;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use JVE\JvEvents\Domain\Model\Event;
-use JVE\JvEvents\Domain\Model\Location;
-use JVE\JvEvents\Domain\Model\Registrant;
-use JVE\JvEvents\Utility\TyposcriptUtility;
+use JVelletti\JvEvents\Domain\Model\Event;
+use JVelletti\JvEvents\Domain\Model\Location;
+use JVelletti\JvEvents\Domain\Model\Registrant;
+use JVelletti\JvEvents\Utility\TyposcriptUtility;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\FormProtection\FrontendFormProtection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use JVE\JvEvents\Utility\RegisterHubspotUtility;
+use JVelletti\JvEvents\Utility\RegisterHubspotUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -179,7 +179,7 @@ class EventBackendController extends BaseController
     
     /**
      * action show
-     *  @param \JVE\JvEvents\Domain\Model\Event
+     *  @param \JVelletti\JvEvents\Domain\Model\Event
      $event
      * @return void
      */
@@ -192,10 +192,10 @@ class EventBackendController extends BaseController
     
     /**
      * action new
-     * @param \JVE\JvEvents\Domain\Model\Registrant
+     * @param \JVelletti\JvEvents\Domain\Model\Registrant
      * @return void
      */
-    // public function confirmAction(\JVE\JvEvents\Domain\Model\Registrant $registrant )
+    // public function confirmAction(\JVelletti\JvEvents\Domain\Model\Registrant $registrant )
     public function confirmAction()
     {
         $eventID = 0 ;
@@ -218,7 +218,7 @@ class EventBackendController extends BaseController
 
                         $pid = $event[0]->getRegistrationFormPid() ;
                         $lng = $event[0]->getSysLanguageUid() ;
-                       // $typoScript = \JVE\JvEvents\Utility\TyposcriptUtility::loadTypoScriptFromScratch( $pid , "tx_jvevents_events" , array( "[globalVar = GP:L = " . intval($lng ) . "]" )) ;
+                       // $typoScript = \JVelletti\JvEvents\Utility\TyposcriptUtility::loadTypoScriptFromScratch( $pid , "tx_jvevents_events" , array( "[globalVar = GP:L = " . intval($lng ) . "]" )) ;
                         $typoScript = TyposcriptUtility::loadTypoScriptFromScratch( $pid , "tx_jvevents_events" , array( '[siteLanguage("languageId") = ' . intval($lng ) . ']' )) ;
                         $this->settings = array_merge( $this->settings ,  $typoScript['settings'] ) ;
                         $this->settings['pageId'] = $pid ;

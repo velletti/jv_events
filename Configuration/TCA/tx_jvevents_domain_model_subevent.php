@@ -2,7 +2,7 @@
 
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use JVE\JvEvents\UserFunc\InlineLabelService;
+use JVelletti\JvEvents\UserFunc\InlineLabelService;
 defined('TYPO3') or die();
 
 /** @var Typo3Version $version */
@@ -199,7 +199,7 @@ $returnArray = array(
 	),
 );
 
-// $configuration = \JVE\JvEvents\Utility\EmConfigurationUtility::getEmConf();
+// $configuration = \JVelletti\JvEvents\Utility\EmConfigurationUtility::getEmConf();
 // if ( $configuration['SubEvent'] )
 //     $returnArray['columns']['access'] = '' ;
 // }

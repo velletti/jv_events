@@ -13,7 +13,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace JVE\JvEvents\ViewHelpers\Security;
+namespace JVelletti\JvEvents\ViewHelpers\Security;
 
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;

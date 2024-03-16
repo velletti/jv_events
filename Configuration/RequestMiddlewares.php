@@ -1,6 +1,6 @@
 <?php
 
-use JVE\JvEvents\Middleware\Ajax;
+use JVelletti\JvEvents\Middleware\Ajax;
 return [
     'frontend' => [
         'jve/jvevents/ajax' => [

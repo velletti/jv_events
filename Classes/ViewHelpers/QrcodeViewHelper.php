@@ -1,5 +1,5 @@
 <?php
-namespace JVE\JvEvents\ViewHelpers;
+namespace JVelletti\JvEvents\ViewHelpers;
 /***************************************************************
  * Copyright notice
  *

@@ -1,5 +1,5 @@
 <?php
-namespace JVE\JvEvents\Scheduler;
+namespace JVelletti\JvEvents\Scheduler;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -140,7 +140,7 @@ class CleanEventsTaskAdditionalFieldProvider extends AbstractAdditionalFieldProv
     {
         if (!$task instanceof AbstractTask ) {
             throw new \InvalidArgumentException(
-                'Expected a task of type \JVE\JvEvents\Scheduler\CleanEventsTask, but got ' . get_class($task),
+                'Expected a task of type \JVelletti\JvEvents\Scheduler\CleanEventsTask, but got ' . get_class($task),
                 1329219449
             );
         }

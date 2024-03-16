@@ -1,11 +1,11 @@
 <?php
-namespace JVE\JvEvents\Validation\Validator;
+namespace JVelletti\JvEvents\Validation\Validator;
 
 
 
 
-use JVE\JvEvents\Domain\Repository\EventRepository;
-use JVE\JvEvents\Domain\Repository\RegistrantRepository;
+use JVelletti\JvEvents\Domain\Repository\EventRepository;
+use JVelletti\JvEvents\Domain\Repository\RegistrantRepository;
 use TYPO3\CMS\Core\Context\AspectInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -61,7 +61,7 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
     }
 
 	public function __construct() {
-		$this->emConf =\JVE\JvEvents\Utility\EmConfigurationUtility::getEmConf();
+		$this->emConf =\JVelletti\JvEvents\Utility\EmConfigurationUtility::getEmConf();
 
 		$allSettings = $this->getSettings() ;
 		$this->settings = $allSettings['plugin.']['tx_jvevents_events.']['settings.'];

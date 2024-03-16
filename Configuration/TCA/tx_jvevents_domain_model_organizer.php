@@ -4,7 +4,7 @@ use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Resource\File;
-use JVE\JvEvents\Utility\EmConfigurationUtility;
+use JVelletti\JvEvents\Utility\EmConfigurationUtility;
 defined('TYPO3') or die();
 
 /** @var Typo3Version $version */
@@ -581,7 +581,7 @@ $returnArray = array(
                 'renderType' => 'selectMultipleSideBySide',
                 'foreign_table' => 'tx_jvevents_domain_model_tag',
                 //'foreign_table_where' => ' AND tx_jvevents_domain_model_tag.sys_language_uid in (-1, ###REC_FIELD_sys_language_uid###)',
-                'itemsProcFunc' => 'JVE\\JvEvents\\UserFunc\\Flexforms->TranslateMMvalues' ,
+                'itemsProcFunc' => 'JVelletti\\JvEvents\\UserFunc\\Flexforms->TranslateMMvalues' ,
                 'foreign_table_where' => ' AND tx_jvevents_domain_model_tag.type = 2 AND (tx_jvevents_domain_model_tag.sys_language_uid = 0 OR tx_jvevents_domain_model_tag.l10n_parent = 0) ORDER BY tx_jvevents_domain_model_tag.name',
 
                 'MM' => 'tx_jvevents_organizer_tag_mm',

@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace JVE\JvEvents\FormEngine\Element;
+namespace JVelletti\JvEvents\FormEngine\Element;
 
 use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
 use TYPO3\CMS\Backend\Form\NodeFactory;

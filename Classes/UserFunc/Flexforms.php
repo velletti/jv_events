@@ -6,7 +6,7 @@
  * Time: 13:39
  */
 
-namespace JVE\JvEvents\UserFunc;
+namespace JVelletti\JvEvents\UserFunc;
 
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;

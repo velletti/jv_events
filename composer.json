@@ -16,7 +16,7 @@
     },
     "autoload": {
         "psr-4": {
-            "JVE\\JvEvents\\": "Classes"
+            "JVelletti\\JvEvents\\": "Classes"
         }
     },
     "autoload-dev": {

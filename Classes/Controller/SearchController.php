@@ -1,5 +1,5 @@
 <?php
-namespace JVE\JvEvents\Controller;
+namespace JVelletti\JvEvents\Controller;
 
 /***************************************************************
  *
@@ -25,7 +25,7 @@ namespace JVE\JvEvents\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use JVE\JvEvents\Domain\Repository\EventRepository;
+use JVelletti\JvEvents\Domain\Repository\EventRepository;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
@@ -76,7 +76,7 @@ class SearchController extends BaseController
     public function searchAction(): ResponseInterface
     {
 
-        // @param \JVE\JvEvents\Domain\Model\Filter $filter
+        // @param \JVelletti\JvEvents\Domain\Model\Filter $filter
 
         $this->debugArray[] = "After Init :" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " Line: " . __LINE__ ;
 

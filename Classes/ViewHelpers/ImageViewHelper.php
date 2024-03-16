@@ -1,5 +1,5 @@
 <?php
-namespace JVE\JvEvents\ViewHelpers;
+namespace JVelletti\JvEvents\ViewHelpers;
 
 /*                                                                        *
  * This script is part of the TYPO3 project - inspiring people to share!  *

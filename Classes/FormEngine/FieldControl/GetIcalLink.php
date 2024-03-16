@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace JVE\JvEvents\FormEngine\FieldControl;
+namespace JVelletti\JvEvents\FormEngine\FieldControl;
 
 /**
  * This file is part of the "jv_events" Extension for TYPO3 CMS.
@@ -30,7 +30,7 @@ class GetIcalLink extends AbstractNode
         $resultArray = $this->initializeResultArray();
         $title = $this->getLanguageService()->sL('LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:jv_events_model_location.geocoder.title');
 
-        $configuration = \JVE\JvEvents\Utility\EmConfigurationUtility::getEmConf();
+        $configuration = \JVelletti\JvEvents\Utility\EmConfigurationUtility::getEmConf();
         $singlePid = ( array_key_exists( 'DetailPid' , $configuration) && $configuration['DetailPid'] > 0 ) ? intval($configuration['DetailPid']) : 111 ;
 
         try {

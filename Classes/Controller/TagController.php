@@ -1,7 +1,7 @@
 <?php
-namespace JVE\JvEvents\Controller;
+namespace JVelletti\JvEvents\Controller;
 
-use JVE\JvEvents\Domain\Repository\TagRepository;
+use JVelletti\JvEvents\Domain\Repository\TagRepository;
 use Psr\Http\Message\ResponseInterface;
 /***************************************************************
  *

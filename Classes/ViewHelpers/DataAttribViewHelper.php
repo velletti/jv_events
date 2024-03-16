@@ -1,9 +1,9 @@
 <?php
-namespace JVE\JvEvents\ViewHelpers;
+namespace JVelletti\JvEvents\ViewHelpers;
 
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use JVE\JvEvents\Domain\Model\Event;
-use JVE\JvEvents\Domain\Model\Category;
+use JVelletti\JvEvents\Domain\Model\Event;
+use JVelletti\JvEvents\Domain\Model\Category;
 /***************************************************************
  * Copyright notice
  *
@@ -31,7 +31,7 @@ use JVE\JvEvents\Domain\Model\Category;
  * in given steps from start to end value
  *
  * <code title="Usage">
- * {namespace register=\JVE\JvEvents\\iewHelpers}
+ * {namespace register=\JVelletti\JvEvents\\iewHelpers}
  * <register:form.required fieldName="'username"/>
  * </code>
  */

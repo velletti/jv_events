@@ -1,4 +1,4 @@
-{namespace JVE=JVE\JvEvents\ViewHelpers}
+{namespace JVE=JVelletti\JvEvents\ViewHelpers}
 <div class="jv-events-singleEvent" data-eventUid="{event.uid}" data-monthUid="{event.startDate -> f:format.date(format:"m.Y")}" data-cityuid="{event.location.city}" data-catuids="{f:if(condition: i.isFirst, then: '{cat.uid},', else: '{cat.uid},') -> f:for(each:'{event.EventCategory}', as: 'cat', iteration: 'i')}" data-taguids="{f:if(condition: i.isFirst, then: '{tag.uid},', else: '{tag.uid},') -> f:for(each:'{event.Tags}', as: 'tag', iteration: 'i')}">
 
 	<div class="panel pnel-sm panel-info p-2 ">

@@ -1,7 +1,7 @@
 <?php
-namespace JVE\JvEvents\Command;
+namespace JVelletti\JvEvents\Command;
 
-use JVE\JvEvents\Utility\SlugUtility;
+use JVelletti\JvEvents\Utility\SlugUtility;
 use PDO;
 use Symfony\Component\Console\Input\InputOption;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
@@ -19,7 +19,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 /**
  * Class UpdateSlugCommandController
  * @author Jörg Velletti <typo3@velletti.de>
- * @package JVE\JvEvents\Command
+ * @package JVelletti\JvEvents\Command
  */
 class UpdateSlugCommand extends Command {
 

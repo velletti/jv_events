@@ -1,5 +1,5 @@
 <?php
-namespace JVE\JvEvents\Controller;
+namespace JVelletti\JvEvents\Controller;
 
 /***************************************************************
  *
@@ -28,37 +28,37 @@ namespace JVE\JvEvents\Controller;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use JVE\JvEvents\Domain\Repository\TagRepository;
-use JVE\JvEvents\Domain\Repository\CategoryRepository;
-use JVE\JvEvents\Domain\Repository\RegistrantRepository;
-use JVE\JvEvents\Domain\Repository\LocationRepository;
-use JVE\JvEvents\Domain\Repository\OrganizerRepository;
-use JVE\JvEvents\Domain\Repository\EventRepository;
-use JVE\JvEvents\Domain\Repository\SubeventRepository;
-use JVE\JvEvents\Domain\Repository\StaticCountryRepository;
+use JVelletti\JvEvents\Domain\Repository\TagRepository;
+use JVelletti\JvEvents\Domain\Repository\CategoryRepository;
+use JVelletti\JvEvents\Domain\Repository\RegistrantRepository;
+use JVelletti\JvEvents\Domain\Repository\LocationRepository;
+use JVelletti\JvEvents\Domain\Repository\OrganizerRepository;
+use JVelletti\JvEvents\Domain\Repository\EventRepository;
+use JVelletti\JvEvents\Domain\Repository\SubeventRepository;
+use JVelletti\JvEvents\Domain\Repository\StaticCountryRepository;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
 use TYPO3\CMS\Extbase\Mvc\Dispatcher;
-use JVE\JvEvents\Utility\EmConfigurationUtility;
-use JVE\JvEvents\Domain\Model\Subevent;
+use JVelletti\JvEvents\Utility\EmConfigurationUtility;
+use JVelletti\JvEvents\Domain\Model\Subevent;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
-use JVE\JvEvents\Domain\Model\Organizer;
+use JVelletti\JvEvents\Domain\Model\Organizer;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
-use JVE\JvEvents\Domain\Repository\FrontendUserRepository;
-use JVE\JvEvents\Domain\Model\FrontendUser;
+use JVelletti\JvEvents\Domain\Repository\FrontendUserRepository;
+use JVelletti\JvEvents\Domain\Model\FrontendUser;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Extbase\Domain\Repository\FrontendUserGroupRepository;
 use TYPO3\CMS\Core\FormProtection\FrontendFormProtection;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use EBT\ExtensionBuilder\Exception;
-use JVE\JvEvents\Domain\Model\Event;
-use JVE\JvEvents\Domain\Model\Location;
-use JVE\JvEvents\Utility\AjaxUtility;
-use JVE\JvEvents\Utility\TyposcriptUtility;
+use JVelletti\JvEvents\Domain\Model\Event;
+use JVelletti\JvEvents\Domain\Model\Location;
+use JVelletti\JvEvents\Utility\AjaxUtility;
+use JVelletti\JvEvents\Utility\TyposcriptUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -66,7 +66,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use JVE\JvEvents\Utility\ShowAsJsonArrayUtility;
+use JVelletti\JvEvents\Utility\ShowAsJsonArrayUtility;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 
@@ -155,7 +155,7 @@ class AjaxController extends BaseController
          */
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         /** @var Request $request */
-        $request = GeneralUtility::makeInstance(Request::class, \JVE\JvEvents\Controller\AjaxController::class );
+        $request = GeneralUtility::makeInstance(Request::class, \JVelletti\JvEvents\Controller\AjaxController::class );
 
         /** @var Typo3Version $version */
         $version = GeneralUtility::makeInstance(Typo3Version::class);

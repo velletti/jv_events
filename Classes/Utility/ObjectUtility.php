@@ -1,5 +1,5 @@
 <?php
-namespace JVE\JvEvents\Utility;
+namespace JVelletti\JvEvents\Utility;
 
 /**
  * TYPO3

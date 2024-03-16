@@ -1,5 +1,5 @@
 <?php
-namespace JVE\JvEvents\Validation\Validator;
+namespace JVelletti\JvEvents\Validation\Validator;
 
 class OrganizerValidator extends BaseValidator {
 
@@ -30,7 +30,7 @@ class OrganizerValidator extends BaseValidator {
 	/**
 	 * Check if $value is valid
 	 *
-	 * @param \JVE\JvEvents\Domain\Model\Organizer $organizer
+	 * @param \JVelletti\JvEvents\Domain\Model\Organizer $organizer
 	 * @return void
 	 */
 	public function isValid(mixed $organizer):void

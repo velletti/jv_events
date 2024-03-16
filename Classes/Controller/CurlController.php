@@ -1,6 +1,6 @@
 <?php
 
-namespace JVE\JvEvents\Controller;
+namespace JVelletti\JvEvents\Controller;
 
 /***************************************************************
  *
@@ -31,11 +31,11 @@ use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\FormProtection\FrontendFormProtection;
 use JVE\JvBanners\Utility\AssetUtility;
-use JVE\JvEvents\Domain\Model\Event;
-use JVE\JvEvents\Domain\Model\Location;
-use JVE\JvEvents\Domain\Model\Organizer;
-use JVE\JvEvents\Domain\Repository\BannerRepository;
-use JVE\JvEvents\Utility\SlugUtility;
+use JVelletti\JvEvents\Domain\Model\Event;
+use JVelletti\JvEvents\Domain\Model\Location;
+use JVelletti\JvEvents\Domain\Model\Organizer;
+use JVelletti\JvEvents\Domain\Repository\BannerRepository;
+use JVelletti\JvEvents\Utility\SlugUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;

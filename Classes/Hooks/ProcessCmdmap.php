@@ -1,5 +1,5 @@
 <?php
-namespace JVE\JvEvents\Hooks ;
+namespace JVelletti\JvEvents\Hooks ;
 /* * *************************************************************
  *  Copyright notice
  *
@@ -23,9 +23,9 @@ namespace JVE\JvEvents\Hooks ;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use JVE\JvEvents\Domain\Model\Event;
-use JVE\JvEvents\Domain\Repository\EventRepository;
-use JVE\JvEvents\Utility\SlugUtility;
+use JVelletti\JvEvents\Domain\Model\Event;
+use JVelletti\JvEvents\Domain\Repository\EventRepository;
+use JVelletti\JvEvents\Utility\SlugUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\Connection;

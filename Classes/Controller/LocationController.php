@@ -1,16 +1,16 @@
 <?php
-namespace JVE\JvEvents\Controller;
+namespace JVelletti\JvEvents\Controller;
 
 use Psr\Http\Message\ResponseInterface;
-use JVE\JvEvents\Domain\Model\Location;
+use JVelletti\JvEvents\Domain\Model\Location;
 use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Annotation\Validate;
-use JVE\JvEvents\Validation\Validator\LocationValidator;
-use JVE\JvEvents\Domain\Model\Organizer;
-use JVE\JvEvents\Domain\Model\Event;
-use JVE\JvEvents\Domain\Model\Category;
-use JVE\JvEvents\Utility\SlugUtility;
+use JVelletti\JvEvents\Validation\Validator\LocationValidator;
+use JVelletti\JvEvents\Domain\Model\Organizer;
+use JVelletti\JvEvents\Domain\Model\Event;
+use JVelletti\JvEvents\Domain\Model\Category;
+use JVelletti\JvEvents\Utility\SlugUtility;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 

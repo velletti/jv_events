@@ -1,7 +1,7 @@
 <?php
-namespace JVE\JvEvents\ViewHelpers;
+namespace JVelletti\JvEvents\ViewHelpers;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use JVE\JvEvents\Domain\Repository\StaticCountryRepository;
+use JVelletti\JvEvents\Domain\Repository\StaticCountryRepository;
 
 /***************************************************************
  * Copyright notice

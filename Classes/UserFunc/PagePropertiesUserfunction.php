@@ -1,5 +1,5 @@
 <?php
-namespace JVE\JvEvents\UserFunc;
+namespace JVelletti\JvEvents\UserFunc;
 
 
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;

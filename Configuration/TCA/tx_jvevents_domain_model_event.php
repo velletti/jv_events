@@ -4,7 +4,7 @@ use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Resource\File;
-use JVE\JvEvents\Utility\EmConfigurationUtility;
+use JVelletti\JvEvents\Utility\EmConfigurationUtility;
 defined('TYPO3') or die();
 
 
@@ -1254,7 +1254,7 @@ $returnArray = array(
 				 'foreign_table_where' => " AND tx_jvevents_domain_model_category.type = 0 AND ( tx_jvevents_domain_model_category.l10n_parent = 0 AND tx_jvevents_domain_model_category.sys_language_uid in(-1, 0 , cast(###REC_FIELD_sys_language_uid### as SIGNED ) )) ORDER BY tx_jvevents_domain_model_category.title",
 				// 'foreign_table_where' => " AND ( tx_jvevents_domain_model_category.l10n_parent = 0 AND find_in_set( tx_jvevents_domain_model_category.sys_language_uid , '-1,0,###REC_FIELD_sys_language_uid###')) ORDER BY tx_jvevents_domain_model_category.title",
                 // nicht übersetzte Datensätze in default spräche werden in der function TranslateMMvalues gelöscht..
-                'itemsProcFunc' => 'JVE\\JvEvents\\UserFunc\\Flexforms->TranslateMMvalues' ,
+                'itemsProcFunc' => 'JVelletti\\JvEvents\\UserFunc\\Flexforms->TranslateMMvalues' ,
 
 				'MM' => 'tx_jvevents_event_category_mm',
 				'size' => 10,
@@ -1293,7 +1293,7 @@ $returnArray = array(
 				'type' => 'select',
 				'renderType' => 'selectMultipleSideBySide',
 				'foreign_table' => 'tx_jvevents_domain_model_tag',
-                'itemsProcFunc' => 'JVE\\JvEvents\\UserFunc\\Flexforms->TranslateMMvalues' ,
+                'itemsProcFunc' => 'JVelletti\\JvEvents\\UserFunc\\Flexforms->TranslateMMvalues' ,
                 //'foreign_table_where' => ' hole alle default, non translated oder alle für alle Sprachen. die nicht lokalsiereten englischen werden in der Translate Function gelöscht!',
                 'foreign_table_where' => " AND tx_jvevents_domain_model_tag.type = 0 AND (tx_jvevents_domain_model_tag.l10n_parent = 0 AND tx_jvevents_domain_model_tag.sys_language_uid in(-1, 0, CAST( ###REC_FIELD_sys_language_uid### as SIGNED)) ) ORDER BY tx_jvevents_domain_model_tag.name",
 

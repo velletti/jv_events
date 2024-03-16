@@ -1,5 +1,5 @@
 <?php
-namespace JVE\JvEvents\Utility;
+namespace JVelletti\JvEvents\Utility;
 /***************************************************************
  * Copyright notice
  *
@@ -29,14 +29,14 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use SJBR\StaticInfoTables\Domain\Repository\CountryRepository;
-use JVE\Jvevents\Domain\Model\Event;
-use JVE\Jvevents\Domain\Model\Registrant;
+use JVelletti\JvEvents\Domain\Model\Event;
+use JVelletti\JvEvents\Domain\Model\Registrant;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class RegisterHubspotEvent
  *
- * @package JVE\Jvevents\EventListener
+ * @package JVelletti\JvEvents\EventListener
  */
 class RegisterHubspotUtility {
 

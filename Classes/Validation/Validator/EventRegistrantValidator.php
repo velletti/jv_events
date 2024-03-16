@@ -1,11 +1,11 @@
 <?php
-namespace JVE\JvEvents\Validation\Validator;
+namespace JVelletti\JvEvents\Validation\Validator;
 
 /**
  * Validator for $registrant
  *
  */
-class EventRegistrantValidator extends \JVE\JvEvents\Validation\Validator\BaseValidator {
+class EventRegistrantValidator extends \JVelletti\JvEvents\Validation\Validator\BaseValidator {
 
 	/** @var array   */
 	public $emConf = NULL ;
@@ -13,7 +13,7 @@ class EventRegistrantValidator extends \JVE\JvEvents\Validation\Validator\BaseVa
 	/**
 	 * Check if $value is valid
 	 *
-	 * @param  \JVE\JvEvents\Domain\Model\Event $event
+	 * @param  \JVelletti\JvEvents\Domain\Model\Event $event
 	 * @return void
 	 */
 	public function isValid(mixed $event):void

@@ -1,5 +1,5 @@
 <?php
-namespace JVE\JvEvents\Domain\Repository;
+namespace JVelletti\JvEvents\Domain\Repository;
 
 use Doctrine\DBAL\Driver\Exception;
 use PDO;

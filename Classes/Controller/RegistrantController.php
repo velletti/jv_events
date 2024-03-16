@@ -1,17 +1,17 @@
 <?php
-namespace JVE\JvEvents\Controller;
+namespace JVelletti\JvEvents\Controller;
 
 use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Annotation\Validate;
-use JVE\JvEvents\Validation\Validator\RegistrantValidator;
+use JVelletti\JvEvents\Validation\Validator\RegistrantValidator;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException;
-use JVE\JvEvents\Domain\Model\Event;
-use JVE\JvEvents\Domain\Model\Registrant;
-use JVE\JvEvents\Domain\Model\Subevent;
-use JVE\JvEvents\Utility\RegisterHubspotUtility;
+use JVelletti\JvEvents\Domain\Model\Event;
+use JVelletti\JvEvents\Domain\Model\Registrant;
+use JVelletti\JvEvents\Domain\Model\Subevent;
+use JVelletti\JvEvents\Utility\RegisterHubspotUtility;
 use Psr\Http\Message\ResponseInterface;
 use SJBR\SrFreecap\Utility\EncryptionUtility;
 use TYPO3\CMS\Core\Exception;

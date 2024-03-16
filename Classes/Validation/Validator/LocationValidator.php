@@ -1,5 +1,5 @@
 <?php
-namespace JVE\JvEvents\Validation\Validator;
+namespace JVelletti\JvEvents\Validation\Validator;
 
 class LocationValidator extends BaseValidator {
 
@@ -44,7 +44,7 @@ class LocationValidator extends BaseValidator {
 	/**
 	 * Check if $value is valid
 	 *
-	 * @param \JVE\JvEvents\Domain\Model\Location $location
+	 * @param \JVelletti\JvEvents\Domain\Model\Location $location
 	 * @return void
 	 */
 	public function isValid(mixed $location): void

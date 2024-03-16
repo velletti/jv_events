@@ -1,8 +1,8 @@
 <?php
-namespace JVE\JvEvents\Wizard;
+namespace JVelletti\JvEvents\Wizard;
 
 use TYPO3\CMS\Backend\Controller\Wizard\AbstractWizardController;
-use JVE\JvEvents\Utility\GeocoderUtility;
+use JVelletti\JvEvents\Utility\GeocoderUtility;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use Psr\Http\Message\ServerRequestInterface;
@@ -14,7 +14,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Class Geocoder
  * See examples in: typo3/sysext/backend/Classes/Controller/Wizard/
  * @author Peter Benke <pbenke@allplan.com>
- * @package JVE\JvEvents\Wizard
+ * @package JVelletti\JvEvents\Wizard
  */
 
 class Geocoder extends AbstractWizardController {

@@ -1,5 +1,5 @@
 <?php
-namespace JVE\JvEvents\Controller;
+namespace JVelletti\JvEvents\Controller;
 
 /***************************************************************
  *
@@ -27,12 +27,12 @@ namespace JVE\JvEvents\Controller;
  ***************************************************************/
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Core\Context\Context;
-use JVE\JvEvents\Utility\EmConfigurationUtility;
+use JVelletti\JvEvents\Utility\EmConfigurationUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
-use JVE\JvEvents\Domain\Model\Location;
-use JVE\JvEvents\Domain\Model\Organizer;
-use JVE\JvEvents\Domain\Model\Category;
+use JVelletti\JvEvents\Domain\Model\Location;
+use JVelletti\JvEvents\Domain\Model\Organizer;
+use JVelletti\JvEvents\Domain\Model\Category;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Core\Utility\MailUtility;
@@ -42,17 +42,17 @@ use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
 use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use JVE\JvEvents\Domain\Model\Event;
-use JVE\JvEvents\Domain\Model\Registrant;
-use JVE\JvEvents\Domain\Model\Tag;
-use JVE\JvEvents\Domain\Repository\CategoryRepository;
-use JVE\JvEvents\Domain\Repository\EventRepository;
-use JVE\JvEvents\Domain\Repository\LocationRepository;
-use JVE\JvEvents\Domain\Repository\OrganizerRepository;
-use JVE\JvEvents\Domain\Repository\RegistrantRepository;
-use JVE\JvEvents\Domain\Repository\StaticCountryRepository;
-use JVE\JvEvents\Domain\Repository\SubeventRepository;
-use JVE\JvEvents\Domain\Repository\TagRepository;
+use JVelletti\JvEvents\Domain\Model\Event;
+use JVelletti\JvEvents\Domain\Model\Registrant;
+use JVelletti\JvEvents\Domain\Model\Tag;
+use JVelletti\JvEvents\Domain\Repository\CategoryRepository;
+use JVelletti\JvEvents\Domain\Repository\EventRepository;
+use JVelletti\JvEvents\Domain\Repository\LocationRepository;
+use JVelletti\JvEvents\Domain\Repository\OrganizerRepository;
+use JVelletti\JvEvents\Domain\Repository\RegistrantRepository;
+use JVelletti\JvEvents\Domain\Repository\StaticCountryRepository;
+use JVelletti\JvEvents\Domain\Repository\SubeventRepository;
+use JVelletti\JvEvents\Domain\Repository\TagRepository;
 use TYPO3\CMS\Core\Context\AspectInterface;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Information\Typo3Version;
@@ -377,7 +377,7 @@ class BaseController extends ActionController
 
         /** @var Event $event */
         $eventsArray = $events->toArray() ;
-        // while( $event instanceof  \JVE\JvEvents\Domain\Model\Event ) {
+        // while( $event instanceof  \JVelletti\JvEvents\Domain\Model\Event ) {
 
         foreach ($eventsArray as $key => $event ) {
             // first fill the Options for the Filters to have only options with Events
@@ -510,7 +510,7 @@ class BaseController extends ActionController
         $this->debugArray[] = "After converting to Array :" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " | Line: " . __LINE__ ;
 
         $x = 0 ;
-      //  while( $event = $events->getOffest($x) instanceof  \JVE\JvEvents\Domain\Model\Event ) {
+      //  while( $event = $events->getOffest($x) instanceof  \JVelletti\JvEvents\Domain\Model\Event ) {
          foreach ($eventsArray as $key => $event ) {
              $x++ ;
             // first fill the Options for the Filters to have only options with Events

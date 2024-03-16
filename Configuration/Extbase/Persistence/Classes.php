@@ -2,10 +2,10 @@
 declare(strict_types=1);
 
 return [
-    \JVE\JvEvents\Domain\Model\StaticCountry::class => [
+    \JVelletti\JvEvents\Domain\Model\StaticCountry::class => [
         'tableName' => 'static_countries',
     ],
-    \JVE\JvEvents\Domain\Model\FrontendUser::class => [
+    \JVelletti\JvEvents\Domain\Model\FrontendUser::class => [
         'tableName' => 'fe_users',
         'properties' => [
             'deleted' => [

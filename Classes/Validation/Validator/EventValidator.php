@@ -1,5 +1,5 @@
 <?php
-namespace JVE\JvEvents\Validation\Validator;
+namespace JVelletti\JvEvents\Validation\Validator;
 
 class EventValidator extends BaseValidator {
 
@@ -32,7 +32,7 @@ class EventValidator extends BaseValidator {
 	/**
 	 * Check if $value is valid
 	 *
-	 * @param \JVE\JvEvents\Domain\Model\Event $event
+	 * @param \JVelletti\JvEvents\Domain\Model\Event $event
      * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("event")
 	 * @return void
 	 */

@@ -189,7 +189,7 @@ return array(
 
                 // 'foreign_table_where' => ' AND tx_jvevents_domain_model_category.type = 0 AND tx_jvevents_domain_model_category.sys_language_uid in (-1, 0)',
                 'foreign_table_where' => ' AND (tx_jvevents_domain_model_category.type = ###REC_FIELD_type### )  AND (tx_jvevents_domain_model_category.sys_language_uid = 0 OR tx_jvevents_domain_model_category.l10n_parent = 0) ORDER BY tx_jvevents_domain_model_category.title',
-                'itemsProcFunc' => 'JVE\\JvEvents\\UserFunc\\Flexforms->TranslateMMvalues' ,
+                'itemsProcFunc' => 'JVelletti\\JvEvents\\UserFunc\\Flexforms->TranslateMMvalues' ,
 
                 'MM' => 'tx_jvevents_tag_category_mm',
                 'size' => 10,

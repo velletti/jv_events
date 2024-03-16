@@ -1,6 +1,6 @@
 <?php
 
-namespace JVE\JvEvents\ViewHelpers\Be;
+namespace JVelletti\JvEvents\ViewHelpers\Be;
 
 
 use Closure;

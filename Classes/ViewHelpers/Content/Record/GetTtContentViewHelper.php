@@ -1,8 +1,8 @@
 <?php
-namespace JVE\JvEvents\ViewHelpers\Content\Record;
+namespace JVelletti\JvEvents\ViewHelpers\Content\Record;
 
-use JVE\JvEvents\Utility\ArrayUtility;
-use JVE\JvEvents\Utility\ObjectUtility;
+use JVelletti\JvEvents\Utility\ArrayUtility;
+use JVelletti\JvEvents\Utility\ObjectUtility;
 use TYPO3\CMS\Extbase\Object\Exception as TYPO3ExtbaseObjectException;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 

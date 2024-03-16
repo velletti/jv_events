@@ -1,5 +1,5 @@
 <?php
-namespace JVE\JvEvents\Domain\Repository;
+namespace JVelletti\JvEvents\Domain\Repository;
 
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;

@@ -1,10 +1,10 @@
 <?php
 
 
-namespace JVE\JvEvents\Utility;
+namespace JVelletti\JvEvents\Utility;
 
 
-use JVE\JvEvents\Controller\AjaxController;
+use JVelletti\JvEvents\Controller\AjaxController;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -13,7 +13,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Class AjaxUtility
- * @package JVE\JvEvents\Utility
+ * @package JVelletti\JvEvents\Utility
  */
 class AjaxUtility {
 

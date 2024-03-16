@@ -1,7 +1,7 @@
 <?php
 
 
-namespace JVE\JvEvents\Utility;
+namespace JVelletti\JvEvents\Utility;
 
 
 use TYPO3\CMS\Core\Database\ConnectionPool;

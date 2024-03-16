@@ -30,7 +30,7 @@ if ($GLOBALS['TYPO3_REQUEST'] && TYPO3\CMS\Core\Http\ApplicationType::fromReques
         'web',	 // Make module a submodule of 'web'
         'eventmngt',	// Submodule key
         'after:List',						// Position
-        [  \JVE\JvEvents\Controller\EventBackendController::class  => 'list, show, new, create, edit, update, delete, register, confirm, search, resendCitrix,resendHubspot'] ,
+        [  \JVelletti\JvEvents\Controller\EventBackendController::class  => 'list, show, new, create, edit, update, delete, register, confirm, search, resendCitrix,resendHubspot'] ,
         array(
             'access' => 'user,group',
             'icon'   => 'EXT:jv_events/ext_icon_importer.gif',
@@ -45,7 +45,7 @@ if ($GLOBALS['TYPO3_REQUEST'] && TYPO3\CMS\Core\Http\ApplicationType::fromReques
             'after:List',
             '',
             [
-               'routeTarget' => JVE\JvEvents\Controller\EventBackendController::class . '::listAction',
+               'routeTarget' => JVelletti\JvEvents\Controller\EventBackendController::class . '::listAction',
                 'access' => 'user,group',
                 'name' => 'web_eventmngt',
                 'workspaces' => 'online',

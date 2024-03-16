@@ -1,7 +1,7 @@
 <?php
-namespace JVE\JvEvents\Domain\Repository;
+namespace JVelletti\JvEvents\Domain\Repository;
 
-use JVE\JvEvents\Domain\Model\FrontendUser;
+use JVelletti\JvEvents\Domain\Model\FrontendUser;
 /***************************************************************
 *  Copyright notice
 *

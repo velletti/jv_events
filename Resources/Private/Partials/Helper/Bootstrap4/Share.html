@@ -1,5 +1,5 @@
 
-{namespace jve=JVE\JvEvents\ViewHelpers}
+{namespace jve=JVelletti\JvEvents\ViewHelpers}
 <f:if condition="{object} == 'event'">
     <f:variable name="alertMsg">{f:translate(key: 'copied_to_clipboard', default: 'copied to clipboard. use STRG-V or similar to insert')}</f:variable>
     <f:variable name="date">{event.startDate -> f:format.date(format:"d.m.Y")} - {event.startTime -> jve:format.date( format:"H:i")}</f:variable>

@@ -1,5 +1,5 @@
 <?php
-namespace JVE\JvEvents\UserFunc;
+namespace JVelletti\JvEvents\UserFunc;
 
 /*
  * This file is part of the TYPO3 CMS project.

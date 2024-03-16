@@ -1,5 +1,5 @@
 <?php
-namespace JVE\JvEvents\ViewHelpers;
+namespace JVelletti\JvEvents\ViewHelpers;
 
 
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;

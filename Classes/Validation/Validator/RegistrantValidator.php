@@ -1,5 +1,5 @@
 <?php
-namespace JVE\JvEvents\Validation\Validator;
+namespace JVelletti\JvEvents\Validation\Validator;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -7,7 +7,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Validator for $registrant
  *
  */
-class RegistrantValidator extends \JVE\JvEvents\Validation\Validator\BaseValidator {
+class RegistrantValidator extends \JVelletti\JvEvents\Validation\Validator\BaseValidator {
 
 	/** @var array   */
 	public $emConf = NULL ;
@@ -15,7 +15,7 @@ class RegistrantValidator extends \JVE\JvEvents\Validation\Validator\BaseValidat
 	/**
 	 * Check if $value is valid
 	 *
-	 * @param  \JVE\JvEvents\Domain\Model\Registrant $registrant
+	 * @param  \JVelletti\JvEvents\Domain\Model\Registrant $registrant
 	 * @return void
 	 */
 	public function isValid(mixed $registrant):void
@@ -48,7 +48,7 @@ class RegistrantValidator extends \JVE\JvEvents\Validation\Validator\BaseValidat
 		/** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $otherReg */
 		$otherReg = $this->registrantRepository->getByFingerprint($fingerPrint) ;
 		if( is_object($otherReg)) {
-			/** @var \JVE\JvEvents\Domain\Model\Registrant $otherReg */
+			/** @var \JVelletti\JvEvents\Domain\Model\Registrant $otherReg */
 			$otherReg = $otherReg->getFirst() ;
 			if( is_object($otherReg)) {
 				if($otherReg->getCrdate() > ( time() - $this->emConf['minFormSeconds'])  ) {

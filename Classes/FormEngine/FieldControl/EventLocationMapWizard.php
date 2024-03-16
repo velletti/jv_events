@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace JVE\JvEvents\FormEngine\FieldControl;
+namespace JVelletti\JvEvents\FormEngine\FieldControl;
 
 /**
  * This file is part of the "jv_events" Extension for TYPO3 CMS.

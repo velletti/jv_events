@@ -1,5 +1,5 @@
 <?php
-namespace JVE\JvEvents\Domain\Model;
+namespace JVelletti\JvEvents\Domain\Model;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Annotation\Validate;

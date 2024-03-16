@@ -1,5 +1,5 @@
 <?php
-namespace JVE\JvEvents\Utility;
+namespace JVelletti\JvEvents\Utility;
 
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Http\ApplicationType;
@@ -7,7 +7,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class Geocoder
- * @package JVE\JvEvents\Utility
+ * @package JVelletti\JvEvents\Utility
  */
 
 class GeocoderUtility {

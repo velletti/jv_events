@@ -1,6 +1,6 @@
 <?php
 
-namespace JVE\JvEvents\Utility ;
+namespace JVelletti\JvEvents\Utility ;
 
 /**
  * This file is part of the TYPO3 CMS project.
