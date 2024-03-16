@@ -861,6 +861,9 @@ class EventController extends BaseController
                             if( $oldEventRow['price_reduced_text'] != $event->getPriceReducedText() ) {
                                 $otherEvent->setPriceReducedText( $event->getPriceReducedText() ) ;
                             }
+                            if( $oldEventRow['location'] != $event->getLocation()->getUid() ) {
+                                $otherEvent->setLocation( $event->getLocation() ) ;
+                            }
 
                             // --------- now fix Slug Name
                                 $row['name'] = $otherEvent->getName();

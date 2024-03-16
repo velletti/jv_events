@@ -238,7 +238,12 @@ class EventRepository extends BaseRepository
 			$query->setLimit( intval( $settings['filter']['maxEvents'])) ;
 		} elseif ($limit > 0) {
             $query->setLimit( intval( $limit )) ;
+        } else  {
+
+
+
         }
+        $query->setLimit( 4 ) ;
 
         $result = $query->execute();
        // $this->debugQuery($query) ;

@@ -47,7 +47,7 @@ class JvEventsCustomLayoutElement extends AbstractFormElement
                 $result['html'] = '<div class="alert alert-error">Typo Script of this Extension : settings.list.layouts.layout1 .. not an Array ! </div>' ;
             } else {
                 $result['html'] =  '<select name="' . $PA['itemFormElName'] . '"';
-                $result['html'] .= ' onchange="' . htmlspecialchars(implode('', $PA['fieldChangeFunc'])) . '"';
+            //    $result['html'] .= ' onchange="' . htmlspecialchars(implode('', $PA['fieldChangeFunc'])) . '"';
                 $result['html'] .= $PA['onFocus'];
                 $result['html']  .= ' >';
                 foreach ( $layouts as $key => $layout) {
@@ -67,8 +67,9 @@ class JvEventsCustomLayoutElement extends AbstractFormElement
     }
 
     public function getSettings() {
-        $objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-        $configurationManager = $objectManager->get(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
+       // $objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+        $configurationManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
+      //  $configurationManager = $objectManager->get(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
         return  $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT );
     }
 }

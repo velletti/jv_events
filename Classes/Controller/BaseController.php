@@ -419,7 +419,7 @@ class BaseController extends ActionController
             $objArray =  $event->getTags() ;
             if( is_object( $objArray)) {
                 // Plugin settings: are there TAGS as filter defined in the Plugin
-                $filterTags = GeneralUtility::intExplode(',', $filter['tags'], true);
+                $filterTags = (!is_null($filter['tags']) ) ? GeneralUtility::intExplode(',', $filter['tags'], true) : '' ;
 
                 /** @var Tag $obj */
                 foreach ($objArray as $obj ) {

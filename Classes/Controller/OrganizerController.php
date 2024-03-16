@@ -73,7 +73,7 @@ class OrganizerController extends BaseController
         // Todo some checks if all params exists ..
 
         } else {
-            $this->forward( $this->settings['defaultOrganizerAction'],null,null, array('action' => $this->settings['defaultOrganizerAction'] )  ) ;
+            $this->forward( $this->settings['defaultOrganizerAction'],"Organizer",null, array('action' => $this->settings['defaultOrganizerAction'] )  ) ;
         }
 
         $this->debugArray[] = "after Init:" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " Line: " . __LINE__ ;

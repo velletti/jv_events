@@ -19,27 +19,19 @@
                                 </numIndex>
                                 <numIndex index="1">
                                     <label>EventSingle</label>
-                                    <value>
-                                        Event->show;Event->new;Event->create;Event->edit;Event->update;Event->register;Event->confirm;Event->delete;Registrant->new;Registrant->create;Registrant->list;Registrant->show;Registrant->confirm;Registrant->delete;Registrant->checkQrcode;Registrant->checkQrcode
-                                    </value>
+                                    <value>Event->show;Event->new;Event->create;Event->edit;Event->update;Event->register;Event->confirm;Event->delete;Registrant->new;Registrant->create;Registrant->list;Registrant->show;Registrant->confirm;Registrant->delete;Registrant->checkQrcode;Registrant->checkQrcode</value>
                                 </numIndex>
                                 <numIndex index="2">
                                     <label>Edit / Create Events</label>
-                                    <value>
-                                        Event->new;Event->show;Event->create;Event->edit;Event->update;Event->delete;Event->copy;Event->cancel;
-                                    </value>
+                                    <value>Event->new;Event->show;Event->create;Event->edit;Event->update;Event->delete;Event->copy;Event->cancel;</value>
                                 </numIndex>
                                 <numIndex index="3">
                                     <label>Edit / Create Locations</label>
-                                    <value>
-                                        Location->list;Location->show;Location->new;Location->create;Location->edit;Location->update;Location->delete;Location->setDefault
-                                    </value>
+                                    <value>Location->list;Location->show;Location->new;Location->create;Location->edit;Location->update;Location->delete;Location->setDefault</value>
                                 </numIndex>
                                 <numIndex index="4">
                                     <label>Organizers (List/Edit/Create ...)</label>
-                                    <value>
-                                        Organizer->assist;Organizer->list;Organizer->activate;Organizer->show;Organizer->new;Organizer->create;Organizer->edit;Organizer->update;Organizer->delete;
-                                    </value>
+                                    <value>Organizer->assist;Organizer->list;Organizer->activate;Organizer->show;Organizer->new;Organizer->create;Organizer->edit;Organizer->update;Organizer->delete;</value>
                                 </numIndex>
                                 <numIndex index="5">
                                     <label>Search Form</label>
