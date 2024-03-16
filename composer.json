@@ -1,5 +1,5 @@
 {
-    "name": "jve/jv-events",
+    "name": "jvelletti/jv-events",
     "type": "typo3-cms-extension",
     "description": "List and show Events with filters. Including registration",
     "authors": [
