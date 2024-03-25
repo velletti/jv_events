@@ -79,6 +79,24 @@ Then you can IDE Controls for each repository separate
       
       
 
-  
+## Upgrade to TYPO3 LTS
+
+### switchable Controllers have been removed. 
+This requires Update of all tt_content elements -> pi_flexform -> field switchableControllerActions
+there is an upgrade Wizard  that hopefully will  do  this for you. 
+Will not work, if plugin was used, but the ReplaceString does not fit to latest V11  version of jvevents.
+
+### typoscript requires update
+
+needs to add at least this lines to your local typoscript:
+
+    plugin.tx_jvevents_event < plugin.tx_jvevents_events
+    plugin.tx_jvevents_location < plugin.tx_jvevents_events
+    plugin.tx_jvevents_registrant < plugin.tx_jvevents_events
+    plugin.tx_jvevents_organizer < plugin.tx_jvevents_events
+
+
+
+
  
 

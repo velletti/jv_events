@@ -36,7 +36,6 @@ use JVelletti\JvEvents\Domain\Repository\OrganizerRepository;
 use JVelletti\JvEvents\Domain\Repository\EventRepository;
 use JVelletti\JvEvents\Domain\Repository\SubeventRepository;
 use JVelletti\JvEvents\Domain\Repository\StaticCountryRepository;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
@@ -117,20 +116,21 @@ class AjaxController extends BaseController
     public function initializeRepositorys()
     {
 
-        $this->tagRepository        = $this->objectManager->get(TagRepository::class);
-        $this->categoryRepository        = $this->objectManager->get(CategoryRepository::class);
-        $this->registrantRepository        = $this->objectManager->get(RegistrantRepository::class);
-        $this->locationRepository        = $this->objectManager->get(LocationRepository::class);
-        $this->organizerRepository        = $this->objectManager->get(OrganizerRepository::class);
-        $this->eventRepository        = $this->objectManager->get(EventRepository::class);
-        $this->subeventRepository        = $this->objectManager->get(SubeventRepository::class);
-        $this->staticCountryRepository        = $this->objectManager->get(StaticCountryRepository::class);
+        $this->tagRepository        = GeneralUtility::makeInstance(TagRepository::class);
+        $this->categoryRepository        = GeneralUtility::makeInstance(CategoryRepository::class);
+        $this->registrantRepository        = GeneralUtility::makeInstance(RegistrantRepository::class);
+        $this->locationRepository        = GeneralUtility::makeInstance(LocationRepository::class);
+        $this->organizerRepository        = GeneralUtility::makeInstance(OrganizerRepository::class);
+        $this->eventRepository        = GeneralUtility::makeInstance(EventRepository::class);
+        $this->subeventRepository        = GeneralUtility::makeInstance(SubeventRepository::class);
+        $this->staticCountryRepository        = GeneralUtility::makeInstance(StaticCountryRepository::class);
     }
 
     public function dispatcher()
     {
         /**
          * Gets the Ajax Call Parameters   | OLD school without middleWare ..
+         * Maybe obsolete and may not work in V12 anymore . ?? 
          */
         $_gp = GeneralUtility::_GPmerged('tx_jvevents_ajax');
 
@@ -149,17 +149,11 @@ class AjaxController extends BaseController
             $ajax['action'] = "eventMenu";
         }
 
-
-        /**
-         * @var $objectManager \TYPO3\CMS\Extbase\Object\ObjectManager
-         */
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         /** @var Request $request */
         $request = GeneralUtility::makeInstance(Request::class, \JVelletti\JvEvents\Controller\AjaxController::class );
 
         /** @var Typo3Version $version */
         $version = GeneralUtility::makeInstance(Typo3Version::class);
-
 
 
         $request->setControllerExtensionName($ajax['extensionName']);
@@ -168,15 +162,15 @@ class AjaxController extends BaseController
         $request->setControllerActionName($ajax['action']);
         $request->setArguments($ajax['arguments']);
 
-        $response = $objectManager->get(ResponseInterface::class);
-        $dispatcher = $objectManager->get(Dispatcher::class);
+        $response = GeneralUtility::makeInstance(ResponseInterface::class);
+        $dispatcher = GeneralUtility::makeInstance(Dispatcher::class);
 
         if( key_exists('event' , $_gp)) {
             $request->setArgument('event',  intval( $_gp['event'] )) ;
         }
 
         $dispatcher->dispatch($request, $response);
-        echo $response->getContent();
+      //  echo $response->getContent();
         die;
 
     }
@@ -911,7 +905,7 @@ class AjaxController extends BaseController
 
 
         /** @var FrontendUserRepository $userRepository */
-        $userRepository = $this->objectManager->get(FrontendUserRepository::class) ;
+        $userRepository = GeneralUtility::makeInstance(FrontendUserRepository::class) ;
         /** @var FrontendUser $user */
         $user = $userRepository->findByUid($userUid) ;
 
@@ -985,7 +979,7 @@ class AjaxController extends BaseController
         foreach ($groupsMissing as $key => $item) {
             if ( $item  ) {
                 /** @var \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserGroupRepository $userGroupRepository */
-                $userGroupRepository = $this->objectManager->get(FrontendUserGroupRepository::class) ;
+                $userGroupRepository = GeneralUtility::makeInstance(FrontendUserGroupRepository::class) ;
                 $newGroup = $userGroupRepository->findByUid($key) ;
                 if( $newGroup ) {
                     if ( $msg == '' ) {
@@ -1179,7 +1173,7 @@ class AjaxController extends BaseController
 	public function generateToken($action = "action")
 	{
 		/** @var FrontendFormProtection $formClass */
-  $formClass =  $this->objectManager->get( FrontendFormProtection::class) ;
+  $formClass =  GeneralUtility::makeInstance( FrontendFormProtection::class) ;
 
 		return $formClass->generateToken(
 			'event', $action ,   "P" . $this->settings['pageId'] . "-L" .$this->settings['sys_language_uid']

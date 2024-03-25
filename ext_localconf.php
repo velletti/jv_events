@@ -9,20 +9,65 @@ if (!defined('TYPO3')) {
 	'JvEvents' ,
 	'Events',
 	array(
-		\JVelletti\JvEvents\Controller\EventController::class => 'list, show, new, create, edit, update, delete, register, confirm, search,copy,cancel',
-		\JVelletti\JvEvents\Controller\OrganizerController::class => 'list, show, new, create, edit, update, delete,assist,activate',
-		\JVelletti\JvEvents\Controller\LocationController::class => 'list, show, new, create, edit, update, delete,setDefault',
-		\JVelletti\JvEvents\Controller\RegistrantController::class => 'list, show,new,create,delete,confirm,checkQrcode',
-		\JVelletti\JvEvents\Controller\TagController::class => 'list',
+		\JVelletti\JvEvents\Controller\EventController::class => 'list',
 	),
 	// non-cacheable actions
 	array(
-		\JVelletti\JvEvents\Controller\EventController::class => 'show, search, new, create, edit, update, register, confirm, delete,copy,cancel',
-        \JVelletti\JvEvents\Controller\OrganizerController::class => 'show, new, create, edit, update, delete,assist,activate',
-		\JVelletti\JvEvents\Controller\RegistrantController::class => 'list,new,create,delete,confirm,checkQrcode',
-		\JVelletti\JvEvents\Controller\LocationController::class => 'new, create, edit, update, delete,setDefault',
-		
+		\JVelletti\JvEvents\Controller\EventController::class => '',
 	)
+);
+
+
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+    'JvEvents' ,
+    'Event',
+    array(
+        \JVelletti\JvEvents\Controller\EventController::class => 'show, new, create, edit, update, delete, confirm, copy,cancel',
+    ),
+    // non-cacheable actions
+    array(
+        \JVelletti\JvEvents\Controller\EventController::class => 'new, create, edit, update, delete,copy,cancel',
+    )
+);
+
+
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+    'JvEvents' ,
+    'Organizer',
+    array(
+        \JVelletti\JvEvents\Controller\OrganizerController::class => 'list, show, new, create, edit, update, delete,assist,activate',
+    ),
+    // non-cacheable actions
+    array(
+        \JVelletti\JvEvents\Controller\OrganizerController::class => 'new,create,edit,update,delete,assist,activate',
+    )
+);
+
+
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+    'JvEvents' ,
+    'Location',
+    array(
+        \JVelletti\JvEvents\Controller\LocationController::class => 'list, show, new, create, edit, update, delete,setDefault',
+    ),
+    // non-cacheable actions
+    array(
+        \JVelletti\JvEvents\Controller\LocationController::class => 'new, create, edit, update, delete,setDefault',
+
+    )
+);
+
+
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+    'JvEvents' ,
+    'Registrant',
+    array(
+        \JVelletti\JvEvents\Controller\RegistrantController::class => 'list, show,new,create,delete,confirm,checkQrcode',
+    ),
+    // non-cacheable actions
+    array(
+        \JVelletti\JvEvents\Controller\RegistrantController::class => 'list,new,create,delete,confirm,checkQrcode',
+    )
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(

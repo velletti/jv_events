@@ -263,7 +263,7 @@ class OrganizerController extends BaseController
             }
         } else{
             /** @var Organizer $organizer */
-            $organizer = $this->objectManager->get(Organizer::class);
+            $organizer = GeneralUtility::makeInstance(Organizer::class);
             // ToDo find good way to handle ID Default .. maybe a pid per User, per location or other typoscript setting
             $organizer->setPid( 13 ) ;
             $organizer->setEmail( $GLOBALS['TSFE']->fe_user->user['email'] ) ;
@@ -424,7 +424,7 @@ class OrganizerController extends BaseController
 
 
         /** @var FrontendUserRepository $userRepository */
-        $userRepository = $this->objectManager->get(FrontendUserRepository::class) ;
+        $userRepository = GeneralUtility::makeInstance(FrontendUserRepository::class) ;
         /** @var FrontendUser $user */
         $user = $userRepository->findByUid($userUid) ;
 
@@ -507,7 +507,7 @@ class OrganizerController extends BaseController
         foreach ($groupsMissing as $key => $item) {
             if ( $item  ) {
                 /** @var \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserGroupRepository $userGroupRepository */
-                $userGroupRepository = $this->objectManager->get(FrontendUserGroupRepository::class) ;
+                $userGroupRepository = GeneralUtility::makeInstance(FrontendUserGroupRepository::class) ;
                 $newGroup = $userGroupRepository->findByUid($key) ;
                 if( $newGroup ) {
                     if ( $msg == '' ) {

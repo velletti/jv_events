@@ -487,7 +487,7 @@ class EventBackendController extends BaseController
 	public function generateToken($action = "action")
 	{
 		/** @var FrontendFormProtection $formClass */
-  $formClass =  $this->objectManager->get( FrontendFormProtection::class) ;
+  $formClass =  GeneralUtility::makeInstance( FrontendFormProtection::class) ;
 
 		return $formClass->generateToken(
 			'event', $action ,   "P" . $this->settings['pageId'] . "-L" .$this->settings['sys_language_uid']

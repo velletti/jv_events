@@ -5,10 +5,64 @@ routeEnhancers:
       'deleteFile.json': 1386871774
       'cropImage.json': 44900073
 
-  jveventPlugin:
+  jveventEventPlugin:
     type: Extbase
     extension: JvEvents
-    plugin: Events
+    plugin: Event
+
+    defaults:
+      event_id: '1'
+    routes:
+      - routePath: '/event/event/show/{event_slug}'
+        _controller: 'Event::show'
+        _arguments:
+          event_slug: event
+    aspects:
+      event_slug:
+        type: PersistedAliasMapper
+        tableName: tx_jvevents_domain_model_event
+        routeFieldName: slug
+      event_id:
+        type: PersistedAliasMapper
+        tableName: tx_jvevents_domain_model_event
+        routeFieldName: uid
+
+  jveventLocationPlugin:
+    type: Extbase
+    extension: JvEvents
+    plugin: Location
+
+    routes:
+      - routePath: '/event/location/show/{location_slug}'
+        _controller: 'Location::show'
+        _arguments:
+          location_slug: location
+    aspects:
+      location_slug:
+        type: PersistedAliasMapper
+        tableName: tx_jvevents_domain_model_location
+        routeFieldName: slug
+
+  jveventOrganizerPlugin:
+    type: Extbase
+    extension: JvEvents
+    plugin: Organizer
+
+    routes:
+      - routePath: '/event/organizer/show/{organizer_slug}'
+        _controller: 'Organizer::show'
+        _arguments:
+          organizer_slug: organizer
+    aspects:
+      organizer_slug:
+        type: PersistedAliasMapper
+        tableName: tx_jvevents_domain_model_organizer
+        routeFieldName: slug
+  
+  jveventRegistrantPlugin:
+    type: Extbase
+    extension: JvEvents
+    plugin: Registrant
 
     defaults:
       event_id: '1'
@@ -20,31 +74,7 @@ routeEnhancers:
           reg_id: registrant
           event_id: event
           hash: hash
-      - routePath: '/event/event/show/{event_slug}'
-        _controller: 'Event::show'
-        _arguments:
-          event_slug: event
-      - routePath: '/event/organizer/show/{organizer_slug}'
-        _controller: 'Organizer::show'
-        _arguments:
-          organizer_slug: organizer
-      - routePath: '/event/location/show/{location_slug}'
-        _controller: 'Location::show'
-        _arguments:
-          location_slug: location
     aspects:
-      organizer_slug:
-        type: PersistedAliasMapper
-        tableName: tx_jvevents_domain_model_organizer
-        routeFieldName: slug
-      location_slug:
-        type: PersistedAliasMapper
-        tableName: tx_jvevents_domain_model_location
-        routeFieldName: slug
-      event_slug:
-        type: PersistedAliasMapper
-        tableName: tx_jvevents_domain_model_event
-        routeFieldName: slug
       event_id:
         type: PersistedAliasMapper
         tableName: tx_jvevents_domain_model_event

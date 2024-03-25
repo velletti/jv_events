@@ -28,7 +28,6 @@ namespace JVelletti\JvEvents\Controller;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Core\Context\Context;
 use JVelletti\JvEvents\Utility\EmConfigurationUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use JVelletti\JvEvents\Domain\Model\Location;
 use JVelletti\JvEvents\Domain\Model\Organizer;
@@ -287,12 +286,7 @@ class BaseController extends ActionController
             }
         }
 
-
-
-        if( !$this->objectManager) {
-            $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class) ;
-        }
-        $this->persistenceManager = $this->objectManager->get(PersistenceManager::class);
+        $this->persistenceManager = GeneralUtility::makeInstance(PersistenceManager::class);
     }
 
     public function generateFilterBox( $filter , $tagShowAfterColon=0 ) {
@@ -709,7 +703,7 @@ class BaseController extends ActionController
     public function getEmailRenderer($templatePath = '' , $templateName = 'default' , $format='html') {
         // create another instance of Fluid
         /** @var StandaloneView $renderer */
-        $renderer = $this->objectManager->get(StandaloneView::class);
+        $renderer = GeneralUtility::makeInstance(StandaloneView::class);
 
 
 
@@ -886,7 +880,7 @@ class BaseController extends ActionController
         $emailBody = $renderer->render();
 
         /** @var $message \TYPO3\CMS\Core\Mail\MailMessage */
-        $message = $this->objectManager->get(MailMessage::class);
+        $message = GeneralUtility::makeInstance(MailMessage::class);
         $message->setTo($recipient)
             ->setFrom($sender)
             ->setSubject($subject);
@@ -937,7 +931,7 @@ class BaseController extends ActionController
      */
     public function sendDebugEmail($recipient,$sender ,$subject , $plainMsg , $htmlMsg = '') {
         /** @var $message \TYPO3\CMS\Core\Mail\MailMessage */
-        $message = $this->objectManager->get(MailMessage::class);
+        $message = GeneralUtility::makeInstance(MailMessage::class);
 
 
         $returnPath = MailUtility::getSystemFromAddress();

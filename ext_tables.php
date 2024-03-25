@@ -7,13 +7,41 @@ if (!defined('TYPO3')) {
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
     'JvEvents' ,
     'Events',
-    'Events'
+    'Events: List Events '
+);
+
+
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
+    'JvEvents' ,
+    'Event',
+    'Events: Single Event '
+);
+
+
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
+    'JvEvents' ,
+    'Organizer',
+    'Events: List Organizer '
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
     'JvEvents' ,
+    'Location',
+    'Events: List Location '
+);
+
+
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
+    'JvEvents' ,
+    'Registrant',
+    'Events: List Registrant '
+);
+
+
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
+    'JvEvents' ,
     'Ajax',
-    'Ajax'
+    'Events: Ajax'
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(

@@ -149,7 +149,7 @@ class LocationController extends BaseController
 
         if ( $location==null) {
             /** @var Location $location */
-            $location = $this->objectManager->get(Location::class);
+            $location = GeneralUtility::makeInstance(Location::class);
             $location->setLng( ($this->settings['filterlocation']['lng'] ?? '-34.5877631' ));
             $location->setLat( ($this->settings['filterlocation']['lat'] ?? '-58.4589249' ));
 

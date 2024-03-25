@@ -286,7 +286,7 @@ class EventController extends BaseController
 
         if ( $event==null) {
             /** @var Event $event */
-            $event = $this->objectManager->get(Event::class);
+            $event = GeneralUtility::makeInstance(Event::class);
         }
         if ( $event->getUid() < 1 ) {
             $today = new \DateTime ;
@@ -1033,7 +1033,7 @@ class EventController extends BaseController
 	public function generateToken($action = "action"): string
     {
 		/** @var FrontendFormProtection $formClass */
-  $formClass =  $this->objectManager->get( FrontendFormProtection::class) ;
+  $formClass =  GeneralUtility::makeInstance( FrontendFormProtection::class) ;
 
 		return $formClass->generateToken(
 			'event', $action ,   "P" . $this->settings['pageId'] . "-L" .$this->settings['sys_language_uid']
