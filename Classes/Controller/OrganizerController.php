@@ -2,6 +2,7 @@
 namespace JVelletti\JvEvents\Controller;
 
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 use JVelletti\JvEvents\Domain\Model\Organizer;
 use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
@@ -69,15 +70,7 @@ class OrganizerController extends BaseController
         $this->timeStart = $this->microtime_float() ;
         $this->debugArray[] = "Start:" . intval(1000 * $this->timeStart ) . " Line: " . __LINE__ ;
         parent::initializeAction() ;
-        if ($this->request->hasArgument('action')) {
-        // Todo some checks if all params exists ..
-
-        } else {
-            $this->forward( $this->settings['defaultOrganizerAction'],"Organizer",null, array('action' => $this->settings['defaultOrganizerAction'] )  ) ;
-        }
-
         $this->debugArray[] = "after Init:" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " Line: " . __LINE__ ;
-
 
     }
     /**

@@ -33,13 +33,38 @@ if (!defined('TYPO3')) {
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
     'JvEvents' ,
-    'Organizer',
+    'Organizers',
     array(
-        \JVelletti\JvEvents\Controller\OrganizerController::class => 'list, show, new, create, edit, update, delete,assist,activate',
+        \JVelletti\JvEvents\Controller\OrganizerController::class => 'list',
     ),
     // non-cacheable actions
     array(
-        \JVelletti\JvEvents\Controller\OrganizerController::class => 'new,create,edit,update,delete,assist,activate',
+        \JVelletti\JvEvents\Controller\OrganizerController::class => '',
+    )
+);
+
+
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+    'JvEvents' ,
+    'Organizer',
+    array(
+        \JVelletti\JvEvents\Controller\OrganizerController::class => 'show, new, create, edit, update, delete,activate',
+    ),
+    // non-cacheable actions
+    array(
+        \JVelletti\JvEvents\Controller\OrganizerController::class => 'new,create,edit,update,delete,activate',
+    )
+);
+
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+    'JvEvents' ,
+    'Assist',
+    array(
+        \JVelletti\JvEvents\Controller\OrganizerController::class => 'assist,activate',
+    ),
+    // non-cacheable actions
+    array(
+        \JVelletti\JvEvents\Controller\OrganizerController::class => 'assist,activate',
     )
 );
 

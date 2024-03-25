@@ -221,9 +221,12 @@ plugin.tx_jvevents_events {
 
 plugin.tx_jvevents_event < plugin.tx_jvevents_events
 plugin.tx_jvevents_location < plugin.tx_jvevents_events
+plugin.tx_jvevents_locations < plugin.tx_jvevents_events
 plugin.tx_jvevents_registrant < plugin.tx_jvevents_events
 plugin.tx_jvevents_organizer < plugin.tx_jvevents_events
-
+plugin.tx_jvevents_organizers < plugin.tx_jvevents_events
+plugin.tx_jvevents_assist < plugin.tx_jvevents_events
+plugin.tx_jvevents_curl < plugin.tx_jvevents_events
 
 
 # Module configuration

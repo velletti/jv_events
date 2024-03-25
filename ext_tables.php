@@ -7,47 +7,83 @@ if (!defined('TYPO3')) {
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
     'JvEvents' ,
     'Events',
-    'Events: List Events '
+    'Events: List Events with filters',
+    'jvevents-plugin' ,
+    'Events'
 );
 
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
     'JvEvents' ,
     'Event',
-    'Events: Single Event '
+    'Events: Single Event - show, create, edit ...',
+    'jvevents-plugin' ,
+    'Events'
 );
 
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
     'JvEvents' ,
-    'Organizer',
-    'Events: List Organizer '
+    'Organizers',
+    'Organizer: List Organizers with filter ' ,
+     'jvevents-plugin' ,
+    'Events'
 );
 
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
+    'JvEvents',
+    'Organizer',
+    'Organizer: Single Organizer, show, create, edit' ,
+    'jvevents-plugin' ,
+    'Events'
+);
+
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
+    'JvEvents',
+    'Assist',
+    'Organizer Assistant' ,
+    'jvevents-plugin' ,
+    'Events'
+);
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
+    'JvEvents' ,
+    'Locations',
+    'Location: List of Locations ',
+    'jvevents-plugin' ,
+    'Events'
+);
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
     'JvEvents' ,
     'Location',
-    'Events: List Location '
+    'Location: Single Location - show, create, edit',
+    'jvevents-plugin' ,
+    'Events'
 );
 
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
     'JvEvents' ,
     'Registrant',
-    'Events: List Registrant '
+    'List Registrant ',
+    'jvevents-plugin' ,
+    'Events'
 );
 
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
     'JvEvents' ,
     'Ajax',
-    'Events: Ajax'
+    'Ajax',
+    'jvevents-plugin' ,
+    'Events'
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
     'JvEvents' ,
     'Curl',
-    'Events: Load events from other website via Curl'
+    'Load events from other website via Curl',
+    'jvevents-plugin' ,
+    'Events'
 );
 
 if ($GLOBALS['TYPO3_REQUEST'] && TYPO3\CMS\Core\Http\ApplicationType::fromRequest( $GLOBALS['TYPO3_REQUEST'] )->isBackend()) {

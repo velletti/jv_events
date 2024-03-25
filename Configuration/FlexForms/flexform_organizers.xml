@@ -20,44 +20,10 @@
                             </parameters>
                         </config>
                     </settings.LayoutList>
-                    <settings.HideEventListLink>
-                        <label>
-                            LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.HideEventListLink
-                        </label>
-                        <config>
-                            <type>check</type>
-                            <default>0</default>
-                        </config>
-                    </settings.HideEventListLink>
-                </el>
+                  </el>
             </ROOT>
         </sDEF>
 
-
-
-        <sDEF3>
-            <ROOT>
-                <sheetTitle>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.EventDetailView
-                </sheetTitle>
-                <type>array</type>
-                <el>
-                    <settings.LayoutSingle>
-                        <label>
-                            LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms_additional.layout
-                        </label>
-                        <config>
-                            <type>user</type>
-                            <renderType>jvEventsCustomLayoutElement</renderType>
-                            <size>30</size>
-                            <userFunc>JVelletti\JvEvents\UserFunc\Flexforms->selectLayout</userFunc>
-                            <parameters>
-                                <layoutType>single.</layoutType>
-                            </parameters>
-                        </config>
-                    </settings.LayoutSingle>
-                </el>
-            </ROOT>
-        </sDEF3>
         <sDEF5>
             <ROOT>
                 <sheetTitle>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.DataSettings

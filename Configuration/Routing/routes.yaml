@@ -53,6 +53,7 @@ routeEnhancers:
         _controller: 'Organizer::show'
         _arguments:
           organizer_slug: organizer
+          action: show
     aspects:
       organizer_slug:
         type: PersistedAliasMapper
