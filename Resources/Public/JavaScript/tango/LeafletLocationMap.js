@@ -157,9 +157,9 @@ AddressLeafletGetIcon = function( size , ancor ) {
         ancor = [10, 40];
     }
     return L.icon({
-        iconUrl: '/typo3conf/ext/jv_events/Resources/Public/Css/tango/marker-icon.png' ,
-        iconRetinaUrl: '/typo3conf/ext/jv_events/Resources/Public/Css/tango/marker-icon-2x.png' ,
-        shadowUrl: '/typo3conf/ext/jv_events/Resources/Public/Css/tango/marker-shadow.png' ,
+        iconUrl: '/assets/leaflet/css/tango/marker-icon.png' ,
+        iconRetinaUrl: '/assets/leaflet/css/tango/marker-icon-2x.png' ,
+        shadowUrl: '/assets/leaflet/css/tango/marker-shadow.png' ,
         iconSize: size,
         iconAnchor: ancor,
         draggable: true

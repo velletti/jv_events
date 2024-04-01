@@ -550,7 +550,7 @@ class AjaxController extends BaseController
         if(!$arguments) {
             $arguments = GeneralUtility::_GPmerged('tx_jvevents_ajax');
         }
-        $this->initSettings();
+        $this->initSettings($this->request);
 
         // 6.2.2020 with teaserText and files
         // 27.1.2021 LTS 10 : wegfall &eID=jv_events und uid, dafür Page ID der Seite mit der Liste : z.b. "id=110"
@@ -600,7 +600,7 @@ class AjaxController extends BaseController
             }
         }
 
-        $layoutPath = GeneralUtility::getFileAbsFileName("typo3conf/ext/jv_events/Resources/Private/Layouts/");
+        $layoutPath = GeneralUtility::getFileAbsFileName("EXT:jv_events/Resources/Private/Layouts/");
 
         $renderer->setLayoutRootPaths(array(0 => $layoutPath));
 
@@ -636,13 +636,6 @@ class AjaxController extends BaseController
     public function eventMenuAction(array $arguments=Null)
     {
         $pid =  GeneralUtility::_GP('id');
-        $ts = TyposcriptUtility::loadTypoScriptFromScratch( $pid , "tx_jvevents_events") ;
-        if( is_array($this->settings) && is_array($ts) && array_key_exists('settings' , $ts )) {
-            $this->settings = array_merge( $this->settings , $ts['settings']);
-        } elseif ( is_array($ts) && array_key_exists('settings' , $ts )) {
-            $this->settings = $ts['settings'] ;
-        }
-
         if(!$arguments) {
             $arguments = GeneralUtility::_GPmerged('tx_jvevents_ajax');
         }
@@ -670,7 +663,7 @@ class AjaxController extends BaseController
             $renderer = $this->getEmailRenderer('', '/Ajax/EventMenu' );
         }
 
-        $layoutPath = GeneralUtility::getFileAbsFileName("typo3conf/ext/jv_events/Resources/Private/Layouts/");
+        $layoutPath = GeneralUtility::getFileAbsFileName("EXT:jv_events/Resources/Private/Layouts/");
 
         // Fallback to Partial Tango, as this actually is the only one using this.
         if( ! $this->settings['LayoutSingle'] ) {
@@ -827,7 +820,7 @@ class AjaxController extends BaseController
             $renderer = $this->getEmailRenderer( '', '/Ajax/locationList' );
         }
 
-        $layoutPath = GeneralUtility::getFileAbsFileName("typo3conf/ext/jv_events/Resources/Private/Layouts/");
+        $layoutPath = GeneralUtility::getFileAbsFileName("EXT:jv_events/Resources/Private/Layouts/");
         $renderer->setLayoutRootPaths(array(0 => $layoutPath));
 
         $renderer->assign('output' , $output) ;
@@ -1255,13 +1248,9 @@ class AjaxController extends BaseController
     /**
      * @return void
      */
-    public function initSettings(): void
+    public function initSettings($request): void
     {
-        $pid = GeneralUtility::_GP('id');
-        if ( !$pid ) {
-            $pid = $GLOBALS['TSFE']->id;
-        }
-        $ts = TyposcriptUtility::loadTypoScriptFromScratch($pid, "tx_jvevents_events");
+        $ts = TyposcriptUtility::loadTypoScriptFromRequest($request, "tx_jvevents_events");
         if (is_array($this->settings) && is_array($ts) && is_array($ts['settings'])) {
             $this->settings = array_merge($ts['settings']);
         } elseif (is_array($ts) && is_array($ts['settings']) ) {

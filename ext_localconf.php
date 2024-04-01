@@ -71,9 +71,22 @@ if (!defined('TYPO3')) {
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
     'JvEvents' ,
+    'Locations',
+    array(
+        \JVelletti\JvEvents\Controller\LocationController::class => 'list',
+    ),
+    // non-cacheable actions
+    array(
+        \JVelletti\JvEvents\Controller\LocationController::class => '',
+
+    )
+);
+
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+    'JvEvents' ,
     'Location',
     array(
-        \JVelletti\JvEvents\Controller\LocationController::class => 'list, show, new, create, edit, update, delete,setDefault',
+        \JVelletti\JvEvents\Controller\LocationController::class => 'show, new, create, edit, update, delete,setDefault',
     ),
     // non-cacheable actions
     array(
@@ -81,7 +94,6 @@ if (!defined('TYPO3')) {
 
     )
 );
-
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
     'JvEvents' ,
@@ -154,6 +166,10 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['proc
  */
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']['jv_events'] =
 	\JVelletti\JvEvents\Hooks\ProcessDatamap::class;
+
+
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['txJvEventsPluginUpdater'] = \JVelletti\JvEvents\Updates\PluginUpdater::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['txJvEventsPluginPermissionUpdater'] = \JVelletti\JvEvents\Updates\PluginPermissionUpdater::class;
 
 
 

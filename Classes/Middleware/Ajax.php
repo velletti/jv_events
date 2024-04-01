@@ -131,7 +131,9 @@ class Ajax implements MiddlewareInterface
                 // ToDo generate Output as before in ajax Controller here in Middleware with CORE features.
                 $controller = $ajaxUtility->initController($_gp , $function , $request ) ;
                 $controller->initializeRepositorys( ) ;
-                $controller->initSettings()  ;
+           
+                $controller->initSettings($request)  ;
+
 
                 switch ($function) {
                     case 'downloadical' :
@@ -284,7 +286,7 @@ class Ajax implements MiddlewareInterface
             }
         }
 
-        $layoutPath = GeneralUtility::getFileAbsFileName("typo3conf/ext/jv_events/Resources/Private/Layouts/");
+        $layoutPath = GeneralUtility::getFileAbsFileName("EXT:jv_events/Resources/Private/Layouts/");
 
         $renderer->setLayoutRootPaths(array(0 => $layoutPath));
 

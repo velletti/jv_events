@@ -725,7 +725,7 @@ class BaseController extends ActionController
         if (isset($extbaseFrameworkConfiguration['view']['layoutRootPaths']) && is_array($extbaseFrameworkConfiguration['view']['layoutRootPaths'])) {
             $layoutPaths = $extbaseFrameworkConfiguration['view']['layoutRootPaths'];
         } else {
-            $layoutPaths =  array( 0 => GeneralUtility::getFileAbsFileName( "typo3conf/ext/jv_events/Resources/Private/Layouts" )) ;
+            $layoutPaths =  array( 0 => GeneralUtility::getFileAbsFileName( "EXT:jv_events/Resources/Private/Layouts" )) ;
         }
         # Jan 2021 : as we want to use same email layout in frontend as in backend, we need to remove "/Backend" from layout path
         #

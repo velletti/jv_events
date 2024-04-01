@@ -86,16 +86,21 @@ This requires Update of all tt_content elements -> pi_flexform -> field switchab
 there is an upgrade Wizard  that hopefully will  do  this for you. 
 Will not work, if plugin was used, but the ReplaceString does not fit to latest V11  version of jvevents.
 
+
 ### typoscript requires update
 
 needs to add at least this lines to your local typoscript:
 
     plugin.tx_jvevents_event < plugin.tx_jvevents_events
     plugin.tx_jvevents_location < plugin.tx_jvevents_events
+    plugin.tx_jvevents_locations < plugin.tx_jvevents_events
     plugin.tx_jvevents_registrant < plugin.tx_jvevents_events
     plugin.tx_jvevents_organizer < plugin.tx_jvevents_events
+    plugin.tx_jvevents_organizers < plugin.tx_jvevents_events
+    plugin.tx_jvevents_curl < plugin.tx_jvevents_events
+    plugin.tx_jvevents_ajax < plugin.tx_jvevents_events
 
-
+include jv-events.css in correct way : EXR: and not: typo3conf/ext/ ... 
 
 
  

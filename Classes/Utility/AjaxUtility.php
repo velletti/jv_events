@@ -59,29 +59,13 @@ class AjaxUtility {
         $controller->standaloneView = GeneralUtility::makeInstance(StandaloneView::class);
         $controller->standaloneView->getRenderingContext()->setControllerName('Ajax');
         $controller->standaloneView->getRenderingContext()->setControllerAction($function);
-        $controller->standaloneView->getRequest()->setControllerExtensionName('jvEvents');
+        // V12 https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/12.0/Breaking-98377-FluidStandaloneViewDoesNotCreateAnExtbaseRequestAnymore.html
+        $controller->standaloneView->setRequest($request);
 
         $controller->standaloneView->setTemplateRootPaths(array( 0 => ExtensionManagementUtility::extPath('jv_events') . 'Resources/Private/Templates') );
         $controller->standaloneView->setLayoutRootPaths(array( 0 => ExtensionManagementUtility::extPath('jv_events') . 'Resources/Private/Layouts'  ));
         $controller->standaloneView->setPartialRootPaths(array( 0 => ExtensionManagementUtility::extPath('jv_events') . 'Resources/Private/Partials' ));
 
-      //  /** @var  \TYPO3\CMS\Extbase\Mvc\Request $request */
-      //  $request =  GeneralUtility::makeInstance( \TYPO3\CMS\Extbase\Mvc\Request::class);
-     //  $request->setControllerName("Ajax") ;
-        //   $request->setControllerActionName($function ) ;
-        //   $request->setControllerExtensionName( "jvevents" ) ;
-        //   $request->setPluginName( "events" ) ;
-
-        //    $controller->getControllerContext()->setRequest($request) ;
-
-        //   /** @var  \TYPO3\CMS\Extbase\Mvc\Response $response */
-        //    $response =  GeneralUtility::makeInstance( \TYPO3\CMS\Extbase\Mvc\Response::class);
-
-
-        //    $controller->getControllerContext()->setResponse($response) ;
-
-
-        
         return $controller ;
     }
 

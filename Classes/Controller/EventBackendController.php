@@ -224,10 +224,6 @@ class EventBackendController extends BaseController
                         $this->settings['pageId'] = $pid ;
                         $this->settings['sys_language_uid'] = $lng ;
 
-                        // ***** NEEDS a FIX !!! ********************
-                        // ToDo : J.v. 4.2.2019 Keine Ahnung wie das früher jemals funktioniert hat ?
-                        // das Layout steht nur in dem Plug, an das komme ich aber vom Backend so nicht dran ..
-
 
                         if( !$this->settings['LayoutRegister'] ) {
                             $this->settings['LayoutRegister'] = "2Allplan" ;
@@ -235,7 +231,6 @@ class EventBackendController extends BaseController
                         //  echo "<pre>" ;
                         // var_dump($this->settings) ;
                         // die;
-                        // ***** NEEDS a FIX !!! ********************
 
                         $registrant->setConfirmed("1") ;
                         $name = trim( $registrant->getFirstName() . " " . $registrant->getLastName())  ;

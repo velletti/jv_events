@@ -22,7 +22,7 @@ plugin.tx_jvevents_events {
 
 		withMicroFormat = {$plugin.tx_jvevents_events.settings.withMicroFormat}
 		#
-		ccsFile = /typo3conf/ext/jv_events/Resources/Public/Css/jv_events.css
+		ccsFile = EXT:jv_events/Resources/Public/Css/jv_events.css
 
 		link {
 			# Event Types that should open in a new Window

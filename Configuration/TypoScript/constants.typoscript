@@ -86,6 +86,7 @@ plugin.tx_jvevents_events {
 	}
 }
 
+
 module.tx_jvevents_eventmngt {
 	view {
 		# cat=module.tx_jvevents_eventmngt/file; type=string; label=Path to template root (BE)

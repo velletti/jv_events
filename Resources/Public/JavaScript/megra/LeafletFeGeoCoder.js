@@ -208,9 +208,9 @@
             ancor = [10, 40];
         }
         return L.icon({
-            iconUrl: '/typo3conf/ext/jv_events/Resources/Public/Css/images/marker-icon.png' ,
-            iconRetinaUrl: '/typo3conf/ext/jv_events/Resources/Public/Css/images/marker-icon-2x.png' ,
-            shadowUrl: '/typo3conf/ext/jv_events/Resources/Public/Css/images/marker-shadow.png' ,
+            iconUrl: '/assets/leaflet/css/images/marker-icon.png' ,
+            iconRetinaUrl: '/assets/leaflet/css/images/marker-icon-2x.png' ,
+            shadowUrl: '/assets/leaflet/images/css/marker-shadow.png' ,
             iconSize: size,
             iconAnchor: ancor,
             draggable: true
