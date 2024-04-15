@@ -24,7 +24,7 @@ class PluginPermissionUpdater implements UpgradeWizardInterface
 {
     public function getIdentifier(): string
     {
-        return 'jveEvents_PluginPermissionUpdater';
+        return 'jvEvents_PluginPermissionUpdater';
     }
 
     public function getTitle(): string

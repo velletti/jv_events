@@ -168,8 +168,8 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['proc
 	\JVelletti\JvEvents\Hooks\ProcessDatamap::class;
 
 
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['txJvEventsPluginUpdater'] = \JVelletti\JvEvents\Updates\PluginUpdater::class;
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['txJvEventsPluginPermissionUpdater'] = \JVelletti\JvEvents\Updates\PluginPermissionUpdater::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['jvEventsPluginUpdater'] = \JVelletti\JvEvents\Updates\PluginUpdater::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['jvEventsPluginPermissionUpdater'] = \JVelletti\JvEvents\Updates\PluginPermissionUpdater::class;
 
 
 

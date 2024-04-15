@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace JVelletti\JvEvents\Updates;
 
-use GeorgRinger\News\Event\PluginUpdaterListTypeEvent;
+use JVelletti\JvEvents\Event\PluginUpdaterListTypeEvent;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Database\Connection;
@@ -27,45 +27,58 @@ class PluginUpdater implements UpgradeWizardInterface
 {
     private const MIGRATION_SETTINGS = [
         [
-            'switchableControllerActions' => 'News->list;News->detail',
-            'targetListType' => 'news_pi1',
+            'switchableControllerActions' => 'Event->list;Event->search',
+            'targetListType' => 'jvevents_events',
+            'defaultOrganizerAction' => '-',
         ],
         [
-            'switchableControllerActions' => 'News->list',
-            'targetListType' => 'news_newsliststicky',
+            'switchableControllerActions' => 'Event->show;Event->new;Event->create;Event->edit;Event->update;Event->register;Event->confirm;Event->delete;Registrant->new;Registrant->create;Registrant->list;Registrant->show;Registrant->confirm;Registrant->delete;Registrant->checkQrcode;Registrant->checkQrcode',
+            'targetListType' => 'jvevents_event',
+            'defaultOrganizerAction' => '-',
         ],
         [
-            'switchableControllerActions' => 'News->selectedList',
-            'targetListType' => 'news_newsselectedlist',
+            'switchableControllerActions' => 'Event->new;Event->show;Event->create;Event->edit;Event->update;Event->delete;Event->copy;Event->cancel;',
+            'targetListType' => 'jvevents_event',
+            'defaultOrganizerAction' => '-',
         ],
         [
-            'switchableControllerActions' => 'News->detail',
-            'targetListType' => 'news_newsdetail',
+            'switchableControllerActions' => 'Location->list;Location->show;Location->new;Location->create;Location->edit;Location->update;Location->delete;Location->setDefault;',
+            'targetListType' => 'jvevents_locations',
+            'defaultOrganizerAction' => '-',
+        ],
+
+        [
+            'switchableControllerActions' => 'Location->list;Location->show;Location->new;Location->create;Location->edit;Location->update;Location->delete;Location->setDefault;',
+            'targetListType' => 'jvevents_location',
+            'defaultOrganizerAction' => '-',
         ],
         [
-            'switchableControllerActions' => 'News->dateMenu',
-            'targetListType' => 'news_newsdatemenu',
+            'switchableControllerActions' => 'Location->list;Location->show;Location->new;Location->create;Location->edit;Location->update;Location->delete;',
+            'targetListType' => 'jvevents_location',
+            'defaultOrganizerAction' => '-',
         ],
         [
-            'switchableControllerActions' => 'News->searchForm',
-            'targetListType' => 'news_newssearchform',
+            'switchableControllerActions' => 'Organizer->assist;Organizer->list;Organizer->activate;Organizer->show;Organizer->new;Organizer->create;Organizer->edit;Organizer->update;Organizer->delete;',
+            'targetListType' => 'jvevents_organizer',
+            'defaultOrganizerAction' => 'list',
         ],
         [
-            'switchableControllerActions' => 'News->searchResult',
-            'targetListType' => 'news_newssearchresult',
+            'switchableControllerActions' => 'Organizer->assist;Organizer->list;Organizer->activate;Organizer->show;Organizer->new;Organizer->create;Organizer->edit;Organizer->update;Organizer->delete;',
+            'targetListType' => 'jvevents_organizers',
+            'defaultOrganizerAction' => '-',
         ],
         [
-            'switchableControllerActions' => 'Category->list',
-            'targetListType' => 'news_categorylist',
+            'switchableControllerActions' => 'Organizer->assist;Organizer->list;Organizer->activate;Organizer->show;Organizer->new;Organizer->create;Organizer->edit;Organizer->update;Organizer->delete;',
+            'targetListType' => 'jvevents_assist',
+            'defaultOrganizerAction' => 'assist',
         ],
         [
-            'switchableControllerActions' => 'Tag->list',
-            'targetListType' => 'news_taglist',
+            'switchableControllerActions' => 'Organizer->assist;Organizer->list;Organizer->show;Organizer->new;Organizer->create;Organizer->edit;Organizer->update;Organizer->delete;',
+            'targetListType' => 'jvevents_organizer',
+            'defaultOrganizerAction' => 'assist',
         ],
-        [
-            'switchableControllerActions' => 'News->month',
-            'targetListType' => 'eventnews_newsmonth',
-        ],
+
+
     ];
 
     /** @var FlexFormService */
@@ -87,17 +100,17 @@ class PluginUpdater implements UpgradeWizardInterface
 
     public function getIdentifier(): string
     {
-        return 'txNewsPluginUpdater';
+        return 'jvEventsPluginUpdater';
     }
 
     public function getTitle(): string
     {
-        return 'EXT:news: Migrate plugins';
+        return 'EXT:JvEvents: Migrate plugins';
     }
 
     public function getDescription(): string
     {
-        $description = 'The old plugin using switchableControllerActions has been split into separate plugins. ';
+        $description = 'The old plugin "Events" using switchableControllerActions has been split into separate plugins. ';
         $description .= 'This update wizard migrates all existing plugin settings and changes the plugin';
         $description .= 'to use the new plugins available. Count of plugins: ' . count($this->getMigrationRecords());
         return $description;
@@ -128,27 +141,41 @@ class PluginUpdater implements UpgradeWizardInterface
     public function performMigration(): bool
     {
         $records = $this->getMigrationRecords();
+        if (  str_starts_with(  $_SERVER['argv'][3] , "-v" )) {
+            $this->verboseLevel = 64 ;
+        }
 
         // Initialize the global $LANG object if it does not exist.
         // This is needed by the ext:form flexforms hook in Core v11
         $GLOBALS['LANG'] = $GLOBALS['LANG'] ?? GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
-
+        $doneRows = 0 ;
+        $skippedRows = 0 ;
         foreach ($records as $record) {
             $flexForm = $this->flexFormService->convertFlexFormContentToArray($record['pi_flexform']);
-            $targetListType = $this->getTargetListType($flexForm['switchableControllerActions'] ?? '');
+            $targetListType = $this->getTargetListType($flexForm ?? '');
+
             $targetListType = $this->eventDispatcher->dispatch(new PluginUpdaterListTypeEvent($flexForm, $record, $targetListType))->getListType();
 
             if ($targetListType === '') {
+                $this->debugOutput( 0,  "\nUid:" . $record['uid'] . " Skipped: : " . $flexForm['switchableControllerActions'] ) ;
+                $skippedRows ++ ;
                 continue;
             }
-
+            $this->debugOutput( 0,  "\nUid:" . $record['uid'] . " New: " . $targetListType . " from : " . $flexForm['switchableControllerActions'] ) ;
+            $doneRows ++  ;
             // Update record with migrated types (this is needed because FlexFormTools
             // looks up those values in the given record and assumes they're up-to-date)
             $record['CType'] = $targetListType;
             $record['list_type'] = '';
+            $newFlexform = $record['pi_flexform'] ;
 
-            // Clean up flexform
+
+            // Clean up flexform --  does not work ...
+            /*
             $newFlexform = $this->flexFormTools->cleanFlexFormXML('tt_content', 'pi_flexform', $record);
+
+            var_dump($newFlexform);
+            die;
             $flexFormData = GeneralUtility::xml2array($newFlexform);
 
             // Remove flexform data which do not exist in flexform of new plugin
@@ -164,11 +191,17 @@ class PluginUpdater implements UpgradeWizardInterface
             } else {
                 $newFlexform = '';
             }
+            */
 
             $this->updateContentElement($record['uid'], $targetListType, $newFlexform);
         }
-
-        return true;
+        echo "\n" ;
+        echo "\n" ;
+        if ( $skippedRows > 0 ) {
+            echo "\n" ;
+            return false;
+        }
+        return true ;
     }
 
     protected function getMigrationRecords(): array
@@ -187,19 +220,22 @@ class PluginUpdater implements UpgradeWizardInterface
                 ),
                 $queryBuilder->expr()->eq(
                     'list_type',
-                    $queryBuilder->createNamedParameter('news_pi1')
+                    $queryBuilder->createNamedParameter('jvevents_events')
                 )
             )
             ->executeQuery()
             ->fetchAllAssociative();
     }
 
-    protected function getTargetListType(string $switchableControllerActions): string
+    protected function getTargetListType(array $switchableControllerActions): string
     {
         foreach (self::MIGRATION_SETTINGS as $setting) {
-            if ($setting['switchableControllerActions'] === $switchableControllerActions
+            if ( $setting['switchableControllerActions'] === $switchableControllerActions['switchableControllerActions']
             ) {
-                return $setting['targetListType'];
+                if ( $setting['defaultControllerActions'] === $switchableControllerActions['defaultControllerActions'] )
+                {
+                    return $setting['targetListType'];
+                }
             }
         }
 
@@ -254,5 +290,11 @@ class PluginUpdater implements UpgradeWizardInterface
         $output = GeneralUtility::array2xml($input, '', 0, 'T3FlexForms', $spaceInd, $options);
         $output = '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>' . LF . $output;
         return $output;
+    }
+
+    private function debugOutput( $minVerbosity , $text ) {
+        if ( $this->verboseLevel > $minVerbosity  ) {
+            echo "\n" . $text ;
+        }
     }
 }
