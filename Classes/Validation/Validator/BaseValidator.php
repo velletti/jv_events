@@ -79,9 +79,6 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
         if ( !$this->eventRepository ) {
             $this->eventRepository = GeneralUtility::makeInstance( EventRepository::class ) ;
         }
-
-        parent::__construct() ;
-
 	}
 
 
@@ -96,8 +93,7 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
     }
 
 	public function getSettings() {
-        $objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-        $configurationManager = $objectManager->get(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
+        $configurationManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
         return  $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT );
 
     }
@@ -252,6 +248,7 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
         // Settings for min length check
         if (!empty($min)) {
             $validator->options['minimum'] = $min;
+            $validator->options['maximum'] = 99999999999;
             $errorMessage =  \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate( "validator.stringlength.less" , "extbase" , array( $min )) ;
             // Not valid (properties see also: /typo3/sysext/extbase/Classes/Error/Result.php)
             if($validator->validate($propertyValue)->hasErrors()){
@@ -277,7 +274,7 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
 
         // Settings for max length check
         if (!empty($max)) {
-            $validator->options['minimum'] = NULL ;
+            $validator->options['minimum'] = 0 ;
             $validator->options['maximum'] = $max;
             $errorMessage =  \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate( "validator.stringlength.exceed" , "extbase" , array( $max )) ;
             // Not valid (properties see also: /typo3/sysext/extbase/Classes/Error/Result.php)

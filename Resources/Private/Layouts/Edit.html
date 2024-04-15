@@ -1,12 +1,11 @@
 <f:if condition="{settings.ccsFile}">
-	<style>@import url("{settings.ccsFile}");</style>
+	<f:asset.css identifier="jveventscss">{settings.ccsFile}</f:asset.css>
 
 </f:if>
 <script>
     var CKEDITOR_BASEPATH = '/typo3conf/ext/jv_events/Resources/Public/JavaScript/ckeditor/';
 </script>
-<script type="text/javascript" src="/typo3conf/ext/jv_events/Resources/Public/JavaScript/ckeditor/ckeditor.js"></script>
-
+<f:asset.script identifier="ckeditorfe">EXT:jv_events/Resources/Public/JavaScript/ckeditor/ckeditor.js</f:asset.script>
 
 <f:flashMessages as="flashMessages">
 	<f:if condition="{flashMessages}">

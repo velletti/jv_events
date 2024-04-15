@@ -10,7 +10,7 @@
             <f:if condition="{output.feuser.isOrganizer}">
                 <f:if condition="{settings.pageIds.editEvent}">
 
-                    <f:link.action pageUid="{settings.pageIds.editEvent}" class="nav-link  px-1" title="Edit Event" action="edit" controller="Event"  pluginName="Events" arguments="{event: output.event.eventId}">
+                    <f:link.action pageUid="{settings.pageIds.editEvent}" class="nav-link  px-1" title="Edit Event"  extensionName="JvEvents" action="edit" controller="Event"  pluginName="Event" arguments="{event: output.event.eventId}">
                         <button class="btn btn-outline-primary btn-sm rounded-circle" href="#">
                             <i class="fas fa-edit "></i>
                         </button>
@@ -39,7 +39,7 @@
                     </span>
 
 
-                    <f:link.action id="jv-events-cancelEvent-link" absolute="true"  pageUid="{settings.pageIds.editEvent}" class="nav-link  px-1" title="Cancel Event" action="cancel" controller="Event"  pluginName="Events" arguments="{event: output.event.eventId}">
+                    <f:link.action id="jv-events-cancelEvent-link" absolute="true"  pageUid="{settings.pageIds.editEvent}" class="nav-link  px-1" title="Cancel Event" extensionName="JvEvents"  action="cancel" controller="Event"  pluginName="Event" arguments="{event: output.event.eventId}">
                         <input id="jv-events-cancelEvent"   type="checkbox" {f:if(condition: '{output.event.canceled}' , else : 'checked' )} data-size="small" data-onstyle="primary" data-offstyle="secondary" data-toggle="toggle" data-style="ios " data-on="{f:if(condition: '{output.event.canceled}' , else: 'ON' , then: '..' )}" data-off="{f:if(condition: '{output.event.canceled}' , then:'Off' , else: '..' )}">
                     </f:link.action>
 
@@ -157,7 +157,7 @@
                     <f:variable name="deleteModalFooter">
                         <f:format.raw>
                             <f:spaceless>
-                                <f:link.action id="jv_events_delete_btn" pageUid="{settings.pageIds.editEvent}"   class="nav-link" title="delete Event" action="delete" controller="Event" pluginName="Events"  arguments="{event: output.event.eventId , deleteFutureEvents: 0}">
+                                <f:link.action id="jv_events_delete_btn" pageUid="{settings.pageIds.editEvent}"   class="nav-link" title="delete Event"  extensionName="JvEvents"  action="delete" controller="Event" pluginName="Event"  arguments="{event: output.event.eventId , deleteFutureEvents: 0}">
                                     <button class="btn btn-primary btn-sm " href="#">
                                         <i class="fas fa-trash "></i> <span class="mx-1">
                                         <f:translate key="event_delete_really_button">
@@ -165,7 +165,7 @@
                                         </f:translate></span>
                                     </button>
                                 </f:link.action>
-                                <f:link.action id="jv_events_delete_btn_all" pageUid="{settings.pageIds.editEvent}" style="display:none;"  class="nav-link" title="delete Event" action="delete" controller="Event"  pluginName="Events" arguments="{event: output.event.eventId , deleteFutureEvents: 1}">
+                                <f:link.action id="jv_events_delete_btn_all" pageUid="{settings.pageIds.editEvent}" style="display:none;"  class="nav-link" title="delete Event"  extensionName="JvEvents" action="delete" controller="Event"  pluginName="Event" arguments="{event: output.event.eventId , deleteFutureEvents: 1}">
                                     <button class="btn btn-primary btn-sm " href="#">
                                         <i class="fas fa-trash "></i> {output.event.sameMasterId}x <span class="mx-1"><f:translate key="event_delete_really_button">
                                      Delete really!
@@ -313,7 +313,7 @@
 
 
 <f:section name="renderCopyLink">
-    <f:link.action pageUid="{settings.pageIds.editEvent}" class="mr-2" title="copy Event - {msgtext}" action="edit" controller="Event"  pluginName="Events"  arguments="{event: eventId, copy2Day: copy2Day, amount: amount}">
+    <f:link.action pageUid="{settings.pageIds.editEvent}" class="mr-2" title="copy Event - {msgtext}"  extensionName="JvEvents" action="edit" controller="Event"  pluginName="Event"  arguments="{event: eventId, copy2Day: copy2Day, amount: amount}">
         <button class="btn btn-primary btn-sm mb-2" href="#">
             <i class="fas fa-copy "></i> <span class="mx-1">{msgtext}</span>
         </button>

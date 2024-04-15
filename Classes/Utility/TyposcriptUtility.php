@@ -43,6 +43,7 @@ class TyposcriptUtility{
     public static function loadTypoScriptFromRequest($request, $extKey = '' , $getConstants = false  ) {
 
         $ts = $request->getAttribute('frontend.typoscript')->getSetupArray();
+
         if( $getConstants ) {
             // Todo get Constants  is untestet
             if(!empty($extKey)){
@@ -57,6 +58,7 @@ class TyposcriptUtility{
                 $ts = self::removeDotsFromTypoScriptArray($ts['plugin.']);
             }
         }
+        return $ts ;
     }
 
 	/**

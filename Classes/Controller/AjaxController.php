@@ -679,6 +679,7 @@ class AjaxController extends BaseController
         $renderer->assign('output' , $output) ;
         $this->settings['Ajax']['Action'] = "Main" ;
         $renderer->assign('settings' , $this->settings ) ;
+
         $returnMain = str_replace( array( "\n" , "\r" , "\t" , "    " , "   " , "  ") , array("" , "" , "" , " " , " " , " " ) , trim( $renderer->render() )) ;
 
         $this->settings['Ajax']['Action'] = "Single" ;
