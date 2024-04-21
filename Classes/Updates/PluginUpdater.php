@@ -22,64 +22,103 @@ use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Updates\DatabaseUpdatedPrerequisite;
 use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
+use function Webmozart\Assert\Tests\StaticAnalysis\inArray;
 
 class PluginUpdater implements UpgradeWizardInterface
 {
+
     private const MIGRATION_SETTINGS = [
         [
             'switchableControllerActions' => 'Event->list;Event->search',
             'targetListType' => 'jvevents_events',
-            'defaultOrganizerAction' => '-',
+            'defaultOrganizerAction' => '',
+            'single' => false ,
+            'register' => false ,
+        ],
+        [
+            'switchableControllerActions' => 'Event->show;Event->new;Event->create;Event->edit;Event->update;Event->register;Event->confirm;Event->delete;Registrant->new;Registrant->create;Registrant->list;Registrant->show;Registrant->confirm;Registrant->delete;Registrant->checkQrcode;Registrant->checkQrcode',
+            'targetListType' => 'jvevents_registrant',
+            'defaultOrganizerAction' => '',
+            'single' => true ,
+            'register' => true ,
         ],
         [
             'switchableControllerActions' => 'Event->show;Event->new;Event->create;Event->edit;Event->update;Event->register;Event->confirm;Event->delete;Registrant->new;Registrant->create;Registrant->list;Registrant->show;Registrant->confirm;Registrant->delete;Registrant->checkQrcode;Registrant->checkQrcode',
             'targetListType' => 'jvevents_event',
-            'defaultOrganizerAction' => '-',
+            'defaultOrganizerAction' => '',
+            'single' => true ,
+            'register' => false ,
         ],
         [
             'switchableControllerActions' => 'Event->new;Event->show;Event->create;Event->edit;Event->update;Event->delete;Event->copy;Event->cancel;',
             'targetListType' => 'jvevents_event',
-            'defaultOrganizerAction' => '-',
+            'defaultOrganizerAction' => '',
+            'register' => false ,
         ],
         [
             'switchableControllerActions' => 'Location->list;Location->show;Location->new;Location->create;Location->edit;Location->update;Location->delete;Location->setDefault;',
             'targetListType' => 'jvevents_locations',
-            'defaultOrganizerAction' => '-',
+            'defaultOrganizerAction' => '',
+            'single' => false ,
+            'register' => false ,
+        ],
+        [
+            'switchableControllerActions' => 'Location->list;Location->show;Location->new;Location->create;Location->edit;Location->update;Location->delete;Location->setDefault',
+            'targetListType' => 'jvevents_locations',
+            'defaultOrganizerAction' => '',
+            'single' => false ,
+            'register' => false ,
         ],
 
         [
             'switchableControllerActions' => 'Location->list;Location->show;Location->new;Location->create;Location->edit;Location->update;Location->delete;Location->setDefault;',
             'targetListType' => 'jvevents_location',
-            'defaultOrganizerAction' => '-',
+            'defaultOrganizerAction' => '',
+            'single' => true ,
+            'register' => false ,
         ],
         [
             'switchableControllerActions' => 'Location->list;Location->show;Location->new;Location->create;Location->edit;Location->update;Location->delete;',
             'targetListType' => 'jvevents_location',
-            'defaultOrganizerAction' => '-',
+            'defaultOrganizerAction' => '',
+            'single' => true ,
+            'register' => false ,
         ],
-        [
+
+          [
             'switchableControllerActions' => 'Organizer->assist;Organizer->list;Organizer->activate;Organizer->show;Organizer->new;Organizer->create;Organizer->edit;Organizer->update;Organizer->delete;',
             'targetListType' => 'jvevents_organizer',
             'defaultOrganizerAction' => 'list',
+              'single' => true ,
+              'register' => false ,
         ],
-        [
-            'switchableControllerActions' => 'Organizer->assist;Organizer->list;Organizer->activate;Organizer->show;Organizer->new;Organizer->create;Organizer->edit;Organizer->update;Organizer->delete;',
-            'targetListType' => 'jvevents_organizers',
-            'defaultOrganizerAction' => '-',
-        ],
+
         [
             'switchableControllerActions' => 'Organizer->assist;Organizer->list;Organizer->activate;Organizer->show;Organizer->new;Organizer->create;Organizer->edit;Organizer->update;Organizer->delete;',
             'targetListType' => 'jvevents_assist',
             'defaultOrganizerAction' => 'assist',
+            'single' => true ,
+            'register' => false ,
         ],
         [
             'switchableControllerActions' => 'Organizer->assist;Organizer->list;Organizer->show;Organizer->new;Organizer->create;Organizer->edit;Organizer->update;Organizer->delete;',
             'targetListType' => 'jvevents_organizer',
             'defaultOrganizerAction' => 'assist',
+            'single' => true ,
+            'register' => false ,
+        ],
+        [
+            'switchableControllerActions' => 'Organizer->assist;Organizer->list;Organizer->activate;Organizer->show;Organizer->new;Organizer->create;Organizer->edit;Organizer->update;Organizer->delete;',
+            'targetListType' => 'jvevents_organizers',
+            'defaultOrganizerAction' => '',
+            'single' => false ,
+            'register' => false ,
         ],
 
-
     ];
+
+    protected array $singlePids = [] ;
+    protected array $registerPids = [] ;
 
     /** @var FlexFormService */
     protected $flexFormService;
@@ -144,6 +183,11 @@ class PluginUpdater implements UpgradeWizardInterface
         if (  str_starts_with(  $_SERVER['argv'][3] , "-v" )) {
             $this->verboseLevel = 64 ;
         }
+        $this->setSinglePids( $records ) ;
+        $this->debugOutput( 32,  "\nSinglePids:" . implode( "," , $this->singlePids  ) ) ;
+
+        $this->setRegisterPids( ) ;
+        $this->debugOutput( 32,  "\nRegisterPids:" . implode( "," ,  $this->registerPids ) ) ;
 
         // Initialize the global $LANG object if it does not exist.
         // This is needed by the ext:form flexforms hook in Core v11
@@ -152,16 +196,16 @@ class PluginUpdater implements UpgradeWizardInterface
         $skippedRows = 0 ;
         foreach ($records as $record) {
             $flexForm = $this->flexFormService->convertFlexFormContentToArray($record['pi_flexform']);
-            $targetListType = $this->getTargetListType($flexForm ?? '');
+            $targetListType = $this->getTargetListType($flexForm ?? '' , $record['pid']);
 
             $targetListType = $this->eventDispatcher->dispatch(new PluginUpdaterListTypeEvent($flexForm, $record, $targetListType))->getListType();
 
             if ($targetListType === '') {
-                $this->debugOutput( 0,  "\nUid:" . $record['uid'] . " Skipped: : " . $flexForm['switchableControllerActions'] ) ;
+                $this->debugOutput( 0,  "\nPid:" . $record['pid'] . " - Uid:" . $record['uid'] . " Skipped: : " . $flexForm['switchableControllerActions'] ) ;
                 $skippedRows ++ ;
                 continue;
             }
-            $this->debugOutput( 0,  "\nUid:" . $record['uid'] . " New: " . $targetListType . " from : " . $flexForm['switchableControllerActions'] ) ;
+            $this->debugOutput( 0,  "\nPid:" . $record['pid'] . " - Uid:" . $record['uid'] . " New: " . $targetListType . " from : " . $flexForm['switchableControllerActions'] ) ;
             $doneRows ++  ;
             // Update record with migrated types (this is needed because FlexFormTools
             // looks up those values in the given record and assumes they're up-to-date)
@@ -171,29 +215,26 @@ class PluginUpdater implements UpgradeWizardInterface
 
 
             // Clean up flexform --  does not work ...
-            /*
+
             $newFlexform = $this->flexFormTools->cleanFlexFormXML('tt_content', 'pi_flexform', $record);
 
-            var_dump($newFlexform);
-            die;
-            $flexFormData = GeneralUtility::xml2array($newFlexform);
 
-            // Remove flexform data which do not exist in flexform of new plugin
-            foreach ($flexFormData['data'] as $sheetKey => $sheetData) {
-                // Remove empty sheets
-                if (!count($flexFormData['data'][$sheetKey]['lDEF']) > 0) {
-                    unset($flexFormData['data'][$sheetKey]);
-                }
-            }
+           $flexFormData = GeneralUtility::xml2array($newFlexform);
 
-            if (count($flexFormData['data']) > 0) {
-                $newFlexform = $this->array2xml($flexFormData);
-            } else {
-                $newFlexform = '';
-            }
-            */
+           // Remove flexform data which do not exist in flexform of new plugin
+           foreach ($flexFormData['data'] as $sheetKey => $sheetData) {
+               // Remove empty sheets
+               if (!count($flexFormData['data'][$sheetKey]['lDEF']) > 0) {
+                   unset($flexFormData['data'][$sheetKey]);
+               }
+           }
+           if (count($flexFormData['data']) > 0) {
+               $newFlexform = $this->array2xml($flexFormData);
+               $this->updateContentElement($record['uid'], $targetListType, $newFlexform);
+           } else {
+               $this->debugOutput( 0,  "\nPid:" . $record['pid'] . " - Uid:" . $record['uid'] . " Skipped: " . $targetListType . " Empty Flexform!! : " . $record['pi_flexform'] ) ;
+           }
 
-            $this->updateContentElement($record['uid'], $targetListType, $newFlexform);
         }
         echo "\n" ;
         echo "\n" ;
@@ -202,6 +243,39 @@ class PluginUpdater implements UpgradeWizardInterface
             return false;
         }
         return true ;
+    }
+    protected function setSinglePids($records) {
+        foreach ($records as $record) {
+            $flexForm = $this->flexFormService->convertFlexFormContentToArray($record['pi_flexform']);
+            $pid = isset( $flexForm['settings']['detailPid'] ) ? $flexForm['settings']['detailPid']  :  0 ;
+            if ( !in_array($pid , $this->singlePids ) && (int)$pid > 0 ) {
+                $this->singlePids[] = (int)$pid ;
+            }
+        }
+    }
+
+    protected function setRegisterPids()
+    {
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_jvevents_domain_model_event');
+        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+        $rows = $queryBuilder
+            ->select('registration_form_pid' )
+            ->from('tx_jvevents_domain_model_event')
+            ->groupBy('registration_form_pid')
+            ->where(
+                $queryBuilder->expr()->gt(
+                    'registration_form_pid',
+                    $queryBuilder->createNamedParameter(0 , Connection::PARAM_INT)
+                ),
+            )
+            ->executeQuery()
+            ->fetchAllAssociative();
+        foreach ($rows as $row) {
+            $this->registerPids[] = $row['registration_form_pid'] ;
+        }
+
     }
 
     protected function getMigrationRecords(): array
@@ -222,19 +296,48 @@ class PluginUpdater implements UpgradeWizardInterface
                     'list_type',
                     $queryBuilder->createNamedParameter('jvevents_events')
                 )
+                ,
+                $queryBuilder->expr()->gt(
+                    'pid',
+                    $queryBuilder->createNamedParameter(0 , Connection::PARAM_INT)
+                )
             )
             ->executeQuery()
             ->fetchAllAssociative();
     }
 
-    protected function getTargetListType(array $switchableControllerActions): string
+    protected function getTargetListType(array $ff , int $pid ): string
     {
+        $this->debugOutput( 33,  "\nPid:" . $pid. " - value: " . $ff['switchableControllerActions'] ) ;
         foreach (self::MIGRATION_SETTINGS as $setting) {
-            if ( $setting['switchableControllerActions'] === $switchableControllerActions['switchableControllerActions']
+
+            if (    str_replace( ";" , "" , $setting['switchableControllerActions'] )
+                === str_replace( ";" , "" , $ff['switchableControllerActions'] )
             ) {
-                if ( $setting['defaultControllerActions'] === $switchableControllerActions['defaultControllerActions'] )
-                {
-                    return $setting['targetListType'];
+                // first check if EVENT  Registration Form Page.
+                $this->debugOutput( 33,  "test: " . $setting['targetListType'] . ($setting['register'] ? " | is Register" : '' ) ) ;
+                if ( in_array($pid , $this->registerPids ) && $setting['register']) {
+                    if ( trim( (string)$setting['defaultControllerActions'])=== trim((string)$ff['defaultControllerActions'] ))
+                    {
+                        return $setting['targetListType'];
+                    }
+                } else {
+                    $this->debugOutput( 33,  "PID: " . $pid . " not in " . implode( "," , $this->registerPids) ) ;
+
+                    // Second check if EVENT / Location / Organizer Single Page.
+                    if ( $setting['single'] ) {
+                        if ( !in_array($pid , $this->singlePids)) {
+                            if ( trim( (string)$setting['defaultControllerActions'])=== trim((string)$ff['defaultControllerActions'] ))
+                            {
+                                return $setting['targetListType'];
+                            }
+                        }
+                    } else {
+                        if ( trim( (string)$setting['defaultControllerActions'])=== trim((string)$ff['defaultControllerActions'] ))
+                        {
+                            return $setting['targetListType'];
+                        }
+                    }
                 }
             }
         }

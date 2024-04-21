@@ -64,6 +64,8 @@ class EventController extends BaseController
 	public function initializeAction() {
         $this->timeStart = $this->microtime_float() ;
 	    $this->debugArray[] = "Start:" . intval(1000 * $this->timeStart ) . " Line: " . __LINE__ ;
+        var_dump( $this->request->getArguments());
+        die; 
 		if ($this->request->hasArgument('action')) {
 
 			if ( in_array( $this->request->getArgument('action') , array("show" , "edit" , "update" , "create" , "delete" , "cancel") )) {

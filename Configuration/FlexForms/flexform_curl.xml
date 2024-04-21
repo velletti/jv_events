@@ -6,20 +6,6 @@
                 </sheetTitle>
                 <type>array</type>
                 <el>
-                    <switchableControllerActions>
-                        <label>Select function</label>
-                        <onChange>reload</onChange>
-                        <config>
-                            <type>select</type>
-                            <renderType>selectSingle</renderType>
-                            <items>
-                                <numIndex index="0">
-                                    <label>Curl EventList</label>
-                                    <value>Curl->externalEvents</value>
-                                </numIndex>
-                            </items>
-                        </config>
-                    </switchableControllerActions>
                     <settings.externalUrl>
                         <label>External URLs:</label>
                         <config>
@@ -61,7 +47,6 @@
         </sDEF>
         <sDEF2>
             <ROOT>
-                <displayCond>FIELD:sDEF.switchableControllerActions:=:Curl->externalEvents</displayCond>
                 <sheetTitle>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.EventListView
                 </sheetTitle>
                 <type>array</type>
@@ -299,7 +284,6 @@
         </sDEF2>
         <sDEFfilter>
             <ROOT>
-                <displayCond>FIELD:sDEF.switchableControllerActions:=:Curl->externalEvents</displayCond>
                 <sheetTitle>
                     LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.EventListFilterLayout
                 </sheetTitle>
@@ -853,9 +837,6 @@
             <ROOT>
                 <sheetTitle>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.EventDetailView
                 </sheetTitle>
-                <displayCond>
-                    FIELD:sDEF.switchableControllerActions:=:Event->show;Event->new;Event->create;Event->edit;Event->update;Event->register;Event->confirm;Event->delete;Registrant->new;Registrant->create;Registrant->list;Registrant->show;Registrant->confirm;Registrant->delete;Registrant->checkQrcode;Registrant->checkQrcode
-                </displayCond>
                 <type>array</type>
                 <el>
                     <settings.LayoutSingle>

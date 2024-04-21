@@ -14,7 +14,8 @@ if (!defined('TYPO3')) {
 	// non-cacheable actions
 	array(
 		\JVelletti\JvEvents\Controller\EventController::class => '',
-	)
+	),
+    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
 );
 
 
@@ -27,7 +28,8 @@ if (!defined('TYPO3')) {
     // non-cacheable actions
     array(
         \JVelletti\JvEvents\Controller\EventController::class => 'new, create, edit, update, delete,copy,cancel',
-    )
+    ),
+    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
 );
 
 
@@ -40,7 +42,8 @@ if (!defined('TYPO3')) {
     // non-cacheable actions
     array(
         \JVelletti\JvEvents\Controller\OrganizerController::class => '',
-    )
+    ),
+    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
 );
 
 
@@ -53,7 +56,8 @@ if (!defined('TYPO3')) {
     // non-cacheable actions
     array(
         \JVelletti\JvEvents\Controller\OrganizerController::class => 'new,create,edit,update,delete,activate',
-    )
+    ),
+    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
@@ -65,7 +69,8 @@ if (!defined('TYPO3')) {
     // non-cacheable actions
     array(
         \JVelletti\JvEvents\Controller\OrganizerController::class => 'assist,activate',
-    )
+    ),
+    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
 );
 
 
@@ -79,7 +84,8 @@ if (!defined('TYPO3')) {
     array(
         \JVelletti\JvEvents\Controller\LocationController::class => '',
 
-    )
+    ),
+    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
@@ -92,7 +98,8 @@ if (!defined('TYPO3')) {
     array(
         \JVelletti\JvEvents\Controller\LocationController::class => 'new, create, edit, update, delete,setDefault',
 
-    )
+    ),
+    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
@@ -104,7 +111,8 @@ if (!defined('TYPO3')) {
     // non-cacheable actions
     array(
         \JVelletti\JvEvents\Controller\RegistrantController::class => 'list,new,create,delete,confirm,checkQrcode',
-    )
+    ),
+    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
@@ -115,18 +123,20 @@ if (!defined('TYPO3')) {
     ),
     array(
         \JVelletti\JvEvents\Controller\AjaxController::class  => 'eventMenu,locationList,organizerList,eventList,eventDisable,eventUnlink',
-    )
+    ),
+    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
     'JvEvents' ,
-    'search',
+    'Search',
     array(
         \JVelletti\JvEvents\Controller\SearchController::class  => 'search',
     ),
     // non-cacheable actions
     array(
-    )
+    ),
+    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
@@ -138,7 +148,8 @@ if (!defined('TYPO3')) {
     // non-cacheable actions
     array(
         \JVelletti\JvEvents\Controller\CurlController::class  => 'externalEvents',
-    )
+    ),
+    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
 );
 
 // Register icons

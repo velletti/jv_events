@@ -2,23 +2,27 @@
     <sheets>
         <sDEF>
             <ROOT>
-                <sheetTitle>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.Function
-                </sheetTitle>
+                <TCEforms>
+                    <sheetTitle>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.Function
+                    </sheetTitle>
+                </TCEforms>
                 <type>array</type>
                 <el>
                     <settings.LayoutList>
-                        <label>
-                            LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms_additional.layout
-                        </label>
-                        <config>
-                            <type>user</type>
-                            <renderType>jvEventsCustomLayoutElement</renderType>
-                            <size>30</size>
-                            <userFunc>JVelletti\JvEvents\UserFunc\Flexforms->selectLayout</userFunc>
-                            <parameters>
-                                <layoutType>list.</layoutType>
-                            </parameters>
-                        </config>
+                        <TCEforms>
+                            <label>
+                                LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms_additional.layout
+                            </label>
+                            <config>
+                                <type>user</type>
+                                <renderType>jvEventsCustomLayoutElement</renderType>
+                                <size>30</size>
+                                <userFunc>JVelletti\JvEvents\UserFunc\Flexforms->selectLayout</userFunc>
+                                <parameters>
+                                    <layoutType>list.</layoutType>
+                                </parameters>
+                            </config>
+                        </TCEforms>
                     </settings.LayoutList>
                     <settings.HideEventListLink>
                         <label>
