@@ -84,7 +84,7 @@ class SlugUtility {
          if( $slug ) {
              $userQuery = $queryBuilder->andWhere( $queryBuilder->expr()->eq($field, $queryBuilder->createNamedParameter( $slug , Connection::PARAM_STR )) ) ;
          }
-        if ( $userQuery->executeQuery()->fetchColumn(0)  < 1 ) {
+        if ( $userQuery->executeQuery()->fetchFirstColumn()  < 1 ) {
             return true ;
         }
         return false ;

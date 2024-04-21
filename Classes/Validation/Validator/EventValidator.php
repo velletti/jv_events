@@ -54,11 +54,10 @@ class EventValidator extends BaseValidator {
         $isValid = $this->securityChecks( $event->getYoutubeLink() , 'youtubeLink' , $isValid ) ;
         $isValid = $this->securityChecks( $event->getRegistrationUrl() , 'registrationUrl' , $isValid ) ;
         $isValid = $this->securityChecks( $event->getPriceReducedText() , 'priceReducedText' , $isValid ) ;
-
         $isValid = $this->isNumeric( $event->getEventCategory() , 'eventCategory' , $isValid , "No Category selected") ;
 
 
-        $eventArray = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST("tx_jvevents_events") ;
+        $eventArray = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST("tx_jvevents_event") ;
         $eventCatUid = intval($eventArray['event']['eventCategory']) ;
         $isValid = $this->isNumeric( $eventCatUid , 'eventCategory' , $isValid , "No Category selected") ;
 

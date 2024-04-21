@@ -34,7 +34,7 @@
                     <br/>
 
                     <f:link.page pageUid="{settings.pageIds.addMedia}" noCache="true" class="nav-link  px-1" title="Add Teaser Image "
-                                 additionalParams="{tx_jvmediaconnector_connector: {action: 'list', controller: 'Media' ,  reference: {id: event.uid, table: 'tx_jvevents_domain_model_event' , fieldname: 'teaser_image' , maxRelations: '1' , returnPid: settings.pageId , returnArray: {tx_jvevents_events: {action: 'edit', event: event.uid }}}}}">
+                                 additionalParams="{tx_jvmediaconnector_connector: {action: 'list', controller: 'Media' ,  reference: {id: event.uid, table: 'tx_jvevents_domain_model_event' , fieldname: 'teaser_image' , maxRelations: '1' , returnPid: settings.pageId , returnArray: {tx_jvevents_event: {action: 'edit', event: event.uid }}}}}">
                         <button class="btn btn-outline-primary btn-xs rounded-circle" href="#">
                             <i class="fas fa-image"></i>
                         </button>
@@ -140,7 +140,7 @@
 
                         <div class="jv_events_save_related_events alert alert-dismissible bg-white">
                             <f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowCheckbox"
-                                      arguments="{object: '', property: 'changeFutureEvents' , onText: 'YES', offText: 'no' ,name:'tx_jvevents_events[changeFutureEvents]' , checked: 'false' , label: '' , translationKey: 'tx_jvevents_domain_model_event.edit.repeating.uebernehmen' ,  mandatory: '' }" />
+                                      arguments="{object: '', property: 'changeFutureEvents' , onText: 'YES', offText: 'no' ,name:'tx_jvevents_event[changeFutureEvents]' , checked: 'false' , label: '' , translationKey: 'tx_jvevents_domain_model_event.edit.repeating.uebernehmen' ,  mandatory: '' }" />
 
                             <p>
                                 <f:translate key="tx_jvevents_domain_model_event.edit.repeating.effected">Betroffene Termine</f:translate>:
