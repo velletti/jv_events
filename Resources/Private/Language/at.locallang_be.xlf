@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-10-17T11:11:09Z">
+		<header>
+			<generator>LFEditor</generator>
+		</header>
+		<body>
+		<trans-unit id="extmng.BackGroundColorBody" approved="yes">
+			<source>set background Color around email </source>
+			<target>Hintergrundfarbe für EMails definieren</target>
+		</trans-unit>
+		<trans-unit id="extmng.adminUserGroups" approved="yes">
+			<source>Leave Empty or Enter list of UIDs of Admin Groups ( actually unused) </source>
+			<target>Leer lassen oder eine Liste von UID von ADMIN Gruppen eintragen ( derzeit ungenutzt)</target>
+		</trans-unit>
+		<trans-unit id="extmng.defaultAllDayEvent" approved="yes" xml:space="preserve">
+			<source>set Default all Day Event = 1 (this hides the fields  start- and endtime)</source>
+			<target>Setze Ganztages Event als Voreinstellung</target>
+		</trans-unit>
+		<trans-unit id="extmng.defaultNeedToConfirm" approved="yes">
+			<source>Set Default User needs To Confirm via Email = 1</source>
+			<target>Setze &quot;Teilnenmer muss bestätigen&quot; als Voreinstellung</target>
+		</trans-unit>
+		<trans-unit id="extmng.defaultNotifyOrganizer" approved="yes">
+			<source>Set Default notify Organizer = 1</source>
+			<target>Setze &quot;Veranstalter informieren&quot; als Voreinstellung</target>
+		</trans-unit>
+		<trans-unit id="extmng.defaultNotifyRegistrant" approved="yes">
+			<source>Set Default notifiy Registrant = 1</source>
+			<target>Setze &quot;Teilnehmer informieren&quot; als Voreinstellung</target>
+		</trans-unit>
+		<trans-unit id="extmng.defaultRegistrationFormPid" approved="yes">
+			<source>set Default Show Registration Form on this PID</source>
+			<target>Setze &quot;mit Registrierungsformular&quot; als Voreinstellung</target>
+		</trans-unit>
+		<trans-unit id="extmng.defaultRegistrationPid" approved="yes">
+			<source>set Default Store Registations on this PID</source>
+			<target>Setze &quot;Seiten ID der Registrierungen&quot; als Voreinstellung</target>
+		</trans-unit>
+		<trans-unit id="extmng.emailBackGroundColor" approved="yes">
+			<source>set Email background Color behind text</source>
+			<target>setze Hintergrundfarbe hinter Textelementen</target>
+		</trans-unit>
+		<trans-unit id="extmng.emailBackGroundColor2" approved="yes">
+			<source>set 2 Background Color (bottons and headline)</source>
+			<target>setze Hintergrundfarbe hinter Textelementen Typ2 (Überschrift und Buttons)</target>
+		</trans-unit>
+		<trans-unit id="extmng.emailFontColor" approved="yes">
+			<source>set Default text Color </source>
+			<target>Setze Default Textfarbe für Emails</target>
+		</trans-unit>
+		<trans-unit id="extmng.emailFontColor2" approved="yes" xml:space="preserve">
+			<source>set 2 Font  Color (bottons and headline)</source>
+			<target>Setze Default Textfarbe für Emails Typ2 (Überschriften und Buttons)</target>
+		</trans-unit>
+		<trans-unit id="extmng.emailFontFamily" approved="yes">
+			<source>set Font Family for Emails Please do NO use ' or &quot; !! </source>
+			<target>Schriftfamilie der Emails ( Keine &quot; &quot; und keine ' &quot; verwenden!</target>
+		</trans-unit>
+		<trans-unit id="extmng.enableCitrix" approved="yes">
+			<source>Show Options to store the Event registrants to Citrix (as GoTo Webinar Registrants)</source>
+			<target>Zeige die Option um Events nach Citrix zu speichern</target>
+		</trans-unit>
+		<trans-unit id="extmng.enableSalesForce" approved="yes">
+			<source>Show Options to store Events and registrations to Salesforce (Needs a special settings and custom Object in SalesForce!)</source>
+			<target>Zeige die Option um Events nach Salesforce zu speichern</target>
+		</trans-unit>
+		<trans-unit id="extmng.hasLoginUser" approved="yes">
+			<source>Show Options to restrict Access to an Event (only usefull if you have a frontend Login)</source>
+			<target>Zeige die Option um den Zugriff auf Events zu beschränken (nur sinnvoll mit Frontend User login)</target>
+		</trans-unit>
+		<trans-unit id="extmng.showImporter" approved="yes">
+			<source>Show Importer From CAL : This is just a plan and actually doing nothing !</source>
+			<target>zeige Import Modul von CAL (Falls das jemand mal sponsoren möchte)</target>
+		</trans-unit>
+		<trans-unit id="extmng.showIndividualMailTemplatesPerEvent" approved="yes">
+			<source>Show separate Fields with Subject and Mail text for each event to create individual Emails per Event : (This is just a plan and Actually doing nothing !)</source>
+			<target>Show separate Fields with Subject and Mail text for each event to create individual Emails per Event : (This is just a plan and Actually doing nothing !)</target>
+		</trans-unit>
+		<trans-unit id="extmng.showRecurring" approved="yes">
+			<source>Use Recurring Events Model. May Slow down frontend List Views : THIS is Still under development</source>
+			<target>Option: Wiederkehre Veranstaltungen aktivieren. Dies kann die Frontend darstellung verlangsamen. (ist auch nur eine mögliche Option, da ist nichts programmiert)</target>
+		</trans-unit>
+		<trans-unit id="flexforms.DataSettings" approved="yes">
+			<source>Data Settings</source>
+			<target>Einstellungen Daten</target>
+		</trans-unit>
+		<trans-unit id="flexforms.EventDetailView" approved="yes">
+			<source>Event Details</source>
+			<target>Veranstaltungsdetails </target>
+		</trans-unit>
+		<trans-unit id="flexforms.EventListView" approved="yes">
+			<source>Event List</source>
+			<target>Veranstaltungsliste</target>
+		</trans-unit>
+		<trans-unit id="flexforms.HideEventListLink">
+            <source>Hide Event List Link</source>
+            <target>Link Veranstaltungsliste verbergen</target>
+        </trans-unit>
+		<trans-unit id="flexforms.Function" approved="yes">
+			<source>Function</source>
+			<target>Funktion</target>
+		</trans-unit>
+		<trans-unit id="flexforms.ListView" approved="yes">
+			<source>List view</source>
+			<target>Listen Darstellung</target>
+		</trans-unit>
+		<trans-unit id="flexforms.RegistrationView" approved="yes">
+			<source>Registration</source>
+			<target>Registrierung</target>
+		</trans-unit>
+		<trans-unit id="flexforms_additional.detailPid" approved="yes">
+			<source>Show Event Details Page ID</source>
+			<target>zeige Veranstaltungsdetails auf folgender Seite (PID) </target>
+		</trans-unit>
+		<trans-unit id="flexforms_additional.eventListPid" approved="yes">
+            <source>Show Event Searchresults on Page ID</source>
+            <target>zeige Suchergebnisse auf folgender Seite (PID) </target>
+        </trans-unit>
+
+		<trans-unit id="flexforms_additional.layout" approved="yes">
+			<source>Select layout Style for Frontend rendering</source>
+			<target>Layout für das Frontend auswählen</target>
+		</trans-unit>
+		<trans-unit id="flexforms_additional.registerPid" approved="yes">
+			<source>Show Registration Form Page ID</source>
+			<target>zeige Registrierungsformular auf folgender Seite (PID) </target>
+		</trans-unit>
+		<trans-unit id="plugin.filter.Categories" approved="yes">
+			<source>Show Only Events with these Categories (leave empty to show all)</source>
+			<target>zeige nur Veranstaltungen mit diesen Kategorien (leer lassen, um alle zu zeigen)</target>
+		</trans-unit>
+		<trans-unit id="plugin.filter.ShowAllCategories" approved="yes" xml:space="preserve">
+			<source>All Categories (If you select also this Option, the Event must have All of the other selected  Category filters)</source>
+			<target>Alle Kategorien: (Wenn Sie diese Option aktivieren, muss die Veranstaltung ALLE der zusätzlich gewählten Kategorien besitzen)</target>
+		</trans-unit>
+		<trans-unit id="plugin.filter.ShowAllTags" approved="yes">
+			<source>All Tags (If you select also this Option, the Event must have All of the other selected Tag filters)</source>
+			<target>Alle Schlagworte: (Wenn Sie diese Option aktivieren, muss die Veranstaltung ALLE der zusätzlich gewählten Schlagworte besitzen)</target>
+		</trans-unit>
+		<trans-unit id="plugin.filter.ShowFilter" approved="yes">
+			<source>Show Filter in List View</source>
+			<target>Zeige Such Filter in der Veranstaltungsliste</target>
+		</trans-unit>
+		<trans-unit id="plugin.filter.Tags" approved="yes">
+			<source>Show Only Events with these Tags</source>
+			<target>zeige nur Veranstaltungen mit diesen Schlagworten</target>
+		</trans-unit>
+		<trans-unit id="plugin.filter.TagsInFilter" approved="yes">
+            <source>Show these Tags in Filterbox</source>
+            <target>zeige nur diese Schlagworte in der Filterbox</target>
+        </trans-unit>
+
+
+		<trans-unit id="plugin.filter.notAllowedtags">
+			<source>Show NO Events with ONE of these Tags</source>
+			<target>Zeige KEINE Veranstaltungen mit EINEM dieser Schlagworten</target>
+		</trans-unit>
+
+		<trans-unit id="plugin.filter.maxDays" approved="yes">
+			<source>Show max Days Only if StartDate has Restrictions , enter 0 for no limitations) </source>
+			<target>zeige maximal x Tage (nur sinnvoll, wenn die Option Startdatum einen Wert enthält) 0 für keine Beschränkung</target>
+		</trans-unit>
+		<trans-unit id="plugin.filter.maxEvents" approved="yes">
+			<source>Show max Events (enter 0 for no limitations) </source>
+			<target>Zeige maximal x Veranstaltungen (0 für keine Beschränkung)</target>
+		</trans-unit>
+		<trans-unit id="plugin.filter.maxEventsPerPage" approved="yes" xml:space="preserve">
+			<source>Show max Events per Page (enter 0 for no limitations) </source>
+			<target>Zeige maximal x Veranstaltungen pro Seite  (0 für keine Beschränkung)</target>
+		</trans-unit>
+		<trans-unit id="plugin.filter.startDate" approved="yes">
+			<source>Show only Events when Startdate matches </source>
+			<target>Zeige Veranstaltungen nur wenn das Startdatum der Bedingung entspricht:</target>
+		</trans-unit>
+		<trans-unit id="plugin.filter.startDate.NoRestriction" approved="yes">
+			<source>No restriction</source>
+			<target>Keine Beschränkung</target>
+		</trans-unit>
+		<trans-unit id="plugin.filter.startDate.Today" approved="yes">
+			<source>Starts Today or in the Future</source>
+			<target>Startet heute oder in der Zukunft</target>
+		</trans-unit>
+		<trans-unit id="plugin.filter.startDate.Tomorrow" approved="yes">
+			<source>Starts Tomorrow or in the Future</source>
+			<target>Startet Morgen oder in der Zukunft</target>
+		</trans-unit>
+		<trans-unit id="plugin.filter.startDate.Yesterday" approved="yes">
+			<source>Starts Yesterday or in the Future</source>
+			<target>Startete gestern oder in der Zukunft</target>
+		</trans-unit>
+
+        <trans-unit id="geocoding.error" xml:space="preserve">
+            <source>Error</source>
+            <target>Fehler</target>
+        </trans-unit>
+        <trans-unit id="geocoding.error.referenceToParentWindow" xml:space="preserve">
+            <source>Reference to parent window not found!</source>
+            <target>Referenz zum öffnenden Fenster nicht gefunden!</target>
+        </trans-unit>
+        <trans-unit id="geocoding.error.geocodingNotSuccessful.part1" xml:space="preserve">
+            <source>Google Geocoding was not successful for the following reason:</source>
+            <target>Google Geocoding war aus folgendem Grund nicht erfolgreich:</target>
+        </trans-unit>
+        <trans-unit id="geocoding.error.geocodingNotSuccessful.part2" xml:space="preserve">
+            <source>(Maybe the address data is not complete? => address, city and country!)</source>
+            <target>Eventuell ist die Adresse nicht vollständig= => (Strasse, Ort oder PLZ und Land!)</target>
+        </trans-unit>
+
+
+        <trans-unit id="geocoding.page.title" xml:space="preserve">
+            <source>Google Geocoding</source>
+            <target>Google Geocoding</target>
+        </trans-unit>
+        <trans-unit id="geocoding.page.headline" xml:space="preserve">
+            <source>Google Geocoding</source>
+            <target>Google Geocoding</target>
+        </trans-unit>
+
+
+        <trans-unit id="geocoding.form.transferGeoData.label.submit" xml:space="preserve">
+            <source>Save</source>
+            <target>Speichern</target>
+        </trans-unit>
+        <trans-unit id="geocoding.form.transferGeoData.label.cancel" xml:space="preserve">
+            <source>Cancel</source>
+            <target>Abbruch</target>
+        </trans-unit>
+
+        <trans-unit id="geocoding.form.geosearch.label.searchFor" xml:space="preserve">
+            <source>Search for</source>
+            <target>Suchen nach</target>
+        </trans-unit>
+        <trans-unit id="geocoding.form.geosearch.label.find" xml:space="preserve">
+            <source>Find</source>
+            <target>Suchen</target>
+        </trans-unit>
+        <trans-unit id="geocoding.form.geosearch.label.updateMap" xml:space="preserve">
+            <source>Update Map</source>
+            <target>Position aktualisieren</target>
+        </trans-unit>
+
+
+		</body>
+	</file>
+</xliff>
