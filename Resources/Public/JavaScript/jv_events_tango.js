@@ -529,7 +529,6 @@ function jv_events_reloadList() {
                 var newQuery = host[0] + "?" ;
             }
 
-
             var param = ''
             for (var i = 0; i < arr.length; i++) {
                 param = arr[i].substr( 0, 999 ) ;
@@ -541,7 +540,11 @@ function jv_events_reloadList() {
                 }
                 if ( !param.match ( /startDate|maxDays/))
                 {
-                    newQuery += "&" + param ;
+                    if ( param.substr(0,1 ) == "&") {
+                        newQuery += param;
+                    } else {
+                        newQuery += "&" + param;
+                    }
                 }
             }
         } else {
@@ -550,12 +553,24 @@ function jv_events_reloadList() {
 
         newQuery += "&tx_jvevents_events[overruleFilter][startDate]=" + jQuery("#overruleFilterStartDate").val() ;
         if( jQuery("#overruleFilterMaxDays").length && jQuery("#overruleFilterMaxDays").val() > 0 ) {
-            let maxDays =  Math.min(  Math.max( jQuery("#overruleFilterMaxDays").val() , 1 ) , 31 ) ;
+            let maxDays =  Math.min(  Math.max( jQuery("#overruleFilterMaxDays").val() , 1 ) , 365 ) ;
 
             newQuery += "&tx_jvevents_events[overruleFilter][maxDays]=" + maxDays ;
         }
+        newQuery = newQuery.replace(/&&+/g, '&');
         var cHash = newQuery.hashCode() ;
-        // console.log( newQuery) ;
+        window.location.href =  newQuery + "&cHash=" + cHash ;        newQuery += "&tx_jvevents_events[overruleFilter][startDate]=" + jQuery("#overruleFilterStartDate").val() ;
+        if( jQuery("#overruleFilterMaxDays").length && parseInt( jQuery("#overruleFilterMaxDays").val()) > 0 ) {
+            let securityMaxdays = parseInt( jQuery("#overruleFilterMaxDays").data("maxdays")) ;
+            if ( securityMaxdays < 1 ) {
+                securityMaxdays = 30 ;
+            }
+            let maxDays =  Math.min(  Math.max( parseInt( jQuery("#overruleFilterMaxDays").val()) , 1 ) , securityMaxdays ) ;
+
+            newQuery += "&tx_jvevents_events[overruleFilter][maxDays]=" + maxDays ;
+        }
+        newQuery = newQuery.replace(/&&+/g, '&');
+        var cHash = newQuery.hashCode() ;
         window.location.href =  newQuery + "&cHash=" + cHash ;
     }
 

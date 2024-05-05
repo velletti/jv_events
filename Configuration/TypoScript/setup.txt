@@ -89,6 +89,7 @@ plugin.tx_jvevents_events {
 		}
 		security.filter {
 			maxDays = 90
+			maxEvents = 9999
 		}
 		# Fallback Layout for Register Emails if nothing set
 		LayoutRegister = 2Megra

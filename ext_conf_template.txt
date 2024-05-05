@@ -57,6 +57,9 @@ RegistrationFormPid = 1001
 # cat=basic/default/16; type=int+; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.defaultRegistrationPid
 RegistrationPid = 4853
 
+# cat=basic/default/16; type=int+; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.defaultRegistrationUntilDate
+RegistrationUntilDefaultDate = 0
+
 # cat=basic/default/16; type=int+; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms_additional.detailPid
 DetailPid = 62
 
