@@ -26,6 +26,9 @@
 		<trans-unit id="extmng.defaultRegistrationFormPid">
 			<source>set Default Show Registration Form on this PID</source>
 		</trans-unit>
+        <trans-unit id="extmng.defaultRegistrationUntilDate">
+            <source>Set Registration Until Date after Frontend Editing to 0 </source>
+        </trans-unit>
 		<trans-unit id="extmng.defaultRegistrationPid">
 			<source>set Default Store Registations on this PID</source>
 		</trans-unit>

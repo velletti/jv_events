@@ -1,6 +1,8 @@
 <?php
 namespace JVelletti\JvEvents\Domain\Model;
 
+use DateTime;
+use DateTimeZone;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Annotation\Validate;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
@@ -239,7 +241,7 @@ class Event extends AbstractEntity
     /**
      * Start Date of this event. Mandatory
      *
-     * @var \DateTime
+     * @var DateTime
      */
     #[Validate(['validator' => 'NotEmpty'])]
     protected $startDate = null;
@@ -310,19 +312,19 @@ class Event extends AbstractEntity
 
     /**
      * Access Start Time of this event (default TYPO3 Field ) -> this does not wrk in TYPO3 10:  int|\DateTime|NULL
-     * @var \DateTime|null
+     * @var DateTime|null
      */
     protected $starttime ;
 
     /**
      * Access End Time of this event (default TYPO3 Field ) -> this does not wrk in TYPO3 10:  int|\DateTime|NULL
-     * @var \DateTime|null
+     * @var DateTime|null
      */
     protected $endtime ;
 
     /**
      * End Date of this event.  var \DateTime|int does  not work in TYPO3 LTS 10
-     * @var \DateTime|null
+     * @var DateTime|null
 
      */
     protected $endDate = null;
@@ -357,14 +359,14 @@ class Event extends AbstractEntity
     /**
      * Regsitration is possible until
      *
-     * @var \DateTime
+     * @var DateTime
      */
     protected $registrationUntil = null;
 
     /**
      * the Actual Time Needed for is registration Possible
      *
-     * @var \DateTime
+     * @var DateTime
      */
     protected $actualTime = null;
     
@@ -961,7 +963,7 @@ class Event extends AbstractEntity
 	/**
      * Returns the startDate
      *
-     * @return \DateTime startDate
+     * @return DateTime startDate
      */
     public function getStartDate()
     {
@@ -971,10 +973,10 @@ class Event extends AbstractEntity
     /**
      * Sets the startDate
      *
-     * @param \DateTime $startDate
+     * @param DateTime $startDate
      * @return void
      */
-    public function setStartDate(\DateTime $startDate)
+    public function setStartDate(DateTime $startDate)
     {
         $this->startDate = $startDate;
     }
@@ -1057,7 +1059,7 @@ class Event extends AbstractEntity
     /**
      * Returns the endDate
      *
-     * @return \DateTime $endDate
+     * @return DateTime $endDate
      */
     public function getEndDate()
     {
@@ -1067,10 +1069,10 @@ class Event extends AbstractEntity
     /**
      * Sets the endDate
      *
-     * @param \DateTime|null $endDate
+     * @param DateTime|null $endDate
      * @return void
      */
-    public function setEndDate(?\DateTime $endDate)
+    public function setEndDate(?DateTime $endDate)
     {
         $this->endDate = $endDate;
     }
@@ -1088,7 +1090,7 @@ class Event extends AbstractEntity
     /**
      * Returns the Access endtime
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getAccessEndtime()
     {
@@ -1098,7 +1100,7 @@ class Event extends AbstractEntity
     /**
      * Returns the Access starttime
      *
-     * @return \DateTime
+     * @return DateTime
      */
 
     public function getAccessStarttime()
@@ -1109,11 +1111,11 @@ class Event extends AbstractEntity
     /**
      * sets the Access endtime
      *
-     * @param \DateTime $starttime
+     * @param DateTime $starttime
      * @return void
      */
 
-    public function setAccessStarttime($starttime): \DateTime
+    public function setAccessStarttime($starttime): DateTime
     {
         $this->starttime = $starttime;
     }
@@ -1121,7 +1123,7 @@ class Event extends AbstractEntity
     /**
      * sets the Access endtime
      *
-     * @param \DateTime $endtime
+     * @param DateTime $endtime
      * @return void
      */
     public function setAccessEndtime($endtime)
@@ -1608,24 +1610,24 @@ class Event extends AbstractEntity
     {
         $this->textRegistrant = $textRegistrant;
     }
-    
+
     /**
      * Returns the registrationUntil
      *
-     * @return \DateTime $registrationUntil
+     * @return DateTime|null $registrationUntil
      */
-    public function getRegistrationUntil()
+    public function getRegistrationUntil(): ?DateTime
     {
-        return $this->registrationUntil;
+        return ($this->registrationUntil) ?? null;
     }
-    
+
     /**
      * Sets the registrationUntil
      *
-     * @param \DateTime $registrationUntil
+     * @param DateTime|null $registrationUntil
      * @return void
      */
-    public function setRegistrationUntil(\DateTime $registrationUntil)
+    public function setRegistrationUntil(?DateTime $registrationUntil): void
     {
         $this->registrationUntil = $registrationUntil;
     }
@@ -2021,7 +2023,7 @@ class Event extends AbstractEntity
 	}
 
     /**
-     * @return \DateTime
+     * @return DateTime
      * @throws \Exception
      */
     public function getActualTime() {
@@ -2037,7 +2039,7 @@ class Event extends AbstractEntity
         $DTZ = $DTZ == '' ? @date_default_timezone_get() : $DTZ ;
         $DTZ = $DTZ == '' ? 'UTC' : $DTZ ;
 
-        return new \DateTime('now' , new \DateTimeZone($DTZ) ) ;
+        return new DateTime('now' , new DateTimeZone($DTZ) ) ;
     }
 
 

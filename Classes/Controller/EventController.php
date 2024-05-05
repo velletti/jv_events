@@ -25,6 +25,8 @@ namespace JVelletti\JvEvents\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use DateTime;
 use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
@@ -106,6 +108,7 @@ class EventController extends BaseController
     {
         $this->debugArray[] = "After Init :" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " Line: " . __LINE__ ;
         $this->settings['filter']['distance']['doNotOverrule'] = "false" ;
+        $this->settings['flexform']['filter']['maxDays']  =  ($this->settings['filter']['maxDays'] > 0 ) ? $this->settings['filter']['maxDays'] : 30 ;
 
         if( $this->request->hasArgument('overruleFilter')) {
 
@@ -129,10 +132,7 @@ class EventController extends BaseController
             if( array_key_exists( "maxDays" , $filter )) {
                 if( $filter['maxDays']  ) {
                   $this->settings['filter']['maxDays'] = intval( $filter['maxDays'] ) ;
-                    // if you have 1000s of events or even more, it may not be a good idear to allow to search too far in the future
-                    if( $this->settings['security']['filter']['maxDays'] > 0 &&  $this->settings['filter']['maxDays'] >  $this->settings['security']['filter']['maxDays'] ) {
-                        $this->settings['filter']['maxDays'] = $this->settings['security']['filter']['maxDays'] ;
-                    }
+
                     $this->settings['filter']['distance']['default'] = 9999 ;
                     $this->settings['filter']['maxEvents'] = 999 ;
                     $this->settings['filter']['distance']['doNotOverrule'] = "true" ;
@@ -151,6 +151,14 @@ class EventController extends BaseController
             }
 
             // https://tango.ddev.local/index.php?id=9&L=0&&tx_jvevents_events[eventsFilter][organizers]=1&tx_jvevents_events[eventsFilter][tags]=5,6,8,7,10,4,1,20,11,14,&tx_jvevents_events[eventsFilter][citys]=undefined&tx_jvevents_events[eventsFilter][months]=undefined&tx_jvevents_events[overruleFilter][category]=true&no_cache=1
+        }
+
+        // if you have 1000s of events or even more, it may not be a good idear to allow to search too far in the future
+        if( $this->settings['security']['filter']['maxDays'] > 0 &&  $this->settings['filter']['maxDays'] >  $this->settings['security']['filter']['maxDays'] ) {
+            $this->settings['filter']['maxDays'] = $this->settings['security']['filter']['maxDays'] ;
+        }
+        if( $this->settings['security']['filter']['maxEvents'] > 0 &&  $this->settings['filter']['maxEvents'] >  $this->settings['security']['filter']['maxEvents'] ) {
+            $this->settings['filter']['maxEvents'] = $this->settings['security']['filter']['maxEvents'] ;
         }
 
 
@@ -289,7 +297,7 @@ class EventController extends BaseController
             $event = GeneralUtility::makeInstance(Event::class);
         }
         if ( $event->getUid() < 1 ) {
-            $today = new \DateTime ;
+            $today = new DateTime ;
             $today->setTime(0,0,0 , 0) ;
             $event->setStartDate( $today ) ;
             $event->setEndDate( $today ) ;
@@ -499,11 +507,11 @@ class EventController extends BaseController
         }
 
 
-        $newDate = new \DateTime(  ) ;
+        $newDate = new DateTime(  ) ;
         $newDate->setTimestamp($event->getStartDate()->getTimestamp()) ;
         $newDate->setTime(0,0,0);
 
-        $newEndDate = new \DateTime(  ) ;
+        $newEndDate = new DateTime(  ) ;
         $newEndDate->setTimestamp( ($event->getEndDate()) ? $event->getEndDate()->getTimestamp() : $event->getStartDate()->getTimestamp()) ;
         $newEndDate->setTime(0,0,0);
 
@@ -564,17 +572,9 @@ class EventController extends BaseController
             $newEndDate->add($diff) ;
             $newEvent->setStartDate($newDate ) ;
             $newEvent->setEndDate($newEndDate ) ;
-            /** @var \DateTime $newRegDate */
-            $newRegDate = new \DateTime(  ) ;
-            $newRegTimestamp= $newEvent->getStartDate()->getTimestamp() ;
-            $newRegDate->setTimestamp($newRegTimestamp) ;
-            $addHours = 23 ;
-            if (  $newRegDate->format("I")  == "1" ) {
-                $addHours = 22 ;
-            }
-            $newRegDate->setTime($addHours,0,0);
 
-            $newEvent->setRegistrationUntil( $newRegDate );
+            $newEvent = $this->setRegistrationUntilDate( $newEvent );
+
             $newEvent->setSysLanguageUid(-1 ) ;
 
             // ++++ now copy the Categories and tags  ++++
@@ -1101,12 +1101,12 @@ class EventController extends BaseController
         $isAllDay = $eventArray['allDay'] ? 1 : 0 ;
         $event->setAllDay($isAllDay);
 
-        $stD = \DateTime::createFromFormat('d.m.Y', $eventArray['startDateFE']  );
+        $stD = DateTime::createFromFormat('d.m.Y', $eventArray['startDateFE']  );
         $stD->setTime(0,0,0,0 ) ;
         $event->setStartDate( $stD ) ;
         if ( $isAllDay ) {
             echo $eventArray['endDateFE'] ;
-            $enD = \DateTime::createFromFormat('d.m.Y', $eventArray['endDateFE']  );
+            $enD = DateTime::createFromFormat('d.m.Y', $eventArray['endDateFE']  );
             $enD->setTime(23,59,59,0 ) ;
             $event->setEndDate( $enD ) ;
             $event->setStartTime( 1 ) ;
@@ -1156,14 +1156,8 @@ class EventController extends BaseController
         $event->setRegistrationGender( intval($event->getRegistrationGender())) ;
         $event->setWithRegistration(intval($event->getWithRegistration()));
         if( intval($event->getWithRegistration()) == 1 ) {
-            $regD = \DateTime::createFromFormat('d.m.Y', $eventArray['startDateFE']  );
-            $addHours = 23 ;
-            if (  $regD->format("I")  == "1" ) {
-                $addHours = 22 ;
-            }
-            $regD->setTime($addHours,0,0,0 ) ;
 
-            $event->setRegistrationUntil( $regD );
+            $event = $this->setRegistrationUntilDate( $event );
             $event->setNotifyOrganizer($this->settings['EmConfiguration']['notifyOrganizer']);
             $event->setNotifyRegistrant($this->settings['EmConfiguration']['notifyRegistrant']);
             if ( $eventArray['registrationFormPid'] > $this->settings['EmConfiguration']['RegistrationFormPid'] ) {
@@ -1182,28 +1176,28 @@ class EventController extends BaseController
             $event->setPid( 12 ) ;
         }
 
-            $row['name'] =  $event->getName() ;
-            $row['pid'] =  $event->getPid() ;
-            $row['parentpid'] =  1 ;
-            $row['uid'] =  $event->getUid() ? $event->getUid() : 0  ;
-            $row['sys_language_uid'] = -1 ;
-            $row['start_date'] =  $event->getStartDate()->format("d-m-Y") ;
-            $row['slug'] =  $event->getSlug() ? $event->getSlug() : $event->getName() . "-" . $row['start_date'] ;
-            $slug = SlugUtility::getSlug("tx_jvevents_domain_model_event", "slug", $row  )  ;
-            $event->setSlug( $slug ) ;
+        $row['name'] =  $event->getName() ;
+        $row['pid'] =  $event->getPid() ;
+        $row['parentpid'] =  1 ;
+        $row['uid'] =  $event->getUid() ? $event->getUid() : 0  ;
+        $row['sys_language_uid'] = -1 ;
+        $row['start_date'] =  $event->getStartDate()->format("d-m-Y") ;
+        $row['slug'] =  $event->getSlug() ? $event->getSlug() : $event->getName() . "-" . $row['start_date'] ;
+        $slug = SlugUtility::getSlug("tx_jvevents_domain_model_event", "slug", $row  )  ;
+        $event->setSlug( $slug ) ;
 
         return $event ;
     }
 
     /**
      * @param Event $event   The Event nneded to get Location and Organizer
-     * @param \DateTime|null $date  Will used to set The Latest Events Date
+     * @param DateTime|null $date  Will used to set The Latest Events Date
      * @throws IllegalObjectTypeException
      * @throws UnknownObjectException
      */
-    public function updateLatestEvent( Event $event , \DateTime $date = NULL ) {
+    public function updateLatestEvent( Event $event , DateTime $date = NULL ) {
         if( $date == NULL ) {
-            $date = new \DateTime('now' ) ;
+            $date = new DateTime('now' ) ;
             // Idea : : get latest Date from any other event of this organizer ?
         }
         $organizer = $event->getOrganizer() ;
@@ -1226,6 +1220,26 @@ class EventController extends BaseController
                 $this->locationRepository->update($location ) ;
             }
         }
+    }
+
+    private function setRegistrationUntilDate( Event $event) {
+        if ( $this->settings['EmConfiguration'] ) {
+            $event->setRegistrationUntil(null) ;
+        } else {
+            $newRegDate = new DateTime(  ) ;
+            $newRegTimestamp= $event->getStartDate()->getTimestamp() ;
+            $newRegDate->setTimestamp($newRegTimestamp) ;
+            $addHours = 23 ;
+            if (  $newRegDate->format("I")  == "1" ) {
+                $addHours = 22 ;
+            }
+            $newRegDate->setTime($addHours,0,0);
+            $event->setRegistrationUntil($newRegDate) ;
+        }
+
+        return $event ;
+
+
     }
 
 }

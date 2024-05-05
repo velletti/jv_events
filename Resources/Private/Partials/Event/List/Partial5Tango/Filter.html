@@ -568,8 +568,12 @@
 
                         </div>
                         <div class="input-group col-12 p-0 mb-3">
+                            <f:variable name="maxDays">{settings.flexform.filter.maxDays}</f:variable>
+                            <f:if condition="{settings.security.filter.maxDays < maxday}">
+                                <f:variable name="maxDays">{settings.security.filter.maxDays}</f:variable>
+                            </f:if>
                             <input onchange="jQuery('#overruleFilterMaxDaysDisplay').html(this.value);" name="overruleFilter[maxDays]"
-                                   id="overruleFilterMaxDays" type="range" min="1" max="31" step="1"
+                                   id="overruleFilterMaxDays" type="range" min="1" max="{maxDays}" step="1" data-maxdays="{maxDays}"
                                    title="# {f:translate(key: 'days', default: 'Tage')}"
                                    value="{settings.filter.maxDays}" />
                             <div class="input-group-addon ">
