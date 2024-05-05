@@ -98,8 +98,8 @@ class EventController extends BaseController
     public function listAction()
     {
         $this->debugArray[] = "After Init :" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " Line: " . __LINE__ ;
-        $this->settings['filter']['distance']['doNotOverrule'] = "false" ;
-        $this->settings['filter']['flexform']['maxDays']  =  $this->settings['filter']['maxDays']  ;
+        $this->settings['']['distance']['doNotOverrule'] = "false" ;
+        $this->settings['flexform']['filter']['maxDays']  =  ($this->settings['filter']['maxDays'] > 0 ) ? $this->settings['filter']['maxDays'] : 30 ;
         if( $this->request->hasArgument('overruleFilter')) {
 
             $filter = $this->request->getArgument('overruleFilter') ;
