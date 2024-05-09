@@ -144,7 +144,7 @@
                                              Also delete the {output.event.sameMasterId} following copies of this event?
 
                                          </f:translate>
-                                         <f:form.checkbox class="ml-3" name="jv_events_deleteFutureEvents"  value="1" onclick="$('#jv_events_delete_btn').toggle();$('#jv_events_delete_btn_all').toggle();"/><br><br>
+                                         <input class="ml-3" onclick="$('#jv_events_delete_btn').toggle();$('#jv_events_delete_btn_all').toggle();" type="checkbox" name="jv_events_deleteFutureEvents" value="1">
 
                                      </b>
                                  </f:if>

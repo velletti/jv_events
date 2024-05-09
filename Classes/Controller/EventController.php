@@ -27,6 +27,7 @@ namespace JVelletti\JvEvents\Controller;
  ***************************************************************/
 
 use DateTime;
+use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
@@ -49,7 +50,7 @@ use JVelletti\JvEvents\Utility\SlugUtility;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\Response;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
@@ -269,7 +270,7 @@ class EventController extends BaseController
             $this->view->assign('hash', $checkHash);
 
         } else {
-            $this->addFlashMessage($this->translate("error.general.entry_not_found"), "Sorry!" , AbstractMessage::WARNING) ;
+            $this->addFlashMessage($this->translate("error.general.entry_not_found"), "Sorry!" , \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING) ;
 
         }
         $this->view->assign('settings', $this->settings);
@@ -309,7 +310,7 @@ class EventController extends BaseController
                 $this->view->assign('organizer', $organizer );
             } else {
                 $pid = $this->settings['pageIds']['loginForm'] ;
-                $this->addFlashMessage('You are not logged in as Organizer.'  , '', AbstractMessage::WARNING);
+                $this->addFlashMessage('You are not logged in as Organizer.'  , '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING);
                 $this->redirect(null , null , NULL , NULL , $pid );
             }
 
@@ -369,14 +370,14 @@ class EventController extends BaseController
                 $clearCachePids = GeneralUtility::trimExplode("," , $this->settings['EmConfiguration']['clearCachePids']) ;
                 if( is_array($clearCachePids) && count( $clearCachePids) > 0 ) {
                     $this->cacheService->clearPageCache( $clearCachePids );
-                    $this->addFlashMessage('The object was created and Cache of following pages are cleared: ' . implode("," , $clearCachePids), '', AbstractMessage::OK);
+                    $this->addFlashMessage('The object was created and Cache of following pages are cleared: ' . implode("," , $clearCachePids), '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK);
                 } else {
-                    $this->addFlashMessage('The object was created.', '', AbstractMessage::OK);
+                    $this->addFlashMessage('The object was created.', '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK);
                 }
                 $pid = $this->settings['pageIds']['showEventDetail'] ;
                 $action = "show" ;
             } catch ( \Exception $e ) {
-                $this->addFlashMessage($e->getMessage() , 'Error', AbstractMessage::WARNING);
+                $this->addFlashMessage($e->getMessage() , 'Error', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING);
 
             }
 
@@ -384,7 +385,7 @@ class EventController extends BaseController
             $action = null ;
 
             $pid = $this->settings['pageIds']['loginForm'] ;
-            $this->addFlashMessage('The object was NOT created. You are not logged in as Organizer.' . $event->getUid() , '', AbstractMessage::WARNING);
+            $this->addFlashMessage('The object was NOT created. You are not logged in as Organizer.' . $event->getUid() , '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING);
             $this->redirect(null , null , NULL , array( 'event' => $event ) , $pid );
         }
         // if PID from TS settings is set: if User is not logged in-> Page with loginForm , on success -> showEventDetail  Page
@@ -399,7 +400,7 @@ class EventController extends BaseController
             $uriBuilder = GeneralUtility::makeInstance( UriBuilder::class ) ;
             $uri = "https://" . GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY') .
                     $uriBuilder->reset()->setTargetPageUid($pid)
-                    ->setArguments([ 'tx_jvevents_events' =>
+                    ->setArguments([ 'tx_jvevents_event' =>
                         ['controller' =>  'Event' , 'action' => $action , 'event' => $event->getUid() ] ])
                     ->build() ;
             // https://tangov10.ddev.site/de/tanzen/termin-details/event/event/show/qqqqqqq-20-08-2023.html
@@ -604,10 +605,10 @@ class EventController extends BaseController
             $this->eventRepository->add($newEvent) ;
             try {
                 $this->persistenceManager->persistAll() ;
-                $this->addFlashMessage('The Event was copied to: ' . $newEvent->getStartDate( )->format("d.m.Y"), '', AbstractMessage::OK);
+                $this->addFlashMessage('The Event was copied to: ' . $newEvent->getStartDate( )->format("d.m.Y"), '',  ContextualFeedbackSeverity::OK);
 
             } catch ( \Exception $e ) {
-                $this->addFlashMessage($e->getMessage() , 'Error in action ' . ' - copyEvent -', AbstractMessage::WARNING);
+                $this->addFlashMessage($e->getMessage() , 'Error in action ' . ' - copyEvent -', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING);
             }
             $eventUid = $newEvent->getUid() ;
 
@@ -667,13 +668,13 @@ class EventController extends BaseController
         if( is_array($clearCachePids) && count( $clearCachePids) > 0 ) {
             $clearCachePids[] = $GLOBALS['TSFE']->id ;
             $this->cacheService->clearPageCache( $clearCachePids );
-            $this->addFlashMessage('The object was updated and Cache of following pages are cleared: ' . implode("," , $clearCachePids), '', AbstractMessage::OK);
+            $this->addFlashMessage('The object was updated and Cache of following pages are cleared: ' . implode("," , $clearCachePids), '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK);
         }
         $action = "show" ;
         if ( $copy2Day == 0 &&  $amount == 1 ) {
             $action = "edit" ;
         }
-       $this->redirect($action , null , null , array( "event" => $eventUid  )) ;
+       return $this->redirect($action , null , null , array( "event" => $eventUid  )) ;
 
     }
     /**
@@ -712,7 +713,7 @@ class EventController extends BaseController
                             $update['uid'] = $row['uid'];
                             $update['hidden'] = 1;
                             $bannerRepository->updateBanner( $update );
-                            $this->addFlashMessage('The Banner ' .  $row['uid'] . ' will be stopped also soon. (<4 h) ', '', AbstractMessage::OK);
+                            $this->addFlashMessage('The Banner ' .  $row['uid'] . ' will be stopped also soon. (<4 h) ', '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK);
                         }
                     }
 
@@ -721,13 +722,13 @@ class EventController extends BaseController
                     if( is_array($clearCachePids) && count( $clearCachePids) > 0 ) {
                         $clearCachePids[] = $GLOBALS['TSFE']->id ;
                         $this->cacheService->clearPageCache( $clearCachePids );
-                        $this->addFlashMessage('The object was updated and Cache of following pages are cleared: ' . implode("," , $clearCachePids), '', AbstractMessage::OK);
+                        $this->addFlashMessage('The object was updated and Cache of following pages are cleared: ' . implode("," , $clearCachePids), '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK);
                     } else {
-                        $this->addFlashMessage('The object was updated.', '', AbstractMessage::OK);
+                        $this->addFlashMessage('The object was updated.', '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK);
                     }
 
                 } catch ( \Exception $e ) {
-                    $this->addFlashMessage($e->getMessage() , 'Error', AbstractMessage::WARNING);
+                    $this->addFlashMessage($e->getMessage() , 'Error', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING);
 
                 }
                 $this->persistenceManager->persistAll() ;
@@ -736,7 +737,7 @@ class EventController extends BaseController
 
         }
 
-        $this->redirect('show' ,null , null , array("event" => $event )) ;
+        return $this->redirect('show' ,null , null , array("event" => $event )) ;
     }
     /**
      * action update
@@ -752,10 +753,8 @@ class EventController extends BaseController
         if( $this->request->hasArgument('event')) {
             $event = $this->cleanEventArguments( $event) ;
         }
-
         if ( $this->hasUserAccess($event->getOrganizer() )) {
-            $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
-
+            $this->getFlashMessageQueue()->getAllMessagesAndFlush();
             try {
                     /** @var ConnectionPool $connection */
                 /** @var QueryBuilder $queryBuilder */
@@ -808,7 +807,7 @@ class EventController extends BaseController
                         }
 
 
-                        $this->addFlashMessage('The Banner ' .  $row['uid'] . ' will be updated soon. (<4 h). Changed Images may take more time.', '', AbstractMessage::OK);
+                        $this->addFlashMessage('The Banner ' .  $row['uid'] . ' will be updated soon. (<4 h). Changed Images may take more time.', '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK);
                     }
                 }
 
@@ -879,7 +878,7 @@ class EventController extends BaseController
                             $this->eventRepository->update($otherEvent) ;
 
                         }
-                        $this->addFlashMessage('The following Events : ' . $otherDaysText . ' were also updated.', '', AbstractMessage::OK);
+                        $this->addFlashMessage('The following Events : ' . $otherDaysText . ' were also updated.', '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK);
 
                     }
                 }
@@ -890,18 +889,18 @@ class EventController extends BaseController
                 $clearCachePids = GeneralUtility::trimExplode("," , $this->settings['EmConfiguration']['clearCachePids']) ;
                 if( is_array($clearCachePids) && count( $clearCachePids) > 0 ) {
                     $this->cacheService->clearPageCache( $clearCachePids );
-                    $this->addFlashMessage('The object was updated and Cache of following pages are cleared: ' . implode("," , $clearCachePids), '', AbstractMessage::OK);
+                    $this->addFlashMessage('The object was updated and Cache of following pages are cleared: ' . implode("," , $clearCachePids), '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK);
                 } else {
-                    $this->addFlashMessage('The object was updated.', '', AbstractMessage::OK);
+                    $this->addFlashMessage('The object was updated.', '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK);
                 }
 
             } catch ( \Exception $e ) {
-                $this->addFlashMessage($e->getMessage() , 'Error', AbstractMessage::WARNING);
+                $this->addFlashMessage($e->getMessage() , 'Error', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING);
 
             }
 
         } else {
-            $this->addFlashMessage('You do not have access rights to change this data.' . $event->getUid() , '', AbstractMessage::WARNING);
+            $this->addFlashMessage('You do not have access rights to change this data.' . $event->getUid() , '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING);
         }
         $this->persistenceManager->persistAll() ;
         $pid = $this->settings['pageIds']['showEventDetail'] ;
@@ -911,8 +910,7 @@ class EventController extends BaseController
             $pid = $GLOBALS['TSFE']->id ;
 
         }
-        $this->redirect('show' , NULL, Null , array( "event" => $event) ,$pid  );
-
+        return $this->redirect('show' , 'Event', 'JvEvents' , array( "event" => $event) ,$pid  );
     }
     
     /**
@@ -930,7 +928,7 @@ class EventController extends BaseController
         }
         $orgId = $event->getOrganizer() ;
         if ( $this->hasUserAccess($event->getOrganizer() )) {
-            $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
+            $this->getFlashMessageQueue()->getAllMessagesAndFlush();
 
             try {
                 $masterId = $event->getMasterId() ;
@@ -948,7 +946,7 @@ class EventController extends BaseController
                         $update['hidden'] = 1;
                         $update['deleted'] = 1;
                         $bannerRepository->updateBanner( $update );
-                        $this->addFlashMessage('The Banner ' .  $row['uid'] . ' will be deleted also soon. (<4 h) ', '', AbstractMessage::OK);
+                        $this->addFlashMessage('The Banner ' .  $row['uid'] . ' will be deleted also soon. (<4 h) ', '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK);
                     }
                 }
 
@@ -987,27 +985,27 @@ class EventController extends BaseController
                 $clearCachePids = GeneralUtility::trimExplode("," , $this->settings['EmConfiguration']['clearCachePids']) ;
                 if( is_array($clearCachePids) && count( $clearCachePids) > 0 ) {
                     $this->cacheService->clearPageCache( $clearCachePids );
-                    $this->addFlashMessage('The object was successfully deleted and Cache of following pages are cleared: ' . implode("," , $clearCachePids), '', AbstractMessage::OK);
+                    $this->addFlashMessage('The object was successfully deleted and Cache of following pages are cleared: ' . implode("," , $clearCachePids), '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK);
                 } else {
-                    $this->addFlashMessage('The Event was deleted.', '', AbstractMessage::OK);
+                    $this->addFlashMessage('The Event was deleted.', '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK);
                 }
                 if( $otherDaysText ) {
-                    $this->addFlashMessage($otherDaysText, '', AbstractMessage::OK);
+                    $this->addFlashMessage($otherDaysText, '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK);
                 }
 
             } catch ( \Exception $e ) {
-                $this->addFlashMessage($e->getMessage() , 'Error', AbstractMessage::WARNING);
+                $this->addFlashMessage($e->getMessage() , 'Error', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING);
 
             }
 
         } else {
-            $this->addFlashMessage('You do not have access rights to delete this event.' . $event->getUid() , '', AbstractMessage::WARNING);
+            $this->addFlashMessage('You do not have access rights to delete this event.' . $event->getUid() , '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING);
         }
         $this->persistenceManager->persistAll() ;
 
         $arguments = array ( 'overruleFilter' => array( 'organizer' => $orgId , 'category' => 'true' , 'maxDays' => 90 )) ;
 
-        $this->redirect('list' , null , null , $arguments, $this->settings['pageIds']['eventList']);
+        return $this->redirect('list' , null , null , $arguments, $this->settings['pageIds']['eventList']);
     }
     
 

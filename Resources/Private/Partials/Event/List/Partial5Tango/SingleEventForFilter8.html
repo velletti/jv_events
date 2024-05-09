@@ -14,7 +14,7 @@
 
                     <f:link.action pageUid="{settings.detailPid}" action="show" arguments="{event : event}">
                         <f:if condition="{event.canceled}">
-                            <f:image src="/typo3conf/ext/jv_events/Resources/Public/Images/canceled.png" class="d-block w-100 h-auto jv_event_canceled" alt="canceled" title="{f:translate(key: 'tx_jvevents_domain_model_event.details.canceled', default: 'canceled')}" width="{settings.list.image.width}c" maxWidth="{settings.list.image.width}" maxHeight="{settings.list.image.height}" treatIdAsReference="false" />
+                            <f:image src="EXT:jv_events/Resources/Public/Images/canceled.png" class="d-block w-100 h-auto jv_event_canceled" alt="canceled" title="{f:translate(key: 'tx_jvevents_domain_model_event.details.canceled', default: 'canceled')}" width="{settings.list.image.width}c" maxWidth="{settings.list.image.width}" maxHeight="{settings.list.image.height}" treatIdAsReference="false" />
                         </f:if>
                         <f:if condition="{event.teaserImage}">
                             <f:then>

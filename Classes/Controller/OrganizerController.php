@@ -289,7 +289,7 @@ class OrganizerController extends BaseController
                 // reloaded paged ??
                 $organizer->setUid( $isOrganizer['uid'] ) ;
             } else {
-                $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
+                $this->getFlashMessageQueue()->getAllMessagesAndFlush();
 
                 $organizer = $this->cleanOrganizerArguments( $organizer ) ;
 
@@ -335,12 +335,12 @@ class OrganizerController extends BaseController
             $url .= "&tx_jvevents_ajax[hmac]=" . $hmac ;
             */
 
-            $url .= "/de/admin/assist.html?tx_jvevents_events[action]=activate&tx_jvevents_events[controller]=Organizer" ;
+            $url .= "/de/admin/assist.html?tx_jvevents_organizer[action]=activate&tx_jvevents_organizer[controller]=Organizer" ;
 
-            $url .= "&tx_jvevents_events[organizerUid]=" . $organizerUid ;
-            $url .= "&tx_jvevents_events[userUid]=" . $userUid ;
-            $url .= "&tx_jvevents_events[rnd]=" . $rnd ;
-            $url .= "&tx_jvevents_events[hmac]=" . $hmac ;
+            $url .= "&tx_jvevents_organizer[organizerUid]=" . $organizerUid ;
+            $url .= "&tx_jvevents_organizer[userUid]=" . $userUid ;
+            $url .= "&tx_jvevents_organizer[rnd]=" . $rnd ;
+            $url .= "&tx_jvevents_organizer[hmac]=" . $hmac ;
 
             $msg = "A new organizer has registered:" ;
             $msg .= "\n\n" . "Name: " . $organizer->getName() ;
@@ -376,12 +376,12 @@ class OrganizerController extends BaseController
 
             $this->redirect('assist' , NULL, Null , NULL , $this->settings['pageIds']['organizerAssist']);
         } else {
-            $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
+            $this->getFlashMessageQueue()->getAllMessagesAndFlush();
 
             $this->addFlashMessage('You do not have access rights to create own Organizer data.'  , '', AbstractMessage::WARNING);
         }
 
-        $this->redirect('assist' , NULL, Null , NULL , $this->settings['pageIds']['organizerAssist'] );
+        return $this->redirect('assist' , NULL, Null , NULL , $this->settings['pageIds']['organizerAssist'] );
 
 
     }
@@ -425,7 +425,7 @@ class OrganizerController extends BaseController
         if( !$organizer  ) {
             $this->addFlashMessage("Organizer not found by ID : " . $organizerUid , "" , AbstractMessage::WARNING) ;
             try {
-                $this->redirect('assist' , "Organizer", Null , NULL , $this->settings['pageIds']['organizerAssist'] );
+                return $this->redirect('assist' , "Organizer", Null , NULL , $this->settings['pageIds']['organizerAssist'] );
             } catch(StopActionException $e) {
 
                 foreach (  $e->getResponse()->getHeaders() as $header => $value ) {
@@ -438,7 +438,7 @@ class OrganizerController extends BaseController
         if( !$user ) {
             $this->addFlashMessage("User not found by ID : " . $userUid , "" , AbstractMessage::WARNING) ;
             try {
-                $this->redirect('assist' , "Organizer", Null , NULL , $this->settings['pageIds']['organizerAssist'] );
+                return $this->redirect('assist' , "Organizer", Null , NULL , $this->settings['pageIds']['organizerAssist'] );
             } catch(StopActionException $e) {
                 foreach (  $e->getResponse()->getHeaders() as $header => $value ) {
                     header( "$header:" . $value[0]) ;
@@ -464,7 +464,7 @@ class OrganizerController extends BaseController
             }
             $this->addFlashMessage("Hmac does not fit to: " . $tokenStr , "ERROR" , AbstractMessage::ERROR) ;
             try {
-                $this->redirect('assist' , "Organizer", Null , NULL , $this->settings['pageIds']['organizerAssist'] );
+                return $this->redirect('assist' , "Organizer", Null , NULL , $this->settings['pageIds']['organizerAssist'] );
             } catch(StopActionException $e) {
                 foreach (  $this->response->getHeaders() as $header ) {
                     header( $header) ;
@@ -554,7 +554,7 @@ class OrganizerController extends BaseController
         $this->sendDebugEmail(  $organizer->getEmail() , $this->settings['register']['senderEmail'] , "[TANGO][NewOrganizer] - " . $organizer->getEmail() . " activated ", $msg , $html) ;
 
         try {
-            $this->redirect('assist' , "Organizer", Null , NULL , $this->settings['pageIds']['organizerAssist'] );
+            return $this->redirect('assist' , "Organizer", Null , NULL , $this->settings['pageIds']['organizerAssist'] );
         } catch(StopActionException $e) {
             foreach (  $e->getResponse()->getHeaders() as $header => $value ) {
                 header( "$header:" . $value[0]) ;
@@ -578,7 +578,7 @@ class OrganizerController extends BaseController
 
 
         if ( ! $this->hasUserAccess($organizer )) {
-            $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
+            $this->getFlashMessageQueue()->getAllMessagesAndFlush();
 
             $this->addFlashMessage('No access.', '', AbstractMessage::ERROR);
             $this->view->assign('noAccess', TRUE );
@@ -604,19 +604,19 @@ class OrganizerController extends BaseController
     public function updateAction(Organizer $organizer)
     {
         if ( $this->hasUserAccess($organizer )) {
-            $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
+            $this->getFlashMessageQueue()->getAllMessagesAndFlush();
             $organizer = $this->cleanOrganizerArguments( $organizer ) ;
             $this->organizerRepository->update($organizer);
             $this->addFlashMessage('The object was updated.', '', AbstractMessage::OK);
         } else {
-            $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
+            $this->getFlashMessageQueue()->getAllMessagesAndFlush();
 
             $this->addFlashMessage('You do not have access rights to change this data.' . $organizer->getUid() , '', AbstractMessage::WARNING);
         }
 
         $this->showNoDomainMxError($organizer->getEmail() ) ;
 
-        $this->redirect('assist' , NULL, Null , NULL , $this->settings['pageIds']['organizerAssist']);
+        return $this->redirect('assist' , NULL, Null , NULL , $this->settings['pageIds']['organizerAssist']);
     }
     
     /**
@@ -629,7 +629,7 @@ class OrganizerController extends BaseController
     {
         $this->addFlashMessage('The object was NOT deleted. this feature is not implemented yet', 'Unfinished Feature', AbstractMessage::ERROR);
      //   $this->organizerRepository->remove($organizer);
-        $this->redirect('assist' , NULL, Null , NULL , $this->settings['pageIds']['organizerAssist']);
+        return $this->redirect('assist' , NULL, Null , NULL , $this->settings['pageIds']['organizerAssist']);
     }
 
 

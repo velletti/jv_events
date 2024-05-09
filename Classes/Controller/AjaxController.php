@@ -270,7 +270,7 @@ class AjaxController extends BaseController
                 if ( $site ) {
                     try {
                     $output['event']['slug'] = (string)$site->getRouter()->generateUri( $singlePid ,['_language' => max( $event->getLanguageUid() ,0 ) ,
-                        'tx_jvevents_events' => ['action' => 'show' , 'controller' => 'Event' ,'event' =>  $event->getUid() ]]);
+                        'tx_jvevents_event' => ['action' => 'show' , 'controller' => 'Event' ,'event' =>  $event->getUid() ]]);
                     } catch( \EXCEPTION $e ) {
                         $output['event']['slug'] = "pid=" . $singlePid . "&L=" . $event->getLanguageUid() ;
                     }
@@ -466,7 +466,7 @@ class AjaxController extends BaseController
                             if ( $site ) {
                                 try {
                                     $tempEventArray['slug'] = (string)$site->getRouter()->generateUri( $singlePid ,['_language' => max( $tempEvent->getLanguageUid() ,0 ) ,
-                                        'tx_jvevents_events' => ['action' => 'show' , 'controller' => 'Event' ,'event' =>  $tempEvent->getUid() ]]);
+                                        'tx_jvevents_event' => ['action' => 'show' , 'controller' => 'Event' ,'event' =>  $tempEvent->getUid() ]]);
                                 } catch( \EXCEPTION $e ) {
                                     $tempEventArray['slug'] = "pid=" . $singlePid . "&L=" . $tempEvent->getLanguageUid() ;
                                 }
@@ -657,6 +657,7 @@ class AjaxController extends BaseController
 
 
         if( $this->standaloneView ) {
+
             $renderer = $this->standaloneView  ;
             $renderer->setTemplate("EventMenu") ;
         } else {
@@ -675,7 +676,6 @@ class AjaxController extends BaseController
         $this->settings['cookie'] =  $_COOKIE ;
 
         $renderer->setLayoutRootPaths(array(0 => $layoutPath));
-
         $renderer->assign('output' , $output) ;
         $this->settings['Ajax']['Action'] = "Main" ;
         $renderer->assign('settings' , $this->settings ) ;

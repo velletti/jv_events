@@ -28,9 +28,10 @@
      data-geocodeurl="https://nominatim.openstreetmap.org/search?format=json&q={settings.filter.initMapAddress -> f:format.urlencode()}&addressdetails=1&limit=1&polygon_svg=1"
      data-geocodeurlshort="https://nominatim.openstreetmap.org/search?format=json&q={settings.filter.initMapAddress -> f:format.urlencode()}&addressdetails=1&limit=1&polygon_svg=1"
 ></div>
-<v:asset.prefetch domains="nominatim.openstreetmap.org" />
-<v:asset.script path="EXT:jv_events/Resources/Public/JavaScript/leaflet-1-7-1.js" name="leaflet1" async="false" content="header"/>
-<v:asset.script path="EXT:jv_events/Resources/Public/JavaScript/tango/LeafletFeGeoCoder.js" name="leafletGeocoder" async="false"  content="header"/>
-<v:asset.style path="EXT:jv_events/Resources/Public/Css/leaflet-1-7-1.css" name="leaflet3"   content="header"/>
-<v:asset.style path="EXT:jv_events/Resources/Public/Css/tango/leafletFrontend.css" name="leaflet4"   content="footer"/>
+
+<f:asset.script identifier="leaflet1" src="EXT:jv_events/Resources/Public/JavaScript/leaflet-1-7-1.js" async="false" priority="true"></f:asset.script>
+<f:asset.script identifier="leafletGeocoder" src="EXT:jv_events/Resources/Public/JavaScript/tango/LeafletFeGeoCoder.js" async="false" priority="true"></f:asset.script>
+<f:asset.css identifier="leaflet3" href="EXT:jv_events/Resources/Public/Css/leaflet-1-7-1.css"></f:asset.css>
+<f:asset.css identifier="leaflet4" href="EXT:jv_events/Resources/Public/Css/tango/leafletFrontend.css"></f:asset.css>
+
 

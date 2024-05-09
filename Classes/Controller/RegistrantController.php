@@ -314,7 +314,7 @@ class RegistrantController extends BaseController
     #[IgnoreValidation(['value' => 'registrant'])]
     public function newAction(Event $event=null, Registrant $registrant=null): ResponseInterface
     {
-        $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
+        $this->getFlashMessageQueue()->getAllMessagesAndFlush();
         if (is_object($event)) {
 
             $this->settings['startReg'] = time();
@@ -453,12 +453,12 @@ class RegistrantController extends BaseController
 
         $latestEventDate = $event->getStartDate() ;
 
-		$this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
+		$this->getFlashMessageQueue()->getAllMessagesAndFlush();
 		$otherEvents = FALSE ;
-		if ( isset( $_POST['tx_jvevents_events']['jv_events_other_events']) && is_array( $_POST['tx_jvevents_events']['jv_events_other_events'])) {
-		    $temp = $_POST['tx_jvevents_events']['jv_events_other_events'] ;
+		if ( isset( $_POST['tx_jvevents_registrant']['jv_events_other_events']) && is_array( $_POST['tx_jvevents_registrant']['jv_events_other_events'])) {
+		    $temp = $_POST['tx_jvevents_registrant']['jv_events_other_events'] ;
 
-			$registrant->setOtherEvents( serialize( $_POST['tx_jvevents_events']['jv_events_other_events']) );
+			$registrant->setOtherEvents( serialize( $_POST['tx_jvevents_registrant']['jv_events_other_events']) );
 
 			foreach ($temp  as $key => $uid ) {
 				/** @var Event $otherEvent */

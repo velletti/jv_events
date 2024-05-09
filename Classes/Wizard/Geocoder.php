@@ -54,7 +54,7 @@ class Geocoder extends AbstractWizardController {
 		$this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
 
 		$this->doc->JScode = $this->geoCoder ->javascriptCode ;
-		GeneralUtility::makeInstance(PageRenderer::class)->addCssFile('../typo3conf/ext/jv_events/Resources/Public/Css/geocoder.css', 'stylesheet', 'screen', '');
+		GeneralUtility::makeInstance(PageRenderer::class)->addCssFile('EXT:jv_events/Resources/Public/Css/geocoder.css', 'stylesheet', 'screen', '');
 
 	}
 

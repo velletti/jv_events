@@ -12,7 +12,7 @@ namespace JVelletti\JvEvents\FormEngine\FieldControl;
  */
 use TYPO3\CMS\Backend\Form\AbstractNode;
 use TYPO3\CMS\Core\Localization\LanguageService;
-
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 /**
  * Adds a wizard for location selection via map
  */
@@ -79,8 +79,13 @@ class EventLocationMapWizard extends AbstractNode
         $resultArray['linkAttributes']['data-copy'] = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
         $resultArray['stylesheetFiles'][] = 'EXT:jv_events/Resources/Public/Css/leaflet-1-7-1.css';
         $resultArray['stylesheetFiles'][] = 'EXT:jv_events/Resources/Public/Css/leafletBackend.css';
-        $resultArray['requireJsModules'][] = 'TYPO3/CMS/JvEvents/leaflet-1-7-1';
-        $resultArray['requireJsModules'][] = 'TYPO3/CMS/JvEvents/LeafletBackend';
+
+        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS(
+            'TYPO3/CMS/JvEvents/leaflet-1-7-1'
+        )->instance("jvevents-location-map-wizard");
+        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS(
+            'TYPO3/CMS/JvEvents/LeafletBackend'
+        )->instance("jvevents-location-map-wizard");
 
         return $resultArray;
     }

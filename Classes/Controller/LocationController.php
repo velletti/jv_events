@@ -13,6 +13,7 @@ use JVelletti\JvEvents\Domain\Model\Category;
 use JVelletti\JvEvents\Utility\SlugUtility;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 
 /***************************************************************
  *
@@ -130,7 +131,7 @@ class LocationController extends BaseController
             $this->view->assign('nextEventLocation', ($nextEventLocation ? $nextEventLocation->getStartdate()->format("d.m.Y") : date("d.m.Y") ));
             $this->view->assign('nextEventOrganizer', ( $nextEventOrganizer ? $nextEventOrganizer->getStartdate()->format("d.m.Y") : date("d.m.Y") ));
         } else {
-            $this->addFlashMessage($this->translate("error.general.entry_not_found"), "Sorry!" , AbstractMessage::WARNING) ;
+            $this->addFlashMessage($this->translate("error.general.entry_not_found"), "Sorry!" , ContextualFeedbackSeverity::WARNING) ;
         }
         return $this->htmlResponse();
     }
@@ -193,7 +194,7 @@ class LocationController extends BaseController
         }
         $action = "edit" ;
         if($this->isUserOrganizer() ) {
-            $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
+            $this->getFlashMessageQueue()->getAllMessagesAndFlush();
 
 
             try {
@@ -209,16 +210,16 @@ class LocationController extends BaseController
                 $this->persistenceManager->persistAll() ;
 
 
-                $this->addFlashMessage('The Location was created.  It may take up some hours before it is visible', '', AbstractMessage::OK);
+                $this->addFlashMessage('The Location was created.  It may take up some hours before it is visible', '', ContextualFeedbackSeverity::OK);
             } catch ( \Exception $e ) {
-                $this->addFlashMessage($e->getMessage() , 'Error', AbstractMessage::WARNING);
+                $this->addFlashMessage($e->getMessage() , 'Error', ContextualFeedbackSeverity::WARNING);
 
             }
 
         } else {
 
             $pid = $this->settings['pageIds']['loginForm'] ;
-            $this->addFlashMessage('The object was NOT created. You are not logged in as Organizer.' . $location->getUid() , '', AbstractMessage::WARNING);
+            $this->addFlashMessage('The object was NOT created. You are not logged in as Organizer.' . $location->getUid() , '', ContextualFeedbackSeverity::WARNING);
             $this->redirect(null , null , NULL , NULL , $pid );
         }
 
@@ -246,6 +247,18 @@ class LocationController extends BaseController
      */
     #[IgnoreValidation(['value' => 'location'])]
     public function setDefaultAction(Location $location , Organizer $organizer ,  $oldDefault= 0) {
+
+        $locations = $this->locationRepository->findByOrganizersAllpages([$organizer->getUid()] , true , TRUE , true ) ;
+        if ( $locations && count($locations) > 0) {
+            foreach ( $locations as $location) {
+                if( is_object($location)) {
+                    if ( $this->hasUserAccess($location->getOrganizer() )) {
+                        $location->setDefaultLocation( FALSE ) ;
+                        $this->locationRepository->update($location) ;
+                    }
+                }
+            }
+        }
         if ( $this->hasUserAccess($location->getOrganizer() )) {
             $location->setDefaultLocation( TRUE ) ;
             $this->locationRepository->update($location) ;
@@ -253,17 +266,10 @@ class LocationController extends BaseController
             $organizer->setLng( $location->getLng() ) ;
             $this->organizerRepository->update($organizer) ;
         }
-        if ( $oldDefault > 0 ) {
-            $location= $this->locationRepository->findByUidAllpages($oldDefault , FALSE , TRUE) ;
-            if( is_object($location)) {
-                if ( $this->hasUserAccess($location->getOrganizer() )) {
-                    $location->setDefaultLocation( FALSE ) ;
-                    $this->locationRepository->update($location) ;
-                }
-            }
+        $this->addFlashMessage("Default Location: " . $location->getName() , null , ContextualFeedbackSeverity::OK);
 
-        }
-        $this->redirect('assist' , 'Organizer', Null , NULL , $this->settings['pageIds']['organizerAssist'] );
+
+        return $this->redirect('assist' , 'Organizer', Null , NULL , $this->settings['pageIds']['organizerAssist'] );
 
     }
 
@@ -298,8 +304,8 @@ class LocationController extends BaseController
             $this->view->assign('location', $location);
             $this->view->assign('categories', $categories);
         } else {
-            $this->addFlashMessage('You do not have access rights to change this data.' , 'Error', AbstractMessage::WARNING);
-            $this->addFlashMessage('ID: ' . $location->getUid(), '', AbstractMessage::WARNING);
+            $this->addFlashMessage('You do not have access rights to change this data.' , 'Error', ContextualFeedbackSeverity::WARNING);
+            $this->addFlashMessage('ID: ' . $location->getUid(), '', AbstractMessageContextualFeedbackSeverity::WARNING);
         }
         return $this->htmlResponse();
     }
@@ -321,14 +327,14 @@ class LocationController extends BaseController
 
         if ($hasAccess ) {
             $location = $this->cleanLocationArguments( $location) ;
-            $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
-            $this->addFlashMessage('The object was updated. It may take some hours before it is visible', '', AbstractMessage::OK);
+            $this->getFlashMessageQueue()->getAllMessagesAndFlush();
+            $this->addFlashMessage('The object was updated. It may take some hours before it is visible', '', ContextualFeedbackSeverity::OK);
             $this->locationRepository->update($location);
         } else {
-            $this->addFlashMessage('You do not have access rights to change this data.' . $location->getUid() , '', AbstractMessage::WARNING);
+            $this->addFlashMessage('You do not have access rights to change this data.' . $location->getUid() , '', ContextualFeedbackSeverity::WARNING);
         }
         $this->showNoDomainMxError($location->getEmail() ) ;
-        $this->redirect('edit' , NULL, Null , array( "location" => $location));
+        return $this->redirect('edit' , NULL, Null , array( "location" => $location));
     }
     
     /**
@@ -350,7 +356,7 @@ class LocationController extends BaseController
             if ( $delete &&  $events->count() == $eventCount) {
 
                 if ( $this->hasUserAccess($location->getOrganizer() )) {
-                    $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
+                    $this->getFlashMessageQueue()->getAllMessagesAndFlush();
                     if ( $events->count() > 0 ) {
                         $eventIds = "Ids: " ;
                         /** @var Event $event */
@@ -358,15 +364,15 @@ class LocationController extends BaseController
                             $eventIds .= $event->getUid() . ", " ;
                             $this->eventRepository->remove($event) ;
                         }
-                        $this->addFlashMessage('The following Events are deleted: ' . $eventIds, '', AbstractMessage::OK);
+                        $this->addFlashMessage('The following Events are deleted: ' . $eventIds, '', ContextualFeedbackSeverity::OK);
                     }
 
                     $this->locationRepository->remove($location);
-                    $this->addFlashMessage('The Location was deleted.', '', AbstractMessage::OK);
+                    $this->addFlashMessage('The Location was deleted.', '', ContextualFeedbackSeverity::OK);
 
 
                 } else {
-                    $this->addFlashMessage('You do not have access rights to change this data.' . $location->getUid() , '', AbstractMessage::WARNING);
+                    $this->addFlashMessage('You do not have access rights to change this data.' . $location->getUid() , '', ContextualFeedbackSeverity::WARNING);
                 }
 
 
