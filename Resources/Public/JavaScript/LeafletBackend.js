@@ -1,7 +1,12 @@
-define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/FormEngine', 'TYPO3/CMS/JvEvents/leaflet-1-7-1'], function ($, Icons, FormEngine) {
+define(['jquery', 
+    'TYPO3/CMS/Backend/Icons', 
+    'TYPO3/CMS/Backend/FormEngine', 
+    'JVelletti/JvEvents/Leaflet',
+    'JVelletti/JvEvents/LeafletBackend'
+], function ($, Icons, FormEngine) {
     'use strict';
 
-    let LeafBE = {
+    let LeafletBackend = {
         $element: null,
         $gLatitude: null,
         $gLongitude: null,
@@ -22,44 +27,44 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/FormEngine', 'TY
 
     // Load icon via TYPO3 Icon-API and requireJS
     Icons.getIcon('actions-close', Icons.sizes.small).done(function (actionsClose) {
-        LeafBE['$iconClose'] = actionsClose;
+        LeafletBackend['$iconClose'] = actionsClose;
     });
 
-    LeafBE.init = function (element) {
+    LeafletBackend.init = function (element) {
         // basic variable initialisation, uses data vars on the trigger button
-        LeafBE.$element = element;
-        LeafBE.$labelTitle = LeafBE.$element.attr('data-label-title');
-        LeafBE.$labelClose = LeafBE.$element.attr('data-label-close');
-        LeafBE.$labelImport = LeafBE.$element.attr('data-label-import');
-        LeafBE.$latitude = LeafBE.$element.attr('data-lat');
-        LeafBE.$longitude = LeafBE.$element.attr('data-lon');
-        LeafBE.$gLatitude = LeafBE.$element.attr('data-glat');
-        LeafBE.$gLongitude = LeafBE.$element.attr('data-glon');
-        LeafBE.$tilesUrl = LeafBE.$element.attr('data-tiles');
-        LeafBE.$tilesCopy = LeafBE.$element.attr('data-copy');
-        LeafBE.$geoCodeUrl = LeafBE.$element.attr('data-geocodeurl');
-        LeafBE.$geoCodeUrlShort = LeafBE.$element.attr('data-geocodeurlshort');
-        LeafBE.$fieldLat = LeafBE.$element.attr('data-namelat');
-        LeafBE.$fieldLon = LeafBE.$element.attr('data-namelon');
-        LeafBE.$fieldLatActive = LeafBE.$element.attr('data-namelat-active');
+        LeafletBackend.$element = element;
+        LeafletBackend.$labelTitle = LeafletBackend.$element.attr('data-label-title');
+        LeafletBackend.$labelClose = LeafletBackend.$element.attr('data-label-close');
+        LeafletBackend.$labelImport = LeafletBackend.$element.attr('data-label-import');
+        LeafletBackend.$latitude = LeafletBackend.$element.attr('data-lat');
+        LeafletBackend.$longitude = LeafletBackend.$element.attr('data-lon');
+        LeafletBackend.$gLatitude = LeafletBackend.$element.attr('data-glat');
+        LeafletBackend.$gLongitude = LeafletBackend.$element.attr('data-glon');
+        LeafletBackend.$tilesUrl = LeafletBackend.$element.attr('data-tiles');
+        LeafletBackend.$tilesCopy = LeafletBackend.$element.attr('data-copy');
+        LeafletBackend.$geoCodeUrl = LeafletBackend.$element.attr('data-geocodeurl');
+        LeafletBackend.$geoCodeUrlShort = LeafletBackend.$element.attr('data-geocodeurlshort');
+        LeafletBackend.$fieldLat = LeafletBackend.$element.attr('data-namelat');
+        LeafletBackend.$fieldLon = LeafletBackend.$element.attr('data-namelon');
+        LeafletBackend.$fieldLatActive = LeafletBackend.$element.attr('data-namelat-active');
 
         // add the container to display the map as a nice overlay
         if (!$('#t3js-location-map-wrap').length) {
-            LeafBE.addMapMarkup();
+            LeafletBackend.addMapMarkup();
         }
     };
 
-    LeafBE.addMapMarkup = function () {
+    LeafletBackend.addMapMarkup = function () {
         $('body').append(
             '<div id="t3js-location-map-wrap">' +
             '<div class="t3js-location-map-title">' +
-            '<div class="btn-group"><a href="#" class="btn btn-icon btn-default" title="' + LeafBE.$labelClose + '" id="t3js-jvevents-close-map">' +
-            LeafBE.$iconClose +
+            '<div class="btn-group"><a href="#" class="btn btn-icon btn-default" title="' + LeafletBackend.$labelClose + '" id="t3js-jvevents-close-map">' +
+            LeafletBackend.$iconClose +
             '</a>' +
             '<a class="btn btn-default" href="#" title="Import marker position to form" id="t3js-jvevents-import-position">' +
-            LeafBE.$labelImport +
+            LeafletBackend.$labelImport +
             '</a></div>' +
-            LeafBE.$labelTitle +
+            LeafletBackend.$labelTitle +
             '</div>' +
             '<div class="t3js-location-map-container" id="t3js-location-map-container">' +
             '</div>' +
@@ -67,57 +72,57 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/FormEngine', 'TY
         );
     };
 
-    LeafBE.createMap = function () {
+    LeafletBackend.createMap = function () {
 
-        if (((!LeafBE.$latitude || !LeafBE.$longitude) || (LeafBE.$latitude == 0 && LeafBE.$longitude == 0)) && LeafBE.$geoCodeUrl != null) {
-            LeafBE.geocode();
+        if (((!LeafletBackend.$latitude || !LeafletBackend.$longitude) || (LeafletBackend.$latitude == 0 && LeafletBackend.$longitude == 0)) && LeafletBackend.$geoCodeUrl != null) {
+            LeafletBackend.geocode();
         }
 
         // The ultimate fallback: if one of the coordinates is empty, fallback to Kopenhagen.
         // Thank you Kaspar for TYPO3 and its great community! ;)
-        if (LeafBE.$latitude == null || LeafBE.$longitude == null) {
-            LeafBE.$latitude = LeafBE.$gLatitude;
-            LeafBE.$longitude = LeafBE.$gLongitude;
+        if (LeafletBackend.$latitude == null || LeafletBackend.$longitude == null) {
+            LeafletBackend.$latitude = LeafletBackend.$gLatitude;
+            LeafletBackend.$longitude = LeafletBackend.$gLongitude;
             // set zoomlevel lower for faster navigation
-            LeafBE.$zoomLevel = 4;
+            LeafletBackend.$zoomLevel = 4;
         }
-        LeafBE.$map = L.map('t3js-location-map-container', {
-            center: [LeafBE.$latitude, LeafBE.$longitude],
-            zoom: LeafBE.$zoomLevel
+        LeafletBackend.$map = L.map('t3js-location-map-container', {
+            center: [LeafletBackend.$latitude, LeafletBackend.$longitude],
+            zoom: LeafletBackend.$zoomLevel
         });
-        L.tileLayer(LeafBE.$tilesUrl, {
-            attribution: LeafBE.$tilesCopy
-        }).addTo(LeafBE.$map);
+        L.tileLayer(LeafletBackend.$tilesUrl, {
+            attribution: LeafletBackend.$tilesCopy
+        }).addTo(LeafletBackend.$map);
 
-        LeafBE.$marker = L.marker([LeafBE.$latitude, LeafBE.$longitude], {
+        LeafletBackend.$marker = L.marker([LeafletBackend.$latitude, LeafletBackend.$longitude], {
             draggable: true
-        }).addTo(LeafBE.$map);
+        }).addTo(LeafletBackend.$map);
 
-        let position = LeafBE.$marker.getLatLng();
+        let position = LeafletBackend.$marker.getLatLng();
 
-        LeafBE.$marker.on('dragend', function (event) {
-            LeafBE.$marker = event.target;
-            position = LeafBE.$marker.getLatLng();
+        LeafletBackend.$marker.on('dragend', function (event) {
+            LeafletBackend.$marker = event.target;
+            position = LeafletBackend.$marker.getLatLng();
         });
-        LeafBE.$map.on('click', function (event) {
-            LeafBE.$marker.setLatLng(event.latlng);
+        LeafletBackend.$map.on('click', function (event) {
+            LeafletBackend.$marker.setLatLng(event.latlng);
         });
         // import coordinates and close overlay
         $('#t3js-jvevents-import-position').on('click', function () {
             // set visual coordinates
-            $('input[data-formengine-input-name="' + LeafBE.$fieldLat + '"]').val(LeafBE.$marker.getLatLng().lat);
-            $('input[data-formengine-input-name="' + LeafBE.$fieldLon + '"]').val(LeafBE.$marker.getLatLng().lng);
+            $('input[data-formengine-input-name="' + LeafletBackend.$fieldLat + '"]').val(LeafletBackend.$marker.getLatLng().lat);
+            $('input[data-formengine-input-name="' + LeafletBackend.$fieldLon + '"]').val(LeafletBackend.$marker.getLatLng().lng);
             // set hidden fields values
-            $('input[name="' + LeafBE.$fieldLat + '"]').val(LeafBE.$marker.getLatLng().lat);
-            $('input[name="' + LeafBE.$fieldLon + '"]').val(LeafBE.$marker.getLatLng().lng);
+            $('input[name="' + LeafletBackend.$fieldLat + '"]').val(LeafletBackend.$marker.getLatLng().lat);
+            $('input[name="' + LeafletBackend.$fieldLon + '"]').val(LeafletBackend.$marker.getLatLng().lng);
             // enable also latitude, if not already done by user.
-            $('input[id="' + LeafBE.$fieldLatActive + '"]').parentsUntil('.form-group').removeClass('disabled');
-            $('input[id="' + LeafBE.$fieldLatActive + '"]').prop('checked', true);
+            $('input[id="' + LeafletBackend.$fieldLatActive + '"]').parentsUntil('.form-group').removeClass('disabled');
+            $('input[id="' + LeafletBackend.$fieldLatActive + '"]').prop('checked', true);
 
             // mark fields as changed for re-evaluation and revalidate the form,
             // this is e.g. needed when this wizard is used on inline elements
-            FormEngine.Validation.markFieldAsChanged($('input[name="' + LeafBE.$fieldLat + '"]'));
-            FormEngine.Validation.markFieldAsChanged($('input[name="' + LeafBE.$fieldLon + '"]'));
+            FormEngine.Validation.markFieldAsChanged($('input[name="' + LeafletBackend.$fieldLat + '"]'));
+            FormEngine.Validation.markFieldAsChanged($('input[name="' + LeafletBackend.$fieldLon + '"]'));
             FormEngine.Validation.validate();
 
             // close map after import of coordinates.
@@ -129,27 +134,27 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/FormEngine', 'TY
         });
     };
 
-    LeafBE.geocode = function () {
+    LeafletBackend.geocode = function () {
         $.ajax({
             type: 'GET',
-            url: LeafBE.$geoCodeUrl,
+            url: LeafletBackend.$geoCodeUrl,
             async: false,
             dataType: 'json',
             success: function (data) {
                 if (data.length == 0) {
                     $.ajax({
                         type: 'GET',
-                        url: LeafBE.$geoCodeUrlShort,
+                        url: LeafletBackend.$geoCodeUrlShort,
                         async: false,
                         dataType: 'json',
                         success: function (data) {
                             if (data.length != 0) {
                                 $.each(data[0], function (key, value) {
                                     if (key == "lat") {
-                                        LeafBE.$latitude = value;
+                                        LeafletBackend.$latitude = value;
                                     }
                                     if (key == "lon") {
-                                        LeafBE.$longitude = value;
+                                        LeafletBackend.$longitude = value;
                                     }
                                 });
                             }
@@ -158,10 +163,10 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/FormEngine', 'TY
                 } else {
                     $.each(data[0], function (key, value) {
                         if (key == "lat") {
-                            LeafBE.$latitude = value;
+                            LeafletBackend.$latitude = value;
                         }
                         if (key == "lon") {
-                            LeafBE.$longitude = value;
+                            LeafletBackend.$longitude = value;
                         }
                     });
                 }
@@ -169,27 +174,27 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/FormEngine', 'TY
         });
     };
 
-    LeafBE.initializeEvents = function (element) {
+    LeafletBackend.initializeEvents = function (element) {
         $(element).on('click', function () {
-            if (LeafBE.$map !== null) {
-                LeafBE.$map.remove();
-                LeafBE.$map = null;
+            if (LeafletBackend.$map !== null) {
+                LeafletBackend.$map.remove();
+                LeafletBackend.$map = null;
             }
-            LeafBE.init($(this));
-            LeafBE.createMap();
+            LeafletBackend.init($(this));
+            LeafletBackend.createMap();
             $('#t3js-location-map-wrap').addClass('active');
         });
     };
 
     // reinit when form has changes, e.g. inline relations loaded using ajax
-    LeafBE.reinitialize = FormEngine.reinitialize;
+    LeafletBackend.reinitialize = FormEngine.reinitialize;
     FormEngine.reinitialize = function () {
-        LeafBE.reinitialize();
+        LeafletBackend.reinitialize();
         if ($('.locationMapWizard').length) {
-            LeafBE.initializeEvents('.locationMapWizard');
+            LeafletBackend.initializeEvents('.locationMapWizard');
         }
     };
-    //LeafBE.addMapMarkup();
-    LeafBE.initializeEvents('.locationMapWizard');
-    return LeafBE;
+    //LeafletBackend.addMapMarkup();
+    LeafletBackend.initializeEvents('.locationMapWizard');
+    return LeafletBackend;
 });

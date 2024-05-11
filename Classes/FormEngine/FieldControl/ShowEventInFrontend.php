@@ -12,6 +12,7 @@ namespace JVelletti\JvEvents\FormEngine\FieldControl;
  */
 use TYPO3\CMS\Backend\Form\AbstractNode;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -46,7 +47,11 @@ class ShowEventInFrontend extends AbstractNode
             $resultArray['iconIdentifier'] = "actions-document-view" ;
             $resultArray['linkAttributes']['class'] = "showEventInFrontend windowOpenUri btn-primary" ;
             $resultArray['linkAttributes']['data-uri'] = $url ;
-            $resultArray['requireJsModules'][] = 'TYPO3/CMS/JvEvents/ShowEventInFrontend' ;
+
+            $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS(
+                'JVelletti/JvEvents/ShowEventInFrontend.js'
+            )->instance($paramArray['itemFormElName']);
+            
         } catch (\Exception $e) {
             $resultArray = [] ;
         }

@@ -29,7 +29,7 @@ class EventLocationMapWizard extends AbstractNode
         $resultArray = $this->initializeResultArray();
         $title = $this->getLanguageService()->sL('LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:jv_events_model_location.geocoder.title');
 
-        $paramArray['itemFormElName'];
+
         $nameLongitude = $paramArray['itemFormElName'];
         $nameLatitude = str_replace('lng', 'lat', $nameLongitude);
         $nameLatitudeActive = str_replace('data', 'control[active]', $nameLatitude);
@@ -81,11 +81,11 @@ class EventLocationMapWizard extends AbstractNode
         $resultArray['stylesheetFiles'][] = 'EXT:jv_events/Resources/Public/Css/leafletBackend.css';
 
         $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS(
-            'TYPO3/CMS/JvEvents/leaflet-1-7-1'
+            'JVelletti/JvEvents/leaflet-1-7-1.js'
         )->instance("jvevents-location-map-wizard");
         $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS(
-            'TYPO3/CMS/JvEvents/LeafletBackend'
-        )->instance("jvevents-location-map-wizard");
+            'JVelletti/JvEvents/LeafletBackend.js'
+        )->instance($paramArray['itemFormElName']);
 
         return $resultArray;
     }
