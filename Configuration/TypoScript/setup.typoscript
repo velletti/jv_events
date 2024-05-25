@@ -45,7 +45,7 @@ plugin.tx_jvevents_events {
 		organizer {
 			newOrgGetGroups {
 				2 = Organizer Default
-				7 = image Upload is allowed
+				# 7 = image Upload is allowed
 				# 5 = Banner Request allowed
 				# 6 = Registration internal allowed
 				# 15  = youTubeLinkAllowed

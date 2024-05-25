@@ -195,7 +195,7 @@
                                     </f:security.ifHasRole>
                                     <f:if condition="{settings.pageIds.addMedia}">
                                         <div class="col-12 pt-2">
-                                            <f:link.page pageUid="{settings.pageIds.addMedia}" noCache="true" class="btn btn-outline-primary x-1  w-100 text-left" title="Add Teaser Image to Event" additionalParams="{tx_jvmediaconnector_connector: {action: 'list', controller: 'Media', pluginName: 'Events' ,  reference: {id: output.event.eventId, table: 'tx_jvevents_domain_model_event' , fieldname: 'teaser_image' , maxRelations: '1' , returnPid: output.returnPid , returnArray: {tx_jvevents_event: {action: 'show', event: output.event.eventId }}}}}">
+                                            <f:link.page pageUid="{settings.pageIds.addMedia}" class="btn btn-outline-primary x-1  w-100 text-left" title="Add Teaser Image to Event" additionalParams="{tx_jvmediaconnector_connector: {action: 'list', controller: 'Media', pluginName: 'Events' ,  reference: {id: output.event.eventId, table: 'tx_jvevents_domain_model_event' , fieldname: 'teaser_image' , maxRelations: '1' , returnPid: output.returnPid , returnArray: {tx_jvevents_event: {action: 'show', event: output.event.eventId }}}}}">
                                                 <button class="btn btn-outline-primary btn-sm rounded-circle mr-2" href="#">
                                                     <i class="fas fa-image"></i>
                                                 </button>

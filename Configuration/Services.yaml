@@ -12,3 +12,8 @@ services:
       - name: 'console.command'
         command: 'jvevents:updateslug'
         schedulable: true
+  JVelletti\JvEvents\Command\UsergroupCommand:
+    tags:
+      - name: 'console.command'
+        command: 'jvevents:usergroup'
+        schedulable: false

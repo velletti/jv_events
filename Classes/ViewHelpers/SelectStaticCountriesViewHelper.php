@@ -41,7 +41,7 @@ use JVelletti\JvEvents\Domain\Repository\StaticCountryRepository;
  * 	name="country" optionLabelField="cnShortDe"/>
  * </code>
  */
-class SelectStaticCountriesViewHelper extends TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper {
+class SelectStaticCountriesViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper {
 	/**
   * Repository that provides the country models
   *

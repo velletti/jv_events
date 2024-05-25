@@ -1,6 +1,13 @@
 {namespace jve=JVelletti\JvEvents\ViewHelpers}
 
-
+<f:if condition="{settings.LayoutSingle}">
+    <f:then>
+        <f:variable name="LayoutSingle">{settings.LayoutSingle}</f:variable>
+    </f:then>
+    <f:else>
+        <f:variable name="LayoutSingle">5Tango</f:variable>
+    </f:else>
+</f:if>
 <div class="card col-12  jv-events-partial{settings.LayoutSingle}" id="jv-event-edit-data">
     <div class="card-header text-white bg-primary">
         <span class="fas fa-edit border-primary rounded-circle"></span>
@@ -44,7 +51,7 @@
             <f:render partial="HasFormErrors" arguments="{object:location, debug: 'true' }" />
 
             <f:form class="form-horizontal"  action="update" name="location" object="{location}" id="location_edit">
-                <f:render partial="Location/Single/Partial{settings.LayoutSingle}/FormFields" arguments="{_all}" />
+                <f:render partial="Location/Single/Partial{LayoutSingle}/FormFields" arguments="{_all}" />
 
                 <div class="text-right">
                     <f:form.submit class="btn btn-primary"

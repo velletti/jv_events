@@ -1,0 +1,67 @@
+<f:if condition="{settings.ccsFile}">
+	<f:asset.css identifier="jveventscss">{settings.ccsFile}</f:asset.css>
+</f:if>
+<f:flashMessages as="flashMessages">
+	<f:if condition="{flashMessages}">
+		<f:for each="{flashMessages}" as="flashMessage">
+			<f:switch expression="{flashMessage.severity}">
+				<f:case value="-1">
+					<f:variable name="alertClass">alert-info</f:variable>
+				</f:case>
+				<f:case value="0">
+					<f:variable name="alertClass">alert-success</f:variable>
+				</f:case>
+				<f:case value="1">
+					<f:variable name="alertClass">alert-warning</f:variable>
+				</f:case>
+				<f:case value="2">
+					<f:variable name="alertClass">alert-danger</f:variable>
+				</f:case>
+				<f:defaultCase>
+					<f:variable name="alertClass">alert-notice</f:variable>
+				</f:defaultCase>
+			</f:switch>
+			<div class="alert {alertClass} my-3" title="{flashMessage.message}">
+				<div>
+					<f:if condition="{flashMessage.title} == 'No MX entry for Maildomain!' ">
+						<f:then>
+							<b>{flashMessage.title}</b><br>
+							{flashMessage.message}
+						</f:then>
+						<f:else>
+							<f:if condition="{flashMessage.severity}> 0">
+								<f:then>
+									<f:translate key="error.msg_error_check-input">Please check fields below</f:translate>
+								</f:then>
+								<f:else>
+									{flashMessage.message}
+								</f:else>
+							</f:if>
+						</f:else>
+
+
+					</f:if>
+
+				</div>
+			</div>
+		</f:for>
+
+	</f:if>
+</f:flashMessages>
+
+<f:if condition="{settings.ShowFilter} > 6">
+	<f:then>
+		<div class="tx-jv-events flex">
+			<f:render section="main" />
+		</div>
+	</f:then>
+	<f:else>
+
+		<div class="tx-jv-events">
+			<f:render section="main" />
+		</div>
+	</f:else>
+</f:if>
+
+
+

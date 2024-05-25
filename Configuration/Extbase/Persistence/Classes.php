@@ -19,4 +19,7 @@ return [
             ],
         ],
     ],
+    \JVelletti\JvEvents\Domain\Model\FrontendUserGroup::class => [
+        'tableName' => 'fe_groups',
+    ],
 ];

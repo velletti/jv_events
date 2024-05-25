@@ -3,7 +3,15 @@
 
 
 <f:section name="main">
+    <f:if condition="{settings.LayoutSingle}">
+        <f:then>
+            <f:variable name="LayoutSingle">{settings.LayoutSingle}</f:variable>
+        </f:then>
+        <f:else>
+            <f:variable name="LayoutSingle">5Tango</f:variable>
+        </f:else>
+    </f:if>
     <f:if condition="{location}">
-        <f:render partial="Location/Single/Partial{settings.LayoutSingle}/Edit" arguments="{_all}" />
+        <f:render partial="Location/Single/Partial{LayoutSingle}/Edit" arguments="{_all}" />
     </f:if>
 </f:section>

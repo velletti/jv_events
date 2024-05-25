@@ -370,7 +370,7 @@ class EventController extends BaseController
                 $clearCachePids = GeneralUtility::trimExplode("," , $this->settings['EmConfiguration']['clearCachePids']) ;
                 if( is_array($clearCachePids) && count( $clearCachePids) > 0 ) {
                     $this->cacheService->clearPageCache( $clearCachePids );
-                    $this->addFlashMessage('The object was created and Cache of following pages are cleared: ' . implode("," , $clearCachePids), '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK);
+                    $this->addFlashMessage('The object was created and Cache of following pages are cleared: ' . implode("," , $clearCachePids), '', ContextualFeedbackSeverity::OK);
                 } else {
                     $this->addFlashMessage('The object was created.', '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK);
                 }

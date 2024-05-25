@@ -109,10 +109,10 @@ class FrontendUser extends AbstractEntity
      */
     protected $company = '';
 
-    /**
-     * @var ObjectStorage<FileReference>
-     */
-    protected $image;
+   #  /**
+   #  * @var ObjectStorage<FileReference>
+   #  */
+    # protected $image;
 
     /**
      * @var \DateTime|null
@@ -145,7 +145,7 @@ class FrontendUser extends AbstractEntity
         $this->username = $username;
         $this->password = $password;
         $this->usergroup = new ObjectStorage();
-        $this->image = new ObjectStorage();
+        # $this->image = new ObjectStorage();
     }
 
     /**
@@ -154,7 +154,7 @@ class FrontendUser extends AbstractEntity
     public function initializeObject()
     {
         $this->usergroup = $this->usergroup ?? new ObjectStorage();
-        $this->image = $this->image ?? new ObjectStorage();
+        # $this->image = $this->image ?? new ObjectStorage();
     }
 
     /**
@@ -523,26 +523,27 @@ class FrontendUser extends AbstractEntity
      * Sets the image value
      *
      * @param ObjectStorage<FileReference> $image
-     */
-    public function setImage(ObjectStorage $image)
-    {
-        $this->image = $image;
-    }
-
-    /**
+ *
+* public function setImage(ObjectStorage $image)
+    * {
+        * $this->image = $image;
+    * }
+     * /
+     * /**
      * Gets the image value
      *
-     * @return ObjectStorage<FileReference>
-     */
-    public function getImage()
-    {
-        return $this->image;
-    }
-
-    /**
+     * @param \DateTime $lastlogin
+     *@return ObjectStorage<FileReference>
+ *
+* public function getImage()
+    * {
+     * return $this->image;
+    * }
+    * /
+     * 
+    * /**
      * Sets the lastlogin value
      *
-     * @param \DateTime $lastlogin
      */
     public function setLastlogin(\DateTime $lastlogin)
     {
