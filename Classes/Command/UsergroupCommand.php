@@ -20,7 +20,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  */
 class UsergroupCommand extends Command {
 
-
+    private array $ALLOWED_CMD= [ "add" , "remove" , "count"] ;
 
     /**
      * Configure the command by defining the name, options and arguments
@@ -33,16 +33,16 @@ class UsergroupCommand extends Command {
             ->addOption(
                 'cmd',
                 'c',
-                InputOption::VALUE_REQUIRED,
+                InputOption::VALUE_OPTIONAL,
                 '--cmd=add (or remove)'
             )
             ->addOption(
-                'ug',
+                'usergroup',
                 'u',
-                InputOption::VALUE_REQUIRED,
+                InputOption::VALUE_OPTIONAL,
                 'enter Number of --usergroup=x to add/remove'
             )->addOption(
-                'mh',
+                'musthave',
                 "m" ,
                 InputOption::VALUE_REQUIRED,
                 'enter Number of --musthave=y that user must have'
@@ -74,33 +74,42 @@ class UsergroupCommand extends Command {
 
         $io = new SymfonyStyle($input, $output);
         $io->title($this->getDescription());
-        if ($input->getOption('ug')) {
-            $usergroup = (int)$input->getOption('ug');
-        } elseif ($input->getOption('u')) {
-            $usergroup = (int)$input->getOption('u');
+        if ($input->getOption('usergroup')) {
+            $usergroup = (int)$input->getOption('usergroup');
         }
-        if ($input->getOption('mh')) {
-            $musthave = (int)$input->getOption('mh');
-        } elseif ($input->getOption('m')) {
-            $musthave = (int)$input->getOption('m');
+        if ($input->getOption('musthave')) {
+            $musthave = (int)$input->getOption('musthave');
         }
         $cmd = "remove";
         if ($input->getOption('cmd')) {
-            $cmd = ($input->getOption('cmd') == "add") ? "add" : "remove";
-        } elseif ($input->getOption('c')) {
-            $cmd = ($input->getOption('c') == "a") ? "add" : "remove";
+            $cmd = $input->getOption('cmd') ;
+        } else {
+            $cmd = "count" ;
         }
+        if ( !in_array($cmd , $this->ALLOWED_CMD) ) {
+            $io->writeln('CMD not allowed : given  '. $cmd );
+            return 1 ;
+        }
+
         $maxRows = 999999999999 ;
         if ($input->getOption('rows') ) {
             $maxRows = (int)$input->getOption('rows') ;
-            $io->writeln('max Rows to be updated was set to '. $maxRows );
+            $io->writeln('Max Rows to be updated was set to '. $maxRows );
 
         }
 
-        $io->writeln( "Command will '" . $cmd . "' group: '" .  $usergroup . "' from fe_users if user has Group: " . $musthave );
-        if ( $musthave == 0 || $usergroup == 0 ) {
-            $io->writeln( "musthave ($musthave)  or usergroup ($usergroup) not set " );
+        if ( $musthave == 0 ) {
+            $io->writeln( "ERROR: musthave ($musthave)   not set " );
             return 1 ;
+        }
+        if ( $usergroup == 0 && $cmd != "count") {
+            $io->writeln( "ERROR: usergroup ($usergroup) not set but requierred if command not count" );
+            return 1 ;
+        }
+        if ( $cmd != "count") {
+            $io->writeln("Command will '" . $cmd . "' group: '" . $usergroup . "' from fe_users if user has Group: " . $musthave);
+        } else {
+            $io->writeln("Command will '" . $cmd . "' users with group: '" . $musthave . "' " );
         }
         $progress = false ;
         $table = "fe_users" ;
@@ -110,10 +119,14 @@ class UsergroupCommand extends Command {
                 ->where($qb->expr()->notInSet("usergroup" , $usergroup ))
                 ->andWhere($qb->expr()->inSet("usergroup" , $musthave ))
                 ->executeQuery() ;
-        } else {
+        } elseif ( $cmd == "remove") {
             $rows = $qb->select("uid" , "usergroup")->from($table)
                 ->where($qb->expr()->inSet("usergroup" , $usergroup ))
                 ->andWhere($qb->expr()->inSet("usergroup" , $musthave ))
+                ->executeQuery() ;
+        } elseif ( $cmd == "count") {
+            $rows = $qb->select("uid" , "usergroup")->from($table)
+                ->where($qb->expr()->inSet("usergroup" , $musthave ))
                 ->executeQuery() ;
         }
 
@@ -122,7 +135,9 @@ class UsergroupCommand extends Command {
             $io->writeln( $table . " - rowCount: " . $total );
             $progress = $io->createProgressBar($total) ;
         }
-
+        if ( $cmd == "count") {
+            return 0;
+        }
         $i = 0 ;
         $debugOutput = "" ;
         while ( $row = $rows->fetchAssociative()) {
@@ -153,6 +168,8 @@ class UsergroupCommand extends Command {
 
             $io->writeln(" ") ;
             $io->writeln("Finished ( " . $table . " updated: "   . $i . "/" . $total .  " records) ");
+            $io->writeln("====================================================================") ;
+            $io->writeln(" ") ;
         }
         return 0 ;
 	}
