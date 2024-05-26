@@ -77,18 +77,22 @@ class UsergroupCommand extends Command {
 
         $io = new SymfonyStyle($input, $output);
         $io->title($this->getDescription());
+        $usergroup = 0;
+        $musthave = 0;
+        $cmd = "";
+
         if ($input->getOption('usergroup')) {
             $usergroup = (int)$input->getOption('usergroup');
         }
         if ($input->getOption('musthave')) {
             $musthave = (int)$input->getOption('musthave');
         }
-        $cmd = "remove";
         if ($input->getOption('cmd')) {
             $cmd = $input->getOption('cmd') ;
         } else {
             $cmd = "count" ;
         }
+        
         if ( !in_array($cmd , $this->ALLOWED_CMD) ) {
             $io->writeln('CMD not allowed : given  '. $cmd );
             return 1 ;
