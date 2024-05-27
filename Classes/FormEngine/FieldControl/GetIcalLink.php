@@ -46,9 +46,9 @@ class GetIcalLink extends AbstractNode
             $resultArray['iconIdentifier'] = "actions-calendar" ;
             $resultArray['linkAttributes']['class'] = "getIcalLink windowOpenUri btn-primary" ;
             $resultArray['linkAttributes']['data-uri'] = $url ;
-            $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS(
-                'JVelletti/JvEvents/ShowEventInFrontend.js'
-            )->instance($paramArray['itemFormElName']);
+         //   $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS(
+         //       'showEventInFrontend.js'
+         //   )->instance($paramArray['itemFormElName']);
         } catch (\Exception $e) {
             $resultArray = [] ;
         }

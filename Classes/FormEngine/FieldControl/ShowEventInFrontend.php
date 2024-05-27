@@ -41,15 +41,14 @@ class ShowEventInFrontend extends AbstractNode
                 $this->data['databaseRow']['sys_language_uid'][0] : $this->data['databaseRow']['sys_language_uid'] , 0 ) ;
 
             $url = (string)$site->getRouter()->generateUri( $singlePid ,['_language' => $lang ,
-                'tx_jvevents_events' => ['action' => 'show' , 'controller' => 'Event' ,'event' =>  $this->data['databaseRow']['uid']]]);
+                'tx_jvevents_event' => ['action' => 'show' , 'controller' => 'Event' ,'event' =>  $this->data['databaseRow']['uid']]]);
 
             $resultArray['title'] = "Show" ;
             $resultArray['iconIdentifier'] = "actions-document-view" ;
-            $resultArray['linkAttributes']['class'] = "showEventInFrontend windowOpenUri btn-primary" ;
+            $resultArray['linkAttributes']['class'] = "showEventInFrontend windowOpenUri " ;
             $resultArray['linkAttributes']['data-uri'] = $url ;
 
-            $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS(
-                'JVelletti/JvEvents/ShowEventInFrontend.js'
+            $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS('showEventInFrontend.js'
             )->instance($paramArray['itemFormElName']);
             
         } catch (\Exception $e) {

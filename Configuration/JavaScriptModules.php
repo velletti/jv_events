@@ -3,11 +3,12 @@
 return [
     'dependencies' => [
         'backend',
+        'core',
     ],
     'tags' => [
         'backend.form',
     ],
     'imports' => [
-        '@jvelletti/jv_events/' => 'EXT:jv_events/Resources/Public/JavaScript/',
+        'showEventInFrontend.js' => 'EXT:jv_events/Resources/Public/JavaScript/Backend/ShowEventInFrontend.js',
     ],
 ];
