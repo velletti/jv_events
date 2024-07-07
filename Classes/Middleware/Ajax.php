@@ -131,7 +131,8 @@ class Ajax implements MiddlewareInterface
                 // ToDo generate Output as before in ajax Controller here in Middleware with CORE features.
                 $controller = $ajaxUtility->initController($_gp , $function , $request ) ;
                 $controller->initializeRepositorys( ) ;
-           
+                /** @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication $frontendUser */
+                $controller->frontendUser = $request->getAttribute('frontend.user');
                 $controller->initSettings($request)  ;
 
 

@@ -92,16 +92,18 @@ class OrganizerController extends BaseController
      */
     public function assistAction(): ResponseInterface
     {
-        $this->view->assign('user', intval($GLOBALS['TSFE']->fe_user->user['uid'] ) ) ;
-        if ( isset( $GLOBALS['TSFE']->fe_user->user['uid'] )) {
-            $this->view->assign('apiToken', TokenUtility::getToken( $GLOBALS['TSFE']->fe_user->user['uid']) ) ;
+        $organizerUids = [];
+        $filter = [];
+        $this->view->assign('user', intval($this->frontendUser->user['uid'] ) ) ;
+        if ( isset( $this->frontendUser->user['uid'] )) {
+            $this->view->assign('apiToken', TokenUtility::getToken( $this->frontendUser->user['uid']) ) ;
             if( $this->request->hasArgument("apiToken")) {
                 $this->view->assign('apiTokenValid', TokenUtility::checkToken( $this->request->getArgument("apiToken") )) ;
             }
         }
 
-        $this->view->assign('userData', $GLOBALS['TSFE']->fe_user->user ) ;
-        $organizer = $this->organizerRepository->findByUserAllpages(intval($GLOBALS['TSFE']->fe_user->user['uid']), true, TRUE);
+        $this->view->assign('userData', $this->frontendUser->user ) ;
+        $organizer = $this->organizerRepository->findByUserAllpages(intval($this->frontendUser->user['uid']), true, TRUE);
         if( is_array( $organizer)  && is_object( $organizer[0]) ) {
             $organizerUids[0] = $organizer[0]->getUid() ;
             $ignoreEnableFields = FALSE ;
@@ -129,14 +131,14 @@ class OrganizerController extends BaseController
             $checkHash = GeneralUtility::hmac ( $checkString );
             $this->view->assign('hash', $checkHash );
 
-            $oldDefaultLocation = $this->locationRepository->findByOrganizersAllpages( array(0 => $organizer[0]->getUid()) , FALSE, FALSE , TRUE )->getFirst() ;
+            $oldDefaultLocation = $this->locationRepository->findByOrganizersAllpages( [0 => $organizer[0]->getUid()] , FALSE, FALSE , TRUE )->getFirst() ;
             if($oldDefaultLocation) {
                 $this->view->assign('defaultLocationUid', $oldDefaultLocation->getUid() );
             }
         }
 
 
-        $this->view->assign('count', count($organizer));
+        $this->view->assign('count', is_countable($organizer) ? count($organizer) : 0);
         $this->view->assign('organizer', $organizer);
         $this->view->assign('isOrganizer', $this->isUserOrganizer());
         return $this->htmlResponse();
@@ -159,7 +161,7 @@ class OrganizerController extends BaseController
 
         if( array_key_exists( 'filterorganizer' , $this->settings)) {
             if ( array_key_exists( "tags", $this->settings['filterorganizer']))  {
-                if( count(GeneralUtility::trimExplode( "," , $this->settings['filterorganizer']['tags'] , true)  ) > 0 ) {
+                if( (is_countable(GeneralUtility::trimExplode( "," , $this->settings['filterorganizer']['tags'] , true)) ? count(GeneralUtility::trimExplode( "," , $this->settings['filterorganizer']['tags'] , true)  ) : 0) > 0 ) {
                     $filter["tags.uid"]  = GeneralUtility::trimExplode( "," , $this->settings['filterorganizer']['tags'] , true )   ;
                 }
             }
@@ -213,11 +215,11 @@ class OrganizerController extends BaseController
     /**
      * action show
      *
-     * @param Organizer|null $organizer
      * @return void
      */
     public function showAction(?Organizer $organizer): ResponseInterface
     {
+        $organizerUids = [];
         if( $organizer ) {
             $this->settings['filter']['organizer'] =  $organizer->getUid()  ;
             $this->settings['filter']['maxEvent'] =  1  ;
@@ -247,27 +249,27 @@ class OrganizerController extends BaseController
         $tags = $this->tagRepository->findAllonAllPages( '2' );
 
 
-        $organizers = $this->organizerRepository->findByUserAllpages( intval($GLOBALS['TSFE']->fe_user->user['uid'] )  , FALSE , TRUE  );
-        $this->view->assign('count', count( $organizers )) ;
+        $organizers = $this->organizerRepository->findByUserAllpages( intval($this->frontendUser->user['uid'] )  , FALSE , TRUE  );
+        $this->view->assign('count', is_countable($organizers) ? count( $organizers ) : 0) ;
 
         if ( $organizer) {
             if( $organizer->getEmail() == '' ) {
-                $organizer->setEmail( $GLOBALS['TSFE']->fe_user->user['email'] ) ;
+                $organizer->setEmail( $this->frontendUser->user['email'] ) ;
             }
         } else{
             /** @var Organizer $organizer */
             $organizer = GeneralUtility::makeInstance(Organizer::class);
             // ToDo find good way to handle ID Default .. maybe a pid per User, per location or other typoscript setting
             $organizer->setPid( 13 ) ;
-            $organizer->setEmail( $GLOBALS['TSFE']->fe_user->user['email'] ) ;
-            $organizer->setName( $GLOBALS['TSFE']->fe_user->user['first_name'] . " " . $GLOBALS['TSFE']->fe_user->user['last_name'] ) ;
-            $organizer->setPhone( $GLOBALS['TSFE']->fe_user->user['phone'] ) ;
+            $organizer->setEmail( $this->frontendUser->user['email'] ) ;
+            $organizer->setName( $this->frontendUser->user['first_name'] . " " . $this->frontendUser->user['last_name'] ) ;
+            $organizer->setPhone( $this->frontendUser->user['phone'] ) ;
 
             // We want to confirm each new Organizer
             $organizer->sethidden( 1 ) ;
 
         }
-        $this->view->assign('user', intval($GLOBALS['TSFE']->fe_user->user['uid'] ) ) ;
+        $this->view->assign('user', intval($this->frontendUser->user['uid'] ) ) ;
 
         $this->view->assign('organizer', $organizer );
         $this->view->assign('tags', $tags);
@@ -277,14 +279,13 @@ class OrganizerController extends BaseController
     /**
      * action create
      *
-     * @param Organizer $organizer
      * @return void
      */
     #[Validate(['param' => 'organizer', 'validator' => OrganizerValidator::class])]
     public function createAction(Organizer $organizer)
     {
-        if ( $GLOBALS['TSFE']->fe_user->user && $GLOBALS['TSFE']->fe_user->user['uid'] > 0 )  {
-             $isOrganizer = $this->organizerRepository->findByUserAllpages( $GLOBALS['TSFE']->fe_user->user['uid'] , true , true ) ;
+        if ( $this->frontendUser->user && $this->frontendUser->user['uid'] > 0 )  {
+             $isOrganizer = $this->organizerRepository->findByUserAllpages( $this->frontendUser->user['uid'] , true , true ) ;
             if ( $isOrganizer ) {
                 // reloaded paged ??
                 $organizer->setUid( $isOrganizer['uid'] ) ;
@@ -296,16 +297,16 @@ class OrganizerController extends BaseController
                 // special needs for tango. maybe we make this configurabale via typoscript
                 $organizer->setHidden(1) ;
                 $organizer->setPid( 13 ) ;
-                $organizer->setSorting( 99999999 ) ;
+                $organizer->setSorting( 99_999_999 ) ;
                 $organizer->setSysLanguageUid(-1 ) ;
 
-                $organizer->setAccessUsers(intval($GLOBALS['TSFE']->fe_user->user['uid'] ));
+                $organizer->setAccessUsers(intval($this->frontendUser->user['uid'] ));
                 $organizer->setAccessGroups( $this->settings['feEdit']['adminOrganizerGroudIds'] );
 
                 $this->organizerRepository->add($organizer);
                 $this->persistenceManager->persistAll() ;
 
-                $this->cacheService->clearPageCache( array($this->settings['pageIds']['organizerAssist'])  );
+                $this->cacheService->clearPageCache( [$this->settings['pageIds']['organizerAssist']]  );
                 if( $organizer->getUid()) {
                     $this->addFlashMessage('The Organizer was created with ID:' . $organizer->getUid() , '', AbstractMessage::OK);
 
@@ -320,9 +321,9 @@ class OrganizerController extends BaseController
             // https://www.allplan.com.ddev.local/de/?uid=82&tx_jvevents_ajax[organizerUid]=111&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[action]=activate&tx_jvevents_ajax[userUid]=1&tx_jvevents_ajax[hmac]=hmac1234&&tx_jvevents_ajax[rnd]=11234
 
             $organizerUid = intval( $organizer->getUid()) ;
-            $userUid = intval($GLOBALS['TSFE']->fe_user->user['uid']) ;
+            $userUid = intval($this->frontendUser->user['uid']) ;
             $rnd = time() ;
-            $tokenStr = "activateOrg" . "-" . $organizerUid . "-" . $GLOBALS['TSFE']->fe_user->user['crdate'] ."-". $userUid .  "-". $rnd ;
+            $tokenStr = "activateOrg" . "-" . $organizerUid . "-" . $this->frontendUser->user['crdate'] ."-". $userUid .  "-". $rnd ;
             $hmac = GeneralUtility::hmac( $tokenStr );
 
             $url  = GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST') ;
@@ -482,7 +483,7 @@ class OrganizerController extends BaseController
                 $groupsMissing[$group ] =  TRUE  ;
             }
         } else {
-            $groupsMissing = array( 2 => TRUE , 7 => TRUE ) ;
+            $groupsMissing = [2 => TRUE, 7 => TRUE] ;
         }
 
         if(is_array( $groups)) {
@@ -569,7 +570,6 @@ class OrganizerController extends BaseController
     /**
      * action edit
      *
-     * @param Organizer $organizer
      * @return void
      */
     #[IgnoreValidation(['value' => 'organizer'])]
@@ -589,7 +589,7 @@ class OrganizerController extends BaseController
             $this->view->assign('organizer', $organizer);
         }
 
-        $this->view->assign('user', intval( $GLOBALS['TSFE']->fe_user->user['uid'] ) );
+        $this->view->assign('user', intval( $this->frontendUser->user['uid'] ) );
         return $this->htmlResponse();
 
     }
@@ -597,7 +597,6 @@ class OrganizerController extends BaseController
     /**
      * action update
      *
-     * @param Organizer $organizer
      * @return void
      */
     #[Validate(['param' => 'organizer', 'validator' => OrganizerValidator::class])]
@@ -622,7 +621,6 @@ class OrganizerController extends BaseController
     /**
      * action delete
      *
-     * @param Organizer $organizer
      * @return void
      */
     public function deleteAction(Organizer $organizer)
@@ -636,12 +634,12 @@ class OrganizerController extends BaseController
 
 
     /**
-     * @param Organizer $organizer
      * @return Organizer
      * @throws NoSuchArgumentException
      */
     public function cleanOrganizerArguments(Organizer  $organizer)
     {
+        $row = [];
         // validation should be done in validatar class so we can ignore issue with wrong format
 
         $organizerArray = $this->request->getArgument('organizer');
@@ -679,15 +677,15 @@ class OrganizerController extends BaseController
 
 
         if( is_array( $organizerArray) && array_key_exists( 'description' , $organizerArray )) {
-            $desc = str_replace(array("\n", "\r", "\t"), array(" ", "", " "), $organizerArray['description']);
+            $desc = str_replace(["\n", "\r", "\t"], [" ", "", " "], (string) $organizerArray['description']);
             $desc = strip_tags($desc, "<p><br><a><i><strong><h2><h3>");
 
             $organizer->setDescription($desc);
         }
-        $organizer->setLink( trim($organizer->getLink())) ;
-        $organizer->setCharityLink( trim($organizer->getCharityLink())) ;
-        $organizer->setYoutubeLink( trim($organizer->getYoutubeLink())) ;
-        $organizer->setEmail( trim($organizer->getEmail())) ;
+        $organizer->setLink( trim((string) $organizer->getLink())) ;
+        $organizer->setCharityLink( trim((string) $organizer->getCharityLink())) ;
+        $organizer->setYoutubeLink( trim((string) $organizer->getYoutubeLink())) ;
+        $organizer->setEmail( trim((string) $organizer->getEmail())) ;
         $organizer->setLanguageUid( -1)  ;
         if ($organizer->getPid() < 1 ) {
             // ToDo find good way to handle ID Default .. maybe a pid per User, per location or other typoscript setting

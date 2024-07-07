@@ -25,6 +25,10 @@ namespace JVelletti\JvEvents\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use JVelletti\JvEvents\Utility\MigrationUtility;
+use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Core\Context\Context;
 use JVelletti\JvEvents\Utility\EmConfigurationUtility;
@@ -151,8 +155,10 @@ class BaseController extends ActionController
      */
     public $timeStart ;
 
+    /** @var array */
+    public $frontendUser ;
+
     /**
-     * @param CacheService $cacheService
      * @return void
      */
     public function injectCacheService(CacheService $cacheService) {
@@ -160,65 +166,41 @@ class BaseController extends ActionController
     }
 
 
-    /**
-     * @param TagRepository $tagRepository
-     */
     public function injectTagRepository(TagRepository $tagRepository)
     {
         $this->tagRepository = $tagRepository;
     }
 
-    /**
-     * @param CategoryRepository $categoryRepository
-     */
     public function injectCategoryRepository(CategoryRepository $categoryRepository)
     {
         $this->categoryRepository = $categoryRepository;
     }
 
-    /**
-     * @param RegistrantRepository $registrantRepository
-     */
     public function injectRegistrantRepository(RegistrantRepository $registrantRepository)
     {
         $this->registrantRepository = $registrantRepository;
     }
 
-    /**
-     * @param LocationRepository $locationRepository
-     */
     public function injectLocationRepository(LocationRepository $locationRepository)
     {
         $this->locationRepository = $locationRepository;
     }
 
-    /**
-     * @param OrganizerRepository $organizerRepository
-     */
     public function injectOrganizerRepository(OrganizerRepository $organizerRepository)
     {
         $this->organizerRepository = $organizerRepository;
     }
 
-    /**
-     * @param EventRepository $eventRepository
-     */
     public function injectEventRepository(EventRepository $eventRepository)
     {
         $this->eventRepository = $eventRepository;
     }
 
-    /**
-     * @param SubeventRepository $subeventRepository
-     */
     public function injectSubeventRepository(SubeventRepository $subeventRepository)
     {
         $this->subeventRepository = $subeventRepository;
     }
 
-    /**
-     * @param StaticCountryRepository $staticCountryRepository
-     */
     public function injectStaticCountryRepository(StaticCountryRepository $staticCountryRepository)
     {
         $this->staticCountryRepository = $staticCountryRepository;
@@ -226,9 +208,6 @@ class BaseController extends ActionController
 
 
 
-    /**
-     * @param PersistenceManager $persistenceManager
-     */
     public function injectPersistenceManager(PersistenceManager $persistenceManager)
     {
         $this->persistenceManager = $persistenceManager;
@@ -243,8 +222,10 @@ class BaseController extends ActionController
     public function initializeAction()
     {
         $this->settings['register']['allowedCountrys'] 	=  GeneralUtility::trimExplode("," , $this->settings['register']['allowedCountrys'] , true );
+        /** @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication $frontendUser */
+        $this->frontendUser = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user');
 
-        $this->settings['pageId']						=  $GLOBALS['TSFE']->id ;
+        $this->settings['pageId'] = MigrationUtility::getPageId($this) ;
         $this->settings['servername']					=  GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST');
         /** @var AspectInterface $languageAspect */
         $languageAspect = GeneralUtility::makeInstance(Context::class)->getAspect('language') ;
@@ -261,14 +242,14 @@ class BaseController extends ActionController
         } else {
             $layout = "5Tango" ;
         }
-        $this->settings['phpTimeZone'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['phpTimeZone'] ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['phpTimeZone'] : "UTC" ;
+        $this->settings['phpTimeZone'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['phpTimeZone'] ?: "UTC" ;
         $fields = $this->settings['register']['requiredFields'][$layout] ;
-        if( array_key_exists( 'Register' , $this->settings )  && array_key_exists( 'add_mandatory_fields' , $this->settings['Register'] ) && strlen( $this->settings['Register']['add_mandatory_fields'] ) > 1 ) {
+        if( array_key_exists( 'Register' , $this->settings )  && array_key_exists( 'add_mandatory_fields' , $this->settings['Register'] ) && strlen( (string) $this->settings['Register']['add_mandatory_fields'] ) > 1 ) {
             $fields .= "," . $this->settings['Register']['add_mandatory_fields'] ;
         }
 
         $required  = GeneralUtility::trimExplode( "," , $fields , true ) ;
-        if ( count($required) > 0 ) {
+        if ( (is_countable($required) ? count($required) : 0) > 0 ) {
             foreach( $required as $key => $field ) {
                 $this->settings['register']['required'][$field] = TRUE ;
             }
@@ -277,7 +258,7 @@ class BaseController extends ActionController
         if( isset($this->settings['register']['formFields'][$layout]) ) {
             $fields = $this->settings['register']['formFields'][$layout] ;
             $formFields  = GeneralUtility::trimExplode( "," , $fields , true ) ;
-            if( count( $formFields ) > 0 ) {
+            if( (is_countable($formFields) ? count( $formFields ) : 0) > 0 ) {
                 foreach( $formFields as $key => $field ) {
                     if( $field) {
                         $this->settings['register']['allformFields'][$field] = TRUE ;
@@ -298,9 +279,9 @@ class BaseController extends ActionController
                 $tag = $this->tagRepository->findByUid($Id) ;
                 if( $tag ) {
                     if( $tagShowAfterColon > 0 ) {
-                        $tags[] = array( "id" => $Id , "title" =>  $tag->getNameAfterColon() ) ;
+                        $tags[] = ["id" => $Id, "title" =>  $tag->getNameAfterColon()] ;
                     } else {
-                        $tags[] = array( "id" => $Id , "title" => $tag->getName()  ) ;
+                        $tags[] = ["id" => $Id, "title" => $tag->getName()] ;
                     }
                 }
             }
@@ -312,15 +293,15 @@ class BaseController extends ActionController
     }
     public function generateFilterAll( $filter )
     {
-        $organizers = array();
-        $tags2 = array();
-        $categories2 = array();
+        $organizers = [];
+        $tags2 = [];
+        $categories2 = [];
 
         $filterTags = GeneralUtility::intExplode(',', $filter['tags'], true);
         if( is_array($filterTags)) {
             foreach ($filterTags as $Id ) {
                 $tag = $this->tagRepository->findByUid($Id) ;
-                $tags2[] = array( "id" => $Id , "title" => $tag->getName()  ) ;
+                $tags2[] = ["id" => $Id, "title" => $tag->getName()] ;
             }
         }
 
@@ -328,15 +309,15 @@ class BaseController extends ActionController
         if( is_array($filterCats)) {
             foreach ($filterCats as $Id ) {
                 $cat = $this->categoryRepository->findByUid($Id) ;
-                $categories2[] = array( "id" => $Id , "title" => $cat->getTitle()  , "description" => $cat->getDescription() , "sorting" => $cat->getSorting() ) ;
+                $categories2[] = ["id" => $Id, "title" => $cat->getTitle(), "description" => $cat->getDescription(), "sorting" => $cat->getSorting()] ;
             }
         }
-        $sortArray = array();
+        $sortArray = [];
         foreach($categories2 as $key => $array) {
             if( $this->settings['filter']['sorttags'] == "sorting" ) {
                 $sortArray[$key] = substr( "00000000000" . $array['sorting'], -12 , 12 )  ;
             } else {
-                $sortArray[$key] = ucfirst ( $array['title']  ) ;
+                $sortArray[$key] = ucfirst ( (string) $array['title']  ) ;
             }
         }
 
@@ -349,24 +330,18 @@ class BaseController extends ActionController
             }
         }
 
-        return array(
-            "organizers" => $organizers ,
-            "tags2" => $tags2 ,
-            "categories2" => $categories2 ,
-            "category50proz" => intval ( (count($categories2) ) / 2 ) ,
-            "tag50proz" => intval ( (count($tags2) +1) / 2 )
-        ) ;
+        return ["organizers" => $organizers, "tags2" => $tags2, "categories2" => $categories2, "category50proz" => intval ( (count($categories2) ) / 2 ), "tag50proz" => intval ( (count($tags2) +1) / 2 )] ;
     }
 
     public function generateFilter(QueryResultInterface $events , $filter ) {
-        $locations = array() ;
-        $organizers = array() ;
-        $citys = array() ;
-        $tags = array() ;
-        $tags2 = array() ;
-        $categories = array() ;
-        $categories2 = array() ;
-        $months = array() ;
+        $locations = [] ;
+        $organizers = [] ;
+        $citys = [] ;
+        $tags = [] ;
+        $tags2 = [] ;
+        $categories = [] ;
+        $categories2 = [] ;
+        $months = [] ;
 
 
         /** @var Event $event */
@@ -420,9 +395,9 @@ class BaseController extends ActionController
                     if ( is_object($obj) ) {
                       //  if ( $filter['combinetags'] == "0" || count($filterTags) < 1 || in_array(  $obj->getUid() , $filterTags )) {
                             if ( $obj->getVisibility() < 1 ) {
-                                $tags[$obj->getUid()] = $obj->getName($filter['tagShowAfterColon'] ) ;
+                                $tags[$obj->getUid()] = $obj->getName() ;
                             }
-                            $tags2[$obj->getUid()] = array( "id" => $obj->getUid() , "title" => $obj->getName($filter['tagShowAfterColon'] ) , "visibility"  => $obj->getVisibility()) ;
+                            $tags2[$obj->getUid()] = ["id" => $obj->getUid(), "title" => $obj->getName(), "visibility"  => $obj->getVisibility()] ;
                      //   }
                     }
                 }
@@ -435,7 +410,7 @@ class BaseController extends ActionController
                 foreach ($objArray as $obj ) {
                     if ( is_object($obj) ) {
                         $categories[$obj->getUid()] = $obj->getTitle() ;
-                        $categories2[$obj->getUid()] = array( "id" => $obj->getUid() , "title" => $obj->getTitle() , "description" => $obj->getDescription() , "sorting" => $obj->getSorting());
+                        $categories2[$obj->getUid()] = ["id" => $obj->getUid(), "title" => $obj->getTitle(), "description" => $obj->getDescription(), "sorting" => $obj->getSorting()];
                     }
                 }
             }
@@ -451,7 +426,7 @@ class BaseController extends ActionController
 
         // Now do sorting
 
-        $sortArray = array();
+        $sortArray = [];
         foreach($categories2 as $key => $array) {
             if( $this->settings['filter']['sorttags'] == "sorting" ) {
                 $sortArray[$key] = substr( "00000000000" . $array['sorting'], -12 , 12 )  ;
@@ -462,42 +437,26 @@ class BaseController extends ActionController
 
         array_multisort($sortArray, SORT_ASC, SORT_STRING , $categories2);
 
-        $sortArray = array();
+        $sortArray = [];
         foreach($tags as $key => $value) {
             $sortArray[$key] = ucfirst ( $value) ;
         }
         array_multisort($sortArray, SORT_ASC, SORT_NUMERIC, $tags);
 
-        usort($tags2, function ($a, $b) { return strcmp(ucfirst($a["title"]), ucfirst($b["title"])); });
-        return array(
-            "locations" => $locations ,  
-            "organizers" => $organizers ,  
-            "citys" => $citys ,  
-            "tags" => $tags ,  
-            "tags2" => $tags2 ,
-            "categories" => $categories ,
-            "categories2" => $categories2 ,
-            "months" => $months ,
-            "category50proz" => intval ( (count($categories2) ) / 2 ) ,
-            "tag50proz" => intval ( (count($tags2) +1) / 2 )
-            ) ;
+        usort($tags2, fn($a, $b) => strcmp(ucfirst((string) $a["title"]), ucfirst((string) $b["title"])));
+        return ["locations" => $locations, "organizers" => $organizers, "citys" => $citys, "tags" => $tags, "tags2" => $tags2, "categories" => $categories, "categories2" => $categories2, "months" => $months, "category50proz" => intval ( (count($categories2) ) / 2 ), "tag50proz" => intval ( (count($tags2) +1) / 2 )] ;
     }
 
 
     public function generateFilterWithoutTagsCats(QueryResultInterface $events , $filter ) {
-        $locations = array() ;
-        $organizers = array() ;
-        $citys = array() ;
-        $months = array() ;
+        $locations = [] ;
+        $organizers = [] ;
+        $citys = [] ;
+        $months = [] ;
 
         if( $this->settings['filter']['hideCityDropdown'] && $this->settings['filter']['hideMonthDropdown']
             && $this->settings['filter']['hideOrganizerDropdown']) {
-            return array(
-                "locations" => $locations ,
-                "organizers" => $organizers ,
-                "citys" => $citys ,
-                "months" => $months ,
-            ) ;
+            return ["locations" => $locations, "organizers" => $organizers, "citys" => $citys, "months" => $months] ;
         }
         /** @var Event $event */
         $eventsArray = $events->toArray() ;
@@ -549,21 +508,16 @@ class BaseController extends ActionController
             }
         }
 
-        return array(
-            "locations" => $locations ,
-            "organizers" => $organizers ,
-            "citys" => $citys ,
-            "months" => $months ,
-        ) ;
+        return ["locations" => $locations, "organizers" => $organizers, "citys" => $citys, "months" => $months] ;
     }
 
     public function generateOrgFilter($orgArray , $filter )
     {
-        $tags = array();
-        $tags2 = array();
-        $categories = array();
-        $categories2 = array();
-        $years = array();
+        $tags = [];
+        $tags2 = [];
+        $categories = [];
+        $categories2 = [];
+        $years = [];
 
 
         /** @var Organizer $organizer */
@@ -576,8 +530,8 @@ class BaseController extends ActionController
                 /** @var Tag $obj */
                 foreach ($objArray as $obj ) {
                     if ( is_object($obj) ) {
-                        $tags[$obj->getUid()] = $obj->getName( $filter['tagShowAfterColon'] ) ;
-                        $tags2[$obj->getUid()] = array( "id" => $obj->getUid() , "title" => $obj->getName( $filter['tagShowAfterColon'] )  ) ;
+                        $tags[$obj->getUid()] = $obj->getName() ;
+                        $tags2[$obj->getUid()] = ["id" => $obj->getUid(), "title" => $obj->getName()] ;
                     }
                 }
             }
@@ -588,7 +542,7 @@ class BaseController extends ActionController
                 foreach ($objArray as $obj ) {
                     if ( is_object($obj) ) {
                         $categories[$obj->getUid()] = $obj->getTitle() ;
-                        $categories2[$obj->getUid()] = array( "id" => $obj->getUid() , "title" => $obj->getTitle() , "description" => $obj->getDescription() , "sorting" => $obj->getSorting());
+                        $categories2[$obj->getUid()] = ["id" => $obj->getUid(), "title" => $obj->getTitle(), "description" => $obj->getDescription(), "sorting" => $obj->getSorting()];
                     }
                 }
             }
@@ -600,7 +554,7 @@ class BaseController extends ActionController
             $years[$year] = $year ;
 
         }
-        $sortArray = array();
+        $sortArray = [];
         foreach($categories2 as $key => $array) {
             if( $this->settings['filter']['sorttags'] == "sorting" ) {
                 $sortArray[$key] = substr( "00000000000" . $array['sorting'], -12 , 12 )  ;
@@ -611,34 +565,26 @@ class BaseController extends ActionController
 
         array_multisort($sortArray, SORT_ASC, SORT_STRING , $categories2);
 
-        $sortArray = array();
+        $sortArray = [];
         foreach($tags as $key => $value) {
             $sortArray[$key] = ucfirst ( $value) ;
         }
         array_multisort($sortArray, SORT_ASC, SORT_NUMERIC, $tags);
 
-        usort($tags2, function ($a, $b) { return strcmp(ucfirst($a["title"]), ucfirst($b["title"])); });
+        usort($tags2, fn($a, $b) => strcmp(ucfirst((string) $a["title"]), ucfirst((string) $b["title"])));
 
         ksort($years );
 
-        return array(
-            "tags" => $tags ,
-            "tags2" => $tags2 ,
-            "categories" => $categories ,
-            "categories2" => $categories2 ,
-            "years" => $years ,
-            "category50proz" => intval ( (count($categories2) ) / 2 ) ,
-            "tag50proz" => intval ( (count($tags2) +1) / 2 )
-        ) ;
+        return ["tags" => $tags, "tags2" => $tags2, "categories" => $categories, "categories2" => $categories2, "years" => $years, "category50proz" => intval ( (count($categories2) ) / 2 ), "tag50proz" => intval ( (count($tags2) +1) / 2 )] ;
 
     }
 
     public function generateOrgFilterFast( $filter )
     {
-        $tags = array();
-        $tags2 = array();
+        $tags = [];
+        $tags2 = [];
 
-        if ( array_key_exists( "tags.uid" , $filter ) && count( $filter["tags.uid"]  ) > 0  ) {
+        if ( array_key_exists( "tags.uid" , $filter ) && (is_countable($filter["tags.uid"]) ? count( $filter["tags.uid"]  ) : 0) > 0  ) {
             $allTags = $this->tagRepository->findAllonAllPagesByUids(  $filter["tags.uid"]  ) ;
         } else {
             $allTags = $this->tagRepository->findAllonAllPages(2 ,$filter  ) ;
@@ -646,32 +592,29 @@ class BaseController extends ActionController
 
         foreach ($allTags as $obj) {
             $tags[$obj->getUid()] = $obj->getName() ;
-            $tags2[$obj->getUid()] = array( "id" => $obj->getUid() , "title" => $obj->getName()  ) ;
+            $tags2[$obj->getUid()] = ["id" => $obj->getUid(), "title" => $obj->getName()] ;
         }
 
-        $sortArray = array();
+        $sortArray = [];
         foreach($tags as $key => $value) {
-            $sortArray[$key] = ucfirst ( $value) ;
+            $sortArray[$key] = ucfirst ( (string) $value) ;
         }
         array_multisort($sortArray, SORT_ASC, SORT_NUMERIC, $tags);
-        usort($tags2, function ($a, $b) { return strcmp(ucfirst($a["title"]), ucfirst($b["title"])); });
+        usort($tags2, fn($a, $b) => strcmp(ucfirst((string) $a["title"]), ucfirst((string) $b["title"])));
 
 
 
-        return array(
-            "tags" => $tags ,
-            "tags2" => $tags2
-        ) ;
+        return ["tags" => $tags, "tags2" => $tags2] ;
 
     }
 
 
     private function array_msort($array, $cols)
     {
-        $colarr = array();
+        $colarr = [];
         foreach ($cols as $col => $order) {
-            $colarr[$col] = array();
-            foreach ($array as $k => $row) { $colarr[$col]['_'.$k] = strtolower($row[$col]); }
+            $colarr[$col] = [];
+            foreach ($array as $k => $row) { $colarr[$col]['_'.$k] = strtolower((string) $row[$col]); }
         }
         $eval = 'array_multisort(';
         foreach ($cols as $col => $order) {
@@ -679,7 +622,7 @@ class BaseController extends ActionController
         }
         $eval = substr($eval,0,-1).');';
         eval($eval);
-        $ret = array();
+        $ret = [];
         foreach ($colarr as $col => $arr) {
             foreach ($arr as $k => $v) {
                 $k = substr($k,1);
@@ -720,21 +663,21 @@ class BaseController extends ActionController
         if (isset($extbaseFrameworkConfiguration['view']['partialRootPaths']) && is_array($extbaseFrameworkConfiguration['view']['partialFilesRootPaths']) ) {
             $partialPaths = $extbaseFrameworkConfiguration['view']['partialFilesRootPaths'];
         } else {
-            $partialPaths = array( 0 => GeneralUtility::getFileAbsFileName( "typo3conf/ext/jv_events/Resources/Private/Partials" ) ) ;
+            $partialPaths = [0 => GeneralUtility::getFileAbsFileName( "typo3conf/ext/jv_events/Resources/Private/Partials" )] ;
         }
         if (isset($extbaseFrameworkConfiguration['view']['layoutRootPaths']) && is_array($extbaseFrameworkConfiguration['view']['layoutRootPaths'])) {
             $layoutPaths = $extbaseFrameworkConfiguration['view']['layoutRootPaths'];
         } else {
-            $layoutPaths =  array( 0 => GeneralUtility::getFileAbsFileName( "EXT:jv_events/Resources/Private/Layouts" )) ;
+            $layoutPaths =  [0 => GeneralUtility::getFileAbsFileName( "EXT:jv_events/Resources/Private/Layouts" )] ;
         }
         # Jan 2021 : as we want to use same email layout in frontend as in backend, we need to remove "/Backend" from layout path
         #
         foreach ( $layoutPaths as $key => $layoutPath ) {
-            $layoutPaths[$key] = str_replace("/Backend" , "" , $layoutPath ) ;
+            $layoutPaths[$key] = str_replace("/Backend" , "" , (string) $layoutPath ) ;
         }
         if ( $templatePath == '') {
 
-			if (isset($extbaseFrameworkConfiguration['view']['templateRootPath']) && strlen($extbaseFrameworkConfiguration['view']['templateRootPath']) > 0) {
+			if (isset($extbaseFrameworkConfiguration['view']['templateRootPath']) && strlen((string) $extbaseFrameworkConfiguration['view']['templateRootPath']) > 0) {
 				$templatePath = GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['view']['templateRootPath'][0]);
             } else {
                 $templatePath =   GeneralUtility::getFileAbsFileName( "typo3conf/ext/jv_events/Resources/Private/Templates" );
@@ -758,8 +701,6 @@ class BaseController extends ActionController
     /**
      * function sendEmail
      *
-     * @param Event $event
-     * @param Registrant $registrant
      * @param string $partialName possible Values: organizer, registrant, developer or admin
      * @throws \Exception
      * @param array $recipient
@@ -768,9 +709,9 @@ class BaseController extends ActionController
      * @param Registrant $oldReg  Copy of a registrant. may dbe different if user is alread registered with same email.
      * @return boolean
      */
-
-    public function sendEmail(Event $event = NULL, Registrant $registrant = NULL , $partialName ='', $recipient=array() , $otherEvents=false , $replyTo=false , Registrant $oldReg = NULL )
+    public function sendEmail(Event $event = NULL, Registrant $registrant = NULL , $partialName ='', $recipient=[] , $otherEvents=false , $replyTo=false , Registrant $oldReg = NULL )
     {
+        $subevents = null;
         if (!GeneralUtility::validEmail($this->settings['register']['senderEmail'])) {
             throw new \Exception('plugin.jv_events.settings.register.senderEmail is not a valid Email Address. Is needed as Sender E-mail');
         }
@@ -795,10 +736,9 @@ class BaseController extends ActionController
             }
         }
 
-        $sender = array($this->settings['register']['senderEmail']
+        $sender = [$this->settings['register']['senderEmail']
                         =>
-                        $this->settings['register']['senderName']
-                    );
+                        $this->settings['register']['senderName']];
 
 
 
@@ -817,7 +757,7 @@ class BaseController extends ActionController
 
         if( $event ) {
             $querysettings =$this->subeventRepository->getTYPO3QuerySettings() ;
-            $querysettings->setStoragePageIds(array( $event->getPid() )) ;
+            $querysettings->setStoragePageIds([$event->getPid()]) ;
 
             $this->subeventRepository->setDefaultQuerySettings( $querysettings );
             $subevents = $this->subeventRepository->findByEventAllpages($event->getUid() , FALSE ) ;
@@ -867,7 +807,7 @@ class BaseController extends ActionController
         $attachments = $this->settings['register']['attachments'][$layout] ;
         if ( is_array( $attachments ) ) {
             if ($registrant->getMore6int() == 0) {
-                if( strlen( trim( $registrant->getContactId() ) ) < 3 && $registrant->getMore6int() != 'unbekannt'  ) {
+                if( strlen( trim( (string) $registrant->getContactId() ) ) < 3 && $registrant->getMore6int() != 0  ) {
                     $registrant->setMore6int(1) ;
                 }
             }
@@ -893,7 +833,7 @@ class BaseController extends ActionController
         if ( is_array( $attachments ) ) {
             if( $registrant->getMore6int() == 1  ) {
                 foreach ($attachments as $attachment) {
-                    if( substr( $attachment , 0 , 1 ) <> "/" ) {
+                    if( !str_starts_with((string) $attachment, "/") ) {
                         $attachment = "/" . $attachment ;
                     }
                     $attachment = $rootPath . $attachment ;
@@ -907,8 +847,8 @@ class BaseController extends ActionController
         /** @var Typo3Version $tt */
         $tt = GeneralUtility::makeInstance( Typo3Version::class ) ;
         if( $tt->getMajorVersion()  < 10 ) {
-            $message->setBody($emailBody, 'text/html');
-            $message->addPart($plainMsg, 'text/plain');
+            $message->html($emailBody);
+            $message->text($plainMsg);
         } else {
             $message->html($emailBody, 'utf-8');
             $message->text($plainMsg, 'utf-8');
@@ -949,8 +889,8 @@ class BaseController extends ActionController
         }
 
         if( $tt->getMajorVersion()  < 10 ) {
-            $message->setBody($htmlMsg, 'text/html');
-            $message->addPart($plainMsg, 'text/plain');
+            $message->html($htmlMsg);
+            $message->text($plainMsg);
         } else {
             $message->html($htmlMsg, 'utf-8');
             $message->text($plainMsg, 'utf-8');
@@ -969,7 +909,7 @@ class BaseController extends ActionController
      */
     public function isUserOrganizer() {
         $groups = GeneralUtility::trimExplode("," , $this->settings['feEdit']['organizerGroudIds'] , TRUE ) ;
-        $feuserGroups = GeneralUtility::trimExplode("," ,  $GLOBALS['TSFE']->fe_user->user['usergroup']  , TRUE ) ;
+        $feuserGroups = GeneralUtility::trimExplode("," ,  $this->frontendUser->user['usergroup']  , TRUE ) ;
         foreach( $groups as $group ) {
             if( in_array( $group  , $feuserGroups )) {
                 return true  ;
@@ -983,7 +923,7 @@ class BaseController extends ActionController
      */
     public function isAdminOrganizer() {
         $groups = GeneralUtility::trimExplode("," , $this->settings['feEdit']['adminOrganizerGroudIds'] , TRUE ) ;
-        $feuserGroups = GeneralUtility::trimExplode("," ,  $GLOBALS['TSFE']->fe_user->user['usergroup']  , TRUE ) ;
+        $feuserGroups = GeneralUtility::trimExplode("," ,  $this->frontendUser->user['usergroup']  , TRUE ) ;
         foreach( $groups as $group ) {
             if( in_array( $group  , $feuserGroups )) {
                 return true  ;
@@ -997,7 +937,7 @@ class BaseController extends ActionController
      * @return bool
      */
     public function hasUserGroup($groupId) {
-        $feuserGroups = GeneralUtility::trimExplode("," ,  $GLOBALS['TSFE']->fe_user->user['usergroup']  , TRUE ) ;
+        $feuserGroups = GeneralUtility::trimExplode("," ,  $this->frontendUser->user['usergroup']  , TRUE ) ;
         return in_array( $groupId  , $feuserGroups ) ;
     }
 
@@ -1009,13 +949,13 @@ class BaseController extends ActionController
         if(! is_object( $organizer ) ) {
            return false ;
         }
-        $feuserUid = intval( $GLOBALS['TSFE']->fe_user->user['uid'] ) ;
+        $feuserUid = (int)$this->frontendUser->user['uid']  ;
         $users = GeneralUtility::trimExplode("," , $organizer->getAccessUsers() , TRUE ) ;
         if( in_array( $feuserUid  , $users )) {
             return true  ;
         } else {
             $groups = GeneralUtility::trimExplode("," , $organizer->getAccessGroups() , TRUE ) ;
-            $feuserGroups = GeneralUtility::trimExplode("," ,  $GLOBALS['TSFE']->fe_user->user['usergroup']  , TRUE ) ;
+            $feuserGroups = GeneralUtility::trimExplode("," ,  $this->frontendUser->user['usergroup']  , TRUE ) ;
             foreach( $groups as $group ) {
                 if( in_array( $group  , $feuserGroups )) {
                     return true  ;
@@ -1032,7 +972,9 @@ class BaseController extends ActionController
      * @throws InvalidQueryException
      */
     public function getOrganizer($doNotCheckAccess=true) {
-        if (intval($GLOBALS['TSFE']->fe_user->user['uid']) < 1 ) {
+        $id = null;
+        $organizer = null;
+        if ((int)$this->frontendUser->user['uid'] < 1 ) {
             return false ;
         }
         /** @var Organizer $organizer */
@@ -1050,7 +992,7 @@ class BaseController extends ActionController
 
         // TODo : think about a better solution how to manage that a user can be linked to more than one Organizer
         // actually it will not work
-        $organizer = $this->organizerRepository->findByUserAllpages( intval($GLOBALS['TSFE']->fe_user->user['uid'])  , FALSE )->getFirst() ;
+        $organizer = $this->organizerRepository->findByUserAllpages( (int)$this->frontendUser->user['uid'] , FALSE )->getFirst() ;
         if ($organizer instanceof Organizer) {
             return $organizer ;
         }
@@ -1068,10 +1010,10 @@ class BaseController extends ActionController
     }
 
     protected function showNoDomainMxError($email ) {
-        if( trim($email ) == '' || trim($email ) == '-'  ) {
+        if( trim((string) $email ) == '' || trim((string) $email ) == '-'  ) {
             return ;
         }
-        $domain  = explode('@', $email);
+        $domain  = explode('@', (string) $email);
         if( count($domain) > 0 ) {
             if( ! checkdnsrr($domain[1], 'MX') ) {
                 $msg = sprintf( $this->translate('error.email.noMxRecord') , "@" . $domain[1] ) . " ";
@@ -1087,7 +1029,7 @@ class BaseController extends ActionController
      * @return float
      */
     public function microtime_float() {
-        list($usec, $sec) = explode(' ', microtime());
+        [$usec, $sec] = explode(' ', microtime());
         return ((float)$usec + (float)$sec);
     }
 

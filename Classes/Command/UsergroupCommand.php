@@ -75,6 +75,7 @@ class UsergroupCommand extends Command {
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
 
+        $rows = null;
         $io = new SymfonyStyle($input, $output);
         $io->title($this->getDescription());
         $usergroup = 0;
@@ -98,7 +99,7 @@ class UsergroupCommand extends Command {
             return 1 ;
         }
 
-        $maxRows = 999999999999 ;
+        $maxRows = 99999 ;
         if ($input->getOption('rows') ) {
             $maxRows = (int)$input->getOption('rows') ;
             $io->writeln('Max Rows to be updated was set to '. $maxRows );

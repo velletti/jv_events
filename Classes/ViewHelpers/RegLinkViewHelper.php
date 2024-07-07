@@ -15,6 +15,8 @@ namespace JVelletti\JvEvents\ViewHelpers;
  * 
  * Based on the news extension of Georg Ringer 
  */
+
+use JVelletti\JvEvents\Utility\MigrationUtility;
 use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
@@ -154,14 +156,7 @@ class RegLinkViewHelper extends AbstractTagBasedViewHelper
 			}
 			// still not set: try the same page . will not work on pages with Event list view but on single View
             if (!$detailPid) {
-                $relevantParametersForCachingFromPageArguments = [];
-                $pageArguments = $GLOBALS['REQUEST']->getAttribute('routing');
-                $queryParams = $pageArguments->getDynamicArguments();
-                if (!empty($queryParams) && ($pageArguments->getArguments()['cHash'] ?? false)) {
-                    $queryParams['id'] = $pageArguments->getPageId();
-                    $relevantParametersForCachingFromPageArguments = GeneralUtility::makeInstance(CacheHashCalculator::class)->getRelevantParameters(HttpUtility::buildQueryString($queryParams));
-                }
-                $detailPid = $relevantParametersForCachingFromPageArguments;
+                $detailPid = MigrationUtility::getPageId() ;
             }
             $configuration['parameter'] = $detailPid;
         }

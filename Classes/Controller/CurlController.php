@@ -72,6 +72,7 @@ class CurlController extends BaseController
      */
     public function externalEventsAction(): ResponseInterface
     {
+        $f = [];
         $this->debugArray[] = "After Init :" . intval(1000 * ($this->microtime_float() - $this->timeStart)) . " Line: " . __LINE__;
         $this->settings['filter']['distance']['doNotOverrule'] = "false";
         //  'https://tangov10.ddev.site/?id=110&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax
@@ -110,7 +111,7 @@ class CurlController extends BaseController
                 $requests = [];
                 foreach ($urls as $key => $url) {
                     if (filter_var($url, FILTER_VALIDATE_URL)) {
-                        $request = json_decode($this->getEventsViaCurl($this->settings, $url), true);
+                        $request = json_decode((string) $this->getEventsViaCurl($this->settings, $url), true, 512, JSON_THROW_ON_ERROR);
                         $events = ($request['eventsByFilter']) ?? null;
                         if ($events) {
                             $requests[] = $events;
@@ -120,9 +121,7 @@ class CurlController extends BaseController
                 }
                 if ($requests) {
                     $request = call_user_func_array('array_merge', $requests);
-                    usort($request, function ($a, $b) {
-                        return $a['startDateTstamp'] <=> $b['startDateTstamp'];
-                    });
+                    usort($request, fn($a, $b) => $a['startDateTstamp'] <=> $b['startDateTstamp']);
                     $lifetime = 60 * 60 * 4; // 4 hours in seconds
                     $cache->set($cacheIdentifier, $request, [], $lifetime);
                 }
@@ -152,19 +151,10 @@ class CurlController extends BaseController
 
         //  'https://tangov10.ddev.site/?id=110&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=1&tx_jvevents_ajax[eventsFilter][startDate]=0&tx_jvevents_ajax[mode]=onlyJson'
         // https://www.tangomuenchen.de/id=150&tx_jvevents_ajax%5Baction%5D=eventList&tx_jvevents_ajax%5Bcontroller%5D=Ajax&tx_jvevents_ajax%5Bmode%5D=onlyJson&tx_jvevents_ajax%5BeventsFilter%5D%5BstartDate%5D=-1&tx_jvevents_ajax%5BeventsFilter%5D%5Bcategories%5D=3
-        $url = trim($url) . "&" . http_build_query($settings['data']);
+        $url = trim((string) $url) . "&" . http_build_query($settings['data']);
         $curl = curl_init();
 
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => $url,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'GET',
-        ));
+        curl_setopt_array($curl, [CURLOPT_URL => $url, CURLOPT_RETURNTRANSFER => true, CURLOPT_ENCODING => '', CURLOPT_MAXREDIRS => 10, CURLOPT_TIMEOUT => 0, CURLOPT_FOLLOWLOCATION => true, CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1, CURLOPT_CUSTOMREQUEST => 'GET']);
 
         $response = curl_exec($curl);
 

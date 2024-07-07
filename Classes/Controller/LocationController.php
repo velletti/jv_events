@@ -1,6 +1,9 @@
 <?php
 namespace JVelletti\JvEvents\Controller;
 
+use JVelletti\JvEvents\Utility\MigrationUtility;
+use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 use Psr\Http\Message\ResponseInterface;
 use JVelletti\JvEvents\Domain\Model\Location;
 use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
@@ -87,7 +90,7 @@ class LocationController extends BaseController
                     $filter = $this->locationRepository->getBoundingBox(  $this->settings['filterlocation']['lat'], $this->settings['filterlocation']['lng'] ,  $this->settings['filterlocation']['dist']) ;
                 }
             }
-            if ( array_key_exists( "categories", $this->settings['filterlocation']) && strlen(trim($this->settings['filterlocation']['categories'] )) > 0 )  {
+            if ( array_key_exists( "categories", $this->settings['filterlocation']) && strlen(trim((string) $this->settings['filterlocation']['categories'] )) > 0 )  {
                 $filter["locationCategory.uid"] =  GeneralUtility::trimExplode( "," , $this->settings['filterlocation']['categories'] )   ;
             }
         }
@@ -110,7 +113,6 @@ class LocationController extends BaseController
     /**
      * action show
      *
-     * @param Location|null $location
      * @return void
      */
     public function showAction(?Location $location): ResponseInterface
@@ -171,7 +173,7 @@ class LocationController extends BaseController
         }
 
         if($this->isUserOrganizer() ) {
-            $this->view->assign('user', intval($GLOBALS['TSFE']->fe_user->user['uid'] ) ) ;
+            $this->view->assign('user', intval($this->frontendUser->user['uid'] ) ) ;
             $this->view->assign('location', $location);
             $this->view->assign('organizer', $organizer );
             $this->view->assign('categories', $categories);
@@ -182,7 +184,6 @@ class LocationController extends BaseController
     /**
      * action create
      *
-     * @param Location $location
      *
      * @return void
      */
@@ -227,21 +228,19 @@ class LocationController extends BaseController
 
 
         if( $pid < 1) {
-            $pid = $GLOBALS['TSFE']->id ;
+            $pid = MigrationUtility::getPageId($this) ;
             $controller = NULL ;
             $action = NULL ;
         } else {
             $controller = "Event" ;
             $action = "new" ;
         }
-        return $this->redirect($action , $controller , NULL , array( 'organizer' => $orgId , 'location' => $location->getUid() )  , $pid );
+        return $this->redirect($action , $controller , NULL , ['organizer' => $orgId, 'location' => $location->getUid()]  , $pid );
 
     }
 
     /**
      * action new
-     * @param Location $location
-     * @param Organizer $organizer
      * @param integer $oldDefault
      * @return void
      */
@@ -276,7 +275,6 @@ class LocationController extends BaseController
     /**
      * action edit
      *
-     * @param Location $location
      * @return void
      */
     #[IgnoreValidation(['value' => 'location'])]
@@ -299,7 +297,7 @@ class LocationController extends BaseController
             $this->view->assign('organizers', $organizers );
         }
         if ( $hasAccess ) {
-            $this->view->assign('user', intval( $GLOBALS['TSFE']->fe_user->user['uid'] ) );
+            $this->view->assign('user', intval( $this->frontendUser->user['uid'] ) );
 
             $this->view->assign('location', $location);
             $this->view->assign('categories', $categories);
@@ -313,7 +311,6 @@ class LocationController extends BaseController
     /**
      * action update
      *
-     * @param Location $location
      * @return void
      */
     #[Validate(['param' => 'location', 'validator' => LocationValidator::class])]
@@ -334,17 +331,17 @@ class LocationController extends BaseController
             $this->addFlashMessage('You do not have access rights to change this data.' . $location->getUid() , '', ContextualFeedbackSeverity::WARNING);
         }
         $this->showNoDomainMxError($location->getEmail() ) ;
-        return $this->redirect('edit' , NULL, Null , array( "location" => $location));
+        return $this->redirect('edit' , NULL, Null , ["location" => $location]);
     }
     
     /**
      * action delete
      *
-     * @param Location $location
      * @return void
      */
     public function deleteAction(Location $location)
     {
+        $eventCount = null;
         $delete = false ;
         $events = $this->eventRepository->findByLocation( $location->getUid() ) ;
         if( $this->request->hasArgument('delete')) {
@@ -386,17 +383,17 @@ class LocationController extends BaseController
     }
 
     /**
-     * @param Location $location
      * @return Location
      */
     public function cleanLocationArguments(Location $location) {
 
-        $desc = str_replace( array( "\n" , "\r" , "\t" ), array(" " , "" , " " ), $location->getDescription() ) ;
+        $row = [];
+        $desc = str_replace( ["\n", "\r", "\t"], [" ", "", " "], (string) $location->getDescription() ) ;
         $desc = strip_tags($desc , "<p><br><a><i><strong><h2><h3>") ;
 
         $location->setDescription( $desc ) ;
-        $location->setLink( trim($location->getLink())) ;
-        $location->setEmail( trim($location->getEmail())) ;
+        $location->setLink( trim((string) $location->getLink())) ;
+        $location->setEmail( trim((string) $location->getEmail())) ;
         $location->setTstamp( time() ) ;
 
         // Type validation should be done in validator class so we can ignore issue with wrong format

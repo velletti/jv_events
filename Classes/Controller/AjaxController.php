@@ -25,6 +25,8 @@ namespace JVelletti\JvEvents\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use JVelletti\JvEvents\Utility\MigrationUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -94,6 +96,9 @@ class AjaxController extends BaseController
     /** @var array  */
     public $arguments = '' ;
 
+    /** @var array */
+    public $frontendUser ;
+
 
     /**
      * @var StandaloneView
@@ -101,11 +106,11 @@ class AjaxController extends BaseController
     public $standaloneView;
 
     public function initializeAction() {
+
         parent::initializeAction() ;
     }
 
     /**
-     * @param ConfigurationManagerInterface $configurationManager
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
@@ -135,7 +140,7 @@ class AjaxController extends BaseController
         $_gp = GeneralUtility::_GPmerged('tx_jvevents_ajax');
 
 
-        $ajax = array();
+        $ajax = [];
         $ajax['arguments'] = $_gp;
         $ajax['vendor'] = 'JVE';
         $ajax['vendorName'] = 'JVE';
@@ -145,7 +150,7 @@ class AjaxController extends BaseController
         $ajax['action'] = $_gp['action'];
 
         /*        * check if action is allowed    */
-        if (!in_array($ajax['action'], array("eventMenu", "eventList", "locationList", "activate", "eventUnlink"))) {
+        if (!in_array($ajax['action'], ["eventMenu", "eventList", "locationList", "activate", "eventUnlink"])) {
             $ajax['action'] = "eventMenu";
         }
 
@@ -169,8 +174,7 @@ class AjaxController extends BaseController
             $request->setArgument('event',  intval( $_gp['event'] )) ;
         }
 
-        $dispatcher->dispatch($request, $response);
-      //  echo $response->getContent();
+        $dispatcher->dispatch($request);
         die;
 
     }
@@ -186,33 +190,33 @@ class AjaxController extends BaseController
     public function eventsListMenuSub(array $arguments )
     {
 
-       //  $GLOBALS['TSFE']->fe_user->user = [ 'uid' => 476 , "username" => "jvel@test.de" , "1,2,3,4,5,6,7"] ;
+       $location = null;
+        $citys = [];
+        $organizer = null;
+        //  $this->frontendUser->user->fe_user->user = [ 'uid' => 476 , "username" => "jvel@test.de" , "1,2,3,4,5,6,7"] ;
         /* ************************************************************************************************************ */
         /*   Prepare the Output :
         /* ************************************************************************************************************ */
-        $feuser = intval(  $GLOBALS['TSFE']->fe_user->user['uid']) ;
+        $feuser = intval(  $this->frontendUser->user['uid']) ;
 
-        $output = array (
-            "requestId" =>  intval( $GLOBALS['TSFE']->id ) ,
-
-            "event" => array()  ,
-            "events" => array()  ,
-            "eventsFilter" => array()  ,
-            "eventsByFilter" => array()  ,
-            "mode" => $arguments['mode'] ,
-            "feuser" => array(
-                "uid" => $GLOBALS['TSFE']->fe_user->user['uid'] ,
-                "username" => $GLOBALS['TSFE']->fe_user->user['username'] ,
-                "usergroup" => $GLOBALS['TSFE']->fe_user->user['usergroup'] ,
-                "isOrganizer" => $this->isUserOrganizer(),
-
-            )  ,
-            "organizer" => array() ,
-            "location" => array() ,
-
-        ) ;
+        $output = [
+            "requestId" =>   $detailPid = MigrationUtility::getPageId(),
+            "event" => [],
+            "events" => [],
+            "eventsFilter" => [],
+            "eventsByFilter" => [],
+            "mode" => $arguments['mode'],
+            "feuser" =>
+                [ "uid" => $this->frontendUser->user['uid'],
+                    "username" => $this->frontendUser->user['username'],
+                    "usergroup" => $this->frontendUser->user['usergroup'],
+                    "isOrganizer" => $this->isUserOrganizer()
+                ],
+            "organizer" => [],
+            "location" => []
+        ] ;
         if ( $output["feuser"]["isOrganizer"]) {
-            $feuserOrganizer = $this->organizerRepository->findByUserAllpages(intval($GLOBALS['TSFE']->fe_user->user['uid']), FALSE, TRUE);
+            $feuserOrganizer = $this->organizerRepository->findByUserAllpages(intval($this->frontendUser->user['uid']), FALSE, TRUE);
             if ( is_object($feuserOrganizer->getFirst())) {
                 $output["feuser"]["organizer"]['uid'] = $feuserOrganizer->getFirst()->getUid() ;
             }
@@ -229,7 +233,7 @@ class AjaxController extends BaseController
         $output['DetailPid'] = $singlePid  ;
         try {
             $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($singlePid);
-        } catch( \Exception $e) {
+        } catch( \Exception) {
             // ignore
             $site = false ;
         }
@@ -249,7 +253,7 @@ class AjaxController extends BaseController
             /** @var Event $event */
             $event = $this->eventRepository->findByUidAllpages( $output['event']['requestId'] , FALSE  , TRUE );
             if( is_object($event )) {
-                if ( substr($output['mode'], 0 , 4 )  != "only" ) {
+                if ( !str_starts_with((string) $output['mode'], "only") ) {
                     $event->increaseViewed();
                     $this->eventRepository->update($event) ;
                     $needToStore = TRUE ;
@@ -271,7 +275,7 @@ class AjaxController extends BaseController
                     try {
                     $output['event']['slug'] = (string)$site->getRouter()->generateUri( $singlePid ,['_language' => max( $event->getLanguageUid() ,0 ) ,
                         'tx_jvevents_event' => ['action' => 'show' , 'controller' => 'Event' ,'event' =>  $event->getUid() ]]);
-                    } catch( \EXCEPTION $e ) {
+                    } catch( \EXCEPTION ) {
                         $output['event']['slug'] = "pid=" . $singlePid . "&L=" . $event->getLanguageUid() ;
                     }
                 }
@@ -301,10 +305,10 @@ class AjaxController extends BaseController
                 } else {
                     if( $this->settings['EmConfiguration']['imgUrl2'] ) {
                         $output['event']['TeaserImageFrom'] =  "config-imgUrl2" ;
-                        $output['event']['teaserImageUrl'] .=  trim($this->settings['EmConfiguration']['imgUrl2']) ;
+                        $output['event']['teaserImageUrl'] .=  trim((string) $this->settings['EmConfiguration']['imgUrl2']) ;
                     } else {
                         $output['event']['TeaserImageFrom'] =  "config-imgUrl" ;
-                        $output['event']['teaserImageUrl'] = GeneralUtility::getIndpEnv("TYPO3_REQUEST_HOST") . trim($this->settings['EmConfiguration']['imgUrl']) ;
+                        $output['event']['teaserImageUrl'] = GeneralUtility::getIndpEnv("TYPO3_REQUEST_HOST") . trim((string) $this->settings['EmConfiguration']['imgUrl']) ;
                     }
                 }
                 $output['event']['filesAfterReg'] = $this->getFilesArray( $event->getFilesAfterReg() )  ;
@@ -347,7 +351,7 @@ class AjaxController extends BaseController
                 $output['event']['days'] = $event->getSubeventCount() ;
                 if( $event->getSubeventCount() > 0 ) {
                     $querysettings =$this->subeventRepository->getTYPO3QuerySettings() ;
-                    $querysettings->setStoragePageIds(array( $event->getPid() )) ;
+                    $querysettings->setStoragePageIds([$event->getPid()]) ;
 
                     $this->subeventRepository->setDefaultQuerySettings( $querysettings );
 
@@ -370,10 +374,10 @@ class AjaxController extends BaseController
                 }
                 if( $event->getMasterId() > 0 ) {
                     $querysettings =$this->subeventRepository->getTYPO3QuerySettings() ;
-                    $querysettings->setStoragePageIds(array( $event->getPid() )) ;
+                    $querysettings->setStoragePageIds([$event->getPid()]) ;
 
                     $this->eventRepository->setDefaultQuerySettings( $querysettings );
-                    $filter = array() ;
+                    $filter = [] ;
                     $filter['startDate'] = $event->getStartDate()->getTimestamp() ;
                     $filter['maxDays'] = 999 ;
                     $filter['skipEvent'] = $event->getUid() ;
@@ -398,7 +402,7 @@ class AjaxController extends BaseController
                 if( is_object( $location )) {
                     $dist = intval( $output['eventsFilter']['sameCity'] ) ;
                     if ( $dist == 1 ||  $dist > 500 || intval( $location->getLng() == 0 )) {
-                        $filter = array( "city" =>  $location->getCity() )  ;
+                        $filter = ["city" =>  $location->getCity()]  ;
                     } else {
                         $filter = $this->locationRepository->getBoundingBox(  $location->getLat() , $location->getLng() , $dist ) ;
                     }
@@ -422,7 +426,7 @@ class AjaxController extends BaseController
                 /** @var Event $tempEvent */
                 $tempEvent =  $events->getFirst() ;
                 if( is_object( $tempEvent )) {
-                    if ( substr($output['mode'], 0, 4 )  != "only") {
+                    if ( !str_starts_with((string) $output['mode'], "only")) {
                         $tempEvent->increaseViewed();
 
                         $this->eventRepository->update($tempEvent);
@@ -444,12 +448,12 @@ class AjaxController extends BaseController
 
                             if (  $tempEvent->getTeaserImage() && is_object( $tempEvent->getTeaserImage()->getOriginalResource()) ) {
                                 $tempEventArray['TeaserImageFrom'] =  "Event" ;
-                                $tempEventArray['teaserImage'] =  trim( GeneralUtility::getIndpEnv("TYPO3_REQUEST_HOST") , "/" ) . "/" .
+                                $tempEventArray['teaserImage'] =  trim( (string) GeneralUtility::getIndpEnv("TYPO3_REQUEST_HOST") , "/" ) . "/" .
                                     $tempEvent->getTeaserImage()->getOriginalResource()->getPublicUrl() ;
                             } elseif( is_object($tempEvent->getLocation()) && $tempEvent->getLocation()->getTeaserImage()
                                 && is_object($tempEvent->getLocation()->getTeaserImage()->getOriginalResource() ) )  {
                                 $tempEventArray['TeaserImageFrom'] =  "Location" ;
-                                $tempEventArray['teaserImage'] =  trim( GeneralUtility::getIndpEnv("TYPO3_REQUEST_HOST") , "/" ) . "/" .
+                                $tempEventArray['teaserImage'] =  trim( (string) GeneralUtility::getIndpEnv("TYPO3_REQUEST_HOST") , "/" ) . "/" .
                                     $tempEvent->getLocation()->getTeaserImage()->getOriginalResource()->getPublicUrl() ;
                             } else {
                                 $tempEventArray['TeaserImageFrom'] =  "NotFound" ;
@@ -467,7 +471,7 @@ class AjaxController extends BaseController
                                 try {
                                     $tempEventArray['slug'] = (string)$site->getRouter()->generateUri( $singlePid ,['_language' => max( $tempEvent->getLanguageUid() ,0 ) ,
                                         'tx_jvevents_event' => ['action' => 'show' , 'controller' => 'Event' ,'event' =>  $tempEvent->getUid() ]]);
-                                } catch( \EXCEPTION $e ) {
+                                } catch( \EXCEPTION ) {
                                     $tempEventArray['slug'] = "pid=" . $singlePid . "&L=" . $tempEvent->getLanguageUid() ;
                                 }
                             }
@@ -550,7 +554,10 @@ class AjaxController extends BaseController
         if(!$arguments) {
             $arguments = GeneralUtility::_GPmerged('tx_jvevents_ajax');
         }
+        /** @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication $frontendUser */
+        $this->frontendUser = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user');
         $this->initSettings($this->request);
+
 
         // 6.2.2020 with teaserText and files
         // 27.1.2021 LTS 10 : wegfall &eID=jv_events und uid, dafür Page ID der Seite mit der Liste : z.b. "id=110"
@@ -602,7 +609,7 @@ class AjaxController extends BaseController
 
         $layoutPath = GeneralUtility::getFileAbsFileName("EXT:jv_events/Resources/Private/Layouts/");
 
-        $renderer->setLayoutRootPaths(array(0 => $layoutPath));
+        $renderer->setLayoutRootPaths([0 => $layoutPath]);
 
         $renderer->assign('output' , $output) ;
         $renderer->assign('settings' , $this->settings ) ;
@@ -622,7 +629,7 @@ class AjaxController extends BaseController
             die;
         } else {
             header("Content-Type:application/json;charset=utf-8") ;
-            ShowAsJsonArrayUtility::show( array( 'values' => $output , 'html' => $return ) ) ;
+            ShowAsJsonArrayUtility::show( ['values' => $output, 'html' => $return] ) ;
             die;
         }
         return $this->htmlResponse();
@@ -635,6 +642,9 @@ class AjaxController extends BaseController
      */
     public function eventMenuAction(array $arguments=Null)
     {
+        /** @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication $frontendUser */
+        $this->frontendUser = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user');
+
         $pid =  GeneralUtility::_GP('id');
         if(!$arguments) {
             $arguments = GeneralUtility::_GPmerged('tx_jvevents_ajax');
@@ -675,22 +685,22 @@ class AjaxController extends BaseController
         $this->settings['hash'] =  $checkHash ;
         $this->settings['cookie'] =  $_COOKIE ;
 
-        $renderer->setLayoutRootPaths(array(0 => $layoutPath));
+        $renderer->setLayoutRootPaths([0 => $layoutPath]);
         $renderer->assign('output' , $output) ;
         $this->settings['Ajax']['Action'] = "Main" ;
         $renderer->assign('settings' , $this->settings ) ;
 
-        $returnMain = str_replace( array( "\n" , "\r" , "\t" , "    " , "   " , "  ") , array("" , "" , "" , " " , " " , " " ) , trim( $renderer->render() )) ;
+        $returnMain = str_replace( ["\n", "\r", "\t", "    ", "   ", "  "] , ["", "", "", " ", " ", " "] , trim( $renderer->render() )) ;
 
         $this->settings['Ajax']['Action'] = "Single" ;
         $renderer->assign('settings' , $this->settings ) ;
-        $returnSingle = str_replace( array( "\n" , "\r" , "\t" , "    " , "   " , "  ") , array("" , "" , "" , " " , " " , " " ) , trim( $renderer->render() )) ;
+        $returnSingle = str_replace( ["\n", "\r", "\t", "    ", "   ", "  "] , ["", "", "", " ", " ", " "] , trim( $renderer->render() )) ;
 
 
-        $return = array( "main" => $returnMain , "single" => $returnSingle ) ;
+        $return = ["main" => $returnMain, "single" => $returnSingle] ;
         // debug : enalbe next line
         // $output['settings'] = $this->settings ;
-        ShowAsJsonArrayUtility::show( array( 'values' => $output , 'html' => $return ) ) ;
+        ShowAsJsonArrayUtility::show( ['values' => $output, 'html' => $return] ) ;
         die;
     }
 
@@ -700,7 +710,7 @@ class AjaxController extends BaseController
             $arguments = GeneralUtility::_GPmerged('tx_jvevents_ajax');
         }
         if(!$arguments) {
-            ShowAsJsonArrayUtility::show( array( 'status' => false , 'html' => $return ) ) ;
+            ShowAsJsonArrayUtility::show( ['status' => false, 'html' => $return] ) ;
             die;
         }
 
@@ -721,12 +731,12 @@ class AjaxController extends BaseController
         if(  isset($arguments['hash']) ) {
             $checkString = $_SERVER["SERVER_NAME"] . "-" . $organizer->getUid() . "-" . $organizer->getCrdate();
             if ( $arguments['hash'] !== GeneralUtility::hmac ( $checkString ) ) {
-                ShowAsJsonArrayUtility::show( array( 'status' => false , 'html' => 'invalid hash for Org: ' . $organizer->getUid() ) ) ;
+                ShowAsJsonArrayUtility::show( ['status' => false, 'html' => 'invalid hash for Org: ' . $organizer->getUid()] ) ;
                 die;
             }
 
         } else {
-            ShowAsJsonArrayUtility::show( array( 'status' => false , 'html' => 'no hash' ) ) ;
+            ShowAsJsonArrayUtility::show( ['status' => false, 'html' => 'no hash'] ) ;
             die;
         }
 
@@ -735,7 +745,7 @@ class AjaxController extends BaseController
             $output['organizer']['organizerId'] = $organizer->getUid() ;
             $output['organizer']['hasAccess'] = $this->hasUserAccess( $organizer ) ;
         } else {
-            ShowAsJsonArrayUtility::show( array( 'status' => false , 'html' => 'Organizer not found by given ID: ' .  $output['organizer']['requestId'] ) ) ;
+            ShowAsJsonArrayUtility::show( ['status' => false, 'html' => 'Organizer not found by given ID: ' .  $output['organizer']['requestId']] ) ;
         }
         $output['keepDays']  = 400 ;
         if( isset($arguments['keepDays']) ) {
@@ -746,7 +756,7 @@ class AjaxController extends BaseController
         }
         if ( $output['keepDays']  == 0 ) {
             // Todo : Add confirm hash to Url, send New URL to user and ask for confirmation.
-            ShowAsJsonArrayUtility::show( array( 'status' => false , 'html' => 'To Delete ALL Events not implemented.'  )) ;
+            ShowAsJsonArrayUtility::show( ['status' => false, 'html' => 'To Delete ALL Events not implemented.']) ;
         }
 
         $timeInPast = time() - ( 24*3600 * $output['keepDays'] ) ;
@@ -778,16 +788,20 @@ class AjaxController extends BaseController
             try {
                 $queryBuilder->executeStatement() ;
             } catch (\Exception $e ) {
-                ShowAsJsonArrayUtility::show( array( 'status' => false  , 'html' => $e->getMessage() ))  ;
+                ShowAsJsonArrayUtility::show( ['status' => false, 'html' => $e->getMessage()])  ;
             }
         }
 
-        ShowAsJsonArrayUtility::show( array( 'status' => true , 'html' => $output ) ) ;
+        ShowAsJsonArrayUtility::show( ['status' => true, 'html' => $output] ) ;
         die;
     }
 
 
     public function locationListAction(array $arguments=Null) {
+        $orgArray = [];
+        $locations = null;
+        /** @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication $frontendUser */
+        $this->frontendUser = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user');
         /* ************************************************************************************************************ */
         /*   render the HTML Output :
         /* ************************************************************************************************************ */
@@ -822,15 +836,15 @@ class AjaxController extends BaseController
         }
 
         $layoutPath = GeneralUtility::getFileAbsFileName("EXT:jv_events/Resources/Private/Layouts/");
-        $renderer->setLayoutRootPaths(array(0 => $layoutPath));
+        $renderer->setLayoutRootPaths([0 => $layoutPath]);
 
         $renderer->assign('output' , $output) ;
         $renderer->assign('settings' , $this->settings ) ;
 
-        $output["locations"] = count($locations) ;
+        $output["locations"] = $locations === null ? 0 : count($locations) ;
 
-        $return = str_replace( array( "\n" , "\r" , "\t" , "    " , "   " , "  ") , array("" , "" , "" , " " , " " , " " ) , trim( $renderer->render() )) ;
-        ShowAsJsonArrayUtility::show( array( 'values' => $output , 'html' => $return ) ) ;
+        $return = str_replace( ["\n", "\r", "\t", "    ", "   ", "  "] , ["", "", "", " ", " ", " "] , trim( $renderer->render() )) ;
+        ShowAsJsonArrayUtility::show( ['values' => $output, 'html' => $return] ) ;
         die;
     }
 
@@ -844,22 +858,21 @@ class AjaxController extends BaseController
         /* ************************************************************************************************************ */
         /*   Prepare the Output :
         /* ************************************************************************************************************ */
-        $feuser = intval($GLOBALS['TSFE']->fe_user->user['uid']);
+        $feuser = intval($this->frontendUser->user['uid']);
 
-        $output = array(
-            "requestId" => intval($GLOBALS['TSFE']->id),
-            "mode" => $arguments['mode'] ,
-            "feuser" => array(
-                "uid" => $feuser ,
-                "username" => $GLOBALS['TSFE']->fe_user->user['username'],
-                "usergroup" => $GLOBALS['TSFE']->fe_user->user['usergroup'],
-                "isOrganizer" => $this->isUserOrganizer() ,
+        $output = [
+            "requestId" => $detailPid = MigrationUtility::getPageId() ,
+            "mode" => $arguments['mode'],
+            "feuser" => [
+                "uid" => $feuser,
+                "username" => $this->frontendUser->user['username'],
+                "usergroup" => $this->frontendUser->user['usergroup'],
+                "isOrganizer" => $this->isUserOrganizer(),
                 "organizerGroudIds" => $this->settings['feEdit']['organizerGroudIds']
-            ),
-            "organizer" => array(),
-            "locations" => array(),
-
-        );
+            ],
+            "organizer" => [],
+            "locations" => []
+          ];
 
 
 
@@ -879,6 +892,8 @@ class AjaxController extends BaseController
     public function activateAction($organizerUid=0 , $userUid=0 , $hmac='invalid' , $rnd = 0 ) {
 
         // https://www.allplan.com.ddev.local/index.php?uid=82&eID=jv_events&tx_jvevents_ajax[organizerUid]=111&tx_jvevents_ajax[action]=activate&tx_jvevents_ajax[userUid]=1&tx_jvevents_ajax[hmac]=hmac1234&&tx_jvevents_ajax[rnd]=11234
+        /** @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication $frontendUser */
+        $this->frontendUser = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user');
 
         $organizerUid = intval($organizerUid) ;
         $userUid = intval($userUid) ;
@@ -908,7 +923,7 @@ class AjaxController extends BaseController
             $this->addFlashMessage("Organizer not found by ID : " . $organizerUid , "" , AbstractMessage::WARNING) ;
             try {
                 $this->redirect('assist' , "Organizer", Null , NULL , $this->settings['pageIds']['organizerAssist'] );
-            } catch(StopActionException $e) {
+            } catch(StopActionException) {
                 foreach (  $this->response->getHeaders() as $header ) {
                     header( $header) ;
                 }
@@ -920,7 +935,7 @@ class AjaxController extends BaseController
             $this->addFlashMessage("User not found by ID : " . $userUid , "" , AbstractMessage::WARNING) ;
             try {
                 $this->redirect('assist' , "Organizer", Null , NULL , $this->settings['pageIds']['organizerAssist'] );
-            } catch(StopActionException $e) {
+            } catch(StopActionException) {
                 foreach (  $this->response->getHeaders() as $header ) {
                     header( $header) ;
                 }
@@ -946,7 +961,7 @@ class AjaxController extends BaseController
             $this->addFlashMessage("Hmac does not fit to: " . $tokenStr , "ERROR" , AbstractMessage::ERROR) ;
             try {
                 $this->redirect('assist' , "Organizer", Null , NULL , $this->settings['pageIds']['organizerAssist'] );
-            } catch(StopActionException $e) {
+            } catch(StopActionException) {
                 foreach (  $this->response->getHeaders() as $header ) {
                     header( $header) ;
                 }
@@ -956,7 +971,7 @@ class AjaxController extends BaseController
 
         }
         $groups =  $user->getUsergroup()->toArray() ;
-        $groupsMissing = array( 2 => TRUE , 7 => TRUE ) ;
+        $groupsMissing = [2 => TRUE, 7 => TRUE] ;
 
         if(is_array( $groups)) {
             /** @var \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup $group */
@@ -997,7 +1012,7 @@ class AjaxController extends BaseController
         $this->addFlashMessage("Organizer : " . $organizerUid . " (" . $organizer->getName() . ")  enabled " , AbstractMessage::OK) ;
         try {
             $this->redirect('assist' , "Organizer", Null , NULL , $this->settings['pageIds']['organizerAssist'] );
-        } catch(StopActionException $e) {
+        } catch(StopActionException) {
             foreach (  $this->response->getHeaders() as $header ) {
                 header( $header) ;
             }
@@ -1012,6 +1027,9 @@ class AjaxController extends BaseController
      * @throws UnknownObjectException
      */
     public function eventChangeLocIdAction( array $arguments=null ) {
+        /** @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication $frontendUser */
+        $this->frontendUser = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user');
+        $output = [];
         if(!$arguments) {
             $arguments = GeneralUtility::_GPmerged('tx_jvevents_ajax');
         }
@@ -1021,8 +1039,8 @@ class AjaxController extends BaseController
         if( $arguments['event'] > 0 ) {
             $output['event']['requestId'] =  $arguments['event'] ;
             $output['msg'] = 'got Event';
-            if ( intval( $GLOBALS['TSFE']->fe_user->user['uid'] ) > 0 ) {
-                $output['event']['user'] =  intval( $GLOBALS['TSFE']->fe_user->user['uid'] ) ;
+            if ( intval( $this->frontendUser->user['uid'] ) > 0 ) {
+                $output['event']['user'] =  intval( $this->frontendUser->user['uid'] ) ;
                 $output['msg'] = 'got Event and user is logged in';
                 /** @var Event $event */
                 $event = $this->eventRepository->findByUidAllpages( $output['event']['requestId'] , FALSE  , TRUE );
@@ -1075,6 +1093,9 @@ class AjaxController extends BaseController
      * @throws UnknownObjectException
      */
     public function eventUnlinkAction( array $arguments=null ) {
+        /** @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication $frontendUser */
+        $this->frontendUser->user = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user');
+        $output = [];
         if(!$arguments) {
             $arguments = GeneralUtility::_GPmerged('tx_jvevents_ajax');
         }
@@ -1084,8 +1105,8 @@ class AjaxController extends BaseController
         if( $arguments['event'] > 0 ) {
             $output['event']['requestId'] =  $arguments['event'] ;
             $output['msg'] = 'got Event';
-            if ( intval( $GLOBALS['TSFE']->fe_user->user['uid'] ) > 0 ) {
-                $output['event']['user'] =  intval( $GLOBALS['TSFE']->fe_user->user['uid'] ) ;
+            if ( intval( $this->frontendUser->user['uid'] ) > 0 ) {
+                $output['event']['user'] =  intval( $this->frontendUser->user['uid'] ) ;
                 $output['msg'] = 'got Event and user is logged in';
                 /** @var Event $event */
                 $event = $this->eventRepository->findByUidAllpages( $output['event']['requestId'] , FALSE  , TRUE );
@@ -1119,6 +1140,8 @@ class AjaxController extends BaseController
 
     public function downloadIcal($arguments) {
 
+
+        $output = [];
         $uid = intval( $arguments["uid"] ) ;
         if( $uid ) {
             /** @var Event $event */
@@ -1155,7 +1178,7 @@ class AjaxController extends BaseController
        return false;
     }
     private function escapeIcal( $text ) {
-        return htmlspecialchars(str_replace( ["," , ";" , "\r\n" , "\n"] , ["\," , "\;" , "\\n", "\\n"] , $text )) ;
+        return htmlspecialchars(str_replace( ["," , ";" , "\r\n" , "\n"] , ["\," , "\;" , "\\n", "\\n"] , (string) $text )) ;
     }
 
     // ########################################   functions ##################################
@@ -1176,23 +1199,22 @@ class AjaxController extends BaseController
 	}
 
     /**
-  * @param ObjectStorage $resource
   * @return array
   */
  public function getFilesArray( ObjectStorage $resource ) {
         /** @var FileReference $tempFile */
-        $return = array() ;
+        $return = [] ;
         if(is_object($resource) && $resource->count() > 0 ) {
             foreach ($resource as $tempFile) {
 
                 try {
-                    $single = array() ;
+                    $single = [] ;
                     if( is_object($tempFile) && $tempFile->getOriginalResource() ) {
                         $single['url'] =  GeneralUtility::getIndpEnv("TYPO3_REQUEST_HOST") . $tempFile->getOriginalResource()->getPublicUrl() ;
                         $single['filename'] =  $tempFile->getOriginalResource()->getName() ;
                         $single['title'] =  $tempFile->getOriginalResource()->getTitle() ;
                         if(!$single['title'] ) {
-                            $single['title']  =  str_replace( "_" , " " , $tempFile->getOriginalResource()->getNameWithoutExtension() ) ;
+                            $single['title']  =  str_replace( "_" , " " , (string) $tempFile->getOriginalResource()->getNameWithoutExtension() ) ;
                         }
                         $single['ext'] =  $tempFile->getOriginalResource()->getExtension() ;
                         $single['mimeType'] =  $tempFile->getOriginalResource()->getMimeType() ;
@@ -1201,7 +1223,7 @@ class AjaxController extends BaseController
                         $single['size'] =  $tempFile->getOriginalResource()->getSize() ;
                     }
                     $return[] = $single ;
-                } catch(\Exception $e) {
+                } catch(\Exception) {
 
                 }
 
@@ -1239,7 +1261,7 @@ class AjaxController extends BaseController
                         $output['event']['banner']['active'] = true ;
                     }
                 }
-            } catch (Exception $e) {
+            } catch (Exception) {
                 // ignore
             }
         }

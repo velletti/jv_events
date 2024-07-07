@@ -1,6 +1,7 @@
 <?php
 namespace JVelletti\JvEvents\Controller;
 
+use JVelletti\JvEvents\Utility\MigrationUtility;
 use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Annotation\Validate;
@@ -74,7 +75,6 @@ class RegistrantController extends BaseController
 	
     /**
      * action list
-     * @param Event $event
      * @param string $hash
      * @return void
      */
@@ -94,7 +94,7 @@ class RegistrantController extends BaseController
         if ( $pid == 0 ) {
             $pid = $event->getRegistrationPid() ;
         }
-        $registrants = array() ;
+        $registrants = [] ;
 
         $checkString =  $_SERVER["SERVER_NAME"] . "-" . $event->getUid() . "-" . $event->getCrdate() ;
         $checkHash = GeneralUtility::hmac ( $checkString ) ;
@@ -234,18 +234,11 @@ class RegistrantController extends BaseController
             $all = false ;
             $fields = $this->settings['register']['allformFields'] ;
         }
-        switch ( $registrant->getGender() ) {
-            case 1:
-                $gender = $this->translate("register_gender_male" ) ;
-                break;
-            case 2:
-                $gender = $this->translate("register_gender_female" ) ;
-                break;
-            default:
-                $gender = $this->translate("register_gender_diverse" ) ;
-                break;
-
-        }
+        $gender = match ($registrant->getGender()) {
+            1 => $this->translate("register_gender_male" ),
+            2 => $this->translate("register_gender_female" ),
+            default => $this->translate("register_gender_diverse" ),
+        };
 
         $phone = " " . $registrant->getPhone() ;
         if ( str_replace( " " , "" , trim($phone )) == trim($phone) ) {
@@ -299,15 +292,13 @@ class RegistrantController extends BaseController
 
         }
 
-        $string =   str_replace("\n" , "   " , $string ) ;
+        $string =   str_replace("\n" , "   " , (string) $string ) ;
         $string =   str_replace("\r" , "   " , $string ) ;
         return  str_replace($delim , $replace , $string ) ;
     }
     /**
      * action new
      *
-     * @param Event $event
-     * @param Registrant $registrant
      * @return void
      */
     #[IgnoreValidation(['value' => 'event'])]
@@ -339,17 +330,17 @@ class RegistrantController extends BaseController
             }
             $checkString = $_SERVER["SERVER_NAME"] . "-" . $event->getUid() . "-" . $event->getCrdate();
             $checkHash = GeneralUtility::hmac ( $checkString );
-            $this->settings['fe_user']['user'] = $GLOBALS['TSFE']->fe_user->user;
+            $this->settings['fe_user']['user'] = $this->frontendUser->user;
             $this->settings['fe_user']['organizer']['showTools'] = FALSE;
             $userUid = 0 ;
-            if ($GLOBALS['TSFE']->fe_user->user) {
-                $userUid = $GLOBALS['TSFE']->fe_user->user['uid'];
+            if ($this->frontendUser->user) {
+                $userUid = $this->frontendUser->user['uid'];
                 if (is_object($event->getOrganizer())) {
                     $userAccessArr = \TYPO3\CMS\CORE\Utility\GeneralUtility::trimExplode(",", $event->getOrganizer()->getAccessUsers());
                     if (in_array($userUid, $userAccessArr)) {
                         $this->settings['fe_user']['organizer']['showTools'] = TRUE;
                     } else {
-                        $usersGroups = \TYPO3\CMS\CORE\Utility\GeneralUtility::trimExplode(",", $GLOBALS['TSFE']->fe_user->user['usergroup']);
+                        $usersGroups = \TYPO3\CMS\CORE\Utility\GeneralUtility::trimExplode(",", $this->frontendUser->user['usergroup']);
                         $OrganizerAccessToolsGroups = \TYPO3\CMS\CORE\Utility\GeneralUtility::trimExplode(",", $event->getOrganizer()->getAccessGroups());
                         foreach ($OrganizerAccessToolsGroups as $tempGroup) {
                             if (in_array($tempGroup, $usersGroups)) {
@@ -388,34 +379,34 @@ class RegistrantController extends BaseController
                 /** @var Registrant $registrant */
                 $registrant = GeneralUtility::makeInstance(Registrant::class);
                 if ($userUid > 0 ) {
-                    $registrant->setGender(intval($GLOBALS['TSFE']->fe_user->user['gender'] + 1));
-                    $registrant->setFirstName($GLOBALS['TSFE']->fe_user->user['first_name']);
-                    $registrant->setLastName($GLOBALS['TSFE']->fe_user->user['last_name']);
-                    $registrant->setEmail($GLOBALS['TSFE']->fe_user->user['email']);
-                    $registrant->setPhone($GLOBALS['TSFE']->fe_user->user['telephone']);
-                    $registrant->setTitle($GLOBALS['TSFE']->fe_user->user['title']);
-                    $registrant->setCity($GLOBALS['TSFE']->fe_user->user['city']);
-                    $registrant->setZip($GLOBALS['TSFE']->fe_user->user['zip']);
-                    $registrant->setCountry($GLOBALS['TSFE']->fe_user->user['country']);
-                    if (array_key_exists('tx_nem_firstname', $GLOBALS['TSFE']->fe_user->user)) {
-                        $registrant->setFirstName($GLOBALS['TSFE']->fe_user->user['tx_nem_firstname']);
-                        $registrant->setLastName($GLOBALS['TSFE']->fe_user->user['tx_nem_lastname']);
+                    $registrant->setGender(intval($this->frontendUser->user['gender'] + 1));
+                    $registrant->setFirstName($this->frontendUser->user['first_name']);
+                    $registrant->setLastName($this->frontendUser->user['last_name']);
+                    $registrant->setEmail($this->frontendUser->user['email']);
+                    $registrant->setPhone($this->frontendUser->user['telephone']);
+                    $registrant->setTitle($this->frontendUser->user['title']);
+                    $registrant->setCity($this->frontendUser->user['city']);
+                    $registrant->setZip($this->frontendUser->user['zip']);
+                    $registrant->setCountry($this->frontendUser->user['country']);
+                    if (array_key_exists('tx_nem_firstname', $this->frontendUser->user)) {
+                        $registrant->setFirstName($this->frontendUser->user['tx_nem_firstname']);
+                        $registrant->setLastName($this->frontendUser->user['tx_nem_lastname']);
 
-                        $registrant->setProfession($GLOBALS['TSFE']->fe_user->user['tx_nem_profession']);
-                        $registrant->setCompany($GLOBALS['TSFE']->fe_user->user['tx_nem_company']);
-                        //  $registrant->setDepartment($GLOBALS['TSFE']->fe_user->user['tx_nem_department']);
-                        $registrant->setCustomerId($GLOBALS['TSFE']->fe_user->user['tx_nem_cnum']);
-                        $registrant->setStreetAndNr($GLOBALS['TSFE']->fe_user->user['tx_nem_street_and_nr']);
+                        $registrant->setProfession($this->frontendUser->user['tx_nem_profession']);
+                        $registrant->setCompany($this->frontendUser->user['tx_nem_company']);
+                        //  $registrant->setDepartment($this->frontendUser->user['tx_nem_department']);
+                        $registrant->setCustomerId($this->frontendUser->user['tx_nem_cnum']);
+                        $registrant->setStreetAndNr($this->frontendUser->user['tx_nem_street_and_nr']);
                     }
                 }
             }
 
-            $addFields = $this->settings['Register']['add_mandatory_fields'] ? trim($this->settings['Register']['add_mandatory_fields']) : '';
+            $addFields = $this->settings['Register']['add_mandatory_fields'] ? trim((string) $this->settings['Register']['add_mandatory_fields']) : '';
             $registrant->setAddMandatoryFields($addFields);
 
 
             $querysettings =$this->subeventRepository->getTYPO3QuerySettings() ;
-            $querysettings->setStoragePageIds(array($event->getPid()));
+            $querysettings->setStoragePageIds([$event->getPid()]);
 
             $this->subeventRepository->setDefaultQuerySettings($querysettings);
             $subevents = $this->subeventRepository->findByEventAllpages($event->getUid(), FALSE);
@@ -443,8 +434,6 @@ class RegistrantController extends BaseController
     /**
      * action createAction
      *
-     * @param Event $event
-     * @param Registrant $registrant
      * @return void
      */
     #[IgnoreValidation(['value' => 'event'])]
@@ -483,7 +472,7 @@ class RegistrantController extends BaseController
             $registrant->setOtherEvents( serialize($temp ) );
 		}
         $querysettings =$this->subeventRepository->getTYPO3QuerySettings() ;
-        $querysettings->setStoragePageIds(array( $event->getPid() )) ;
+        $querysettings->setStoragePageIds([$event->getPid()]) ;
 
         $this->subeventRepository->setDefaultQuerySettings( $querysettings );
         $subevents = $this->subeventRepository->findByEventAllpages($event->getUid() , true ) ;
@@ -535,7 +524,7 @@ class RegistrantController extends BaseController
 		if ($event->getRegistrationPid() > 0) {
 			$registrant->setPid($event->getRegistrationPid());
 		} else {
-			$registrant->setPid( $GLOBALS['TSFE']->id );
+			$registrant->setPid( $detailPid = MigrationUtility::getPageId() );
 		}
 
 		$registrant->setFingerprint( );
@@ -686,7 +675,7 @@ class RegistrantController extends BaseController
 					if ($otherEvent->getRegistrationPid() > 0) {
 						$newregistrant->setPid($otherEvent->getRegistrationPid());
 					} else {
-						$newregistrant->setPid( $GLOBALS['TSFE']->id );
+						$newregistrant->setPid( $detailPid = MigrationUtility::getPageId() );
 					}
                     $newregistrant->setEvent( $otherEvent->getUid() ) ;
 					$this->registrantRepository->add($newregistrant);
@@ -714,22 +703,22 @@ class RegistrantController extends BaseController
 
             if (is_object($event->getOrganizer())) {
                 if (GeneralUtility::validEmail($event->getOrganizer()->getEmail())) {
-                    $replyto = array( $event->getOrganizer()->getEmail() => '=?utf-8?B?'. base64_encode( $event->getOrganizer()->getName() ) .'?=' ) ;
+                    $replyto = [$event->getOrganizer()->getEmail() => '=?utf-8?B?'. base64_encode( (string) $event->getOrganizer()->getName() ) .'?='] ;
                 }
                 if( $event->getNotifyOrganizer() && $replyto ) {
 
                     if (GeneralUtility::validEmail($event->getOrganizer()->getEmail())) {
                         $this->sendEmail($event, $registrant, "Organizer" ,
-                            array( $event->getOrganizer()->getEmail() => '=?utf-8?B?'. base64_encode( $event->getOrganizer()->getName() ) .'?=' ) , $otherEvents , $registrantEmail , $oldReg );
+                            [$event->getOrganizer()->getEmail() => '=?utf-8?B?'. base64_encode( (string) $event->getOrganizer()->getName() ) .'?='] , $otherEvents , $registrantEmail , $oldReg );
                     }
-                    $ccEmails = str_replace( array("," , ";" , " " ) , array("," , "," , ",") , $event->getOrganizer()->getEmailCc() ) ;
+                    $ccEmails = str_replace( [",", ";", " "] , [",", ",", ","] , (string) $event->getOrganizer()->getEmailCc() ) ;
                     $ccEmailsArray = GeneralUtility::trimExplode("," , $ccEmails , true ) ;
-                    if ( count($ccEmailsArray) > 0 ) {
+                    if ( (is_countable($ccEmailsArray) ? count($ccEmailsArray) : 0) > 0 ) {
                         foreach ( $ccEmailsArray as $ccEmail ) {
                             if (GeneralUtility::validEmail( $ccEmail ) ) {
 
                                 $this->sendEmail($event, $registrant, "Organizer" ,
-                                    array( $ccEmail => '=?utf-8?B?'. base64_encode( $event->getOrganizer()->getName() ) .'?=' ) , $otherEvents , $registrantEmail , $oldReg );
+                                    [$ccEmail => '=?utf-8?B?'. base64_encode( (string) $event->getOrganizer()->getName() ) .'?='] , $otherEvents , $registrantEmail , $oldReg );
                             }
                         }
                     }
@@ -738,7 +727,7 @@ class RegistrantController extends BaseController
 			if( $event->getNotifyRegistrant()  ) {
                 if (is_object($event->getLocation())) {
                     if (GeneralUtility::validEmail($event->getLocation()->getEmail())) {
-                        $replyto = array( $event->getLocation()->getEmail() => '=?utf-8?B?'. base64_encode( $event->getLocation()->getName() ) .'?=' ) ;
+                        $replyto = [$event->getLocation()->getEmail() => '=?utf-8?B?'. base64_encode( (string) $event->getLocation()->getName() ) .'?='] ;
                     }
                 }
 				if (GeneralUtility::validEmail($registrant->getEmail())) {
@@ -768,7 +757,6 @@ class RegistrantController extends BaseController
     /**
      * action confirmAction
      *
-     * @param Registrant $registrant
      * @return void
      */
     public function confirmAction(Registrant $registrant)
@@ -776,10 +764,10 @@ class RegistrantController extends BaseController
         $eventUid = 0 ;
         $hash = '' ;
         if( $this->request->hasArgument('hash')) {
-            $hash = trim(strip_tags( $this->request->getArgument('hash') ));
+            $hash = trim(strip_tags( (string) $this->request->getArgument('hash') ));
         }
         if( $this->request->hasArgument('registrant')) {
-            $registrantUid = trim(strip_tags( $this->request->getArgument('registrant') ));
+            $registrantUid = trim(strip_tags( (string) $this->request->getArgument('registrant') ));
             $registrant = $this->registrantRepository->getOneById($registrantUid , true ) ;
         }
 
@@ -799,7 +787,7 @@ class RegistrantController extends BaseController
                                 $replyto = false ;
                                 if (is_object($event->getOrganizer())) {
                                     if (GeneralUtility::validEmail($event->getOrganizer()->getEmail())) {
-                                        $replyto = array( $event->getOrganizer()->getEmail() => '=?utf-8?B?'. base64_encode( $event->getOrganizer()->getName() ) .'?=' ) ;
+                                        $replyto = [$event->getOrganizer()->getEmail() => '=?utf-8?B?'. base64_encode( $event->getOrganizer()->getName() ) .'?='] ;
                                     }
                                 }
                                 $registrantEmail = $this->getRegistrantEmail($registrant)   ;
@@ -834,13 +822,11 @@ class RegistrantController extends BaseController
             }
         }
         $this->persistenceManager->persistAll() ;
-        $this->redirect("list" , null , null, array("event" => $eventUid , "hash" => $hash ) ) ;
+        $this->redirect("list" , null , null, ["event" => $eventUid, "hash" => $hash] ) ;
 
     }
 
     /**
-     * @param Registrant $oldReg
-     * @param Registrant $registrant
      * @throws IllegalObjectTypeException
      * @throws UnknownObjectException
      */
@@ -856,7 +842,7 @@ class RegistrantController extends BaseController
                 }
             }
             $this->registrantRepository->update($oldReg) ;
-        } catch(Exception $e) {
+        } catch(Exception) {
         }
     }
     /**
@@ -893,13 +879,14 @@ class RegistrantController extends BaseController
      */
     public function deleteAction()
     {
+        $registrant = null;
         $eventUid = 0 ;
         $hash = '' ;
         if( $this->request->hasArgument('hash')) {
-            $hash = trim(strip_tags( $this->request->getArgument('hash') ));
+            $hash = trim(strip_tags( (string) $this->request->getArgument('hash') ));
         }
         if( $this->request->hasArgument('registrant')) {
-            $registrantUid = trim(strip_tags( $this->request->getArgument('registrant') ));
+            $registrantUid = trim(strip_tags( (string) $this->request->getArgument('registrant') ));
             $registrant = $this->registrantRepository->getOneById($registrantUid , true ) ;
         }
 
@@ -938,7 +925,7 @@ class RegistrantController extends BaseController
             $this->addFlashMessage('Could not find this registration ', '', AbstractMessage::ERROR);
         }
         $this->persistenceManager->persistAll() ;
-        $this->redirect("list" , null , null, array("event" => $eventUid , "hash" => $hash ) ) ;
+        $this->redirect("list" , null , null, ["event" => $eventUid, "hash" => $hash] ) ;
 
 
     }
@@ -947,7 +934,6 @@ class RegistrantController extends BaseController
     /**
      * action show
      *
-     * @param Registrant $registrant
      * @return void
      */
     public function showAction(Registrant $registrant): ResponseInterface
@@ -957,7 +943,6 @@ class RegistrantController extends BaseController
     }
 
     /**
-     * @param Registrant $registrant
      * @return int|mixed
      */
     private function getTotalPersonCount(Registrant $registrant) {
@@ -971,7 +956,7 @@ class RegistrantController extends BaseController
                 if (is_array( $secondPersonFields) && count($secondPersonFields) > 0 ) {
                     $secondPerson = [] ;
                     foreach ($secondPersonFields as $field) {
-                        $func = "get" . ucfirst($field) ;
+                        $func = "get" . ucfirst((string) $field) ;
                         if(method_exists ($registrant , $func)) {
                             if( $registrant->$func() ) {
                                 $secondPerson[] = $registrant->$func() ;
@@ -987,7 +972,7 @@ class RegistrantController extends BaseController
             // variant 2 :: we have A FIELD that contains the total number of persons in this registaion.
             if( array_key_exists( 'fieldNameAmount', $this->settings['register']['secondPerson']) )  {
                 $field = $this->settings['register']['secondPerson']['fieldNameAmount'] ;
-                $func = "get" . ucfirst($field) ;
+                $func = "get" . ucfirst((string) $field) ;
                 if(method_exists ($registrant , $func)) {
                     $totalPersonCount = intval( $registrant->$func()) ;
                 }
@@ -999,11 +984,10 @@ class RegistrantController extends BaseController
             // Finally: minium 1 registration but maybe 2 or more up to maxAmount
             $totalPersonCount = max( 1 , $totalPersonCount ) ;
         }
-        return array( "total" => $totalPersonCount ) ;
+        return ["total" => $totalPersonCount] ;
     }
 
     /**
-     * @param Registrant $registrant
      * @return array|bool
      */
     public function getRegistrantEmail(Registrant $registrant) {
@@ -1016,13 +1000,12 @@ class RegistrantController extends BaseController
             } else {
                 $name  = '=?utf-8?B?'. base64_encode( $name) .'?=' ;
             }
-            $registrantEmail = array( $registrant->getEmail() => $name ) ;
+            $registrantEmail = [$registrant->getEmail() => $name] ;
         }
         return $registrantEmail ;
     }
 
     /**
-     * @param RequestInterface $request
      * @return ResponseInterface
      */
     public function processRequest(RequestInterface $request ):ResponseInterface
@@ -1030,7 +1013,7 @@ class RegistrantController extends BaseController
         try {
             return parent::processRequest($request);
         }
-        catch(TargetNotFoundException $e) {
+        catch(TargetNotFoundException) {
 
         }
     }

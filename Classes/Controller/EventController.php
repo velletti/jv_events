@@ -26,6 +26,9 @@ namespace JVelletti\JvEvents\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use JVelletti\JvEvents\Utility\MigrationUtility;
+use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 use DateTime;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
@@ -69,14 +72,14 @@ class EventController extends BaseController
 	    $this->debugArray[] = "Start:" . intval(1000 * $this->timeStart ) . " Line: " . __LINE__ ;
 		if ($this->request->hasArgument('action')) {
 
-			if ( in_array( $this->request->getArgument('action') , array("show" , "edit" , "update" , "create" , "delete" , "cancel") )) {
+			if ( in_array( $this->request->getArgument('action') , ["show", "edit", "update", "create", "delete", "cancel"] )) {
 				// user is calling  one of the actions, that requires and event ID.
 
 			    if ( !$this->request->hasArgument('event') && !$this->request->getArgument('action') == "show") {
 			        return new ForwardResponse('show');
 				}
-                if ( $this->request->hasArgument('event') && $this->request->getArgument('action') == "show"  && !ctype_digit( $this->request->getArgument('event') ) ) {
-                    return (new ForwardResponse('show'))->withArguments(array( 'action' => 'show' , 'event' => null ));
+                if ( $this->request->hasArgument('event') && $this->request->getArgument('action') == "show"  && !ctype_digit( (string) $this->request->getArgument('event') ) ) {
+                    return (new ForwardResponse('show'))->withArguments(['action' => 'show', 'event' => null]);
                 }
 
 			}
@@ -121,7 +124,7 @@ class EventController extends BaseController
             }
             if( array_key_exists( "startDate" , $filter )) {
                 if( $filter['startDate']  ) {
-                    $sdArr = explode("." , $filter['startDate'] ) ;
+                    $sdArr = explode("." , (string) $filter['startDate'] ) ;
                     if( $sdArr[0] > 0 && $sdArr[0] < 32 && $sdArr[1] > 0 && $sdArr[1] < 13  && $sdArr[2] > 1970 ) {
                         $this->settings['filter']['startDate'] = mktime(0,0,0, $sdArr[1] , $sdArr[0] , $sdArr[2] ) ;
                         $this->settings['filter']['overruleStartDate'] = date( "d.m.Y" , $this->settings['filter']['startDate'] ) ;
@@ -218,7 +221,6 @@ class EventController extends BaseController
     /**
      * action show
      *
-     * @param Event|null $event
      * @return void
      */
     #[IgnoreValidation(['value' => 'event'])]
@@ -231,7 +233,7 @@ class EventController extends BaseController
 
             //$querysettings = new Typo3QuerySettings;
             $querysettings =$this->subeventRepository->getTYPO3QuerySettings() ;
-            $querysettings->setStoragePageIds(array($event->getPid()));
+            $querysettings->setStoragePageIds([$event->getPid()]);
 
             $this->subeventRepository->setDefaultQuerySettings($querysettings);
             $subevents = $this->subeventRepository->findByEventAllpages($event->getUid(), FALSE);
@@ -244,17 +246,17 @@ class EventController extends BaseController
 
             }
 
-            $this->settings['fe_user']['user'] = $GLOBALS['TSFE']->fe_user->user;
+            $this->settings['fe_user']['user'] = $this->frontendUser->user;
             $this->settings['fe_user']['organizer']['showTools'] = FALSE;
 
-            if ($GLOBALS['TSFE']->fe_user->user) {
-                $userUid = $GLOBALS['TSFE']->fe_user->user['uid'];
+            if ($this->frontendUser->user) {
+                $userUid = $this->frontendUser->user['uid'];
                 if (is_object($event->getOrganizer())) {
                     $userAccessArr = GeneralUtility::trimExplode(",", $event->getOrganizer()->getAccessUsers());
                     if (in_array($userUid, $userAccessArr)) {
                         $this->settings['fe_user']['organizer']['showTools'] = TRUE;
                     } else {
-                        $usersGroups = GeneralUtility::trimExplode(",", $GLOBALS['TSFE']->fe_user->user['usergroup']);
+                        $usersGroups = GeneralUtility::trimExplode(",", $this->frontendUser->user['usergroup']);
                         $OrganizerAccessToolsGroups = GeneralUtility::trimExplode(",", $event->getOrganizer()->getAccessGroups());
                         foreach ($OrganizerAccessToolsGroups as $tempGroup) {
                             if (in_array($tempGroup, $usersGroups)) {
@@ -270,7 +272,7 @@ class EventController extends BaseController
             $this->view->assign('hash', $checkHash);
 
         } else {
-            $this->addFlashMessage($this->translate("error.general.entry_not_found"), "Sorry!" , \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING) ;
+            $this->addFlashMessage($this->translate("error.general.entry_not_found"), "Sorry!" , ContextualFeedbackSeverity::WARNING) ;
 
         }
         $this->view->assign('settings', $this->settings);
@@ -310,7 +312,7 @@ class EventController extends BaseController
                 $this->view->assign('organizer', $organizer );
             } else {
                 $pid = $this->settings['pageIds']['loginForm'] ;
-                $this->addFlashMessage('You are not logged in as Organizer.'  , '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING);
+                $this->addFlashMessage('You are not logged in as Organizer.'  , '', ContextualFeedbackSeverity::WARNING);
                 $this->redirect(null , null , NULL , NULL , $pid );
             }
 
@@ -322,7 +324,7 @@ class EventController extends BaseController
                 }
                 $this->view->assign('location', $location );
             } else {
-                $locations= $this->locationRepository->findByOrganizersAllpages( array(0 => $organizer->getUid()) , FALSE, FALSE ) ;
+                $locations= $this->locationRepository->findByOrganizersAllpages( [0 => $organizer->getUid()] , FALSE, FALSE ) ;
                 $this->view->assign('locations', $locations );
             }
 
@@ -335,7 +337,7 @@ class EventController extends BaseController
 
         }
         if($this->isUserOrganizer() ) {
-            $this->view->assign('user', intval($GLOBALS['TSFE']->fe_user->user['uid'] ) ) ;
+            $this->view->assign('user', intval($this->frontendUser->user['uid'] ) ) ;
             $this->view->assign('event', $event);
             $this->view->assign('categories', $categories);
             $this->view->assign('tags', $tags);
@@ -345,8 +347,6 @@ class EventController extends BaseController
     
     /**
      * action create
-     *
-     * @param Event $event
      */
     #[Validate(['param' => 'event', 'validator' => EventValidator::class])]
     public function createAction(Event $event)
@@ -372,12 +372,12 @@ class EventController extends BaseController
                     $this->cacheService->clearPageCache( $clearCachePids );
                     $this->addFlashMessage('The object was created and Cache of following pages are cleared: ' . implode("," , $clearCachePids), '', ContextualFeedbackSeverity::OK);
                 } else {
-                    $this->addFlashMessage('The object was created.', '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK);
+                    $this->addFlashMessage('The object was created.', '', ContextualFeedbackSeverity::OK);
                 }
                 $pid = $this->settings['pageIds']['showEventDetail'] ;
                 $action = "show" ;
             } catch ( \Exception $e ) {
-                $this->addFlashMessage($e->getMessage() , 'Error', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING);
+                $this->addFlashMessage($e->getMessage() , 'Error', ContextualFeedbackSeverity::WARNING);
 
             }
 
@@ -385,14 +385,13 @@ class EventController extends BaseController
             $action = null ;
 
             $pid = $this->settings['pageIds']['loginForm'] ;
-            $this->addFlashMessage('The object was NOT created. You are not logged in as Organizer.' . $event->getUid() , '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING);
-            $this->redirect(null , null , NULL , array( 'event' => $event ) , $pid );
+            $this->addFlashMessage('The object was NOT created. You are not logged in as Organizer.' . $event->getUid() , '', ContextualFeedbackSeverity::WARNING);
+            $this->redirect(null , null , NULL , ['event' => $event] , $pid );
         }
         // if PID from TS settings is set: if User is not logged in-> Page with loginForm , on success -> showEventDetail  Page
-        if( $pid < 1) {
+        if ($pid < 1) {
             // else : stay on this page
-            $pid = $GLOBALS['TSFE']->id ;
-
+            $pid = MigrationUtility::getPageId($this);
         }
         try {
             /** @var UriBuilder $uriBuilder */
@@ -409,7 +408,7 @@ class EventController extends BaseController
                 ->withHeader('Location', $uri )
                 ->withStatus("200");
 
-        } catch  ( \Exception $e ) {
+        } catch  ( \Exception ) {
             $this->redirect(null, null , NULL, null , $pid);
         }
 
@@ -418,7 +417,6 @@ class EventController extends BaseController
     /**
      * action edit
      *
-     * @param Event $event
      * @param integer $copy2Day if set, Copy the event to the given DateDiff in DAYS
      * @param integer $amount if set, the amount of Copys that shall be created
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
@@ -430,6 +428,7 @@ class EventController extends BaseController
     public function editAction(Event $event , $copy2Day=0 , $amount=0 ): ResponseInterface
     {
 
+        $filter = [];
         if($this->isUserOrganizer() ) {
             if( $this->hasUserAccess( $event->getOrganizer() )) {
 
@@ -451,7 +450,7 @@ class EventController extends BaseController
                 /** @var QueryResultInterface $tags */
                 $tags = $this->tagRepository->findAllonAllPages('0');
 
-                $this->view->assign('user', intval($GLOBALS['TSFE']->fe_user->user['uid'] ) ) ;
+                $this->view->assign('user', intval($this->frontendUser->user['uid'] ) ) ;
 
                 // remove RegistrationFormPid to be able to use Checkbox: maybe  will be set back to default on SAVE
 
@@ -477,7 +476,7 @@ class EventController extends BaseController
                 $relatedEvents = $this->eventRepository->findByFilter($filter ) ;
                 $this->view->assign('relatedEvents', $relatedEvents );
 
-                $locations= $this->locationRepository->findByOrganizersAllpages( array(0 => $event->getOrganizer() ) , FALSE, FALSE ) ;
+                $locations= $this->locationRepository->findByOrganizersAllpages( [0 => $event->getOrganizer()] , FALSE, FALSE ) ;
                 $this->view->assign('locations', $locations );
 
             } else {
@@ -490,7 +489,6 @@ class EventController extends BaseController
     }
 
     /**
-     * @param Event $event
      * @param int $copy2Day
      * @param int $amount
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
@@ -498,6 +496,7 @@ class EventController extends BaseController
      * @throws IllegalObjectTypeException
      */
     private function copyEvent(Event $event, $copy2Day= 0, $amount= 0 ){
+        $row = [];
         // Does the Copy Master Event already have a masterId? if not, use its uid as new  Master
         // with this master ID we are able to update Changes from one event to all events with the same master Id
         // if we just do ONE Copy, do not set master ID
@@ -544,7 +543,7 @@ class EventController extends BaseController
             $fields =  $extConf['resetFieldListAfterCopy']   ;
 
             // default: setUnconfirmedSeats:0;setRegisteredSeats:0;setSalesForceEventId:"";setSalesForceSessionId:""
-            $fieldsArray = explode(";" , trim($fields)  ) ;
+            $fieldsArray = explode(";" , trim((string) $fields)  ) ;
             if( is_array($fieldsArray)) {
                 foreach ($fieldsArray as $value ) {
                     $fieldsArraySub = explode(":" , trim($value)  ) ;
@@ -608,7 +607,7 @@ class EventController extends BaseController
                 $this->addFlashMessage('The Event was copied to: ' . $newEvent->getStartDate( )->format("d.m.Y"), '',  ContextualFeedbackSeverity::OK);
 
             } catch ( \Exception $e ) {
-                $this->addFlashMessage($e->getMessage() , 'Error in action ' . ' - copyEvent -', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING);
+                $this->addFlashMessage($e->getMessage() , 'Error in action ' . ' - copyEvent -', ContextualFeedbackSeverity::WARNING);
             }
             $eventUid = $newEvent->getUid() ;
 
@@ -666,21 +665,20 @@ class EventController extends BaseController
         // got from EM Settings
         $clearCachePids = GeneralUtility::trimExplode("," , $this->settings['EmConfiguration']['clearCachePids']) ;
         if( is_array($clearCachePids) && count( $clearCachePids) > 0 ) {
-            $clearCachePids[] = $GLOBALS['TSFE']->id ;
+            $clearCachePids[] = MigrationUtility::getPageId($this) ;
             $this->cacheService->clearPageCache( $clearCachePids );
-            $this->addFlashMessage('The object was updated and Cache of following pages are cleared: ' . implode("," , $clearCachePids), '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK);
+            $this->addFlashMessage('The object was updated and Cache of following pages are cleared: ' . implode("," , $clearCachePids), '', ContextualFeedbackSeverity::OK);
         }
         $action = "show" ;
         if ( $copy2Day == 0 &&  $amount == 1 ) {
             $action = "edit" ;
         }
-       return $this->redirect($action , null , null , array( "event" => $eventUid  )) ;
+       return $this->redirect($action , null , null , ["event" => $eventUid]) ;
 
     }
     /**
      * action cancel - will toogle the canceled status
      *
-     * @param Event $event
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
      * @throws IllegalObjectTypeException
@@ -689,6 +687,7 @@ class EventController extends BaseController
     #[IgnoreValidation(['value' => 'event'])]
     public function cancelAction(Event $event)
     {
+        $update = [];
         if($this->isUserOrganizer() ) {
             if( $this->hasUserAccess( $event->getOrganizer() )) {
                 if( $event->getCanceled() ) {
@@ -697,8 +696,8 @@ class EventController extends BaseController
                     $event->setCanceled( '1' ) ;
                 }
                 $event->setLastUpdated(time());
-                if ( intval($GLOBALS['TSFE']->fe_user->user['uid'] ) ) {
-                    $event->setLastUpdatedBy(intval($GLOBALS['TSFE']->fe_user->user['uid'] ) );
+                if ( intval($this->frontendUser->user['uid'] ) ) {
+                    $event->setLastUpdatedBy(intval($this->frontendUser->user['uid'] ) );
                 }
 
 
@@ -713,22 +712,22 @@ class EventController extends BaseController
                             $update['uid'] = $row['uid'];
                             $update['hidden'] = 1;
                             $bannerRepository->updateBanner( $update );
-                            $this->addFlashMessage('The Banner ' .  $row['uid'] . ' will be stopped also soon. (<4 h) ', '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK);
+                            $this->addFlashMessage('The Banner ' .  $row['uid'] . ' will be stopped also soon. (<4 h) ', '', ContextualFeedbackSeverity::OK);
                         }
                     }
 
                     // got from EM Settings
                     $clearCachePids = GeneralUtility::trimExplode("," , $this->settings['EmConfiguration']['clearCachePids']) ;
                     if( is_array($clearCachePids) && count( $clearCachePids) > 0 ) {
-                        $clearCachePids[] = $GLOBALS['TSFE']->id ;
+                        $clearCachePids[] = MigrationUtility::getPageId($this);
                         $this->cacheService->clearPageCache( $clearCachePids );
-                        $this->addFlashMessage('The object was updated and Cache of following pages are cleared: ' . implode("," , $clearCachePids), '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK);
+                        $this->addFlashMessage('The object was updated and Cache of following pages are cleared: ' . implode("," , $clearCachePids), '', ContextualFeedbackSeverity::OK);
                     } else {
-                        $this->addFlashMessage('The object was updated.', '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK);
+                        $this->addFlashMessage('The object was updated.', '', ContextualFeedbackSeverity::OK);
                     }
 
                 } catch ( \Exception $e ) {
-                    $this->addFlashMessage($e->getMessage() , 'Error', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING);
+                    $this->addFlashMessage($e->getMessage() , 'Error', ContextualFeedbackSeverity::WARNING);
 
                 }
                 $this->persistenceManager->persistAll() ;
@@ -737,19 +736,19 @@ class EventController extends BaseController
 
         }
 
-        return $this->redirect('show' ,null , null , array("event" => $event )) ;
+        return $this->redirect('show' ,null , null , ["event" => $event]) ;
     }
     /**
      * action update
      *
-     * @param Event $event
-     * 
+     *
      * @return void
      */
     #[Validate(['param' => 'event', 'validator' => EventValidator::class])]
     public function updateAction(Event $event)
     {
 
+        $filter = [];
         if( $this->request->hasArgument('event')) {
             $event = $this->cleanEventArguments( $event) ;
         }
@@ -807,13 +806,13 @@ class EventController extends BaseController
                         }
 
 
-                        $this->addFlashMessage('The Banner ' .  $row['uid'] . ' will be updated soon. (<4 h). Changed Images may take more time.', '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK);
+                        $this->addFlashMessage('The Banner ' .  $row['uid'] . ' will be updated soon. (<4 h). Changed Images may take more time.', '', ContextualFeedbackSeverity::OK);
                     }
                 }
 
                 $event->setLastUpdated(time());
-                if ( intval($GLOBALS['TSFE']->fe_user->user['uid'] ) ) {
-                    $event->setLastUpdatedBy(intval($GLOBALS['TSFE']->fe_user->user['uid'] ) );
+                if ( intval($this->frontendUser->user['uid'] ) ) {
+                    $event->setLastUpdatedBy(intval($this->frontendUser->user['uid'] ) );
                 }
                 $this->eventRepository->update($event) ;
                 if( $event->getChangeFutureEvents() && $event->getMasterId() > 0 ) {
@@ -828,8 +827,8 @@ class EventController extends BaseController
                         $otherDaysText = " " ;
                         foreach ( $otherEvents as $otherEvent ) {
                             $otherEvent->setLastUpdated(time());
-                            if ( intval($GLOBALS['TSFE']->fe_user->user['uid'] ) ) {
-                                $otherEvent->setLastUpdatedBy(intval($GLOBALS['TSFE']->fe_user->user['uid'] ) );
+                            if ( intval($this->frontendUser->user['uid'] ) ) {
+                                $otherEvent->setLastUpdatedBy(intval($this->frontendUser->user['uid'] ) );
                             }
 
                             $otherDaysText .= $otherEvent->getStartDate()->format("d.M-Y") .  " (Id:" . $otherEvent->getUid() ."), " ;
@@ -878,7 +877,7 @@ class EventController extends BaseController
                             $this->eventRepository->update($otherEvent) ;
 
                         }
-                        $this->addFlashMessage('The following Events : ' . $otherDaysText . ' were also updated.', '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK);
+                        $this->addFlashMessage('The following Events : ' . $otherDaysText . ' were also updated.', '', ContextualFeedbackSeverity::OK);
 
                     }
                 }
@@ -889,40 +888,39 @@ class EventController extends BaseController
                 $clearCachePids = GeneralUtility::trimExplode("," , $this->settings['EmConfiguration']['clearCachePids']) ;
                 if( is_array($clearCachePids) && count( $clearCachePids) > 0 ) {
                     $this->cacheService->clearPageCache( $clearCachePids );
-                    $this->addFlashMessage('The object was updated and Cache of following pages are cleared: ' . implode("," , $clearCachePids), '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK);
+                    $this->addFlashMessage('The object was updated and Cache of following pages are cleared: ' . implode("," , $clearCachePids), '', ContextualFeedbackSeverity::OK);
                 } else {
-                    $this->addFlashMessage('The object was updated.', '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK);
+                    $this->addFlashMessage('The object was updated.', '', ContextualFeedbackSeverity::OK);
                 }
 
             } catch ( \Exception $e ) {
-                $this->addFlashMessage($e->getMessage() , 'Error', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING);
+                $this->addFlashMessage($e->getMessage() , 'Error', ContextualFeedbackSeverity::WARNING);
 
             }
 
         } else {
-            $this->addFlashMessage('You do not have access rights to change this data.' . $event->getUid() , '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING);
+            $this->addFlashMessage('You do not have access rights to change this data.' . $event->getUid() , '', ContextualFeedbackSeverity::WARNING);
         }
         $this->persistenceManager->persistAll() ;
         $pid = $this->settings['pageIds']['showEventDetail'] ;
         // if PID from TS settings is set: if User is not logged in-> Page with loginForm , on success -> showEventDetail  Page
-        if( $pid < 1) {
-            // else : stay on this page
-            $pid = $GLOBALS['TSFE']->id ;
-
+        if ($pid < 1) {
+            $pid = MigrationUtility::getPageId($this);
         }
-        return $this->redirect('show' , 'Event', 'JvEvents' , array( "event" => $event) ,$pid  );
+        return $this->redirect('show' , 'Event', 'JvEvents' , ["event" => $event] ,$pid  );
     }
     
     /**
      * action delete
      *
-     * @param Event $event
      * @param integer $deleteFutureEvents
      * @return void
      */
     public function deleteAction(Event $event , $deleteFutureEvents = 0)
     {
 
+        $update = [];
+        $otherDaysText = null;
         if($this->request->hasArgument('deleteFutureEvents') ) {
             $deleteFutureEvents = $this->request->getArgument('deleteFutureEvents') ;
         }
@@ -933,8 +931,8 @@ class EventController extends BaseController
             try {
                 $masterId = $event->getMasterId() ;
                 $event->setLastUpdated(time());
-                if ( intval($GLOBALS['TSFE']->fe_user->user['uid'] ) ) {
-                    $event->setLastUpdatedBy(intval($GLOBALS['TSFE']->fe_user->user['uid'] ) );
+                if ( intval($this->frontendUser->user['uid'] ) ) {
+                    $event->setLastUpdatedBy(intval($this->frontendUser->user['uid'] ) );
                 }
 
                 if( ExtensionManagementUtility::isLoaded("jv_banners")) {
@@ -946,7 +944,7 @@ class EventController extends BaseController
                         $update['hidden'] = 1;
                         $update['deleted'] = 1;
                         $bannerRepository->updateBanner( $update );
-                        $this->addFlashMessage('The Banner ' .  $row['uid'] . ' will be deleted also soon. (<4 h) ', '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK);
+                        $this->addFlashMessage('The Banner ' .  $row['uid'] . ' will be deleted also soon. (<4 h) ', '', ContextualFeedbackSeverity::OK);
                     }
                 }
 
@@ -954,10 +952,10 @@ class EventController extends BaseController
 
                 if( $masterId && $deleteFutureEvents) {
                     $querysettings =$this->subeventRepository->getTYPO3QuerySettings() ;
-                    $querysettings->setStoragePageIds(array( $event->getPid() )) ;
+                    $querysettings->setStoragePageIds([$event->getPid()]) ;
 
                     $this->eventRepository->setDefaultQuerySettings( $querysettings );
-                    $filter = array() ;
+                    $filter = [] ;
                     $filter['startDate'] = $event->getStartDate()->getTimestamp() ;
                     $filter['maxDays'] = 999 ;
                     $filter['skipEvent'] = $event->getUid() ;
@@ -971,8 +969,8 @@ class EventController extends BaseController
                             if( $otherEvent) {
                                 $otherDaysText .= $otherEvent->getStartDate()->format("d.M-Y") .  " (Id:" . $otherEvent->getUid() ."), " ;
                                 $otherEvent->setLastUpdated(time());
-                                if ( intval($GLOBALS['TSFE']->fe_user->user['uid'] ) ) {
-                                    $otherEvent->setLastUpdatedBy(intval($GLOBALS['TSFE']->fe_user->user['uid'] ) );
+                                if ( intval($this->frontendUser->user['uid'] ) ) {
+                                    $otherEvent->setLastUpdatedBy(intval($this->frontendUser->user['uid'] ) );
                                 }
                                 $this->eventRepository->remove($otherEvent) ;
                             }
@@ -985,25 +983,25 @@ class EventController extends BaseController
                 $clearCachePids = GeneralUtility::trimExplode("," , $this->settings['EmConfiguration']['clearCachePids']) ;
                 if( is_array($clearCachePids) && count( $clearCachePids) > 0 ) {
                     $this->cacheService->clearPageCache( $clearCachePids );
-                    $this->addFlashMessage('The object was successfully deleted and Cache of following pages are cleared: ' . implode("," , $clearCachePids), '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK);
+                    $this->addFlashMessage('The object was successfully deleted and Cache of following pages are cleared: ' . implode("," , $clearCachePids), '', ContextualFeedbackSeverity::OK);
                 } else {
-                    $this->addFlashMessage('The Event was deleted.', '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK);
+                    $this->addFlashMessage('The Event was deleted.', '', ContextualFeedbackSeverity::OK);
                 }
                 if( $otherDaysText ) {
-                    $this->addFlashMessage($otherDaysText, '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK);
+                    $this->addFlashMessage($otherDaysText, '', ContextualFeedbackSeverity::OK);
                 }
 
             } catch ( \Exception $e ) {
-                $this->addFlashMessage($e->getMessage() , 'Error', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING);
+                $this->addFlashMessage($e->getMessage() , 'Error', ContextualFeedbackSeverity::WARNING);
 
             }
 
         } else {
-            $this->addFlashMessage('You do not have access rights to delete this event.' . $event->getUid() , '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING);
+            $this->addFlashMessage('You do not have access rights to delete this event.' . $event->getUid() , '', ContextualFeedbackSeverity::WARNING);
         }
         $this->persistenceManager->persistAll() ;
 
-        $arguments = array ( 'overruleFilter' => array( 'organizer' => $orgId , 'category' => 'true' , 'maxDays' => 90 )) ;
+        $arguments = ['overruleFilter' => ['organizer' => $orgId, 'category' => 'true', 'maxDays' => 90]] ;
 
         return $this->redirect('list' , null , null , $arguments, $this->settings['pageIds']['eventList']);
     }
@@ -1040,12 +1038,13 @@ class EventController extends BaseController
 	}
 
     /**
-  * @param Event $event
   * @return mixed
   * @throws NoSuchArgumentException
   */
  public function cleanEventArguments(Event  $event)
     {
+        $endT = null;
+        $row = [];
         // Type validation should be done in validator class so we can ignore issue with wrong format
         $eventArray = $this->request->getArgument('event');
 
@@ -1068,8 +1067,8 @@ class EventController extends BaseController
         $eventTagUids = GeneralUtility::trimExplode("," , $eventArray['tagsFE'] , true ) ;
         if( is_array($eventTagUids) && count($eventTagUids) > 0  ) {
             $existingTags = $event->getTags() ;
-            $existingTagsArray = array() ;
-            $notexistingTagsArray = array() ;
+            $existingTagsArray = [] ;
+            $notexistingTagsArray = [] ;
             if ( $existingTags ) {
                 /** @var Tag $existingTag */
                 foreach ( $existingTags as $existingTag ) {
@@ -1113,31 +1112,31 @@ class EventController extends BaseController
         } else {
             $event->setEndDate( $stD ) ;
 
-            $startT =  ( intval( substr( $eventArray['startTimeFE']  , 0,2 ) ) * 3600 )
-                + ( intval( substr( $eventArray['startTimeFE']  , 3,2 ) ) * 60 ) ;
+            $startT =  ( intval( substr( (string) $eventArray['startTimeFE']  , 0,2 ) ) * 3600 )
+                + ( intval( substr( (string) $eventArray['startTimeFE']  , 3,2 ) ) * 60 ) ;
             $event->setStartTime( $startT ) ;
 
 
             if ( trim($eventArray['endTimeFE'] == "00:00")) {
                 $endT = ((3600 * 23)  + (59*60)) ;
             } else {
-                $endT =  ( intval( substr( $eventArray['endTimeFE']  , 0,2 ) ) * 3600 )
-                    + ( intval( substr( $eventArray['endTimeFE']  , 3,2 ) ) * 60  ) ;
+                $endT =  ( intval( substr( (string) $eventArray['endTimeFE']  , 0,2 ) ) * 3600 )
+                    + ( intval( substr( (string) $eventArray['endTimeFE']  , 3,2 ) ) * 60  ) ;
             }
         }
 
 
         $event->setEndTime( $endT ) ;
 
-        $desc = str_replace( array( "\n" , "\r" , "\t" ), array(" " , "" , " " ), $eventArray['description'] ) ;
+        $desc = str_replace( ["\n", "\r", "\t"], [" ", "", " "], (string) $eventArray['description'] ) ;
         $desc = strip_tags($desc , "<p><br><a><i><strong><h2><h3>") ;
 
         $event->setDescription( $desc ) ;
-        $desc = str_replace( array( "\r" , "\t" ), array( "" , " " ), $eventArray['introtextRegistrant'] ) ;
+        $desc = str_replace( ["\r", "\t"], ["", " "], (string) $eventArray['introtextRegistrant'] ) ;
         $desc = strip_tags($desc , "<b>") ;
         $event->setIntrotextRegistrant( $desc ) ;
 
-        $desc = str_replace( array(  "\r" , "\t" ), array( "" , " " ), $eventArray['introtextRegistrantConfirmed'] ) ;
+        $desc = str_replace( ["\r", "\t"], ["", " "], (string) $eventArray['introtextRegistrantConfirmed'] ) ;
         $desc = strip_tags($desc , "<b>") ;
         $event->setIntrotextRegistrantConfirmed( $desc ) ;
 
@@ -1177,10 +1176,10 @@ class EventController extends BaseController
         $row['name'] =  $event->getName() ;
         $row['pid'] =  $event->getPid() ;
         $row['parentpid'] =  1 ;
-        $row['uid'] =  $event->getUid() ? $event->getUid() : 0  ;
+        $row['uid'] =  $event->getUid() ?: 0  ;
         $row['sys_language_uid'] = -1 ;
         $row['start_date'] =  $event->getStartDate()->format("d-m-Y") ;
-        $row['slug'] =  $event->getSlug() ? $event->getSlug() : $event->getName() . "-" . $row['start_date'] ;
+        $row['slug'] =  $event->getSlug() ?: $event->getName() . "-" . $row['start_date'] ;
         $slug = SlugUtility::getSlug("tx_jvevents_domain_model_event", "slug", $row  )  ;
         $event->setSlug( $slug ) ;
 

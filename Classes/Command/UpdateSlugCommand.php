@@ -23,10 +23,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  */
 class UpdateSlugCommand extends Command {
 
-    /**
-     * @var array
-     */
-    private $allowedTables = [] ;
+    private array $allowedTables = [] ;
 
     /**
      * @var array
@@ -83,14 +80,14 @@ class UpdateSlugCommand extends Command {
         $extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class) ;
         try {
             $this->extConf = $extConf->get('jv_events');
-        } catch (Exception $e) {
+        } catch (Exception) {
             $this->extConf = [] ;
         }
 
 
         $io = new SymfonyStyle($input, $output);
         $io->title($this->getDescription());
-        $maxRows = 999999999999 ;
+        $maxRows = 999999 ;
         if ($input->getOption('rows') ) {
             $maxRows = (int)$input->getOption('rows') ;
             $io->writeln('max Rows to be updated was set to '. $maxRows );
@@ -100,12 +97,12 @@ class UpdateSlugCommand extends Command {
         $table = $this->allowedTables[0] ;
 
         if ($input->getArgument('table')) {
-            $table = $input->getArgument('table');
+            $table = (string)$input->getArgument('table');
 
         }
         $field = 'slug' ;
         if ($input->getOption('field')) {
-            $field = $input->getOption('field');
+            $field = (string) $input->getOption('field');
 
         }
 
@@ -122,11 +119,11 @@ class UpdateSlugCommand extends Command {
 
     /**
      * @param SymfonyStyle $io
-     * @param $table
-     * @param $slugField
-     * @param $maxRows
+     * @param string $table
+     * @param string$slugField
+     * @param int $maxRows
      */
-    public function updateCommand(SymfonyStyle $io , $table , $slugField , $maxRows  ){
+    public function updateCommand(SymfonyStyle $io , ?string $table , ?string $slugField , int $maxRows  ){
         $progress = false ;
         if( !$table ) { return ; }
 		$rows = $this->getQueryBuilder($table)->select("*")->from($table)->executeQuery() ;
@@ -172,10 +169,9 @@ class UpdateSlugCommand extends Command {
 	}
 
     /**
-     * @param string $table
-     * @return QueryBuilder
-     */
-	private function getQueryBuilder(string $table): QueryBuilder
+  * @return QueryBuilder
+  */
+ private function getQueryBuilder(string $table): QueryBuilder
     {
         /** @var ConnectionPool $connectionPool */
         $connectionPool = GeneralUtility::makeInstance( ConnectionPool::class);
@@ -191,11 +187,11 @@ class UpdateSlugCommand extends Command {
      */
     private function mapRow($table , $row , $slugField ): array
     {
-	    $return = array() ;
+	    $return = [] ;
 
-        $return['pid'] =   $row['pid'] ? $row['pid'] : 0  ;
+        $return['pid'] =   $row['pid'] ?: 0  ;
         $return['parentpid'] =  1 ;
-        $return['uid'] =  $row['uid'] ? $row['uid'] : 0  ;
+        $return['uid'] =  $row['uid'] ?: 0  ;
 
 
 
@@ -212,7 +208,7 @@ class UpdateSlugCommand extends Command {
                 }
 
                 $return['start_date'] =   date( $slugGenerationDateFormat , $row['start_date'] ) ;
-                $return[$slugField] =   $row[$slugField]?  $row[$slugField] : $row['name'] . "-" . $row['start_date'] ;
+                $return[$slugField] =   $row[$slugField] ?: $row['name'] . "-" . $row['start_date'] ;
                 break ;
             default:
                 $return['name'] =  $row['name'] ;
@@ -223,7 +219,7 @@ class UpdateSlugCommand extends Command {
                 }
                 $return['sys_language_uid'] =   $row['sys_language_uid'] ;
                 $return['start_date'] =   date( "d-m-Y" , $row['start_date'] ) ;
-                $return[$slugField] =   $row[$slugField]?  $row[$slugField] : $row['name'] . "-" . $row['start_date'] ;
+                $return[$slugField] =   $row[$slugField] ?: $row['name'] . "-" . $row['start_date'] ;
                 break ;
         }
         return $return ;
