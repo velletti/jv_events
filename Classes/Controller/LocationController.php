@@ -220,7 +220,7 @@ class LocationController extends BaseController
 
             $pid = $this->settings['pageIds']['loginForm'] ;
             $this->addFlashMessage('The object was NOT created. You are not logged in as Organizer.' . $location->getUid() , '', ContextualFeedbackSeverity::WARNING);
-            $this->redirect(null , null , NULL , NULL , $pid );
+            return $this->redirect(null , null , NULL , NULL , $pid );
         }
 
         $pid = $this->settings['pageIds']['editEvent'] ;
@@ -234,7 +234,7 @@ class LocationController extends BaseController
             $controller = "Event" ;
             $action = "new" ;
         }
-        $this->redirect($action , $controller , NULL , array( 'organizer' => $orgId , 'location' => $location->getUid() )  , $pid );
+        return $this->redirect($action , $controller , NULL , array( 'organizer' => $orgId , 'location' => $location->getUid() )  , $pid );
 
     }
 

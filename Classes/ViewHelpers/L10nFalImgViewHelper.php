@@ -83,27 +83,25 @@ class L10nFalImgViewHelper extends AbstractViewHelper {
 			return null;
 		}
         /**
-         * @var $sysPage PageRepository
          * @var $obj FileReference
          */
         $relevantParametersForCachingFromPageArguments = [];
-        $pageArguments = $GLOBALS['REQUEST']->getAttribute('routing');
-        $queryParams = $pageArguments->getDynamicArguments();
-        if (!empty($queryParams) && ($pageArguments->getArguments()['cHash'] ?? false)) {
-            $queryParams['id'] = $pageArguments->getPageId();
-            $relevantParametersForCachingFromPageArguments = GeneralUtility::makeInstance(CacheHashCalculator::class)->getRelevantParameters(HttpUtility::buildQueryString($queryParams));
+        if ( isset( $GLOBALS['TYPO3_REQUEST'])) {
+            $pageArguments = $GLOBALS['TYPO3_REQUEST']->getAttribute('routing');
+
+            $queryParams = $pageArguments->getDynamicArguments();
+            if (!empty($queryParams) && ($pageArguments->getArguments()['cHash'] ?? false)) {
+                $queryParams['id'] = $pageArguments->getPageId();
+                $relevantParametersForCachingFromPageArguments = GeneralUtility::makeInstance(CacheHashCalculator::class)->getRelevantParameters(HttpUtility::buildQueryString($queryParams));
+            }
+            $sysPage = $relevantParametersForCachingFromPageArguments;
         }
-        $sysPage = $relevantParametersForCachingFromPageArguments;
-
-
 
 
         /** @var ConnectionPool $connectionPool */
         $connectionPool = GeneralUtility::makeInstance( ConnectionPool::class);
 
-        $connection = $connectionPool->getConnectionForTable('tx_jvchat_room') ;
-
-
+        $connection = $connectionPool->getConnectionForTable('sys_file_reference') ;
 
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_file_reference') ;
