@@ -16,7 +16,7 @@ class CleanJsStringViewHelper extends AbstractViewHelper {
 		$content = $this->renderChildren();
 
 		// Strip new lines
-		$content = str_replace("\r", '', $content);
+		$content = str_replace("\r", '', (string) $content);
 		$content = str_replace("\n", '', $content);
 
 		// Mask Quotes

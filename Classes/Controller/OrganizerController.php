@@ -193,7 +193,7 @@ class OrganizerController extends BaseController
             //    var_dump($orgFilter) ;
         // die;
         */
-        if ( array_key_exists( "respectTagVisibility", $this->settings['filterorganizer']) )  {
+        if ( isset(  $this->settings['filterorganizer']) && array_key_exists( "respectTagVisibility", $this->settings['filterorganizer']) )  {
             $filter['respectTagVisibility'] =  $this->settings['filterorganizer']['respectTagVisibility'] ;
         } else {
             $filter['respectTagVisibility'] = 1 ;

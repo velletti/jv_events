@@ -30,19 +30,18 @@ class RequiredViewHelper extends AbstractConditionViewHelper implements ViewHelp
 	 *
 	 * @var array
 	 */
-	protected $settings = array();
+	protected $settings = [];
 
 	/**
 	 * Configuration of the framework
 	 *
 	 * @var array
 	 */
-	protected $frameworkConfiguration = array();
+	protected $frameworkConfiguration = [];
 
 	/**
   * Injection of configuration manager
   *
-  * @param ConfigurationManagerInterface $configurationManager
   * @throws InvalidConfigurationTypeException
   * @return void
   */
@@ -57,7 +56,7 @@ class RequiredViewHelper extends AbstractConditionViewHelper implements ViewHelp
         if ( $layout == '' ) { $layout = "1Allplan" ; }
 
 		$fields = $this->settings['register']['requiredFields'][$layout] ;
-        if( strlen( $this->settings['Register']['add_mandatory_fields'] ) > 1 ) {
+        if( strlen( (string) $this->settings['Register']['add_mandatory_fields'] ) > 1 ) {
             $fields .= "," . $this->settings['Register']['add_mandatory_fields'] ;
         }
 		$this->settings['register']['requiredFields'] = $fields ;
@@ -76,7 +75,7 @@ class RequiredViewHelper extends AbstractConditionViewHelper implements ViewHelp
      * @param array|null $arguments
      * @return bool
      */
-    protected static function evaluateCondition($arguments = null, $settings = array() )
+    protected static function evaluateCondition($arguments = null, $settings = [] )
     {
         $fieldSettings = GeneralUtility::trimExplode( "," , $settings['register']['requiredFields'] ) ;
         if ( is_array($fieldSettings) && in_array( $arguments['fieldName'], $fieldSettings)) {

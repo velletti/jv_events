@@ -70,7 +70,7 @@ class DataAttribViewHelper extends AbstractViewHelper   {
         $orgName = '' ;
 	    if( is_object ( $event->getOrganizer() )) {
             $orgId  = $event->getOrganizer()->getUid()  ;
-            $orgName  = urlencode( trim($event->getOrganizer()->getName()))  ;
+            $orgName  = urlencode( trim((string) $event->getOrganizer()->getName()))  ;
         }
 
         $result = 'data-eventuid="' . $event->getUid() . '" data-eventpid="' .  $event->getPid()
@@ -82,7 +82,7 @@ class DataAttribViewHelper extends AbstractViewHelper   {
 	    $locCity = '' ;
         $locAddress = '' ;
         if( is_object ( $event->getLocation() )) {
-            $locCity  = urlencode( trim( $event->getLocation()->getCity() )) ;
+            $locCity  = urlencode( trim( (string) $event->getLocation()->getCity() )) ;
             $locAddress  = urlencode( trim( $event->getLocation()->getZip() . " " . $event->getLocation()->getCity() . "," . $event->getLocation()->getStreetAndNr() . "," . $event->getLocation()->getCountry())) ;
             $result .= 'data-longitude="' . $event->getLocation()->getLng() . '" ' ;
             $result .= 'data-latitude="' . $event->getLocation()->getLat() . '" ' ;

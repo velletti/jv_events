@@ -54,7 +54,7 @@ class YoutubeViewHelper extends AbstractTagBasedViewHelper
     {
         $this->registerUniversalTagAttributes();
         $this->registerArgument('uri', 'string', 'Youtube Url', true);
-        $this->registerArgument('settings', 'array', 'settings Array', false , array() );
+        $this->registerArgument('settings', 'array', 'settings Array', false , [] );
 
     }
 
@@ -69,14 +69,14 @@ class YoutubeViewHelper extends AbstractTagBasedViewHelper
         // maybe we need settings
         $settings = $this->arguments['settings'] ?? [] ;
         $class = $this->arguments['class'] ?? '' ;
-        $videoUrl = parse_url($uri);
+        $videoUrl = parse_url((string) $uri);
 
         if ( isset($_COOKIE['tx_events_youtube_consens'])) {
 
             if (array_key_exists("query", $videoUrl)) {
                 parse_str($videoUrl['query'], $params);
                 if (is_array($params)) {
-                    if (strpos($uri, "watch") > 0 && isset($params["v"])) {
+                    if (strpos((string) $uri, "watch") > 0 && isset($params["v"])) {
                         // single Video we try to embedd
                         // <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/F2zTd_YwTvo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
@@ -91,7 +91,7 @@ class YoutubeViewHelper extends AbstractTagBasedViewHelper
 
                     }
                     // todo .. fix playlist embeddng
-                    if (strpos($uri, "XXX-playlist-XXX") > 0 && isset($params["list"])) {
+                    if (strpos((string) $uri, "XXX-playlist-XXX") > 0 && isset($params["list"])) {
                         // playlist Video we try to embedd
                         // <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/videoseries?list=PL1COG6YIRDMDIYGsK7ZkGfji99W_etnoG" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 

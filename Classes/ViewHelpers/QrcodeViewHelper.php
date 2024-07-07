@@ -43,6 +43,6 @@ class QrcodeViewHelper extends AbstractViewHelper {
 	 */
 	public function render() {
         $qrCode = new QrCode( ( $this->arguments['string'] ));
-		return base64_encode( $qrCode->writeString());
+		return base64_encode( (string) $qrCode->writeString());
 	}
 }

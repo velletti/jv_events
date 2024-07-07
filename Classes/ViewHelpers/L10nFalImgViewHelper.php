@@ -44,6 +44,8 @@ namespace JVelletti\JvEvents\ViewHelpers;
  *
  *
  */
+use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use JVelletti\JvEvents\Domain\Model\Event;
 use TYPO3Fluid\Fluid\Core\Exception;
@@ -80,14 +82,18 @@ class L10nFalImgViewHelper extends AbstractViewHelper {
 		if(!in_array($tableFieldName, $allowedTableFieldNames)){
 			return null;
 		}
-		// ToDo fix following Lines
-        return null;
-
-		/**
-		 * @var $sysPage PageRepository
-		 * @var $obj FileReference
-		 */
-		$sysPage = $GLOBALS['TSFE']->sys_page;
+        /**
+         * @var $sysPage PageRepository
+         * @var $obj FileReference
+         */
+        $relevantParametersForCachingFromPageArguments = [];
+        $pageArguments = $GLOBALS['REQUEST']->getAttribute('routing');
+        $queryParams = $pageArguments->getDynamicArguments();
+        if (!empty($queryParams) && ($pageArguments->getArguments()['cHash'] ?? false)) {
+            $queryParams['id'] = $pageArguments->getPageId();
+            $relevantParametersForCachingFromPageArguments = GeneralUtility::makeInstance(CacheHashCalculator::class)->getRelevantParameters(HttpUtility::buildQueryString($queryParams));
+        }
+        $sysPage = $relevantParametersForCachingFromPageArguments;
 
 
 
@@ -109,7 +115,7 @@ class L10nFalImgViewHelper extends AbstractViewHelper {
             ->fetchAll();
 
 
-		$outArray = array() ;
+		$outArray = [] ;
 		foreach ($records as &$r) {
 			$sysPage->versionOL('sys_file_reference', $r);
             $queryBuilder2 = $connectionPool->getQueryBuilderForTable('sys_file_reference') ;

@@ -1,5 +1,6 @@
 <?php
 namespace JVelletti\JvEvents\ViewHelpers;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use JVelletti\JvEvents\Domain\Repository\StaticCountryRepository;
 
@@ -41,7 +42,7 @@ use JVelletti\JvEvents\Domain\Repository\StaticCountryRepository;
  * 	name="country" optionLabelField="cnShortDe"/>
  * </code>
  */
-class SelectStaticCountriesViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper {
+class SelectStaticCountriesViewHelper extends AbstractTagBasedViewHelper {
 	/**
   * Repository that provides the country models
   *
@@ -49,9 +50,6 @@ class SelectStaticCountriesViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\
   */
  protected $countryRepository;
 
-    /**
-     * @param StaticCountryRepository $countryRepository
-     */
     public function injectCountryRepository(StaticCountryRepository $countryRepository)
     {
         $this->countryRepository = $countryRepository;
@@ -71,7 +69,7 @@ class SelectStaticCountriesViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\
 		$this->registerArgument('name', 'string', 'Name of input tag');
 		$this->registerArgument('value', 'mixed', 'Value of input tag');
 		$this->registerArgument('sortByOptionLabel', 'boolean', 'If true, List will be sorted by label.', FALSE, TRUE);
-		$this->registerArgument('allowedCountries', 'array', 'Array with countries allowed to be displayed.', FALSE, array());
+		$this->registerArgument('allowedCountries', 'array', 'Array with countries allowed to be displayed.', FALSE, []);
         $this->registerArgument('prependOptionLabel', 'string', 'If specified, will provide an option at first position with the specified label.');
         $this->registerArgument('prependOptionValue', 'string', 'If specified, will provide an option at first position with the specified value.');
 
@@ -119,8 +117,9 @@ class SelectStaticCountriesViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\
 	public function initialize() {
 		parent::initialize();
 
+
 		if (ExtensionManagementUtility::isLoaded('static_info_tables')) {
-			if ($this->hasArgument('allowedCountries') && count($this->arguments['allowedCountries'])) {
+			if ($this->hasArgument('allowedCountries') && (is_countable($this->arguments['allowedCountries']) ? count($this->arguments['allowedCountries']) : 0)) {
 				$this->arguments['options'] = $this->countryRepository->findByCnIso2($this->arguments['allowedCountries']);
 			} else {
 				$this->arguments['options'] = $this->countryRepository->findAll();

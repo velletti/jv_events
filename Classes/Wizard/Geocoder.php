@@ -39,7 +39,6 @@ class Geocoder extends AbstractWizardController {
 	 * Geocoder constructor
 	 */
 	public function __construct() {
-		parent::__construct();
 		$this->getLanguageService()->includeLLFile('EXT:jv_events/Resources/Private/Language/locallang_be.xlf');
 		$this->init();
 	}
@@ -74,12 +73,10 @@ class Geocoder extends AbstractWizardController {
 		// If it is a new, unsaved record, we get the following parameter for uid:
 		// e.g.: [uid] => NEW57f654657625f780378440
 		// So set at least the uid, so we can read the fields inside the parent window
-		if(empty($addressData) && preg_match('/^NEW/', $parameters['uid'])){
+		if(empty($addressData) && preg_match('/^NEW/', (string) $parameters['uid'])){
 
 			unset($addressData);
-			$addressData = array(
-				'uid' => $parameters['uid']
-			);
+			$addressData = ['uid' => $parameters['uid']];
 
 		}
 
@@ -91,8 +88,6 @@ class Geocoder extends AbstractWizardController {
 	/**
   * Injects the request object for the current request or subrequest
   * Calles by Configuration/Backend/Routes.php
-  * @param ServerRequestInterface $request
-  * @param ResponseInterface $response
   * @return ResponseInterface
   */
  public function mainAction(ServerRequestInterface $request, ResponseInterface $response){

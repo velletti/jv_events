@@ -15,6 +15,8 @@ namespace JVelletti\JvEvents\ViewHelpers;
  * 
  * Based on the news extension of Georg Ringer 
  */
+use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use JVelletti\JvEvents\Domain\Model\Event;
 use JVelletti\JvEvents\Domain\Model\Category;
@@ -69,8 +71,8 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
 
         $this->registerArgument('event', Event::class, 'Event', false);
         $this->registerArgument('eventId', 'int', 'Event as id', false);
-        $this->registerArgument('settings', 'array', 'settings Array', false , array() );
-        $this->registerArgument('configuration', 'array', 'configuration Array', false , array() );
+        $this->registerArgument('settings', 'array', 'settings Array', false , [] );
+        $this->registerArgument('configuration', 'array', 'configuration Array', false , [] );
         $this->registerArgument('content', 'string', ' the content', false ,'' );
         $this->registerArgument('uriOnly', 'boolean', ' render only the uri ', false ,false );
         $this->registerArgument('withProtocol', 'boolean', ' render withProtocol https or http etc ', false ,false );
@@ -157,8 +159,6 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
      * Generate the link configuration for the link to the news item
      *
      * @param Event|int $event
-     * @param array $settings
-     * @param array $configuration
      * @return array
      */
     protected function getLinkToEventItem(
@@ -171,7 +171,14 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
             $detailPid = intval( $settings['detailPid']) ;
             
             if (!$detailPid) {
-                $detailPid = $GLOBALS['TSFE']->id;
+                $relevantParametersForCachingFromPageArguments = [];
+                $pageArguments = $GLOBALS['REQUEST']->getAttribute('routing');
+                $queryParams = $pageArguments->getDynamicArguments();
+                if (!empty($queryParams) && ($pageArguments->getArguments()['cHash'] ?? false)) {
+                    $queryParams['id'] = $pageArguments->getPageId();
+                    $relevantParametersForCachingFromPageArguments = GeneralUtility::makeInstance(CacheHashCalculator::class)->getRelevantParameters(HttpUtility::buildQueryString($queryParams));
+                }
+                $detailPid = $relevantParametersForCachingFromPageArguments;
             }
             $configuration['parameter'] = $detailPid;
         }

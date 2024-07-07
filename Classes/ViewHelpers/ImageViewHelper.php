@@ -32,9 +32,6 @@ class ImageViewHelper extends AbstractTagBasedViewHelper
      */
     protected ImageService $imageService;
 
-    /**
-     * @param ImageService $imageService
-     */
     public function injectImageService(ImageService $imageService)
     {
         $this->imageService = $imageService;
@@ -83,7 +80,7 @@ class ImageViewHelper extends AbstractTagBasedViewHelper
     public function render()
     {
         if (($this->arguments['src'] === null && $this->arguments['image'] === null) || ($this->arguments['src'] !== null && $this->arguments['image'] !== null)) {
-            throw new Exception('You must either specify a string src or a File object.', 1382284106);
+            throw new Exception('You must either specify a string src or a File object.', 1_382_284_106);
         }
 
         try {

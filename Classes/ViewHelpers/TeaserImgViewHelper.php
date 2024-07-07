@@ -66,8 +66,8 @@ class TeaserImgViewHelper extends AbstractTagBasedViewHelper
         $this->registerUniversalTagAttributes();
 
         $this->registerArgument('event', Event::class, 'Event', false);
-        $this->registerArgument('settings', 'array', 'settings Array', false , array() );
-        $this->registerArgument('configuration', 'array', 'configuration Array', false , array() );
+        $this->registerArgument('settings', 'array', 'settings Array', false , [] );
+        $this->registerArgument('configuration', 'array', 'configuration Array', false , [] );
         $this->registerArgument('withProtocol', 'boolean', ' render withProtocol https or http etc ', false ,false );
 
     }
