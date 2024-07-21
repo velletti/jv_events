@@ -31,7 +31,7 @@ class EventLocationMapWizard extends AbstractNode
 
 
         $nameLongitude = $paramArray['itemFormElName'];
-        $nameLatitude = str_replace('lng', 'lat', $nameLongitude);
+        $nameLatitude = str_replace('lng', 'lat', (string) $nameLongitude);
         $nameLatitudeActive = str_replace('data', 'control[active]', $nameLatitude);
         $geoCodeUrl = '';
         $gLat = '48.1135455';  // Me at home as default
@@ -73,7 +73,7 @@ class EventLocationMapWizard extends AbstractNode
         $resultArray['linkAttributes']['data-geocodeurl'] = $geoCodeUrl;
         $resultArray['linkAttributes']['data-geocodeurlshort'] = $geoCodeUrlShort;
         $resultArray['linkAttributes']['data-namelat'] = htmlspecialchars($nameLatitude);
-        $resultArray['linkAttributes']['data-namelon'] = htmlspecialchars($nameLongitude);
+        $resultArray['linkAttributes']['data-namelon'] = htmlspecialchars((string) $nameLongitude);
         $resultArray['linkAttributes']['data-namelat-active'] = htmlspecialchars($nameLatitudeActive);
         $resultArray['linkAttributes']['data-tiles'] = htmlspecialchars('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
         $resultArray['linkAttributes']['data-copy'] = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';

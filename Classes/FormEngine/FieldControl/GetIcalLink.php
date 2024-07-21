@@ -10,6 +10,7 @@ namespace JVelletti\JvEvents\FormEngine\FieldControl;
  * For the full copyright and license information, please read the
  * LICENSE file that was distributed with this source code.
  */
+use JVelletti\JvEvents\Utility\EmConfigurationUtility;
 use TYPO3\CMS\Backend\Form\AbstractNode;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
@@ -31,7 +32,7 @@ class GetIcalLink extends AbstractNode
         $resultArray = $this->initializeResultArray();
         $title = $this->getLanguageService()->sL('LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:jv_events_model_location.geocoder.title');
 
-        $configuration = \JVelletti\JvEvents\Utility\EmConfigurationUtility::getEmConf();
+        $configuration = EmConfigurationUtility::getEmConf();
         $singlePid = ( array_key_exists( 'DetailPid' , $configuration) && $configuration['DetailPid'] > 0 ) ? intval($configuration['DetailPid']) : 111 ;
 
         try {
@@ -49,7 +50,7 @@ class GetIcalLink extends AbstractNode
          //   $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS(
          //       'showEventInFrontend.js'
          //   )->instance($paramArray['itemFormElName']);
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             $resultArray = [] ;
         }
 

@@ -11,15 +11,8 @@ namespace JVelletti\JvEvents\Event;
 
 final class PluginUpdaterListTypeEvent
 {
-    protected array $flexforms;
-    protected array $row;
-    protected string $listType;
-
-    public function __construct(array $flexforms, array $row, string $listType)
+    public function __construct(protected array $flexforms, protected array $row, protected string $listType)
     {
-        $this->flexforms = $flexforms;
-        $this->row = $row;
-        $this->listType = $listType;
     }
 
     public function getFlexforms(): array

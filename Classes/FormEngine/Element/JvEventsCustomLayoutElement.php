@@ -19,9 +19,6 @@ class JvEventsCustomLayoutElement extends AbstractFormElement
 
     /**
      * Container objects give $nodeFactory down to other containers.
-     *
-     * @param NodeFactory $nodeFactory
-     * @param array $data
      */
     public function __construct(NodeFactory $nodeFactory, array $data  = [])
     {
@@ -52,7 +49,7 @@ class JvEventsCustomLayoutElement extends AbstractFormElement
                 $result['html']  .= ' >';
                 foreach ( $layouts as $key => $layout) {
                     $selected = '' ;
-                    if ( $key == htmlspecialchars($PA['itemFormElValue']) ) {
+                    if ( $key == htmlspecialchars((string) $PA['itemFormElValue']) ) {
                         $selected = ' selected="selected"' ;
                     }
                     $result['html'] .= '<option ' . $selected . ' value="' . $key .  '"> ' . $layout . '</option>';
@@ -67,7 +64,7 @@ class JvEventsCustomLayoutElement extends AbstractFormElement
     }
 
     public function getSettings() {
-        $configurationManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
+        $configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
         return  $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT );
     }
 }
