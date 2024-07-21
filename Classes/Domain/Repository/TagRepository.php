@@ -36,9 +36,7 @@ class TagRepository extends BaseRepository
     /**
      * @var array
      */
-    protected $defaultOrderings = array(
-        'name' => QueryInterface::ORDER_ASCENDING ,
-    );
+    protected $defaultOrderings = ['name' => QueryInterface::ORDER_ASCENDING];
 
     /**
      * @param int $type default -1 means all Types
@@ -56,10 +54,7 @@ class TagRepository extends BaseRepository
         if( ($type > -1 )) {
             if( isset( $filter['respectTagVisibility']) && $filter['respectTagVisibility'] == 1 ) {
                 $query->matching(
-                    $query->logicalAnd(
-                        $query->equals('type', $type)  ,
-                        $query->equals('visibility', 0 )
-                    )
+                    $query->logicalAnd([$query->equals('type', $type), $query->equals('visibility', 0 )])
                 ) ;
             } else {
                 $query->matching(  $query->equals('type', $type)  ) ;
@@ -70,15 +65,12 @@ class TagRepository extends BaseRepository
 
         // $querySettings->setRespectSysLanguage(FALSE);
         $query->setQuerySettings($querySettings) ;
-        $res = $query->execute() ;
-        // $this->debugQuery($query) ;
+        $res = $query->executeQuery() ;
 
         return $res ;
     }
 
     /**
-     * @param array $tagUids
-     *
      * @return array|QueryResultInterface
      */
     public function findAllonAllPagesByUids( array $tagUids)
@@ -95,7 +87,7 @@ class TagRepository extends BaseRepository
         }
         // $querySettings->setRespectSysLanguage(FALSE);
         $query->setQuerySettings($querySettings) ;
-        $res = $query->execute() ;
+        $res = $query->executeQuery() ;
         // $this->debugQuery($query) ;
 
         return $res ;

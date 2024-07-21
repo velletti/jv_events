@@ -29,10 +29,10 @@ class BannerRepository {
                 ->fetchAssociative();
 
             // var_dump( $queryBuilder->getSQL() );
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             // ignore
             // var_dump($e->getMessage() );
-        } catch (Exception $e) {
+        } catch (Exception) {
             //var_dump($e->getMessage());
             //ignore
         }
@@ -65,7 +65,7 @@ class BannerRepository {
             // var_dump( $queryBuilder->getParameters() );
             // die;
            $queryBuilder->executeStatement();
-        } catch ( \Exception $e) {
+        } catch ( \Exception) {
             // ignore
             // var_dump($e->getMessage() );
         }

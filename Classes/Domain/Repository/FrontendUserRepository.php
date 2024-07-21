@@ -54,7 +54,7 @@ class FrontendUserRepository extends BaseRepository {
      * @return FrontendUser|object the current user if found, otherwise NULL
      */
     public function findByUid($uid) {
-        $constraints = array();
+        $constraints = [];
         $query = $this->createQuery();
         $querySettings = $query->getQuerySettings() ;
         $querySettings->setRespectStoragePage(false);
@@ -64,7 +64,7 @@ class FrontendUserRepository extends BaseRepository {
         $constraints[] = $query->equals('uid', intval($uid));
         $query->matching($query->logicalAnd(...$constraints));
 
-        return  $query->execute()->getFirst();
+        return  $query->executeQuery()->getFirst();
 
     }
 

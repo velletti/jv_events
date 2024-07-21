@@ -39,13 +39,12 @@ class StaticCountryRepository extends BaseRepository {
 			->getQuerySettings()
 			->setRespectStoragePage(FALSE);
 
-		return $query->execute();
+		return $query->executeQuery();
 	}
 
 
     /**
   * Find countries by iso2 codes despection the storage page
-  * @param array $cnIso2
   * @return array|QueryResultInterface
   */
  public function findByCnIso2(array $cnIso2) {
@@ -57,6 +56,6 @@ class StaticCountryRepository extends BaseRepository {
 
 		$query->matching($query->in('cn_iso_2', $cnIso2));
 
-		return $query->execute();
+		return $query->executeQuery();
 	}
 }

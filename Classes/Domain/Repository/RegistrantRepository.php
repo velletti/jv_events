@@ -67,7 +67,7 @@ class RegistrantRepository extends BaseRepository
 
 		// $query->getQuerySettings()->setIgnoreEnableFields(TRUE) ;
 
-		return $query->matching( $query->equals("fingerprint", $fingerprint) )->execute() ;
+		return $query->matching( $query->equals("fingerprint", $fingerprint) )->executeQuery() ;
 	}
 
     /**
@@ -85,7 +85,7 @@ class RegistrantRepository extends BaseRepository
              $query->getQuerySettings()->setIgnoreEnableFields(TRUE) ;
         }
 
-        return $query->matching( $query->equals("uid", $id) )->execute()->getFirst() ;
+        return $query->matching( $query->equals("uid", $id) )->executeQuery()->getFirst() ;
     }
 
     /**
@@ -100,7 +100,7 @@ class RegistrantRepository extends BaseRepository
         $query->getQuerySettings()->setRespectSysLanguage(FALSE);
         $query->getQuerySettings()->setIgnoreEnableFields(TRUE) ;
 
-        return $query->matching( $query->equals("uid", $uid) )->execute()->getFirst() ;
+        return $query->matching( $query->equals("uid", $uid) )->executeQuery()->getFirst() ;
     }
 
     /**
@@ -109,16 +109,17 @@ class RegistrantRepository extends BaseRepository
      * @param array $settings
      * @return array
      */
-    public function findEventsByFilter($email = '', $pid = 0 , $settings = array() ) {
+    public function findEventsByFilter($email = '', $pid = 0 , $settings = [] ) {
 
+        $additionalWhere = null;
         $query = $this->createQuery();
         // $query->getQuerySettings()->setReturnRawQueryResult(TRUE);
         $pageIds = GeneralUtility::trimExplode( "," , $settings['storagePids'], true)  ;
 
-        if ( $pid > 0  || count($pageIds) > 0 ) {
+        if ( $pid > 0  || (is_countable($pageIds) ? count($pageIds) : 0) > 0 ) {
 
 
-            if ( count($pageIds) > 0 ) {
+            if ( (is_countable($pageIds) ? count($pageIds) : 0) > 0 ) {
                 $additionalWhere = ' AND find_in_set( pid , "' .  $settings['storagePids'] . '" ) '  ;
             } else {
                 $additionalWhere = ' AND pid = ' . $pid  ;
@@ -138,7 +139,7 @@ class RegistrantRepository extends BaseRepository
         $query->statement('SELECT event from tx_jvevents_domain_model_registrant where deleted = 0 ' . $additionalWhere . ' Group By event ');
         $regevents = $query->execute(true) ;
         // var_dump($regevents) ;
-        $result = array()  ;
+        $result = []  ;
        foreach ( $regevents as $next ) {
             $result[] = $next['event'] ;
         }
@@ -150,20 +151,17 @@ class RegistrantRepository extends BaseRepository
      * @param int $pid
      * @param array $settings
      * @param int $limit
-     * @param array $orderings
      * @return QueryResultInterface|array
      */
-    public function findByFilter($email = '', $eventID = 0, $pid = 0 , $settings=array() , $limit=1 , array $orderings = array(
-        'uid' => QueryInterface::ORDER_DESCENDING
-    ) ) {
+    public function findByFilter($email = '', $eventID = 0, $pid = 0 , $settings=[] , $limit=1 , array $orderings = ['uid' => QueryInterface::ORDER_DESCENDING] ) {
         $query = $this->createQuery();
-        $constraints = array();
+        $constraints = [];
         if ( isset( $settings['storagePids'] )) {
             $pageIds = GeneralUtility::trimExplode( "," , $settings['storagePids'], true)  ;
         } else {
             $pageIds = [] ;
         }
-        if ( count($pageIds) > 0 ) {
+        if ( (is_countable($pageIds) ? count($pageIds) : 0) > 0 ) {
             if($pid > 0 ) {
                 $pageIds[] = intval( $pid);
             }
@@ -209,7 +207,7 @@ class RegistrantRepository extends BaseRepository
         }
         // new way to debug typo3 db queries
         //  $this->debugQuery($query) ;
-        $result = $query->execute();
+        $result = $query->executeQuery();
         return $result;
     }
 }

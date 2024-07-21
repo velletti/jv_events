@@ -36,10 +36,7 @@ class SubeventRepository extends BaseRepository
 	/**
 	 * @var array
 	 */
-	protected $defaultOrderings = array(
-		'start_date' => QueryInterface::ORDER_ASCENDING ,
-		'start_time' => QueryInterface::ORDER_ASCENDING
-	);
+	protected $defaultOrderings = ['start_date' => QueryInterface::ORDER_ASCENDING, 'start_time' => QueryInterface::ORDER_ASCENDING];
 
     public function findByUidAllpages($uid , $toArray=false )
     {
@@ -50,9 +47,9 @@ class SubeventRepository extends BaseRepository
         $query->setLimit( 1 ) ;
 
         if( $toArray === TRUE ) {
-            return $query->execute()->toArray();
+            return $query->executeQuery()->toArray();
         } else {
-            return $query->execute()->getFirst() ;
+            return $query->executeQuery()->getFirst() ;
         }
     }
 
@@ -74,9 +71,9 @@ class SubeventRepository extends BaseRepository
         // $this->showSql( $query , __FILE__ , __LINE__ ) ;
 
         if( $toArray === TRUE ) {
-            return $query->execute()->toArray() ;
+            return $query->executeQuery()->toArray() ;
         } else {
-            return $query->execute() ;
+            return $query->executeQuery() ;
         }
     }
 

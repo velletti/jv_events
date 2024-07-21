@@ -36,9 +36,7 @@ class CategoryRepository extends BaseRepository
     /**
      * @var array
      */
-    protected $defaultOrderings = array(
-        'sorting' => QueryInterface::ORDER_ASCENDING
-    );
+    protected $defaultOrderings = ['sorting' => QueryInterface::ORDER_ASCENDING];
 
     /**
      * @param int $type default -1 means all Types
@@ -56,7 +54,7 @@ class CategoryRepository extends BaseRepository
         if( ($type > -1 )) {
             $query->matching( $query->equals('type', $type) ) ;
         }
-        $res = $query->execute() ;
+        $res = $query->executeQuery() ;
 
         return $res ;
     }

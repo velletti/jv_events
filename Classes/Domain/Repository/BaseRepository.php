@@ -54,19 +54,21 @@ class BaseRepository extends Repository
         echo "<pre>" ;
         echo var_export($values , true ) ;
         echo "</pre>" ;
-        $from = array() ;
-        $to = array() ;
+        $from = [] ;
+        $to = [] ;
         foreach (array_reverse( $values ) as $key => $value) {
             $from[] = ":" .$key ;
             $to[] = $value ;
         }
-        $sqlFinalQuery = str_replace($from , $to , $sqlquery ) ;
+        $sqlFinalQuery = str_replace($from , $to , (string) $sqlquery ) ;
         echo "<hr>Final: <br>" ;
-        echo str_replace( array( "(" , ")" )  , array("<br>(" , ")<br>" ) , $sqlFinalQuery ) ;
+        echo str_replace( ["(", ")"]  , ["<br>(", ")<br>"] , $sqlFinalQuery ) ;
         echo "<br><hr><br></div></body></html>" ;
     }
 
     function debugQuery($query) {
+        $search = [];
+        $replace = [];
         // new way to debug typo3 db queries
         $queryParser = GeneralUtility::makeInstance(Typo3DbQueryParser::class);
         $querystr = $queryParser->convertQueryToDoctrineQueryBuilder($query)->getSQL() ;
@@ -81,9 +83,9 @@ class BaseRepository extends Repository
             $replace[] = "'$value'" ;
 
         }
-        echo str_replace( $search , $replace , $querystr ) ;
+        echo str_replace( $search , $replace , (string) $querystr ) ;
         /** @var QueryResult $result */
-        $result = $query->execute() ;
+        $result = $query->executeQuery() ;
         echo "<hr>Anzahl: " .  $result->count() ;
 
         die;
@@ -130,7 +132,7 @@ class BaseRepository extends Repository
             if ($permClause !== '') {
                 $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($permClause));
             }
-            $statement = $queryBuilder->execute();
+            $statement = $queryBuilder->executeQuery();
             while ($row = $statement->fetchAssociative()) {
                 if ($begin <= 0) {
                     $theList .= ',' . $row['uid'];

@@ -38,11 +38,7 @@ class LocationRepository extends BaseRepository
     /**
      * @var array
      */
-    protected $defaultOrderings = array(
-        'crdate' => QueryInterface::ORDER_DESCENDING ,
-        'sorting' => QueryInterface::ORDER_ASCENDING
-
-    );
+    protected $defaultOrderings = ['crdate' => QueryInterface::ORDER_DESCENDING, 'sorting' => QueryInterface::ORDER_ASCENDING];
 
     public function findByUidAllpages($uid , $toArray=TRUE , $ignoreEnableFields = TRUE )
     {
@@ -56,7 +52,7 @@ class LocationRepository extends BaseRepository
         $query->setLimit(1) ;
 
         $query->matching( $query->equals('uid', $uid ) ) ;
-        $res = $query->execute() ;
+        $res = $query->executeQuery() ;
 
         if( $toArray === TRUE ) {
             return $res->toArray();
@@ -77,6 +73,8 @@ class LocationRepository extends BaseRepository
 
     public function findByOrganizersAllpages($organizers , $toArray=TRUE , $ignoreEnableFields = TRUE , $onlyDefault = FALSE , $orderby = false , $lastModified = false )
     {
+        $constraints = [];
+        $sortings = [];
         $query = $this->createQuery();
         $querySettings = $query->getQuerySettings() ;
         $querySettings->setRespectStoragePage(false);
@@ -100,7 +98,7 @@ class LocationRepository extends BaseRepository
             $actualTime = new \DateTime('now' ) ;
             $actualTime->modify($lastModified ) ;
 
-            $constraints[] = $query->logicalOr($query->greaterThanOrEqual('tstamp', $actualTime ), $query->greaterThanOrEqual('latest_event', $actualTime ));
+            $constraints[] = $query->logicalOr([$query->greaterThanOrEqual('tstamp', $actualTime ), $query->greaterThanOrEqual('latest_event', $actualTime )]);
         }
         if (count($constraints) === 1) {
             $query->matching(reset($constraints));
@@ -117,7 +115,7 @@ class LocationRepository extends BaseRepository
                     break;
             }
         }
-        $res = $query->execute() ;
+        $res = $query->executeQuery() ;
 
         if( $toArray === TRUE ) {
             return $res->toArray();
@@ -128,6 +126,7 @@ class LocationRepository extends BaseRepository
 
     public function findByFilterAllpages($filter=FALSE , $toArray=FALSE , $ignoreEnableFields = FALSE , $limit=FALSE, $lastModified = '-1 YEAR')
     {
+        $constraintsOr = [];
         $query = $this->createQuery();
         $query->setOrderings( [ 'organizer.sorting' => QueryInterface::ORDER_ASCENDING ] );
 
@@ -137,8 +136,8 @@ class LocationRepository extends BaseRepository
         $querySettings->setIgnoreEnableFields($ignoreEnableFields) ;
         $query->setQuerySettings($querySettings) ;
 
-        $constraints = array() ;
-        if ( $filter && count($filter) > 0 ) {
+        $constraints = [] ;
+        if ( $filter && (is_countable($filter) ? count($filter) : 0) > 0 ) {
             foreach ( $filter as $field => $value) {
                 if ( $field == "lng" || $field == "lat") {
                     $constraints[] = $query->greaterThanOrEqual(  $field  ,  $value[0] ) ;
@@ -181,7 +180,7 @@ class LocationRepository extends BaseRepository
             $query->matching($query->logicalAnd(...$constraints));
         }
         $query->matching( $query->logicalAnd(...$constraints)) ;
-        $res = $query->execute() ;
+        $res = $query->executeQuery() ;
 
         // new way to debug typo3 db queries
         // $this->debugQuery( $query) ;
@@ -196,16 +195,16 @@ class LocationRepository extends BaseRepository
            $topLeft = $this->getBoundingBoxCoords($lat_degrees,$lon_degrees,315, $distance)  ;
            $bottomRight = $this->getBoundingBoxCoords($lat_degrees,$lon_degrees,135, $distance)  ;
            if ( $topLeft['lat'] > $bottomRight['lat'] ) {
-               $lat = array( $bottomRight['lat'] , $topLeft['lat'])  ;
+               $lat = [$bottomRight['lat'], $topLeft['lat']]  ;
            } else {
-               $lat = array( $topLeft['lat'],$bottomRight['lat'])  ;
+               $lat = [$topLeft['lat'], $bottomRight['lat']]  ;
            }
             if ( $topLeft['lng'] > $bottomRight['lng'] ) {
-                $lng = array( $bottomRight['lng'] , $topLeft['lng'])  ;
+                $lng = [$bottomRight['lng'], $topLeft['lng']]  ;
             } else {
-                $lng = array( $topLeft['lng'],$bottomRight['lng'])  ;
+                $lng = [$topLeft['lng'], $bottomRight['lng']]  ;
             }
-       return array(   "lat" => $lat, "lng" => $lng);
+       return ["lat" => $lat, "lng" => $lng];
 
             // old Code.. Does not work with Augsburg even with 200 km
 
@@ -258,8 +257,7 @@ class LocationRepository extends BaseRepository
                 $lon2 = $westmost;
             }
 
-            return array(   "lat" => array( $lat1,$lat2) ,
-                            "lng" => array( $lon1,$lon2) );
+            return ["lat" => [$lat1, $lat2], "lng" => [$lon1, $lon2]];
     }
 
     /**

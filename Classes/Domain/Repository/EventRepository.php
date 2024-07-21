@@ -1,6 +1,7 @@
 <?php
 namespace JVelletti\JvEvents\Domain\Repository;
 
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use DateTime;
 use DateTimeZone;
 use Exception;
@@ -44,11 +45,7 @@ class EventRepository extends BaseRepository
 	/**
 	 * @var array
 	 */
-	protected $defaultOrderings = array(
-		'start_date' => QueryInterface::ORDER_ASCENDING ,
-		'start_time' => QueryInterface::ORDER_ASCENDING ,
-        'tstamp' => QueryInterface::ORDER_DESCENDING
-	);
+	protected $defaultOrderings = ['start_date' => QueryInterface::ORDER_ASCENDING, 'start_time' => QueryInterface::ORDER_ASCENDING, 'tstamp' => QueryInterface::ORDER_DESCENDING];
 
     public function findByUidAllpages($uid , $toArray=TRUE , $ignoreEnableFields = TRUE )
     {
@@ -62,7 +59,7 @@ class EventRepository extends BaseRepository
         $query->setLimit(1) ;
 
         $query->matching( $query->equals('uid', $uid ) ) ;
-        $res = $query->execute() ;
+        $res = $query->executeQuery() ;
 
         // $this->debugQuery($query) ;
 
@@ -78,13 +75,15 @@ class EventRepository extends BaseRepository
      * @param array|boolean $filter
      * @param integer|boolean $limit
      * @param array|boolean $settings
-     * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|object[]  $query
+     * @return QueryResultInterface|object[] $query
      * @throws InvalidQueryException
      * @throws Exception
      */
     public function findByFilter($filter = false, $limit = false, $settings=false )
     {
-		$configuration = EmConfigurationUtility::getEmConf();
+		$constraintsTop = [];
+  $constraintsOrg = [];
+  $configuration = EmConfigurationUtility::getEmConf();
         if ( is_array($filter)) {
             $settings['filter'] = $filter ;
         }
@@ -115,7 +114,7 @@ class EventRepository extends BaseRepository
 
 
 
-        $constraints = array();
+        $constraints = [];
 		$query->getQuerySettings()->setRespectStoragePage(false);
 
 		if ( isset($configuration['doNotRespectSyslanguage']) && $configuration['doNotRespectSyslanguage'] == 1 ) {
@@ -123,7 +122,7 @@ class EventRepository extends BaseRepository
         }
 
 
-        $constraintsTagsCat = array() ;
+        $constraintsTagsCat = [] ;
         if( isset($settings['filter']['categories'] ) && $settings['filter']['categories']  ) {
             $constraintsTagsCat = $this->getCatContraints($constraintsTagsCat,  $settings ,  $query );
         }
@@ -219,7 +218,7 @@ class EventRepository extends BaseRepository
 		}
         // and the normal visibility contrains , including date Time
         $actualTime = new DateTime('now' ,$DateTimeZone ) ;
-        $subconstraints = array() ;
+        $subconstraints = [] ;
         $subconstraints[] = $query->greaterThanOrEqual('endtime', $actualTime );
         $subconstraints[] = $query->lessThanOrEqual('endtime', 1 );
         $constraints[] = $query->logicalOr(...$subconstraints) ;
@@ -245,7 +244,7 @@ class EventRepository extends BaseRepository
         }
         $query->setLimit( 4 ) ;
 
-        $result = $query->execute();
+        $result = $query->executeQuery();
        // $this->debugQuery($query) ;
 
         return $result;
@@ -260,7 +259,7 @@ class EventRepository extends BaseRepository
     {
         $query = $this->createQuery();
 
-        $constraints = array();
+        $constraints = [];
         $query->getQuerySettings()->setRespectStoragePage(false);
 
         $query->getQuerySettings()->setRespectSysLanguage(FALSE);
@@ -269,7 +268,7 @@ class EventRepository extends BaseRepository
         $constraints[] = $query->equals("location",  $uid );
             $query->matching($query->logicalAnd(...$constraints));
 
-        $result = $query->execute();
+        $result = $query->executeQuery();
         if ( 1 == 2 ) {
             $this->debugQuery($query) ;
         }
@@ -313,7 +312,7 @@ class EventRepository extends BaseRepository
                         $endDate->modify("+" . intval( $settings['filter']['maxDays']-1) . " Days" ) ;
 
                     } else {
-                        $sd = $settings['filter']['startDate'] ? $settings['filter']['startDate'] : "0" ;
+                        $sd = $settings['filter']['startDate'] ?: "0" ;
                         $startDate = new DateTime( 'NOW ' . $sd . ' Days' , $DateTimeZone) ;
                         $endDate = new DateTime( 'NOW +' . (intval ($sd )). ' Days' , $DateTimeZone) ;
 
@@ -339,11 +338,7 @@ class EventRepository extends BaseRepository
 
 
 
-            return array( "startDate" => $startDate ,
-                          "endDate" => $endDate  ,
-                          "nextDate" => $nextDate ,
-                          "prevDate" => $previousDate
-                        ) ;
+            return ["startDate" => $startDate, "endDate" => $endDate, "nextDate" => $nextDate, "prevDate" => $previousDate] ;
         }
 
         return false ;
@@ -399,7 +394,7 @@ class EventRepository extends BaseRepository
 
         $pidList = GeneralUtility::intExplode(',', $rGetTreeList, true);
         if (!empty($pidList)) {
-            if (count($pidList) == 1) {
+            if ((is_countable($pidList) ? count($pidList) : 0) == 1) {
                 $constraints[] = $query->equals('pid', $pidList[0]);
             } else {
                 $constraints[] = $query->in('pid', $pidList);
@@ -420,17 +415,17 @@ class EventRepository extends BaseRepository
 	{
 		$catList = GeneralUtility::intExplode(',', $settings['filter']['categories'], true);
 
-		if( count($catList) < 1 ) {
+		if( (is_countable($catList) ? count($catList) : 0) < 1 ) {
 			return $constraints ;
 		}
 
 
 
-		if (count($catList) == 1) {
+		if ((is_countable($catList) ? count($catList) : 0) == 1) {
 			$constraints[] = $query->equals('eventCategory.uid', $catList[0]);
 
 		} else {
-            $catConstraints = array() ;
+            $catConstraints = [] ;
             foreach ( $catList as $catUid ) {
                 if ( $catUid > 0 ) {
                     $catConstraints[] = $query->equals('eventCategory.uid', $catUid);
@@ -454,14 +449,14 @@ class EventRepository extends BaseRepository
     private function getTagContraints($constraints, $settings ,  $query)
     {
         $tagList = GeneralUtility::intExplode(',', $settings['filter']['tags'], true);
-        if( count($tagList) < 1 ) {
+        if( (is_countable($tagList) ? count($tagList) : 0) < 1 ) {
             return $constraints ;
         }
 
-        if (count($tagList) == 1) {
+        if ((is_countable($tagList) ? count($tagList) : 0) == 1) {
             $constraints[] = $query->equals('tags.uid', $tagList[0]);
         } else {
-            $tagConstraints = array() ;
+            $tagConstraints = [] ;
 
             foreach ( $tagList as $tagUid ) {
                 if ( $tagUid > 0 ) {
@@ -484,14 +479,14 @@ class EventRepository extends BaseRepository
     private function getNotAllowedTagContraints($constraints, $settings ,  $query)
     {
         $tagList = GeneralUtility::intExplode(',', $settings['filter']['notAllowedtags'], true);
-        if( count($tagList) < 1 ) {
+        if( (is_countable($tagList) ? count($tagList) : 0) < 1 ) {
             return $constraints ;
         }
 
-        if (count($tagList) == 1) {
+        if ((is_countable($tagList) ? count($tagList) : 0) == 1) {
             $constraints[] = $query->logicalNot($query->contains('tags', $tagList[0] )) ;
         } else {
-            $tagConstraints = array() ;
+            $tagConstraints = [] ;
 
             foreach ( $tagList as $tagUid ) {
                 if ( $tagUid > 0 ) {
