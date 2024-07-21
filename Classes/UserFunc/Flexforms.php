@@ -8,7 +8,6 @@
 
 namespace JVelletti\JvEvents\UserFunc;
 
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
@@ -18,8 +17,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class Flexforms {
 	public function getSettings() {
-		$objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-		$configurationManager = $objectManager->get(ConfigurationManagerInterface::class);
+		$configurationManager =  GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
 		$settings = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT );
 
 		return $settings ;

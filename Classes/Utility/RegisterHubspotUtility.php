@@ -27,7 +27,6 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use SJBR\StaticInfoTables\Domain\Repository\CountryRepository;
 use JVelletti\JvEvents\Domain\Model\Event;
 use JVelletti\JvEvents\Domain\Model\Registrant;
@@ -312,9 +311,8 @@ class RegisterHubspotUtility {
         $jsonArray['city'] = trim($registrant->getCity() ) ;
         $jsonArray['laenderkennzeichen__c'] = trim($registrant->getCountry() ) ;
 
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         /** @var \SJBR\StaticInfoTables\Domain\Repository\CountryRepository $countries */
-        $countries = $objectManager->get(CountryRepository::class);
+        $countries =  GeneralUtility::makeInstance(CountryRepository::class);
         /** @var \SJBR\StaticInfoTables\Domain\Model\Country $cn_short_en */
         $cn_short_en = $countries->findOneByIsoCodeA2( trim($registrant->getCountry() ) ) ;
         if( is_object($cn_short_en) ) {

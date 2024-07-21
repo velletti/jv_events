@@ -33,7 +33,6 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
@@ -47,9 +46,6 @@ class ProcessCmdmap {
 	protected $id;
 	protected $deleted;
 	protected $fieldArray;
-
-	/** @var  ObjectManager $this->objectManager */
-	protected $objectManager ;
 
 	/** @var  EventRepository $this->eventRepository */
 	protected $eventRepository ;
@@ -83,14 +79,13 @@ class ProcessCmdmap {
 
 
                     $this->table = $table;
-                    /** @var  ObjectManager $objectManager */
-                    $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class) ;
 
                     /** @var PersistenceManager $persistenceManager */
-                    $persistenceManager1 = $this->objectManager->get(PersistenceManager::class);
+
+                    $persistenceManager =  GeneralUtility::makeInstance(PersistenceManager::class);
 
                     /** @var  EventRepository $eventRepository */
-                    $this->eventRepository = $this->objectManager->get(EventRepository::class);
+                    $this->eventRepository =  GeneralUtility::makeInstance(EventRepository::class);
 
 
                     $mapping = $Obj ->copyMappingArray['tx_jvevents_domain_model_event'] ;
@@ -149,7 +144,7 @@ class ProcessCmdmap {
                             } catch (UnknownObjectException $e) {
                                 // ignore
                             }
-                            $persistenceManager1->persistAll() ;
+                            $persistenceManager->persistAll() ;
                         }
                     }
                 }

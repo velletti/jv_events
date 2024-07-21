@@ -44,7 +44,7 @@ class BaseRepository extends Repository
      * @param QueryInterface $query
      */
     public function showSql($query , $file , $line ) {
-        $queryParser = $this->objectManager->get(Typo3DbQueryParser::class);
+        $queryParser = GeneralUtility::makeInstance(Typo3DbQueryParser::class);
 
         $sqlquery = $queryParser->convertQueryToDoctrineQueryBuilder($query)->getSQL() ;
         echo "<html><body><h2>See File" . $file  . " Line :" . $line ." </h2><div>";
@@ -68,7 +68,7 @@ class BaseRepository extends Repository
 
     function debugQuery($query) {
         // new way to debug typo3 db queries
-        $queryParser = $this->objectManager->get(Typo3DbQueryParser::class);
+        $queryParser = GeneralUtility::makeInstance(Typo3DbQueryParser::class);
         $querystr = $queryParser->convertQueryToDoctrineQueryBuilder($query)->getSQL() ;
         echo $querystr ;
         echo "<hr>" ;

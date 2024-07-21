@@ -18,7 +18,6 @@ use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 use TYPO3\CMS\Core\Locking\LockFactory;
@@ -230,21 +229,20 @@ class CleanEventsTask extends AbstractTask
 
 
 
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
 
 
         /** @var QuestionRepository $questionRepository */
-        $questionRepository = $objectManager->get(QuestionRepository::class) ;
+        $questionRepository =  GeneralUtility::makeInstance(QuestionRepository::class) ;
 
         /** @var PersistenceManager $persistanceManager */
-        $persistanceManager = $objectManager->get(PersistenceManager::class) ;
+        $persistanceManager =  GeneralUtility::makeInstance(PersistenceManager::class) ;
 
         /** @var EventRepository $eventRepository */
-        $eventRepository = $objectManager->get(EventRepository::class) ;
+        $eventRepository =  GeneralUtility::makeInstance(EventRepository::class) ;
         /** @var AnswerRepository $answerRepository */
-        $answerRepository = $objectManager->get(AnswerRepository::class) ;
+        $answerRepository =  GeneralUtility::makeInstance(AnswerRepository::class) ;
         /** @var OrganizerRepository $organizerRepository */
-        $organizerRepository = $objectManager->get(OrganizerRepository::class) ;
+        $organizerRepository =  GeneralUtility::makeInstance(OrganizerRepository::class) ;
         $organizers = $organizerRepository->findByFilterAllpages(FALSE , true ) ;
 
         /** @var ConnectionPool $connectionPool */

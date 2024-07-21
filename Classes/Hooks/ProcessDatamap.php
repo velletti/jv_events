@@ -27,7 +27,6 @@ use JVelletti\JvEvents\Domain\Repository\EventRepository;
 use JVelletti\JvEvents\Domain\Model\Event;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use JVelletti\JvEvents\Utility\EmConfigurationUtility;
 use JVelletti\JvEvents\Domain\Repository\RegistrantRepository;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
@@ -61,8 +60,6 @@ class ProcessDatamap {
     public $sfConnect ;
 
 
-    /** @var EventRepository $this ->objectManager */
- protected $objectManager ;
 
 	/** @var EventRepository $this ->eventRepository */
  protected $eventRepository ;
@@ -87,15 +84,14 @@ class ProcessDatamap {
 	public function main() {
 
 		if ($this->table == 'tx_jvevents_domain_model_event') { //do only things when we are in the  event table
-   /** @var EventRepository $objectManager */
-   $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class) ;
-
-			/** @var EventRepository $eventRepository */
-   $this->eventRepository = $this->objectManager->get(EventRepository::class);
 
 
-			/** @var Event $event */
-   $this->event = $this->eventRepository->findByUidAllpages(intval($this->id), FALSE ) ;
+                    /** @var EventRepository $eventRepository */
+           $this->eventRepository =  GeneralUtility::makeInstance(EventRepository::class);
+
+
+                    /** @var Event $event */
+           $this->event = $this->eventRepository->findByUidAllpages(intval($this->id), FALSE ) ;
 
 			$allowedError = 0 ;
             $configuration = EmConfigurationUtility::getEmConf();
@@ -311,7 +307,7 @@ class ProcessDatamap {
 
                                             // Automatic Migration 2019 : Update registrants that they have to be moved to hubspot
                                             /** @var RegistrantRepository $registrantRepository */
-                                            $registrantRepository = $this->objectManager->get(RegistrantRepository::class);
+                                            $registrantRepository =  GeneralUtility::makeInstance(RegistrantRepository::class);
 
                                             /** @var QueryResultInterface $registrants */
                                             $registrants = $registrantRepository->findByFilter('' , $this->event->getUid(), 0 , array() , 999 ) ;
@@ -351,7 +347,7 @@ class ProcessDatamap {
                 $this->eventRepository->update($this->event) ;
 
                 /** @var PersistenceManager $persistenceManager */
-                $persistenceManager = $this->objectManager->get(PersistenceManager::class);
+                $persistenceManager =  GeneralUtility::makeInstance(PersistenceManager::class);
                 $persistenceManager->persistAll() ;
 
                 if ( !key_exists( 'WARNING' , $this->flashMessage ) && !key_exists( 'ERROR' , $this->flashMessage ) ) {
@@ -683,10 +679,10 @@ class ProcessDatamap {
                         $message = GeneralUtility::makeInstance(FlashMessage::class,
                             $tempText ,
                             $type , // [optional] the header
-                            $typeInt , // [optional] the severity defaults to \TYPO3\CMS\Core\Messaging\FlashMessage::OK
+                            $typeInt , // [optional] the severity defaults to
                             true // [optional] whether the message should be stored in the session or only in the \TYPO3\CMS\Core\Messaging\FlashMessageQueue object (default is false)
                         );
-                        $flashMessageService = $this->objectManager->get(FlashMessageService::class);
+                        $flashMessageService =  GeneralUtility::makeInstance(FlashMessageService::class);
                         $messageQueue = $flashMessageService->getMessageQueueByIdentifier();
                         $messageQueue->addMessage($message);
                     }
