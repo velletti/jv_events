@@ -123,7 +123,6 @@ class Subevent extends AbstractEntity {
     /**
      * Sets the startDate
      *
-     * @param \DateTime $startDate
      * @return void
      */
     public function setStartDate(\DateTime $startDate)
@@ -196,7 +195,6 @@ class Subevent extends AbstractEntity {
     /**
      * Sets the endDate
      *
-     * @param \DateTime $endDate
      * @return void
      */
     public function setEndDate(\DateTime $endDate)

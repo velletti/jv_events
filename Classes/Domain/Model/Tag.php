@@ -120,7 +120,6 @@ class Tag extends AbstractEntity
     /**
      * Sets the name
      *
-     * @param string $name
      * @return void
      */
     public function setName(string $name)
@@ -131,7 +130,6 @@ class Tag extends AbstractEntity
     /**
      * Adds a Category
      *
-     * @param Category $tagCategory
      * @return void
      */
     public function addTagCategory(Category $tagCategory)
@@ -230,9 +228,6 @@ class Tag extends AbstractEntity
         return $this->nocopy;
     }
 
-    /**
-     * @param int $nocopy
-     */
     public function setNocopy(int $nocopy)
     {
         $this->nocopy = $nocopy;
@@ -246,9 +241,6 @@ class Tag extends AbstractEntity
         return $this->visibility;
     }
 
-    /**
-     * @param int $visibility
-     */
     public function setVisibility(int $visibility): void
     {
         $this->visibility = $visibility;

@@ -309,7 +309,6 @@ class Organizer extends AbstractEntity
     /**
      * Sets the name
      *
-     * @param string $name
      * @return void
      */
     public function setName(string $name)
@@ -325,9 +324,6 @@ class Organizer extends AbstractEntity
         return $this->subname;
     }
 
-    /**
-     * @param string $subname
-     */
     public function setSubname(string $subname): void
     {
         $this->subname = $subname;
@@ -348,7 +344,6 @@ class Organizer extends AbstractEntity
     /**
      * Sets the email
      *
-     * @param string $email
      * @return void
      */
     public function setEmail(string $email)
@@ -387,7 +382,6 @@ class Organizer extends AbstractEntity
     /**
      * Sets the phone
      *
-     * @param string|null $phone
      * @return void
      */
     public function setPhone(?string $phone)
@@ -429,7 +423,6 @@ class Organizer extends AbstractEntity
     /**
      * Sets the images
      *
-     * @param FileReference $images
      * @return void
      */
     public function setImages(FileReference $images)
@@ -480,7 +473,6 @@ class Organizer extends AbstractEntity
     /**
      * Adds a Category
      *
-     * @param Category $organizerCategory
      * @return void
      */
     public function addOrganizerCategory(Category $organizerCategory)
@@ -652,7 +644,6 @@ class Organizer extends AbstractEntity
     /**
      * Adds a Tag
      *
-     * @param Tag $tag
      * @return void
      */
     public function addTag(Tag $tag)
@@ -830,9 +821,6 @@ class Organizer extends AbstractEntity
         return $this->slug;
     }
 
-    /**
-     * @param string $slug
-     */
     public function setSlug(string $slug)
     {
         $this->slug = $slug;
@@ -846,9 +834,6 @@ class Organizer extends AbstractEntity
         return $this->charityLink;
     }
 
-    /**
-     * @param string $charityLink
-     */
     public function setCharityLink(string $charityLink)
     {
         $this->charityLink = $charityLink;
@@ -862,9 +847,6 @@ class Organizer extends AbstractEntity
         return $this->youtubeLink;
     }
 
-    /**
-     * @param string $youtubeLink
-     */
     public function setYoutubeLink(string $youtubeLink)
     {
         $this->youtubeLink = $youtubeLink;
@@ -878,9 +860,6 @@ class Organizer extends AbstractEntity
         return $this->top;
     }
 
-    /**
-     * @param int $top
-     */
     public function setTop(int $top): void
     {
         $this->top = $top;

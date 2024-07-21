@@ -774,7 +774,9 @@ class AjaxController extends BaseController
         $output['countResult'] = $queryCount->count( '*' )->from('tx_jvevents_domain_model_event' )
             ->where( $queryBuilder->expr()->lte('start_date',  $timeInPast ) )
             ->andWhere($queryBuilder->expr()->lte('end_date', $timeInPast ))
-            ->andWhere($queryBuilder->expr()->eq('deleted', 0 ))->andWhere($queryBuilder->expr()->eq('organizer', $output['organizer']['requestId'] ))->executeQuery()->fetchColumn(0) ;
+            ->andWhere($queryBuilder->expr()->eq('deleted', 0 ))->andWhere($queryBuilder->expr()->eq('organizer', $output['organizer']['requestId'] ))
+            ->executeQuery()
+            ->fetchOne() ;
 
         if ( $output['countResult'] > 0 ) {
             $queryBuilder ->update('tx_jvevents_domain_model_event')

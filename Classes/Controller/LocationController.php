@@ -337,9 +337,9 @@ class LocationController extends BaseController
     /**
      * action delete
      *
-     * @return void
+     * @return ResponseInterface
      */
-    public function deleteAction(Location $location)
+    public function deleteAction(Location $location): ResponseInterface
     {
         $eventCount = null;
         $delete = false ;
@@ -365,7 +365,7 @@ class LocationController extends BaseController
                     }
 
                     $this->locationRepository->remove($location);
-                    $this->addFlashMessage('The Location was deleted.', '', ContextualFeedbackSeverity::OK);
+                    // $this->addFlashMessage('The Location was deleted.', '', ContextualFeedbackSeverity::OK);
 
 
                 } else {
@@ -373,13 +373,13 @@ class LocationController extends BaseController
                 }
 
 
-                $this->redirect('assist' , 'Organizer', Null , NULL , $this->settings['pageIds']['organizerAssist'] );
+                return $this->redirect('assist' , 'Organizer', Null , NULL , $this->settings['pageIds']['organizerAssist'] );
             }
         }
         $this->view->assign('location', $location);
         $this->view->assign('eventCount', $events->count() );
         $this->view->assign('settings', $this->settings );
-
+        return $this->htmlResponse() ;
     }
 
     /**

@@ -737,7 +737,6 @@ class Event extends AbstractEntity
     /**
      * Sets the organizer
      *
-     * @param Organizer $organizer
      * @return void
      */
     public function setOrganizer(Organizer $organizer)
@@ -758,7 +757,6 @@ class Event extends AbstractEntity
     /**
      * Sets the location
      *
-     * @param Location $location
      * @return void
      */
     public function setLocation(Location $location)
@@ -795,9 +793,6 @@ class Event extends AbstractEntity
         return $this->eventButtonText;
     }
 
-    /**
-     * @param string $eventButtonText
-     */
     public function setEventButtonText(string $eventButtonText): void
     {
         $this->eventButtonText = $eventButtonText;
@@ -858,7 +853,6 @@ class Event extends AbstractEntity
     /**
      * Sets the images
      *
-     * @param FileReference $images
      * @return void
      */
     public function setImages(FileReference $images)
@@ -879,7 +873,6 @@ class Event extends AbstractEntity
 	/**
   * Sets the teaserImage
   *
-  * @param FileReference $teaserImage
   * @return void
   */
  public function setTeaserImage(FileReference $teaserImage)
@@ -902,7 +895,6 @@ class Event extends AbstractEntity
     /**
      * Sets the files
      *
-     * @param FileReference $files
      * @return void
      */
     public function setFiles(FileReference $files)
@@ -927,7 +919,6 @@ class Event extends AbstractEntity
     /**
      * Sets the files
      *
-     * @param FileReference $files
      * @return void
      */
     public function setFilesAfterReg(FileReference $files)
@@ -950,7 +941,6 @@ class Event extends AbstractEntity
     /**
      * Sets the filesAfterEvent
      *
-     * @param FileReference $files
      * @return void
      */
     public function setFilesAfter(FileReference $files)
@@ -973,7 +963,6 @@ class Event extends AbstractEntity
     /**
      * Sets the startDate
      *
-     * @param DateTime $startDate
      * @return void
      */
     public function setStartDate(DateTime $startDate)
@@ -1069,7 +1058,6 @@ class Event extends AbstractEntity
     /**
      * Sets the endDate
      *
-     * @param DateTime|null $endDate
      * @return void
      */
     public function setEndDate(?DateTime $endDate)
@@ -1624,7 +1612,6 @@ class Event extends AbstractEntity
     /**
      * Sets the registrationUntil
      *
-     * @param DateTime|null $registrationUntil
      * @return void
      */
     public function setRegistrationUntil(?DateTime $registrationUntil): void
@@ -1841,7 +1828,6 @@ class Event extends AbstractEntity
     /**
      * Adds a Category
      *
-     * @param Category $eventCategory
      * @return void
      */
     public function addEventCategory(Category $eventCategory)
@@ -1884,7 +1870,6 @@ class Event extends AbstractEntity
     /**
      * Adds a Tag
      *
-     * @param Tag $tag
      * @return void
      */
     public function addTag(Tag $tag)
@@ -2222,9 +2207,6 @@ class Event extends AbstractEntity
         return $this->url;
     }
 
-    /**
-     * @param string $url
-     */
     public function setUrl(string $url)
     {
         $this->url = $url;
@@ -2233,7 +2215,6 @@ class Event extends AbstractEntity
     /**
      * Adds a Subevent
      *
-     * @param Subevent $subevent
      * @return void
      */
     public function addSubevent(Subevent $subevent)
@@ -2589,9 +2570,6 @@ class Event extends AbstractEntity
         return $this->tstamp;
     }
 
-    /**
-     * @param int $tstamp
-     */
     public function setTstamp(int $tstamp): void
     {
         $this->tstamp = $tstamp;
@@ -2605,9 +2583,6 @@ class Event extends AbstractEntity
         return $this->lastUpdated;
     }
 
-    /**
-     * @param int|null $lastUpdated
-     */
     public function setLastUpdated(?int $lastUpdated): void
     {
         $this->lastUpdated = $lastUpdated;
@@ -2621,9 +2596,6 @@ class Event extends AbstractEntity
         return $this->lastUpdatedBy;
     }
 
-    /**
-     * @param int|null $lastUpdatedBy
-     */
     public function setLastUpdatedBy(?int $lastUpdatedBy): void
     {
         $this->lastUpdatedBy = $lastUpdatedBy;
@@ -2695,9 +2667,6 @@ class Event extends AbstractEntity
         return $this->registrationGender;
     }
 
-    /**
-     * @param int $registrationGender
-     */
     public function setRegistrationGender(int $registrationGender)
     {
         $this->registrationGender = $registrationGender;
@@ -2711,10 +2680,7 @@ class Event extends AbstractEntity
         return $this->registrationShowStatus;
     }
 
-    /**
-     * @param mixed $registrationShowStatus
-     */
-    public function setRegistrationShowStatus($registrationShowStatus)
+    public function setRegistrationShowStatus(mixed $registrationShowStatus)
     {
         if( is_null($registrationShowStatus)) {
             $registrationShowStatus = 0 ;
@@ -2730,9 +2696,6 @@ class Event extends AbstractEntity
         return $this->youtubeLink;
     }
 
-    /**
-     * @param string|null $youtubeLink
-     */
     public function setYoutubeLink(?string $youtubeLink): void
     {
         $this->youtubeLink = $youtubeLink;

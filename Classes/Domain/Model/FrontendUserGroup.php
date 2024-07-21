@@ -104,8 +104,6 @@ class FrontendUserGroup extends AbstractEntity
 
     /**
      * Adds a subgroup to the frontend user
-     *
-     * @param FrontendUserGroup $subgroup
      */
     public function addSubgroup(FrontendUserGroup $subgroup)
     {
@@ -114,8 +112,6 @@ class FrontendUserGroup extends AbstractEntity
 
     /**
      * Removes a subgroup from the frontend user group
-     *
-     * @param FrontendUserGroup $subgroup
      */
     public function removeSubgroup(FrontendUserGroup $subgroup)
     {

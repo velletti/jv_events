@@ -25,16 +25,6 @@ use JVelletti\JvEvents\Domain\Model\FrontendUserGroup;
 class FrontendUser extends AbstractEntity
 {
     /**
-     * @var string
-     */
-    protected $username = '';
-
-    /**
-     * @var string
-     */
-    protected $password = '';
-
-    /**
      * @var ObjectStorage<FrontendUserGroup>
      */
     protected $usergroup;
@@ -140,10 +130,8 @@ class FrontendUser extends AbstractEntity
      * @param string $username
      * @param string $password
      */
-    public function __construct($username = '', $password = '')
+    public function __construct(protected $username = '', protected $password = '')
     {
-        $this->username = $username;
-        $this->password = $password;
         $this->usergroup = new ObjectStorage();
         # $this->image = new ObjectStorage();
     }
@@ -153,7 +141,7 @@ class FrontendUser extends AbstractEntity
      */
     public function initializeObject()
     {
-        $this->usergroup = $this->usergroup ?? new ObjectStorage();
+        $this->usergroup ??= new ObjectStorage();
         # $this->image = $this->image ?? new ObjectStorage();
     }
 
@@ -210,8 +198,6 @@ class FrontendUser extends AbstractEntity
 
     /**
      * Adds a usergroup to the frontend user
-     *
-     * @param FrontendUserGroup $usergroup
      */
     public function addUsergroup(FrontendUserGroup $usergroup)
     {
@@ -220,8 +206,6 @@ class FrontendUser extends AbstractEntity
 
     /**
      * Removes a usergroup from the frontend user
-     *
-     * @param FrontendUserGroup $usergroup
      */
     public function removeUsergroup(FrontendUserGroup $usergroup)
     {
@@ -520,31 +504,30 @@ class FrontendUser extends AbstractEntity
     }
 
     /**
-     * Sets the image value
+    * Sets the image value
+    *
+    * @param ObjectStorage<FileReference> $image
      *
-     * @param ObjectStorage<FileReference> $image
- *
-* public function setImage(ObjectStorage $image)
-    * {
-        * $this->image = $image;
-    * }
-     * /
-     * /**
-     * Gets the image value
-     *
-     * @param \DateTime $lastlogin
-     *@return ObjectStorage<FileReference>
- *
-* public function getImage()
-    * {
-     * return $this->image;
-    * }
+    * public function setImage(ObjectStorage $image)
+        * {
+       * $this->image = $image;
+        * }
     * /
-     * 
     * /**
-     * Sets the lastlogin value
+    * Gets the image value
+    *
+    *@return ObjectStorage<FileReference>
      *
-     */
+    * public function getImage()
+        * {
+    * return $this->image;
+        * }
+        * /
+    *
+        * /**
+    * Sets the lastlogin value
+    *
+    */
     public function setLastlogin(\DateTime $lastlogin)
     {
         $this->lastlogin = $lastlogin;

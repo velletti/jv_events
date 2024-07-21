@@ -454,7 +454,6 @@ class Location extends AbstractEntity
     /**
      * Sets the organizer
      *
-     * @param Organizer|null $organizer
      * @return void
      */
     public function setOrganizer(?Organizer $organizer)
@@ -491,7 +490,6 @@ class Location extends AbstractEntity
     /**
      * Adds a Category
      *
-     * @param Category $locationCategory
      * @return void
      */
     public function addLocationCategory(Category $locationCategory)
@@ -613,9 +611,6 @@ class Location extends AbstractEntity
         return $this->slug;
     }
 
-    /**
-     * @param string $slug
-     */
     public function setSlug(string $slug)
     {
         $this->slug = $slug;
@@ -629,9 +624,6 @@ class Location extends AbstractEntity
         return $this->tstamp;
     }
 
-    /**
-     * @param int $tstamp
-     */
     public function setTstamp(int $tstamp)
     {
         $this->tstamp = $tstamp;

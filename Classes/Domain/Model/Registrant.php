@@ -1115,7 +1115,6 @@ class Registrant extends AbstractEntity
     /**
      * Sets the more7date
      *
-     * @param \DateTime $more7date
      * @return void
      */
     public function setMore7date(\DateTime $more7date)
@@ -1136,7 +1135,6 @@ class Registrant extends AbstractEntity
     /**
      * Sets the more8file
      *
-     * @param FileReference $more8file
      * @return void
      */
     public function setMore8file(FileReference $more8file)
@@ -1403,12 +1401,9 @@ class Registrant extends AbstractEntity
      */
     public function getAddMandatoryFields(): string
     {
-        return $this->addMandatoryFields ? $this->addMandatoryFields : "";
+        return $this->addMandatoryFields ?: "";
     }
 
-    /**
-     * @param string $addMandatoryFields
-     */
     public function setAddMandatoryFields(string $addMandatoryFields): void
     {
         $this->addMandatoryFields = $addMandatoryFields;

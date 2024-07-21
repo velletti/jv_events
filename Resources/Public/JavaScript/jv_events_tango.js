@@ -64,7 +64,7 @@ function jv_events_init_del_events() {
                 },
                 success: function (response) {
                     hideSpinner() ;
-                    $('#jv_events_danger_delete_events_msg .alert').removeClass('alert-secondary');
+                    $('#jv_events_danger_delete_events_msg .alert').removeClass('alert-secondary').removeClass('alert-warning').removeClass('alert-success');
                     if ( response.status ) {
                         $('#jv_events_danger_delete_events_msg .alert').addClass('alert-success');
                         if ( response.html && response.html.countResult > -1 ) {
