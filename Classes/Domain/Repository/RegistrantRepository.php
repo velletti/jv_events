@@ -67,7 +67,7 @@ class RegistrantRepository extends BaseRepository
 
 		// $query->getQuerySettings()->setIgnoreEnableFields(TRUE) ;
 
-		return $query->matching( $query->equals("fingerprint", $fingerprint) )->executeQuery() ;
+		return $query->matching( $query->equals("fingerprint", $fingerprint) )->execute() ;
 	}
 
     /**
@@ -85,7 +85,7 @@ class RegistrantRepository extends BaseRepository
              $query->getQuerySettings()->setIgnoreEnableFields(TRUE) ;
         }
 
-        return $query->matching( $query->equals("uid", $id) )->executeQuery()->getFirst() ;
+        return $query->matching( $query->equals("uid", $id) )->execute()->getFirst() ;
     }
 
     /**
@@ -100,7 +100,7 @@ class RegistrantRepository extends BaseRepository
         $query->getQuerySettings()->setRespectSysLanguage(FALSE);
         $query->getQuerySettings()->setIgnoreEnableFields(TRUE) ;
 
-        return $query->matching( $query->equals("uid", $uid) )->executeQuery()->getFirst() ;
+        return $query->matching( $query->equals("uid", $uid) )->execute()->getFirst() ;
     }
 
     /**
@@ -207,7 +207,7 @@ class RegistrantRepository extends BaseRepository
         }
         // new way to debug typo3 db queries
         //  $this->debugQuery($query) ;
-        $result = $query->executeQuery();
+        $result = $query->execute();
         return $result;
     }
 }

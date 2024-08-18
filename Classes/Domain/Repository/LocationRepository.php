@@ -52,7 +52,7 @@ class LocationRepository extends BaseRepository
         $query->setLimit(1) ;
 
         $query->matching( $query->equals('uid', $uid ) ) ;
-        $res = $query->executeQuery() ;
+        $res = $query->execute() ;
 
         if( $toArray === TRUE ) {
             return $res->toArray();
@@ -115,7 +115,7 @@ class LocationRepository extends BaseRepository
                     break;
             }
         }
-        $res = $query->executeQuery() ;
+        $res = $query->execute() ;
 
         if( $toArray === TRUE ) {
             return $res->toArray();
@@ -180,7 +180,7 @@ class LocationRepository extends BaseRepository
             $query->matching($query->logicalAnd(...$constraints));
         }
         $query->matching( $query->logicalAnd(...$constraints)) ;
-        $res = $query->executeQuery() ;
+        $res = $query->execute() ;
 
         // new way to debug typo3 db queries
         // $this->debugQuery( $query) ;

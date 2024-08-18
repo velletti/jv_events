@@ -64,7 +64,7 @@ class FrontendUserRepository extends BaseRepository {
         $constraints[] = $query->equals('uid', intval($uid));
         $query->matching($query->logicalAnd(...$constraints));
 
-        return  $query->executeQuery()->getFirst();
+        return  $query->execute()->getFirst();
 
     }
 

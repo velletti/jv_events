@@ -974,7 +974,8 @@ class BaseController extends ActionController
     public function getOrganizer($doNotCheckAccess=true) {
         $id = null;
         $organizer = null;
-        if ((int)$this->frontendUser->user['uid'] < 1 ) {
+        $frontendUser = $this->request->getAttribute('frontend.user');
+        if ( !is_object($frontendUser) ||  (int)$frontendUser->user['uid'] < 1 ) {
             return false ;
         }
         /** @var Organizer $organizer */

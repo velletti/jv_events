@@ -65,7 +65,7 @@ class TagRepository extends BaseRepository
 
         // $querySettings->setRespectSysLanguage(FALSE);
         $query->setQuerySettings($querySettings) ;
-        $res = $query->executeQuery() ;
+        $res = $query->execute() ;
 
         return $res ;
     }
@@ -87,7 +87,7 @@ class TagRepository extends BaseRepository
         }
         // $querySettings->setRespectSysLanguage(FALSE);
         $query->setQuerySettings($querySettings) ;
-        $res = $query->executeQuery() ;
+        $res = $query->execute() ;
         // $this->debugQuery($query) ;
 
         return $res ;

@@ -52,7 +52,7 @@ class ProcessDatamap {
 	protected $fieldArray;
 
 	/** @var  array */
-	protected $flashMessage = array() ;
+	protected $flashMessage = [] ;
 
     /**
      * @var SalesforceWrapperUtility
@@ -83,7 +83,10 @@ class ProcessDatamap {
 
 	public function main() {
 
-		if ($this->table == 'tx_jvevents_domain_model_event') { //do only things when we are in the  event table
+		$search = [];
+  $replace = [];
+  $row = [];
+  if ($this->table == 'tx_jvevents_domain_model_event') { //do only things when we are in the  event table
 
 
                     /** @var EventRepository $eventRepository */
@@ -104,7 +107,7 @@ class ProcessDatamap {
 			    // remove unwanted Chars from Text Initial we start with removign ETX = end of text
 			    $search[] = chr(3) ;
 			    $replace[] = '' ;
-                $this->event->setDescription( str_replace($search , $replace , $this->event->getDescription())) ;
+                $this->event->setDescription( str_replace($search , $replace , (string) $this->event->getDescription())) ;
 
                     $row['name'] =  $this->event->getName() ;
                     $row['pid'] =  $this->event->getPid() ;
@@ -220,7 +223,7 @@ class ProcessDatamap {
                         }
 
                     } else {
-                        if (trim($this->event->getRegistrationUrl()) == '' || !$this->event->getRegistrationUrl() ) {
+                        if (trim((string) $this->event->getRegistrationUrl()) == '' || !$this->event->getRegistrationUrl() ) {
                             $this->flashMessage['INFO'][] = 'Registration URL is not set "' .  $this->event->getRegistrationUrl() . '". Registration is not Possible.' ;
                         } else {
                             if (! $this->event->getRegistrationUntil() ) {
@@ -263,10 +266,10 @@ class ProcessDatamap {
                         $this->flashMessage['ERROR'][] = 'No Location selected in Tab Relations!' ;
                         $allowedError ++ ;
                     }
-                    if( count( $this->event->getEventCategory()) < 1 ) {
+                    if( (is_countable($this->event->getEventCategory()) ? count( $this->event->getEventCategory()) : 0) < 1 ) {
                         $this->flashMessage['WARNING'][] = 'No Event Category selected in Tab Relations. This event may not be found in lists!' ;
                     }
-                    if( count(  $this->event->getTags() ) < 1 ) {
+                    if( (is_countable($this->event->getTags()) ? count(  $this->event->getTags() ) : 0) < 1 ) {
                         $this->flashMessage['WARNING'][] = 'No Event Tags selected in Tab Relations!' ;
                     }
 
@@ -310,7 +313,7 @@ class ProcessDatamap {
                                             $registrantRepository =  GeneralUtility::makeInstance(RegistrantRepository::class);
 
                                             /** @var QueryResultInterface $registrants */
-                                            $registrants = $registrantRepository->findByFilter('' , $this->event->getUid(), 0 , array() , 999 ) ;
+                                            $registrants = $registrantRepository->findByFilter('' , $this->event->getUid(), 0 , [] , 999 ) ;
                                             $repairCount = 0 ;
                                             if ( $registrants->count() > 0 ) {
                                                 /** @var Registrant $registrant */
@@ -368,6 +371,9 @@ class ProcessDatamap {
     */
 
     private function createUpdateEventForSF2019() {
+        $owner = null;
+        $cntry = null;
+        $locCity = null;
         $configuration = EmConfigurationUtility::getEmConf();
 
         /** @var SalesforceWrapperUtility */
@@ -376,7 +382,7 @@ class ProcessDatamap {
         $settings = $this->sfConnect->contactSF() ;
     //    $this->flashMessage['NOTICE'][] = 'Salesforce: Connect result ! : ' . var_export( $settings , true ) ;
         if( $settings['faultstring'] ) {
-            $settings['SFREST']['SF_PASSWORD'] = substr( $settings['SFREST']['SF_PASSWORD'] , 0 , 3 ) . "...." . substr( $settings['SFREST']['SF_PASSWORD'] , 8 , 99 ) ;
+            $settings['SFREST']['SF_PASSWORD'] = substr( (string) $settings['SFREST']['SF_PASSWORD'] , 0 , 3 ) . "...." . substr( (string) $settings['SFREST']['SF_PASSWORD'] , 8 , 99 ) ;
             $this->flashMessage['ERROR'][] = 'Create Update Campaign in Salesforce: could not Connect ! : ' . var_export( $settings , true ) ;
             return ;
         }
@@ -397,20 +403,10 @@ class ProcessDatamap {
 
 
 
-        $data = array(
-            'IsActive' => true,
-            'Description' =>  "TYPO3 Event: " . $this->event->getUid() . " on PID: " . $this->event->getPid() . " \n\n"
-                . $this->event->getStartDate()->format("d.m.Y") . " - " . date( "H:i" ,  $this->event->getStartTime() )  . " \n"
+        $data = ['IsActive' => true, 'Description' =>  "TYPO3 Event: " . $this->event->getUid() . " on PID: " . $this->event->getPid() . " \n\n"
+            . $this->event->getStartDate()->format("d.m.Y") . " - " . date( "H:i" ,  $this->event->getStartTime() )  . " \n"
 
-                . html_entity_decode( strip_tags( $this->event->getDescription() ) , ENT_COMPAT , 'UTF-8') ,
-
-            'EndDate' =>  $endD ,
-            'StartDate' =>  $startD   ,
-            'Typo3Id__c' =>  $this->event->getUid()    ,
-
-            'AllplanOrganization__c' =>  '300'   , // will be overwritten later
-
-        ) ;
+            . html_entity_decode( strip_tags( (string) $this->event->getDescription() ) , ENT_COMPAT , 'UTF-8'), 'EndDate' =>  $endD, 'StartDate' =>  $startD, 'Typo3Id__c' =>  $this->event->getUid(), 'AllplanOrganization__c' =>  '300'] ;
 
         if ( $this->event->getPrice() > 0 ) {
             $data['Type']  = 'Training' ;
@@ -418,11 +414,11 @@ class ProcessDatamap {
 
 
         if(  is_object( $this->event->getOrganizer() ) ) {
-            $owner = str_replace( " " , "_" , substr( trim( strip_tags ( $this->event->getOrganizer()->getName())) , 0, 10 ) ) ;
+            $owner = str_replace( " " , "_" , substr( trim( strip_tags ( (string) $this->event->getOrganizer()->getName())) , 0, 10 ) ) ;
             if( $this->event->getOrganizer()->getSalesForceUserOrg() ) {
                 $data['AllplanOrganization__c']  =   $this->event->getOrganizer()->getSalesForceUserOrg() ;  ;
             }
-            $data['OwnerId']  =    trim( $this->event->getOrganizer()->getSalesForceUserId2())  ;
+            $data['OwnerId']  =    trim( (string) $this->event->getOrganizer()->getSalesForceUserId2())  ;
         } else {
             $this->flashMessage['ERROR'][] = 'Store in Salesforce: No Organizer set in Relations ! : '  ;
         }
@@ -438,7 +434,7 @@ class ProcessDatamap {
 
         if(  is_object( $this->event->getLocation() ) ) {
             $cntry = $this->event->getLocation()->getCountry() ;
-            $locCity = str_replace( " " , "_" , substr( trim( strip_tags ($this->event->getLocation()->getCity())) , 0, 10 ) ) ;
+            $locCity = str_replace( " " , "_" , substr( trim( strip_tags ((string) $this->event->getLocation()->getCity())) , 0, 10 ) ) ;
         }
         if ( !$cntry ) {
             $cntry = "XX" ;
@@ -446,7 +442,7 @@ class ProcessDatamap {
         if ( !$locCity ) {
             $locCity = "NonameCity" ;
         }
-        $campaignName = $cntry . "-" . $this->event->getStartDate()->format("Y-m-") . $owner. "-" . $locCity . "-" .  strip_tags ( $this->event->getName() ) ;
+        $campaignName = $cntry . "-" . $this->event->getStartDate()->format("Y-m-") . $owner. "-" . $locCity . "-" .  strip_tags ( (string) $this->event->getName() ) ;
         $data['Name'] = substr( html_entity_decode(  $campaignName  , ENT_COMPAT , 'UTF-8') , 0 , 80 ) ;
 
 
@@ -498,7 +494,7 @@ class ProcessDatamap {
                 $this->flashMessage['OK'][] = "Campaign was updated in Salesforce: ! : " . $settings['SFREST']['instance_url'] . "/" . $this->event->getSalesForceCampaignId()   ;
             } else {
                 $this->flashMessage['WARNING'][] = 'Could not update Response  : ' . var_export( $sfResponse , true ) ;
-                $sfResponse = json_decode($sfResponse) ;
+                $sfResponse = json_decode((string) $sfResponse, null, 512, JSON_THROW_ON_ERROR) ;
             }
 
         } else {
@@ -514,7 +510,7 @@ class ProcessDatamap {
             $url = $settings['SFREST']['instance_url'] . "/services/data/v48.0/sobjects/Campaign/" ;
             $sfResponse = $this->sfConnect->getCurl($url , $settings['SFREST']['access_token'] , "201" ,  $data , false , false )  ;
             $this->flashMessage['NOTICE'][] = 'Store Campaign in Salesforce: ' .var_export( $sfResponse , true )  ;
-            $sfResponse = json_decode($sfResponse) ;
+            $sfResponse = json_decode((string) $sfResponse, null, 512, JSON_THROW_ON_ERROR) ;
 
             if( is_object($sfResponse)) {
                 if ($sfResponse->success && $sfResponse->id) {
@@ -533,14 +529,11 @@ class ProcessDatamap {
 
                     /** @var MailMessage $Typo3_v6mail */
                     $Typo3_v6mail = GeneralUtility::makeInstance(MailMessage::class);
-                    $Typo3_v6mail->setFrom( array( 'www@systems.allplan.com' => $_SERVER['SERVER_NAME'] ) );
+                    $Typo3_v6mail->setFrom( ['www@systems.allplan.com' => $_SERVER['SERVER_NAME']] );
                     $Typo3_v6mail->setReturnPath( 'www@systems.allplan.com' );
 
                     $Typo3_v6mail->setTo(
-                        array(
-                            'jvelletti@allplan.com' =>  'Joerg V',
-                            'lgraf@allplan.com' => 'Linda G',
-                        )
+                        ['jvelletti@allplan.com' =>  'Joerg V']
                     );
                     /** @var Typo3Version $tt */
                     $tt = GeneralUtility::makeInstance( Typo3Version::class ) ;
@@ -560,7 +553,7 @@ class ProcessDatamap {
                     }
                 }
             } else {
-                if ( substr( $sfResponse , 0 , 6 ) == "Error" ) {
+                if ( substr( (string) $sfResponse , 0 , 6 ) == "Error" ) {
                     $this->flashMessage['ERROR'][] = "Could not create Campaign in Salesforce: ! : " . var_export( $sfResponse , true )  ;
                 }
             }
@@ -583,6 +576,7 @@ class ProcessDatamap {
     }
 
     private function renameCampaignMemberStati( $url , $access_token , $sfCampaignId ) {
+        $data = [];
         $data['what'] = ", Label,HasResponded,IsDefault ";
         $data['from'] = "CampaignMemberStatus" ;
         $data['where']= " CampaignId = '" . $sfCampaignId . "'" ;
@@ -590,7 +584,7 @@ class ProcessDatamap {
         $sfResponse = $this->sfConnect->getData($url , $access_token ,   $data  )  ;
         if ( is_array($sfResponse) ) {
             if  ( array_key_exists( "records" , $sfResponse['result'] )) {
-                if ( count ( $sfResponse['result']['records']) > 0 ) {
+                if ( (is_countable($sfResponse['result']['records']) ? count ( $sfResponse['result']['records']) : 0) > 0 ) {
                     foreach ($sfResponse['result']['records'] as $record ) {
                         $this->flashMessage['NOTICE'][] = 'Campaign Member Stati found : ' . var_export($record, true)  ;
                         if ( $record['IsDefault']) {
@@ -622,7 +616,7 @@ class ProcessDatamap {
      */
     private function createCampaignMemberStati( $url , $access_token , $sfCampaignId ) {
 
-        $dataMaster = array( 'Wait listed' , 'Confirmed' , 'No Show' , 'Cancelled' , 'Blocked from Email' ,  'Blocked by Sales' ) ;
+        $dataMaster = ['Wait listed', 'Confirmed', 'No Show', 'Cancelled', 'Blocked from Email', 'Blocked by Sales'] ;
 
         $status = "" ;
         foreach ( $dataMaster as $key => $datalabel ) {
@@ -633,7 +627,7 @@ class ProcessDatamap {
             $data['SortOrder'] = $key + 3 ;
             $sfResponse = $this->sfConnect->getCurl($url , $access_token , "201" ,  $data , false , false )  ;
           //  $this->flashMessage['NOTICE'][] = 'Campaign Member Status "' . $data['Label'] . '" created : ' . var_export($sfResponse , true ) ;
-            $sfResponse = json_decode($sfResponse) ;
+            $sfResponse = json_decode((string) $sfResponse, null, 512, JSON_THROW_ON_ERROR) ;
             if( is_object($sfResponse)) {
                 if ($sfResponse->success && $sfResponse->id) {
                     $status .= $data['Label'] . ", " ;

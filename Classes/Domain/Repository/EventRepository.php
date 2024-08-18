@@ -59,7 +59,7 @@ class EventRepository extends BaseRepository
         $query->setLimit(1) ;
 
         $query->matching( $query->equals('uid', $uid ) ) ;
-        $res = $query->executeQuery() ;
+        $res = $query->execute() ;
 
         // $this->debugQuery($query) ;
 
@@ -244,7 +244,7 @@ class EventRepository extends BaseRepository
         }
         $query->setLimit( 4 ) ;
 
-        $result = $query->executeQuery();
+        $result = $query->execute();
        // $this->debugQuery($query) ;
 
         return $result;
@@ -268,7 +268,7 @@ class EventRepository extends BaseRepository
         $constraints[] = $query->equals("location",  $uid );
             $query->matching($query->logicalAnd(...$constraints));
 
-        $result = $query->executeQuery();
+        $result = $query->execute();
         if ( 1 == 2 ) {
             $this->debugQuery($query) ;
         }

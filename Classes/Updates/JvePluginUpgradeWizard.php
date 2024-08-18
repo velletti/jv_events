@@ -20,11 +20,12 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Attribute\UpgradeWizard;
 use TYPO3\CMS\Install\Updates\DatabaseUpdatedPrerequisite;
 use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
-use function Webmozart\Assert\Tests\StaticAnalysis\inArray;
 
-class PluginUpdater implements UpgradeWizardInterface
+#[UpgradeWizard('jvePluginUpgradeWizard')]
+class JvePluginUpgradeWizard implements UpgradeWizardInterface
 {
 
     private const MIGRATION_SETTINGS = [
@@ -137,11 +138,6 @@ class PluginUpdater implements UpgradeWizardInterface
         $this->eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
     }
 
-    public function getIdentifier(): string
-    {
-        return 'jvEventsPluginUpdater';
-    }
-
     public function getTitle(): string
     {
         return 'EXT:JvEvents: Migrate plugins';
@@ -174,7 +170,7 @@ class PluginUpdater implements UpgradeWizardInterface
 
     public function checkIfWizardIsRequired(): bool
     {
-        return count($this->getMigrationRecords()) > 0;
+        return  count($this->getMigrationRecords()) > 0;
     }
 
     public function performMigration(): bool
@@ -282,28 +278,23 @@ class PluginUpdater implements UpgradeWizardInterface
     {
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $queryBuilder = $connectionPool->getQueryBuilderForTable('tt_content');
-        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $queryBuilder->getRestrictions()->removeAll() ;
 
-        return $queryBuilder
+        $queryBuilder
             ->select('uid', 'pid', 'CType', 'list_type', 'pi_flexform')
             ->from('tt_content')
             ->where(
                 $queryBuilder->expr()->eq(
                     'CType',
-                    $queryBuilder->createNamedParameter('list')
+                    $queryBuilder->createNamedParameter('list', Connection::PARAM_STR)
                 ),
-                $queryBuilder->expr()->eq(
+                $queryBuilder->expr()->like(
                     'list_type',
-                    $queryBuilder->createNamedParameter('jvevents_events')
+                    $queryBuilder->createNamedParameter('jvevent%', Connection::PARAM_STR)
                 )
-                ,
-                $queryBuilder->expr()->gt(
-                    'pid',
-                    $queryBuilder->createNamedParameter(0 , Connection::PARAM_INT)
-                )
-            )
-            ->executeQuery()
-            ->fetchAllAssociative();
+            ) ;
+        $rows = $queryBuilder->executeQuery()->fetchAllAssociative() ;
+        return $rows;
     }
 
     protected function getTargetListType(array $ff , int $pid ): string

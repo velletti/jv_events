@@ -16,16 +16,14 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\Attribute\UpgradeWizard;
 use TYPO3\CMS\Install\Updates\DatabaseUpdatedPrerequisite;
+
+use TYPO3\CMS\Install\Attribute\UpgradeWizard;
 use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
-#[UpgradeWizard('jveEvents_PluginPermissionUpdater')]
-class PluginPermissionUpdater implements UpgradeWizardInterface
+
+#[UpgradeWizard('jvePluginPermissionUpdateWizard')]
+class JvePluginPermissionUpdateWizard implements UpgradeWizardInterface
 {
-    public function getIdentifier(): string
-    {
-        return 'jvEvents_PluginPermissionUpdater';
-    }
 
     public function getTitle(): string
     {
@@ -34,7 +32,7 @@ class PluginPermissionUpdater implements UpgradeWizardInterface
 
     public function getDescription(): string
     {
-        $description = 'This update wizard updates all permissions and allows **all** news plugins instead of the previous single plugin.';
+        $description = 'This update wizard updates all permissions and allows **all** Jv Events plugins instead of the previous single plugin.';
         $description .= ' Count of affected groups: ' . count($this->getMigrationRecords());
         return $description;
     }
@@ -84,7 +82,7 @@ class PluginPermissionUpdater implements UpgradeWizardInterface
             ->where(
                 $queryBuilder->expr()->like(
                     'explicit_allowdeny',
-                    $queryBuilder->createNamedParameter('%' . $queryBuilder->escapeLikeWildcards('tt_content:list_type:news_pi1') . '%')
+                    $queryBuilder->createNamedParameter('%' . $queryBuilder->escapeLikeWildcards('tt_content:list_type:jvevents_events') . '%')
                 )
             )
             ->executeQuery()

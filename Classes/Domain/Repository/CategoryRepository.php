@@ -54,7 +54,7 @@ class CategoryRepository extends BaseRepository
         if( ($type > -1 )) {
             $query->matching( $query->equals('type', $type) ) ;
         }
-        $res = $query->executeQuery() ;
+        $res = $query->execute() ;
 
         return $res ;
     }

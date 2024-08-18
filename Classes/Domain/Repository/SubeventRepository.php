@@ -47,9 +47,9 @@ class SubeventRepository extends BaseRepository
         $query->setLimit( 1 ) ;
 
         if( $toArray === TRUE ) {
-            return $query->executeQuery()->toArray();
+            return $query->execute()->toArray();
         } else {
-            return $query->executeQuery()->getFirst() ;
+            return $query->execute()->getFirst() ;
         }
     }
 
@@ -71,9 +71,9 @@ class SubeventRepository extends BaseRepository
         // $this->showSql( $query , __FILE__ , __LINE__ ) ;
 
         if( $toArray === TRUE ) {
-            return $query->executeQuery()->toArray() ;
+            return $query->execute()->toArray() ;
         } else {
-            return $query->executeQuery() ;
+            return $query->execute() ;
         }
     }
 

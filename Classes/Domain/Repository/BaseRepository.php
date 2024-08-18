@@ -85,7 +85,7 @@ class BaseRepository extends Repository
         }
         echo str_replace( $search , $replace , (string) $querystr ) ;
         /** @var QueryResult $result */
-        $result = $query->executeQuery() ;
+        $result = $query->execute() ;
         echo "<hr>Anzahl: " .  $result->count() ;
 
         die;

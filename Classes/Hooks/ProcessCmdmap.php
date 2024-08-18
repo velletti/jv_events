@@ -57,18 +57,10 @@ class ProcessCmdmap {
 
 
     /**
-	 * Prevent deleting/moving of a news record if the editor doesn't have access to all categories of the news record
-	 *
-	 * @param string $command
-	 * @param string $table
-	 * @param int $id
-	 * @param mixed $value
-	 * @param mixed $Obj
-	 * @param mixed $pasteUpdate
-	 * @param mixed $pasteDatamap
-	 */
-
-	public function processCmdmap_postProcess(string $command, string $table, int $id, $value, $Obj, $pasteUpdate, $pasteDatamap) {
+  * Prevent deleting/moving of a news record if the editor doesn't have access to all categories of the news record
+  */
+ public function processCmdmap_postProcess(string $command, string $table, int $id, mixed $value, mixed $Obj, mixed $pasteUpdate, mixed $pasteDatamap) {
+        $row = [];
         if( is_object( $Obj )) {
             if ($table == 'tx_jvevents_domain_model_event') {
                 $this->command = $command;
@@ -100,7 +92,7 @@ class ProcessCmdmap {
                             $fields =  $extConf['resetFieldListAfterCopy']   ;
 
                             // default: setUnconfirmedSeats:0;setRegisteredSeats:0;setSalesForceEventId:"";setSalesForceSessionId:""
-                            $fieldsArray = explode(";" , trim($fields)  ) ;
+                            $fieldsArray = explode(";" , trim((string) $fields)  ) ;
                             if( is_array($fieldsArray)) {
                                 foreach ($fieldsArray as $value ) {
                                     $fieldsArraySub = explode(":" , trim($value)  ) ;
@@ -140,8 +132,8 @@ class ProcessCmdmap {
 
                             try {
                                 $this->eventRepository->update($this->event);
-                            } catch (IllegalObjectTypeException $e) {
-                            } catch (UnknownObjectException $e) {
+                            } catch (IllegalObjectTypeException) {
+                            } catch (UnknownObjectException) {
                                 // ignore
                             }
                             $persistenceManager->persistAll() ;

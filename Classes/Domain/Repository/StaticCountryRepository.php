@@ -39,7 +39,7 @@ class StaticCountryRepository extends BaseRepository {
 			->getQuerySettings()
 			->setRespectStoragePage(FALSE);
 
-		return $query->executeQuery();
+		return $query->execute();
 	}
 
 
@@ -56,6 +56,6 @@ class StaticCountryRepository extends BaseRepository {
 
 		$query->matching($query->in('cn_iso_2', $cnIso2));
 
-		return $query->executeQuery();
+		return $query->execute();
 	}
 }
