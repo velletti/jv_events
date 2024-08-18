@@ -993,7 +993,7 @@ class BaseController extends ActionController
 
         // TODo : think about a better solution how to manage that a user can be linked to more than one Organizer
         // actually it will not work
-        $organizer = $this->organizerRepository->findByUserAllpages( (int)$this->frontendUser->user['uid'] , FALSE )->getFirst() ;
+        $organizer = $this->organizerRepository->findByUserAllpages( (int)(int)$frontendUser->user['uid'] , FALSE )->getFirst() ;
         if ($organizer instanceof Organizer) {
             return $organizer ;
         }
