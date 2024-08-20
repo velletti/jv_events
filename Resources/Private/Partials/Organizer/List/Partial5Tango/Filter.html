@@ -1,41 +1,60 @@
 <f:if condition="{settings.ShowFilter} || {settings.HideEventListLink}">
+    <f:then>
+        <div class="filter organizer" xmlns:f="http://www.w3.org/1999/html">
+            <div class="hints clearfix row">
+                <p class="text-left col-auto" id="filter-organizer" >
 
-    <div class="filter organizer" xmlns:f="http://www.w3.org/1999/html">
-        <div class="hints clearfix row">
-            <p class="text-left col-auto" id="filter-organizer" >
+                    <button class="btn btn-secondary" data-target="#jv-events-filter-sub" role="button" data-toggle="collapse">
+                        <span class="fa fa-filter mh-sm"></span> <span class="jv-events-filter-sub-text"><f:translate key="tx_jvevents_event.filter.hint" /></span>
+                    </button>
 
-                <button class="btn btn-secondary" data-target="#jv-events-filter-sub" role="button" data-toggle="collapse">
-                    <span class="fa fa-filter mh-sm"></span> <span class="jv-events-filter-sub-text"><f:translate key="tx_jvevents_event.filter.hint" /></span>
-                </button>
-
-            </p>
-            <p class="text-left  col-auto" id="filter-reset-events"><a href="#"><span class="fa fa-trash mh-sm"></span> <span class="d-none d-sm-inline-block"><f:translate key="tx_jvevents_event.filter.reset" /></span></a></p>
-
-        </div>
-           <form class="clearfix" onsubmit="this.preventDefault();">
-               <div id="jv-events-filter-sub" class="fieldsets collapse">
-                <f:if condition="{f:count(subject: orgFilter.tags2)} > 1">
-                    <fieldset id="jv_events_fieldset_tags" class="fieldsettags p-0">
-                        <legend class="d-none"><f:translate key="tx_jvevents_domain_model_event.tags" /></legend>
-
-                        <div class="checkbox" id="jv_events_filter_tags">
-                            <f:for each="{orgFilter.tags2}" as="tag">
-                                <label>
-                                    <input type="checkbox" id="jv_events_filter_tag-{tag.id}" value="{tag.id}">{tag.title}
-                                </label>
-                            </f:for>
-                        </div>
-                    </fieldset>
-                </f:if>
+                </p>
+                <p class="text-left  col-auto" id="filter-reset-events"><a href="#"><span class="fa fa-trash mh-sm"></span> <span class="d-none d-sm-inline-block"><f:translate key="tx_jvevents_event.filter.reset" /></span></a></p>
 
             </div>
-        </form>
+            <form class="clearfix" onsubmit="this.preventDefault();">
+                <div id="jv-events-filter-sub" class="fieldsets collapse">
+                    <f:if condition="{f:count(subject: orgFilter.tags2)} > 1">
+                        <fieldset id="jv_events_fieldset_tags" class="fieldsettags p-0">
+                            <legend class="d-none"><f:translate key="tx_jvevents_domain_model_event.tags" /></legend>
 
-        <p class="filter-result-hint text-center hide" id="filter-result-hint-events">
-            <f:translate key="tx_jvevents_event.filter.resulthint" />
-            <span class="arrow"></span>
-        </p>
+                            <div class="checkbox" id="jv_events_filter_tags">
+                                <f:for each="{orgFilter.tags2}" as="tag">
+                                    <label>
+                                        <input type="checkbox" id="jv_events_filter_tag-{tag.id}" value="{tag.id}">{tag.title}
+                                    </label>
+                                </f:for>
+                            </div>
+                        </fieldset>
+                    </f:if>
+
+                </div>
+            </form>
+
+            <p class="filter-result-hint text-center hide" id="filter-result-hint-events">
+                <f:translate key="tx_jvevents_event.filter.resulthint" />
+                <span class="arrow"></span>
+            </p>
 
 
-    </div>
+        </div>
+    </f:then>
+    <f:else>
+        <f:form.textfield class="form-control" id="searchOrganizer" placeholder="search"></f:form.textfield>
+
+        <f:asset.script identifier="searchOrganizer">
+            $(document).ready(function () {
+                    $("#searchOrganizer").on("keyup", function () {
+                    var searchWord = this.value.toLowerCase();
+                    console.log(searchWord) ;
+                    $("div.jv-events-singleOrganizer").each(function () {
+                        var elementText = $(this).text().toLowerCase();
+                        var isMatch = elementText.indexOf(searchWord) > -1;
+
+                        $(this).toggleClass("d-none", !isMatch);
+                    });
+                });
+            });
+        </f:asset.script>
+    </f:else>
 </f:if>

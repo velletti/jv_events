@@ -54,7 +54,7 @@ class TagRepository extends BaseRepository
         if( ($type > -1 )) {
             if( isset( $filter['respectTagVisibility']) && $filter['respectTagVisibility'] == 1 ) {
                 $query->matching(
-                    $query->logicalAnd([$query->equals('type', $type), $query->equals('visibility', 0 )])
+                    $query->logicalAnd(...[$query->equals('type', $type), $query->equals('visibility', 0 )])
                 ) ;
             } else {
                 $query->matching(  $query->equals('type', $type)  ) ;
