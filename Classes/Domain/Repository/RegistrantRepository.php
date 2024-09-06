@@ -125,13 +125,13 @@ class RegistrantRepository extends BaseRepository
                 $additionalWhere = ' AND pid = ' . $pid  ;
             }
             if ( $settings['filter']['startDate'] < -20 ) {
-
-                $additionalWhere .= ' AND tstamp > ' . mktime( 0 , 0 , 0 , date("m") , intval( date("d") + $settings['filter']['startDate'] ) , date("y") ) ;
+                $startDateTemp = intval( intval(date("d")) + intval($settings['filter']['startDate'] )) ;
+                $additionalWhere .= ' AND tstamp > ' .  mktime( 0 , 0 , 0 , date("m") , $startDateTemp , date("y") ) ;;
             }
         } else {
             if ( $settings['filter']['startDate'] < -20 ) {
-
-                $additionalWhere = ' AND tstamp > ' . mktime( 0 , 0 , 0 , date("m") , intval( date("d") + $settings['filter']['startDate'] ) , date("y") ) ;
+                $startDateTemp = intval( intval(date("d")) + intval($settings['filter']['startDate'] )) ;
+                $additionalWhere = ' AND tstamp > ' .  mktime( 0 , 0 , 0 , date("m") , $startDateTemp , date("y") ) ;;
             }
         }
        // echo $additionalWhere ;
