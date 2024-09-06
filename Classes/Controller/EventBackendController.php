@@ -71,19 +71,22 @@ class EventBackendController extends BaseController
         $itemsPerPage = 20 ;
         $pageId = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
         $recursive = false ;
-
+        $debug[__LINE__] = "started " ;
         if( $this->request->hasArgument('recursive')) {
             $recursive = $this->request->getArgument('recursive') ;
-
+            $debug[__LINE__] = "recursive is true " ;
         }
         $onlyActual = -999 ;
-        if( $this->request->hasArgument('onlyActual')) {
+        if( $this->request->hasArgument('onlyActual') && $this->request->getArgument('onlyActual') ) {
             $onlyActual = $this->request->getArgument('onlyActual') ;
+            $debug[__LINE__] = "onlyActual is true " ;
 
         }
         if ( $recursive ) {
             $queryGenerator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\QueryGenerator::class);
             $this->settings['storagePids'] = $queryGenerator->getTreeList($pageId, 9999, 0, 1) ;
+            $debug[__LINE__] = "storagePids " . $this->settings['storagePids'] ;
+
         }
          $email = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('email');
         $this->settings['filter']['startDate']  = $onlyActual ;
@@ -116,16 +119,18 @@ class EventBackendController extends BaseController
         );
 
         if( $GLOBALS['BE_USER']->doesUserHaveAccess($pageRow , 1 ) ) {
-
+            $debug[__LINE__] = "User has access "  ;
             /**
              * @var $queryGenerator \TYPO3\CMS\Core\Database\QueryGenerator
              */
 
             $eventIds = $this->registrantRepository->findEventsByFilter($email , $pageId , $this->settings  ) ;
+            $debug[__LINE__] = "event Count  " . count($eventIds) ;
             if( count($eventIds) > 0 ) {
                 // $events[] = array( "0" => "-" ) ;
+                $events = [] ;
                 foreach ($eventIds as $key => $eventId ) {
-                    $event = $this->eventRepository->findByUidAllpages($eventId) ;
+                    $event = $this->eventRepository->findByUidAllpages($eventId  ) ;
                     if( is_array($event)) {
                         if(  $event[0] instanceof  \JVE\JvEvents\Domain\Model\Event )  {
                             $location = '' ;
@@ -148,8 +153,6 @@ class EventBackendController extends BaseController
 
                 }
             }
-
-
             $this->view->assign('event', $eventID );
             $this->view->assign('itemsPerPage', $itemsPerPage );
             $this->view->assign('events', $events);
@@ -158,8 +161,10 @@ class EventBackendController extends BaseController
             $this->view->assign('onlyActual', $onlyActual  );
             $this->view->assign('recursive', $recursive );
             $this->view->assign('pageId', $pageId );
+            $this->view->assign('debug', $debug );
         } else {
             die("You do not have Access to page " .$pageId ) ;
+
         }
 
 

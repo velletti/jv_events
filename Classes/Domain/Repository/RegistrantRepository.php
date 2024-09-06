@@ -114,31 +114,33 @@ class RegistrantRepository extends \JVE\JvEvents\Domain\Repository\BaseRepositor
         $pageIds = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode( "," , $settings['storagePids'], true)  ;
 
         if ( $pid > 0  || count($pageIds) > 0 ) {
-
-
             if ( count($pageIds) > 0 ) {
                 $additionalWhere = ' AND find_in_set( pid , "' .  $settings['storagePids'] . '" ) '  ;
             } else {
                 $additionalWhere = ' AND pid = ' . $pid  ;
             }
             if ( $settings['filter']['startDate'] < -20 ) {
-
-                $additionalWhere .= ' AND tstamp > ' . mktime( 0 , 0 , 0 , date("m") , intval( date("d") + $settings['filter']['startDate'] ) , date("y") ) ;
+                $startDateTemp = intval( intval(date("d")) + intval($settings['filter']['startDate'] )) ;
+                $additionalWhere .= ' AND tstamp > ' .  mktime( 0 , 0 , 0 , date("m") , $startDateTemp , date("y") ) ;;
             }
         } else {
             if ( $settings['filter']['startDate'] < -20 ) {
-
-                $additionalWhere = ' AND tstamp > ' . mktime( 0 , 0 , 0 , date("m") , intval( date("d") + $settings['filter']['startDate'] ) , date("y") ) ;
+                $startDateTemp = intval( intval(date("d")) + intval($settings['filter']['startDate'] )) ;
+                $additionalWhere = ' AND tstamp > ' .  mktime( 0 , 0 , 0 , date("m") , $startDateTemp , date("y") ) ;;
             }
         }
-       // echo $additionalWhere ;
-       // die;
         $query->statement('SELECT event from tx_jvevents_domain_model_registrant where deleted = 0 ' . $additionalWhere . ' Group By event ');
         $regevents = $query->execute(true) ;
-        // var_dump($regevents) ;
         $result = array()  ;
-       foreach ( $regevents as $next ) {
+        foreach ( $regevents as $next ) {
             $result[] = $next['event'] ;
+        }
+        if ( 1==2 ) {
+            echo "Query : <br> SELECT event from tx_jvevents_domain_model_registrant where deleted = 0 " . $additionalWhere .  ' Group By event ';
+            echo "<br>Count: <br>" . count($regevents  ) ;
+            echo "<br>startDate: <br>" . $settings['filter']['startDate'] ;
+            echo "<br><br>Result: <br>" . var_export($regevents , true ) ;
+            die;
         }
         return $result;
     }
