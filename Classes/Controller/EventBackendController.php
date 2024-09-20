@@ -90,7 +90,7 @@ class EventBackendController extends BaseController
 
         }
         $onlyActual = -999 ;
-        if( $this->request->hasArgument('onlyActual')) {
+        if( $this->request->hasArgument('onlyActual') && $this->request->getArgument('onlyActual') ) {
             $onlyActual = $this->request->getArgument('onlyActual') ;
 
         }
