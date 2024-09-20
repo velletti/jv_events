@@ -176,8 +176,11 @@ class JvePluginUpgradeWizard implements UpgradeWizardInterface
     public function performMigration(): bool
     {
         $records = $this->getMigrationRecords();
-        if (  str_starts_with(  $_SERVER['argv'][3] , "-v" )) {
+        if ( isset($_SERVER['argv'][3] ) && str_starts_with(  (string)$_SERVER['argv'][3] , "-v" )) {
             $this->verboseLevel = 64 ;
+        }
+        if ( isset($_SERVER['argv'][3] ) && str_starts_with(  (string)$_SERVER['argv'][3] , "-vv" )) {
+            $this->verboseLevel = 128 ;
         }
         $this->setSinglePids( $records ) ;
         $this->debugOutput( 32,  "\nSinglePids:" . implode( "," , $this->singlePids  ) ) ;
