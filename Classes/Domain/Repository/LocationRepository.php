@@ -98,7 +98,7 @@ class LocationRepository extends BaseRepository
             $actualTime = new \DateTime('now' ) ;
             $actualTime->modify($lastModified ) ;
 
-            $constraints[] = $query->logicalOr([$query->greaterThanOrEqual('tstamp', $actualTime ), $query->greaterThanOrEqual('latest_event', $actualTime )]);
+            $constraints[] = $query->logicalOr(...[$query->greaterThanOrEqual('tstamp', $actualTime ), $query->greaterThanOrEqual('latest_event', $actualTime )]);
         }
         if (count($constraints) === 1) {
             $query->matching(reset($constraints));
