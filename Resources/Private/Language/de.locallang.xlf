@@ -637,7 +637,8 @@
             </trans-unit>
             <trans-unit id="create.location.contact_warning">
                 <source>Need a different contact info for this location? if not leave the next 3 fields empty</source>
-                <target>Wenn die nachfolgenden Felder leer gelassen werden, werden deine normalen Kontaktdaten angezeigt. Ansonsten kanst du diese Felder nutzen, um z.b. die Telefonnummer der Abendkasse anstatt deiner anzuzeigen.<br><br>
+                <target>Wenn die nachfolgenden Felder leer gelassen werden, werden deine normalen Kontaktdaten angezeigt. Ansonsten kanst du diese Felder nutzen, um z.b. die Telefonnummer der Abendkasse anstatt deiner anzuzeigen.
+
                 Um einzelne Infos gar nicht anzuzeigen, bitte ein Minuszeichens <b>(-)</b> eingeben.</target>
             </trans-unit>
             <trans-unit id="tx_jvevents_domain_model_location.lng" approved="yes">

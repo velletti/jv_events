@@ -518,7 +518,8 @@
                 <source>Link</source>
             </trans-unit>
             <trans-unit id="create.location.contact_warning">
-                <source>Need a different contact info for this location? Maybe helpful to show a different phone number.<br><br>
+                <source>Need a different contact info for this location? Maybe helpful to show a different phone number.
+
                 If not needed, leave the next 3 fields empty and your normal contact data is shown.
                 Or enter a minus char <b>(-)</b> to suppress this entry.</source>
             </trans-unit>
