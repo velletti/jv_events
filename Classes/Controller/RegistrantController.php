@@ -79,7 +79,7 @@ class RegistrantController extends BaseController
      * @return void
      */
     #[IgnoreValidation(['value' => 'event'])]
-    public function listAction(Event $event, $hash  ): ResponseInterface
+    public function listAction(Event $event, ?string $hash = ''  ): ResponseInterface
     {
         // toDo add restrictions to listing ... only for admins or the organizer himself ..
 

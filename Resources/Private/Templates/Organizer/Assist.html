@@ -212,9 +212,10 @@
 
 <f:section name="notOrganizerYet">
     <div class="alert alert-warning">
-        <h3>Account Status: <span class="far fa-square"> </span> <span>Pending</span></h3>
+        <h3>Status: User <span class="far fa-check-square" titel="OK - aktiv"> </span> | <f:translate key="tx_jvevents_domain_model_event.organizer"></f:translate>: <span class="far fa-square" title="Pending"> </span> </h3>
         <p>
-            Dein User Account ist noch nicht als Veranstalter freigeschaltet. <br>
+            <f:translate key="create.user.account.active.headline"></f:translate>, <f:translate key="create.organizer.account.notactive.headline"></f:translate>
+            <br>
 
             <br>
             <f:render section="createButton" arguments="{_all}"></f:render>
@@ -287,7 +288,7 @@
         <div class="progress-bar bg-success" role="progressbar" style="width: 95%" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"><f:translate key="LLL:EXT:jve_template/Resources/Private/Language/locallang.xlf:step" /> 5 / 5 </div>
     </div>
     <div class="alert alert-warning mt-4 ">
-        <h3>Organizer Status: <span class="far fa-square"> </span> <span>inactiv</span></h3>
+        <h3>Organizer Status: <span class="far fa-square"> </span> <span>inactiv</span> <span class="small position-right mr-3">( User Status <span class="far fa-check-square" titel="OK - aktiv"> </span> )</span></h3>
         <p>
             <f:translate key="create.organizer.account.notactive.headline">Your Organizer Account is not activated!</f:translate><br>
             <br>

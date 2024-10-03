@@ -425,7 +425,7 @@ class EventController extends BaseController
      * @return void
      */
     #[IgnoreValidation(['value' => 'event'])]
-    public function editAction(Event $event , $copy2Day=0 , $amount=0 ): ResponseInterface
+    public function editAction(Event $event , ?int $copy2Day=0 , ?int $amount=0 ): ResponseInterface
     {
 
         $filter = [];

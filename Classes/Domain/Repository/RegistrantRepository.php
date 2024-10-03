@@ -63,7 +63,6 @@ class RegistrantRepository extends BaseRepository
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		$query->getQuerySettings()->setRespectSysLanguage(FALSE);
         $query->getQuerySettings()->setLanguageOverlayMode(FALSE) ;
-        $query->getQuerySettings()->setLanguageMode('content_fallback') ;
 
 		// $query->getQuerySettings()->setIgnoreEnableFields(TRUE) ;
 
@@ -178,8 +177,6 @@ class RegistrantRepository extends BaseRepository
         $query->getQuerySettings()->setRespectSysLanguage(FALSE);
         $query->getQuerySettings()->setIgnoreEnableFields(TRUE) ;
         $query->getQuerySettings()->setLanguageOverlayMode(FALSE) ;
-
-        $query->getQuerySettings()->setLanguageMode('content_fallback') ;
 
         $query->setOrderings($orderings) ;
 

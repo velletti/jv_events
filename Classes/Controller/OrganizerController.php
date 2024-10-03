@@ -13,12 +13,14 @@ use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use JVelletti\JvEvents\Domain\Repository\FrontendUserRepository;
 use JVelletti\JvEvents\Domain\Model\FrontendUser;
-use TYPO3\CMS\Extbase\Domain\Repository\FrontendUserGroupRepository;
+use JVelletti\JvEvents\Domain\Model\FrontendUserGroup;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
 use JVelletti\JvEvents\Domain\Model\Tag;
 use JVelletti\JvEvents\Utility\SlugUtility;
 use JVelletti\JvEvents\Utility\TokenUtility;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
+
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -231,7 +233,7 @@ class OrganizerController extends BaseController
             $this->view->assign('organizer', $organizer);
             $this->view->assign('locations', $locations);
         } else {
-            $this->addFlashMessage($this->translate("error.general.entry_not_found"), "Sorry!" , AbstractMessage::WARNING) ;
+            $this->addFlashMessage($this->translate("error.general.entry_not_found"), "Sorry!" , \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING) ;
         }
         return $this->htmlResponse();
 
@@ -308,10 +310,10 @@ class OrganizerController extends BaseController
 
                 $this->cacheService->clearPageCache( [$this->settings['pageIds']['organizerAssist']]  );
                 if( $organizer->getUid()) {
-                    $this->addFlashMessage('The Organizer was created with ID:' . $organizer->getUid() , '', AbstractMessage::OK);
+                    $this->addFlashMessage('The Organizer was created with ID:' . $organizer->getUid() , '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK);
 
                 } else {
-                    $this->addFlashMessage('Error: Organizer did not get an ID:' , '', AbstractMessage::WARNING);
+                    $this->addFlashMessage('Error: Organizer did not get an ID:' , '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING);
                 }
             }
 
@@ -336,12 +338,12 @@ class OrganizerController extends BaseController
             $url .= "&tx_jvevents_ajax[hmac]=" . $hmac ;
             */
 
-            $url .= "/de/admin/assist.html?tx_jvevents_organizer[action]=activate&tx_jvevents_organizer[controller]=Organizer" ;
+            $url .= "/de/admin/assist.html?tx_jvevents_assist[action]=activate&tx_jvevents_assist[controller]=Organizer" ;
 
-            $url .= "&tx_jvevents_organizer[organizerUid]=" . $organizerUid ;
-            $url .= "&tx_jvevents_organizer[userUid]=" . $userUid ;
-            $url .= "&tx_jvevents_organizer[rnd]=" . $rnd ;
-            $url .= "&tx_jvevents_organizer[hmac]=" . $hmac ;
+            $url .= "&tx_jvevents_assist[organizerUid]=" . $organizerUid ;
+            $url .= "&tx_jvevents_assist[userUid]=" . $userUid ;
+            $url .= "&tx_jvevents_assist[rnd]=" . $rnd ;
+            $url .= "&tx_jvevents_assist[hmac]=" . $hmac ;
 
             $msg = "A new organizer has registered:" ;
             $msg .= "\n\n" . "Name: " . $organizer->getName() ;
@@ -379,7 +381,7 @@ class OrganizerController extends BaseController
         } else {
             $this->getFlashMessageQueue()->getAllMessagesAndFlush();
 
-            $this->addFlashMessage('You do not have access rights to create own Organizer data.'  , '', AbstractMessage::WARNING);
+            $this->addFlashMessage('You do not have access rights to create own Organizer data.'  , '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING);
         }
 
         return $this->redirect('assist' , NULL, Null , NULL , $this->settings['pageIds']['organizerAssist'] );
@@ -422,9 +424,8 @@ class OrganizerController extends BaseController
         /** @var FrontendUser $user */
         $user = $userRepository->findByUid($userUid) ;
 
-
         if( !$organizer  ) {
-            $this->addFlashMessage("Organizer not found by ID : " . $organizerUid , "" , AbstractMessage::WARNING) ;
+            $this->addFlashMessage("Organizer not found by ID : " . $organizerUid , "" , \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING) ;
             try {
                 return $this->redirect('assist' , "Organizer", Null , NULL , $this->settings['pageIds']['organizerAssist'] );
             } catch(StopActionException $e) {
@@ -437,7 +438,7 @@ class OrganizerController extends BaseController
             }
         }
         if( !$user ) {
-            $this->addFlashMessage("User not found by ID : " . $userUid , "" , AbstractMessage::WARNING) ;
+            $this->addFlashMessage("User not found by ID : " . $userUid , "" , \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING) ;
             try {
                 return $this->redirect('assist' , "Organizer", Null , NULL , $this->settings['pageIds']['organizerAssist'] );
             } catch(StopActionException $e) {
@@ -463,7 +464,7 @@ class OrganizerController extends BaseController
                 echo "<br>Gives: " . $tokenId ;
                 die;
             }
-            $this->addFlashMessage("Hmac does not fit to: " . $tokenStr , "ERROR" , AbstractMessage::ERROR) ;
+            $this->addFlashMessage("Hmac does not fit to: " . $tokenStr , "ERROR" , \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR) ;
             try {
                 return $this->redirect('assist' , "Organizer", Null , NULL , $this->settings['pageIds']['organizerAssist'] );
             } catch(StopActionException $e) {
@@ -485,9 +486,8 @@ class OrganizerController extends BaseController
         } else {
             $groupsMissing = [2 => TRUE, 7 => TRUE] ;
         }
-
         if(is_array( $groups)) {
-            /** @var \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup $group */
+            /** @var \JVelletti\JvEvents\Domain\Model\FrontendUserGroup $group */
             foreach ($groups as $group) {
                 foreach ($groupsMissing as $key => $item) {
                     if ( $group->getUid() == $key ) {
@@ -500,9 +500,9 @@ class OrganizerController extends BaseController
         $msg = '' ;
         foreach ($groupsMissing as $key => $item) {
             if ( $item  ) {
-                /** @var \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserGroupRepository $userGroupRepository */
-                $userGroupRepository = GeneralUtility::makeInstance(FrontendUserGroupRepository::class) ;
-                $newGroup = $userGroupRepository->findByUid($key) ;
+                /** @var FrontendUserGroup $newGroup */
+                $newGroup = GeneralUtility::makeInstance(FrontendUserGroup::class) ;
+                $newGroup->setUid($key) ;
                 if( $newGroup ) {
                     if ( $msg == '' ) {
                         $msg .= " Added Group: " . $newGroup->getUId() ;
@@ -515,14 +515,14 @@ class OrganizerController extends BaseController
             }
 
         }
-        $user->setDisable(0) ;
+
         $userRepository->update( $user ) ;
 
         $organizer->setHidden(0) ;
         $this->organizerRepository->update( $organizer) ;
         $this->persistenceManager->persistAll() ;
-        $this->addFlashMessage("User : " . $userUid . " (" . $user->getEmail() . ") enabled | " . $msg . "  " , "Success" , AbstractMessage::OK) ;
-        $this->addFlashMessage("Organizer : " . $organizerUid . " (" . $organizer->getName() . ")  enabled " , AbstractMessage::OK) ;
+        $this->addFlashMessage("User : " . $userUid . " (" . $user->getEmail() . ") enabled as organizer | " . $msg . "  " , "Success" , \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK) ;
+        $this->addFlashMessage("Organizer : " . $organizerUid . " (" . $organizer->getName() . ")  enabled " , \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK) ;
 
 
         $msg = "\n *********************************************** " ;
@@ -580,7 +580,7 @@ class OrganizerController extends BaseController
         if ( ! $this->hasUserAccess($organizer )) {
             $this->getFlashMessageQueue()->getAllMessagesAndFlush();
 
-            $this->addFlashMessage('No access.', '', AbstractMessage::ERROR);
+            $this->addFlashMessage('No access.', '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR);
             $this->view->assign('noAccess', TRUE );
         } else {
             /** @var QueryResultInterface $categories */
@@ -606,11 +606,11 @@ class OrganizerController extends BaseController
             $this->getFlashMessageQueue()->getAllMessagesAndFlush();
             $organizer = $this->cleanOrganizerArguments( $organizer ) ;
             $this->organizerRepository->update($organizer);
-            $this->addFlashMessage('The object was updated.', '', AbstractMessage::OK);
+            $this->addFlashMessage('The object was updated.', '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK);
         } else {
             $this->getFlashMessageQueue()->getAllMessagesAndFlush();
 
-            $this->addFlashMessage('You do not have access rights to change this data.' . $organizer->getUid() , '', AbstractMessage::WARNING);
+            $this->addFlashMessage('You do not have access rights to change this data.' . $organizer->getUid() , '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING);
         }
 
         $this->showNoDomainMxError($organizer->getEmail() ) ;
@@ -625,7 +625,7 @@ class OrganizerController extends BaseController
      */
     public function deleteAction(Organizer $organizer)
     {
-        $this->addFlashMessage('The object was NOT deleted. this feature is not implemented yet', 'Unfinished Feature', AbstractMessage::ERROR);
+        $this->addFlashMessage('The object was NOT deleted. this feature is not implemented yet', 'Unfinished Feature', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR);
      //   $this->organizerRepository->remove($organizer);
         return $this->redirect('assist' , NULL, Null , NULL , $this->settings['pageIds']['organizerAssist']);
     }

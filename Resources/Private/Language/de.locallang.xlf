@@ -637,8 +637,8 @@
             </trans-unit>
             <trans-unit id="create.location.contact_warning">
                 <source>Need a different contact info for this location? if not leave the next 3 fields empty</source>
-                <target>Wenn die nachfolgenden Felder leer gelassen werden, werden deine normalen Kontaktdaten angezeigt. Dies ist z. B. sinnvoll, um die Telefonnummer der Abendkasse anstatt deiner anzuzeigen.
-                Oder ein Minuszeichens (-) eingeben, um z.b. keine E-Mail Adresse anzuzeigen.</target>
+                <target>Wenn die nachfolgenden Felder leer gelassen werden, werden deine normalen Kontaktdaten angezeigt. Ansonsten kanst du diese Felder nutzen, um z.b. die Telefonnummer der Abendkasse anstatt deiner anzuzeigen.<br><br>
+                Um einzelne Infos gar nicht anzuzeigen, bitte ein Minuszeichens <b>(-)</b> eingeben.</target>
             </trans-unit>
             <trans-unit id="tx_jvevents_domain_model_location.lng" approved="yes">
                 <source>Lng</source>
@@ -1030,9 +1030,13 @@
                 <source>Your Organizer Account is not activated!</source>
                 <target>Der Account ist nicht als Veranstalter aktiviert!</target>
             </trans-unit>
+            <trans-unit id="create.user.account.active.headline">
+               <source>Your user Account is activated!</source>
+               <target>Dein User Account ist aktiviert!</target>
+           </trans-unit>
             <trans-unit id="create.organizer.account.notactive.helptext1">
                 <source>Before you can add your Events, we have to check and activate your Organizer status.</source>
-                <target>Bevor Du Termine eintragen, muss Dein Account freigeschaltet werden.</target>
+                <target>Bevor Du Termine eintragen, musst Du als Veranstalter freigeschaltet werden.</target>
             </trans-unit>
              <trans-unit id="create.organizer.account.notactive.helptext2">
                 <source>Check of new organzers is normaly done within 2 days. If this takes more time, please be patient.</source>

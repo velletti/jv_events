@@ -518,8 +518,9 @@
                 <source>Link</source>
             </trans-unit>
             <trans-unit id="create.location.contact_warning">
-                <source>Need a different contact info for this location? If not, leave the next 3 fields empty. But maybe helpful to show a different phone number.
-                Or enter a minus char (-) to suppress this entry.</source>
+                <source>Need a different contact info for this location? Maybe helpful to show a different phone number.<br><br>
+                If not needed, leave the next 3 fields empty and your normal contact data is shown.
+                Or enter a minus char <b>(-)</b> to suppress this entry.</source>
             </trans-unit>
             <trans-unit id="location.geocode.error">
                 <source>The position on the map could not be determined.
@@ -844,6 +845,9 @@
             </trans-unit>
             <trans-unit id="create.organizer.create.Headline">
                <source>Want to become an Organizer?</source>
+           </trans-unit>
+           <trans-unit id="create.user.account.active.headline">
+               <source>Your user Account is activated!</source>
            </trans-unit>
             <trans-unit id="create.organizer.account.notactive.headline">
                 <source>Your Organizer Account is not activated!</source>

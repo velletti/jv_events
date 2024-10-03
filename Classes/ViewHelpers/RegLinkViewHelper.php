@@ -182,11 +182,12 @@ class RegLinkViewHelper extends AbstractTagBasedViewHelper
 
         }
 
-        $configuration['additionalParams'] = '&tx_jvevents_events[event]=' . ($event->getUid() );
-        $configuration['additionalParams'] .= '&tx_jvevents_events[eventTitle]=' . urlencode( $catTitles . $event->getName() );
-        $configuration['additionalParams'] .= '&tx_jvevents_events[controller]=Registrant' . '&tx_jvevents_events[action]=new';
+        $configuration['additionalParams'] = '&tx_jvevents_registrant[event]=' . ($event->getUid() );
+        $configuration['additionalParams'] .= '&tx_jvevents_registrant[eventTitle]=' . urlencode( $catTitles . $event->getName() );
+        $configuration['additionalParams'] .= '&tx_jvevents_registrant[controller]=Registrant'
+                                            . '&tx_jvevents_registrant[action]=new';
 
-        $configuration['additionalParams'] .= '&tx_jvevents_events[date]=' . $event->getStartDate()->format( $settings['link']['dateFormat']  );
+        $configuration['additionalParams'] .= '&tx_jvevents_registrant[date]=' . $event->getStartDate()->format( $settings['link']['dateFormat']  );
 
         return $configuration;
     }

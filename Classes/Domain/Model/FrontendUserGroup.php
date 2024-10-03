@@ -128,4 +128,9 @@ class FrontendUserGroup extends AbstractEntity
     {
         return $this->subgroup;
     }
+
+    public function setUid(int $uid): void
+    {
+        $this->uid = $uid;
+    }
 }

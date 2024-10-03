@@ -647,15 +647,8 @@ class BaseController extends ActionController
         // create another instance of Fluid
         /** @var StandaloneView $renderer */
         $renderer = GeneralUtility::makeInstance(StandaloneView::class);
-
-
-
-        // set the controller context
-        $controllerContext = $this->buildControllerContext();
-
-        $controllerContext->setRequest($this->request);
-       // $controllerContext->getRequest()->setControllerActionName("Create") ;
-        $renderer->setControllerContext($controllerContext);
+        // set the request directly on the renderer
+        $renderer->setRequest($this->request);
 
         // override the template path with individual settings in TypoScript
         $extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
@@ -663,7 +656,7 @@ class BaseController extends ActionController
         if (isset($extbaseFrameworkConfiguration['view']['partialRootPaths']) && is_array($extbaseFrameworkConfiguration['view']['partialFilesRootPaths']) ) {
             $partialPaths = $extbaseFrameworkConfiguration['view']['partialFilesRootPaths'];
         } else {
-            $partialPaths = [0 => GeneralUtility::getFileAbsFileName( "typo3conf/ext/jv_events/Resources/Private/Partials" )] ;
+            $partialPaths = [0 => GeneralUtility::getFileAbsFileName( "EXT:jv_events/Resources/Private/Partials" )] ;
         }
         if (isset($extbaseFrameworkConfiguration['view']['layoutRootPaths']) && is_array($extbaseFrameworkConfiguration['view']['layoutRootPaths'])) {
             $layoutPaths = $extbaseFrameworkConfiguration['view']['layoutRootPaths'];
@@ -680,7 +673,7 @@ class BaseController extends ActionController
 			if (isset($extbaseFrameworkConfiguration['view']['templateRootPath']) && strlen((string) $extbaseFrameworkConfiguration['view']['templateRootPath']) > 0) {
 				$templatePath = GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['view']['templateRootPath'][0]);
             } else {
-                $templatePath =   GeneralUtility::getFileAbsFileName( "typo3conf/ext/jv_events/Resources/Private/Templates" );
+                $templatePath =   GeneralUtility::getFileAbsFileName( "EXT:jv_events/Resources/Private/Templates" );
             }
         }
 
