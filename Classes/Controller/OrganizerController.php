@@ -522,7 +522,7 @@ class OrganizerController extends BaseController
         $this->organizerRepository->update( $organizer) ;
         $this->persistenceManager->persistAll() ;
         $this->addFlashMessage("User : " . $userUid . " (" . $user->getEmail() . ") enabled as organizer | " . $msg . "  " , "Success" , \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK) ;
-        $this->addFlashMessage("Organizer : " . $organizerUid . " (" . $organizer->getName() . ")  enabled " , \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK) ;
+        $this->addFlashMessage("Organizer : " . $organizerUid . " (" . $organizer->getName() . ")  enabled " , "Success" ,\TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK) ;
 
 
         $msg = "\n *********************************************** " ;
