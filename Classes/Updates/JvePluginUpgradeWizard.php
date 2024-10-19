@@ -303,6 +303,13 @@ class JvePluginUpgradeWizard implements UpgradeWizardInterface
     protected function getTargetListType(array $ff , int $pid ): string
     {
         $this->debugOutput( 33,  "\nPid:" . $pid. " - value: " . $ff['switchableControllerActions'] ) ;
+        if ( isset( $ff['settings.v12pluginName'] )) {
+            return $ff['settings.v12pluginName'] ;
+        }
+        if ( isset( $ff['settings']['v12pluginName'] )) {
+            return $ff['settings']['v12pluginName'] ;
+        }
+
         foreach (self::MIGRATION_SETTINGS as $setting) {
 
             if (    str_replace( ";" , "" , $setting['switchableControllerActions'] )

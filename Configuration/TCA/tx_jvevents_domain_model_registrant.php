@@ -32,7 +32,7 @@ return array(
 		'label_alt_force' => TRUE ,
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
-		'versioningWS' => TRUE,
+		'versioningWS' => false,
 
 		'languageField' => 'sys_language_uid',
 		'transOrigPointerField' => 'l10n_parent',

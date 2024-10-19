@@ -36,7 +36,7 @@ $return = array(
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',
 		'sortby' => 'sorting',
-		'versioningWS' => TRUE,
+		'versioningWS' => false,
 
 		'languageField' => 'sys_language_uid',
 		'transOrigPointerField' => 'l10n_parent',

@@ -34,7 +34,7 @@ $returnArray = array(
 		'cruser_id' => 'cruser_id',
 		'sortby' => 'sorting',
         'default_sortby' => 'crdate DESC',
-		'versioningWS' => TRUE,
+		'versioningWS' => false,
 
 		'languageField' => 'sys_language_uid',
 		'transOrigPointerField' => 'l10n_parent',

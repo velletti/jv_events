@@ -82,8 +82,8 @@ class EventRepository extends BaseRepository
     public function findByFilter($filter = false, $limit = false, $settings=false )
     {
 		$constraintsTop = [];
-  $constraintsOrg = [];
-  $configuration = EmConfigurationUtility::getEmConf();
+        $constraintsOrg = [];
+        $configuration = EmConfigurationUtility::getEmConf();
         if ( is_array($filter)) {
             $settings['filter'] = $filter ;
         }
