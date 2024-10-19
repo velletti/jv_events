@@ -23,6 +23,23 @@
 							</config>
 						</TCEforms>
 					</switchableControllerActions>
+					<settings.v12pluginName>
+						<TCEforms>
+							<label>Prepare Upgrade V12</label>
+							<config>
+								<default>jvevents_curl</default>
+								<type>select</type>
+								<renderType>selectSingle</renderType>
+								<items>
+									<numIndex index="10">
+										<numIndex index="0">Get Events from other URLS</numIndex>
+										<numIndex index="1">jvevents_curl</numIndex>
+									</numIndex>
+
+								</items>
+							</config>
+						</TCEforms>
+					</settings.v12pluginName>
 					<settings.externalUrl>
 						<TCEforms>
 							<label>External URLs:</label>

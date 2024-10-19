@@ -43,6 +43,64 @@
 							</config>
 						</TCEforms>
 					</switchableControllerActions>
+					<settings.v12pluginName>
+						<TCEforms>
+							<label>Prepare Upgrade V12</label>
+
+							<config>
+								<type>select</type>
+								<renderType>selectSingle</renderType>
+								<items>
+
+									<numIndex index="0">
+										<numIndex index="0">Unused in V11, neededfor upgrade to v12</numIndex>
+										<numIndex index="1"></numIndex>
+									</numIndex>
+									<numIndex index="1">
+										<numIndex index="0">Event Liste</numIndex>
+										<numIndex index="1">jvevents_events</numIndex>
+									</numIndex>
+									<numIndex index="2">
+										<numIndex index="0">Einzelnes Event</numIndex>
+										<numIndex index="1">jvevents_event</numIndex>
+									</numIndex>
+									<numIndex index="3">
+										<numIndex index="0">Organizer List</numIndex>
+										<numIndex index="1">jvevents_organizers</numIndex>
+									</numIndex>
+									<numIndex index="4">
+										<numIndex index="0">Einzelner Organizer</numIndex>
+										<numIndex index="1">jvevents_organizer</numIndex>
+									</numIndex>
+									<numIndex index="5">
+										<numIndex index="0">Organizer Assistent</numIndex>
+										<numIndex index="1">jvevents_assist</numIndex>
+									</numIndex>
+									<numIndex index="6">
+										<numIndex index="0">Location List</numIndex>
+										<numIndex index="1">jvevents_locations</numIndex>
+									</numIndex>
+									<numIndex index="7">
+										<numIndex index="0">Einzelne Location</numIndex>
+										<numIndex index="1">jvevents_location</numIndex>
+									</numIndex>
+									<numIndex index="8">
+										<numIndex index="0">Registration</numIndex>
+										<numIndex index="1">jvevents_registrant</numIndex>
+									</numIndex>
+									<numIndex index="9">
+										<numIndex index="0">Search</numIndex>
+										<numIndex index="1">jvevents_search</numIndex>
+									</numIndex>
+									<numIndex index="10">
+										<numIndex index="0">Get Events from other URLS</numIndex>
+										<numIndex index="1">jvevents_curl</numIndex>
+									</numIndex>
+
+								</items>
+							</config>
+						</TCEforms>
+					</settings.v12pluginName>
 					<settings.defaultOrganizerAction>
 						<TCEforms>
 							<label>Select function</label>
