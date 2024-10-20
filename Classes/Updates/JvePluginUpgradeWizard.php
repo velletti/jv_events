@@ -29,6 +29,14 @@ class JvePluginUpgradeWizard implements UpgradeWizardInterface
 {
 
     private const MIGRATION_SETTINGS = [
+
+        [
+            'switchableControllerActions' => 'Curl->externalEvents',
+            'targetListType' => 'jvevents_curl',
+            'defaultOrganizerAction' => '',
+            'single' => false ,
+            'register' => false ,
+        ],
         [
             'switchableControllerActions' => 'Event->list;Event->search',
             'targetListType' => 'jvevents_events',
@@ -187,6 +195,7 @@ class JvePluginUpgradeWizard implements UpgradeWizardInterface
 
         $this->setRegisterPids( ) ;
         $this->debugOutput( 32,  "\nRegisterPids:" . implode( "," ,  $this->registerPids ) ) ;
+        $this->debugOutput( 32,  "\n..." ) ;
 
         // Initialize the global $LANG object if it does not exist.
         // This is needed by the ext:form flexforms hook in Core v11
@@ -195,6 +204,7 @@ class JvePluginUpgradeWizard implements UpgradeWizardInterface
         $skippedRows = 0 ;
         foreach ($records as $record) {
             $flexForm = $this->flexFormService->convertFlexFormContentToArray($record['pi_flexform']);
+
             $targetListType = $this->getTargetListType($flexForm ?? '' , $record['pid']);
 
             $targetListType = $this->eventDispatcher->dispatch(new PluginUpdaterListTypeEvent($flexForm, $record, $targetListType))->getListType();
@@ -316,14 +326,14 @@ class JvePluginUpgradeWizard implements UpgradeWizardInterface
                 === str_replace( ";" , "" , $ff['switchableControllerActions'] )
             ) {
                 // first check if EVENT  Registration Form Page.
-                $this->debugOutput( 33,  "test: " . $setting['targetListType'] . ($setting['register'] ? " | is Register" : '' ) ) ;
+                $this->debugOutput( 33,  "First test: is register page? " . $setting['targetListType'] . ($setting['register'] ? " | is Register" : '' ) ) ;
                 if ( in_array($pid , $this->registerPids ) && $setting['register']) {
                     if ( trim( (string)$setting['defaultControllerActions'])=== trim((string)$ff['defaultControllerActions'] ))
                     {
                         return $setting['targetListType'];
                     }
                 } else {
-                    $this->debugOutput( 33,  "PID: " . $pid . " not in " . implode( "," , $this->registerPids) ) ;
+                    $this->debugOutput( 33,  "PID: " . $pid . " not in List of Register PIDs : " . implode( "," , $this->registerPids) ) ;
 
                     // Second check if EVENT / Location / Organizer Single Page.
                     if ( $setting['single'] ) {

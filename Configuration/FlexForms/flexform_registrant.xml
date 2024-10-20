@@ -21,6 +21,14 @@
                             </parameters>
                         </config>
                     </settings.LayoutList>
+                    <settings.v12pluginName>
+                        <label>
+                            Obsolete: v12pluginName
+                        </label>
+                        <config>
+                            <type>input</type>
+                        </config>
+                    </settings.v12pluginName>
 
                 </el>
             </ROOT>

@@ -1129,7 +1129,7 @@ class EventController extends BaseController
         $event->setEndTime( $endT ) ;
 
         $desc = str_replace( ["\n", "\r", "\t"], [" ", "", " "], (string) $eventArray['description'] ) ;
-        $desc = strip_tags($desc , "<p><br><a><i><strong><h2><h3>") ;
+        $desc = strip_tags($desc , "<p><br><a><i><strong><h2><h3><ol><li><ul>") ;
 
         $event->setDescription( $desc ) ;
         $desc = str_replace( ["\r", "\t"], ["", " "], (string) $eventArray['introtextRegistrant'] ) ;
