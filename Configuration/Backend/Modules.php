@@ -7,52 +7,24 @@
  * LICENSE file that was distributed with this source code.
  */
 
-use T3G\AgencyPack\Blog\Controller\BackendController;
+use JVelletti\JvEvents\Controller\EventBackendController;
 
 return [
-    'blog_BlogBlog' => [
-        'position' => ['after' => 'web'],
-        'labels' => 'LLL:EXT:blog/Resources/Private/Language/locallang_mod_blog.xlf',
-        'iconIdentifier' => 'module-blog',
-    ],
-    'blog_BlogBlogPosts' => [
-        'parent' => 'blog_BlogBlog',
+    'jvevents_eventmngt' => [
+        'parent' => 'web',
         'access' => 'user',
-        'path' => '/module/blog/posts',
-        'iconIdentifier' => 'module-blog-posts',
-        'labels' => 'LLL:EXT:blog/Resources/Private/Language/locallang_mod_blog_posts.xlf',
-        'extensionName' => 'Blog',
+        'path' => '/module/jvevents/eventmngt',
+        'iconIdentifier' => 'jvevents-plugin',
+        'labels' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_eventmngt.xlf',
+        'extensionName' => 'JvEvents',
         'controllerActions' => [
-            BackendController::class => [
-                'posts',
-            ],
-        ],
-    ],
-    'blog_BlogBlogComments' => [
-        'parent' => 'blog_BlogBlog',
-        'access' => 'user',
-        'path' => '/module/blog/comments',
-        'iconIdentifier' => 'module-blog-comments',
-        'labels' => 'LLL:EXT:blog/Resources/Private/Language/locallang_mod_blog_comments.xlf',
-        'extensionName' => 'Blog',
-        'controllerActions' => [
-            BackendController::class => [
-                'comments',
-                'updateCommentStatus'
-            ],
-        ],
-    ],
-    'blog_BlogBlogSetup' => [
-        'parent' => 'blog_BlogBlog',
-        'access' => 'admin',
-        'path' => '/module/blog/setup',
-        'iconIdentifier' => 'module-blog-setup',
-        'labels' => 'LLL:EXT:blog/Resources/Private/Language/locallang_mod_blog_setup.xlf',
-        'extensionName' => 'Blog',
-        'controllerActions' => [
-            BackendController::class => [
-                'setupWizard',
-                'createBlog',
+            EventBackendController::class => [
+                'list',
+                'show',
+                'confirm',
+                'search',
+                'resendCitrix',
+                ',resendHubspot',
             ],
         ],
     ],

@@ -1,7 +1,7 @@
 <?php
 
 if (!defined('TYPO3')) {
-	die('Access denied.' );
+	die('Access denied in file.' );
 }
 ## EXTENSION BUILDER DEFAULTS END TOKEN - Everything BEFORE this line is overwritten with the defaults of the extension builder
 
@@ -152,19 +152,6 @@ if (!defined('TYPO3')) {
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
 );
 
-// Register icons
-$icons = [
-    'jvevents-plugin' => 'ContentElementWizard.svg',
-    'jvevents-location-map-wizard' => 'actions-geo.svg',
-];
-$iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
-foreach ($icons as $identifier => $path) {
-    $iconRegistry->registerIcon(
-        $identifier,
-        \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
-        ['source' => 'EXT:jv_events/Resources/Public/Icons/' . $path]
-    );
-}
 
 /**
  * Register Hook on delete/copy/move record ( event) - unset registrations and so on

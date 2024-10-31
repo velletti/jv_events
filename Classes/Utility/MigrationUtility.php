@@ -24,7 +24,15 @@ class MigrationUtility
         } else {
             if( isset($GLOBALS['TYPO3_REQUEST'])) {
                 $pageArguments = $GLOBALS['TYPO3_REQUEST']->getAttribute('routing');
-                $pageId = (int)$pageArguments->getPageId();
+                if( $pageArguments) {
+                    if ( $pageArguments && method_exists( $pageArguments ,"getPageId")) {
+                        $pageId = (int)$pageArguments->getPageId();
+                    } else if( get_class($pageArguments) == 'TYPO3\CMS\Core\Routing\PageArguments') {
+                        $pageId = (int)$pageArguments->getPageId();
+
+                    }
+
+                }
             }
         }
         if ($pageId == 0 ) {

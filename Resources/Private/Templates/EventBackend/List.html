@@ -1,11 +1,10 @@
 {namespace jve=JVelletti\JvEvents\ViewHelpers}
 <f:layout name="Backend" />
-
 <f:section name="main">
-	<f:render section="content" arguments="{_all}"/>
+	<f:render section="Content" arguments="{_all}"/>
 </f:section>
-<f:section name="content">
 
+<f:section name="Content">
 		<div class="d-none" style="display:none;">
 			<!-- comment: Icon or messages needed for Ajax see typo3\sysext\core\Classes\Imaging\IconRegistry.php //-->
 
@@ -24,15 +23,6 @@
 				maybe also older registrations may exist.
 			</div>
 		</f:if>
-			<f:if condition="{settings.directmail} && 1==2">
-				<div>
-					<f:link.action class="btn btn-default" action="list" arguments="{createDmailGroup:1}" title="Create Email Group">
-						<core:icon identifier="actions-document"/> Create Email lists for Newsletter
-					</f:link.action>
-
-
-				</div>
-			</f:if>
 			<f:form id="jveventFilterForm" action="list" controller="EventBackend" method="post">
 				<input type="hidden" name="uid" value="{plugin.uid}" /><f:form.hidden name="pluginUid" value="{plugin.uid}" />
 				<f:form.select class="form-select" name="event" value="{event}" additionalAttributes="{onchange: 'document.getElementById(\'jveventFilterForm\').submit();'}" id="jvevents" property="event" options="{events}" optionLabelField="name" sortByOptionLabel="TRUE" prependOptionLabel="-" prependOptionValue="0"></f:form.select>

@@ -136,6 +136,7 @@ class JvePluginUpgradeWizard implements UpgradeWizardInterface
      * @var FlexFormTools
      */
     protected $flexFormTools;
+    protected $verboseLevel = 16 ;
 
     protected EventDispatcherInterface $eventDispatcher;
 
