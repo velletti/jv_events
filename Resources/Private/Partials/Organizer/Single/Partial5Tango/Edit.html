@@ -23,7 +23,7 @@
             </f:if>
             <br/>
 
-                <f:link.page pageUid="{settings.pageIds.addMedia}" noCache="true" class="nav-link  px-1" title="Add Teaser Image " additionalParams="{tx_jvmediaconnector_connector: {action: 'list', controller: 'Media' ,  reference: {id: organizer.uid, table: 'tx_jvevents_domain_model_organizer' , fieldname: 'teaser_image' , maxRelations: '1' , returnPid: settings.pageId , returnArray: {tx_jvevents_event: {action: 'edit', organizer: organizer.uid }}}}}">
+                <f:link.page pageUid="{settings.pageIds.addMedia}" noCache="true" class="nav-link  px-1" title="Add Teaser Image " additionalParams="{tx_jvmediaconnector_connector: {action: 'list', controller: 'Media' ,  reference: {id: organizer.uid, table: 'tx_jvevents_domain_model_organizer' , fieldname: 'teaser_image' , maxRelations: '1' , returnPid: settings.pageId , returnArray: {tx_jvevents_organizer: {action: 'edit', organizer: organizer.uid }}}}}">
                     <button class="btn btn-outline-primary btn-xs rounded-circle" href="#">
                         <i class="fas fa-image"></i>
                     </button>
