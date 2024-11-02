@@ -968,6 +968,7 @@ class BaseController extends ActionController
         $id = null;
         $organizer = null;
         $frontendUser = $this->request->getAttribute('frontend.user');
+        $this->frontendUser = $frontendUser ;
         if ( !is_object($frontendUser) ||  (int)$frontendUser->user['uid'] < 1 ) {
             return false ;
         }
@@ -978,6 +979,7 @@ class BaseController extends ActionController
         if( $id > 0 ) {
             $organizer = $this->organizerRepository->findByUidAllpages($id , FALSE);
         }
+
         if ($organizer instanceof Organizer) {
             if( $doNotCheckAccess || $this->hasUserAccess($organizer) ) {
                 return $organizer ;
@@ -986,7 +988,7 @@ class BaseController extends ActionController
 
         // TODo : think about a better solution how to manage that a user can be linked to more than one Organizer
         // actually it will not work
-        $organizer = $this->organizerRepository->findByUserAllpages( (int)(int)$frontendUser->user['uid'] , FALSE )->getFirst() ;
+        $organizer = $this->organizerRepository->findByUserAllpages( (int)$frontendUser->user['uid'] , FALSE )->getFirst() ;
         if ($organizer instanceof Organizer) {
             return $organizer ;
         }
