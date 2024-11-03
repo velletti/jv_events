@@ -475,14 +475,16 @@ function jv_events_init() {
         && ( lngCookie != 'undefined' && lngCookie != null )
         &&  ( zoomCookie != 'undefined' && zoomCookie != null )
     ) {
-        $('#jv_events_filter_near_to_me').prop("checked" , true) ;
-        $('.fieldsetbox-near-to-me').removeClass("d-none") ;
+        $('#jv_events_filter_near_to_me').prop("checked" , true).removeClass("d-none").change(function(i) {
+            jv_events_refreshList() ;
+        });
+        $('#jv_events_filter_no_near_to_me').addClass("d-none") ;
     } else {
-        $('#jv_events_filter_near_to_me').prop("checked" , false) ;
-        $('.fieldsetbox-near-to-me').addClass("d-none") ;
+        $('#jv_events_filter_near_to_me').prop("checked" , false).addClass("d-none") ;
+        $('#jv_events_filter_no_near_to_me').removeClass("d-none") ;
     }
 
-    if( ! jQuery("#map").length  ) {
+    if( !$("#map").length || $("div.filterType4").length ) {
         jv_events_refreshList();
     }
 
@@ -871,7 +873,7 @@ function jv_events_refreshList(){
     let resultcountEvents = 0 ;
     let allcountEvents = 0 ;
 	jQuery('.tx-jv-events DIV.jv-events-row').each(function (i) {
-	   // console.log( " ************* single row **************** UID: " + jQuery(this).data("eventuid")  ) ;
+	  // console.log( " ************* single row **************** UID: " + jQuery(this).data("eventuid")  ) ;
       //  console.log( " ************* single row **************** Org UID: " + jQuery(this).data("orguid")  ) ;
        // console.log( " catuids on Event : " + jQuery(this).data("catuids") ) ;
        // console.log( " Lat on Event : " + jQuery(this).data("latitude") ) ;
@@ -888,7 +890,7 @@ function jv_events_refreshList(){
             lastDay = this ;
 
         } else {
-            if( jQuery( "#filterType7body").length ) {
+            if( jQuery( "#filterType7body").length || $('#jv_events_filter_near_to_me').length) {
                 if ( minLat > 0  && minLng > 0 && maxLat < 9999 && maxLng < 9999) {
                     if (  jQuery(this).data("latitude") > maxLat ||  jQuery(this).data("latitude") < minLat || jQuery(this).data("longitude") > maxLng || jQuery(this).data("longitude") < minLng ) {
                         jQuery(this).addClass('d-none').addClass('hidden-byMapBoundary') ;
