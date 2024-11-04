@@ -986,114 +986,114 @@
                 <source>Dec</source>
                 <target>Dez</target>
             </trans-unit>
-            <trans-unit id="days">
+            <trans-unit id="days" approved="yes">
                 <source>Days</source>
                 <target>Tage</target>
             </trans-unit>
-            <trans-unit id="time">
+            <trans-unit id="time" approved="yes">
                 <source>o'clock</source>
                 <target>Uhr</target>
             </trans-unit>
 
-            <trans-unit id="select-position">
+            <trans-unit id="select-position" approved="yes">
                 <source>Select your Position</source>
                 <target>Wähle deinen Standort</target>
             </trans-unit>
-            <trans-unit id="select-position-btn">
+            <trans-unit id="select-position-btn" approved="yes">
                 <source>Locate Position</source>
                 <target>Standort bestimmen</target>
             </trans-unit>
-             <trans-unit id="error.email.noMxRecord">
+             <trans-unit id="error.email.noMxRecord" approved="yes">
                 <source>Please verify your email address. Is the domain; '%s' correct?</source>
                  <target>Stimmt die email address wirklich? Ist das: '%s' korrekt?</target>
             </trans-unit>
-             <trans-unit id="error.msg_error_html_code_not_allowed">
+             <trans-unit id="error.msg_error_html_code_not_allowed" approved="yes">
                 <source>Please check your input. Looks as it contains unwanted HTML Code. In most cases the Server can repair this, if you retry to save your input</source>
                  <target>Bitte prüfen Sie Ihre Eingaben. Es sieht so aus, als dort HTML Code eingefügt wurde. In vielen Fällen kann der Server den Fehler automatisch bereinigen. Dazu bitte einfach noch mal speichern. </target>
             </trans-unit>
-            <trans-unit id="error.msg_error_check-input">
+            <trans-unit id="error.msg_error_check-input" approved="yes">
                 <source>Please check your input below.</source>
                  <target>Es ist ein Fehler aufgetreten. Bitte prüfen Sie ihre Eingaben in den nachfolgenden Feldern auf fehlende Angaben.</target>
             </trans-unit>
-            <trans-unit id="jv_events_model_location.press-refresh.title">
+            <trans-unit id="jv_events_model_location.press-refresh.title" approved="yes">
                 <source>Calculate and set map coordinates (LNG=Longitude and LAT=latitude) </source>
                 <target>Berechnen und Speichern der Karten Kooordinaten (LNG/LAT)</target>
             </trans-unit>
-            <trans-unit id="contact.webmaster">
+            <trans-unit id="contact.webmaster" approved="yes">
                 <source>Please Contact Webmaster via</source>
                 <target>Webmaster direkt kontaktieren via </target>
             </trans-unit>
-            <trans-unit id="create.organizer.create.Headline">
+            <trans-unit id="create.organizer.create.Headline" approved="yes">
                 <source>Want to have a NEW entry in Organizer list?</source>
                 <target>Du möchtest in der Veranstalterliste erscheinen?</target>
             </trans-unit>
-            <trans-unit id="create.organizer.account.notactive.headline">
+            <trans-unit id="create.organizer.account.notactive.headline" approved="yes">
                 <source>Your Organizer Account is not activated!</source>
                 <target>Der Account ist nicht als Veranstalter aktiviert!</target>
             </trans-unit>
-            <trans-unit id="create.user.account.active.headline">
+            <trans-unit id="create.user.account.active.headline" approved="yes">
                <source>Your user Account is activated!</source>
                <target>Dein User Account ist aktiviert!</target>
            </trans-unit>
-            <trans-unit id="create.organizer.account.notactive.helptext1">
+            <trans-unit id="create.organizer.account.notactive.helptext1" approved="yes">
                 <source>Before you can add your Events, we have to check and activate your Organizer status.</source>
                 <target>Bevor Du Termine eintragen, musst Du als Veranstalter freigeschaltet werden.</target>
             </trans-unit>
-             <trans-unit id="create.organizer.account.notactive.helptext2">
+             <trans-unit id="create.organizer.account.notactive.helptext2" approved="yes">
                 <source>Check of new organzers is normaly done within 2 days. If this takes more time, please be patient.</source>
                 <target>Die Prüfung und Freischaltung dauert bin der Regel bis maximal 2 Tage. Wenn es mal länger dauert, ist deine Anfrage evt. untergegangen.</target>
             </trans-unit>
-            <trans-unit id="create.organizer.account.notactive.helptext3">
+            <trans-unit id="create.organizer.account.notactive.helptext3" approved="yes">
                 <source>To speed up this process</source>
                 <target>Um die Freischaltung zu beschleunigen</target>
             </trans-unit>
 
-            <trans-unit id="create.organizer.create.text">
+            <trans-unit id="create.organizer.create.text" approved="yes">
                     <source>If you want to become a NEW Organizer, just click on this button and fill the Form</source>
                 <target>Um deine Veranstaltungen als NEUER Veranstalter einzutragen, einfach den nachfolgenden Button anklicken und das Formular ausfüllen</target>
             </trans-unit>
-            <trans-unit id="create.organizer.AddUser.Headline">
+            <trans-unit id="create.organizer.AddUser.Headline" approved="yes">
                 <source>Want to manage an existing entry in the Organizer list?</source>
                 <target>Du möchstest einen existierenden Veranstaltereintrag ändern?</target>
             </trans-unit>
-            <trans-unit id="create.organizer.AddUser.text">
+            <trans-unit id="create.organizer.AddUser.text" approved="yes">
                 <source>You have just registered as new user but need to manage the events and data of an EXISTING Organizer?</source>
                 <target>Du bist neu registriert, möchstest aber die bereits eingetragene(n) Veranstaltung(en) und Daten eines EXISTIERENDEN Veranstalters ändern? </target>
             </trans-unit>
 
-            <trans-unit id="aks_for_position_intro">
+            <trans-unit id="aks_for_position_intro" approved="yes">
                 <source>If you like, you can give the browser access to you actual position to compute the distance to the tango locations.</source>
                 <target>Wenn du möchtest, kann die Webseite deine aktuelle Position bestimmen und die Entfernungen zu den Veranstaltungen entsprechend berechnen.</target>
             </trans-unit>
-            <trans-unit id="aks_for_position_browser_and_cookie">
+            <trans-unit id="aks_for_position_browser_and_cookie" approved="yes">
                 <source>If you do so, the browser will ask you to get access. If you confirm this, the browser can store the geo position as Cookie on your computer, if you press save icon. Our Server will use this only for filtering events for you but itself does not store this and also will not track you by the position. Really! We do NO User tracking!</source>
                 <target>Dazu wirst du, je nach Browser Optionen, noch gefragt, ob du dies erlauben möchstest. Diese Koordinaten werden dann auf Wunsch (Dazu auf as Icon Save klicken) in deinem Browser als Cookie gespeichert. Der Server wertet diese Eingaben nur für die Filterung der anzuzeigenden Termine aus. Es erfolgt kein User Tracking! Ehrlich!</target>
             </trans-unit>
-              <trans-unit id="center_map_and_select_zoom">
+              <trans-unit id="center_map_and_select_zoom" approved="yes">
                 <source>You can center the map and zoom in to select locations and use this as filter</source>
                 <target>Du kannst in die die Karte hineinzoomen und einen Bereich auswählen, um nur Veranstaltungsorte in deiner Nähe zu wählen.</target>
             </trans-unit>
-             <trans-unit id="near_to_me">
+             <trans-unit id="near_to_me" approved="yes">
                <source>Near to me</source>
                <target>in meiner Nähe</target>
             </trans-unit>
-            <trans-unit id="store_as_cookie">
+            <trans-unit id="store_as_cookie" approved="yes">
                <source>Store as cookie</source>
                <target>Als Cookie speichern</target>
             </trans-unit>
-             <trans-unit id="unset_cookies">
+             <trans-unit id="unset_cookies" approved="yes">
                <source>Remove stored map cookies</source>
                <source>Gespeicherte Kartencookies löschen</source>
             </trans-unit>
-            <trans-unit id="donate">
+            <trans-unit id="donate" approved="yes">
                 <source>Donate</source>
                 <target>Spenden</target>
             </trans-unit>
-             <trans-unit id="event.created">
+             <trans-unit id="event.created" approved="yes">
                 <source>Created</source>
                 <target>Erstellt</target>
             </trans-unit>
-            <trans-unit id="event.modified">
+            <trans-unit id="event.modified" approved="yes">
                 <source>Last modified</source>
                 <target>Letzte Änderung</target>
             </trans-unit>

@@ -1,5 +1,5 @@
 <f:if condition="{settings.ShowFilter}==2">
-    <div class="filter events">
+    <div class="filter events jfilterType2">
         <div class="hints clearfix">
             <p class="text-left" id="filter-events" >
 
@@ -193,7 +193,7 @@
 </f:if>
 <f:if condition="{settings.ShowFilter}==3">
 
-    <div class="filter events">
+    <div class="filter events  filterType3">
         <div class="hints clearfix">
             <p class="text-left" id="filter-events" >
 
@@ -384,15 +384,15 @@
 </f:if>
 <f:if condition="{settings.ShowFilter}==4">
 
-    <div class="filter events">
+    <div class="filter events  filterType4">
         <f:link.page id="jv-events-filter-baseUrl" class="d-none hidden" pageUid="{settings.pageIds.eventList}">-</f:link.page>
         <form class="clearfix" onsubmit="this.preventDefault();"  action="#">
 
             <div id="jv-events-filter-sub" class="fieldsets">
                 <div class="row">
 
-                    <div class="col-12 col-sm-6 col-lg-3 col-xl-6">
-                        <div class="input-group date col-10 p-0">
+                    <div class="col-5 col-sm-5 col-lg-4 col-xl-6">
+                        <div class="input-group date p-0">
                             <f:if condition="{settings.filter.startDate}">
                                 <f:then>
                                     <f:variable name="startDate">{settings.filter.overruleStartDate}</f:variable>
@@ -413,6 +413,24 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-7 col-sm-6 col-lg-4 col-xl-6">
+                        <f:if condition="{settings.filter.usersMapsettings}">
+                            <f:if condition="{settings.pageIds.selectMapDimension}">
+                                <fieldset class="fieldsetbox-near-to-me  border-0 pt-1 pb-2">
+                                    <div class="checkbox" >
+                                        <span id="jv_events_filter_no_near_to_me" class="badge badge-danger mr-1"><span class="fa fa-question m-1"></span> </span>
+                                        <input type="checkbox" id="jv_events_filter_near_to_me"  style="transform: scale(1.8)"  value="1" checked>
+                                        <f:link.page class="pointer ml-2" pageUid="{settings.pageIds.selectMapDimension}" title="{f:translate(key: 'center_map_and_select_zoom')}">
+                                            <f:translate key="near_to_me"></f:translate>
+                                            <span class="badge badge-success"><span class="fa fa-info m-1"></span> </span>
+                                        </f:link.page>
+                                    </div>
+
+                                </fieldset>
+                            </f:if>
+                        </f:if>
+
+                    </div>
                 </div>
             </div>
 
@@ -422,7 +440,7 @@
 </f:if>
 
 <f:if condition="{settings.ShowFilter}==5">
-    <div class="filter events">
+    <div class="filter events filterType5">
 
         <f:link.page id="jv-events-filter-baseUrl" class="d-none" pageUid="{settings.pageIds.eventList}">-</f:link.page>
 
@@ -596,17 +614,19 @@
                 </f:if>
 
                 <f:if condition="{settings.filter.usersMapsettings}">
-                    <fieldset class="fieldsetbox-near-to-me  border-0 pt-1 pb-2">
-                        <div class="checkbox" >
-                            <input type="checkbox" id="jv_events_filter_near_to_me" value="1" checked><f:translate key="near_to_me"></f:translate>
-                            <f:if condition="{settings.pageIds.selectMapDimension}">
+                    <f:if condition="{settings.pageIds.selectMapDimension}">
+                        <fieldset class="fieldsetbox-near-to-me  border-0 pt-1 pb-2">
+                            <div class="checkbox" >
+                                <span id="jv_events_filter_no_near_to_me" class="badge badge-danger mr-1"><span class="fa fa-question mx-2"></span> </span>
+                                <input type="checkbox" style="transform: scale(1.8)" id="jv_events_filter_near_to_me" value="1" checked>
                                 <f:link.page class="pointer ml-2" pageUid="{settings.pageIds.selectMapDimension}" title="{f:translate(key: 'center_map_and_select_zoom')}">
-                                    <span class="badge badge-success"><span class="fa fa-info mx-2"></span> </span>
+                                    <f:translate key="near_to_me"></f:translate>
+                                    <span class="badge badge-success"><span class="fa fa-info m-2"></span> </span>
                                 </f:link.page>
-                            </f:if>
-                        </div>
+                            </div>
 
-                    </fieldset>
+                        </fieldset>
+                    </f:if>
                 </f:if>
                 <f:if condition="{settings.filter.showDropdownsFirst}">
                     <fieldset class="fieldsetbox6   border-0">

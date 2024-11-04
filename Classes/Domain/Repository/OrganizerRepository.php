@@ -81,6 +81,7 @@ class OrganizerRepository extends BaseRepository
         // $query->setLimit($limit) ;
         $constraints[] = $query->like('access_users', "%," . $user ) ;
         $constraints[] = $query->like('access_users',  $user .",%") ;
+        $constraints[] = $query->like('access_users',  "%," , $user .",%") ;
         $constraints[] = $query->equals('access_users',  $user ) ;
 
         if ( $ignoreEnableFields ) {
