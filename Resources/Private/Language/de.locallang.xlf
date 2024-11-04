@@ -5,68 +5,66 @@
 			<generator>LFEditor</generator>
 		</header>
 		<body>
-            <trans-unit id="month.01">
+            <trans-unit id="month.01" approved="yes">
                 <source>January</source>
                 <target>Januar</target>
             </trans-unit>
-            <trans-unit id="month.02">
+            <trans-unit id="month.02" approved="yes">
                 <source>February</source>
                 <target>Februar</target>
             </trans-unit>
-            <trans-unit id="month.03">
+            <trans-unit id="month.03" approved="yes">
                 <source>March</source>
                 <target>März</target>
             </trans-unit>
-            <trans-unit id="month.04">
+            <trans-unit id="month.04" approved="yes">
                 <source>April</source>
                 <target>April</target>
             </trans-unit>
-            <trans-unit id="month.05">
+            <trans-unit id="month.05" approved="yes">
                 <source>May</source>
                 <target>Mai</target>
             </trans-unit>
-            <trans-unit id="month.06">
+            <trans-unit id="month.06" approved="yes">
                 <source>June</source>
                 <target>Juni</target>
             </trans-unit>
-            <trans-unit id="month.07">
+            <trans-unit id="month.07" approved="yes">
                 <source>July</source>
                 <target>Juli</target>
             </trans-unit>
-            <trans-unit id="month.08">
+            <trans-unit id="month.08" approved="yes">
                 <source>August</source>
                 <target>August</target>
             </trans-unit>
-            <trans-unit id="month.09">
+            <trans-unit id="month.09" approved="yes">
                 <source>September</source>
                 <target>September</target>
             </trans-unit>
-            <trans-unit id="month.10">
+            <trans-unit id="month.10" approved="yes">
                 <source>October</source>
                 <target>Oktober</target>
             </trans-unit>
-            <trans-unit id="month.11">
+            <trans-unit id="month.11" approved="yes">
                 <source>November</source>
                 <target>November</target>
             </trans-unit>
-            <trans-unit id="month.12">
+            <trans-unit id="month.12" approved="yes">
                 <source>December</source>
                 <target>Dezember</target>
             </trans-unit>
-
-			<trans-unit id="jv_events_model_event.currency.label">
+			<trans-unit id="jv_events_model_event.currency.label" approved="yes">
 				<source>Currency</source>
 				<target>Währung</target>
 			</trans-unit>
-			<trans-unit id="jv_events_model_event.inclusiveVat">
+			<trans-unit id="jv_events_model_event.inclusiveVat" approved="yes">
 				<source>incl. VAT</source>
 				<target>inkl. MwSt.</target>
 			</trans-unit>
-			 <trans-unit id="tx_jvevents_domain_model_event.create_event">
+			 <trans-unit id="tx_jvevents_domain_model_event.create_event" approved="yes">
                 <source>Create Event</source>
                 <target>Neuer Termin</target>
             </trans-unit>
-
             <trans-unit id="register.accept_privacy" approved="yes">
                 <source>I have read and accept the </source>
                 <target>I habe die </target>
@@ -87,29 +85,26 @@
                 <source>privacy policy</source>
                 <target>Datenschutzbestimmungen</target>
             </trans-unit>
-
-            <trans-unit id="register.overbooked">
+            <trans-unit id="register.overbooked" approved="yes">
                 <source>+++Overbooked+++</source>
                 <target>+++Ausgebucht+++</target>
             </trans-unit>
-            <trans-unit id="register.overbooked_headline">
+            <trans-unit id="register.overbooked_headline" approved="yes">
                 <source>This event is fully booked</source>
                 <target>Diese Veranstaltung ist ausgebucht.</target>
             </trans-unit>
-            <trans-unit id="register.overbooked_text">
+            <trans-unit id="register.overbooked_text" approved="yes">
                 <source>Unfortunately, your registration to this event cannot be processed. Please contact the host to receive information about last minute tickets.</source>
                 <target>Leider sind keine Registrierungen mehr möglich. Bitte wenden Sie sich an den Veranstalter bezüglich Informationen zu Restplätzen.</target>
             </trans-unit>
-            <trans-unit id="register.registration_not_possible_text">
+            <trans-unit id="register.registration_not_possible_text" approved="yes">
                 <source>Unfortunately, your registration to this event cannot be processed.</source>
                 <target>Leider ist eine Registrierung nicht möglich.</target>
              </trans-unit>
-             <trans-unit id="register.deadline_expired_text">
+             <trans-unit id="register.deadline_expired_text" approved="yes">
                 <source>The deadline for registration has expired.</source>
                 <target>Die Frist zur Anmeldung ist abgelaufen.</target>
              </trans-unit>
-
-
             <trans-unit id="register.terms_of_use" approved="yes">
                 <source>Terms of use</source>
                 <target>Nutzungsbedingungen</target>
@@ -130,15 +125,15 @@
                 <source>Div.</source>
                 <target>Div.</target>
             </trans-unit>
-            <trans-unit id="register_gender_female_follower">
+            <trans-unit id="register_gender_female_follower" approved="yes">
                 <source>Follower (Role woman)</source>
                 <target>Folgende(r) (Rolle Frau)</target>
             </trans-unit>
-            <trans-unit id="register_gender_male_leader">
+            <trans-unit id="register_gender_male_leader" approved="yes">
                 <source>Leader (Role man)</source>
                 <target>Führende(r) (Rolle Mann)</target>
             </trans-unit>
-            <trans-unit id="register_important_notice">
+            <trans-unit id="register_important_notice" approved="yes">
                 <source>Important Notice</source>
                 <source>Wichtiger Hinweis</source>
             </trans-unit>
@@ -166,11 +161,10 @@
                 <source>This E-Mail Address is not valid!</source>
                 <target>Diese E-Mail Adresse ist nicht gültig!</target>
             </trans-unit>
-            <trans-unit id="register_email_registered_same_event">
+            <trans-unit id="register_email_registered_same_event" approved="yes">
                 <source>Please register with a different E-Mail Address. This E-Mail Address is already registered to this Event!</source>
                 <target>Bitte nutzen Sie eine andere E-Mail Adresse. Mit dieser E-Mail Adresse sind Sie bereits für diesen Termin angemeldet!</target>
             </trans-unit>
-
             <trans-unit id="register_mandatory_error" approved="yes">
                 <source>This is a required field!</source>
                 <target>Dies ist ein Plichtfeld!</target>
@@ -203,11 +197,10 @@
                 <source>Register</source>
                 <target>Anmelden</target>
             </trans-unit>
-             <trans-unit id="registrations">
+             <trans-unit id="registrations" approved="yes">
                 <source>registrations</source>
                 <target>Anmeldungen</target>
             </trans-unit>
-
             <trans-unit id="register_send_error" approved="yes">
                 <source>You forgot to fill some of the required fields!</source>
                 <target>Ein oder mehrere Pflichtfelder wurden nicht ausgefüllt!</target>
@@ -252,11 +245,10 @@
                 <source>Waiting list Seats</source>
                 <target>Warteliste</target>
             </trans-unit>
-            <trans-unit id="register_available_waiting_seats_only">
+            <trans-unit id="register_available_waiting_seats_only" approved="yes">
                 <source>You will be registered to Waitinglist.</source>
                 <source>Registrierung erfolgt auf die Warteliste.</source>
             </trans-unit>
-
             <trans-unit id="register.you_are_on_waiting_list" approved="yes">
                 <source>Your registration was successfull added to the Waiting list. Please wait for the Confirmation by the Organizer</source>
                 <target>Ihre Registrierung wurde erfolgreich zur Warteliste hinzugefügt. Bitte warten Sie auf die Bestätigung durch den Veranstalter.</target>
@@ -265,17 +257,14 @@
                 <source>Your registration was stored successfull. </source>
                 <target>Ihre Registrierung wurde erfolgreich durchgeführt.</target>
             </trans-unit>
-
-            <trans-unit id="register.you_are_registered_again">
+            <trans-unit id="register.you_are_registered_again" approved="yes">
                 <source>Your registration was updated successfull. </source>
                 <target>Ihre Anmeldung wurde erfolgreich aktualisiert. </target>
             </trans-unit>
-            <trans-unit id="register.you_are_registered_same_email_warning">
+            <trans-unit id="register.you_are_registered_same_email_warning" approved="yes">
                 <source>You can only registered once with the same E-mail for the same event!</source>
                 <target>Pro Veranstaltung kann man sich mit der gleichen E-mail Adresse nur einmal anmelden!</target>
             </trans-unit>
-
-
             <trans-unit id="register.you_need_to_confirm" approved="yes">
                 <source>Your Need to confirm your registration. Please click the following button.</source>
                 <target>Sie müssen Ihre Registrierung noch durch 'Klick' auf den nachfolgenden Button bestätigen.</target>
@@ -300,7 +289,6 @@
                 <source>if the button does not work, copy the following URL into your browser:</source>
                 <target>Wenn der Button nicht funktioniert, kopieren Sie bitte die nachfolgende URL in die Adresszeile Ihres Browsers:</target>
             </trans-unit>
-
             <trans-unit id="tx_jvevents_domain_model_event.citrix_uid" approved="yes">
                 <source>Citrix Uid</source>
                 <target>Citrix Uid</target>
@@ -309,7 +297,7 @@
                 <source>Description</source>
                 <target>Langtext / Beschreibung</target>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.price">
+            <trans-unit id="tx_jvevents_domain_model_event.price" approved="yes">
                 <source>Price</source>
                 <target>Kosten</target>
              </trans-unit>
@@ -381,16 +369,14 @@
                 <source>Organizer</source>
                 <target>Veranstalter</target>
             </trans-unit>
-              <trans-unit id="tx_jvevents_domain_model_event.registration_url">
+              <trans-unit id="tx_jvevents_domain_model_event.registration_url" approved="yes">
                 <source>Link to registration</source>
                 <target>Link zur Registrierung</target>
             </trans-unit>
-
             <trans-unit id="tx_jvevents_domain_model_event.registered_seats" approved="yes">
                 <source>Registered Seats</source>
                 <target>Angemeldete Teilnehmer</target>
             </trans-unit>
-
             <trans-unit id="tx_jvevents_domain_model_event.registrant" approved="yes">
                 <source>Registrant</source>
                 <target>Teilnehmer</target>
@@ -399,7 +385,7 @@
                 <source>Event Registration</source>
                 <target>Anmeldung zur Veranstaltung</target>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.registrant_email_header_unconfirmed">
+            <trans-unit id="tx_jvevents_domain_model_event.registrant_email_header_unconfirmed" approved="yes">
                 <source>Unconfirmed Registration</source>
                 <target>Noch unbestätigte Anmeldung</target>
             </trans-unit>
@@ -427,7 +413,6 @@
                 <source>Start Date</source>
                 <target>Startdatum</target>
             </trans-unit>
-
             <trans-unit id="tx_jvevents_domain_model_event.date" approved="yes">
                 <source>Date</source>
                 <target>Datum</target>
@@ -436,7 +421,7 @@
                 <source>Start Time</source>
                 <target>Startzeit</target>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.entry_time">
+            <trans-unit id="tx_jvevents_domain_model_event.entry_time" approved="yes">
                 <source>Opening time</source>
                 <target>Einlass ab</target>
             </trans-unit>
@@ -464,11 +449,11 @@
                 <source>Tags</source>
                 <target>Schlagworte</target>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_tag.select">
+            <trans-unit id="tx_jvevents_domain_model_tag.select" approved="yes">
                 <source>Select Tag(s)</source>
                 <target>Schlagwort(e) auswählen</target>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_category.select">
+            <trans-unit id="tx_jvevents_domain_model_category.select" approved="yes">
                 <source>Select Category</source>
                 <target>Kategorie auswählen</target>
             </trans-unit>
@@ -512,21 +497,19 @@
                 <source>Street,City,DE</source>
                 <target>Straße,Stadt,DE</target>
             </trans-unit>
-
             <trans-unit id="tx_jvevents_domain_model_event.details.tab.contact" approved="yes">
                 <source>Contact</source>
                 <target>Kontakt</target>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.details.canceled">
+            <trans-unit id="tx_jvevents_domain_model_event.details.canceled" approved="yes">
                 <source>Canceled!</source>
                 <target>Entfällt!</target>
             </trans-unit>
-
-          <trans-unit id="event_copy_eventseries">
+          <trans-unit id="event_copy_eventseries" approved="yes">
                 <source>Event series (regularly)!</source>
                 <target>Regelmäßige Termine</target>
             </trans-unit>
-            <trans-unit id="event_copy_intro">
+            <trans-unit id="event_copy_intro" approved="yes">
                 <source>
                     If you copy an event, changes on this copy can easily made also to the copy. This way you can make changes to repeating events very fast.
                 </source>
@@ -534,7 +517,7 @@
                     Wenn du einen Termin kopierst, können Änderungen auch automatisch an dem/den anderen Termin(en) übernommen werden. Damit kann man somit regelmäßig stattfindende Termine einfach pflegen.
                 </target>
             </trans-unit>
-             <trans-unit id="event_copy_intro2">
+             <trans-unit id="event_copy_intro2" approved="yes">
                 <source>
                     If you want to create a diffent kind of event (other times or different kind of class / workshop) it could be better not to use the copy funktion. Create a new event.
                 </source>
@@ -542,57 +525,53 @@
                     Inhaltlich unterschiedliche Termine (z.b. verschiedene Kursarten oder Uhrzeiten) sollten deshalb nicht durch die nachfolgenden Buttons erstellt werden. Nutze die dann die den Button 'beliebiges Datum'.
                 </target>
             </trans-unit>
-           <trans-unit id="event_copy_one">
+           <trans-unit id="event_copy_one" approved="yes">
                <source>Create one Copy (unlinked)</source>
                <target>Einzelne Kopie (nicht verbunden)</target>
            </trans-unit>
-
-            <trans-unit id="general_see_help">
+            <trans-unit id="general_see_help" approved="yes">
                  <source>See help Pages</source>
                  <target>Siehe Hilfeseiten</target>
              </trans-unit>
-            <trans-unit id="event_copy_multi">
+            <trans-unit id="event_copy_multi" approved="yes">
                   <source>Copy multiple weekly</source>
                   <target>Mehrere Wochen</target>
             </trans-unit>
-             <trans-unit id="event_copy_multi2weeks">
+             <trans-unit id="event_copy_multi2weeks" approved="yes">
                  <source>Copy multiple every 14 days</source>
                  <target>Kopie alle 14 Tage</target>
              </trans-unit>
-             <trans-unit id="event_delete_question">
+             <trans-unit id="event_delete_question" approved="yes">
                 <source>This will delete the event without info.</source>
                 <target>Dies löscht den Termin ohne Weitere Information.</target>
              </trans-unit>
-              <trans-unit id="event_delete_question_SameMaster">
+              <trans-unit id="event_delete_question_SameMaster" approved="yes">
                   <source>Also delete the %1s following copies of this event?</source>
                   <target>Sowie die %1s folgenden Kopien dieses Termins</target>
                </trans-unit>
-
-            <trans-unit id="event_delete_are_you_sure">
+            <trans-unit id="event_delete_are_you_sure" approved="yes">
                 <source>Are you sure?</source>
                 <target>Bist du sicher?</target>
             </trans-unit>
-            <trans-unit id="event_delete_really_button">
+            <trans-unit id="event_delete_really_button" approved="yes">
                 <source>Really delete!</source>
                 <target>Wirklich löschen!</target>
             </trans-unit>
-            <trans-unit id="event_delete_button">
+            <trans-unit id="event_delete_button" approved="yes">
                 <source>Termin löschen</source>
             </trans-unit>
-
-            <trans-unit id="tx_jvevents_domain_model_event.edit.repeating.headline">
+            <trans-unit id="tx_jvevents_domain_model_event.edit.repeating.headline" approved="yes">
                 <source>Repeating Event</source>
                 <target>Regelmäßiger Termin</target>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.edit.repeating.text">
+            <trans-unit id="tx_jvevents_domain_model_event.edit.repeating.text" approved="yes">
                 <source>This is a repeating, copied Event. Shall we change also all other future Events with the same ID?</source>
                 <target>Dies ist ein regelmäßiger Termin. Sollen die obigen Änderungen für alle zukünftigen Termine mit der gleichen ID übernommen werden?</target>
             </trans-unit>
-             <trans-unit id="tx_jvevents_domain_model_event.edit.repeating.uebernehmen">
+             <trans-unit id="tx_jvevents_domain_model_event.edit.repeating.uebernehmen" approved="yes">
                 <source>Change them also</source>
                 <target>Änderungen übernehmen</target>
             </trans-unit>
-
             <trans-unit id="tx_jvevents_domain_model_location" approved="yes">
                 <source>Location</source>
                 <target>Veranstaltungsort</target>
@@ -617,12 +596,11 @@
                 <source>Lat</source>
                 <target>LAT (Latitude)</target>
             </trans-unit>
-             <trans-unit id="tx_jvevents_domain_model_location.position_not_exact">
+             <trans-unit id="tx_jvevents_domain_model_location.position_not_exact" approved="yes">
                 <source>Position not exact enough? Zoom into the map and  click onto the correct position. Will be overwriten, if you change again the address</source>
                 <target>Position zu ungenau? Zoom in die Karte und klicke an die genaue Position. Wird jedoch beim ändern der Adresse überschrieben!</target>
             </trans-unit>
-
-             <trans-unit id="location.geocode.error">
+             <trans-unit id="location.geocode.error" approved="yes">
                <source>The position on the map could not be determined.
                    You can determine the values for LAT and LNG using Google Maps and enter them here.
                    Example: </source>
@@ -630,15 +608,13 @@
                     Du kannst die Werte für LAT und LNG über Google Maps ermitteln und hier eintragen.
                     Beispiel: </target>
             </trans-unit>
-
             <trans-unit id="tx_jvevents_domain_model_location.link" approved="yes">
                 <source>Link</source>
                 <target>Link</target>
             </trans-unit>
-            <trans-unit id="create.location.contact_warning">
+            <trans-unit id="create.location.contact_warning" approved="yes">
                 <source>Need a different contact info for this location? if not leave the next 3 fields empty</source>
                 <target>Wenn die nachfolgenden Felder leer gelassen werden, werden deine normalen Kontaktdaten angezeigt. Ansonsten kanst du diese Felder nutzen, um z.b. die Telefonnummer der Abendkasse anstatt deiner anzuzeigen.
-
                 Um einzelne Infos gar nicht anzuzeigen, bitte ein Minuszeichens <b>(-)</b> eingeben.</target>
             </trans-unit>
             <trans-unit id="tx_jvevents_domain_model_location.lng" approved="yes">
@@ -669,7 +645,6 @@
                 <source>Additional info</source>
                 <target>Zusatzinfo (RG/Etage/..)</target>
             </trans-unit>
-
             <trans-unit id="tx_jvevents_domain_model_location.zip" approved="yes">
                 <source>Zip</source>
                 <target>PLZ</target>
@@ -850,7 +825,7 @@
                 <source>Filter by category</source>
                 <target>Kategorie filtern</target>
             </trans-unit>
-            <trans-unit id="tx_jvevents_event.filter.organizer">
+            <trans-unit id="tx_jvevents_event.filter.organizer" approved="yes">
                 <source>Filter by organizer</source>
                 <target>Veranstalter filtern</target>
             </trans-unit>
@@ -858,7 +833,7 @@
                 <source>Filter by city</source>
                 <target>Ort filtern</target>
             </trans-unit>
-            <trans-unit id="tx_jvevents_event.filter.city.all">
+            <trans-unit id="tx_jvevents_event.filter.city.all" approved="yes">
                 <source>All citys</source>
                 <target>Alle Orte</target>
             </trans-unit>
@@ -886,41 +861,38 @@
                 <source>Reset filter</source>
                 <target>Filter zurücksetzen</target>
             </trans-unit>
-            <trans-unit id="tx_jvevents_event.filter.resultcount">
+            <trans-unit id="tx_jvevents_event.filter.resultcount" approved="yes">
                 <source>Hits</source>
                 <target>Treffer</target>
             </trans-unit>
-             <trans-unit id="tx_jvevents_event.filter.distance">
+             <trans-unit id="tx_jvevents_event.filter.distance" approved="yes">
                 <source>Set Position</source>
                 <target>Setze Position</target>
             </trans-unit>
-
-             <trans-unit id="tx_jvevents_event.filter.configure.headline">
+             <trans-unit id="tx_jvevents_event.filter.configure.headline" approved="yes">
                 <source>Configure the search result</source>
                 <target>Suchergebnis konfigurieren</target>
             </trans-unit>
-            <trans-unit id="tx_jvevents_event.filter.configure.text_reason">
+            <trans-unit id="tx_jvevents_event.filter.configure.text_reason" approved="yes">
                 <source>Before you can use the lists on this website, you should configure the search filter. </source>
                 <target>Bevor Du die Listen auf dieser Webseite sinnvoll nutzen kannst, solltest du den Suchfilter oberhalb dieses Hinweises einstellen. </target>
             </trans-unit>
-            <trans-unit id="tx_jvevents_event.filter.configure.text_setposition">
+            <trans-unit id="tx_jvevents_event.filter.configure.text_setposition" approved="yes">
                 <source>First set the position of the center of the Map. You can do this by using your GPS positon or just enter the Name of your city or optional the street.</source>
                 <target>Zuerst gilt es, die Position festzulegen, von der aus gesucht werden soll. Dies kann auf Wunsch automatisch über die GPS Daten / Deine Positon erfolgen oder indem dort der Name einer Stadt (optional mit einer Straße) eingetragen wird.</target>
             </trans-unit>
-            <trans-unit id="tx_jvevents_event.filter.configure.text_selectDist">
+            <trans-unit id="tx_jvevents_event.filter.configure.text_selectDist" approved="yes">
                 <source>As second step, select the wanted distance you want to search events, locations and teachers.</source>
                 <target>Im zweiten Schritt wähle bitte die gewünschte maximale Entfernung in der Veranstaltungen, Orte oder Lehrer gesucht werden sollen.</target>
             </trans-unit>
-            <trans-unit id="tx_jvevents_event.filter.configure.text_saveButton">
+            <trans-unit id="tx_jvevents_event.filter.configure.text_saveButton" approved="yes">
                 <source>if you use the save button after the Distance selector, your settings will be stored as a cookie in your browser and text will disapear.</source>
                 <target>Wenn du auf das 'Speichern' Icon hinter der Auswahl der Entfernung klickst, werden deine Einstellungen als Cookie in deinem Browser gespeichert und dieser Text verschwindet.</target>
             </trans-unit>
-              <trans-unit id="tx_jvevents_event.filter.configure.text_default">
+              <trans-unit id="tx_jvevents_event.filter.configure.text_default" approved="yes">
                  <source>Without this settings, resultlists will only show hits that are 50 (or 250km on tangobayern.de) away from Marienplatz in Munich.</source>
                 <target>Ohne diese Einstellungen wird im Umkreis von 50 (bzw. 250km auf tangobayern.de) um den Marienplatz in München gesucht.</target>
             </trans-unit>
-
-
             <trans-unit id="tx_jvevents_event.filter.resulthint" approved="yes">
                 <source>The following content was modified pursuant to your filter settings</source>
                 <target>Die folgenden Inhalte wurden entsprechend Ihrer Auswahl angepasst</target>
@@ -929,11 +901,10 @@
                 <source>More filters</source>
                 <target>Weitere Filter</target>
             </trans-unit>
-            <trans-unit id="tx_jvevents_event.list.event_details">
+            <trans-unit id="tx_jvevents_event.list.event_details" approved="yes">
                 <source>Event details</source>
                 <target>Veranstaltungsdetails</target>
             </trans-unit>
-
             <trans-unit id="tx_jvevents_event.list.no_events_found" approved="yes">
                 <source>No Events found with this search values</source>
                 <target>Keine Veranstaltungen mit diesen Kriterien gefunden</target>
@@ -994,7 +965,6 @@
                 <source>o'clock</source>
                 <target>Uhr</target>
             </trans-unit>
-
             <trans-unit id="select-position" approved="yes">
                 <source>Select your Position</source>
                 <target>Wähle deinen Standort</target>
@@ -1047,7 +1017,6 @@
                 <source>To speed up this process</source>
                 <target>Um die Freischaltung zu beschleunigen</target>
             </trans-unit>
-
             <trans-unit id="create.organizer.create.text" approved="yes">
                     <source>If you want to become a NEW Organizer, just click on this button and fill the Form</source>
                 <target>Um deine Veranstaltungen als NEUER Veranstalter einzutragen, einfach den nachfolgenden Button anklicken und das Formular ausfüllen</target>
@@ -1060,7 +1029,6 @@
                 <source>You have just registered as new user but need to manage the events and data of an EXISTING Organizer?</source>
                 <target>Du bist neu registriert, möchstest aber die bereits eingetragene(n) Veranstaltung(en) und Daten eines EXISTIERENDEN Veranstalters ändern? </target>
             </trans-unit>
-
             <trans-unit id="aks_for_position_intro" approved="yes">
                 <source>If you like, you can give the browser access to you actual position to compute the distance to the tango locations.</source>
                 <target>Wenn du möchtest, kann die Webseite deine aktuelle Position bestimmen und die Entfernungen zu den Veranstaltungen entsprechend berechnen.</target>

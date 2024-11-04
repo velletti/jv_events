@@ -17,15 +17,14 @@
 			<source>Type</source>
 			<target>Tipo</target>
 		</trans-unit>
-		<trans-unit id="tx_jvevents_domain_model_category.block_registration">
+		<trans-unit id="tx_jvevents_domain_model_category.block_registration" approved="yes">
             <source>Allow register to all events in this Category</source>
             <target>Consente l'iscrizione a tutti gli eventi di questa categoria</target>
         </trans-unit>
-        <trans-unit id="tx_jvevents_domain_model_event.new_registration">
+        <trans-unit id="tx_jvevents_domain_model_event.new_registration" approved="yes">
             <source>Your Registration</source>
             <target>La tua iscrizione</target>
         </trans-unit>
-
 		<trans-unit id="tx_jvevents_domain_model_event" approved="yes">
 			<source>Event</source>
 			<target>Evento</target>
@@ -234,7 +233,6 @@
             <source>Intro Text Registrant - Registration Confirmed</source>
             <target>Testo introduttivo partecipante - Conferma di iscrizione</target>
         </trans-unit>
-
 		<trans-unit id="tx_jvevents_domain_model_event.unconfirmed_seats" approved="yes">
 			<source>Unconfirmed Seats</source>
 			<target>Posti non confermati</target>

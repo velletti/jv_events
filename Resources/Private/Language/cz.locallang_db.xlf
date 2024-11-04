@@ -17,15 +17,14 @@
 			<source>Type</source>
 			<target>Typ</target>
 		</trans-unit>
-		<trans-unit id="tx_jvevents_domain_model_category.block_registration">
+		<trans-unit id="tx_jvevents_domain_model_category.block_registration" approved="yes">
             <source>Allow register to all events in this Category</source>
             <target>Povolit registraci pro všechny události v této kategorii</target>
         </trans-unit>
-        <trans-unit id="tx_jvevents_domain_model_event.new_registration">
+        <trans-unit id="tx_jvevents_domain_model_event.new_registration" approved="yes">
             <source>Your Registration</source>
             <target>Vaše registrace</target>
         </trans-unit>
-
 		<trans-unit id="tx_jvevents_domain_model_event" approved="yes">
 			<source>Event</source>
 			<target>Událost</target>
@@ -234,7 +233,6 @@
             <source>Intro Text Registrant - Registration Confirmed</source>
             <target>Intro text e-mailu účastník - potvrzení registrace.</target>
         </trans-unit>
-
 		<trans-unit id="tx_jvevents_domain_model_event.unconfirmed_seats" approved="yes">
 			<source>Unconfirmed Seats</source>
 			<target>Nepotvrzené registrace</target>

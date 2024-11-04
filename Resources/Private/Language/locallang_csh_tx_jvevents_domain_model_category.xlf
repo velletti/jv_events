@@ -5,13 +5,13 @@
 			<generator>LFEditor</generator>
 		</header>
 		<body>
-		<trans-unit id="title.description">
+		<trans-unit id="title.description" approved="yes">
 			<source>title of Category</source>
 		</trans-unit>
-		<trans-unit id="type.description">
+		<trans-unit id="type.description" approved="yes">
 			<source>type</source>
 		</trans-unit>
-		<trans-unit id="block_reservation.description">
+		<trans-unit id="block_reservation.description" approved="yes">
             <source>Allow Subscribe to all Events of this Category (Block reservation)</source>
         </trans-unit>
 		</body>

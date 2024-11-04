@@ -3,13 +3,13 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2017-04-24T11:47:43Z">
 		<header/>
 		<body>
-			<trans-unit id="switchableControllerActions.description" xml:space="preserve">
+			<trans-unit id="switchableControllerActions.description" xml:space="preserve" approved="yes">
 				<source>Set the view you want to display</source>
 			</trans-unit>
-			<trans-unit id="settings.RegisterHubSpotFormId.description" xml:space="preserve">
+			<trans-unit id="settings.RegisterHubSpotFormId.description" xml:space="preserve" approved="yes">
                 <source>If You use ANY Kind of external Formulars (HubSpot, Citrix, SalesForce, ..) You can enter this Form ID here.</source>
             </trans-unit>
-            <trans-unit id="setting.RegisterHubSpotPortalId.description" xml:space="preserve">
+            <trans-unit id="setting.RegisterHubSpotPortalId.description" xml:space="preserve" approved="yes">
                 <source>If You use ANY Kind of external Formulars (HubSpot, Citrix, SalesForce, ..) You can enter this Portal ID here.</source>
             </trans-unit>
 		</body>

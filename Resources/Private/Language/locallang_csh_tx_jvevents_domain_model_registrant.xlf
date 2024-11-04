@@ -5,91 +5,91 @@
 			<generator>LFEditor</generator>
 		</header>
 		<body>
-		<trans-unit id="additional_info.description">
+		<trans-unit id="additional_info.description" approved="yes">
 			<source>additionalInfo</source>
 		</trans-unit>
-		<trans-unit id="city.description">
+		<trans-unit id="city.description" approved="yes">
 			<source>city</source>
 		</trans-unit>
-		<trans-unit id="company.description">
+		<trans-unit id="company.description" approved="yes">
 			<source>company</source>
 		</trans-unit>
-		<trans-unit id="contact_id.description">
+		<trans-unit id="contact_id.description" approved="yes">
 			<source>contactId</source>
 		</trans-unit>
-		<trans-unit id="country.description">
+		<trans-unit id="country.description" approved="yes">
 			<source>country</source>
 		</trans-unit>
-		<trans-unit id="customer_id.description">
+		<trans-unit id="customer_id.description" approved="yes">
 			<source>customerId</source>
 		</trans-unit>
-		<trans-unit id="department.description">
+		<trans-unit id="department.description" approved="yes">
 			<source>department</source>
 		</trans-unit>
-		<trans-unit id="email.description">
+		<trans-unit id="email.description" approved="yes">
 			<source>email</source>
 		</trans-unit>
-		<trans-unit id="first_name.description">
+		<trans-unit id="first_name.description" approved="yes">
 			<source>firstName</source>
 		</trans-unit>
-		<trans-unit id="gender.description">
+		<trans-unit id="gender.description" approved="yes">
 			<source>gender</source>
 		</trans-unit>
-		<trans-unit id="language.description">
+		<trans-unit id="language.description" approved="yes">
 			<source>language</source>
 		</trans-unit>
-		<trans-unit id="last_name.description">
+		<trans-unit id="last_name.description" approved="yes">
 			<source>lastName</source>
 		</trans-unit>
-		<trans-unit id="more1.description">
+		<trans-unit id="more1.description" approved="yes">
 			<source>more1</source>
 		</trans-unit>
-		<trans-unit id="more2.description">
+		<trans-unit id="more2.description" approved="yes">
 			<source>more2</source>
 		</trans-unit>
-		<trans-unit id="more3.description">
+		<trans-unit id="more3.description" approved="yes">
 			<source>more3</source>
 		</trans-unit>
-		<trans-unit id="more4.description">
+		<trans-unit id="more4.description" approved="yes">
 			<source>more4</source>
 		</trans-unit>
-		<trans-unit id="more5bool.description">
+		<trans-unit id="more5bool.description" approved="yes">
 			<source>more5bool</source>
 		</trans-unit>
-		<trans-unit id="more6int.description">
+		<trans-unit id="more6int.description" approved="yes">
 			<source>more6int</source>
 		</trans-unit>
-		<trans-unit id="more7date.description">
+		<trans-unit id="more7date.description" approved="yes">
 			<source>more7date</source>
 		</trans-unit>
-		<trans-unit id="more8file.description">
+		<trans-unit id="more8file.description" approved="yes">
 			<source>more8file</source>
 		</trans-unit>
-		<trans-unit id="newsletter.description">
+		<trans-unit id="newsletter.description" approved="yes">
 			<source>newsletter</source>
 		</trans-unit>
-		<trans-unit id="password.description">
+		<trans-unit id="password.description" approved="yes">
 			<source>password</source>
 		</trans-unit>
-		<trans-unit id="phone.description">
+		<trans-unit id="phone.description" approved="yes">
 			<source>phone</source>
 		</trans-unit>
-		<trans-unit id="privacy.description">
+		<trans-unit id="privacy.description" approved="yes">
 			<source>has accepted privacy policy</source>
 		</trans-unit>
-		<trans-unit id="profession.description">
+		<trans-unit id="profession.description" approved="yes">
 			<source>profession</source>
 		</trans-unit>
-		<trans-unit id="recall.description">
+		<trans-unit id="recall.description" approved="yes">
 			<source>Partizipant wants a recall</source>
 		</trans-unit>
-		<trans-unit id="street_and_nr.description">
+		<trans-unit id="street_and_nr.description" approved="yes">
 			<source>streetAndNr</source>
 		</trans-unit>
-		<trans-unit id="username.description">
+		<trans-unit id="username.description" approved="yes">
 			<source>username</source>
 		</trans-unit>
-		<trans-unit id="zip.description">
+		<trans-unit id="zip.description" approved="yes">
 			<source>zip</source>
 		</trans-unit>
 		</body>

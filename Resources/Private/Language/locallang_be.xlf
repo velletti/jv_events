@@ -5,367 +5,327 @@
 			<generator>LFEditor</generator>
 		</header>
 		<body>
-		<trans-unit id="extmng.BackGroundColorBody">
+		<trans-unit id="extmng.BackGroundColorBody" approved="yes">
 			<source>set background Color around email </source>
 		</trans-unit>
-		<trans-unit id="extmng.adminUserGroups">
+		<trans-unit id="extmng.adminUserGroups" approved="yes">
 			<source>Leave Empty or Enter list of UIDs of Admin Groups ( actually unused) </source>
 		</trans-unit>
-		<trans-unit id="extmng.defaultAllDayEvent" xml:space="preserve">
+		<trans-unit id="extmng.defaultAllDayEvent" xml:space="preserve" approved="yes">
 			<source>set Default all Day Event = 1 (this hides the fields  start- and endtime)</source>
 		</trans-unit>
-		<trans-unit id="extmng.defaultNeedToConfirm">
+		<trans-unit id="extmng.defaultNeedToConfirm" approved="yes">
 			<source>Set Default User needs To Confirm via Email = 1</source>
 		</trans-unit>
-		<trans-unit id="extmng.defaultNotifyOrganizer">
+		<trans-unit id="extmng.defaultNotifyOrganizer" approved="yes">
 			<source>Set Default notify Organizer = 1</source>
 		</trans-unit>
-		<trans-unit id="extmng.defaultNotifyRegistrant">
+		<trans-unit id="extmng.defaultNotifyRegistrant" approved="yes">
 			<source>Set Default notifiy Registrant = 1</source>
 		</trans-unit>
-		<trans-unit id="extmng.defaultRegistrationFormPid">
+		<trans-unit id="extmng.defaultRegistrationFormPid" approved="yes">
 			<source>set Default Show Registration Form on this PID</source>
 		</trans-unit>
-        <trans-unit id="extmng.defaultRegistrationUntilDate">
+        <trans-unit id="extmng.defaultRegistrationUntilDate" approved="yes">
             <source>Set Registration Until Date after Frontend Editing to 0 </source>
         </trans-unit>
-		<trans-unit id="extmng.defaultRegistrationPid">
+		<trans-unit id="extmng.defaultRegistrationPid" approved="yes">
 			<source>set Default Store Registations on this PID</source>
 		</trans-unit>
-		<trans-unit id="extmng.emailBackGroundColor">
+		<trans-unit id="extmng.emailBackGroundColor" approved="yes">
 			<source>set Email background Color behind text</source>
 		</trans-unit>
-		<trans-unit id="extmng.emailBackGroundColor2">
+		<trans-unit id="extmng.emailBackGroundColor2" approved="yes">
 			<source>set 2 Background Color (bottons and headline)</source>
 		</trans-unit>
-		<trans-unit id="extmng.emailFontColor">
+		<trans-unit id="extmng.emailFontColor" approved="yes">
 			<source>set Default text Color </source>
 		</trans-unit>
-		<trans-unit id="extmng.emailFontColor2" xml:space="preserve">
+		<trans-unit id="extmng.emailFontColor2" xml:space="preserve" approved="yes">
 			<source>set 2 Font  Color (bottons and headline)</source>
 		</trans-unit>
-		<trans-unit id="extmng.emailFontFamily">
+		<trans-unit id="extmng.emailFontFamily" approved="yes">
 			<source>set Font Family for Emails Please do NO use ' or &quot; !! </source>
 		</trans-unit>
-		<trans-unit id="extmng.emailImgUrl">
+		<trans-unit id="extmng.emailImgUrl" approved="yes">
 			<source>Absolute path to a Header Image ( Logo) for emails starting with / </source>
 		</trans-unit>
-		<trans-unit id="extmng.emailImgUrl2">
+		<trans-unit id="extmng.emailImgUrl2" approved="yes">
 			<source>Absolute path to a second Header Image  for emails starting with / </source>
 		</trans-unit>
-
-		<trans-unit id="extmng.enableCitrix">
+		<trans-unit id="extmng.enableCitrix" approved="yes">
 			<source>Show Options to store the Event registrants to Citrix (as GoTo Webinar Registrants)</source>
 		</trans-unit>
-		<trans-unit id="extmng.enableSalesForce">
+		<trans-unit id="extmng.enableSalesForce" approved="yes">
 			<source>Show Options to store Events and registrations to Salesforce (Needs a special settings and custom Object in SalesForce!)</source>
 		</trans-unit>
-		<trans-unit id="extmng.enableHubspot">
+		<trans-unit id="extmng.enableHubspot" approved="yes">
 			<source>Show Options to store Events as Campaign to Salesforce and the registrations to Hubspot</source>
 		</trans-unit>
-
-
-
-		<trans-unit id="extmng.hasLoginUser">
+		<trans-unit id="extmng.hasLoginUser" approved="yes">
 			<source>Show Options to restrict Access to an Event (only usefull if you have a frontend Login)</source>
 		</trans-unit>
-        <trans-unit id="extmng.hideEndEdate">
+        <trans-unit id="extmng.hideEndEdate" approved="yes">
             <source>Do not show the inputfield EndDate</source>
         </trans-unit>
-        <trans-unit id="extmng.hideAllLanguages">
+        <trans-unit id="extmng.hideAllLanguages" approved="yes">
             <source>Do not show the Option All Languages in Event Creation</source>
         </trans-unit>
-        <trans-unit id="extmng.doNotRespectSyslanguage">
+        <trans-unit id="extmng.doNotRespectSyslanguage" approved="yes">
             <source>set setRespectSysLanguage in Repository to false to show filtered events with lang -1 in all Languages </source>
         </trans-unit>
-
-
-		<trans-unit id="extmng.showImporter">
+		<trans-unit id="extmng.showImporter" approved="yes">
 			<source>Show Importer From CAL : This is just a plan and actually doing nothing !</source>
 		</trans-unit>
-		<trans-unit id="extmng.showIndividualMailTemplatesPerEvent">
+		<trans-unit id="extmng.showIndividualMailTemplatesPerEvent" approved="yes">
 			<source>Show separate Fields with Subject and Mail text for each event to create individual Emails per Event : (This is just a plan and Actually doing nothing !)</source>
 		</trans-unit>
-		<trans-unit id="extmng.showRecurring">
+		<trans-unit id="extmng.showRecurring" approved="yes">
 			<source>Use Recurring Events Model. May Slow down frontend List Views : THIS is Still under development</source>
 		</trans-unit>
-
-		<trans-unit id="extmng.useGeolocation">
+		<trans-unit id="extmng.useGeolocation" approved="yes">
 			<source>Use Geo Location Feature for Google MAPs interaction </source>
 		</trans-unit>
-		<trans-unit id="extmng.minFormSec">
+		<trans-unit id="extmng.minFormSec" approved="yes">
 			<source>Minimum time in seconds a use should use to fill the registraton form. If he needs less time, he traps into the Spam/BOT trap.</source>
 		</trans-unit>
-
-
-		<trans-unit id="flexforms.DataSettings">
+		<trans-unit id="flexforms.DataSettings" approved="yes">
 			<source>Data Settings</source>
 		</trans-unit>
-		<trans-unit id="flexforms.EventDetailView">
+		<trans-unit id="flexforms.EventDetailView" approved="yes">
 			<source>Event Details</source>
 		</trans-unit>
-		<trans-unit id="flexforms.EventListView">
+		<trans-unit id="flexforms.EventListView" approved="yes">
             <source>Event List</source>
         </trans-unit>
-
-		<trans-unit id="flexforms.plugin.filter.tagboxheadline">
+		<trans-unit id="flexforms.plugin.filter.tagboxheadline" approved="yes">
 			<source>Tagfilter Box</source>
 		</trans-unit>
-		<trans-unit id="flexforms.plugin.filter.tagboxtags">
+		<trans-unit id="flexforms.plugin.filter.tagboxtags" approved="yes">
             <source>Tags for box</source>
         </trans-unit>
-        <trans-unit id="flexforms.plugin.filter.tagboxWidth">
+        <trans-unit id="flexforms.plugin.filter.tagboxWidth" approved="yes">
             <source>Show Tags in selected # of columns</source>
         </trans-unit>
-
-
-
-		<trans-unit id="flexforms.EventListFilterLayout">
+		<trans-unit id="flexforms.EventListFilterLayout" approved="yes">
             <source>Filter Layout</source>
         </trans-unit>
-        <trans-unit id="flexforms.EventListFilterLayout">
+        <trans-unit id="flexforms.EventListFilterLayout" approved="yes">
                     <source>Filter Layout</source>
                 </trans-unit>
-
-		<trans-unit id="flexforms.HideEventListLink">
+		<trans-unit id="flexforms.HideEventListLink" approved="yes">
             <source>Hide Event List Link</source>
         </trans-unit>
-		<trans-unit id="flexforms.Function">
+		<trans-unit id="flexforms.Function" approved="yes">
 			<source>Function</source>
 		</trans-unit>
-		<trans-unit id="flexforms.ListView">
+		<trans-unit id="flexforms.ListView" approved="yes">
 			<source>List view</source>
 		</trans-unit>
-		<trans-unit id="flexforms.RegistrationView">
+		<trans-unit id="flexforms.RegistrationView" approved="yes">
 			<source>Registration</source>
 		</trans-unit>
-		<trans-unit id="flexforms_additional.detailPid">
+		<trans-unit id="flexforms_additional.detailPid" approved="yes">
 			<source>Show Event Details Page ID</source>
 		</trans-unit>
-		<trans-unit id="flexforms_additional.eventListPid">
+		<trans-unit id="flexforms_additional.eventListPid" approved="yes">
             <source>Show Event Searchresults on Page ID</source>
         </trans-unit>
-		<trans-unit id="flexforms_additional.externalFormId">
+		<trans-unit id="flexforms_additional.externalFormId" approved="yes">
             <source>External Form ID</source>
         </trans-unit>
-        <trans-unit id="flexforms_additional.externalPortalId">
+        <trans-unit id="flexforms_additional.externalPortalId" approved="yes">
             <source>External Portal / Organisation ID</source>
         </trans-unit>
-
-
-
-		<trans-unit id="flexforms_additional.layout">
+		<trans-unit id="flexforms_additional.layout" approved="yes">
 			<source>Select layout Style for Frontend rendering</source>
 		</trans-unit>
-
-		<trans-unit id="flexforms_add_mandatory_fields">
+		<trans-unit id="flexforms_add_mandatory_fields" approved="yes">
 			<source>Typoscript: Add mandatory fields</source>
 		</trans-unit>
-
-		<trans-unit id="flexforms_additional.registerPid">
+		<trans-unit id="flexforms_additional.registerPid" approved="yes">
 			<source>Show Registration Form Page ID</source>
 		</trans-unit>
-		<trans-unit id="plugin.filter.Categories">
+		<trans-unit id="plugin.filter.Categories" approved="yes">
 			<source>Show Only Events with these Categories (leave empty to show all)</source>
 		</trans-unit>
-			<trans-unit id="plugin.filter.sortCategories">
+			<trans-unit id="plugin.filter.sortCategories" approved="yes">
 				<source>Sort Categories in Filter</source>
 			</trans-unit>
-
-			<trans-unit id="plugin.filter.sortTags">
+			<trans-unit id="plugin.filter.sortTags" approved="yes">
 				<source>Sort Tags in Filter</source>
 			</trans-unit>
-
-			<trans-unit id="plugin.filter.sortTags.alfabetic">
+			<trans-unit id="plugin.filter.sortTags.alfabetic" approved="yes">
 				<source>Sort by Name alfabetically</source>
 			</trans-unit>
-			<trans-unit id="plugin.filter.sortTags.likeInBackend">
+			<trans-unit id="plugin.filter.sortTags.likeInBackend" approved="yes">
 				<source>Sort by Ordering in Backend</source>
 			</trans-unit>
-			<trans-unit id="plugin.filter.combineTags">
+			<trans-unit id="plugin.filter.combineTags" approved="yes">
 				<source>Combine Selected Tags in Filter with AND </source>
 			</trans-unit>
-			<trans-unit id="plugin.filter.Organizer">
+			<trans-unit id="plugin.filter.Organizer" approved="yes">
                 <source>Show only selected organizer(s) - default empty to show all</source>
             </trans-unit>
-            <trans-unit id="plugin.filter.Organizer.HideInactive">
+            <trans-unit id="plugin.filter.Organizer.HideInactive" approved="yes">
 				<source>Hide organizer if no Event in the future</source>
 			</trans-unit>
-			<trans-unit id="plugin.filter.Organizer.respectTagVisibility">
+			<trans-unit id="plugin.filter.Organizer.respectTagVisibility" approved="yes">
                 <source>Respect tags visibility settings (default true) </source>
             </trans-unit>
-            <trans-unit id="plugin.filter.Organizer.reverseSorting">
+            <trans-unit id="plugin.filter.Organizer.reverseSorting" approved="yes">
                 <source>Reverse Sorting (default false) </source>
             </trans-unit>
-
-
-            <trans-unit id="plugin.filter.Organizer.latestUpdate">
+            <trans-unit id="plugin.filter.Organizer.latestUpdate" approved="yes">
                 <source>Hide organizer, if latest update has happen since more than given days (default 0 = ignore this filter)</source>
             </trans-unit>
-             <trans-unit id="plugin.filter.Locations.hideList">
+             <trans-unit id="plugin.filter.Locations.hideList" approved="yes">
                 <source>Hide list, only show Map</source>
             </trans-unit>
-
-			<trans-unit id="plugin.filter.hideCityDropdown">
+			<trans-unit id="plugin.filter.hideCityDropdown" approved="yes">
 				<source>Hide Dropdown City, even if there is more than one Cities</source>
 			</trans-unit>
-			<trans-unit id="plugin.filter.showDropdownsFirst">
+			<trans-unit id="plugin.filter.showDropdownsFirst" approved="yes">
                 <source>Show Dropdown Selects as first Filter option</source>
             </trans-unit>
-
-			<trans-unit id="plugin.filter.hideMonthDropdown">
+			<trans-unit id="plugin.filter.hideMonthDropdown" approved="yes">
                 <source>Hide Dropdown Month, even if there is more than one Month</source>
             </trans-unit>
-            <trans-unit id="plugin.filter.hideKalenderSelector">
+            <trans-unit id="plugin.filter.hideKalenderSelector" approved="yes">
                 <source>Hide Calendar Selector, if selected is normaly showing this</source>
             </trans-unit>
-            <trans-unit id="plugin.filter.hideOrganizerDropdown">
+            <trans-unit id="plugin.filter.hideOrganizerDropdown" approved="yes">
                 <source>Hide Dropdown Organizer, even if there is more than one Organizer</source>
             </trans-unit>
-			<trans-unit id="plugin.filter.canceledEvents">
+			<trans-unit id="plugin.filter.canceledEvents" approved="yes">
 				<source>Show Events based on the Canceled Field value </source>
 			</trans-unit>
-            <trans-unit id="plugin.filter.canceledEvents.all">
+            <trans-unit id="plugin.filter.canceledEvents.all" approved="yes">
                 <source>0 - ignore Canceled Filter (default) </source>
             </trans-unit>
-            <trans-unit id="plugin.filter.canceledEvents.only">
+            <trans-unit id="plugin.filter.canceledEvents.only" approved="yes">
                 <source>1 - All other Filters must fit AND Event must be marked as Canceled</source>
             </trans-unit>
-            <trans-unit id="plugin.filter.canceledEvents.hide">
+            <trans-unit id="plugin.filter.canceledEvents.hide" approved="yes">
                 <source>2 - If Event is marked as Canceled it is NOT listed</source>
             </trans-unit>
-
-			<trans-unit id="plugin.filter.topEvents">
+			<trans-unit id="plugin.filter.topEvents" approved="yes">
 				<source>Show Events based on the TopEvent Field value </source>
 			</trans-unit>
-
-
-			<trans-unit id="plugin.filter.topEvents.all">
+			<trans-unit id="plugin.filter.topEvents.all" approved="yes">
 				<source>0 - ignore Top Event Filter (default) </source>
 			</trans-unit>
-			<trans-unit id="plugin.filter.topEvents.only">
+			<trans-unit id="plugin.filter.topEvents.only" approved="yes">
 				<source>1 - All other Filters must fit AND Event must be marked as Top Event</source>
 			</trans-unit>
-			<trans-unit id="plugin.filter.topEvents.also">
+			<trans-unit id="plugin.filter.topEvents.also" approved="yes">
 				<source>2 - If Event is marked as Top Event it will be listed, even other filters does not fit</source>
 			</trans-unit>
-
-		<trans-unit id="plugin.filter.ShowAllCategories" xml:space="preserve">
+		<trans-unit id="plugin.filter.ShowAllCategories" xml:space="preserve" approved="yes">
 			<source>All Categories (If you select also this Option, the Event must have All of the other selected  Category filters)</source>
 		</trans-unit>
-		<trans-unit id="plugin.filter.ShowAllTags">
+		<trans-unit id="plugin.filter.ShowAllTags" approved="yes">
 			<source>All Tags (If you select also this Option, the Event must have All of the other selected Tag filters)</source>
 		</trans-unit>
-		<trans-unit id="plugin.filter.ShowFilter">
+		<trans-unit id="plugin.filter.ShowFilter" approved="yes">
 			<source>Show Filter in List View ?</source>
 		</trans-unit>
-		<trans-unit id="plugin.filter.ShowFilter.NoFilter">
+		<trans-unit id="plugin.filter.ShowFilter.NoFilter" approved="yes">
             <source>Do not Show a Filter </source>
         </trans-unit>
-		<trans-unit id="plugin.filter.ShowFilter.SelectFilter">
+		<trans-unit id="plugin.filter.ShowFilter.SelectFilter" approved="yes">
             <source>Filter with select Dropdowns</source>
         </trans-unit>
-		<trans-unit id="plugin.filter.ShowFilter.AdvancedFilter">
+		<trans-unit id="plugin.filter.ShowFilter.AdvancedFilter" approved="yes">
             <source>Use Advanced Filter with Multi Select</source>
         </trans-unit>
-		<trans-unit id="plugin.filter.ShowFilter.AdvancedFilterWithPosition">
+		<trans-unit id="plugin.filter.ShowFilter.AdvancedFilterWithPosition" approved="yes">
 			<source>Use Advanced Filter with Multi Select and Position</source>
 		</trans-unit>
-		<trans-unit id="plugin.filter.ShowFilter.AdvancedFilterWithBoxes">
+		<trans-unit id="plugin.filter.ShowFilter.AdvancedFilterWithBoxes" approved="yes">
             <source>Use Advanced Filter - Show Tags grouped </source>
         </trans-unit>
-		<trans-unit id="plugin.filter.ShowFilter.AdvancedFilterOnLeftSide">
+		<trans-unit id="plugin.filter.ShowFilter.AdvancedFilterOnLeftSide" approved="yes">
             <source>Use Advanced Filter - Show Tags on left side </source>
         </trans-unit>
-
-		<trans-unit id="plugin.filter.ShowFilter.SimpleDateFilter">
+		<trans-unit id="plugin.filter.ShowFilter.SimpleDateFilter" approved="yes">
             <source>Simple Filter only with Date</source>
         </trans-unit>
-
-        <trans-unit id="plugin.filter.ShowFilter.SimpleDateFilterWithPosition">
+        <trans-unit id="plugin.filter.ShowFilter.SimpleDateFilterWithPosition" approved="yes">
             <source>Simple Filter only with Date and Position and distance</source>
         </trans-unit>
-
-
-		<trans-unit id="plugin.filter.Tags">
+		<trans-unit id="plugin.filter.Tags" approved="yes">
 			<source>Show Only Events with these Tags</source>
 		</trans-unit>
-		<trans-unit id="plugin.filter.TagsInFilter">
+		<trans-unit id="plugin.filter.TagsInFilter" approved="yes">
             <source>Show these Tags in Filterbox</source>
         </trans-unit>
-
-		<trans-unit id="plugin.filter.notAllowedtags">
+		<trans-unit id="plugin.filter.notAllowedtags" approved="yes">
 			<source>Show NO Events with ONE of these Tags</source>
 		</trans-unit>
-		<trans-unit id="plugin.filter.maxDays">
+		<trans-unit id="plugin.filter.maxDays" approved="yes">
 			<source>Show max Days Only if StartDate has Restrictions , enter 0 for no limitations) </source>
 		</trans-unit>
-		<trans-unit id="plugin.filter.maxEvents">
+		<trans-unit id="plugin.filter.maxEvents" approved="yes">
 			<source>Show max Events (enter 0 for no limitations) </source>
 		</trans-unit>
-		<trans-unit id="plugin.filter.maxEventsPerPage">
+		<trans-unit id="plugin.filter.maxEventsPerPage" approved="yes">
 			<source>Show max Events per Page (enter 0 for no limitations) </source>
 		</trans-unit>
-		<trans-unit id="plugin.filter.startDate">
+		<trans-unit id="plugin.filter.startDate" approved="yes">
 			<source>Show only Events when Startdate matches </source>
 		</trans-unit>
-		<trans-unit id="plugin.filter.startDate.NoRestriction">
+		<trans-unit id="plugin.filter.startDate.NoRestriction" approved="yes">
 			<source>No restriction</source>
 		</trans-unit>
-		<trans-unit id="plugin.filter.startDate.Today">
+		<trans-unit id="plugin.filter.startDate.Today" approved="yes">
 			<source>Starts Today or in the Future</source>
 		</trans-unit>
-		<trans-unit id="plugin.filter.startDate.Tomorrow">
+		<trans-unit id="plugin.filter.startDate.Tomorrow" approved="yes">
 			<source>Starts Tomorrow or in the Future</source>
 		</trans-unit>
-		<trans-unit id="plugin.filter.startDate.Yesterday">
+		<trans-unit id="plugin.filter.startDate.Yesterday" approved="yes">
 			<source>Starts Yesterday or in the Future</source>
 		</trans-unit>
-
-
-			<trans-unit id="geocoding.error" xml:space="preserve">
+			<trans-unit id="geocoding.error" xml:space="preserve" approved="yes">
 				<source>Error</source>
 			</trans-unit>
-			<trans-unit id="geocoding.error.referenceToParentWindow" xml:space="preserve">
+			<trans-unit id="geocoding.error.referenceToParentWindow" xml:space="preserve" approved="yes">
 				<source>Reference to parent window not found!</source>
 			</trans-unit>
-			<trans-unit id="geocoding.error.geocodingNotSuccessful.part1" xml:space="preserve">
+			<trans-unit id="geocoding.error.geocodingNotSuccessful.part1" xml:space="preserve" approved="yes">
 				<source>Google Geocoding was not successful for the following reason:</source>
 			</trans-unit>
-			<trans-unit id="geocoding.error.geocodingNotSuccessful.part2" xml:space="preserve">
+			<trans-unit id="geocoding.error.geocodingNotSuccessful.part2" xml:space="preserve" approved="yes">
 				<source>(Maybe the address data is not complete? => address, city and country!)</source>
 			</trans-unit>
-
-
-			<trans-unit id="geocoding.page.title" xml:space="preserve">
+			<trans-unit id="geocoding.page.title" xml:space="preserve" approved="yes">
 				<source>Google Geocoding</source>
 			</trans-unit>
-			<trans-unit id="geocoding.page.headline" xml:space="preserve">
+			<trans-unit id="geocoding.page.headline" xml:space="preserve" approved="yes">
 				<source>Google Geocoding</source>
 			</trans-unit>
-
-			<trans-unit id="geocoding.form.transferGeoData.label.latitude" xml:space="preserve">
+			<trans-unit id="geocoding.form.transferGeoData.label.latitude" xml:space="preserve" approved="yes">
 				<source>Latitude</source>
 			</trans-unit>
-			<trans-unit id="geocoding.form.transferGeoData.label.longitude" xml:space="preserve">
+			<trans-unit id="geocoding.form.transferGeoData.label.longitude" xml:space="preserve" approved="yes">
 				<source>Longitude</source>
 			</trans-unit>
-			<trans-unit id="geocoding.form.transferGeoData.label.submit" xml:space="preserve">
+			<trans-unit id="geocoding.form.transferGeoData.label.submit" xml:space="preserve" approved="yes">
 				<source>Save</source>
 			</trans-unit>
-			<trans-unit id="geocoding.form.transferGeoData.label.cancel" xml:space="preserve">
+			<trans-unit id="geocoding.form.transferGeoData.label.cancel" xml:space="preserve" approved="yes">
 				<source>Cancel</source>
 			</trans-unit>
-			<trans-unit id="geocoding.form.geosearch.label.searchFor" xml:space="preserve">
+			<trans-unit id="geocoding.form.geosearch.label.searchFor" xml:space="preserve" approved="yes">
 				<source>Search for</source>
 			</trans-unit>
-			<trans-unit id="geocoding.form.geosearch.label.find" xml:space="preserve">
+			<trans-unit id="geocoding.form.geosearch.label.find" xml:space="preserve" approved="yes">
 				<source>Find</source>
 			</trans-unit>
-            <trans-unit id="geocoding.form.geosearch.label.updateMap" xml:space="preserve">
+            <trans-unit id="geocoding.form.geosearch.label.updateMap" xml:space="preserve" approved="yes">
 				<source>Update Map</source>
 			</trans-unit>
-
 		</body>
 	</file>
 </xliff>

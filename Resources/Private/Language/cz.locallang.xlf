@@ -5,53 +5,51 @@
 			<generator>LFEditor</generator>
 		</header>
 		<body>
-			<trans-unit id="month.01">
+			<trans-unit id="month.01" approved="yes">
 				<source>January</source>
 				<target>Leden</target>
 			</trans-unit>
-			<trans-unit id="month.02">
+			<trans-unit id="month.02" approved="yes">
 				<source>February</source>
 				<target>únor</target>
 			</trans-unit>
-			<trans-unit id="month.03">
+			<trans-unit id="month.03" approved="yes">
 				<source>March</source>
 				<target>březen</target>
 			</trans-unit>
-			<trans-unit id="month.04">
+			<trans-unit id="month.04" approved="yes">
 				<source>April</source>
 				<target>duben</target>
 			</trans-unit>
-			<trans-unit id="month.05">
+			<trans-unit id="month.05" approved="yes">
 				<source>May</source>
 				<target>květen</target>
 			</trans-unit>
-			<trans-unit id="month.06">
+			<trans-unit id="month.06" approved="yes">
 				<source>June</source>
 				<target>červen</target>
 			</trans-unit>
-
-
-			<trans-unit id="month.07">
+			<trans-unit id="month.07" approved="yes">
 				<source>July</source>
 				<target>červenec</target>
 			</trans-unit>
-			<trans-unit id="month.08">
+			<trans-unit id="month.08" approved="yes">
 				<source>August</source>
 				<target>srpen</target>
 			</trans-unit>
-			<trans-unit id="month.09">
+			<trans-unit id="month.09" approved="yes">
 				<source>September</source>
 				<target>září</target>
 			</trans-unit>
-			<trans-unit id="month.10">
+			<trans-unit id="month.10" approved="yes">
 				<source>October</source>
 				<target>říjen</target>
 			</trans-unit>
-			<trans-unit id="month.11">
+			<trans-unit id="month.11" approved="yes">
 				<source>November</source>
 				<target>listopad</target>
 			</trans-unit>
-			<trans-unit id="month.12">
+			<trans-unit id="month.12" approved="yes">
 				<source>December</source>
 				<target>prosinec</target>
 			</trans-unit>
@@ -59,36 +57,34 @@
 			<source>I have read and accept the </source>
 			<target>Četl(a) jsem a akceptuji </target>
 		</trans-unit>
-			<trans-unit id="jv_events_model_event.currency.label">
+			<trans-unit id="jv_events_model_event.currency.label" approved="yes">
 				<source>Currency</source>
 				<target>Měna</target>
 			</trans-unit>
-			<trans-unit id="jv_events_model_event.inclusiveVat">
+			<trans-unit id="jv_events_model_event.inclusiveVat" approved="yes">
 				<source>incl. VAT</source>
 				<target>včetně DPH</target>
 			</trans-unit>
-		<trans-unit id="register.overbooked">
+		<trans-unit id="register.overbooked" approved="yes">
             <source>+++Overbooked+++</source>
             <target>+++obsazen+++</target>
         </trans-unit>
-        <trans-unit id="register.overbooked_headline">
+        <trans-unit id="register.overbooked_headline" approved="yes">
             <source>This event is fully booked</source>
             <target>Tento termín je již plně obsazen.</target>
         </trans-unit>
-        <trans-unit id="register.overbooked_text">
+        <trans-unit id="register.overbooked_text" approved="yes">
                <source>Unfortunately, your registration to this event cannot be processed. Please contact the host to receive information about last minute tickets.</source>
             <target>Bohužel není možné provést Vaší registraci na tento termín. Kontaktujte prosím pořadatele, zda nejsou k dispozici ještě "last minute" místa.</target>
         </trans-unit>
-              <trans-unit id="register.registration_not_possible_text">
+              <trans-unit id="register.registration_not_possible_text" approved="yes">
                     <source>Unfortunately, your registration to this event cannot be processed.</source>
                     <target>Bohužel není možné provést Vaší registraci na tento termín.</target>
                  </trans-unit>
-                 <trans-unit id="register.deadline_expired_text">
+                 <trans-unit id="register.deadline_expired_text" approved="yes">
                     <source>The deadline for registration has expired.</source>
                     <target>Termín pro přilášení již uplynul.</target>
                  </trans-unit>
-
-
 		<trans-unit id="register.accept_privacy.and" approved="yes">
 			<source>and</source>
 			<target>a</target>
@@ -225,8 +221,6 @@
 			<source>Waiting list Seats</source>
 			<target>Seznam čekajících</target>
 		</trans-unit>
-
-
 		<trans-unit id="register.you_are_on_waiting_list" approved="yes">
             <source>Your registration was successfull added to the Waiting list. Please wait for the Confirmation by the Organizer</source>
             <target>Vaše registrace byla úspěšně přidána do pořadníku. Prosím, vyčkejte na potvrzení od pořadatele.</target>
@@ -259,7 +253,6 @@
             <source>if the button does not work, copy the following URL into your browser:</source>
             <target>V případě, že tlačítko nefunguje, zkopírujte prosím následující URL adresu do adresního řádku prohlížeče:</target>
         </trans-unit>
-
 		<trans-unit id="tx_jvevents_domain_model_event.citrix_uid" approved="yes">
 			<source>Citrix Uid</source>
 			<target>Citrix Uid</target>
@@ -372,7 +365,6 @@
 			<source>Start Date</source>
 			<target>Začátek - datum</target>
 		</trans-unit>
-
 		<trans-unit id="tx_jvevents_domain_model_event.date" approved="yes">
 			<source>Date</source>
 			<target>Datum</target>
@@ -681,7 +673,7 @@
 			<source>Filter by city</source>
 			<target>Filtrovat podle města</target>
 		</trans-unit>
-		<trans-unit id="tx_jvevents_event.filter.city.all">
+		<trans-unit id="tx_jvevents_event.filter.city.all" approved="yes">
             <source>All citys</source>
             <target>Všechna místa</target>
         </trans-unit>
@@ -717,7 +709,7 @@
 			<source>More filters</source>
 			<target>Další filtry</target>
 		</trans-unit>
-		<trans-unit id="tx_jvevents_event.list.event_details">
+		<trans-unit id="tx_jvevents_event.list.event_details" approved="yes">
 			<source>Event details</source>
 			<target>Podrobnosti události</target>
 		</trans-unit>
@@ -773,11 +765,11 @@
 			<source>Dec</source>
 			<target>Pro</target>
 		</trans-unit>
-			<trans-unit id="days">
+			<trans-unit id="days" approved="yes">
 				<source>Days</source>
 				<target>Dny</target>
 			</trans-unit>
-			<trans-unit id="time">
+			<trans-unit id="time" approved="yes">
 				<source>o'clock</source>
 				<target>hodin</target>
 			</trans-unit>

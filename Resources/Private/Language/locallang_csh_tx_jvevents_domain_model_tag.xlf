@@ -5,7 +5,7 @@
 			<generator>LFEditor</generator>
 		</header>
 		<body>
-		<trans-unit id="name.description">
+		<trans-unit id="name.description" approved="yes">
 			<source>Name of the Tag</source>
 		</trans-unit>
 		</body>

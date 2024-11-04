@@ -5,149 +5,149 @@
 			<generator>LFEditor</generator>
 		</header>
 		<body>
-		<trans-unit id="access.description">
+		<trans-unit id="access.description" approved="yes">
 			<source>this event is visible for the following usergroups / Access Rights</source>
 		</trans-unit>
-		<trans-unit id="all_day.description">
+		<trans-unit id="all_day.description" approved="yes">
 			<source>allDay</source>
 		</trans-unit>
-		<trans-unit id="available_seats.description" xml:space="preserve">
+		<trans-unit id="available_seats.description" xml:space="preserve" approved="yes">
 			<source>Available Seats:
 				 Set this to a value higher than 0 if you want registrations using Waiting list. Can be combined with Avaiable Seats </source>
 		</trans-unit>
-		<trans-unit id="citrix_uid.description">
+		<trans-unit id="citrix_uid.description" approved="yes">
 			<source>Enter the citrixUid of your goTo Webinar event. (means You FIRST have to create the event in the citrix portal!)</source>
 		</trans-unit>
-		<trans-unit id="description.description">
+		<trans-unit id="description.description" approved="yes">
 			<source>description</source>
 		</trans-unit>
-		<trans-unit id="end_date.description">
+		<trans-unit id="end_date.description" approved="yes">
 			<source>endDate</source>
 		</trans-unit>
-		<trans-unit id="end_time.description">
+		<trans-unit id="end_time.description" approved="yes">
 			<source>endTime</source>
 		</trans-unit>
-		<trans-unit id="event_category.description">
+		<trans-unit id="event_category.description" approved="yes">
 			<source>eventCategory</source>
 		</trans-unit>
-		<trans-unit id="event_type.description">
+		<trans-unit id="event_type.description" approved="yes">
 			<source>eventType</source>
 		</trans-unit>
-		<trans-unit id="files.description">
+		<trans-unit id="files.description" approved="yes">
 			<source>Upload files, visible to all who may see the event. Depending on your layout if in List view or/and Detail view</source>
 		</trans-unit>
-		<trans-unit id="filesAfterReg.description">
+		<trans-unit id="filesAfterReg.description" approved="yes">
 			<source>Upload files, visible to had registered to the event. Depending on your layout if in List view or/and Detail view. or maybe only in a registration email notification</source>
 		</trans-unit>
-		<trans-unit id="filesAfterEvent.description">
+		<trans-unit id="filesAfterEvent.description" approved="yes">
 			<source>Upload files, visible AFTER the event. Depending on your layout and definied workflow or maybe  only in an notification email after the event to the attendees </source>
 		</trans-unit>
-		<trans-unit id="freq_exception.description">
+		<trans-unit id="freq_exception.description" approved="yes">
 			<source>Fe. If Weekly, select if every thursday or only every second week.</source>
 		</trans-unit>
-		<trans-unit id="frequency.description">
+		<trans-unit id="frequency.description" approved="yes">
 			<source>select Kind of Frequency: Daily, weekly, monthly, yearly</source>
 		</trans-unit>
-		<trans-unit id="images.description">
+		<trans-unit id="images.description" approved="yes">
 			<source>Upload more Images. It is Depending on your Layout, what will happen : shown als SlideShow, only one etc.)</source>
 		</trans-unit>
-		<trans-unit id="is_exception_for.description">
+		<trans-unit id="is_exception_for.description" approved="yes">
 			<source>This event is an exception for an recurring event.</source>
 		</trans-unit>
-		<trans-unit id="is_recurring.description">
+		<trans-unit id="is_recurring.description" approved="yes">
 			<source>Use this checkbox, if this is a frequently event.</source>
 		</trans-unit>
-		<trans-unit id="location.description">
+		<trans-unit id="location.description" approved="yes">
 			<source>location</source>
 		</trans-unit>
-		<trans-unit id="marketing_process_id.description">
+		<trans-unit id="marketing_process_id.description" approved="yes">
 			<source>If you want to start a marketingProcess (sending emails, reminder and so) after a registration, enter the ID of the configured salesforce marketing Process</source>
 		</trans-unit>
-		<trans-unit id="name.description">
+		<trans-unit id="name.description" approved="yes">
 			<source>name</source>
 		</trans-unit>
-		<trans-unit id="need_to_confirm.description">
+		<trans-unit id="need_to_confirm.description" approved="yes">
 			<source>If the user needs to confirm the registration, activate this option</source>
 		</trans-unit>
-		<trans-unit id="notify_organizer.description">
+		<trans-unit id="notify_organizer.description" approved="yes">
 			<source>Do you want to send an Email notification to the Organisers Email Adddress?</source>
 		</trans-unit>
-		<trans-unit id="notify_registrant.description">
+		<trans-unit id="notify_registrant.description" approved="yes">
 			<source>Do you want to send an Email notification to the Registrants Email Adddress? </source>
 		</trans-unit>
-		<trans-unit id="organizer.description">
+		<trans-unit id="organizer.description" approved="yes">
 			<source>organizer</source>
 		</trans-unit>
-		<trans-unit id="registered_seats.description">
+		<trans-unit id="registered_seats.description" approved="yes">
 			<source>registered Seats: Automatically computed after registration. if this value is higher than the sum of available and Waiting List Seats, registration is not possible</source>
 		</trans-unit>
-		<trans-unit id="registrant.description">
+		<trans-unit id="registrant.description" approved="yes">
 			<source>registrant</source>
 		</trans-unit>
-		<trans-unit id="registrationPid.description">
+		<trans-unit id="registrationPid.description" approved="yes">
 			<source>If you use the internal Registration modul, the registrated users are stored on the Page/Folder you specify here. It is a good idea to select a separate Sysfolder for each Event or each organizer to allow an Organizer easy access too only his registrations also in backend</source>
 		</trans-unit>
-		<trans-unit id="registrationUrl.description">
+		<trans-unit id="registrationUrl.description" approved="yes">
 			<source>An external Website, PDF, Form or somethings else is used for the Registration. Enter the URL or f.e. select the PDF from the Filelist</source>
 		</trans-unit>
-		<trans-unit id="registration_access.description">
+		<trans-unit id="registration_access.description" approved="yes">
 			<source>Registration is only visible for this usergroups / access rights</source>
 		</trans-unit>
-		<trans-unit id="registration_until.description">
+		<trans-unit id="registration_until.description" approved="yes">
 			<source>If you use any registration, you can enter the date, when you want to hide the Registration link</source>
 		</trans-unit>
-		<trans-unit id="sales_force_event_id.description">
+		<trans-unit id="sales_force_event_id.description" approved="yes">
 			<source>This ID is automatically generated by salesForce and only visible to help you to find the event in salesforce</source>
 		</trans-unit>
-		<trans-unit id="sales_force_record_type.description">
+		<trans-unit id="sales_force_record_type.description" approved="yes">
 			<source>salesForceRecordType This normaly should be empty. in special Cases this is usefull</source>
 		</trans-unit>
-		<trans-unit id="sales_force_session_id.description">
+		<trans-unit id="sales_force_session_id.description" approved="yes">
 			<source>This ID is automatically generated by salesForce and only visible to help you to find the event in salesforce</source>
 		</trans-unit>
-		<trans-unit id="start_date.description">
+		<trans-unit id="start_date.description" approved="yes">
 			<source>startDate</source>
 		</trans-unit>
-		<trans-unit id="start_time.description">
+		<trans-unit id="start_time.description" approved="yes">
 			<source>startTime</source>
 		</trans-unit>
-		<trans-unit id="store_in_citrix.description">
+		<trans-unit id="store_in_citrix.description" approved="yes">
 			<source>storeInCitrix</source>
 		</trans-unit>
-		<trans-unit id="store_in_sales_force.description">
+		<trans-unit id="store_in_sales_force.description" approved="yes">
 			<source>Store Events and registration In SalesForce CRM </source>
 		</trans-unit>
-		<trans-unit id="subject_organizer.description">
+		<trans-unit id="subject_organizer.description" approved="yes">
 			<source>subject of the Email to the Organizer. You can use PlaceHolders like ###EVENT_STARTDATE### ###EVENT_NAME### ###LOCATION_CITY### (see Docu)</source>
 		</trans-unit>
-		<trans-unit id="subject_registrant.description" xml:space="preserve">
+		<trans-unit id="subject_registrant.description" xml:space="preserve" approved="yes">
 			<source>subject of the Email to the Registrant. You can use PlaceHolders like ###EVENT_STARTDATE###  ###EVENT_NAME### ###LOCATION_CITY### (see Docu)</source>
 		</trans-unit>
-		<trans-unit id="tags.description">
+		<trans-unit id="tags.description" approved="yes">
 			<source>tags</source>
 		</trans-unit>
-		<trans-unit id="teaser.description">
+		<trans-unit id="teaser.description" approved="yes">
 			<source>teaser</source>
 		</trans-unit>
-		<trans-unit id="teaserImage.description">
+		<trans-unit id="teaserImage.description" approved="yes">
 			<source>Upload one (small) Image. It is Depending on your Layout, what will happen : shown in List View or not)</source>
 		</trans-unit>
-		<trans-unit id="test_registrant.description">
+		<trans-unit id="test_registrant.description" approved="yes">
 			<source>testRegistrant</source>
 		</trans-unit>
-		<trans-unit id="text_organizer.description">
+		<trans-unit id="text_organizer.description" approved="yes">
 			<source>Introtext of the Email to the Organizer. </source>
 		</trans-unit>
-		<trans-unit id="text_registrant.description">
+		<trans-unit id="text_registrant.description" approved="yes">
 			<source>Text of the Email to the Registrant. </source>
 		</trans-unit>
-		<trans-unit id="introtext_registrant.description">
+		<trans-unit id="introtext_registrant.description" approved="yes">
             <source>Introtext of the Email to the Registrant. </source>
         </trans-unit>
-		<trans-unit id="unconfirmed_seats.description">
+		<trans-unit id="unconfirmed_seats.description" approved="yes">
 			<source>unconfirmed Seats: if you use the option: User must confirm, this is the amount of users, that did not click the link</source>
 		</trans-unit>
-		<trans-unit id="with_registration.description">
+		<trans-unit id="with_registration.description" approved="yes">
 			<source>If you activate this Option &quot;Registration&quot;, the internal Modul for registration with many oprions is used</source>
 		</trans-unit>
 		</body>
