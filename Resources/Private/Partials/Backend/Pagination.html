@@ -16,7 +16,7 @@
         </li>
         <f:if condition="{pagination.previousPageNumber} && {pagination.previousPageNumber} >= {pagination.firstPageNumber}">
           <li class="previous">
-            <jve:be.uri arguments="{route: 'jvevents_eventmngt',pageId:pageId,currentPage:pagination.previousPageNumber, recursive: recursive, onlyActual: onlyActual,event:event}" title="previous" class="page-link"> &lt; </jve:be.uri>
+            <jve:be.uri arguments="{route: 'jvevents_eventmngt',id:pageId,currentPage:pagination.previousPageNumber, recursive: recursive, onlyActual: onlyActual,event:event}" title="previous" class="page-link"> &lt; </jve:be.uri>
           </li>
         </f:if>
         <f:if condition="{pagination.hasLessPages} || {minPage} > 0 ">
@@ -34,7 +34,7 @@
             <f:else>
               <f:if condition="{index.index} > {minPage}  && {index.index} < {maxPage}">
                 <li class="page-item">
-                  <jve:be.uri arguments="{route: 'jvevents_eventmngt',pageId:pageId,currentPage:page, recursive: recursive, onlyActual: onlyActual,event:event}" title="previous" class="page-link"> {page} </jve:be.uri>
+                  <jve:be.uri arguments="{route: 'jvevents_eventmngt',id:pageId,currentPage:page, recursive: recursive, onlyActual: onlyActual,event:event}" title="previous" class="page-link"> {page} </jve:be.uri>
                 </li>
               </f:if>
 
@@ -46,7 +46,7 @@
         </f:if>
         <f:if condition="{pagination.nextPageNumber} && {pagination.nextPageNumber} <= {pagination.lastPageNumber}">
           <li class="next">
-            <jve:be.uri arguments="{route: 'jvevents_eventmngt',pageId:pageId,currentPage:pagination.nextPageNumber, recursive: recursive, onlyActual: onlyActual,event:event}" title="previous" class="page-link"> &gt; </jve:be.uri>
+            <jve:be.uri arguments="{route: 'jvevents_eventmngt',pageId:id,currentPage:pagination.nextPageNumber, recursive: recursive, onlyActual: onlyActual,event:event}" title="previous" class="page-link"> &gt; </jve:be.uri>
           </li>
         </f:if>
       </ul>

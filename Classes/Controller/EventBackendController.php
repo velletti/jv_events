@@ -39,8 +39,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use JVelletti\JvEvents\Domain\Model\Event;
 use JVelletti\JvEvents\Domain\Model\Location;
 use JVelletti\JvEvents\Domain\Model\Registrant;
-use JVelletti\JvEvents\Utility\TyposcriptUtility;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\FormProtection\FrontendFormProtection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use JVelletti\JvEvents\Utility\RegisterHubspotUtility;
@@ -176,6 +175,93 @@ class EventBackendController extends BaseController
         $view->assign('recursive', $recursive);
         $view->assign('pageId', $pageId );
         return $view->renderResponse('/EventBackend/List.html');
+    }
+
+
+    /**
+     * action new
+     * @param \JVelletti\JvEvents\Domain\Model\Registrant
+     * @return void
+     */
+    // public function confirmAction(\JVelletti\JvEvents\Domain\Model\Registrant $registrant )
+    public function confirmAction()
+    {
+        $eventID = 0 ;
+        if ( $this->request->hasArgument("eventID")) {
+            $eventID = $this->request->getArgument("eventID");
+        }
+        if ( $this->request->hasArgument("registrant")) {
+            $regId = $this->request->getArgument("registrant") ;
+
+
+            if( $regId > 0 ) {
+                /** @var Registrant $registrant */
+                $registrant = $this->registrantRepository->findByUid($regId) ;
+                if( $registrant ) {
+
+                    /** @var Event $event */
+                    $event = $this->eventRepository->findByUidAllpages($registrant->getEvent() ) ;
+
+                    if( $event ) {
+
+                        $pid = (int)$event[0]->getRegistrationFormPid() ;
+                        $lng = (int)$event[0]->getSysLanguageUid() ;
+                        if( $lng < 1) {
+                            $lng = 0 ;
+                        }
+                        $path = \JVelletti\JvTyposcript\Utility\TyposcriptUtility::getPath($pid , $lng , "tx_jvevents_events") ;
+                        $typoScript = \JVelletti\JvTyposcript\Utility\TyposcriptUtility::loadTypoScriptviaCurl($path) ;
+                        $this->settings = array_merge( $this->settings ,  ($typoScript['settings'] ?? []) ) ;
+                        if( !isset($this->settings['register']['senderEmail'] ) ) {
+                            $this->addFlashMessage(" settings['register']['senderEmail']  not set "  , 'ERROR', ContextualFeedbackSeverity::ERROR);
+                            return $this->redirect('list' , NULL , NULL , ['event' => $eventID]) ;
+                        }
+                        $this->settings['pageId'] = $pid ;
+                        $this->settings['sys_language_uid'] = $lng ;
+
+
+                        if( !$this->settings['LayoutRegister'] ) {
+                            $this->settings['LayoutRegister'] = "2Allplan" ;
+                        }
+                        //  echo "<pre>" ;
+                        // var_dump($this->settings) ;
+                        // die;
+
+                        $registrant->setConfirmed("1") ;
+                        $name = trim( $registrant->getFirstName() . " " . $registrant->getLastName())  ;
+                        if( strlen( $name ) < 3 ) {
+                            $name = "RegistrantId: " . $registrant->getUid() ;
+                        } else {
+                            $name  = '=?utf-8?B?'. base64_encode( $name) .'?=' ;
+                        }
+
+                        $this->sendEmail($event[0] , $registrant ,"Registrant" , [$registrant->getEmail() => $name] , FALSE )  ;
+
+                        $this->registrantRepository->update($registrant) ;
+                        $this->addFlashMessage($this->settings['register']['senderEmail'] . " -> Email send to " . $registrant->getEmail() . " - layout: " . $this->settings['LayoutRegister'] , '', ContextualFeedbackSeverity::INFO);
+                    }
+                }
+            }
+
+        }
+        return $this->redirect('list' , NULL , NULL , ['event' => $eventID]) ;
+    }
+
+    // ########################################   functions ##################################
+    /**
+     * helper for Formvalidation
+     * @param string $action
+     * @return string
+     */
+    public function generateToken($action = "action")
+    {
+        /** @var FrontendFormProtection $formClass */
+        $formClass =  GeneralUtility::makeInstance( FrontendFormProtection::class) ;
+
+        return $formClass->generateToken(
+           'event', $action ,   "P" . $this->settings['pageId'] . "-L" .$this->settings['sys_language_uid']
+        );
+
     }
 
 }

@@ -63,7 +63,7 @@ https://github.com/derekpunsalan/responsive-email/blob/master/README.md
 							<table style="font-size: 100%; font-family: '{emConf.fontFamily}'; line-height: 1.65; width: 100% !important; border-collapse: collapse; margin: 0; padding: 0;">
 								<tr style="font-size: 100%; font-family: '{emConf.fontFamily}'; line-height: 1.65; margin: 0; padding: 0;">
 									<td style="font-size: 100%; font-family: '{emConf.fontFamily}'; line-height: 1.65; background: {emConf.BackGroundColor} none; margin: 0; padding: 30px 35px;" bgcolor="{emConf.BackGroundColor}">
-										<f:format.html parseFuncTSPath="lib.jveventsRTE">{signature.html}</f:format.html>
+										<f:format.nl2br>{signature.plain}</f:format.nl2br>
 									</td>
 								</tr>
 							</table>

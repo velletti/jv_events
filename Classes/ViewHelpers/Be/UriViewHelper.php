@@ -31,7 +31,7 @@ class UriViewHelper extends AbstractTagBasedViewHelper
         $finalArguments = [] ;
         $arguments = ($this->arguments['arguments'] ?? [] ) ;
         $class = ($this->arguments['class'] ?? 'page-link' ) ;
-        foreach ( ["recursive" , "onlyActual" , "event" , "currentPage" ] as $special ) {
+        foreach ( ["id" , "recursive" , "onlyActual" , "event" , "currentPage" ] as $special ) {
             if( isset($arguments[$special] )) {
                 $finalArguments[$special]= $arguments[$special] ;
             }
