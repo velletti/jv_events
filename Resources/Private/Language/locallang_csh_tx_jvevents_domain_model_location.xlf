@@ -5,45 +5,44 @@
 			<generator>LFEditor</generator>
 		</header>
 		<body>
-		<trans-unit id="city.description">
+		<trans-unit id="city.description" approved="yes">
 			<source>Name of the City</source>
 		</trans-unit>
-		<trans-unit id="country.description">
+		<trans-unit id="country.description" approved="yes">
 			<source>Select the Country from the list. (stores 3 Digits Iso Code)</source>
 		</trans-unit>
-		<trans-unit id="description.description">
+		<trans-unit id="description.description" approved="yes">
 			<source>Details to this location</source>
 		</trans-unit>
-		<trans-unit id="email.description">
+		<trans-unit id="email.description" approved="yes">
 			<source>valid Email Address. </source>
 		</trans-unit>
-		<trans-unit id="lat.description">
+		<trans-unit id="lat.description" approved="yes">
 			<source>Latitude of this location for the MAP view. use the Wizard to set this</source>
 		</trans-unit>
-		<trans-unit id="link.description">
+		<trans-unit id="link.description" approved="yes">
 			<source>URL should start with http:// </source>
 		</trans-unit>
-		<trans-unit id="lng.description">
+		<trans-unit id="lng.description" approved="yes">
 			<source>Longitude of this location for the MAP view. use the Wizard to set this</source>
 		</trans-unit>
-		<trans-unit id="location_category.description">
+		<trans-unit id="location_category.description" approved="yes">
 			<source>Category of this Location</source>
 		</trans-unit>
-		<trans-unit id="name.description">
+		<trans-unit id="name.description" approved="yes">
 			<source>Name of the Location. Keep it short, if you use Filtering by Eventlocation</source>
 		</trans-unit>
-		<trans-unit id="organizer.description">
+		<trans-unit id="organizer.description" approved="yes">
 			<source>Detail description of this Organizer</source>
 		</trans-unit>
-		<trans-unit id="phone.description">
+		<trans-unit id="phone.description" approved="yes">
 			<source>phone Number for this location</source>
 		</trans-unit>
-		<trans-unit id="street_and_nr.description" xml:space="preserve">
+		<trans-unit id="street_and_nr.description" xml:space="preserve" approved="yes">
 			<source>Address and Number of the location. separate special infos like Backyard or third floor with / 
-
 Fe.: &quot;Leopoldstreet 123a / Backyard building / 3 Floor</source>
 		</trans-unit>
-		<trans-unit id="zip.description">
+		<trans-unit id="zip.description" approved="yes">
 			<source>Zip / Postal Code</source>
 		</trans-unit>
 		</body>

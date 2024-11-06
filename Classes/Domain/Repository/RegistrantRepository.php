@@ -203,7 +203,7 @@ class RegistrantRepository extends BaseRepository
             $query->matching($query->logicalAnd(...$constraints));
         }
         // new way to debug typo3 db queries
-        //  $this->debugQuery($query) ;
+        // $this->debugQuery($query) ;
         $result = $query->execute();
         return $result;
     }

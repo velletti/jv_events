@@ -5,25 +5,25 @@
 			<generator>LFEditor</generator>
 		</header>
 		<body>
-		<trans-unit id="description.description">
+		<trans-unit id="description.description" approved="yes">
 			<source>description</source>
 		</trans-unit>
-		<trans-unit id="email.description" xml:space="preserve">
+		<trans-unit id="email.description" xml:space="preserve" approved="yes">
 			<source>email  is used in lists, detail Views (depends on the selected Layout) but also as ReplyTo Address in Emails to the partipant</source>
 		</trans-unit>
-		<trans-unit id="images.description">
+		<trans-unit id="images.description" approved="yes">
 			<source>images to this organizer (depents on Layout if visible)</source>
 		</trans-unit>
-		<trans-unit id="name.description">
+		<trans-unit id="name.description" approved="yes">
 			<source>name or organizer. is used in lists, detail Views (depends on the selected Layout) but also as SenderName in Emails to the partipant</source>
 		</trans-unit>
-		<trans-unit id="organizer_category.description">
+		<trans-unit id="organizer_category.description" approved="yes">
 			<source>organizerCategory</source>
 		</trans-unit>
-		<trans-unit id="phone.description">
+		<trans-unit id="phone.description" approved="yes">
 			<source>phone of the organizer. Please use International ISO Format: +49 (89) 123 456 78</source>
 		</trans-unit>
-		<trans-unit id="sales_force_user_id.description">
+		<trans-unit id="sales_force_user_id.description" approved="yes">
 			<source>salesForceUserId : only this SalesForce user will have access to the events and registrations in Salesforce</source>
 		</trans-unit>
 		</body>

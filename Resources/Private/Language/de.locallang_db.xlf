@@ -5,27 +5,26 @@
 			<generator>LFEditor</generator>
 		</header>
 		<body>
-			<trans-unit id="tx_jvevents_domain_model_event.price">
+			<trans-unit id="tx_jvevents_domain_model_event.price" approved="yes">
 				<source>Price incl. VAT</source>
 				<target>Preis inkl. MwSt.</target>
 			</trans-unit>
-			<trans-unit id="tx_jvevents_domain_model_event.priceReduced">
+			<trans-unit id="tx_jvevents_domain_model_event.priceReduced" approved="yes">
 				<source>Reduced Price</source>
 				<target>Ermäßigter Preis</target>
 			</trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.priceReducedHeader">
+            <trans-unit id="tx_jvevents_domain_model_event.priceReducedHeader" approved="yes">
                <source>If You want to show a reduced price, you need to add a text that explains the reduced price. F.e.: 'for students' / or 'early bird price' </source>
                <source>Um einen reduzierten Preis anzuzeigen, bitte einen Grund angeben. Z.b:  'für Studenten' / oder 'bei Anmeldung bis xx.yy' </source>
             </trans-unit>
-			<trans-unit id="tx_jvevents_domain_model_event.priceReducedText">
+			<trans-unit id="tx_jvevents_domain_model_event.priceReducedText" approved="yes">
 				<source>Text after Reduced Price</source>
 				<target>Grund für eine Reduzierung</target>
 			</trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.priceReducedTextLabel">
+            <trans-unit id="tx_jvevents_domain_model_event.priceReducedTextLabel" approved="yes">
                 <source>Reduction when</source>
                 <target>Ermäßigt wenn</target>
             </trans-unit>
-
 		<trans-unit id="tx_jvevents_domain_model_category" approved="yes">
 			<source>Category</source>
 			<target>Category</target>
@@ -38,15 +37,14 @@
 			<source>Type</source>
 			<target>Typ</target>
 		</trans-unit>
-		<trans-unit id="tx_jvevents_domain_model_category.block_registration">
+		<trans-unit id="tx_jvevents_domain_model_category.block_registration" approved="yes">
             <source>Allow register to all events in this Category</source>
             <target>Erlaube die Anmeldung für alle Veranstaltungen in der Kategorie</target>
         </trans-unit>
-        <trans-unit id="tx_jvevents_domain_model_event.new_registration">
+        <trans-unit id="tx_jvevents_domain_model_event.new_registration" approved="yes">
             <source>Your Registration</source>
             <target>Ihre Anmeldung</target>
         </trans-unit>
-
 		<trans-unit id="tx_jvevents_domain_model_event" approved="yes">
 			<source>Event</source>
 			<target>Veranstaltung</target>
@@ -135,7 +133,7 @@
 			<source>Name</source>
 			<target>Name der Veranstaltung</target>
 		</trans-unit>
-		<trans-unit id="tx_jvevents_domain_model_event.event_button_text">
+		<trans-unit id="tx_jvevents_domain_model_event.event_button_text" approved="yes">
             <source>Overwrite the default CTA (To the event)</source>
             <target>Überschreiben des Standard CTA (Zum Termin)</target>
         </trans-unit>
@@ -167,35 +165,34 @@
 			<source>Your Registration</source>
 			<target>Ihre Anmeldung</target>
 		</trans-unit>
-		 <trans-unit id="tx_jvevents_domain_model_event.registration_show_status">
+		 <trans-unit id="tx_jvevents_domain_model_event.registration_show_status" approved="yes">
             <source>Show amount of Registrations during registration</source>
             <target>Anzahl der bisherigen Anmeldungen bei der Registrierung anzeigen</target>
         </trans-unit>
-        <trans-unit id="tx_jvevents_domain_model_event.registration_gender">
+        <trans-unit id="tx_jvevents_domain_model_event.registration_gender" approved="yes">
             <source>Restrict Registration by gender</source>
             <target>Registrierung eingeschränken</target>
         </trans-unit>
-        <trans-unit id="tx_jvevents_domain_model_event.registration_gender.none">
+        <trans-unit id="tx_jvevents_domain_model_event.registration_gender.none" approved="yes">
             <source>Registration is not restricted by gender (default)</source>
             <target>Registration ist nicht eingeschränkt durch das Geschlecht (default)</target>
         </trans-unit>
-        <trans-unit id="tx_jvevents_domain_model_event.registration_gender.male">
+        <trans-unit id="tx_jvevents_domain_model_event.registration_gender.male" approved="yes">
             <source>Registration is restricted. Only role male (leaders) can register</source>
             <target>Registrierung ist eingeschränkt. Nur für 'Führende' (Rolle: Mann) möglich</target>
         </trans-unit>
-        <trans-unit id="tx_jvevents_domain_model_event.registration_gender.female">
+        <trans-unit id="tx_jvevents_domain_model_event.registration_gender.female" approved="yes">
             <source>Registration is restricted. Only rle female (followers) can register</source>
             <target>Registrierung ist eingeschränkt. Nur für 'Folgende' (Rolle: Frau) möglich</target>
         </trans-unit>
-        <trans-unit id="tx_jvevents_domain_model_event.registration_gender.couples">
+        <trans-unit id="tx_jvevents_domain_model_event.registration_gender.couples" approved="yes">
             <source>Registration is restricted. Only Couples can register</source>
             <target>Registrierung ist eingeschränkt. Anmeldung nur möglich als Paar.</target>
         </trans-unit>
-         <trans-unit id="tx_jvevents_domain_model_event.registration_gender.single">
+         <trans-unit id="tx_jvevents_domain_model_event.registration_gender.single" approved="yes">
             <source>Registration is restricted. Only Single Persons can register</source>
             <source>Registrierung ist eingeschränkt. Nur Einzelpersonen erlaubt.</source>
         </trans-unit>
-
 		<trans-unit id="tx_jvevents_domain_model_event.registrant" approved="yes">
 			<source>Participant</source>
 			<target>Teilnehmer</target>
@@ -232,8 +229,7 @@
 			<source>Store In Citrix</source>
 			<target>Anmeldungen in Citrix (goToWebinar) speichern </target>
 		</trans-unit>
-
-		<trans-unit id="tx_jvevents_domain_model_event.store_in_hubspot">
+		<trans-unit id="tx_jvevents_domain_model_event.store_in_hubspot" approved="yes">
 			<source>Send Registrations to SalesForce (via Hubspot)</source>
 			<target>Übertragung Eventanmeldungen nach Salesforce</target>
 		</trans-unit>
@@ -245,12 +241,11 @@
 			<source>Start Time</source>
 			<target>Start Zeit</target>
 		</trans-unit>
-
-		<trans-unit id="tx_jvevents_domain_model_event.entry_time">
+		<trans-unit id="tx_jvevents_domain_model_event.entry_time" approved="yes">
             <source>Opening time</source>
             <target>Einlass ab</target>
         </trans-unit>
-        <trans-unit id="tx_jvevents_domain_model_event.entry_time_help">
+        <trans-unit id="tx_jvevents_domain_model_event.entry_time_help" approved="yes">
             <source>Just put a time to this field, if your participants should or may come before the official start time</source>
             <target>Diese Uhrzeit nur ausfüllen, wenn ein Einlass vor der eigentlichen Startzeit möglich oder gar gewünscht ist</target>
         </trans-unit>
@@ -298,7 +293,6 @@
             <source>Intro Text Registrant - Registration Confirmed</source>
             <target>Intro Text Teilnehmer Email - Anmeldung ist bestätigt.</target>
         </trans-unit>
-
 		<trans-unit id="tx_jvevents_domain_model_event.unconfirmed_seats" approved="yes">
 			<source>Unconfirmed Seats</source>
 			<target>Unbestätigte Registrierungen</target>

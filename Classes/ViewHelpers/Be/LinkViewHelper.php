@@ -43,37 +43,31 @@ class LinkViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedV
      */
 
     public function render( ) {
-        $uid        = $this->arguments['uid'];
-        $table   = $this->arguments['table'];
-        $returnM   = $this->arguments['returnM'];
-        $returnModule   = $this->arguments['returnModule'];
-        $class   = $this->arguments['class'];
+        $uid        = ( $this->arguments['uid'] ?? 0 );
+        $table   = ($this->arguments['table'] ?? '' ) ;
+        $returnM   = ($this->arguments['returnM'] ?? '' ) ;
+
+        $returnModule  = ($this->arguments['returnModule'] ?? '' ) ;
+        $returnController   = ($this->arguments['returnController'] ?? '' ) ;
+        $returnAction   = ($this->arguments['returnAction'] ?? '' ) ;
+        $eventId   = ($this->arguments['eventId'] ?? '' ) ;
+        $recursive   = ($this->arguments['recursive'] ?? '' ) ;
+        $onlyActual  = ($this->arguments['onlyActual'] ?? '' ) ;
+        $class   = ($this->arguments['class'] ?? '' ) ;
 
         $returnArray = array() ;
         if( $this->arguments['pageId'] > 0 ) {
             $returnArray['id'] = $this->arguments['pageId'] ;
-        } else {
-
-            $returnArray['id'] = intval($_GET['id']) ;
         }
         $returnArray[$returnModule] = array() ;
-        $returnArray[$returnModule]['action'] =$this->arguments['returnAction'] ;
-        $returnArray[$returnModule]['controller'] = $this->arguments['returnController'] ;
-        $returnArray[$returnModule]['event'] =  $this->arguments['eventId'] ;
-        $returnArray[$returnModule]['recursive'] = $this->arguments['recursive'] ;
-        $returnArray[$returnModule]['onlyActual'] = $this->arguments['onlyActual'] ;
+        $returnArray[$returnModule]['action'] =$returnModule ;
+        $returnArray[$returnModule]['controller'] = $returnController ;
+        $returnArray[$returnModule]['event'] =  $eventId ;
+        $returnArray[$returnModule]['recursive'] = $recursive ;
+        $returnArray[$returnModule]['onlyActual'] = $onlyActual;
 
-        /* outdated. will be removed when LTS 8 support is dropped  */
-        if( $_GET['M']) {
-            $returnM = $_GET['M'] ;
-        }
-        if( $_GET['route']) {
-            $returnM = $_GET['route'] ;
-        }
         //  Routing in LTS 9 is without /module, but / at the end    | LTS 10 "/module" at beginning, but no / at the end
         $moduleName = str_replace( array( "module/" , "/" ) , array("" ,"_" ), trim( $returnM , "/") ) ;
-        $debug[] = GeneralUtility::_GP('M')  ;
-        $debug[] = GeneralUtility::_GP('route')  ;
         $debug[] = $returnM ;
         $debug[] = $moduleName ;
 

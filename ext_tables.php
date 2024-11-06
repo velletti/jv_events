@@ -19,7 +19,7 @@ foreach ( $pluginArray as $plugin ) {
     );
 }
 
-if ($GLOBALS['TYPO3_REQUEST'] && TYPO3\CMS\Core\Http\ApplicationType::fromRequest( $GLOBALS['TYPO3_REQUEST'] )->isBackend()) {
+if (isset($GLOBALS['TYPO3_REQUEST'] ) && TYPO3\CMS\Core\Http\ApplicationType::fromRequest( $GLOBALS['TYPO3_REQUEST'] )->isBackend()) {
 
     //       * Registers a Backend Module
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(

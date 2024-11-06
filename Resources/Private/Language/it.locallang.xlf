@@ -5,60 +5,59 @@
 			<generator>LFEditor</generator>
 		</header>
 		<body>
-			<trans-unit id="month.01">
+			<trans-unit id="month.01" approved="yes">
 				<source>January</source>
 				<target>Gennaio</target>
 			</trans-unit>
-			<trans-unit id="month.02">
+			<trans-unit id="month.02" approved="yes">
 				<source>February</source>
 				<target>Febbraio</target>
 			</trans-unit>
-			<trans-unit id="month.03">
+			<trans-unit id="month.03" approved="yes">
 				<source>March</source>
 				<target>Marzo</target>
 			</trans-unit>
-			<trans-unit id="month.04">
+			<trans-unit id="month.04" approved="yes">
 				<source>April</source>
 				<target>Aprile</target>
 			</trans-unit>
-			<trans-unit id="month.05">
+			<trans-unit id="month.05" approved="yes">
 				<source>May</source>
 				<target>Maggio</target>
 			</trans-unit>
-			<trans-unit id="month.06">
+			<trans-unit id="month.06" approved="yes">
 				<source>June</source>
 				<target>Giugno</target>
 			</trans-unit>
-			<trans-unit id="month.07">
+			<trans-unit id="month.07" approved="yes">
 				<source>July</source>
 				<target>Luglio</target>
 			</trans-unit>
-			<trans-unit id="month.08">
+			<trans-unit id="month.08" approved="yes">
 				<source>August</source>
 				<target>Agosto</target>
 			</trans-unit>
-			<trans-unit id="month.09">
+			<trans-unit id="month.09" approved="yes">
 				<source>September</source>
 				<target>Settembre</target>
 			</trans-unit>
-			<trans-unit id="month.10">
+			<trans-unit id="month.10" approved="yes">
 				<source>October</source>
 				<target>Ottobre</target>
 			</trans-unit>
-			<trans-unit id="month.11">
+			<trans-unit id="month.11" approved="yes">
 				<source>November</source>
 				<target>Novembre</target>
 			</trans-unit>
-			<trans-unit id="month.12">
+			<trans-unit id="month.12" approved="yes">
 				<source>December</source>
 				<target>Dicembre</target>
 			</trans-unit>
-
-			<trans-unit id="jv_events_model_event.currency.label">
+			<trans-unit id="jv_events_model_event.currency.label" approved="yes">
 				<source>Currency</source>
 				<target>Moneta</target>
 			</trans-unit>
-			<trans-unit id="jv_events_model_event.inclusiveVat">
+			<trans-unit id="jv_events_model_event.inclusiveVat" approved="yes">
 				<source>incl. VAT</source>
 				<target>IVA inclusa</target>
 			</trans-unit>
@@ -66,24 +65,23 @@
 			<source>I have read and accept the </source>
 			<target>Ho letto e accetto </target>
 		</trans-unit>
-
-		<trans-unit id="register.overbooked">
+		<trans-unit id="register.overbooked" approved="yes">
             <source>+++Overbooked+++</source>
             <target>+++completo+++</target>
         </trans-unit>
-        <trans-unit id="register.overbooked_headline">
+        <trans-unit id="register.overbooked_headline" approved="yes">
             <source>This event is fully booked</source>
             <target>Questo evento è al completo.</target>
         </trans-unit>
-        <trans-unit id="register.overbooked_text">
+        <trans-unit id="register.overbooked_text" approved="yes">
            <source>Unfortunately, your registration to this event cannot be processed. Please contact the host to receive information about last minute tickets.</source>
             <target>Non è più possibile effettuare alcuna iscrizione. Mettersi in contatto con l'organizzatore per avere informazioni su eventuali posti liberi.</target>
         </trans-unit>
-        <trans-unit id="register.registration_not_possible_text">
+        <trans-unit id="register.registration_not_possible_text" approved="yes">
                 <source>Unfortunately, your registration to this event cannot be processed.</source>
                 <target>Non è più possibile effettuare alcuna iscrizione. </target>
              </trans-unit>
-             <trans-unit id="register.deadline_expired_text">
+             <trans-unit id="register.deadline_expired_text" approved="yes">
                 <source>The deadline for registration has expired.</source>
                 <target>La scadenza per l'iscrizione è scaduta</target>
              </trans-unit>
@@ -224,8 +222,6 @@
 			<source>Waiting list Seats</source>
 			<target>Lista d'attesa posti.</target>
 		</trans-unit>
-
-
 		<trans-unit id="register.you_are_on_waiting_list" approved="yes">
             <source>Your registration was successfull added to the Waiting list. Please wait for the Confirmation by the Organizer</source>
             <target>La tua iscrizione è stata aggiunta alla lista d'attesa. Ti preghiamo di attendere la conferma da parte dell'organizzatore.</target>
@@ -258,7 +254,6 @@
             <source>if the button does not work, copy the following URL into your browser:</source>
             <target>Se il link non funziona, copia il seguente indirizzo nel tuo browser web:</target>
         </trans-unit>
-
 		<trans-unit id="tx_jvevents_domain_model_event.citrix_uid" approved="yes">
 			<source>Citrix Uid</source>
 			<target>Citrix Uid</target>
@@ -371,7 +366,6 @@
 			<source>Start Date</source>
 			<target>Data di inizio</target>
 		</trans-unit>
-
 		<trans-unit id="tx_jvevents_domain_model_event.date" approved="yes">
 			<source>Date</source>
 			<target>Data</target>
@@ -680,7 +674,7 @@
 			<source>Filter by city</source>
 			<target>Filtra per località</target>
 		</trans-unit>
-		<trans-unit id="tx_jvevents_event.filter.city.all">
+		<trans-unit id="tx_jvevents_event.filter.city.all" approved="yes">
             <source>All citys</source>
             <target>Tutti i luoghi</target>
         </trans-unit>
@@ -716,7 +710,7 @@
 			<source>More filters</source>
 			<target>Ulteriori filtri</target>
 		</trans-unit>
-		<trans-unit id="tx_jvevents_event.list.event_details">
+		<trans-unit id="tx_jvevents_event.list.event_details" approved="yes">
 			<source>Event details</source>
 			<target>Dettagli dell'evento</target>
 		</trans-unit>
@@ -772,11 +766,11 @@
 			<source>Dec</source>
 			<target>Dic</target>
 		</trans-unit>
-			<trans-unit id="days">
+			<trans-unit id="days" approved="yes">
 				<source>Days</source>
 				<target>giorni</target>
 			</trans-unit>
-			<trans-unit id="time">
+			<trans-unit id="time" approved="yes">
 				<source>o'clock</source>
 				<target></target>
 			</trans-unit>

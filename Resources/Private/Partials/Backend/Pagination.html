@@ -2,10 +2,10 @@
 
 <f:if condition="{paginator.numberOfPages} > 1">
   <f:variable name="minPage">0</f:variable>
-  <f:if condition="{paginator.currentPageNumber} > 5">
-    <f:variable name="minPage">{paginator.currentPageNumber -6}</f:variable>
+  <f:if condition="{paginator.currentPageNumber} > 3">
+    <f:variable name="minPage">{paginator.currentPageNumber -4}</f:variable>
   </f:if>
-  <f:variable name="maxPage">{minPage +10}</f:variable>
+  <f:variable name="maxPage">{minPage +6}</f:variable>
 
   <div class="position-relative bg-light" style="height: 35px; ">
      <nav aria-label="pagebrowser  ">
@@ -16,16 +16,12 @@
         </li>
         <f:if condition="{pagination.previousPageNumber} && {pagination.previousPageNumber} >= {pagination.firstPageNumber}">
           <li class="previous">
-            <a href="{jve:be.uri(arguments:'{currentPage:pagination.previousPageNumber, recursive: recursive, onlyActual: onlyActual,event:event}',name:name)}" title="previous" class="page-link">
-              &lt;
-            </a>
+            <jve:be.uri arguments="{route: 'jvevents_eventmngt',pageId:pageId,currentPage:pagination.previousPageNumber, recursive: recursive, onlyActual: onlyActual,event:event}" title="previous" class="page-link"> &lt; </jve:be.uri>
           </li>
         </f:if>
         <f:if condition="{pagination.hasLessPages} || {minPage} > 0 ">
           <li class="page-item">…</li>
         </f:if>
-
-
 
         <f:for each="{pagination.allPageNumbers}" as="page" iteration="index">
 
@@ -38,7 +34,7 @@
             <f:else>
               <f:if condition="{index.index} > {minPage}  && {index.index} < {maxPage}">
                 <li class="page-item">
-                  <a href="{jve:be.uri(arguments:'{currentPage:page, recursive: recursive, onlyActual: onlyActual,event:event}',name:name)}" class="page-link">{page}</a>
+                  <jve:be.uri arguments="{route: 'jvevents_eventmngt',pageId:pageId,currentPage:page, recursive: recursive, onlyActual: onlyActual,event:event}" title="previous" class="page-link"> {page} </jve:be.uri>
                 </li>
               </f:if>
 
@@ -50,9 +46,7 @@
         </f:if>
         <f:if condition="{pagination.nextPageNumber} && {pagination.nextPageNumber} <= {pagination.lastPageNumber}">
           <li class="next">
-            <a href="{jve:be.uri(arguments:'{currentPage:pagination.nextPageNumber, recursive: recursive, onlyActual: onlyActual,event:event}',name:name)}" title="next" class="page-link">
-              &gt;
-            </a>
+            <jve:be.uri arguments="{route: 'jvevents_eventmngt',pageId:pageId,currentPage:pagination.nextPageNumber, recursive: recursive, onlyActual: onlyActual,event:event}" title="previous" class="page-link"> &gt; </jve:be.uri>
           </li>
         </f:if>
       </ul>

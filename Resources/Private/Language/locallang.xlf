@@ -5,906 +5,861 @@
 			<generator>LFEditor</generator>
 		</header>
 		<body>
-		    <trans-unit id="error.general.entry_not_found">
+		    <trans-unit id="error.general.entry_not_found" approved="yes">
                 <source>Could not find this entry anymore</source>
             </trans-unit>
-            <trans-unit id="month.01">
+            <trans-unit id="month.01" approved="yes">
                 <source>January</source>
             </trans-unit>
-            <trans-unit id="month.02">
+            <trans-unit id="month.02" approved="yes">
                 <source>February</source>
             </trans-unit>
-            <trans-unit id="month.03">
+            <trans-unit id="month.03" approved="yes">
                 <source>March</source>
             </trans-unit>
-            <trans-unit id="month.04">
+            <trans-unit id="month.04" approved="yes">
                 <source>April</source>
             </trans-unit>
-            <trans-unit id="month.05">
+            <trans-unit id="month.05" approved="yes">
                 <source>May</source>
             </trans-unit>
-            <trans-unit id="month.06">
+            <trans-unit id="month.06" approved="yes">
                 <source>June</source>
             </trans-unit>
-            <trans-unit id="month.07">
+            <trans-unit id="month.07" approved="yes">
                 <source>July</source>
             </trans-unit>
-            <trans-unit id="month.08">
+            <trans-unit id="month.08" approved="yes">
                 <source>August</source>
             </trans-unit>
-            <trans-unit id="month.09">
+            <trans-unit id="month.09" approved="yes">
                 <source>September</source>
             </trans-unit>
-            <trans-unit id="month.10">
+            <trans-unit id="month.10" approved="yes">
                 <source>October</source>
             </trans-unit>
-            <trans-unit id="month.11">
+            <trans-unit id="month.11" approved="yes">
                 <source>November</source>
             </trans-unit>
-            <trans-unit id="month.12">
+            <trans-unit id="month.12" approved="yes">
                 <source>December</source>
             </trans-unit>
-
-            <trans-unit id="error.email.noMxRecord">
+            <trans-unit id="error.email.noMxRecord" approved="yes">
                 <source>Please verify your email address. Is the domain: '%s' correct?</source>
             </trans-unit>
-            <trans-unit id="error.msg_error_html_code_not_allowed">
+            <trans-unit id="error.msg_error_html_code_not_allowed" approved="yes">
                 <source>Please check your input. Looks as it contains unwanted HTML Code. In most cases the Server can repair this, if you retry to save your input.</source>
             </trans-unit>
-            <trans-unit id="error.msg_error_check-input">
+            <trans-unit id="error.msg_error_check-input" approved="yes">
                 <source>Please check your input below.</source>
             </trans-unit>
-            <trans-unit id="jv_events_model_location.press-refresh.title">
+            <trans-unit id="jv_events_model_location.press-refresh.title" approved="yes">
                 <source>Calculate and set map coordinates (LNG/LAT) </source>
             </trans-unit>
-            <trans-unit id="jv_events_model_event.currency.label">
+            <trans-unit id="jv_events_model_event.currency.label" approved="yes">
                 <source>Currency</source>
             </trans-unit>
-            <trans-unit id="jv_events_model_event.inclusiveVat">
+            <trans-unit id="jv_events_model_event.inclusiveVat" approved="yes">
                 <source>incl. VAT</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.create_event">
+            <trans-unit id="tx_jvevents_domain_model_event.create_event" approved="yes">
                 <source>Create Event</source>
             </trans-unit>
-
-
-            <trans-unit id="jv_events_model_location.geocoder.title">
+            <trans-unit id="jv_events_model_location.geocoder.title" approved="yes">
                 <source>Geocoder (Please enter the address data first!)</source>
             </trans-unit>
-             <trans-unit id="jv_events_model_location.geocoder.close">
+             <trans-unit id="jv_events_model_location.geocoder.close" approved="yes">
                 <source>Close Geocoder</source>
             </trans-unit>
-            <trans-unit id="aks_for_position_intro">
+            <trans-unit id="aks_for_position_intro" approved="yes">
                 <source>If you like, you can give the browser access to you actual position to compute the distance to the tango locations.</source>
             </trans-unit>
-            <trans-unit id="aks_for_position_browser_and_cookie">
+            <trans-unit id="aks_for_position_browser_and_cookie" approved="yes">
                 <source>If you do so, the browser will ask you to get access. If you confirm this, the browser can store the geo position as Cookie on your computer, if you press save icon. Our Server will use this only for filtering events for you but itself does not store this and also will not track you by the position. Really! We do NO User tracking!</source>
             </trans-unit>
-            <trans-unit id="center_map_and_select_zoom">
+            <trans-unit id="center_map_and_select_zoom" approved="yes">
                 <source>You can center the map and zoom in to select locations and use this as filter to show only events near to you.</source>
             </trans-unit>
-            <trans-unit id="near_to_me">
+            <trans-unit id="near_to_me" approved="yes">
                <source>Near to me</source>
             </trans-unit>
-            <trans-unit id="store_as_cookie">
+            <trans-unit id="store_as_cookie" approved="yes">
                <source>Store as cookie</source>
             </trans-unit>
-            <trans-unit id="unset_cookies">
+            <trans-unit id="unset_cookies" approved="yes">
                <source>Remove stored map cookies</source>
             </trans-unit>
-            <trans-unit id="register.accept_privacy">
+            <trans-unit id="register.accept_privacy" approved="yes">
                 <source>I have read and accept the </source>
             </trans-unit>
-            <trans-unit id="register.accept_privacy.and">
+            <trans-unit id="register.accept_privacy.and" approved="yes">
                 <source>and</source>
             </trans-unit>
-            <trans-unit id="register.accept_privacy_end">
+            <trans-unit id="register.accept_privacy_end" approved="yes">
                 <source>.</source>
             </trans-unit>
-            <trans-unit id="register.accept_privacy_intro">
+            <trans-unit id="register.accept_privacy_intro" approved="yes">
                 <source>I have read and accept the </source>
             </trans-unit>
-            <trans-unit id="register.privacy">
+            <trans-unit id="register.privacy" approved="yes">
                 <source>privacy policy</source>
             </trans-unit>
-
-            <trans-unit id="register.overbooked">
+            <trans-unit id="register.overbooked" approved="yes">
                 <source>+++Overbooked+++</source>
             </trans-unit>
-            <trans-unit id="register.overbooked_headline">
+            <trans-unit id="register.overbooked_headline" approved="yes">
                 <source>This event is fully booked</source>
             </trans-unit>
-            <trans-unit id="register.overbooked_text">
+            <trans-unit id="register.overbooked_text" approved="yes">
                 <source>Unfortunately, your registration to this event cannot be processed. Please contact the host to receive information about last minute tickets.</source>
             </trans-unit>
-             <trans-unit id="register.registration_not_possible_text">
+             <trans-unit id="register.registration_not_possible_text" approved="yes">
                 <source>Unfortunately, your registration to this event cannot be processed.</source>
              </trans-unit>
-             <trans-unit id="register.deadline_expired_text">
+             <trans-unit id="register.deadline_expired_text" approved="yes">
                 <source>The deadline for registration has expired.</source>
              </trans-unit>
-            <trans-unit id="register.terms_of_use">
+            <trans-unit id="register.terms_of_use" approved="yes">
                 <source>Terms of use</source>
             </trans-unit>
-            <trans-unit id="register_email_with_infos">
+            <trans-unit id="register_email_with_infos" approved="yes">
                 <source>You will soon get an email with all information about your registration!</source>
             </trans-unit>
-            <trans-unit id="register_gender_female">
+            <trans-unit id="register_gender_female" approved="yes">
                 <source>Mrs.</source>
             </trans-unit>
-            <trans-unit id="register_gender_male">
+            <trans-unit id="register_gender_male" approved="yes">
                 <source>Mr.</source>
             </trans-unit>
-            <trans-unit id="register_gender_diverse">
+            <trans-unit id="register_gender_diverse" approved="yes">
                 <source>Div.</source>
             </trans-unit>
-            <trans-unit id="register_gender_female_follower">
+            <trans-unit id="register_gender_female_follower" approved="yes">
                 <source>Follower (Role woman)</source>
             </trans-unit>
-            <trans-unit id="register_gender_male_leader">
+            <trans-unit id="register_gender_male_leader" approved="yes">
                 <source>Leader (Role man)</source>
             </trans-unit>
-           <trans-unit id="register_important_notice">
+           <trans-unit id="register_important_notice" approved="yes">
                 <source>Important Notice</source>
             </trans-unit>
-            <trans-unit id="register_head_company_data">
+            <trans-unit id="register_head_company_data" approved="yes">
                 <source>Company Data / Invoice Address</source>
             </trans-unit>
-            <trans-unit id="register_head_company_data_simple">
+            <trans-unit id="register_head_company_data_simple" approved="yes">
                 <source>Company Data</source>
             </trans-unit>
-            <trans-unit id="register_head_different_billing_address">
+            <trans-unit id="register_head_different_billing_address" approved="yes">
                 <source>Billing address, if different</source>
             </trans-unit>
-            <trans-unit id="register_head_more_info">
+            <trans-unit id="register_head_more_info" approved="yes">
                 <source>Additional Informations</source>
             </trans-unit>
-            <trans-unit id="register_head_participant_data">
+            <trans-unit id="register_head_participant_data" approved="yes">
                 <source>Participants Data</source>
             </trans-unit>
-            <trans-unit id="register_mandatory_email_error">
+            <trans-unit id="register_mandatory_email_error" approved="yes">
                 <source>This E-Mail Address is not valid!</source>
             </trans-unit>
-            <trans-unit id="register_email_registered_same_event">
+            <trans-unit id="register_email_registered_same_event" approved="yes">
                 <source>Please register with a different E-Mail Address. This E-Mail Address is already registered to this Event!</source>
             </trans-unit>
-
-
-
-            <trans-unit id="register_mandatory_error">
+            <trans-unit id="register_mandatory_error" approved="yes">
                 <source>This is a required field!</source>
             </trans-unit>
-            <trans-unit id="register_mandatory_error_fingerprint">
+            <trans-unit id="register_mandatory_error_fingerprint" approved="yes">
                 <source>It looks as if you are a bot. Tapped by fingerprint. Please wait, before you try again.</source>
             </trans-unit>
-            <trans-unit id="register_mandatory_error_honeypot">
+            <trans-unit id="register_mandatory_error_honeypot" approved="yes">
                 <source>It looks as if you are a bot. Tapped by honey pot.</source>
             </trans-unit>
-            <trans-unit id="register_mandatory_error_too_fast">
+            <trans-unit id="register_mandatory_error_too_fast" approved="yes">
                 <source>It looks as if you are a bot. Tapped by speed. Please wait, before you try again.</source>
             </trans-unit>
-            <trans-unit id="register_need_to_confirm">
+            <trans-unit id="register_need_to_confirm" approved="yes">
                 <source>You will soon get an email with a Confirmation Link. please Confirm your registration!</source>
             </trans-unit>
-            <trans-unit id="register_need_to_confirm_email">
+            <trans-unit id="register_need_to_confirm_email" approved="yes">
                 <source>We will send this email to:</source>
             </trans-unit>
-            <trans-unit id="register_please_select">
+            <trans-unit id="register_please_select" approved="yes">
                 <source>Please Select</source>
             </trans-unit>
-            <trans-unit id="register_send">
+            <trans-unit id="register_send" approved="yes">
                 <source>Register</source>
             </trans-unit>
-            <trans-unit id="registrations">
+            <trans-unit id="registrations" approved="yes">
                 <source>registrations</source>
             </trans-unit>
-            <trans-unit id="register_send_error">
+            <trans-unit id="register_send_error" approved="yes">
                 <source>You forgot to fill some of the required fields!</source>
             </trans-unit>
-            <trans-unit id="register_was_not_stored">
+            <trans-unit id="register_was_not_stored" approved="yes">
                 <source>An ERROR occured during your registration! Please try again!</source>
             </trans-unit>
-            <trans-unit id="register_was_stored">
+            <trans-unit id="register_was_stored" approved="yes">
                 <source>Your registration was stored!</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_category">
+            <trans-unit id="tx_jvevents_domain_model_category" approved="yes">
                 <source>Category</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_category.title">
+            <trans-unit id="tx_jvevents_domain_model_category.title" approved="yes">
                 <source>Title</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_category.type">
+            <trans-unit id="tx_jvevents_domain_model_category.type" approved="yes">
                 <source>Type</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event">
+            <trans-unit id="tx_jvevents_domain_model_event" approved="yes">
                 <source>Event</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.access">
+            <trans-unit id="tx_jvevents_domain_model_event.access" approved="yes">
                 <source>Access</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.all_day">
+            <trans-unit id="tx_jvevents_domain_model_event.all_day" approved="yes">
                 <source>All Day</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.price">
+            <trans-unit id="tx_jvevents_domain_model_event.price" approved="yes">
                 <source>Price</source>
             </trans-unit>
-
-            <trans-unit id="tx_jvevents_domain_model_event.available_seats">
+            <trans-unit id="tx_jvevents_domain_model_event.available_seats" approved="yes">
                 <source>Available Seats</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.available_waiting_seats">
+            <trans-unit id="tx_jvevents_domain_model_event.available_waiting_seats" approved="yes">
                 <source>Waiting list Seats</source>
             </trans-unit>
-
-
-            <trans-unit id="register.you_are_on_waiting_list">
+            <trans-unit id="register.you_are_on_waiting_list" approved="yes">
                 <source>Your registration was successfull added to the Waiting list. Please wait for the Confirmation by the Organizer</source>
             </trans-unit>
-            <trans-unit id="register.you_are_registered">
+            <trans-unit id="register.you_are_registered" approved="yes">
                 <source>Your registration was stored successfull. </source>
             </trans-unit>
-            <trans-unit id="register.you_are_registered_again">
+            <trans-unit id="register.you_are_registered_again" approved="yes">
                 <source>Your registration was updated successfull. </source>
             </trans-unit>
-            <trans-unit id="register.you_are_registered_same_email_warning">
+            <trans-unit id="register.you_are_registered_same_email_warning" approved="yes">
                 <source>You can only registered once with the same E-mail for the same event!</source>
             </trans-unit>
-
-            <trans-unit id="register.you_need_to_confirm">
+            <trans-unit id="register.you_need_to_confirm" approved="yes">
                 <source>Your Need to confirm your registration. Please click the following button.</source>
             </trans-unit>
-            <trans-unit id="register.button.confirm">
+            <trans-unit id="register.button.confirm" approved="yes">
                 <source>Confirm registration</source>
             </trans-unit>
-            <trans-unit id="list.register.button.register">
+            <trans-unit id="list.register.button.register" approved="yes">
                 <source>Register</source>
             </trans-unit>
-            <trans-unit id="list.register.button.registration">
+            <trans-unit id="list.register.button.registration" approved="yes">
                 <source>Registration</source>
             </trans-unit>
-             <trans-unit id="register.registration.date">
+             <trans-unit id="register.registration.date" approved="yes">
                 <source>Registration date</source>
             </trans-unit>
-            <trans-unit id="list.register.button.subscribe">
+            <trans-unit id="list.register.button.subscribe" approved="yes">
                 <source>Subscribe</source>
             </trans-unit>
-
-            <trans-unit id="register.url.confirm_intro_text">
+            <trans-unit id="register.url.confirm_intro_text" approved="yes">
                 <source>if the button does not work, copy the following URL into your browser:</source>
             </trans-unit>
-
-
-
-            <trans-unit id="tx_jvevents_domain_model_event.citrix_uid">
+            <trans-unit id="tx_jvevents_domain_model_event.citrix_uid" approved="yes">
                 <source>Citrix Uid</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.description">
+            <trans-unit id="tx_jvevents_domain_model_event.description" approved="yes">
                 <source>Description</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.end_date">
+            <trans-unit id="tx_jvevents_domain_model_event.end_date" approved="yes">
                 <source>End Date</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.end_time">
+            <trans-unit id="tx_jvevents_domain_model_event.end_time" approved="yes">
                 <source>End Time</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.event_category">
+            <trans-unit id="tx_jvevents_domain_model_event.event_category" approved="yes">
                 <source>Event Category</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.event_type">
+            <trans-unit id="tx_jvevents_domain_model_event.event_type" approved="yes">
                 <source>Event Type</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.files">
+            <trans-unit id="tx_jvevents_domain_model_event.files" approved="yes">
                 <source>Files</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.freq_exception">
+            <trans-unit id="tx_jvevents_domain_model_event.freq_exception" approved="yes">
                 <source>Freq Exception</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.frequency">
+            <trans-unit id="tx_jvevents_domain_model_event.frequency" approved="yes">
                 <source>Frequency</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.images">
+            <trans-unit id="tx_jvevents_domain_model_event.images" approved="yes">
                 <source>Images</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.is_exception_for">
+            <trans-unit id="tx_jvevents_domain_model_event.is_exception_for" approved="yes">
                 <source>Is Exception For:</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.is_recurring">
+            <trans-unit id="tx_jvevents_domain_model_event.is_recurring" approved="yes">
                 <source>Is Recurring</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.location">
+            <trans-unit id="tx_jvevents_domain_model_event.location" approved="yes">
                 <source>Location</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.marketing_process_id">
+            <trans-unit id="tx_jvevents_domain_model_event.marketing_process_id" approved="yes">
                 <source>Marketing Process Id</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.name">
+            <trans-unit id="tx_jvevents_domain_model_event.name" approved="yes">
                 <source>Title of event</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.need_to_confirm">
+            <trans-unit id="tx_jvevents_domain_model_event.need_to_confirm" approved="yes">
                 <source>Participant needs To Confirm</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.notify_organizer">
+            <trans-unit id="tx_jvevents_domain_model_event.notify_organizer" approved="yes">
                 <source>Notify Organiser</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.notify_registrant">
+            <trans-unit id="tx_jvevents_domain_model_event.notify_registrant" approved="yes">
                 <source>Notify Registrant</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.organizer">
+            <trans-unit id="tx_jvevents_domain_model_event.organizer" approved="yes">
                 <source>Organizer</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.registration_url">
+            <trans-unit id="tx_jvevents_domain_model_event.registration_url" approved="yes">
                 <source>Link to registration</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.registered_seats">
+            <trans-unit id="tx_jvevents_domain_model_event.registered_seats" approved="yes">
                 <source>Registered Seats</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.registrant">
+            <trans-unit id="tx_jvevents_domain_model_event.registrant" approved="yes">
                 <source>Registrant</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.registrant_email_header">
+            <trans-unit id="tx_jvevents_domain_model_event.registrant_email_header" approved="yes">
                 <source>Event Registration</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.registrant_email_header_unconfirmed">
+            <trans-unit id="tx_jvevents_domain_model_event.registrant_email_header_unconfirmed" approved="yes">
                 <source>Unconfirmed Registration</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.registration_access">
+            <trans-unit id="tx_jvevents_domain_model_event.registration_access" approved="yes">
                 <source>Registration Access</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.registration_until">
+            <trans-unit id="tx_jvevents_domain_model_event.registration_until" approved="yes">
                 <source>Registration Until</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.sales_force_event_id">
+            <trans-unit id="tx_jvevents_domain_model_event.sales_force_event_id" approved="yes">
                 <source>Sales Force Event Id</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.sales_force_record_type">
+            <trans-unit id="tx_jvevents_domain_model_event.sales_force_record_type" approved="yes">
                 <source>Sales Force Record Type</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.sales_force_session_id">
+            <trans-unit id="tx_jvevents_domain_model_event.sales_force_session_id" approved="yes">
                 <source>Sales Force Session Id</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.start_date">
+            <trans-unit id="tx_jvevents_domain_model_event.start_date" approved="yes">
                 <source>Start Date</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.date">
+            <trans-unit id="tx_jvevents_domain_model_event.date" approved="yes">
                 <source>Date</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.start_time">
+            <trans-unit id="tx_jvevents_domain_model_event.start_time" approved="yes">
                 <source>Start Time</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.entry_time">
+            <trans-unit id="tx_jvevents_domain_model_event.entry_time" approved="yes">
                 <source>Entry starting at</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.openEnd">
+            <trans-unit id="tx_jvevents_domain_model_event.openEnd" approved="yes">
                 <source>Open end</source>
             </trans-unit>
-
-            <trans-unit id="tx_jvevents_domain_model_event.time">
+            <trans-unit id="tx_jvevents_domain_model_event.time" approved="yes">
                 <source>Time</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.store_in_citrix">
+            <trans-unit id="tx_jvevents_domain_model_event.store_in_citrix" approved="yes">
                 <source>Store Registration in Citrix</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.store_in_sales_force">
+            <trans-unit id="tx_jvevents_domain_model_event.store_in_sales_force" approved="yes">
                 <source>Store Registration In SalesForce</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.subject_organizer">
+            <trans-unit id="tx_jvevents_domain_model_event.subject_organizer" approved="yes">
                 <source>Subject Organizer</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.subject_registrant">
+            <trans-unit id="tx_jvevents_domain_model_event.subject_registrant" approved="yes">
                 <source>Subject Registrant</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.tags">
+            <trans-unit id="tx_jvevents_domain_model_event.tags" approved="yes">
                 <source>Tags</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.teaser">
+            <trans-unit id="tx_jvevents_domain_model_event.teaser" approved="yes">
                 <source>Teaser</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.text_organizer">
+            <trans-unit id="tx_jvevents_domain_model_event.text_organizer" approved="yes">
                 <source>Text Organizer</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.text_registrant">
+            <trans-unit id="tx_jvevents_domain_model_event.text_registrant" approved="yes">
                 <source>Text Registrant</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.Introtext_registrant">
+            <trans-unit id="tx_jvevents_domain_model_event.Introtext_registrant" approved="yes">
                 <source>Intro Text Registrant</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.unconfirmed_seats">
+            <trans-unit id="tx_jvevents_domain_model_event.unconfirmed_seats" approved="yes">
                 <source>Unconfirmed Seats</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.with_registration">
+            <trans-unit id="tx_jvevents_domain_model_event.with_registration" approved="yes">
                 <source>With Registration</source>
             </trans-unit>
-
-            <trans-unit id="tx_jvevents_domain_model_event.details.linktext">
+            <trans-unit id="tx_jvevents_domain_model_event.details.linktext" approved="yes">
                 <source>To the event</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.details.tab.details">
+            <trans-unit id="tx_jvevents_domain_model_event.details.tab.details" approved="yes">
                 <source>Details</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.details.tab.map">
+            <trans-unit id="tx_jvevents_domain_model_event.details.tab.map" approved="yes">
                 <source>Map</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.filter.streetCityCountry">
+            <trans-unit id="tx_jvevents_domain_model_event.filter.streetCityCountry" approved="yes">
                 <source>Street,City,DE</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.details.tab.contact">
+            <trans-unit id="tx_jvevents_domain_model_event.details.tab.contact" approved="yes">
                 <source>Contact</source>
             </trans-unit>
-           <trans-unit id="tx_jvevents_domain_model_event.details.canceled">
+           <trans-unit id="tx_jvevents_domain_model_event.details.canceled" approved="yes">
                 <source>Canceled!</source>
             </trans-unit>
-           <trans-unit id="event_copy_eventseries">
+           <trans-unit id="event_copy_eventseries" approved="yes">
                 <source>Event series (regularly)!</source>
             </trans-unit>
-            <trans-unit id="event_copy_intro">
+            <trans-unit id="event_copy_intro" approved="yes">
                 <source>
                     If you copy an event, changes on this copy can easily made also to the copy. This way you can make changes to repeating events very fast.
                 </source>
             </trans-unit>
-             <trans-unit id="event_copy_intro2">
+             <trans-unit id="event_copy_intro2" approved="yes">
                 <source>
                     If you want to create a diffent kind of event (other times or different kind of class / workshop) it is be better to use the single copy function on top.
                 </source>
             </trans-unit>
-           <trans-unit id="event_copy_one">
+           <trans-unit id="event_copy_one" approved="yes">
                <source>Create one Copy (unlinked)</source>
            </trans-unit>
-            <trans-unit id="general_see_help">
+            <trans-unit id="general_see_help" approved="yes">
               <source>See help Pages</source>
           </trans-unit>
-
-            <trans-unit id="event_copy_multi">
+            <trans-unit id="event_copy_multi" approved="yes">
                   <source>Copy multiple weekly</source>
             </trans-unit>
-             <trans-unit id="event_copy_multi2weeks">
+             <trans-unit id="event_copy_multi2weeks" approved="yes">
                  <source>Copy multiple every 14 days</source>
              </trans-unit>
-             <trans-unit id="event_delete_question">
+             <trans-unit id="event_delete_question" approved="yes">
                 <source>This will delete the event without info.</source>
              </trans-unit>
-              <trans-unit id="event_delete_question_SameMaster">
+              <trans-unit id="event_delete_question_SameMaster" approved="yes">
                  <source>Also delete the %1s following copies of this event?</source>
               </trans-unit>
-
-
-
-            <trans-unit id="event_delete_are_you_sure">
+            <trans-unit id="event_delete_are_you_sure" approved="yes">
                 <source>Are you sure?</source>
             </trans-unit>
-            <trans-unit id="event_delete_realy_button">
+            <trans-unit id="event_delete_realy_button" approved="yes">
                 <source>Really delete!</source>
             </trans-unit>
-             <trans-unit id="event_delete_button">
+             <trans-unit id="event_delete_button" approved="yes">
                 <source>Delete Event</source>
             </trans-unit>
-
-
-
-           <trans-unit id="tx_jvevents_domain_model_event.edit.repeating.headline">
+           <trans-unit id="tx_jvevents_domain_model_event.edit.repeating.headline" approved="yes">
                 <source>Repeating Event</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_event.edit.repeating.text">
+            <trans-unit id="tx_jvevents_domain_model_event.edit.repeating.text" approved="yes">
                 <source>This is a repeating, copied Event. Shall we change also all other future Events with the same ID?</source>
             </trans-unit>
-             <trans-unit id="tx_jvevents_domain_model_event.edit.repeating.uebernehmen">
+             <trans-unit id="tx_jvevents_domain_model_event.edit.repeating.uebernehmen" approved="yes">
                 <source>Change them also</source>
             </trans-unit>
-
-             <trans-unit id="x_jvevents_domain_model_event.edit.repeating.effected">
+             <trans-unit id="x_jvevents_domain_model_event.edit.repeating.effected" approved="yes">
                 <source>Effected Events</source>
             </trans-unit>
             t
-
-
-            <trans-unit id="tx_jvevents_domain_model_location">
+            <trans-unit id="tx_jvevents_domain_model_location" approved="yes">
                 <source>Location</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_location.city">
+            <trans-unit id="tx_jvevents_domain_model_location.city" approved="yes">
                 <source>City</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_location.country">
+            <trans-unit id="tx_jvevents_domain_model_location.country" approved="yes">
                 <source>Country</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_location.description">
+            <trans-unit id="tx_jvevents_domain_model_location.description" approved="yes">
                 <source>Description</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_location.email">
+            <trans-unit id="tx_jvevents_domain_model_location.email" approved="yes">
                 <source>Email</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_location.lat">
+            <trans-unit id="tx_jvevents_domain_model_location.lat" approved="yes">
                 <source>Lat</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_location.link">
+            <trans-unit id="tx_jvevents_domain_model_location.link" approved="yes">
                 <source>Link</source>
             </trans-unit>
-            <trans-unit id="create.location.contact_warning">
+            <trans-unit id="create.location.contact_warning" approved="yes">
                 <source>Need a different contact info for this location? Maybe helpful to show a different phone number.
-
                 If not needed, leave the next 3 fields empty and your normal contact data is shown.
                 Or enter a minus char <b>(-)</b> to suppress this entry.</source>
             </trans-unit>
-            <trans-unit id="location.geocode.error">
+            <trans-unit id="location.geocode.error" approved="yes">
                 <source>The position on the map could not be determined.
                 You can determine the values for LAT and LNG using Google Maps and enter them here.
                 Example: </source>
             </trans-unit>
-
-
-
-
-            <trans-unit id="tx_jvevents_domain_model_location.lng">
+            <trans-unit id="tx_jvevents_domain_model_location.lng" approved="yes">
                 <source>Lng</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_location.position_not_exact">
+            <trans-unit id="tx_jvevents_domain_model_location.position_not_exact" approved="yes">
                 <source>Position not exact enough? Zoom into the map and  click onto the correct position. Will be overwriten, if you change again the address</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_location.location_category">
+            <trans-unit id="tx_jvevents_domain_model_location.location_category" approved="yes">
                 <source>Location Category</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_location.name">
+            <trans-unit id="tx_jvevents_domain_model_location.name" approved="yes">
                 <source>Name of location</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_location.organizer">
+            <trans-unit id="tx_jvevents_domain_model_location.organizer" approved="yes">
                 <source>Organizer</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_location.phone">
+            <trans-unit id="tx_jvevents_domain_model_location.phone" approved="yes">
                 <source>Phone</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_location.street_and_nr">
+            <trans-unit id="tx_jvevents_domain_model_location.street_and_nr" approved="yes">
                 <source>Street And Nr</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_location.zip">
+            <trans-unit id="tx_jvevents_domain_model_location.zip" approved="yes">
                 <source>Zip</source>
             </trans-unit>
-
-
-            <trans-unit id="tx_jvevents_domain_model_organizer">
+            <trans-unit id="tx_jvevents_domain_model_organizer" approved="yes">
                 <source>Organizer</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_organizer.description">
+            <trans-unit id="tx_jvevents_domain_model_organizer.description" approved="yes">
                 <source>Description</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_organizer.email">
+            <trans-unit id="tx_jvevents_domain_model_organizer.email" approved="yes">
                 <source>Email</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_organizer.link">
+            <trans-unit id="tx_jvevents_domain_model_organizer.link" approved="yes">
                 <source>Link</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_organizer.charity_link">
+            <trans-unit id="tx_jvevents_domain_model_organizer.charity_link" approved="yes">
                 <source>Charity Link</source>
             </trans-unit>
-             <trans-unit id="tx_jvevents_domain_model_organizer.youtube_link">
+             <trans-unit id="tx_jvevents_domain_model_organizer.youtube_link" approved="yes">
                 <source>Youtube Link</source>
             </trans-unit>
-
-            <trans-unit id="tx_jvevents_domain_model_organizer.images">
+            <trans-unit id="tx_jvevents_domain_model_organizer.images" approved="yes">
                 <source>Images</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_organizer.name">
+            <trans-unit id="tx_jvevents_domain_model_organizer.name" approved="yes">
                 <source>Organizer</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_organizer.organizer_category">
+            <trans-unit id="tx_jvevents_domain_model_organizer.organizer_category" approved="yes">
                 <source>Organizer Category</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_organizer.phone">
+            <trans-unit id="tx_jvevents_domain_model_organizer.phone" approved="yes">
                 <source>Phone</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_organizer.sales_force_user_id">
+            <trans-unit id="tx_jvevents_domain_model_organizer.sales_force_user_id" approved="yes">
                 <source>Sales Force User Id</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_registrant">
+            <trans-unit id="tx_jvevents_domain_model_registrant" approved="yes">
                 <source>Registrant</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_registrant.additional_info">
+            <trans-unit id="tx_jvevents_domain_model_registrant.additional_info" approved="yes">
                 <source>Additional Info</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_registrant.city">
+            <trans-unit id="tx_jvevents_domain_model_registrant.city" approved="yes">
                 <source>City</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_registrant.company">
+            <trans-unit id="tx_jvevents_domain_model_registrant.company" approved="yes">
                 <source>Company</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_registrant.contact_id">
+            <trans-unit id="tx_jvevents_domain_model_registrant.contact_id" approved="yes">
                 <source>Contact Id</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_registrant.country">
+            <trans-unit id="tx_jvevents_domain_model_registrant.country" approved="yes">
                 <source>Country</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_registrant.customer_id">
+            <trans-unit id="tx_jvevents_domain_model_registrant.customer_id" approved="yes">
                 <source>Customer Id</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_registrant.department">
+            <trans-unit id="tx_jvevents_domain_model_registrant.department" approved="yes">
                 <source>Department</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_registrant.email">
+            <trans-unit id="tx_jvevents_domain_model_registrant.email" approved="yes">
                 <source>Email</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_registrant.fingerprint">
+            <trans-unit id="tx_jvevents_domain_model_registrant.fingerprint" approved="yes">
                 <source>Fingerprint</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_registrant.first_name">
+            <trans-unit id="tx_jvevents_domain_model_registrant.first_name" approved="yes">
                 <source>First Name</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_registrant.title">
+            <trans-unit id="tx_jvevents_domain_model_registrant.title" approved="yes">
                 <source>Title</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_registrant.gender">
+            <trans-unit id="tx_jvevents_domain_model_registrant.gender" approved="yes">
                 <source>Gender</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_registrant.hotprice">
+            <trans-unit id="tx_jvevents_domain_model_registrant.hotprice" approved="yes">
                 <source>Get the hottest price</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_registrant.language">
+            <trans-unit id="tx_jvevents_domain_model_registrant.language" approved="yes">
                 <source>Language</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_registrant.last_name">
+            <trans-unit id="tx_jvevents_domain_model_registrant.last_name" approved="yes">
                 <source>Last Name</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_registrant.more1">
+            <trans-unit id="tx_jvevents_domain_model_registrant.more1" approved="yes">
                 <source>More1</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_registrant.more2">
+            <trans-unit id="tx_jvevents_domain_model_registrant.more2" approved="yes">
                 <source>More2</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_registrant.more3">
+            <trans-unit id="tx_jvevents_domain_model_registrant.more3" approved="yes">
                 <source>More3</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_registrant.more4">
+            <trans-unit id="tx_jvevents_domain_model_registrant.more4" approved="yes">
                 <source>More4</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_registrant.more5bool">
+            <trans-unit id="tx_jvevents_domain_model_registrant.more5bool" approved="yes">
                 <source>More5bool</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_registrant.more6int">
+            <trans-unit id="tx_jvevents_domain_model_registrant.more6int" approved="yes">
                 <source>More6int</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_registrant.more7date">
+            <trans-unit id="tx_jvevents_domain_model_registrant.more7date" approved="yes">
                 <source>More7date</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_registrant.more8file">
+            <trans-unit id="tx_jvevents_domain_model_registrant.more8file" approved="yes">
                 <source>More8file</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_registrant.newsletter">
+            <trans-unit id="tx_jvevents_domain_model_registrant.newsletter" approved="yes">
                 <source>Newsletter</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_registrant.password">
+            <trans-unit id="tx_jvevents_domain_model_registrant.password" approved="yes">
                 <source>Password</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_registrant.phone">
+            <trans-unit id="tx_jvevents_domain_model_registrant.phone" approved="yes">
                 <source>Phone</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_registrant.privacy">
+            <trans-unit id="tx_jvevents_domain_model_registrant.privacy" approved="yes">
                 <source>Privacy</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_registrant.profession">
+            <trans-unit id="tx_jvevents_domain_model_registrant.profession" approved="yes">
                 <source>Profession</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_registrant.recall">
+            <trans-unit id="tx_jvevents_domain_model_registrant.recall" approved="yes">
                 <source>Please call me</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_registrant.street_and_nr">
+            <trans-unit id="tx_jvevents_domain_model_registrant.street_and_nr" approved="yes">
                 <source>Street And Nr</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_registrant.username">
+            <trans-unit id="tx_jvevents_domain_model_registrant.username" approved="yes">
                 <source>Username</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_registrant.zip">
+            <trans-unit id="tx_jvevents_domain_model_registrant.zip" approved="yes">
                 <source>Zip</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_tag">
+            <trans-unit id="tx_jvevents_domain_model_tag" approved="yes">
                 <source>Tag</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_tag.select">
+            <trans-unit id="tx_jvevents_domain_model_tag.select" approved="yes">
                 <source>Select Tag(s)</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_category.select">
+            <trans-unit id="tx_jvevents_domain_model_category.select" approved="yes">
                 <source>Select Category</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_domain_model_tag.name">
+            <trans-unit id="tx_jvevents_domain_model_tag.name" approved="yes">
                 <source>Name</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_event.filter.category">
+            <trans-unit id="tx_jvevents_event.filter.category" approved="yes">
                 <source>Filter by category</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_event.filter.organizer">
+            <trans-unit id="tx_jvevents_event.filter.organizer" approved="yes">
                 <source>Filter by organizer</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_event.filter.city">
+            <trans-unit id="tx_jvevents_event.filter.city" approved="yes">
                 <source>Filter by city</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_event.filter.city.all">
+            <trans-unit id="tx_jvevents_event.filter.city.all" approved="yes">
                 <source>All citys</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_event.filter.location">
+            <trans-unit id="tx_jvevents_event.filter.location" approved="yes">
                 <source>Filter by location</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_event.filter.month">
+            <trans-unit id="tx_jvevents_event.filter.month" approved="yes">
                 <source>Filter by month</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_event.filter.tag">
+            <trans-unit id="tx_jvevents_event.filter.tag" approved="yes">
                 <source>Filter by Tag</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_event.filter.hint">
+            <trans-unit id="tx_jvevents_event.filter.hint" approved="yes">
                 <source>Filter the content on this page</source>
             </trans-unit>
             <trans-unit id="tx_jvevents_event.filter.hintshort" approved="yes">
                 <source>Filter events</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_event.filter.resultcount">
+            <trans-unit id="tx_jvevents_event.filter.resultcount" approved="yes">
                 <source>Hits</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_event.filter.reset">
+            <trans-unit id="tx_jvevents_event.filter.reset" approved="yes">
                 <source>Reset filter</source>
             </trans-unit>
-
-            <trans-unit id="tx_jvevents_event.filter.resulthint">
+            <trans-unit id="tx_jvevents_event.filter.resulthint" approved="yes">
                 <source>The following content was modified pursuant to your filter settings</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_event.filter.morefilters">
+            <trans-unit id="tx_jvevents_event.filter.morefilters" approved="yes">
                 <source>More filters</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_event.filter.distance">
+            <trans-unit id="tx_jvevents_event.filter.distance" approved="yes">
                 <source>Set Position</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_event.filter.configure.headline">
+            <trans-unit id="tx_jvevents_event.filter.configure.headline" approved="yes">
                 <source>Configure the search result</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_event.filter.configure.text_reason">
+            <trans-unit id="tx_jvevents_event.filter.configure.text_reason" approved="yes">
                 <source>Before you can use the lists on this website, you should configure the search filter. </source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_event.filter.configure.text_setposition">
+            <trans-unit id="tx_jvevents_event.filter.configure.text_setposition" approved="yes">
                 <source>First set the position of the center of the Map. You can do this by using your GPS positon or just enter the Name of your city or optional the street.</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_event.filter.configure.text_selectDist">
+            <trans-unit id="tx_jvevents_event.filter.configure.text_selectDist" approved="yes">
                 <source>As second step, select the wanted distance you want to search events, locations and teachers.</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_event.filter.configure.text_saveButton">
+            <trans-unit id="tx_jvevents_event.filter.configure.text_saveButton" approved="yes">
                 <source>If you use the save button after the Distance selector, your settings will be stored as a cookie in your browser and this text will disapear.</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_event.filter.configure.text_changeLater">
+            <trans-unit id="tx_jvevents_event.filter.configure.text_changeLater" approved="yes">
                 <source>But you can always change it afterwards in the filter.</source>
             </trans-unit>
-           <trans-unit id="tx_jvevents_event.filter.configure.text_default">
+           <trans-unit id="tx_jvevents_event.filter.configure.text_default" approved="yes">
                 <source>Without this settings, resultlists will only show hits that are 50 (or 250km on tangobayern.de) away from Marienplatz in Munich.</source>
             </trans-unit>
-            <trans-unit id="register_available_waiting_seats_only">
+            <trans-unit id="register_available_waiting_seats_only" approved="yes">
                 <source>You will be registered to Waitinglist.</source>
             </trans-unit>
-
-            <trans-unit id="tx_jvevents_event.list.event_details">
+            <trans-unit id="tx_jvevents_event.list.event_details" approved="yes">
                 <source>Event details</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_event.list.no_events_found">
+            <trans-unit id="tx_jvevents_event.list.no_events_found" approved="yes">
                 <source>No Events found with this search values</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.01">
+            <trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.01" approved="yes">
                 <source>Jan</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.02">
+            <trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.02" approved="yes">
                 <source>Feb</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.03">
+            <trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.03" approved="yes">
                 <source>Mar</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.04">
+            <trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.04" approved="yes">
                 <source>Apr</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.05">
+            <trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.05" approved="yes">
                 <source>May</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.06">
+            <trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.06" approved="yes">
                 <source>Jun</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.07">
+            <trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.07" approved="yes">
                 <source>Jul</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.08">
+            <trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.08" approved="yes">
                 <source>Aug</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.09">
+            <trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.09" approved="yes">
                 <source>Sep</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.10">
+            <trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.10" approved="yes">
                 <source>Oct</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.11">
+            <trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.11" approved="yes">
                 <source>Nov</source>
             </trans-unit>
-            <trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.12">
+            <trans-unit id="tx_jvevents_event.dateFormat.month.abbreviation.12" approved="yes">
                 <source>Dec</source>
             </trans-unit>
-            <trans-unit id="days">
+            <trans-unit id="days" approved="yes">
                 <source>Days</source>
             </trans-unit>
-            <trans-unit id="time">
+            <trans-unit id="time" approved="yes">
                 <source>o'clock</source>
             </trans-unit>
-
-
-            <trans-unit id="event.notfound">
+            <trans-unit id="event.notfound" approved="yes">
                 <source>Could not find this event. Maybe it is canceled.</source>
             </trans-unit>
-            <trans-unit id="event.MayBeNoAccess">
+            <trans-unit id="event.MayBeNoAccess" approved="yes">
                 <source>Maybe you do not have access and need to login.</source>
             </trans-unit>
-
-             <trans-unit id="select-position">
+             <trans-unit id="select-position" approved="yes">
                 <source>Select your Position</source>
             </trans-unit>
-            <trans-unit id="select-position-btn">
+            <trans-unit id="select-position-btn" approved="yes">
                 <source>Locate Position</source>
             </trans-unit>
-            <trans-unit id="addImage">
+            <trans-unit id="addImage" approved="yes">
                 <source>Add Image</source>
             </trans-unit>
-             <trans-unit id="changeImage">
+             <trans-unit id="changeImage" approved="yes">
                 <source>Change Image</source>
             </trans-unit>
-
-            <trans-unit id="contact.webmaster">
+            <trans-unit id="contact.webmaster" approved="yes">
                 <source>Please Contact Webmaster via</source>
             </trans-unit>
-            <trans-unit id="create.organizer.create.Headline">
+            <trans-unit id="create.organizer.create.Headline" approved="yes">
                <source>Want to become an Organizer?</source>
            </trans-unit>
-           <trans-unit id="create.user.account.active.headline">
+           <trans-unit id="create.user.account.active.headline" approved="yes">
                <source>Your user Account is activated!</source>
            </trans-unit>
-            <trans-unit id="create.organizer.account.notactive.headline">
+            <trans-unit id="create.organizer.account.notactive.headline" approved="yes">
                 <source>Your Organizer Account is not activated!</source>
             </trans-unit>
-            <trans-unit id="create.organizer.account.notactive.helptext1">
+            <trans-unit id="create.organizer.account.notactive.helptext1" approved="yes">
                  <source>Before you can add your Events, we have to check and activate your Organizer status.</source>
             </trans-unit>
-             <trans-unit id="create.organizer.account.notactive.helptext2">
+             <trans-unit id="create.organizer.account.notactive.helptext2" approved="yes">
                 <source>Check of new organzers is normaly done within 2 days. If this takes more time, please be patient.</source>
             </trans-unit>
-            <trans-unit id="create.organizer.account.notactive.helptext3">
+            <trans-unit id="create.organizer.account.notactive.helptext3" approved="yes">
                 <source>To speed up this process</source>
             </trans-unit>
-
-            <trans-unit id="create.organizer.create.text">
+            <trans-unit id="create.organizer.create.text" approved="yes">
                 <source>If you want to become a NEW Organizer, just click on this button and fill the Form</source>
             </trans-unit>
-            <trans-unit id="create.organizer.AddUser.Headline">
+            <trans-unit id="create.organizer.AddUser.Headline" approved="yes">
                 <source>Want to manage an existing Organizer?</source>
             </trans-unit>
-            <trans-unit id="create.organizer.AddUser.text">
+            <trans-unit id="create.organizer.AddUser.text" approved="yes">
                 <source>You have just registered as new user but need to manage the events and data of an EXISTING Organizer?</source>
             </trans-unit>
-          <trans-unit id="donate">
+          <trans-unit id="donate" approved="yes">
                 <source>Donate</source>
             </trans-unit>
-             <trans-unit id="indexerTask_DelRegistratationsAfter">
+             <trans-unit id="indexerTask_DelRegistratationsAfter" approved="yes">
                 <source>Amount of Days, after that a users event Registration is deleted (eventend dat + given days) (if = 0 will do nothing) </source>
             </trans-unit>
-            <trans-unit id="indexerTask_DelEventsAfter">
+            <trans-unit id="indexerTask_DelEventsAfter" approved="yes">
                 <source>Amount of Days, after an old event is deleted (eventend dat + given days) (if = 0 will do nothing) </source>
             </trans-unit>
-            <trans-unit id="indexerTask_ResortingOrganizer">
+            <trans-unit id="indexerTask_ResortingOrganizer" approved="yes">
                 <source>Amount of Days a organizer should have an Event in the past. If he does not have at eas one, resorting to lower value is done. (if = 0 will do nothing) </source>
             </trans-unit>
-             <trans-unit id="indexerTask_DisableOrganizer">
+             <trans-unit id="indexerTask_DisableOrganizer" approved="yes">
                 <source>Disable organizer, if lastlogin of maintainer is more than given days. (if = 0 will do nothing) </source>
             </trans-unit>
-            <trans-unit id="indexerTask_DisableOrganizerSortingValue">
+            <trans-unit id="indexerTask_DisableOrganizerSortingValue" approved="yes">
                 <source>Disable organizer REALLY, if sorting Value of orgnizer is higher  given value. (if = 0 will do nothing, default: 123.456.789 ) </source>
             </trans-unit>
-             <trans-unit id="indexerTask_Debugmail">
+             <trans-unit id="indexerTask_Debugmail" approved="yes">
                 <source>Email receiver . If set, this will get debug infos via Email on each run</source>
             </trans-unit>
-
-             <trans-unit id="event.created">
+             <trans-unit id="event.created" approved="yes">
                 <source>Created</source>
             </trans-unit>
-            <trans-unit id="event.modified">
+            <trans-unit id="event.modified" approved="yes">
                 <source>Last modified</source>
             </trans-unit>
-
-             <trans-unit id="event.notfound">
+             <trans-unit id="event.notfound" approved="yes">
                 <source>An event with this ID could not be found</source>
             </trans-unit>
-
 		</body>
 	</file>
 </xliff>

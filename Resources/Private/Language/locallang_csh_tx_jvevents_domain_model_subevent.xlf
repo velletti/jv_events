@@ -5,20 +5,19 @@
 			<generator>LFEditor</generator>
 		</header>
 		<body>
-			<trans-unit id="all_day.description">
+			<trans-unit id="all_day.description" approved="yes">
 				<source>allDay</source>
 			</trans-unit>
-
-			<trans-unit id="end_time.description">
+			<trans-unit id="end_time.description" approved="yes">
 				<source>endTime</source>
 			</trans-unit>
-			<trans-unit id="start_date.description">
+			<trans-unit id="start_date.description" approved="yes">
 				<source>startDate</source>
 			</trans-unit>
-			<trans-unit id="start_time.description">
+			<trans-unit id="start_time.description" approved="yes">
 				<source>startTime</source>
 			</trans-unit>
-			<trans-unit id="tx_jvevents_domain_model_subevent">
+			<trans-unit id="tx_jvevents_domain_model_subevent" approved="yes">
 				<source>If this is a multi day Event, add additonal Date / Time values  </source>
 			</trans-unit>
 		</body>

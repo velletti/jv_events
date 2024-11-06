@@ -1,37 +1,37 @@
-
-<f:be.container
-		includeCssFiles="{0: '{f:uri.resource(path:\'Css/backendModule.css\')}'}"
+<html
+		xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+		data-namespace-typo3-fluid="true"
 >
-	<div class="typo3-fullDoc module">
-		<div id="typo3-docheader">
-			<div class="typo3-docheader-functions">
-				<div class="left">
-					<f:be.buttons.csh />
-					<f:be.menus.actionMenu>
-						<f:be.menus.actionMenuItem label="Overview" controller="" action="list" />
 
-					</f:be.menus.actionMenu>
-				</div>
-				<div class="right">
-					<f:be.pagePath />
-					<f:be.pageInfo />
-				</div>
-			</div>
-			<div class="typo3-docheader-buttons">
-				<div class="left">
+<f:render section="Before" arguments="{_all}" optional="true" />
 
-				</div>
-				<div class="right">
-					<f:be.buttons.shortcut />
-				</div>
+<div class="module {moduleClass}" data-module-id="{moduleId}" data-module-name="{moduleName}">
+	<f:if condition="{formTag}">
+		<f:then>
+			<f:format.raw>{formTag}</f:format.raw>
+		</f:then>
+	</f:if>
+	<f:if condition="{docHeader.enabled}">
+		<f:render partial="DocHeader" arguments="{docHeader:docHeader}" />
+	</f:if>
+	<div class="module-body t3js-module-body">
+		<f:if condition="{uiBlock}">
+			<div id="t3js-ui-block" class="ui-block">
+				<core:icon identifier="spinner-circle" size="large" />
 			</div>
+		</f:if>
+		<f:flashMessages queueIdentifier="{flashMessageQueueIdentifier}" />
 
-		</div>
-		<div id="typo3-docbody" class="module-body t3js-module-body" >
-			<div id="typo3-inner-docbody">
-				<f:flashMessages />
-				<f:render section="content" />
-			</div>
-		</div>
+		<f:render section="Content" arguments="{_all}" optional="true" />
+
 	</div>
-</f:be.container>
+	<f:if condition="{formTag}">
+		<f:then>
+			</form>
+		</f:then>
+	</f:if>
+</div>
+
+<f:render section="After" arguments="{_all}" optional="true" />
+
+</html>

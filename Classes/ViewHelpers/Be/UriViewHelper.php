@@ -28,36 +28,38 @@ class UriViewHelper extends AbstractTagBasedViewHelper
      */
     public function render(): string
     {
-        $uriBuilder = $this->renderingContext->getControllerContext()->getUriBuilder();
-        $extensionName = $this->renderingContext->getControllerContext()->getRequest()->getControllerExtensionName();
-        $pluginName = $this->renderingContext->getControllerContext()->getRequest()->getPluginName();
-        $extensionService = GeneralUtility::makeInstance(ExtensionService::class);
-        $pluginNamespace = $extensionService->getPluginNamespace($extensionName, $pluginName);
-        $argumentPrefix = $pluginNamespace . '[' . $this->arguments['name'] . ']';
-        $arguments = $this->hasArgument('arguments') ? $this->arguments['arguments'] : [];
-        if ($this->hasArgument('action')) {
-            $arguments['action'] = $this->arguments['action'];
-        }
-        if ($this->hasArgument('format') && $this->arguments['format'] !== '') {
-            $arguments['format'] = $this->arguments['format'];
-        }
-        $finalArguments = [$argumentPrefix => $arguments] ;
-        foreach ( ["recursive" , "onlyActual" , "event" ] as $special ) {
+        $finalArguments = [] ;
+        $arguments = ($this->arguments['arguments'] ?? [] ) ;
+        $class = ($this->arguments['class'] ?? 'page-link' ) ;
+        foreach ( ["recursive" , "onlyActual" , "event" , "currentPage" ] as $special ) {
             if( isset($arguments[$special] )) {
-                $argumentPrefixSpecial =  $pluginNamespace . '[' . $special. ']';
-                $finalArguments[$argumentPrefixSpecial] = $arguments[$special] ;
+                $finalArguments[$special]= $arguments[$special] ;
             }
         }
-
-
-        $uriBuilder->reset()
-            ->setArguments($finalArguments)
-            ->setAddQueryString(true)
-            ->setArgumentsToBeExcludedFromQueryString([$argumentPrefix, 'cHash']);
-        $addQueryStringMethod = $this->arguments['addQueryStringMethod'] ?? null;
-        if (is_string($addQueryStringMethod)) {
-            $uriBuilder->setAddQueryStringMethod($addQueryStringMethod);
+        $route = false ;
+        if ( isset($arguments['route'] )) {
+            $route = $arguments['route'];
+        } else {
+            return '' ;
         }
-        return $uriBuilder->build();
+
+        try {
+            /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+
+            $uri = $uriBuilder->buildUriFromRoute( $route , $finalArguments ) ;
+
+            $this->tag->setTagName("a") ;
+
+            $this->tag->addAttribute('href', $uri  );
+            $this->tag->addAttribute('class', $class  );
+            $this->tag->setContent($this->renderChildren());
+            $this->tag->forceClosingTag(TRUE);
+            return $this->tag->render();
+
+        } catch (\TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException $e) {
+
+        }
+        return '' ;
     }
 }

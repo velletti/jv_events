@@ -93,7 +93,7 @@
 			<source>Event List</source>
 			<target>Veranstaltungsliste</target>
 		</trans-unit>
-		<trans-unit id="flexforms.HideEventListLink">
+		<trans-unit id="flexforms.HideEventListLink" approved="yes">
             <source>Hide Event List Link</source>
             <target>Link Veranstaltungsliste verbergen</target>
         </trans-unit>
@@ -117,7 +117,6 @@
             <source>Show Event Searchresults on Page ID</source>
             <target>zeige Suchergebnisse auf folgender Seite (PID) </target>
         </trans-unit>
-
 		<trans-unit id="flexforms_additional.layout" approved="yes">
 			<source>Select layout Style for Frontend rendering</source>
 			<target>Layout für das Frontend auswählen</target>
@@ -150,13 +149,10 @@
             <source>Show these Tags in Filterbox</source>
             <target>zeige nur diese Schlagworte in der Filterbox</target>
         </trans-unit>
-
-
-		<trans-unit id="plugin.filter.notAllowedtags">
+		<trans-unit id="plugin.filter.notAllowedtags" approved="yes">
 			<source>Show NO Events with ONE of these Tags</source>
 			<target>Zeige KEINE Veranstaltungen mit EINEM dieser Schlagworten</target>
 		</trans-unit>
-
 		<trans-unit id="plugin.filter.maxDays" approved="yes">
 			<source>Show max Days Only if StartDate has Restrictions , enter 0 for no limitations) </source>
 			<target>zeige maximal x Tage (nur sinnvoll, wenn die Option Startdatum einen Wert enthält) 0 für keine Beschränkung</target>
@@ -189,58 +185,50 @@
 			<source>Starts Yesterday or in the Future</source>
 			<target>Startete gestern oder in der Zukunft</target>
 		</trans-unit>
-
-        <trans-unit id="geocoding.error" xml:space="preserve">
+        <trans-unit id="geocoding.error" xml:space="preserve" approved="yes">
             <source>Error</source>
             <target>Fehler</target>
         </trans-unit>
-        <trans-unit id="geocoding.error.referenceToParentWindow" xml:space="preserve">
+        <trans-unit id="geocoding.error.referenceToParentWindow" xml:space="preserve" approved="yes">
             <source>Reference to parent window not found!</source>
             <target>Referenz zum öffnenden Fenster nicht gefunden!</target>
         </trans-unit>
-        <trans-unit id="geocoding.error.geocodingNotSuccessful.part1" xml:space="preserve">
+        <trans-unit id="geocoding.error.geocodingNotSuccessful.part1" xml:space="preserve" approved="yes">
             <source>Google Geocoding was not successful for the following reason:</source>
             <target>Google Geocoding war aus folgendem Grund nicht erfolgreich:</target>
         </trans-unit>
-        <trans-unit id="geocoding.error.geocodingNotSuccessful.part2" xml:space="preserve">
+        <trans-unit id="geocoding.error.geocodingNotSuccessful.part2" xml:space="preserve" approved="yes">
             <source>(Maybe the address data is not complete? => address, city and country!)</source>
             <target>Eventuell ist die Adresse nicht vollständig= => (Strasse, Ort oder PLZ und Land!)</target>
         </trans-unit>
-
-
-        <trans-unit id="geocoding.page.title" xml:space="preserve">
+        <trans-unit id="geocoding.page.title" xml:space="preserve" approved="yes">
             <source>Google Geocoding</source>
             <target>Google Geocoding</target>
         </trans-unit>
-        <trans-unit id="geocoding.page.headline" xml:space="preserve">
+        <trans-unit id="geocoding.page.headline" xml:space="preserve" approved="yes">
             <source>Google Geocoding</source>
             <target>Google Geocoding</target>
         </trans-unit>
-
-
-        <trans-unit id="geocoding.form.transferGeoData.label.submit" xml:space="preserve">
+        <trans-unit id="geocoding.form.transferGeoData.label.submit" xml:space="preserve" approved="yes">
             <source>Save</source>
             <target>Speichern</target>
         </trans-unit>
-        <trans-unit id="geocoding.form.transferGeoData.label.cancel" xml:space="preserve">
+        <trans-unit id="geocoding.form.transferGeoData.label.cancel" xml:space="preserve" approved="yes">
             <source>Cancel</source>
             <target>Abbruch</target>
         </trans-unit>
-
-        <trans-unit id="geocoding.form.geosearch.label.searchFor" xml:space="preserve">
+        <trans-unit id="geocoding.form.geosearch.label.searchFor" xml:space="preserve" approved="yes">
             <source>Search for</source>
             <target>Suchen nach</target>
         </trans-unit>
-        <trans-unit id="geocoding.form.geosearch.label.find" xml:space="preserve">
+        <trans-unit id="geocoding.form.geosearch.label.find" xml:space="preserve" approved="yes">
             <source>Find</source>
             <target>Suchen</target>
         </trans-unit>
-        <trans-unit id="geocoding.form.geosearch.label.updateMap" xml:space="preserve">
+        <trans-unit id="geocoding.form.geosearch.label.updateMap" xml:space="preserve" approved="yes">
             <source>Update Map</source>
             <target>Position aktualisieren</target>
         </trans-unit>
-
-
 		</body>
 	</file>
 </xliff>

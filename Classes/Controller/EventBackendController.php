@@ -25,11 +25,17 @@ namespace JVelletti\JvEvents\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use JVelletti\JvEvents\Domain\Repository\RegistrantRepository;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Database\QueryGenerator;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+
 use JVelletti\JvEvents\Domain\Model\Event;
 use JVelletti\JvEvents\Domain\Model\Location;
 use JVelletti\JvEvents\Domain\Model\Registrant;
@@ -50,26 +56,42 @@ class EventBackendController extends BaseController
 {
 
     /**
+     * registrantRepository
+     *
+     * @var RegistrantRepository
+     */
+    protected $registrantRepository = NULL;
+
+    /**
      * @var RegisterHubspotUtility
      */
     protected RegisterHubspotUtility $hubspot  ;
 
+    protected ModuleTemplateFactory $moduleTemplateFactory;
+    protected PageRenderer $pageRenderer;
+    protected BackendUserAuthentication $backendUser;
+
+    public function __construct(
+       RegistrantRepository $registrantRepository,
+       ModuleTemplateFactory $moduleTemplateFactory,
+       PageRenderer $pageRenderer,
+       BackendUserAuthentication $backendUser
+    ) {
+        $this->registrantRepository = $registrantRepository;
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
+        $this->pageRenderer = $pageRenderer;
+        $this->backendUser = $backendUser;
+    }
 
 
 	public function initializeAction() {
-		if ($this->request->hasArgument('action')) {
+       // This works only, if moduleTemplateFactory is used for view => see action function(s)
+       $this->pageRenderer->addCssFile('EXT:jv_events/Resources/Public/Css/backendModule.css', 'stylesheet', 'all', '', false);
+       // $this->pageRenderer->loadJavaScriptModule('@peterBenke/pbNotifications/Notifications.js');
 
-			if ($this->request->getArgument('action') == "show") {
-				if (!$this->request->hasArgument('event')) {
-					throw new \Exception('Missing Event Id in URL');
-				}
-			}
-		}
-		if (!$this->request->hasArgument('event')) {
-			// ToDo redirect to error
-		}
-        $this->hubspot = GeneralUtility::makeInstance(RegisterHubspotUtility::class);
-        parent::initializeAction() ;
+
+        // $this->hubspot = GeneralUtility::makeInstance(RegisterHubspotUtility::class);
+        // parent::initializeAction() ;
 	}
     /**
      * action list
@@ -79,6 +101,29 @@ class EventBackendController extends BaseController
      */
     public function listAction(): ResponseInterface
     {
+        $view = $this->moduleTemplateFactory->create($this->request);
+
+        $pageId = 0 ;
+        if ( $this->request->hasArgument('id') ) {
+            $pageId = $this->request->getArgument("id") ;
+            $pageRow = BackendUtility::getRecord(
+               'pages',
+               $pageId,
+               '*'
+            );
+/*
+            if (!$this->backendUser->doesUserHaveAccess($pageRow, 1)) {
+                $view->assign('error', 'No access to this page');
+                return $view->renderResponse('/EventBackend/List.html');
+            }
+*/
+        }
+
+
+        $view->setTitle('Event Management');
+        $view->setModuleName("web_JvEventsEventmngt");
+        $view->setModuleId("jvevents_eventmngt");
+
         $eventID = null;
         $events = [];
         $itemsPerPage = 20 ;
@@ -87,6 +132,10 @@ class EventBackendController extends BaseController
 
         if( $this->request->hasArgument('recursive')) {
             $recursive = $this->request->getArgument('recursive') ;
+        }
+        $currentPage = 1;
+        if( $this->request->hasArgument('currentPage')) {
+            $currentPage = $this->request->getArgument('currentPage') ;
 
         }
         $onlyActual = -999 ;
@@ -95,446 +144,38 @@ class EventBackendController extends BaseController
 
         }
         if ( $recursive ) {
-            $queryGenerator = GeneralUtility::makeInstance(QueryGenerator::class);
-            $this->settings['storagePids'] = $queryGenerator->getTreeList($pageId, 9999, 0, 1) ;
+            $this->settings['storagePids'] = $this->registrantRepository->getTreeList($pageId, 9999, 0, 1) ;
         }
-         $email = GeneralUtility::_GP('email');
+
         $this->settings['filter']['startDate']  = $onlyActual ;
         $this->settings['storagePid'] = $pageId ;
 
 
         $this->settings['directmail'] = FALSE  ;
-
+        $eventID = 0 ;
         if( $this->request->hasArgument('event')) {
             $eventID = $this->request->getArgument('event') ;
             if( $eventID > 0 ) {
                 $itemsPerPage = 100 ;
             }
-
         }
-
         if (ExtensionManagementUtility::isLoaded('direct_mail')) {
             $this->settings['directmail'] = TRUE ;
         }
-
-
         /** @var QueryResultInterface $events */
         $registrants = $this->registrantRepository->findByFilter($email, $eventID, $pageId ,  $this->settings , 999 );
+        $events = [] ;
 
-
-        $pageRow = BackendUtility::getRecord(
-            'pages',
-            $pageId,
-            '*'
-        );
-
-        if( $GLOBALS['BE_USER']->doesUserHaveAccess($pageRow , 1 ) ) {
-
-            /**
-             * @var $queryGenerator \TYPO3\CMS\Core\Database\QueryGenerator
-             */
-
-            $eventIds = $this->registrantRepository->findEventsByFilter($email , $pageId , $this->settings  ) ;
-            if( (is_countable($eventIds) ? count($eventIds) : 0) > 0 ) {
-                // $events[] = array( "0" => "-" ) ;
-                foreach ($eventIds as $key => $eventId ) {
-                    $event = $this->eventRepository->findByUidAllpages($eventId) ;
-                    if( is_array($event)) {
-                        if(  $event[0] instanceof  Event )  {
-                            $location = '' ;
-                            if ($event[0]->getLocation() instanceof  Location )  {
-                                $location = $event[0]->getLocation()->getCity() ;
-                            }
-                            $event[0]->setName( $event[0]->getStartDate()->format("Y-m-d - ") . substr( (string) $event[0]->getName() , 0 , 50 ) . " | " . $location . " (ID: " . $event[0]->getUid() . ")" ) ;
-                            if( $eventID > 0 ) {
-                                $this->view->assign('eventName', $event[0]->getName() );
-
-                            }
-                            $events[] = $event[0] ;
-                            if ( $this->request->hasArgument("createDmailGroup")) {
-                                if ($eventID == 0 || ($eventID == $event[0]->getUid())) {
-                                    $this->createDmailGroup($event[0]);
-                                }
-                            }
-                        }
-                    }
-
-                }
-            }
-
-
-            $this->view->assign('event', $eventID );
-            $this->view->assign('itemsPerPage', $itemsPerPage );
-            $this->view->assign('events', $events);
-            $this->view->assign('registrants', $registrants);
-            $this->view->assign('settings', $this->settings );
-            $this->view->assign('onlyActual', $onlyActual  );
-            $this->view->assign('recursive', $recursive );
-            $this->view->assign('pageId', $pageId );
-        } else {
-            die("You do not have Access to page " .$pageId ) ;
-        }
-        return $this->htmlResponse();
-
-
-    }
-    
-    /**
-     * action show
-     *  @param \JVelletti\JvEvents\Domain\Model\Event
-     $event
-     * @return void
-     */
-    public function showAction(Event $event): ResponseInterface
-    {
-		
-		$this->view->assign('event', $event);
-  return $this->htmlResponse();
-    }
-    
-    /**
-     * action new
-     * @param \JVelletti\JvEvents\Domain\Model\Registrant
-     * @return void
-     */
-    // public function confirmAction(\JVelletti\JvEvents\Domain\Model\Registrant $registrant )
-    public function confirmAction()
-    {
-        $eventID = 0 ;
-        if ( $this->request->hasArgument("eventID")) {
-            $eventID = $this->request->getArgument("eventID");
-        }
-		if ( $this->request->hasArgument("registrant")) {
-		    $regId = $this->request->getArgument("registrant") ;
-
-
-		    if( $regId > 0 ) {
-		        /** @var Registrant $registrant */
-                $registrant = $this->registrantRepository->findByUid($regId) ;
-                if( $registrant ) {
-
-                    /** @var Event $event */
-                    $event = $this->eventRepository->findByUidAllpages($registrant->getEvent() ) ;
-
-                    if( $event ) {
-
-                        $pid = $event[0]->getRegistrationFormPid() ;
-                        $lng = $event[0]->getSysLanguageUid() ;
-                       // $typoScript = \JVelletti\JvEvents\Utility\TyposcriptUtility::loadTypoScriptFromScratch( $pid , "tx_jvevents_events" , array( "[globalVar = GP:L = " . intval($lng ) . "]" )) ;
-                        $typoScript = TyposcriptUtility::loadTypoScriptFromScratch( $pid , "tx_jvevents_events" , ['[siteLanguage("languageId") = ' . intval($lng ) . ']']) ;
-                        $this->settings = array_merge( $this->settings ,  $typoScript['settings'] ) ;
-                        $this->settings['pageId'] = $pid ;
-                        $this->settings['sys_language_uid'] = $lng ;
-
-
-                        if( !$this->settings['LayoutRegister'] ) {
-                            $this->settings['LayoutRegister'] = "2Allplan" ;
-                        }
-                        //  echo "<pre>" ;
-                        // var_dump($this->settings) ;
-                        // die;
-
-                        $registrant->setConfirmed("1") ;
-                        $name = trim( $registrant->getFirstName() . " " . $registrant->getLastName())  ;
-                        if( strlen( $name ) < 3 ) {
-                            $name = "RegistrantId: " . $registrant->getUid() ;
-                        } else {
-                            $name  = '=?utf-8?B?'. base64_encode( $name) .'?=' ;
-                        }
-
-                        $this->sendEmail($event[0] , $registrant ,"Registrant" , [$registrant->getEmail() => $name] , FALSE )  ;
-
-                        $this->registrantRepository->update($registrant) ;
-                        $this->addFlashMessage($this->settings['register']['senderEmail'] . " -> Email send to " . $registrant->getEmail() . " - layout: " . $this->settings['LayoutRegister'] , '', AbstractMessage::INFO);
-                    }
-                }
-            }
-
-        }
-        $this->redirect('list' , NULL , NULL , ['event' => $eventID]) ;
-	}
-
-    /**
-     * action resendCitrix
-     *
-     * will output json Resonse
-     */
-    public function resendCitrixAction()
-    {
-        if( $this->settings['EmConfiguration']['enableCitrix'] < 1 ) {
-            $output = ["enableCitrix" => false] ;
-        } elseif (!$this->request->hasArgument("registrant")) {
-            $output = ["error" => true, "msg" => "No registrant Id"] ;
-        } else {
-            $regId = intval( $this->request->getArgument("registrant")) ;
-            $registrant = false ;
-            $event = false ;
-            if ($regId < 1) {
-                $output = ["error" => true, "msg" => "Registrant Id < 1"] ;
-            } else {
-                /** @var Registrant $registrant */
-                $registrant = $this->registrantRepository->findByUid($regId);
-            }
-            if (! $registrant || !is_object($registrant)) {
-                $output = ["error" => true, "msg" => "Registrant not Found"] ;
-            } else {
-                /** @var Event $event */
-                $event = $this->eventRepository->findByUidAllpages($registrant->getEvent(), FALSE);
-            }
-            if (! $event || !is_object($event)) {
-                $output = ["error" => true, "msg" => "Event not Found"] ;
-            } else {
-                // Special Solution For allplan. So this Extension exists
-                // Condition is special for DE but should work also in all langauges
-                // if anybody also needs this, we should make it more flexibel ..
-
-                $lng = intval( $event->getLanguageUid()) ;
-                $ts = TyposcriptUtility::loadTypoScriptFromScratch(
-                    $event->getRegistrationFormPid(), "tx_jvevents_events", ['[siteLanguage("languageId") = ' . intval($lng ) . ']']
-                );
-
-                $this->settings['register']['citrix']['orgID'] = $ts['settings']['register']['citrix']['orgID'];
-                $this->settings['register']['citrix']['orgAUTH'] = $ts['settings']['register']['citrix']['orgAUTH'];
-                $response = $this->citrixSlot->createAction($registrant, $event, $this->settings);
-                //   $response = "201" ;
-                $registrant->setCitrixResponse($response['CitrixResponse']) ;
-                $this->registrantRepository->update($registrant) ;
-
-
-                if ($response == 200 || $response == 201) {
-                    $colorCode = AbstractMessage::INFO;
-                } else {
-                    $colorCode = AbstractMessage::WARNING;
-                }
-                // $this->addFlashMessage(" Resent user " . $registrant->getEmail() . " to Citrix : " . var_export($response, true)
-                //    , '', $colorCode);
-
-                $this->persistenceManager->persistAll();
-                $output = ["uid" => $regId, "text" => $response];
-            }
-        }
-        $jsonOutput = json_encode($output, JSON_THROW_ON_ERROR);
-        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-        header('Cache-Control: no-cache, must-revalidate');
-        header('Pragma: no-cache');
-        header('Content-Length: ' . strlen($jsonOutput));
-        header('Content-Type: application/json; charset=utf-8');
-        header('Content-Transfer-Encoding: 8bit');
-
-        $callbackId = GeneralUtility::_GP("callback");
-        if ($callbackId == '') {
-            echo $jsonOutput;
-        } else {
-            echo $callbackId . "(" . $jsonOutput . ")";
-        }
-
-        die();
-    }
-
-
-    /**
-     * action resendHubspotAction
-     *
-     * will output json Resonse
-     */
-    public function resendHubspotAction()
-    {
-        if( $this->settings['EmConfiguration']['enableHubspot'] < 1 ) {
-            $output = ["enableHubspot" => false] ;
-        } elseif (!$this->request->hasArgument("registrant")) {
-            $output = ["error" => true, "msg" => "No registrant Id"] ;
-        } else {
-            $regId = intval( $this->request->getArgument("registrant")) ;
-            $registrant = false ;
-            $event = false ;
-            if ($regId < 1) {
-                $output = ["error" => true, "msg" => "Registrant Id < 1"] ;
-            } else {
-                /** @var Registrant $registrant */
-                $registrant = $this->registrantRepository->findByUid($regId);
-            }
-            if (! $registrant || !is_object($registrant)) {
-                $output = ["error" => true, "msg" => "Registrant not Found"] ;
-            } else {
-                /** @var Event $event */
-                $event = $this->eventRepository->findByUidAllpages($registrant->getEvent(), FALSE);
-            }
-            if (! $event || !is_object($event)) {
-                $output = ["error" => true, "msg" => "Event not Found"] ;
-            } else {
-                // Special Solution For allplan. So this Extension exists
-                // Condition is special for DE but should work also in all langauges
-                // if anybody also needs this, we should make it more flexibel ..
-
-                $lng = intval( $event->getLanguageUid()) ;
-
-                $ts = TyposcriptUtility::loadTypoScriptFromScratch(
-                    $event->getRegistrationFormPid(), "tx_jvevents_events",['[siteLanguage("languageId") = ' . intval($lng ) . ']']
-                );
-
-                $response = $this->hubspot->createAction($registrant, $event, $this->settings);
-
-
-                if ($response['status'] == 201 || $response['status']  == 204) {
-                    $colorCode = AbstractMessage::INFO;
-                    $registrant->setHubspotResponse($response['status']) ;
-                } else {
-                    $colorCode = AbstractMessage::WARNING;
-                    $registrant->setHubspotResponse($response['status'] . " - " . $response['error']) ;
-                }
-                $this->registrantRepository->update($registrant) ;
-                // $this->addFlashMessage(" Resent user " . $registrant->getEmail() . " to Citrix : " . var_export($response, true)
-                //    , '', $colorCode);
-
-                $this->persistenceManager->persistAll();
-                $output = ["uid" => $regId, "text" => $response];
-            }
-        }
-
-        $jsonOutput = json_encode($output, JSON_THROW_ON_ERROR);
-        $callbackId = GeneralUtility::_GP("callback");
-        if ($callbackId ) {
-            $jsonOutput = $callbackId . "(" . $jsonOutput . ")";
-        }
-        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-        header('Cache-Control: no-cache, must-revalidate');
-        header('Pragma: no-cache');
-        header('Content-Length: ' . strlen($jsonOutput));
-        header('Content-Type: application/json; charset=utf-8');
-        header('Content-Transfer-Encoding: 8bit');
-
-         echo $jsonOutput;
-
-        die();
-    }
-
-    /**
-     * action create
-     *
-     * @return void
-     */
-    public function createAction(Event $newEvent): ResponseInterface
-    {
-        $this->addFlashMessage('The object was created. Please be aware that this action is publicly accessible unless you implement an access check. See http://wiki.typo3.org/T3Doc/Extension_Builder/Using_the_Extension_Builder#1._Model_the_domain', '', AbstractMessage::ERROR);
-       // $this->eventRepository->add($newEvent);
-        // $this->redirect('list');return $this->htmlResponse();return $this->htmlResponse();return $this->htmlResponse();
-    }
-    
-    /**
-     * action edit
-     *
-     * @return void
-     */
-    public function editAction(Event $event): ResponseInterface
-    {
-        $this->view->assign('event', $event);
-        return $this->htmlResponse();
-    }
-    
-    /**
-     * action update
-     *
-     * @return void
-     */
-    public function updateAction(Event $event): ResponseInterface
-    {
-        $this->addFlashMessage('The object was updated. Please be aware that this action is publicly accessible unless you implement an access check. See http://wiki.typo3.org/T3Doc/Extension_Builder/Using_the_Extension_Builder#1._Model_the_domain', '', AbstractMessage::ERROR);
-       // $this->eventRepository->update($event);
-       // $this->redirect('list');return $this->htmlResponse();return $this->htmlResponse();return $this->htmlResponse();
-    }
-    
-    /**
-     * action delete
-     *
-     * @return void
-     */
-    public function deleteAction(Event $event): ResponseInterface
-    {
-        $this->addFlashMessage('The object was deleted. Please be aware that this action is publicly accessible unless you implement an access check. See http://wiki.typo3.org/T3Doc/Extension_Builder/Using_the_Extension_Builder#1._Model_the_domain', '', AbstractMessage::ERROR);
-       // $this->eventRepository->remove($event);
-       //  $this->redirect('list');return $this->htmlResponse();return $this->htmlResponse();return $this->htmlResponse();
-    }
-    
-
-
-
-    /**
-     * action search
-     *
-     * @return void
-     */
-    public function searchAction(): ResponseInterface
-    {
-        return $this->htmlResponse();
-    }
-
-
-    // ########################################   functions ##################################
-	/**
-	 * helper for Formvalidation
-	 * @param string $action
-	 * @return string
-	 */
-	public function generateToken($action = "action")
-	{
-		/** @var FrontendFormProtection $formClass */
-  $formClass =  GeneralUtility::makeInstance( FrontendFormProtection::class) ;
-
-		return $formClass->generateToken(
-			'event', $action ,   "P" . $this->settings['pageId'] . "-L" .$this->settings['sys_language_uid']
-		);
-
-	}
-
-    /**
-  * @return bool
-  */
- public function createDmailGroup( Event  $event ) {
-
-        $query = [];
-        $dgroup = [];
-        if (! ExtensionManagementUtility::isLoaded('direct_mail')) {
-            return true ;
-        }
-        /** @var ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance( ConnectionPool::class);
-
-        /** @var QueryBuilder $queryBuilder */
-        $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_dmail_group') ;
-        $dgroupRow = $queryBuilder->select("*")->from("sys_dmail_group")->where($queryBuilder->expr()->eq("static_list" ,$event->getUid() ))->executeQuery()->fetchAll() ;
-
-        // $dgroupRow =  \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw("sys_dmail_group" , "deleted = 0 AND static_list = " . $event->getUid() , "*" ) ;
-        if($dgroupRow ) {
-            return true ;
-        }
-
-        $query[] = ['operator' => 'AND', 'type' => 'FIELD_event', 'comparison' => '32', 'inputValue' => $event->getUid()] ;
-        $query[] = ['operator' => 'AND', 'type' => 'FIELD_email', 'comparison' => '0', 'inputValue' => "@"] ;
-        $query[] = ['operator' => 'AND', 'type' => 'FIELD_hidden', 'comparison' => '129', 'negate' => 'on', 'inputValue' => "1"] ;
-        $query[] = ['operator' => 'AND', 'type' => 'FIELD_deleted', 'comparison' => '129', 'negate' => 'on', 'inputValue' => "1"] ;
-        $query[] = ['operator' => 'AND', 'type' => 'FIELD_confirmed', 'comparison' => '129', 'inputValue' => "1"] ;
-
-	    $dgroup['title'] = "Event " . $event->getStartDate()->format("d.m.Y" ) . " (" . $event->getUid() . ") "  ;
-	    //$dgroup['queryTable'] = "tx_jvevents_domain_model_registrant" ;
-	    $dgroup['type'] = 3 ;
-
-	    // toDo get PID from Config
-	    $dgroup['pid'] = 141 ;
-	    $dgroup['tstamp'] = time()  ;
-
-	    $dgroup['static_list'] = $event->getUid()  ;
-	    $dgroup['whichtables'] =  4 ;
-	    $dgroup['description'] =  $event->getName() ;
-	    $dgroup['list'] =  serialize( [] ) ;
-	    $dgroup['csv'] =  0 ;
-	    $dgroup['query'] = serialize($query) ;
-
-
-
-        return $queryBuilder->insert('sys_dmail_group')->values($dgroup)->executeStatement() ;
-
+        $view->assign('event', $eventID);
+        $view->assign('itemsPerPage', $itemsPerPage);
+        $view->assign('events', $events);
+        $view->assign('registrants', $registrants);
+        $view->assign('settings', $this->settings);
+        $view->assign('onlyActual', $onlyActual);
+        $view->assign('currentPage', $currentPage);
+        $view->assign('recursive', $recursive);
+        $view->assign('pageId', $pageId );
+        return $view->renderResponse('/EventBackend/List.html');
     }
 
 }
