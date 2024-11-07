@@ -1069,7 +1069,7 @@ function jv_events_refreshList(){
         if( fCat && fCat.val() > 0 ) {
             urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][categories]=" + fCat.val() ;
         }
-        if( fDist && parseInt( fDist.val()) !=  parseInt(fDist.data('default') ) && fDist.val() != 'undefined' ) {
+        if( fDist.length && parseInt( fDist.val()) !=  parseInt(fDist.data('default') ) && fDist.val() != 'undefined' ) {
             urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][distance]=" + fDist.val() ;
         }
 
