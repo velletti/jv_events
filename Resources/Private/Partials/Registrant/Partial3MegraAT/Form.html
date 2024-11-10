@@ -74,6 +74,22 @@
 			<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRow" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.hotprice', FieldName : 'hotprice' , settings: settings , cols: 'col-md-12' , required: '{f:if(condition: \'{settings.register.required.hotPrice}\' , then: \'TRUE\')}'}"/>
 		</div>
 
+		<f:for as="tag" each="{event.tags}">
+			<f:if condition="{tag.uid}==10">
+				<div class="clearfix row">
+					<div class="col-12 alert alert-warning">
+						<b>Hybrid-Veranstaltung:</b><br>
+						Bitte aktivieren Sie die Checkbox, wenn Sie online teilnehmen möchten.
+						<div class="checkbox" >
+							<label for="jv_events_more2">
+								<f:form.checkbox class="checkbox" id="jv_events_more2" property="more2" value="1" checked=""/>
+								<b>Ich möchte online teilnehmen</b>
+							</label>
+						</div>
+					</div>
+				</div>
+			</f:if>
+		</f:for>
 		<div class="clearfix row">
 			<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRowGender" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.gender', FieldName : 'gender' , settings: settings , cols: 'col-md-6' , required: '{f:if(condition: \'{settings.register.required.gender}\' , then: \'TRUE\')}'}"/>
 			<f:render partial="Registrant/Partial{settings.LayoutSingle}/FormRow" arguments="{translate: 'TRUE',label: 'tx_jvevents_domain_model_registrant.title', FieldName : 'title' , settings: settings , cols: 'col-md-6' , required: '{f:if(condition: \'{settings.register.required.title}\' , then: \'TRUE\')}'}"/>
