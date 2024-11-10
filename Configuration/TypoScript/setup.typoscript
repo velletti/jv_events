@@ -13,6 +13,8 @@ plugin.tx_jvevents_events {
 		checkInstallation = {$plugin.tx_jvevents_events.settings.checkInstallation}
 		# set this setting in Case of Problems
 		debug = {$plugin.tx_jvevents_events.settings.debug}
+		# activate this setting to get Debug Output in frontend of used Query
+		debugQuery = 0
 
 
 

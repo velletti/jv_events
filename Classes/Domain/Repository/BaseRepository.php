@@ -76,6 +76,7 @@ class BaseRepository extends Repository
         echo "<hr>" ;
         $queryParams = array_reverse ( $queryParser->convertQueryToDoctrineQueryBuilder($query)->getParameters()) ;
         var_dump($queryParams);
+        $querystr .= " LIMIT " . $query->getLimit() . " OFFSET " . $query->getOffset() ;
         echo "<hr>" ;
 
         foreach ($queryParams as $key => $value ) {
