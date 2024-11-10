@@ -42,17 +42,25 @@ class TyposcriptUtility{
 
     public static function loadTypoScriptFromRequest($request, $extKey = '' , $getConstants = false  ) {
 
-        $ts = $request->getAttribute('frontend.typoscript')->getSetupArray();
+        $tsFrontend = $request->getAttribute('frontend.typoscript') ;
+        if ( $tsFrontend ) {
+            $ts = $tsFrontend->getSetupArray();
+            if( !isset($ts['plugin.']) ) {
+                return []  ;
+            }
+        } else {
+            return  [];
+        }
 
         if( $getConstants ) {
             // Todo get Constants  is untestet
-            if(!empty($extKey)){
+            if(!empty($extKey) && isset($ts['config.'][$extKey . '.'])){
                 $ts = self::removeDotsFromTypoScriptArray($ts['config.'][$extKey . '.']);
             } else {
                 $ts = self::removeDotsFromTypoScriptArray($ts['config.']);
             }
         } else {
-            if(!empty($extKey)){
+            if(!empty($extKey) && isset($ts['plugin.'][$extKey . '.'])){
                 $ts = self::removeDotsFromTypoScriptArray($ts['plugin.'][$extKey . '.']);
             } else {
                 $ts = self::removeDotsFromTypoScriptArray($ts['plugin.']);
