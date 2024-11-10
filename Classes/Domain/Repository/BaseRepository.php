@@ -87,8 +87,6 @@ class BaseRepository extends Repository
         /** @var QueryResult $result */
         $result = $query->execute() ;
         echo "<hr>Anzahl: " .  $result->count() ;
-
-        die;
     }
 
     public function getTYPO3QuerySettings(): QuerySettingsInterface

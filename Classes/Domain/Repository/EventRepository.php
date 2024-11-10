@@ -238,14 +238,16 @@ class EventRepository extends BaseRepository
 		} elseif ($limit > 0) {
             $query->setLimit( intval( $limit )) ;
         } else  {
-
-
+            // no lmit ?? $query->setLimit( 4 ) ;
 
         }
-        $query->setLimit( 4 ) ;
+
 
         $result = $query->execute();
-       // $this->debugQuery($query) ;
+
+        if ( $settings['debugQuery'] ) {
+            $this->debugQuery($query) ;
+        }
 
         return $result;
     }
