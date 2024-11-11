@@ -4,6 +4,10 @@ namespace JVelletti\JvEvents\Utility;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Localization\Locales;
+use TYPO3\CMS\Core\Localization\LocalizationFactory;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 
 /**
  * Class Geocoder
@@ -31,17 +35,18 @@ class GeocoderUtility {
      */
     protected function getLanguageService()
     {
-        /** @var LanguageService $lang */
-        $lang = GeneralUtility::makeInstance(LanguageService::class) ;
+        /** @var LanguageServiceFactory $localizationFactory */
+        $localizationFactory = GeneralUtility::makeInstance(LanguageServiceFactory::class);
+
+
         if (ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()) {
             $lng = $GLOBALS['BE_USER']->uc['lang'] ;
         } else {
             $lng = $GLOBALS['TSFE']->config['config']['language'] ;
         }
         if ( $lng == '' ) { $lng = "en" ;}
-        $lang->init($lng) ;
-
-        return $lang ;
+        /** @var LanguageService $lang */
+        return $localizationFactory->create($lng) ;
     }
 
 	public function __construct() {
