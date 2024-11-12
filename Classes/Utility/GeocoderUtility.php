@@ -62,7 +62,7 @@ class GeocoderUtility {
         $this->getLanguageService()->includeLLFile('EXT:jv_events/Resources/Private/Language/locallang_be.xlf');
 
 		$googleApiKey = EmConfigurationUtility::getGoogleApiKey();
-        $this->javascriptCode = '<script async defer src="https://maps.googleapis.com/maps/api/js?key=' . $googleApiKey . '&callback=initGeoCoderMap"></script>';
+        $this->javascriptCode = '<script async defer src="https://maps.googleapis.com/maps/api/js?key=' . $googleApiKey . '&loading=async&libraries=marker&callback=initGeoCoderMap"></script>';
 
 
 	}
@@ -305,6 +305,7 @@ class GeocoderUtility {
                         zoom: initZoom ,
                         streetViewControl: false,
                         mapTypeControl: false,
+                        mapId: "jv_events_google_map",
                         draggableCursor: "default" ,
                         center: myLatLng,
 		                styles: styleArray
@@ -328,8 +329,8 @@ class GeocoderUtility {
                     updateCity() ;
                 });
 				map.addListener( \'click\', function(e) {
-				    marker.setPosition( e.latLng ) ;
-				    map.panTo(marker.getPosition()) ;
+				    marker.position = e.latLng ;
+				    map.panTo(marker.position) ;
                     var zoom = map.getZoom();
                     if ( zoom < 9 ) {
                       zoom = 9 ;
@@ -340,8 +341,8 @@ class GeocoderUtility {
                     
                 });
                 map.addListener( \'dblclick\', function(e) {
-				    marker.setPosition( e.latLng ) ;
-				    map.panTo(marker.getPosition()) ;
+				    marker.position = e.latLng ;
+				    map.panTo(marker.position) ;
                     var zoom = map.getZoom();
                     if( jQuery("#jv_events_geo").length ) {
                        if ( jQuery("#jv_events_geo").data( "doubleclickzoom" ) ) {
@@ -379,10 +380,10 @@ class GeocoderUtility {
 			
 			function updatePosition() {
 				if(document.getElementById("lat")) {
-					document.getElementById("lat").value =  marker.getPosition().lat() ;
+					document.getElementById("lat").value =  marker.position.lat ;
 				}
 				if(document.getElementById("lng")) {
-					document.getElementById("lng").value =  marker.getPosition().lng() ;
+					document.getElementById("lng").value =  marker.position.lng ;
 				}
 
 				if(document.getElementById("jvevents-geo-ok")) {
@@ -397,8 +398,8 @@ class GeocoderUtility {
                     var d = new Date();
                     d.setTime(d.getTime() + ( 24*60*60*1000 * 365));
                     var expires = "expires=" + d.toUTCString();
-                    document.cookie = "tx_events_lat=" + marker.getPosition().lat() + "; " + expires + ";path=/";
-                    document.cookie = "tx_events_lng=" + marker.getPosition().lng() + "; " + expires + ";path=/";
+                    document.cookie = "tx_events_lat=" + marker.position.lat + "; " + expires + ";path=/";
+                    document.cookie = "tx_events_lng=" + marker.position.lng + "; " + expires + ";path=/";
                 }
                 ' . $updateFunctionCode .
             '
@@ -495,13 +496,14 @@ class GeocoderUtility {
                             // console.log( "geometrie Location") ;
                             // console.debug( results[0].geometry.location ) ;
                             if( marker ) {
-                                marker.setPosition(results[0].geometry.location) ;
+                                marker.position = results[0].geometry.location ;
                             } else {
-                                marker = new google.maps.Marker({
+                                marker = new google.maps.marker.AdvancedMarkerElement({
+                                        map,
                                         position: results[0].geometry.location,
-                                        map: map,
                                         zIndex: 99999,
                                         title: address.address,
+                                        
                                         draggable: draggable
                                     });
                                
@@ -510,7 +512,7 @@ class GeocoderUtility {
                                 }
                                   marker.addListener("click", () => {
                                     map.setZoom(9);
-                                    map.panTo(marker.getPosition()) ;
+                                    map.panTo(marker.position) ;
                                   });
                                   
                                   marker.addListener("dblclick", () => {
@@ -521,17 +523,17 @@ class GeocoderUtility {
                                        }
                                     }
                                     map.setZoom(doubleCLickZoom);
-                                    map.panTo(marker.getPosition()) ;
+                                    map.panTo(marker.position) ;
                                   });
                             }
                             
                 
                             function updatePosition() {
                                 if(document.getElementById("lat")) {
-                                    document.getElementById("lat").value = marker.getPosition().lat() ;
+                                    document.getElementById("lat").value = marker.position.lat ;
                                 }
                                 if(document.getElementById("lng")) {
-                                    document.getElementById("lng").value = marker.getPosition().lng() ;
+                                    document.getElementById("lng").value = marker.position.lng ;
                                 }
                                 if(document.getElementById("jvevents-geo-ok")) {
                                     document.getElementById("jvevents-geo-ok").style.opacity = "1" ;
@@ -544,11 +546,11 @@ class GeocoderUtility {
                                     var d = new Date();
                                     d.setTime(d.getTime() + ( 24*60*60*1000 * 365));
                                     var expires = "expires=" + d.toUTCString();
-                                    document.cookie = "tx_events_lat=" + marker.getPosition().lat() + "; " + expires + ";path=/";
-                                    document.cookie = "tx_events_lng=" + marker.getPosition().lng() + "; " + expires + ";path=/";
+                                    document.cookie = "tx_events_lat=" + marker.position.lat + "; " + expires + ";path=/";
+                                    document.cookie = "tx_events_lng=" + marker.position.lng + "; " + expires + ";path=/";
                                 }
                                 ' . $updateFunctionCode . ' 
-                                map.panTo(marker.getPosition()) ;
+                                map.panTo(marker.position) ;
                                 updateCity() ;
                             }
                             function getCookies(name) {
