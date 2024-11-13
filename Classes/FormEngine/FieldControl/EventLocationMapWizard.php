@@ -72,7 +72,6 @@ class EventLocationMapWizard extends AbstractNode
                       $lat = $geo['lat'];
                       $lon = $geo['lon'];
                       $title = "From GeoCoder: " . $lat . " / " . $lon;
-
                   }
             }
         } else {

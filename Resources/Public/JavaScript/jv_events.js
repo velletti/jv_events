@@ -697,13 +697,13 @@ function jv_events_refreshList(){
     }
     if( jQuery("#jv_events_geo").length  && jQuery("#jv_events_geo").data("init" ).length ) {
         if(jQuery("#jv_events_geo").data("init" ) != "done") {
-            console.log( "init != done , so no push URL Flter") ;
+            // console.log( "init != done , so no push URL Flter") ;
         } else {
-            console.log( "init was : " +  jQuery("#jv_events_geo").data("init" )  ) ;
+            // console.log( "init was : " +  jQuery("#jv_events_geo").data("init" )  ) ;
             jv_events_pushUrl( urlFilter ) ;
         }
     } else {
-        console.log( "init did not run or data init not found."  ) ;
+        // console.log( "init did not run or data init not found."  ) ;
     }
 
 

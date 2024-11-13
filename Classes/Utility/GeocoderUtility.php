@@ -305,10 +305,9 @@ class GeocoderUtility {
                         zoom: initZoom ,
                         streetViewControl: false,
                         mapTypeControl: false,
-                        mapId: "jv_events_google_map",
+                        mapId: "50580b58009c1faf",
                         draggableCursor: "default" ,
-                        center: myLatLng,
-		                styles: styleArray
+                        center: myLatLng
                     });
 				} else {
                     // Create the map
@@ -317,8 +316,7 @@ class GeocoderUtility {
                         streetViewControl: false,
                         mapTypeControl: false,
                         draggableCursor: "default" ,
-                        center: myLatLng,
-		                 styles: styleArray
+                        center: myLatLng
                     });
 				}
 				map.addListener( \'zoom_changed\', function() {
@@ -352,7 +350,6 @@ class GeocoderUtility {
                     if ( zoom < 9 ) {
                       zoom = 9 ;
                     }
-                    
                   
                     map.setZoom( zoom ) ;
                     updatePosition() ;
