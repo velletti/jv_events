@@ -10,9 +10,15 @@ namespace JVelletti\JvEvents\FormEngine\FieldControl;
  * For the full copyright and license information, please read the
  * LICENSE file that was distributed with this source code.
  */
+
+use JVelletti\JvEvents\Utility\GeocoderUtility;
 use TYPO3\CMS\Backend\Form\AbstractNode;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Adds a wizard for location selection via map
  */
@@ -37,15 +43,16 @@ class EventLocationMapWizard extends AbstractNode
         $gLat = '48.1135455';  // Me at home as default
         $gLon = '11.4725687';
 
-        $lat = $row['lat'] != '' ? htmlspecialchars(sprintf("%.16f",$row['lat'])) : '';
-        $lon = $row['lng'] != '' ? htmlspecialchars(sprintf("%.16f",$row['lng'])) : '';
+        $lat = ($row['lat'] != '' &&  (int)$row['lat'] != 0 ) ? htmlspecialchars(sprintf("%.16f",$row['lat'])) : $gLat;
+        $lon = ($row['lng'] != '' &&  (int)$row['lng'] != 0  ) ? htmlspecialchars(sprintf("%.16f",$row['lng'])) : $gLon ;
         if( $row['street_and_nr'] != '' &&  $row['city'] != ''  ) {
-            $title = "GeoCoder" ;
+            $title = "GeoCoder "   ;
         }
-        if ($row['lat'] || $row['lng'] == '') {
+        if ( $row['lat']== '' || $row['lng'] == '' || (int)$row['lat']== 0 || (int)$row['lng'] == 0 ) {
+
             // remove all after first slash in address (top, floor ...)
             $address = preg_replace('/^([^\/]*).*$/', '$1', $row['street_and_nr'] ?? '') . ' ';
-            $address .= $row['city'] ?? '';
+            $address .= ($row['zip'] ?? '' ) . " " . ($row['city'] ?? '' ) . " , " . $row['country'][0] ?? 'DE' ;
             // if we have at least some address part (saves geocoding calls)
             if ($address) {
                 // base url
@@ -57,7 +64,19 @@ class EventLocationMapWizard extends AbstractNode
                 // replace newlines with spaces; remove multiple spaces
                 $geoCodeUrl = trim(preg_replace('/\s\s+/', ' ', $geoCodeUrlBase . $geoCodeUrlAddress . $geoCodeUrlQuery));
                 $geoCodeUrlShort = trim(preg_replace('/\s\s+/', ' ', $geoCodeUrlBase . $geoCodeUrlCityOnly . $geoCodeUrlQuery));
+                $title .= " : " .$address ;
+
+                $geo = GeocoderUtility::geocode($address , "TYPO3-JV-EVENTS"  , "jvelletti@allplan.com") ;
+
+                  if ( !empty($geo ) ) {
+                      $lat = $geo['lat'];
+                      $lon = $geo['lon'];
+                      $title = "From GeoCoder: " . $lat . " / " . $lon;
+
+                  }
             }
+        } else {
+            $title = "GeoCoder pos: " . $row['lat'] . " / " . $row['lng'] ;
         }
 
         $resultArray['iconIdentifier'] = 'jvevents-location-map-wizard';
@@ -80,12 +99,8 @@ class EventLocationMapWizard extends AbstractNode
         $resultArray['stylesheetFiles'][] = 'EXT:jv_events/Resources/Public/Css/leaflet-1-7-1.css';
         $resultArray['stylesheetFiles'][] = 'EXT:jv_events/Resources/Public/Css/leafletBackend.css';
 
-        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS(
-            'JVelletti/JvEvents/leaflet-1-7-1.js'
-        )->instance("jvevents-location-map-wizard");
-        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS(
-            'JVelletti/JvEvents/LeafletBackend.js'
-        )->instance($paramArray['itemFormElName']);
+        $pageRenderer = GeneralUtility::makeInstance('TYPO3\CMS\Core\Page\PageRenderer');
+        $pageRenderer->loadJavaScriptModule('jv-events-leaflet-backend');
 
         return $resultArray;
     }
@@ -95,6 +110,6 @@ class EventLocationMapWizard extends AbstractNode
      */
     protected function getLanguageService(): LanguageService
     {
-        return $GLOBALS['LANG'];
+        return GeneralUtility::makeInstance(LanguageServiceFactory::class)->create("default") ;
     }
 }

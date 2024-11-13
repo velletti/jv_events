@@ -963,4 +963,39 @@ class GeocoderUtility {
         return $content ;
 	}
 
+    public static function geocode(string $address , $userAgent, $email ): array
+    {
+        $url = 'https://nominatim.openstreetmap.org/search';
+        $query = http_build_query([
+           'q' => $address,
+           'format' => 'json',
+           'addressdetails' => 1,
+           'limit' => 1,
+           'polygon_svg' => 1
+        ]);
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url . '?' . $query);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+           'User-Agent: ' . $userAgent,
+           'Accept-Language: en-US,en;q=0.5',
+           'Referer: ' . $_SERVER['SERVER_NAME'],
+           'From: ' . $email // This is required by Nominatim's usage policy
+        ]);
+
+        $response = curl_exec($ch);
+        if (curl_errno($ch)) {
+           return [];
+        }
+
+        curl_close($ch);
+
+        $return =  json_decode($response, true);
+        if (isset($return[0]['place_id'])) {
+            return $return[0];
+        }
+        return [] ;
+    }
+
 }
