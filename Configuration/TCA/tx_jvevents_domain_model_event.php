@@ -596,15 +596,15 @@ $returnArray = array(
 				'type' => 'datetime',
 				'size' => 4,
 				'checkbox' => 1,
-                'fieldControl' => [
-                    'showEvent' => [
-                        'renderType' => 'showEventInFrontend'
-                    ] ,
-                    'dowloadIcal' => [
-                        'renderType' => 'getIcalLink'
-                    ]
-                ],
-                'format' => 'time'
+            'fieldControl' => [
+                'showEvent' => [
+                    'renderType' => 'showEventInFrontend'
+                ] ,
+                'dowloadIcal' => [
+                    'renderType' => 'getIcalLink'
+                ]
+            ],
+            'format' => 'time'
 			)
 		),
         'entry_time' => array(
@@ -951,7 +951,12 @@ $returnArray = array(
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.registered_seats',
 			'config' => array(
 				'type' => 'number',
-				'size' => 4
+				'size' => 4 ,
+              'fieldControl' => [
+                   'dowloadCSV' => [
+                      'renderType' => 'downloadRegistrations'
+                   ]
+            ],
 			)
 		),
 		'unconfirmed_seats' => array(

@@ -198,6 +198,13 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1655213082] = [
     'priority' => 44,
     'class' => \JVelletti\JvEvents\FormEngine\FieldControl\GetIcalLink::class
 ];
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1655213080] = [
+   'nodeName' => 'downloadRegistrations',
+   'priority' => 48,
+   'class' => \JVelletti\JvEvents\FormEngine\FieldControl\DownloadRegistrations::class
+];
+
+
 
 
 

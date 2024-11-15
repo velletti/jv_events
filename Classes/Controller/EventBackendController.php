@@ -27,10 +27,13 @@ namespace JVelletti\JvEvents\Controller;
  ***************************************************************/
 
 use JVelletti\JvEvents\Domain\Repository\RegistrantRepository;
+use JVelletti\JvEvents\Utility\EmConfigurationUtility;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Database\QueryGenerator;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -127,6 +130,16 @@ class EventBackendController extends BaseController
         $events = [];
         $itemsPerPage = 20 ;
         $pageId = GeneralUtility::_GP('id');
+
+        $pageRow = BackendUtility::getRecord(
+           'pages',
+           $pageId,
+           '*'
+        );
+
+        if( ! $GLOBALS['BE_USER']->doesUserHaveAccess($pageRow , 1 ) ) {
+            die( "No access to this page: " . $pageId) ;
+        }
         $recursive = false ;
 
         if( $this->request->hasArgument('recursive')) {
@@ -156,18 +169,86 @@ class EventBackendController extends BaseController
             $eventID = $this->request->getArgument('event') ;
             if( $eventID > 0 ) {
                 $itemsPerPage = 100 ;
+                $selectedEvent= $this->eventRepository->findByUidAllpages($eventID , false) ;
+                if ( $selectedEvent instanceof  Event  ){
+                    $location = '' ;
+                    if ($selectedEvent->getLocation() instanceof  Location )  {
+                        $location = $selectedEvent->getLocation()->getCity() ;
+                    }
+                    $eventName = $selectedEvent->getStartDate()->format("Y-m-d - ")
+                       . substr( (string) $selectedEvent->getName() , 0 , 50 ) . " | " . $location . " (ID: " . $selectedEvent->getUid() . ")" ;
+
+                    $view->assign('selectedEvent', $selectedEvent );
+                    $view->assign('eventName', $eventName );
+
+
+
+                    $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($selectedEvent->getRegistrationFormPid());
+                    $serverFromSite =  $site->getBase()->getHost() ;
+
+                    $lang = max(  $selectedEvent->getSysLanguageUid()  , 0 ) ;
+                    $checkString =  $serverFromSite . "-" .  $selectedEvent->getUid()  . "-" . $selectedEvent->getCrdate() ;
+                    $checkHash = GeneralUtility::hmac ( $checkString ) ;
+                    // pid = 0 to load registrations from all pages for that event
+                    $url = (string)$site->getRouter()->generateUri( $selectedEvent->getRegistrationFormPid() ,['_language' => $lang ,
+                       'tx_jvevents_registrant' => ['action' => 'list' , 'controller' => 'Registrant' ,'event' =>  $selectedEvent->getUid()
+                           , 'export' => '1' ,  'pid' => '0' ,  'hash' => $checkHash  ]]);
+                    $view->assign('downloadUri', $url );
+
+                    $registrants = $this->registrantRepository->findByFilter('', $eventID, 0 ,  [] , 999 );
+
+                    $configuration = EmConfigurationUtility::getEmConf();
+                    $previewPid = ( array_key_exists( 'DetailPid' , $configuration) && $configuration['DetailPid'] > 0 ) ? intval($configuration['DetailPid']) : 111 ;
+
+                    try {
+                        $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($previewPid);
+
+                        $previewUrl = (string)$site->getRouter()->generateUri( $previewPid ,['_language' => max(  $selectedEvent->getSysLanguageUid()  , 0 ) ,
+                           'tx_jvevents_event' => ['action' => 'show' , 'controller' => 'Event' ,'event' =>  $selectedEvent->getUid() ]]);
+
+                    } catch (\Exception) {
+                        $previewUrl = false ;
+                    }
+                    $view->assign('previewUri', $previewUrl );
+                }
             }
+         }
+        if ( $eventID == 0) {
+            $registrants = $this->registrantRepository->findByFilter('', $eventID, $pageId ,  $this->settings , 999 );
         }
         if (ExtensionManagementUtility::isLoaded('direct_mail')) {
             $this->settings['directmail'] = TRUE ;
         }
         /** @var QueryResultInterface $events */
-        $registrants = $this->registrantRepository->findByFilter($email, $eventID, $pageId ,  $this->settings , 999 );
-        $events = [] ;
+
+
+        $eventsOptions = [] ;
+        if( $pageId > 0 ) {
+            $events = $this->eventRepository->findForBackend($pageId , $this->settings ) ;
+        }
+        if ( $events) {
+            /** @var Event $event */
+            foreach ($events as $event) {
+                $location = " no location !!! " ;
+                  if ($event->getLocation() instanceof  Location )  {
+                      $location = ( $event->getLocation()->getCity() ?? " no city " ) ;
+                      if( strtolower($event->getLocation()->getName() != "online"  )) {
+                          if ( (int)$event->getLocation()->getLat()  == 0 ) {
+                              $location .=  " (no map position !!) " ;
+                          }
+                      }
+                  }
+
+                $eventsOptions[] = [
+                    'uid' => $event->getUid(),
+                    'name' => $event->getStartDate()->format("Y-m-d - ") . substr( (string) $event->getName() , 0 , 40 ) . " | " . $location . " (ID: " . $event->getUid() . " | " .  $event->getRegisteredSeats() . " + " . $event->getUnconfirmedSeats() . " regist.)",
+                ];
+            }
+        }
 
         $view->assign('event', $eventID);
         $view->assign('itemsPerPage', $itemsPerPage);
-        $view->assign('events', $events);
+        $view->assign('eventsOptions', $eventsOptions );
         $view->assign('registrants', $registrants);
         $view->assign('settings', $this->settings);
         $view->assign('onlyActual', $onlyActual);

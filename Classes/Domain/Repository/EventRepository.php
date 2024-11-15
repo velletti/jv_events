@@ -1,6 +1,7 @@
 <?php
 namespace JVelletti\JvEvents\Domain\Repository;
 
+use phpDocumentor\Reflection\Types\ArrayKey;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use DateTime;
 use DateTimeZone;
@@ -277,8 +278,31 @@ class EventRepository extends BaseRepository
         return $result;
     }
 
+    public function findForBackend(int $pageId , array  $settings )
+    {
+        $query = $this->createQuery();
+        $query->getQuerySettings()->setRespectStoragePage(false);
+        $query->getQuerySettings()->setRespectSysLanguage(FALSE);
 
+        $constraints = $this->getPidContraints([], $settings ,  $query, $settings['storagePids'] );
+        if ( $settings['filter']['startDate']  > -9999 ) {
+            $constraints = $this->getDateContraints($constraints, $settings ,  $query , $DateTimeZone);
+        }
+        $query->matching($query->logicalAnd(...$constraints));
 
+        if( isset($settings['filter']['maxEvents'] ) && intval( $settings['filter']['maxEvents'] ) > 0 )  {
+            $query->setLimit( intval( $settings['filter']['maxEvents'])) ;
+        } else  {
+            $query->setLimit( 256 ) ;
+        }
+
+        $query->setOrderings([ 'tstamp' => QueryInterface::ORDER_DESCENDING]);
+        $result = $query->execute();
+        if ( 1 == 2 ) {
+            $this->debugQuery($query) ;
+        }
+        return $result;
+    }
     /**
      * @param array $settings
      * @param DateTimeZone $DateTimeZone
@@ -390,9 +414,11 @@ class EventRepository extends BaseRepository
      * @return array
      * @throws InvalidQueryException
      */
-    private function getPidContraints($constraints, $settings ,  $query)
+    private function getPidContraints($constraints, $settings ,  $query, $rGetTreeList=null )
     {
-		$rGetTreeList = $this->getTreeList( $settings['storagePid'],  $settings['recursive'], 0, 1); //Will be a string
+        if( $rGetTreeList == null ) {
+            $rGetTreeList = $this->getTreeList( $settings['storagePid'],  $settings['recursive'], 0, 1); //Will be a string
+        }
 
         $pidList = GeneralUtility::intExplode(',', $rGetTreeList, true);
         if (!empty($pidList)) {

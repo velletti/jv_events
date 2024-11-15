@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Adds a Link to see event in Frontend
  */
-class ShowEventInFrontend extends AbstractNode
+class DownloadRegistrations extends AbstractNode
 {
     /**
      * @return array
@@ -30,30 +30,35 @@ class ShowEventInFrontend extends AbstractNode
 
         $paramArray = $this->data['parameterArray'];
         $resultArray = $this->initializeResultArray();
-        $title = "Preview Event in Frontend" ;
-
+        $title = "Download Registrations Event as CSV" ;
+        $resultArray['title'] = "Download Registrations" ;
+        $resultArray['iconIdentifier'] = "actions-download" ;
+        $resultArray['linkAttributes']['class'] = " " ;
 
         $configuration = EmConfigurationUtility::getEmConf();
-        $singlePid = ( array_key_exists( 'DetailPid' , $configuration) && $configuration['DetailPid'] > 0 ) ? intval($configuration['DetailPid']) : 111 ;
+        $singlePid = ($this->data['databaseRow']['registration_form_pid'][0]['uid'] ?? 0 ) ;
 
         try {
             $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($singlePid);
+            $serverFromSite =  $site->getBase()->getHost() ;
+
             $lang = max(  is_array( $this->data['databaseRow']['sys_language_uid'][0] ) ?
-                $this->data['databaseRow']['sys_language_uid'][0] : $this->data['databaseRow']['sys_language_uid'] , 0 ) ;
-
+             $this->data['databaseRow']['sys_language_uid'][0] : $this->data['databaseRow']['sys_language_uid'] , 0 ) ;
+            $checkString =  $serverFromSite . "-" . $this->data['databaseRow']['uid'] . "-" . $this->data['databaseRow']['crdate'] ;
+            $checkHash = GeneralUtility::hmac ( $checkString ) ;
+            // pid = 0 to load registrations from all pages for that event
             $url = (string)$site->getRouter()->generateUri( $singlePid ,['_language' => $lang ,
-                'tx_jvevents_event' => ['action' => 'show' , 'controller' => 'Event' ,'event' =>  $this->data['databaseRow']['uid']]]);
+                'tx_jvevents_registrant' => ['action' => 'list' , 'controller' => 'Registrant' ,'event' =>  $this->data['databaseRow']['uid']
+                    , 'export' => '1' ,  'pid' => '0' ,  'hash' => $checkHash  ]]);
 
-            $resultArray['title'] = "Show" ;
-            $resultArray['iconIdentifier'] = "actions-document-view" ;
-            $resultArray['linkAttributes']['class'] = "showEventInFrontend windowOpenUri " ;
+            $resultArray['linkAttributes']['class'] = "showEventInFrontend windowOpenUri" ;
             $resultArray['linkAttributes']['data-uri'] = $url ;
-
             $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS('showEventInFrontend.js'
             )->instance($paramArray['itemFormElName']);
             
         } catch (\Exception) {
-            $resultArray = [] ;
+
+            $resultArray['linkAttributes']['data-uri'] = '' ;
         }
 
 

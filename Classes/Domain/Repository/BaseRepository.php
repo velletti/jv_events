@@ -76,7 +76,7 @@ class BaseRepository extends Repository
         echo "<hr>" ;
         $queryParams = array_reverse ( $queryParser->convertQueryToDoctrineQueryBuilder($query)->getParameters()) ;
         var_dump($queryParams);
-        $querystr .= " LIMIT " . $query->getLimit() . " OFFSET " . $query->getOffset() ;
+        $querystr .= ($query->getLimit() ?  " LIMIT " . $query->getLimit() : '' ) . ( $query->getOffset()  ? " OFFSET " . $query->getOffset() : '' ) ;
         echo "<hr>" ;
 
         foreach ($queryParams as $key => $value ) {
@@ -88,6 +88,7 @@ class BaseRepository extends Repository
         /** @var QueryResult $result */
         $result = $query->execute() ;
         echo "<hr>Anzahl: " .  $result->count() ;
+        die;
     }
 
     public function getTYPO3QuerySettings(): QuerySettingsInterface

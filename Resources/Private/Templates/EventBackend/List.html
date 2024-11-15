@@ -1,6 +1,7 @@
 {namespace jve=JVelletti\JvEvents\ViewHelpers}
 <f:layout name="Backend" />
 <f:section name="main">
+
 	<f:render section="Content" arguments="{_all}"/>
 </f:section>
 
@@ -25,7 +26,10 @@
 		</f:if>
 			<f:form id="jveventFilterForm" action="list" controller="EventBackend" method="post">
 				<input type="hidden" name="uid" value="{plugin.uid}" /><f:form.hidden name="pluginUid" value="{plugin.uid}" />
-				<f:form.select class="form-select" name="event" value="{event}" additionalAttributes="{onchange: 'document.getElementById(\'jveventFilterForm\').submit();'}" id="jvevents" property="event" options="{events}" optionLabelField="name" sortByOptionLabel="TRUE" prependOptionLabel="-" prependOptionValue="0"></f:form.select>
+				<f:form.select class="form-select" name="event" value="{event}"
+							   additionalAttributes="{onchange: 'document.getElementById(\'jveventFilterForm\').submit();'}" id="jvevents"
+							   options="{eventsOptions}" optionValueField="uid" optionLabelField="name" sortByOptionLabel="TRUE"
+							   prependOptionLabel="-" prependOptionValue="0"></f:form.select>
 				<div class="form-check m-2">
 					<f:form.checkbox class="form-check-input" name="recursive" id="recursive" property="recursive"  value="1" checked="{recursive} == 1" additionalAttributes="{onchange: 'document.getElementById(\'jveventFilterForm\').submit();'}" />
 					<label class="form-check-label">Search also subpages of Page ID: {pageId}</label>
@@ -35,6 +39,34 @@
 					<label class="form-check-label">not older than 90 Days</label>
 				</div>
 			</f:form>
+			<f:if condition="{eventName}">
+				<div class="alert alert-info">
+					<h3>{eventName}</h3>
+					Event: <f:format.date format="H:i">{selectedEvent.startTime}</f:format.date> - <f:format.date format="H:i">{selectedEvent.endTime}</f:format.date> <br>
+
+					Registrations: {selectedEvent.registeredSeats} +  {selectedEvent.unconfirmedSeats} (unconfirmed)<br>
+					Location: {selectedEvent.location.name} ,  {selectedEvent.location.city}  <br>
+					<br>
+					<jve:be.link uid="{selectedEvent.uid}" table="tx_jvevents_domain_model_event" pageId="{selectedEvent.registrationFormPid}" onlyActual="{onlyActual}" recursive="{recursive}" eventId="{selectedEvent.uid}" returnPid="{pageId}" returnM="jvevents_eventmngt"  returnEvent="{selectedEvent.uid}"  returnAction="list" title="Edit Event" class="btn btn-default">
+						<core:icon size="small" identifier="actions-document-open" />
+					</jve:be.link>
+					<f:if condition="{previewUri}">
+						<button onclick="window.open('{previewUri}', '_blank');" class="btn btn-primary mr-2" title="View in frontend ">
+							<core:icon size="small" identifier="actions-view" />
+							View
+						</button>
+					</f:if>
+
+					<f:if condition="{downloadUri}">
+						<button onclick="window.location.href='{downloadUri}';" class="btn btn-primary" title="Download Registrations ">
+							<core:icon size="small" identifier="actions-download" />
+							Download Registrations (CSV)
+						</button>
+					</f:if>
+
+
+				</div>
+			</f:if>
 
 
 		<div class="table-fit mb-0">
@@ -97,60 +129,77 @@
 
 								<div id="regInfo{registrant.uid}" class="collapse" role="dialog">
 									<div class="card mt-2" style="width: 100%;">
-										<div class="card-header border-end-primary">
-											<div class="row ">
-												<div class="col-4 col-md-3 col-lg-2 my-1">
-													Event:
-												</div>
-
-												<div class="col-8  col-md-9 col-lg-10 my-1">
-													<jve:be.link uid="{registrant.event}" table="tx_jvevents_domain_model_event" pageId="{registrant.pid}" onlyActual="{onlyActual}" recursive="{recursive}" eventId="{event}" returnModule="tx_jvevents_web_jveventseventmngt"  returnController="EventBackend" returnAction="list" title="Edit Event" class="btn btn-default">
-														<core:icon size="small" identifier="actions-document-open" /> ID: {registrant.event}
+										<div class="card-header border-end-primary border-bottom pb-1">
+											<div class="row">
+												<div class="col-2">
+													<jve:be.link uid="{registrant.event}" table="tx_jvevents_domain_model_event" pageId="{registrant.pid}" onlyActual="{onlyActual}" recursive="{recursive}" eventId="{event}" returnPid="{pageId}" returnM="jvevents_eventmngt"   returnAction="list" title="Edit Event" class="btn btn-default">
+														<core:icon size="small" identifier="actions-document-open" />
 													</jve:be.link>
+												</div>
+												<div class="col-10  col-md-3">
+													<b>
+														<jve:be.link uid="{registrant.event}" table="tx_jvevents_domain_model_event" pageId="{registrant.pid}" onlyActual="{onlyActual}" recursive="{recursive}" eventId="{event}" returnPid="{pageId}" returnM="jvevents_eventmngt" returnAction="list" title="Edit Event" >
+															Event: {registrant.event}
+														</jve:be.link>
+
+
+												</b>
+												</div>
+												<div class="col-10  col-md-7 offset-2 offset-md-0">
+													<jve:be.uri arguments="{event: registrant.event, onlyActual: onlyActual, id:pageId, route: 'jvevents_eventmngt' }" class="btn btn-default border"  name="filterByEvent">
+														<core:icon size="small" identifier="actions-filter" /> Filter by this Event
+													</jve:be.uri>
 												</div>
 											</div>
 										</div>
 
 										<div class="card-body">
 											<div class="row">
-												<div class="col-4 col-md-3 col-lg-2">
-													Registrant:
-												</div>
-												<div class="col-8  col-md-9 col-lg-10">
-													<jve:be.link uid="{registrant.uid}" table="tx_jvevents_domain_model_registrant" pageId="{registrant.pid}" onlyActual="{onlyActual}" recursive="{recursive}" eventId="{event}" returnModule="tx_jvevents_web_jveventseventmngt"  returnController="EventBackend" returnAction="list" title="Edit Registration" class="btn btn-default">
-														<core:icon size="small" identifier="actions-document-open"/> ID: {registrant.uid}
+												<div class="col-2">
+													<jve:be.link uid="{registrant.uid}" table="tx_jvevents_domain_model_registrant" pageId="{registrant.pid}" onlyActual="{onlyActual}" recursive="{recursive}" eventId="{event}" returnPid="{pageId}" returnM="/module/jvevents/eventmngt"  returnController="EventBackend" returnAction="list" title="Edit Registration" class="btn btn-default">
+														<core:icon size="small" identifier="actions-document-open"/>
 													</jve:be.link>
 												</div>
+												<div class="col-10  col-md-3">
+													Registrant ID:
+												</div>
+												<div class="col-10  offset-2 offset-md-0 col-md-7">
+													<b>
+														<jve:be.link uid="{registrant.uid}" table="tx_jvevents_domain_model_registrant" pageId="{registrant.pid}" onlyActual="{onlyActual}" recursive="{recursive}" eventId="{event}" returnPid="{pageId}" returnM="/module/jvevents/eventmngt"  returnController="EventBackend" returnAction="list" title="Edit Registration" class="">
+															{registrant.uid} (on pid: {registrant.pid})
+														</jve:be.link>
+													</b>
+												</div>
 											</div>
-											<div class="row mt-2">
-												<div class="col-4 col-md-3 col-lg-2">
+											<div class="row">
+												<div class="col-10  offset-2 col-md-3">
 													Registrered at:
 												</div>
-												<div class="col-8  col-md-9 col-lg-10">
-													<f:format.date format="d.m.Y">{registrant.crdate}</f:format.date><br>
+												<div class="col-10  offset-2 offset-md-0 col-md-5">
+													<f:format.date format="d.m.Y H:i" >{registrant.crdate}</f:format.date><br>
 												</div>
 											</div>
 											<div class="row">
-												<div class="col-4 col-md-3 col-lg-2">
+												<div class="col-10  offset-2 col-md-3">
 													City:
 												</div>
-												<div class="col-8  col-md-9 col-lg-10-8">
-													{registrant.zip} {registrant.city}
+												<div class="col-10  offset-2 offset-md-0 col-md-7">
+													{registrant.zip} {registrant.city}  {registrant.country}
 												</div>
 											</div>
 											<div class="row">
-												<div class="col-4 col-md-3 col-lg-2">
+												<div class="col-10  offset-2 col-md-3">
 													Tel:
 												</div>
-												<div class="col-8  col-md-9 col-lg-10">
+												<div class="col-10  offset-2 offset-md-0 col-md-7">
 													{registrant.phone}
 												</div>
 											</div>
 
 											<f:if condition="{registrant.additionalInfo}">
 												<div class="row">
-													<div class="col-12">
-														<br>Additional Info: <f:format.nl2br>{registrant.additionalInfo}</f:format.nl2br><br>
+													<div class="col-10 offset-2">
+														<br><b>Additional Info:</b><br><f:format.nl2br>{registrant.additionalInfo}</f:format.nl2br><br>
 													</div>
 												</div>
 											</f:if>
@@ -246,3 +295,4 @@
 		</div>
 
 </f:section>
+

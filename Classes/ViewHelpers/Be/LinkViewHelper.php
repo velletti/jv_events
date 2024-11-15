@@ -23,14 +23,15 @@ class LinkViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedV
         $this->registerUniversalTagAttributes();
         $this->registerTagAttribute('name', 'string', 'Specifies the name of an anchor');
         $this->registerTagAttribute('uid', 'integer', 'Uid of the data record' , true );
-        $this->registerTagAttribute('pageId', 'integer', 'page Uid where to go back' , true );
+        $this->registerTagAttribute('pageId', 'integer', 'page Uid where to go ' , true );
         $this->registerTagAttribute('onlyActual', 'integer', 'actually default : Date -90 Days if checked'  , true );
         $this->registerTagAttribute('eventId', 'integer', 'id of the event if set ' , false );
         $this->registerTagAttribute('recursive', 'integer', 'if checkbox is set to search recursive ' , false );
         $this->registerTagAttribute('table', 'string', 'Name of the database table' , false , "tx_jvevents_domain_model_event" );
-        $this->registerTagAttribute('returnM', 'string', 'Module name_of_backend' , false , "web_JvEventsEventmngt");
+        $this->registerTagAttribute('returnM', 'string', 'Module name_of_backend' , false , "jvevents_eventmngt");
+        $this->registerTagAttribute('returnPid', 'string', 'Current Pid' , false , "0");
         $this->registerTagAttribute('returnModule', 'string', 'parameterArray' , false , "tx_jvevents_web_jveventseventmngt");
-        $this->registerTagAttribute('returnController', 'string', 'controller name_of_backend' , true , "EventBackend");
+        $this->registerTagAttribute('returnController', 'string', 'controller name_of_backend' , false , "");
         $this->registerTagAttribute('returnAction', 'string', 'function name of the action' , true , "list");
     }
 
@@ -50,41 +51,44 @@ class LinkViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedV
         $returnModule  = ($this->arguments['returnModule'] ?? '' ) ;
         $returnController   = ($this->arguments['returnController'] ?? '' ) ;
         $returnAction   = ($this->arguments['returnAction'] ?? '' ) ;
+        $returnPid   = ($this->arguments['pageId'] ?? '' ) ;
         $eventId   = ($this->arguments['eventId'] ?? '' ) ;
         $recursive   = ($this->arguments['recursive'] ?? '' ) ;
         $onlyActual  = ($this->arguments['onlyActual'] ?? '' ) ;
         $class   = ($this->arguments['class'] ?? '' ) ;
 
-        $returnArray = array() ;
-        if( $this->arguments['pageId'] > 0 ) {
-            $returnArray['id'] = $this->arguments['pageId'] ;
+
+        $returnUrl = '' ;
+        if( $this->arguments['returnPid'] > 0 ) {
+            $returnArray = [
+               'action' => $returnAction,
+               'recursive' => $recursive,
+               'event' => $eventId,
+               'onlyActual' => $onlyActual
+            ];
+            $returnArray['id'] = $this->arguments['returnPid'] ;
+            //  Routing in LTS 9 is without /module, but / at the end    | LTS 10 "/module" at beginning, but no / at the end
+            $moduleName = str_replace( array( "module/" , "/" ) , array("" ,"_" ), trim( $returnM , "/") ) ;
+            $debug[] = $returnM ;
+            $debug[] = $moduleName ;
+
+            try {
+                /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+                $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+
+                $returnUrlObj = $uriBuilder->buildUriFromRoute($moduleName,  $returnArray );
+                $returnUrl = $returnUrlObj->getPath() . "?" .  $returnUrlObj->getQuery() ;
+            } catch (\TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException $e) {
+                $returnUrl = "exceptionInRoute__" . $moduleName ;
+            }
         }
-        $returnArray[$returnModule] = array() ;
-        $returnArray[$returnModule]['action'] =$returnModule ;
-        $returnArray[$returnModule]['controller'] = $returnController ;
-        $returnArray[$returnModule]['event'] =  $eventId ;
-        $returnArray[$returnModule]['recursive'] = $recursive ;
-        $returnArray[$returnModule]['onlyActual'] = $onlyActual;
 
-        //  Routing in LTS 9 is without /module, but / at the end    | LTS 10 "/module" at beginning, but no / at the end
-        $moduleName = str_replace( array( "module/" , "/" ) , array("" ,"_" ), trim( $returnM , "/") ) ;
-        $debug[] = $returnM ;
-        $debug[] = $moduleName ;
-
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
-
-        try {
-            $returnUrlObj = $uriBuilder->buildUriFromRoute($moduleName,  $returnArray );
-            $returnUrl = $returnUrlObj->getPath() . "?" .  $returnUrlObj->getQuery() ;
-        } catch (\TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException $e) {
-            $returnUrl = "exceptionInRoute__" . $moduleName ;
-        }
         $debug[] = $returnUrl ;
-        // tx_fetool_tools_fetoolfeuserlist%5Baction%5D=listbyclass&tx_fetool_tools_fetoolfeuserlist%5Bcontroller%5D=Feuserlist
-        // tx_jvevents_web_jveventseventmngt[action]=list&tx_jvevents_web_jveventseventmngt[controller]=EventBackend
 
         try {
+            /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+
             $uri = $uriBuilder->buildUriFromRoute('record_edit', array( 'edit['. $table . '][' . $uid . ']' => 'edit' ,'returnUrl' => $returnUrl )) ;
         } catch (\TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException $e) {
             // no route registered, use the fallback logic to check for a module

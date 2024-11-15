@@ -189,7 +189,7 @@ class RegistrantRepository extends BaseRepository
         if($eventID > 0 ) {
             $constraints[] = $query->equals("event", $eventID);
         }
-        if ( $settings['filter']['startDate'] < -1 ) {
+        if ( isset($settings['filter']['startDate'] ) && $settings['filter']['startDate'] < -1 ) {
             $constraints[] = $query->greaterThan("crdate", time() + ( 60*60*24 ) * intval($settings['filter']['startDate'] ));
         }
 
@@ -202,8 +202,9 @@ class RegistrantRepository extends BaseRepository
             }
             $query->matching($query->logicalAnd(...$constraints));
         }
-        // new way to debug typo3 db queries
+
         // $this->debugQuery($query) ;
+
         $result = $query->execute();
         return $result;
     }

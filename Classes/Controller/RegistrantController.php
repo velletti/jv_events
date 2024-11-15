@@ -90,8 +90,7 @@ class RegistrantController extends BaseController
         $pid = 0 ;
         if( $this->request->hasArgument('pid')) {
             $pid = $this->request->getArgument('pid') ;
-        }
-        if ( $pid == 0 ) {
+        } else {
             $pid = $event->getRegistrationPid() ;
         }
         $registrants = [] ;
@@ -101,6 +100,8 @@ class RegistrantController extends BaseController
 
 
         if( $checkHash ==  $hash ) {
+            //overwrite any wrong setting start Date ... to get all registrations
+            $this->settings['filter']['startDate'] = 0 ;
             $registrants = $this->registrantRepository->findByFilter('', $event->getUid(), $pid , $this->settings, 9999) ;
 
 
