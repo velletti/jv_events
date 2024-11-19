@@ -4,11 +4,11 @@
 	<strong style="color:red;">No Google Api Key in extension configuration defined!</strong>
 </f:if>
 
-<div id="map" style="height:500px;"></div>
+<div id="map" style="height:500px;"  data-publicpath="{core:normalizedUrl(pathOrUrl: 'EXT:jv_events/Resources/Public/')}"></div>
 
 
-<script type="text/javascript" src="/typo3conf/ext/jv_events/Resources/Public/JavaScript/googleMapsAllplan.js"></script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key={settings.EmConfiguration.googleApiKey}&callback=initMap"></script>
+<script type="text/javascript" src="{core:normalizedUrl(pathOrUrl: 'EXT:jv_events/Resources/Public/')}JavaScript/googleMapsAllplan.js"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key={settings.EmConfiguration.googleApiKey}&callback=initMap&loading=async&libraries=marker"></script>
 <script type="text/javascript">
 
 	var addresses = [];
@@ -19,7 +19,7 @@
 			currentAddress['uid'] = '<JVE:CleanJsString>{address.uid}</JVE:CleanJsString>';
 			currentAddress['address'] = '<JVE:CleanJsString>{address.country.shortNameEn}, {address.zip} {address.city}, {address.street_and_nr}</JVE:CleanJsString>';
 			currentAddress['title'] = '<JVE:CleanJsString>{address.company}</JVE:CleanJsString>';
-			currentAddress['markerText'] = '<JVE:CleanJsString><h3>{address.company}</h3><p>{address.address}<br>{address.zip} {address.city}<br>{address.country.shortNameEn}</p></JVE:CleanJsString>';
+			currentAddress['markerText'] = '<JVE:CleanJsString><h3>{address.name}</h3><p>{address.streetAndNr}<br>{address.zip} {address.city}<br>{address.country.shortNameEn}</p></JVE:CleanJsString>';
 			currentAddress['lng'] = {address.lng};
 			currentAddress['lat'] = {address.lat};
 			addresses.push(currentAddress);

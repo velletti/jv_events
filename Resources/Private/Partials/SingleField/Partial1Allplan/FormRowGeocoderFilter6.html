@@ -12,7 +12,7 @@
         <f:form.textfield class="form-control" readonly="readonly" property="{zoom}" id="{zoom}" value="{settings.filter.initMapZoom}" maxlength="{maxLength}"/>
 </div>
 
-<div id="map" style="height:200px;"></div>
+<div id="map" style="height:200px;"  data-publicpath="{core:normalizedUrl(pathOrUrl: 'EXT:jv_events/Resources/Public/')}"></div>
 <jve:geocoder formfields="{input: {address: '{settings.filter.initMapAddress}' , zoom: '{settings.filter.initMapZoom}'}, return: {lat: '#lat', lng: '#lng', zoom: '#zoom'}}" updateFunction="{updateFunction}">
 
 </jve:geocoder>
