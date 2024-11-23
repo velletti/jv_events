@@ -29,7 +29,7 @@
         </div>
 
         <f:for each="{locations}" as="location">
-            <div class="row w-100 border border-left-0 border-right-0 my-2 pt-1 ml-1">
+            <div class="row w-100 border-top mt-2 pt-1 ml-1">
                 <f:spaceless>
                     <div class="col-2  text-left ml-0 pl-0">
                         <f:link.action pageUid="{settings.pageIds.editLocation}" action="setDefault" controller="Location" class="btn btn-{f:if(condition: '{location.defaultLocation}' , then: 'primary', else: 'secondary')}" title="{location.uid}" arguments="{location: '{location.uid}', organizer: '{organizer.0.uid}' , oldDefault: '{defaultLocation}'}">
@@ -44,7 +44,9 @@
                         </f:link.action>
                     </div>
                     <div class="col-2  text-left">
-
+                        <f:link.action pageUid="{settings.pageIds.editLocation}" action="setDefault" controller="Location" class="btn btn-{f:if(condition: '{location.defaultLocation}' , then: 'primary', else: 'secondary')}" title="{location.uid}" arguments="{location: '{location.uid}', organizer: '{organizer.0.uid}' , oldDefault: '{defaultLocation}'}">
+                            Id:{location.uid}
+                        </f:link.action>
                     </div>
                     <div class="col-8  text-right ml-0 pl-0">
                         <f:link.action pageUid="{settings.pageIds.editLocation}" action="show" controller="Location" class="ml-1 btn btn-primary" title="{location.uid}" arguments="{location: '{location.uid}', organizer: '{organizer.0.uid}'}">
@@ -73,7 +75,7 @@
                 </f:spaceless>
 
             </div>
-                <div class="row w-100 border border-left-0 border-right-0 my-2 pt-1 ml-1">
+                <div class="row w-100 border-bottom mb-2 pt-1 ml-1">
                     <f:spaceless>
                         <div class="col-1  text-left ml-0 pl-0">
 
@@ -81,7 +83,7 @@
                         <div class="col-11 text-left p-0">
                             <div class="d-none-md">
                                 <f:link.action pageUid="{settings.pageIds.editLocation}" action="setDefault" title="{location.name}, {location.streetAndNr} - {location.city}" controller="Location" class="btn text-left" arguments="{location: '{location.uid}', organizer: '{organizer.0.uid}' , oldDefault: '{defaultLocation}'}">
-                                    <f:format.crop maxCharacters="75">Id:{location.uid} - {location.name}, {location.streetAndNr} - {location.city}</f:format.crop>
+                                    <f:format.crop maxCharacters="75">{location.name}, {location.streetAndNr} - {location.city}</f:format.crop>
                                 </f:link.action>
                             </div>
                             <f:if condition="{location.lat} == 0 || {location.lng} == 0">
