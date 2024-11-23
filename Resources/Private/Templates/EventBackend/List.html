@@ -51,17 +51,17 @@
 						<core:icon size="small" identifier="actions-document-open" />
 					</jve:be.link>
 					<f:if condition="{previewUri}">
-						<button onclick="window.open('{previewUri}', '_blank');" class="btn btn-primary mr-2" title="View in frontend ">
-							<core:icon size="small" identifier="actions-view" />
-							View
-						</button>
+							<a href="{previewUri}" target="_blank" class="mr-1 btn btn-default" style="text-decoration: none !important;">
+								<core:icon size="small" identifier="actions-view" />
+								View
+							</a>
 					</f:if>
 
 					<f:if condition="{downloadUri}">
-						<button onclick="window.location.href='{downloadUri}';" class="btn btn-primary" title="Download Registrations ">
+						<a href="{downloadUri}" target="_blank" class="mr-1 btn btn-default" style="text-decoration: none !important;">
 							<core:icon size="small" identifier="actions-download" />
 							Download Registrations (CSV)
-						</button>
+						</a>
 					</f:if>
 
 

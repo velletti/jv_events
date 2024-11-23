@@ -81,7 +81,7 @@
                         <div class="col-11 text-left p-0">
                             <div class="d-none-md">
                                 <f:link.action pageUid="{settings.pageIds.editLocation}" action="setDefault" title="{location.name}, {location.streetAndNr} - {location.city}" controller="Location" class="btn text-left" arguments="{location: '{location.uid}', organizer: '{organizer.0.uid}' , oldDefault: '{defaultLocation}'}">
-                                    <f:format.crop maxCharacters="75">{location.name}, {location.streetAndNr} - {location.city}</f:format.crop>
+                                    <f:format.crop maxCharacters="75">Id:{location.uid} - {location.name}, {location.streetAndNr} - {location.city}</f:format.crop>
                                 </f:link.action>
                             </div>
                             <f:if condition="{location.lat} == 0 || {location.lng} == 0">

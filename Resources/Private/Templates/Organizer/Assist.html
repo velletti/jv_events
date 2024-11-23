@@ -149,6 +149,8 @@
                 <span class="pt-1 pb-2">{apiToken}</span>
                 (changes, if password or email is changed!)
                 <f:if condition="{apiTokenValid}"> (valide) </f:if>
+                <br>
+                <b>Your organizer ID:</b> {organizer.0.uid}<br>
             </div>
         </jve:security.ifHasRoles>
     </div>
