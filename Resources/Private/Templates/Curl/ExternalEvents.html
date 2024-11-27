@@ -29,4 +29,12 @@
 			</f:then>
 		</f:if>
 	</div>
+	<f:security.ifHasRole role="adminOrganizer">
+		<div class="alert alert-warning">
+			<f:for each="{debugArray}" as="debug">
+				echo "<br>" - {debug}
+			</f:for>
+		</div>
+
+	</f:security.ifHasRole>
 </f:section>

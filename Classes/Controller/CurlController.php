@@ -97,7 +97,6 @@ class CurlController extends BaseController
         $this->settings['data']['tx_jvevents_ajax']['limit'] = ($this->settings['filter']['maxevents'] > 0) ? intval($this->settings['filter']['maxevents']) : 999;
         $this->settings['checkInstallation'] = -1;
 
-
         $this->debugArray[] = "Load Events:" . intval(1000 * ($this->microtime_float() - $this->timeStart)) . " Line: " . __LINE__;
 
         /** @var FrontendInterface $cache */
@@ -111,10 +110,16 @@ class CurlController extends BaseController
                 $requests = [];
                 foreach ($urls as $key => $url) {
                     if (filter_var($url, FILTER_VALIDATE_URL)) {
-                        $request = json_decode((string) $this->getEventsViaCurl($this->settings, $url), true, 512, JSON_THROW_ON_ERROR);
-                        $events = ($request['eventsByFilter']) ?? null;
-                        if ($events) {
-                            $requests[] = $events;
+                        $curlResonse = $this->getEventsViaCurl($this->settings, $url) ;
+                        try {
+                            $request = json_decode((string)$curlResonse, true, 512, JSON_THROW_ON_ERROR);
+                            $events = ($request['eventsByFilter']) ?? null;
+                            if ($events) {
+                                $requests[] = $events;
+                            }
+                        } catch (JsonException $e) {
+                            $this->debugArray[] = "Error in JSON: " . $e->getMessage();
+                            $this->debugArray[] = "for URL: " . $url ;
                         }
                     }
 
