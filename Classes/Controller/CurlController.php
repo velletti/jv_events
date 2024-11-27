@@ -105,12 +105,15 @@ class CurlController extends BaseController
 
         if (!$cache->has($cacheIdentifier)) {
             $urls = GeneralUtility::trimExplode("\n", $this->settings["externalUrl"]);
+
             $request = null;
             if ($urls) {
                 $requests = [];
                 foreach ($urls as $key => $url) {
+                    $this->debugArray[] = "Try URL: " . $url ;
                     if (filter_var($url, FILTER_VALIDATE_URL)) {
                         $curlResonse = (string)$this->getEventsViaCurl($this->settings, $url) ;
+                        $this->debugArray[] = "time:" . intval(1000 * ($this->microtime_float() - $this->timeStart)) ;
                         try {
                             $request = json_decode($curlResonse, true, 512, JSON_THROW_ON_ERROR);
                             $events = ($request['eventsByFilter']) ?? null;
@@ -119,7 +122,7 @@ class CurlController extends BaseController
                             }
                         } catch (\JsonException $e) {
                             $this->debugArray[] = "Error in JSON: " . $e->getMessage();
-                            $this->debugArray[] = "for URL: " . $url ;
+
                         }
                     }
 
