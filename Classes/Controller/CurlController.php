@@ -110,14 +110,14 @@ class CurlController extends BaseController
                 $requests = [];
                 foreach ($urls as $key => $url) {
                     if (filter_var($url, FILTER_VALIDATE_URL)) {
-                        $curlResonse = $this->getEventsViaCurl($this->settings, $url) ;
+                        $curlResonse = (string)$this->getEventsViaCurl($this->settings, $url) ;
                         try {
-                            $request = json_decode((string)$curlResonse, true, 512, JSON_THROW_ON_ERROR);
+                            $request = json_decode($curlResonse, true, 512, JSON_THROW_ON_ERROR);
                             $events = ($request['eventsByFilter']) ?? null;
                             if ($events) {
                                 $requests[] = $events;
                             }
-                        } catch (JsonException $e) {
+                        } catch (\JsonException $e) {
                             $this->debugArray[] = "Error in JSON: " . $e->getMessage();
                             $this->debugArray[] = "for URL: " . $url ;
                         }
