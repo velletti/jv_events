@@ -142,8 +142,6 @@ class CurlController extends BaseController
         } else {
             $request = $cache->get($cacheIdentifier);
         }
-var_dump( $this->debugArray );
-        die;
         $this->view->assign('events', $request);
 
         $dtz = $this->eventRepository->getDateTimeZone();
