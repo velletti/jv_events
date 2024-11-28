@@ -402,6 +402,7 @@ class EventController extends BaseController
                     ->setArguments([ 'tx_jvevents_event' =>
                         ['controller' =>  'Event' , 'action' => $action , 'event' => $event->getUid() ] ])
                     ->build() ;
+
             // https://tangov10.ddev.site/de/tanzen/termin-details/event/event/show/qqqqqqq-20-08-2023.html
 
             return (new Response())

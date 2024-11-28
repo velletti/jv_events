@@ -56,6 +56,8 @@ use JVelletti\JvEvents\Domain\Repository\RegistrantRepository;
 use JVelletti\JvEvents\Domain\Repository\StaticCountryRepository;
 use JVelletti\JvEvents\Domain\Repository\SubeventRepository;
 use JVelletti\JvEvents\Domain\Repository\TagRepository;
+use JVelletti\JvEvents\Domain\Repository\TokenRepository;
+
 use TYPO3\CMS\Core\Context\AspectInterface;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Information\Typo3Version;
@@ -139,6 +141,11 @@ class BaseController extends ActionController
 
 
     /**
+     * @var TokenRepository
+     */
+    protected $tokenRepository;
+
+    /**
      * @var array
      */
     public $debugArray ;
@@ -165,6 +172,16 @@ class BaseController extends ActionController
         $this->cacheService = $cacheService ;
     }
 
+
+    /**
+     * Inject the TokenRepository
+     *
+     * @param TokenRepository $tokenRepository
+     */
+    public function injectTokenRepository(TokenRepository $tokenRepository): void
+    {
+        $this->tokenRepository = $tokenRepository;
+    }
 
     public function injectTagRepository(TagRepository $tagRepository)
     {

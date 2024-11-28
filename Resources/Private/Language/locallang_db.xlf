@@ -497,6 +497,64 @@
             <trans-unit id="tx_jvevents_domain_model_subevent" approved="yes">
                 <source>Additonal days</source>
             </trans-unit>
+
+        <!-- Table Title -->
+            <trans-unit id="tx_jvevents_domain_model_token">
+                <source>Token</source>
+            </trans-unit>
+
+        <!-- Field Labels -->
+            <trans-unit id="tx_jvevents_domain_model_token.name">
+                <source>Name</source>
+            </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_token.token">
+                <source>Token</source>
+            </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_token.feuser">
+                <source>Frontend User</source>
+            </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_token.license">
+                <source>License</source>
+            </trans-unit>
+
+        <!-- Access Control Labels -->
+            <trans-unit id="tx_jvevents_domain_model_token.hidden">
+                <source>Hidden</source>
+            </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_token.starttime">
+                <source>Start Time</source>
+            </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_token.endtime">
+                <source>End Time</source>
+            </trans-unit>
+
+        <!-- Help Texts -->
+            <trans-unit id="tx_jvevents_domain_model_token.name.description">
+                <source>The name of the token (e.g., identifier).</source>
+            </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_token.token.description">
+                <source>The unique token value.</source>
+            </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_token.feuser.description">
+                <source>Link the token to a specific frontend user (optional).</source>
+            </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_token.license.description">
+                <source>The type of license associated with this token.</source>
+            </trans-unit>
+
+        <!-- Enum Values -->
+            <trans-unit id="tx_jvevents_domain_model_token.license.blocked">
+                <source>Blocked</source>
+            </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_token.license.demo">
+                <source>Demo</source>
+            </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_token.license.basic">
+                <source>Basic</source>
+            </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_token.license.full">
+                <source>Full</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>

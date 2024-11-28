@@ -6,6 +6,7 @@ use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Extbase\Mvc\Request;
+use Psr\Http\Message\ServerRequestInterface;
 
 class TyposcriptUtility{
 
@@ -33,7 +34,7 @@ class TyposcriptUtility{
 	public static function loadTypoScriptFromScratch($pageUid = 0, $extKey = '' , $conditions = false , $getConstants = false , $request=null  ) {
         if ( !$request ) {
             /** @var Request $request */
-            $request = GeneralUtility::makeInstance(Request::class) ;
+            $request = GeneralUtility::makeInstance(Request::class, ...$requestInterface) ;
             $request->withArguments(['uid' => $pageUid] ) ;
 
         }

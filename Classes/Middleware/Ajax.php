@@ -21,6 +21,7 @@ use JVelletti\JvEvents\Domain\Repository\RegistrantRepository;
 use JVelletti\JvEvents\Domain\Repository\StaticCountryRepository;
 use JVelletti\JvEvents\Domain\Repository\SubeventRepository;
 use JVelletti\JvEvents\Domain\Repository\TagRepository;
+use JVelletti\JvEvents\Domain\Repository\TokenRepository;
 use JVelletti\JvEvents\Utility\AjaxUtility;
 use JVelletti\JvEvents\Utility\ShowAsJsonArrayUtility;
 use JVelletti\JvEvents\Utility\TokenUtility;
@@ -43,6 +44,13 @@ use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
  */
 class Ajax implements MiddlewareInterface
 {
+
+    /**
+     * @var TokenRepository
+     */
+    protected $tokenRepository;
+
+
     /**
      * @param ServerRequestInterface $request
      * @param RequestHandlerInterface $handler
@@ -120,7 +128,7 @@ class Ajax implements MiddlewareInterface
 
             $function = strtolower( trim($_gp['tx_jvevents_ajax']['action'])) ;
             if( $function == "eventlist"  ) {
-                $this->getEventList( $_gp["tx_jvevents_ajax"] ) ;
+                $this->getEventList( $_gp["tx_jvevents_ajax"] , $request ) ;
 
             } else {
 
@@ -215,7 +223,7 @@ class Ajax implements MiddlewareInterface
      * @param array|null $arguments
      * @return void
      */
-    public function getEventList(array $arguments=Null)
+    public function getEventList(array $arguments=Null , $request = null)
     {
 
         $this->tagRepository        = GeneralUtility::makeInstance(TagRepository::class);
@@ -226,12 +234,13 @@ class Ajax implements MiddlewareInterface
         $this->eventRepository        = GeneralUtility::makeInstance(EventRepository::class);
         $this->subeventRepository        = GeneralUtility::makeInstance(SubeventRepository::class);
         $this->staticCountryRepository        = GeneralUtility::makeInstance(StaticCountryRepository::class);
+        $this->tokenRepository        = GeneralUtility::makeInstance(TokenRepository::class);
 
         if (!$arguments) {
             $arguments = GeneralUtility::_GPmerged('tx_jvevents_ajax');
         }
         $pid = GeneralUtility::_GP('id');
-        $ts = TyposcriptUtility::loadTypoScriptFromScratch($pid, "tx_jvevents_events");
+        $ts = TyposcriptUtility::loadTypoScriptFromRequest($request, "tx_jvevents_events");
         if (is_array($this->settings) && is_array($ts)) {
             $this->settings = array_merge($ts['settings']);
         } elseif (is_array($ts)) {
@@ -252,6 +261,9 @@ class Ajax implements MiddlewareInterface
 
         // https://www-dev.allplan.com/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=2049&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][sameCity]=&tx_jvevents_ajax[eventsFilter][skipEvent]=2049&tx_jvevents_ajax[eventsFilter][startDate]=1&tx_jvevents_ajax[rss]=1
         // https://www-dev.allplan.com/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=2049&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][sameCity]=&tx_jvevents_ajax[eventsFilter][skipEvent]=2049&tx_jvevents_ajax[eventsFilter][startDate]=1&tx_jvevents_ajax[mode]=onlyValues
+
+        // https://wwwv12.allplan.com.ddev.site/?id=13001&L=1&tx_jvevents_ajax[event]=4308&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[mode]=onlyJson&tx_jvevents_ajax[apiToken]=testTestTest&&tx_jvevents_ajax[user]=11
+
 
         // get all Access infos, Location infos , find similar events etc
         $output = $this->eventsListMenuSub($arguments);
@@ -321,9 +333,19 @@ class Ajax implements MiddlewareInterface
      */
     public function eventsListMenuSub(array $arguments )
     {
-        $isAutorized = TokenUtility::checkToken(($arguments['apiToken']) ?? null ) ;
+        $apiLicense = TokenUtility::checkLicense (isset($arguments['apiToken'])  ? (string)$arguments['apiToken'] : null ,
+                                                                                  isset($arguments['user'] ) ? (int)$arguments['user'] : null ) ;
 
-        $arguments['limit'] = $isAutorized ? 250 : 10 ;
+        if( ! $apiLicense ) {
+            $isAutorized = TokenUtility::checkToken(($arguments['apiToken']) ?? null ) ;
+            $apiLicense = $isAutorized ? "DEMO" : "BLOCKED" ;
+
+        } else {
+            $isAutorized = TRUE ;
+        }
+
+        $licencseLimits = [ "DEMO" => 3 , "BASIC" => 10 , "FULL" => 250 ] ;
+        $arguments['limit'] = ($licencseLimits[$apiLicense] ?? 0 ) ;
 
         //  $GLOBALS['TSFE']->fe_user->user = [ 'uid' => 476 , "username" => "jvel@test.de" , "1,2,3,4,5,6,7"] ;
         /* ************************************************************************************************************ */
@@ -338,6 +360,9 @@ class Ajax implements MiddlewareInterface
             "events" => array()  ,
             "eventsFilter" => array()  ,
             "eventsByFilter" => array()  ,
+            "license" => $apiLicense ,
+            "licenseLimit" => $arguments['limit'] ,
+            "isAutorized" => $isAutorized ,
             "mode" => $arguments['mode'] ,
             "feuser" => array(
                 "uid" => $GLOBALS['TSFE']->fe_user->user['uid'] ,
@@ -395,124 +420,22 @@ class Ajax implements MiddlewareInterface
                 }
 
 
-                $output['event']['eventId'] = $event->getUid() ;
-                $output['event']['viewed'] = $event->getViewed();
-                $output['event']['canceled'] = $event->getCanceled();
-
-                $output['event']['startDate'] = $event->getStartDate()->format("d.m.Y") ;
-                if  ($event->getAllDay() ) {
-                    $output['event']['allDay'] = true ;
-                } else {
-                    $output['event']['allDay'] = false ;
-                    $output['event']['startTime'] = date( "H:i" , $event->getStartTime()) ;
-                    $output['event']['endTime'] = date( "H:i" , $event->getEndTime()) ;
-                }
-
-                $output['event']['creationTime'] = date( "d.m.Y H:i" , $event->getCrdate() ) ;
-                $output['event']['crdate'] =  $event->getCrdate()  ;
-                $output['event']['noNotification'] = $event->getNotifyRegistrant() ;
-
-                if ( $site ) {
-                    try {
-                        $output['event']['slug'] = (string)$site->getRouter()->generateUri( $singlePid ,['_language' => max( $event->getLanguageUid() ,0 ) ,
-                            'tx_jvevents_events' => ['action' => 'show' , 'controller' => 'Event' ,'event' =>  $event->getUid() ]]);
-                    } catch( \EXCEPTION $e ) {
-                        $output['event']['slug'] = "pid=" . $singlePid . "&L=" . $event->getLanguageUid() ;
-                    }
-                }
-
-
-                if( $event->getNotifyRegistrant() == 0  ) {
-                    $reminder2 = new \DateInterval("P1D") ;
-                    $reminderDate2 =  new \DateTime($event->getStartDate()->format("c")) ;
-
-                    $reminder1 = new \DateInterval("P7D") ;
-                    $reminderDate1 =  new \DateTime($event->getStartDate()->format("c")) ;
-                    $now =  new \DateTime() ;
-                    if ( $reminderDate1 > $now ) {
-                        $output['event']['reminderDate1'] =  $reminderDate1->sub( $reminder1 )->format("d.m.Y") ;
-                    }
-                    if ( $reminderDate2 > $now ) {
-                        $output['event']['reminderDate2'] =  $reminderDate2->sub( $reminder2 )->format("d.m.Y") ;
-                    }
-                }
-
-                $output['event']['name'] = $event->getName() ;
-                $output['event']['teasterText'] = $event->getTeaser();
-                $output['event']['teaserImageUrl'] = GeneralUtility::getIndpEnv("TYPO3_REQUEST_HOST")  ;
-                if (  $event->getTeaserImage() && is_object( $event->getTeaserImage()->getOriginalResource()) ) {
-                    $output['event']['TeaserImageFrom'] =  "Event" ;
-                    $output['event']['teaserImageUrl'] .=  $event->getTeaserImage()->getOriginalResource()->getPublicUrl() ;
-                } else {
-                    if( $this->settings['EmConfiguration']['imgUrl2'] ) {
-                        $output['event']['TeaserImageFrom'] =  "config-imgUrl2" ;
-                        $output['event']['teaserImageUrl'] .=  trim($this->settings['EmConfiguration']['imgUrl2']) ;
-                    } else {
-                        $output['event']['TeaserImageFrom'] =  "config-imgUrl" ;
-                        $output['event']['teaserImageUrl'] = GeneralUtility::getIndpEnv("TYPO3_REQUEST_HOST") . trim($this->settings['EmConfiguration']['imgUrl']) ;
-                    }
-                }
-                $output['event']['filesAfterReg'] = $this->getFilesArray( $event->getFilesAfterReg() )  ;
-                $output['event']['filesAfterEvent'] = $this->getFilesArray( $event->getFilesAfterEvent() )  ;
-
-
-
-                $output['event']['price'] = round( $event->getPrice() , 2 ) ;
-                $output['event']['currency'] = $event->getCurrency() ;
-                $output['event']['priceReduced'] = $event->getPriceReduced();
-                $output['event']['priceReducedText'] = $event->getPriceReducedText();
-
-                $output['event']['registration']['possible'] = $event->isIsRegistrationPossible() ;
-                $output['event']['registration']['formPid'] = $event->getRegistrationFormPid() ;
-                $output['event']['registration']['noFreeSeats'] = $event->isIsNoFreeSeats() ;
-                $output['event']['registration']['freeSeats'] = $event->getAvailableSeats() ;
-                $output['event']['registration']['freeSeatsWaitinglist'] = $event->getAvailableWaitingSeats();
-                $output['event']['registration']['registeredSeats'] = $event->getRegisteredSeats();
-                $output['event']['registration']['unconfirmedSeats'] = $event->getUnconfirmedSeats();
-
-                $output['event']['registration']['sfCampaignId'] = $event->getSalesForceCampaignId() ;
-                $output['event']['notification']['waitinglist'] = $event->getIntrotextRegistrant() ;
-                $output['event']['notification']['confirmed'] = $event->getIntrotextRegistrantConfirmed() ;
+                ### nmode to sub FUnction
+                $output['event'] = $this->mapEvent2Output( $site , $event , $singlePid ) ;
 
                 if( is_object( $event->getOrganizer() )) {
                     $organizer = $event->getOrganizer() ;
-                    $output['event']['organizerId'] = $organizer->getUid()  ;
+                    $return['organizerId'] = $organizer->getUid()  ;
                     $output['organizer']['organizerName'] = $organizer->getname()  ;
                     $output['organizer']['organizerEmail'] = $organizer->getEmail()  ;
                     $output['organizer']['organizerPhone'] = $organizer->getPhone()  ;
                     $output['organizer']['organizerSFID'] = $organizer->getSalesForceUserId() ;
-                    $output['event']['registration']['registrationInfo'] = $organizer->getRegistrationInfo() ;
-                    $output['event']['hasAccess'] = $this->hasUserAccess( $organizer ) ;
-                }
+                 }
                 if( is_object( $event->getLocation() )) {
-
                     $location = $event->getLocation() ;
                     $output['event']['locationId'] = $event->getLocation()->getUid() ;
                 }
-                $output['event']['days'] = $event->getSubeventCount() ;
-                if( $event->getSubeventCount() > 0 ) {
-                    $querysettings =$this->subeventRepository->getTYPO3QuerySettings() ;
-                    $querysettings->setStoragePageIds(array( $event->getPid() )) ;
 
-                    $this->subeventRepository->setDefaultQuerySettings( $querysettings );
-
-                    $subeventsArr = $this->subeventRepository->findByEventAllpages($event->getUid() , TRUE   ) ;
-                    /** @var Subevent $subevent */
-                    foreach ( $subeventsArr as $subevent) {
-                        if( is_object( $subevent )) {
-                            $temp = [] ;
-                            $temp['date'] = $subevent->getStartDate()->format("d.m.Y") ;
-                            $temp['starttime'] = date( "H:i" ,$subevent->getStartTime() ) ;
-                            $temp['endtime'] = date( "H:i" ,$subevent->getEndTime() ) ;
-                            $output['event']['moreDays'][] = $temp ;
-                            unset($temp) ;
-                        }
-
-                    }
-
-                } else {
-                    $output['event']['moreDays'] = [] ;
-                }
                 if( $event->getMasterId() > 0 ) {
                     $querysettings =$this->subeventRepository->getTYPO3QuerySettings() ;
                     $querysettings->setStoragePageIds(array( $event->getPid() )) ;
@@ -535,6 +458,19 @@ class Ajax implements MiddlewareInterface
         }
 
         if( $arguments['eventsFilter']  ) {
+            // unset arguments taht require a License
+            if( ! $isAutorized ) {
+                unset( $arguments['eventsFilter']['categories'] ) ;
+                unset( $arguments['eventsFilter']['organizer'] ) ;
+                unset( $arguments['eventsFilter']['location'] ) ;
+                unset( $arguments['eventsFilter']['sameCity'] ) ;
+            } else {
+                if ($apiLicense == "DEMO") {
+                    unset($arguments['eventsFilter']['organizer']);
+                    unset($arguments['eventsFilter']['location']);
+                    unset($arguments['eventsFilter']['sameCity']);
+                }
+            }
 
             $output['eventsFilter'] = $arguments['eventsFilter'] ;
 
@@ -575,6 +511,7 @@ class Ajax implements MiddlewareInterface
                     } else {
 
                         $tempEventsArray = $events->toArray() ;
+
                         foreach ( $tempEventsArray as $tempEvent ) {
 
                             $tempEventArray = [] ;
@@ -646,10 +583,12 @@ class Ajax implements MiddlewareInterface
                                     $tempEventArray['slug'] = (string)$site->getRouter()->generateUri( $singlePid ,['_language' => max( $tempEvent->getLanguageUid() ,0 ) ,
                                         'tx_jvevents_events' => ['action' => 'show' , 'controller' => 'Event' ,'event' =>  $tempEvent->getUid() ]]);
                                 } catch( \EXCEPTION $e ) {
-                                    $tempEventArray['slug'] = "pid=" . $singlePid . "&L=" . $tempEvent->getLanguageUid() ;
+                                    $tempEventArray['slug'] = $e->getMessage() ;
                                 }
                             }
-
+                            if ( $isAutorized && !is_array($output['event'] ) ) {
+                                $output['event'] = $this->mapEvent2Output( $site , $tempEvent , $singlePid ) ;
+                            }
                             $output['eventsByFilter'][] = $tempEventArray;
                             unset( $tempEventArray );
                         }
@@ -697,7 +636,7 @@ class Ajax implements MiddlewareInterface
         /* ************************************************************************************************************ */
         /*   Get infos about: Organizer
         /* ************************************************************************************************************ */
-        if(  $arguments['organizer'] > 0  && !is_object($organizer ) ) {
+        if(  isset( $arguments['organizer']) &&  $arguments['organizer'] > 0  && !is_object($organizer ) ) {
             $output['organizer']['requestId'] =  $arguments['organizer'];
 
             /** @var Organizer $organizer */
@@ -719,6 +658,133 @@ class Ajax implements MiddlewareInterface
 
     }
 
+    public function mapEvent2Output( $site , $event , $singlePid ) {
+        $return['eventId'] = $event->getUid() ;
+        $return['viewed'] = $event->getViewed();
+        $return['canceled'] = $event->getCanceled();
+
+        $return['startDate'] = $event->getStartDate()->format("d.m.Y") ;
+        if  ($event->getAllDay() ) {
+            $return['allDay'] = true ;
+        } else {
+            $return['allDay'] = false ;
+            $return['startTime'] = date( "H:i" , $event->getStartTime()) ;
+            $return['endTime'] = date( "H:i" , $event->getEndTime()) ;
+        }
+
+        $return['creationTime'] = date( "d.m.Y H:i" , $event->getCrdate() ) ;
+        $return['crdate'] =  $event->getCrdate()  ;
+        $return['noNotification'] = $event->getNotifyRegistrant() ;
+
+        if ( $site ) {
+            try {
+                $return['slug'] = (string)$site->getRouter()->generateUri( $singlePid ,['_language' => max( $event->getLanguageUid() ,0 ) ,
+                   'tx_jvevents_event' => ['action' => 'show' , 'controller' => 'Event' ,'event' =>  $event->getUid() ]]);
+            } catch( \EXCEPTION $e ) {
+                $return['slug'] = "pid=" . $singlePid . "&L=" . $event->getLanguageUid() ;
+            }
+        }
+
+
+        if( $event->getNotifyRegistrant() == 0  ) {
+            $reminder2 = new \DateInterval("P1D") ;
+            $reminderDate2 =  new \DateTime($event->getStartDate()->format("c")) ;
+
+            $reminder1 = new \DateInterval("P7D") ;
+            $reminderDate1 =  new \DateTime($event->getStartDate()->format("c")) ;
+            $now =  new \DateTime() ;
+            if ( $reminderDate1 > $now ) {
+                $return['reminderDate1'] =  $reminderDate1->sub( $reminder1 )->format("d.m.Y") ;
+            }
+            if ( $reminderDate2 > $now ) {
+                $return['reminderDate2'] =  $reminderDate2->sub( $reminder2 )->format("d.m.Y") ;
+            }
+        }
+
+        $return['name'] = $event->getName() ;
+        $return['teasterText'] = $event->getTeaser();
+        $return['teaserImageUrl'] = GeneralUtility::getIndpEnv("TYPO3_REQUEST_HOST")  ;
+        if (  $event->getTeaserImage() && is_object( $event->getTeaserImage()->getOriginalResource()) ) {
+            $return['TeaserImageFrom'] =  "Event" ;
+            $return['teaserImageUrl'] .=  $event->getTeaserImage()->getOriginalResource()->getPublicUrl() ;
+        } else {
+            if( $this->settings['EmConfiguration']['imgUrl2'] ) {
+                $return['TeaserImageFrom'] =  "config-imgUrl2" ;
+                $return['teaserImageUrl'] .=  trim($this->settings['EmConfiguration']['imgUrl2']) ;
+            } else {
+                $return['TeaserImageFrom'] =  "config-imgUrl" ;
+                $return['teaserImageUrl'] = GeneralUtility::getIndpEnv("TYPO3_REQUEST_HOST") . trim($this->settings['EmConfiguration']['imgUrl']) ;
+            }
+        }
+        $return['filesAfterReg'] = $this->getFilesArray( $event->getFilesAfterReg() )  ;
+        $return['filesAfterEvent'] = $this->getFilesArray( $event->getFilesAfterEvent() )  ;
+
+
+
+        $return['price'] = round( $event->getPrice() , 2 ) ;
+        $return['currency'] = $event->getCurrency() ;
+        $return['priceReduced'] = $event->getPriceReduced();
+        $return['priceReducedText'] = $event->getPriceReducedText();
+
+        $return['registration']['possible'] = $event->isIsRegistrationPossible() ;
+        $return['registration']['formPid'] = $event->getRegistrationFormPid() ;
+        $return['registration']['noFreeSeats'] = $event->isIsNoFreeSeats() ;
+        $return['registration']['freeSeats'] = $event->getAvailableSeats() ;
+        $return['registration']['freeSeatsWaitinglist'] = $event->getAvailableWaitingSeats();
+        $return['registration']['registeredSeats'] = $event->getRegisteredSeats();
+        $return['registration']['unconfirmedSeats'] = $event->getUnconfirmedSeats();
+        $return['registration']['slug'] = '' ;
+        if( $event->isIsRegistrationPossible() && $event->getRegistrationFormPid() > 0  ) {
+            $lang = max( $event->getLanguageUid() ,0 ) ;
+            $argumentString = http_build_query( ['tx_jvevents_registrant' => ['action' => 'new' , 'controller' => 'Register' ,'event' =>  $event->getUid()  ]] ) ;
+            $return['registration']['slug'] = GeneralUtility::getIndpEnv("TYPO3_REQUEST_HOST") . "/index.php?id=" . $event->getRegistrationFormPid() . "&L=" . $lang  . "&" . $argumentString;
+            if( $site ) {
+                try {
+                    $return['registration']['slug'] = (string)$site->getRouter()->generateUri( $event->getRegistrationFormPid() ,['_language' => $lang ,
+                                 'tx_jvevents_registrant' => ['action' => 'new' , 'controller' => 'Registrant' ,'event' =>  $event->getUid() ]]);
+
+                 } catch( \EXCEPTION $e ) {
+                    $return['registration']['slug'] = $e->getMessage() ;
+                }
+
+            }
+        }
+
+        $return['registration']['sfCampaignId'] = $event->getSalesForceCampaignId() ;
+        $return['notification']['waitinglist'] = $event->getIntrotextRegistrant() ;
+        $return['notification']['confirmed'] = $event->getIntrotextRegistrantConfirmed() ;
+
+        $return['days'] = $event->getSubeventCount() ;
+        if( $event->getSubeventCount() > 0 ) {
+            $querysettings =$this->subeventRepository->getTYPO3QuerySettings() ;
+            $querysettings->setStoragePageIds(array( $event->getPid() )) ;
+
+            $this->subeventRepository->setDefaultQuerySettings( $querysettings );
+
+            $subeventsArr = $this->subeventRepository->findByEventAllpages($event->getUid() , TRUE   ) ;
+            /** @var Subevent $subevent */
+            foreach ( $subeventsArr as $subevent) {
+                if( is_object( $subevent )) {
+                    $temp = [] ;
+                    $temp['date'] = $subevent->getStartDate()->format("d.m.Y") ;
+                    $temp['starttime'] = date( "H:i" ,$subevent->getStartTime() ) ;
+                    $temp['endtime'] = date( "H:i" ,$subevent->getEndTime() ) ;
+                    $return['moreDays'][] = $temp ;
+                    unset($temp) ;
+                }
+
+            }
+        } else {
+            $return['moreDays'] = [] ;
+        }
+        if( is_object( $event->getOrganizer() )) {
+            $organizer = $event->getOrganizer() ;
+
+            $return['registration']['registrationInfo'] = $organizer->getRegistrationInfo() ;
+            $return['hasAccess'] = $this->hasUserAccess( $organizer ) ;
+        }
+        return $return ;
+    }
 
     /**
      * @param ObjectStorage $resource

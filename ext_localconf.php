@@ -204,6 +204,9 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1655213080] = [
    'class' => \JVelletti\JvEvents\FormEngine\FieldControl\DownloadRegistrations::class
 ];
 
+if (!isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['jv_events'])) {
+    $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['jv_events'] = [];
+}
 
 
 

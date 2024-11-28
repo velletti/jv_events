@@ -54,7 +54,6 @@ use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 class CurlController extends BaseController
 {
 
-
     public function initializeAction()
     {
         $this->timeStart = $this->microtime_float();
@@ -100,7 +99,10 @@ class CurlController extends BaseController
         $this->debugArray[] = "Load Events:" . intval(1000 * ($this->microtime_float() - $this->timeStart)) . " Line: " . __LINE__;
 
         /** @var FrontendInterface $cache */
-        $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('extbase_object');
+        /** @var CacheManager $cacheManager */
+        $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
+
+        $cache=  $cacheManager->getCache( 'jv_events');
         $cacheIdentifier = 'jv-events-curl_uid-' . (int)$GLOBALS['TSFE']->cObj->data['uid'];
 
         if (!$cache->has($cacheIdentifier)) {
@@ -110,7 +112,7 @@ class CurlController extends BaseController
             if ($urls) {
                 $requests = [];
                 foreach ($urls as $key => $url) {
-                    $this->debugArray[] = "Try URL: " . $url ;
+                    $this->debugArray[] = "Try URL: " . $url . "&" . http_build_query( ($settings['data'] ?? [] ));
                     if (filter_var($url, FILTER_VALIDATE_URL)) {
                         $curlResonse = (string)$this->getEventsViaCurl($this->settings, $url) ;
                         $this->debugArray[] = "time:" . intval(1000 * ($this->microtime_float() - $this->timeStart)) ;
@@ -122,6 +124,7 @@ class CurlController extends BaseController
                             }
                         } catch (\JsonException $e) {
                             $this->debugArray[] = "Error in JSON: " . $e->getMessage();
+                            $this->debugArray[] = "Resonse: " .$curlResonse ;
 
                         }
                     }
@@ -139,7 +142,8 @@ class CurlController extends BaseController
         } else {
             $request = $cache->get($cacheIdentifier);
         }
-
+var_dump( $this->debugArray );
+        die;
         $this->view->assign('events', $request);
 
         $dtz = $this->eventRepository->getDateTimeZone();

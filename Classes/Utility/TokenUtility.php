@@ -60,7 +60,7 @@ class TokenUtility
         }
         list($uid, $givenToken) = $split;
 
-        $tokenShouldBe = self::getToken($uid ,false) ;
+        $tokenShouldBe = self::getToken( (int)$uid ,false) ;
         if ( !$tokenShouldBe ||  !$givenToken ) {
             return false ;
         }
@@ -68,6 +68,32 @@ class TokenUtility
             return true ;
         }
         return false ;
+    }
+
+    public static function checkLicense( ?string $apiToken , ?int $user  ) :?string
+    {
+
+        if ( !$apiToken|| !$user  || strlen($apiToken ) < 10 || $user < 1 ) {
+            return null ;
+        }
+
+        $apiToken = trim($apiToken) ;
+         $user = intval($user) ;
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_jvevents_domain_model_token');
+        $queryBuilder->getRestrictions()->removeByType( \TYPO3\CMS\Core\Database\Query\Restriction\PageIdListRestriction::class);
+        $query = $queryBuilder
+            ->select('license')
+            ->from('tx_jvevents_domain_model_token')
+            ->where(
+                $queryBuilder->expr()->eq('token', $queryBuilder->createNamedParameter($apiToken, \PDO::PARAM_STR))
+            )->andWhere(
+                  $queryBuilder->expr()->eq('feuser', $queryBuilder->createNamedParameter($user, \PDO::PARAM_INT))
+           );
+        $result = $query->executeQuery()->fetchAssociative();
+        if($result === false) {
+            return null;
+        }
+        return $result['license'];
     }
 
 

@@ -75,8 +75,17 @@ routeEnhancers:
           reg_id: registrant
           event_id: event
           hash: hash
+
+      - routePath: '/registrant/{event_slug}/new'
+        _controller: 'Registrant::new'
+        _arguments:
+          event_slug: event
     aspects:
       event_id:
         type: PersistedAliasMapper
         tableName: tx_jvevents_domain_model_event
         routeFieldName: uid
+      event_slug:
+        type: PersistedAliasMapper
+        tableName: tx_jvevents_domain_model_event
+        routeFieldName: slug

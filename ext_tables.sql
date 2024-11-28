@@ -562,4 +562,22 @@ CREATE TABLE tx_jvevents_location_category_mm (
 	KEY uid_foreign (uid_foreign)
 );
 
-## EXTENSION BUILDER DEFAULTS END TOKEN - Everything BEFORE this line is overwritten with the defaults of the extension builder
+CREATE TABLE tx_jvevents_domain_model_token (
+    uid INT AUTO_INCREMENT NOT NULL,
+    pid INT DEFAULT 0 NOT NULL,
+    name VARCHAR(80) NOT NULL,
+    token VARCHAR(80) NOT NULL,
+    feuser INT DEFAULT NULL,
+    license ENUM('BLOCKED', 'DEMO', 'BASIC', 'FULL') DEFAULT 'DEMO' NOT NULL,
+    tstamp INT DEFAULT 0 NOT NULL,
+    crdate INT DEFAULT 0 NOT NULL,
+    cruser_id INT DEFAULT 0 NOT NULL,
+    starttime INT DEFAULT 0 NOT NULL,
+    endtime INT DEFAULT 0 NOT NULL,
+    hidden TINYINT(1) DEFAULT 0 NOT NULL,
+    deleted TINYINT(1) DEFAULT 0 NOT NULL,
+    PRIMARY KEY (uid),
+    KEY parent (pid),
+    KEY feuser (feuser),
+    KEY token (token)
+) ENGINE=InnoDB;
