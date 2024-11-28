@@ -914,12 +914,9 @@ class EventController extends BaseController
     /**
      * action delete
      *
-     * @param integer $deleteFutureEvents
-     * @return void
      */
-    public function deleteAction(Event $event , $deleteFutureEvents = 0)
+    public function deleteAction(Event $event , int $deleteFutureEvents = 0) : ResponseInterface
     {
-
         $update = [];
         $otherDaysText = null;
         if($this->request->hasArgument('deleteFutureEvents') ) {
@@ -1003,8 +1000,9 @@ class EventController extends BaseController
         $this->persistenceManager->persistAll() ;
 
         $arguments = ['overruleFilter' => ['organizer' => $orgId, 'category' => 'true', 'maxDays' => 90]] ;
-
-        return $this->redirect('list' , null , null , $arguments, $this->settings['pageIds']['eventList']);
+        // JVE 28.11.2024 -Todo: find reason why this is not set from flexform  or typoscript!
+        $pid = ($this->settings['pageIds']['eventList'] > 0 ) ? $this->settings['pageIds']['eventList']: 150 ;
+        return $this->redirect('list' , null , null , $arguments, $pid);
     }
     
 
