@@ -11,8 +11,8 @@ if ( CKEDITOR.env.ie && CKEDITOR.env.version < 9 )
 // unless user specified own height.
 CKEDITOR.config.height = 300;
 CKEDITOR.config.width = 'auto';
-CKEDITOR.config.contentsCss = [ '/typo3conf/ext/jve_template/Resources/Public/Css/Www/rte.min.css' ,  './contents.css' ] ;
-CKEDITOR.config.customConfig =  '/typo3conf/ext/jv_events/Resources/Public/JavaScript/ckeditor_config.js'   ;
+CKEDITOR.config.contentsCss = [ './contents.css' ] ;
+CKEDITOR.config.customConfig =  './ckeditor_configV12.js'   ;
 
 var initSample = ( function() {
     var FIELDID = 'editor';

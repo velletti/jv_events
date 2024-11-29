@@ -402,7 +402,6 @@ class EventController extends BaseController
                     ->setArguments([ 'tx_jvevents_event' =>
                         ['controller' =>  'Event' , 'action' => $action , 'event' => $event->getUid() ] ])
                     ->build() ;
-
             // https://tangov10.ddev.site/de/tanzen/termin-details/event/event/show/qqqqqqq-20-08-2023.html
 
             return (new Response())
@@ -917,6 +916,7 @@ class EventController extends BaseController
      */
     public function deleteAction(Event $event , int $deleteFutureEvents = 0) : ResponseInterface
     {
+
         $update = [];
         $otherDaysText = null;
         if($this->request->hasArgument('deleteFutureEvents') ) {

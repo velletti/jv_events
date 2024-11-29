@@ -54,6 +54,7 @@ use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 class CurlController extends BaseController
 {
 
+
     public function initializeAction()
     {
         $this->timeStart = $this->microtime_float();
@@ -95,6 +96,7 @@ class CurlController extends BaseController
         $this->settings['data']['tx_jvevents_ajax']['eventsFilter'] = $f;
         $this->settings['data']['tx_jvevents_ajax']['limit'] = ($this->settings['filter']['maxevents'] > 0) ? intval($this->settings['filter']['maxevents']) : 999;
         $this->settings['checkInstallation'] = -1;
+
 
         $this->debugArray[] = "Load Events:" . intval(1000 * ($this->microtime_float() - $this->timeStart)) . " Line: " . __LINE__;
 
@@ -142,6 +144,7 @@ class CurlController extends BaseController
         } else {
             $request = $cache->get($cacheIdentifier);
         }
+
         $this->view->assign('events', $request);
 
         $dtz = $this->eventRepository->getDateTimeZone();
