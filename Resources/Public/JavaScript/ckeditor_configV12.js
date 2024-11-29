@@ -30,7 +30,7 @@ CKEDITOR.editorConfig = function( config ) {
 
     // Set the most common block elements.
     // config.format_tags = 'p;h2;h3;pre;ol;ul;li';
-    config.format_tags = 'p;h2;h3;pre;ul';
+    config.format_tags = 'p;h2;h3;pre';
 
     // Simplify the dialog windows.
     config.removeDialogTabs = 'image:advanced;link:advanced';
