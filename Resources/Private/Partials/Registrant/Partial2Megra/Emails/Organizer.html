@@ -33,10 +33,10 @@
 		<h3 style="font-size: 22px; font-family: '{emConf.fontFamily}'; line-height: 1.25; margin: 0 0 20px; padding: 0;">
 			{f:translate(key: 'register_head_participant_data' , default:'Participants Data')}<br/>
 			ID: {registrant.uid} | <f:format.date format="d.m.Y">{registrant.created}</f:format.date>
-		</h3>
+		</h3>o
 
 		<p style="font-size: 16px; font-family: '{emConf.fontFamily}'; line-height: 1.65; font-weight: normal; margin: 0 0 20px; padding: 0;">
-			<f:if condition="{registrant.more2}==1"><br><b>Online Teilnehmer!</b><br></f:if>
+			<f:if condition="{registrant.more2}=='online'"><br><b>Online Teilnehmer!</b><br></f:if>
 
 			{f:translate(key: 'tx_jvevents_domain_model_registrant.gender')}:
 			<f:if condition="{registrant.gender}==1">{f:translate(key: 'register_gender_male')}</f:if>
