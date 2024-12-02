@@ -192,9 +192,9 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         }
 
         if( is_int( $event )) {
-            $configuration['additionalParams'] .= '&tx_jvevents_events[event]=' . $event ;
+            $configuration['additionalParams'] .= '&tx_jvevents_event[event]=' . $event ;
         } else {
-            $configuration['additionalParams'] .= '&tx_jvevents_events[event]=' . ($event->getUid() );
+            $configuration['additionalParams'] .= '&tx_jvevents_event[event]=' . ($event->getUid() );
             $categories = $event->getEventCategory() ;
             $catTitles = "" ;
             if ( $categories ) {

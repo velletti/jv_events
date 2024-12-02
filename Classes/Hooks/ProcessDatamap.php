@@ -494,7 +494,11 @@ class ProcessDatamap {
                 $this->flashMessage['OK'][] = "Campaign was updated in Salesforce: ! : " . $settings['SFREST']['instance_url'] . "/" . $this->event->getSalesForceCampaignId()   ;
             } else {
                 $this->flashMessage['WARNING'][] = 'Could not update Response  : ' . var_export( $sfResponse , true ) ;
-                $sfResponse = json_decode((string) $sfResponse, null, 512, JSON_THROW_ON_ERROR) ;
+                try {
+                    $sfResponse = json_decode((string) $sfResponse, null, 512, JSON_THROW_ON_ERROR) ;
+                } catch ( \JsonException $e ) {
+                    $sfResponse = var_export( $sfResponse , true )  ;
+                }
             }
 
         } else {
