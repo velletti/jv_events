@@ -265,11 +265,16 @@ class ProcessDatamap {
                     if( !$this->event->getLocation()) {
                         $this->flashMessage['ERROR'][] = 'No Location selected in Tab Relations!' ;
                         $allowedError ++ ;
+                    } else {
+                        if ( (int) $this->event->getLocation()->getLat() == 0 && (int) $this->event->getLocation()->getLng() == 0
+                            && strpos( strtolower( $this->event->getLocation()->getName() )  , "online") === false ) {
+                            $this->flashMessage['WARNING'][] = 'No Geo Coordinates set in Location! Please check the address!' ;
+                        }
                     }
-                    if( (is_countable($this->event->getEventCategory()) ? count( $this->event->getEventCategory()) : 0) < 1 ) {
+                    if(  (is_countable($this->event->getEventCategory()) ? count(  $this->event->getEventCategory() ) : 0) < 1  && count( $this->pObj->substNEWwithIDs ) == 0 ) {
                         $this->flashMessage['WARNING'][] = 'No Event Category selected in Tab Relations. This event may not be found in lists!' ;
                     }
-                    if( (is_countable($this->event->getTags()) ? count(  $this->event->getTags() ) : 0) < 1 ) {
+                    if( (is_countable($this->event->getTags()) ? count(  $this->event->getTags() ) : 0) < 1  && count( $this->pObj->substNEWwithIDs ) == 0 ) {
                         $this->flashMessage['WARNING'][] = 'No Event Tags selected in Tab Relations!' ;
                     }
 
