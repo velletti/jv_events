@@ -25,11 +25,12 @@ CKEDITOR.editorConfig = function( config ) {
         { name: 'about', groups: [ 'about' ] }
     ];
 
-    config.removeButtons = 'Source,Save,NewPage,Preview,Print,Templates,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Italic,Underline,Subscript,Superscript,Indent,Outdent,CreateDiv,Blockquote,BidiLtr,BidiRtl,Language,Image,Flash,Table,PageBreak,Iframe,Font,FontSize,TextColor,BGColor,About,Maximize,PasteFromWord,Find,Replace,SelectAll,Scayt,NumberedList,JustifyRight,JustifyBlock,Anchor,Smiley,Styles';
+    config.removeButtons = 'Source,Save,NewPage,Preview,Print,Templates,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Italic,Underline,Subscript,Superscript,Indent,Outdent,CreateDiv,Blockquote,BidiLtr,BidiRtl,Language,Image,Flash,Table,PageBreak,Iframe,Font,FontSize,TextColor,BGColor,About,PasteFromWord,Scayt,NumberedList,JustifyRight,JustifyBlock,Anchor,Smiley,Styles';
 
 
     // Set the most common block elements.
-    config.format_tags = 'p;h2;h3;pre;ol;ul;li';
+    // config.format_tags = 'p;h2;h3;pre;ol;ul;li';
+    config.format_tags = 'p;h2;h3;pre';
 
     // Simplify the dialog windows.
     config.removeDialogTabs = 'image:advanced;link:advanced';

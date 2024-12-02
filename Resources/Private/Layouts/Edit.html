@@ -2,10 +2,10 @@
 	<f:asset.css identifier="jveventscss" href="{settings.ccsFile}"></f:asset.css>
 </f:if>
 
-<script>
-    var CKEDITOR_BASEPATH = '{core:normalizedUrl(pathOrUrl:"EXT:jv_events/Resources/Public/JavaScript/ckeditor/")}';
-</script>
-<f:asset.script identifier="ckeditorfe" src="EXT:jv_events/Resources/Public/JavaScript/ckeditor/ckeditor.js" priority="true"></f:asset.script>
+<f:asset.script identifier="ckeditorfe1" priority="true">
+	var CKEDITOR_BASEPATH =	'{f:uri.resource(path: "EXT:jv_events/Resources/Public/JavaScript/ckeditor/")}';
+</f:asset.script>
+<f:asset.script identifier="ckeditorfe2" src="EXT:jv_events/Resources/Public/JavaScript/ckeditor/ckeditor.js" priority="true" ></f:asset.script>
 
 <f:flashMessages as="flashMessages">
 	<f:if condition="{flashMessages}">

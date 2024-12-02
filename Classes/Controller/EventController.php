@@ -402,7 +402,6 @@ class EventController extends BaseController
                     ->setArguments([ 'tx_jvevents_event' =>
                         ['controller' =>  'Event' , 'action' => $action , 'event' => $event->getUid() ] ])
                     ->build() ;
-
             // https://tangov10.ddev.site/de/tanzen/termin-details/event/event/show/qqqqqqq-20-08-2023.html
 
             return (new Response())
@@ -914,10 +913,8 @@ class EventController extends BaseController
     /**
      * action delete
      *
-     * @param integer $deleteFutureEvents
-     * @return void
      */
-    public function deleteAction(Event $event , $deleteFutureEvents = 0)
+    public function deleteAction(Event $event , int $deleteFutureEvents = 0) : ResponseInterface
     {
 
         $update = [];
@@ -1003,8 +1000,9 @@ class EventController extends BaseController
         $this->persistenceManager->persistAll() ;
 
         $arguments = ['overruleFilter' => ['organizer' => $orgId, 'category' => 'true', 'maxDays' => 90]] ;
-
-        return $this->redirect('list' , null , null , $arguments, $this->settings['pageIds']['eventList']);
+        // JVE 28.11.2024 -Todo: find reason why this is not set from flexform  or typoscript!
+        $pid = ($this->settings['pageIds']['eventList'] > 0 ) ? $this->settings['pageIds']['eventList']: 150 ;
+        return $this->redirect('list' , null , null , $arguments, $pid);
     }
     
 
