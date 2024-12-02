@@ -486,14 +486,14 @@ class ProcessDatamap {
         $this->flashMessage['NOTICE'][] = 'Data  : ' . var_export( $data , true ) ;
 
 
-        if( $this->event->getSalesForceCampaignId() ) {
+        if( $this->event->getSalesForceCampaignId() && strlen( $this->event->getSalesForceCampaignId() > 10 ) ) {
             // Update
             $url = $settings['SFREST']['instance_url'] . "/services/data/v48.0/sobjects/Campaign/" . $this->event->getSalesForceCampaignId() ;
             $sfResponse = $this->sfConnect->getCurl($url , $settings['SFREST']['access_token'] , "204" ,  $data , true  , false )  ;
             if( is_int( $sfResponse ) && $sfResponse == 204 ) {
                 $this->flashMessage['OK'][] = "Campaign was updated in Salesforce: ! : " . $settings['SFREST']['instance_url'] . "/" . $this->event->getSalesForceCampaignId()   ;
             } else {
-                $this->flashMessage['WARNING'][] = 'Could not update Response  : ' . var_export( $sfResponse , true ) ;
+                $this->flashMessage['WARNING'][] = 'Could not update campeign ' .  $this->event->getSalesForceCampaignId() . ' |  Response  : ' . var_export( $sfResponse , true ) ;
                 try {
                     $sfResponse = json_decode((string) $sfResponse, null, 512, JSON_THROW_ON_ERROR) ;
                 } catch ( \JsonException $e ) {
@@ -514,7 +514,11 @@ class ProcessDatamap {
             $url = $settings['SFREST']['instance_url'] . "/services/data/v48.0/sobjects/Campaign/" ;
             $sfResponse = $this->sfConnect->getCurl($url , $settings['SFREST']['access_token'] , "201" ,  $data , false , false )  ;
             $this->flashMessage['NOTICE'][] = 'Store Campaign in Salesforce: ' .var_export( $sfResponse , true )  ;
-            $sfResponse = json_decode((string) $sfResponse, null, 512, JSON_THROW_ON_ERROR) ;
+            try {
+                $sfResponse = json_decode((string) $sfResponse, null, 512, JSON_THROW_ON_ERROR) ;
+            } catch ( \JsonException $e ) {
+                $sfResponse = var_export( $sfResponse , true )  ;
+            }
 
             if( is_object($sfResponse)) {
                 if ($sfResponse->success && $sfResponse->id) {
@@ -631,7 +635,11 @@ class ProcessDatamap {
             $data['SortOrder'] = $key + 3 ;
             $sfResponse = $this->sfConnect->getCurl($url , $access_token , "201" ,  $data , false , false )  ;
           //  $this->flashMessage['NOTICE'][] = 'Campaign Member Status "' . $data['Label'] . '" created : ' . var_export($sfResponse , true ) ;
-            $sfResponse = json_decode((string) $sfResponse, null, 512, JSON_THROW_ON_ERROR) ;
+            try {
+                $sfResponse = json_decode((string) $sfResponse, null, 512, JSON_THROW_ON_ERROR) ;
+            } catch ( \JsonException $e ) {
+                $sfResponse = var_export( $sfResponse , true )  ;
+            }
             if( is_object($sfResponse)) {
                 if ($sfResponse->success && $sfResponse->id) {
                     $status .= $data['Label'] . ", " ;
