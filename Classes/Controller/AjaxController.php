@@ -1069,9 +1069,9 @@ class AjaxController extends BaseController
                                     // $this->redirect("show" , "Event" , "JvEvents", ['event' => $event->getUid() ] , intval($arguments['returnToPid'] )) ;
 
                                     $target = GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST') . "/index.php?id=". intval($arguments['returnToPid'] ) ;
-                                    $target .= "&tx_jvevents_events%5Bevent%5D=" . $event->getUid() ;
-                                    $target .= "&tx_jvevents_events%5Baction%5D=edit"  ;
-                                    $target .= "&tx_jvevents_events%5Bcontroller%5D=Event"  ;
+                                    $target .= "&tx_jvevents_event%5Bevent%5D=" . $event->getUid() ;
+                                    $target .= "&tx_jvevents_event%5Baction%5D=edit"  ;
+                                    $target .= "&tx_jvevents_event%5Bcontroller%5D=Event"  ;
                                     header("Location: " .  $target   );
                                     exit;
 

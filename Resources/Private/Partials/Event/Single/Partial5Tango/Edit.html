@@ -64,23 +64,23 @@
 
                             <div class="alert alert-info pb-2 mb-2">
                                 <div class="row">
-                                    <div class="col-10">
+                                    <div class="col-md-10 col-8">
                                         <b><f:translate key="tx_jvevents_domain_model_event.location"></f:translate>:</b>
                                         ({event.location.uid})  {event.location.name}, {event.location.streetAndNr} - {event.location.city}
                                     </div>
-                                    <div class="col-1">
+                                    <div class="col-md-1 col-2">
                                         <f:link.action class="btn btn-secondary btn-sm" pageUid="{settings.pageIds.editLocation}" action="edit" controller="Location"  title="{event.location.uid} - {event.location.name}" arguments="{location: '{event.location.uid}', organizer: '{event.organizer.uid}'}">
                                             <span class="fa fa-edit"></span>
                                         </f:link.action>
                                     </div>
-                                    <div class="col-1">
+                                    <div class="col-md-1 col-2">
                                         <span class="btn btn-secondary btn-sm" title="Change to other, existing Location" data-toggle="collapse" data-target="#jveventsChangeLocation">
                                             <span class="fas fa-map-marked-alt"></span>
                                         </span>
                                     </div>
                                 </div>
                                 <div class="collapse" id="jveventsChangeLocation">
-                                    <div class="alert alert-info p-4">
+                                    <div class="alert alert-info p-0 pt-4 border-0">
                                         <f:render partial="Location/ChangeLocation" arguments="{_all}" />
                                     </div>
                                 </div>
