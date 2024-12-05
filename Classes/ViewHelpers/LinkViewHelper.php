@@ -187,8 +187,8 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
             $configuration['noCache'] = 1 ;
         }
         if ((int)$settings['link']['skipControllerAndAction'] !== 1) {
-            $configuration['additionalParams'] = '&tx_jvevents_events[controller]=Event' .
-                '&tx_jvevents_events[action]=show';
+            $configuration['additionalParams'] = '&tx_jvevents_event[controller]=Event' .
+                '&tx_jvevents_event[action]=show';
         }
 
         if( is_int( $event )) {
