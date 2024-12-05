@@ -581,3 +581,8 @@ CREATE TABLE tx_jvevents_domain_model_token (
     KEY feuser (feuser),
     KEY token (token)
 ) ENGINE=InnoDB;
+
+## is removed in original extension. but somewhre in the code it is used:first remove usage, then remove this
+CREATE TABLE tx_sfbanners_domain_model_banner (
+  sorting INT DEFAULT 0
+) ;

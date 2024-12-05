@@ -15,8 +15,6 @@ class BannerRepository {
 
         /** @var ConnectionPool $connectionPool */
         $connectionPool = GeneralUtility::makeInstance( ConnectionPool::class);
-        // $connection = $connectionPool->getQueryBuilderForTable('tx_sfbanners_domain_model_banner') ;
-
         try {
             $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_sfbanners_domain_model_banner') ;
             $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
@@ -43,7 +41,6 @@ class BannerRepository {
     public function updateBanner( array $row) {
         /** @var ConnectionPool $connectionPool */
         $connectionPool = GeneralUtility::makeInstance( ConnectionPool::class);
-        // $connection = $connectionPool->getQueryBuilderForTable('tx_sfbanners_domain_model_banner') ;
 
         try {
             $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_sfbanners_domain_model_banner') ;

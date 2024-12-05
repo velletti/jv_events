@@ -30,7 +30,7 @@ namespace JVelletti\JvEvents\Controller;
 use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\FormProtection\FrontendFormProtection;
-use JVE\JvBanners\Utility\AssetUtility;
+use JVelletti\JvBanners\Utility\AssetUtility;
 use JVelletti\JvEvents\Domain\Model\Event;
 use JVelletti\JvEvents\Domain\Model\Location;
 use JVelletti\JvEvents\Domain\Model\Organizer;

@@ -1255,7 +1255,9 @@ class AjaxController extends BaseController
                     ->where( $queryBuilder->expr()->eq('link', $queryBuilder->createNamedParameter($output['event']["eventId"] , \PDO::PARAM_INT)) )
                     ->andWhere( $queryBuilder->expr()->eq('deleted', $queryBuilder->createNamedParameter(0 , \PDO::PARAM_INT)) )
                     ->andWhere( $queryBuilder->expr()->eq('hidden', $queryBuilder->createNamedParameter(0 , \PDO::PARAM_INT)) )
-                    ->orderBy("endtime" , "DESC")->setMaxResults(1)->executeQuery()
+                    ->orderBy("endtime" , "DESC")
+                    ->setMaxResults(1)
+                    ->executeQuery()
                     ->fetchAssociative();
                 if ( $row) {
                     $output['event']['banner'] = $row ;
