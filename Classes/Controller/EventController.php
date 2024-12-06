@@ -113,6 +113,7 @@ class EventController extends BaseController
         $this->debugArray[] = "After Init :" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " Line: " . __LINE__ ;
         $this->settings['filter']['distance']['doNotOverrule'] = "false" ;
         $this->settings['flexform']['filter']['maxDays']  =  ($this->settings['filter']['maxDays'] > 0 ) ? $this->settings['filter']['maxDays'] : 30 ;
+        $this->settings['flexform']['filter']['maxEvents']  =  ($this->settings['filter']['maxEvents'] > 0 ) ? $this->settings['filter']['maxEvents'] : 100 ;
 
         if( $this->request->hasArgument('overruleFilter')) {
 
@@ -159,12 +160,15 @@ class EventController extends BaseController
 
         // if you have 1000s of events or even more, it may not be a good idear to allow to search too far in the future
         if( $this->settings['security']['filter']['maxDays'] > 0 &&  $this->settings['filter']['maxDays'] >  $this->settings['security']['filter']['maxDays'] ) {
-            $this->settings['filter']['maxDays'] = $this->settings['security']['filter']['maxDays'] ;
+            if( $this->settings['flexform']['filter']['maxDays'] < $this->settings['filter']['maxDays'] ) {
+                $this->settings['filter']['maxDays'] = $this->settings['security']['filter']['maxDays'] ;
+            }
         }
         if( $this->settings['security']['filter']['maxEvents'] > 0 &&  $this->settings['filter']['maxEvents'] >  $this->settings['security']['filter']['maxEvents'] ) {
-            $this->settings['filter']['maxEvents'] = $this->settings['security']['filter']['maxEvents'] ;
+            if( $this->settings['flexform']['filter']['maxEvents'] < $this->settings['filter']['maxEvents'] ) {
+                $this->settings['filter']['maxEvents'] = $this->settings['security']['filter']['maxEvents'] ;
+            }
         }
-
 
         $this->debugArray[] = "Load Events:" . intval(1000 * ($this->microtime_float()  - $this->timeStart ) ) . " Line: " . __LINE__ ;
         /** @var QueryResultInterface $events */
