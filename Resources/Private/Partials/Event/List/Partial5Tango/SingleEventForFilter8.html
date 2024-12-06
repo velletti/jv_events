@@ -1,7 +1,11 @@
 {namespace jve=JVelletti\JvEvents\ViewHelpers}
 
 <f:if condition="{aktDate} != {lastDate}">
-    <div class="alert bg-gradient-dark text-white-50 jv-events-row jvevents-newDay mt-4"><i class="fas fa-calendar-alt"> </i> {event.startDate -> f:format.date(format:"D d. M. Y")} </div>
+    <f:if condition="{settings.layoutHideDay}">
+        <f:else>
+            <div class="alert bg-gradient-dark text-white-50 jv-events-row jvevents-newDay mt-4"><i class="fas fa-calendar-alt"> </i> {event.startDate -> f:format.date(format:"D d. M. Y")} </div>
+        </f:else>
+    </f:if>
 </f:if>
 
 <f:spaceless>
@@ -83,8 +87,16 @@
                             <b>{f:translate(key: 'tx_jvevents_domain_model_event.details.canceled', default: 'canceled')}</b>
                         </f:then>
                         <f:else>
-                            {event.location.city}<br>
-                            {event.startTime -> f:format.date(format:"H:i")}-<f:if condition="{event.endTime}"><f:then>{event.endTime -> jve:format.date( format:"H:i")}</f:then><f:else><f:translate key="tx_jvevents_domain_model_event.openEnd">Open End</f:translate></f:else></f:if> h<br>
+                            <f:if condition="{settings.layoutHideDay}">
+                                <f:then>
+                                    {event.location.city}<br>
+                                    {event.startDate -> f:format.date(format:"D d. M. Y")} - {event.endDate -> f:format.date(format:"D d. M. Y")}
+                                </f:then>
+                                <f:else>
+                                    {event.location.city}<br>
+                                    {event.startTime -> f:format.date(format:"H:i")}-<f:if condition="{event.endTime}"><f:then>{event.endTime -> jve:format.date( format:"H:i")}</f:then><f:else><f:translate key="tx_jvevents_domain_model_event.openEnd">Open End</f:translate></f:else></f:if> h<br>
+                                </f:else>
+                            </f:if>
 
 
                             <f:if condition="{event.price} > 0">

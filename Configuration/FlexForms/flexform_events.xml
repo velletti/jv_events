@@ -21,6 +21,14 @@
                             </parameters>
                         </config>
                     </settings.LayoutList>
+                    <settings.layoutHideDay>
+                        <label>
+                            Do not show a Day separater in the List (default off, but usefull on tango holidays)
+                        </label>
+                        <config>
+                            <type>check</type>
+                        </config>
+                    </settings.layoutHideDay>
                     <settings.v12pluginName>
                         <label>
                             Obsolete: v12pluginName
