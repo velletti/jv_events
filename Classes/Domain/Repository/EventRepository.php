@@ -46,7 +46,7 @@ class EventRepository extends BaseRepository
 	/**
 	 * @var array
 	 */
-	protected $defaultOrderings = ['start_date' => QueryInterface::ORDER_ASCENDING, 'start_time' => QueryInterface::ORDER_ASCENDING, 'tstamp' => QueryInterface::ORDER_DESCENDING];
+	protected $defaultOrderings = ['start_date' => QueryInterface::ORDER_ASCENDING, 'start_time' => QueryInterface::ORDER_ASCENDING, 'location' => QueryInterface::ORDER_ASCENDING];
 
     public function findByUidAllpages($uid , $toArray=TRUE , $ignoreEnableFields = TRUE )
     {
