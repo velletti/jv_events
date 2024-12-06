@@ -17,3 +17,8 @@ services:
       - name: 'console.command'
         command: 'jvevents:usergroup'
         schedulable: false
+  JVelletti\JvEvents\Command\CleanupMissingFilesCommand:
+    tags:
+      - name: 'console.command'
+        command: 'jvevents:missingfiles'
+        schedulable: false
