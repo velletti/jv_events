@@ -41,12 +41,12 @@
 					<f:if condition="{object}">
 						<f:then>
 							<jve:SelectStaticCountries class="form-control jv-events-req-{required} ObjIcon" property="{property}" id="jv_events_{property}"
-															allowedCountries="{allowedCountrys}" optionValueField="cnIso2"  optionLabelField="cnShortLocal" sortByOptionLabel="TRUE"/>
+															allowedCountries="{allowedCountrys}" optionValueField="cnIso2"  optionLabelField="cnShortDe" sortByOptionLabel="TRUE"/>
 
 						</f:then>
 						<f:else>
 							<jve:SelectStaticCountries class="form-control jv-events-req-{required} noObjIcon"  id="{property}" {defaultValueText}
-															allowedCountries="{allowedCountrys}" optionValueField="cnIso2" optionLabelField="cnShortLocal" sortByOptionLabel="TRUE"/>
+															allowedCountries="{allowedCountrys}" optionValueField="cnIso2" optionLabelField="cnShortDe" sortByOptionLabel="TRUE"/>
 						</f:else>
 					</f:if>
 
@@ -65,12 +65,12 @@
 				<f:if condition="{object}">
 					<f:then>
 						<jve:SelectStaticCountries class="form-control jv-events-req-{required} noObjNoIcon" property="{property}" id="jv_events_{property}"
-												   allowedCountries="{allowedCountrys}" optionValueField="cnIso2" optionLabelField="cnShortLocal" sortByOptionLabel="TRUE"/>
+												   allowedCountries="{allowedCountrys}" optionValueField="cnIso2" optionLabelField="cnShortDe" sortByOptionLabel="TRUE"/>
 
 					</f:then>
 					<f:else>
 						<jve:SelectStaticCountries class="form-control jv-events-req-{required} ObjNoIcon"  id="{property}" {defaultValueText}
-												   allowedCountries="{allowedCountrys}" optionValueField="cnIso2"  optionLabelField="cnShortLocal" sortByOptionLabel="TRUE"/>
+												   allowedCountries="{allowedCountrys}" optionValueField="cnIso2"  optionLabelField="cnShortDe" sortByOptionLabel="TRUE"/>
 					</f:else>
 				</f:if>
 			</f:else>

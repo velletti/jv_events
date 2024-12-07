@@ -62,67 +62,7 @@ class Ajax implements MiddlewareInterface
         RequestHandlerInterface $handler
     ): ResponseInterface
     {
-
         $_gp = $request->getQueryParams();
-        // examples:
-        // https://wwwv11.allplan.com.ddev.site/?id=110&L=1&tx_jvevents_ajax[event]=4308&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[mode]=onlyValues
-        // https://tangov10.ddev.site/?id=110&L=1&tx_jvevents_ajax[event]=4308&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[mode]=onlyValues
-
-        // FIx Broken URL : https://tangov10.ddev.site/de/eventlist.html?tx_jvevents_events  but no values
-        if( is_array($_gp) && key_exists("tx_jvevents_events" ,$_gp ) && is_string($_gp['tx_jvevents_events'] )  ) {
-            return (new Response())
-                ->withHeader('Location', $request->getUri()->getScheme() . "://" .$request->getUri()->getHost() )
-                ->withStatus("301");
-        }
-        // FIx Broken URL : https://tangov10.ddev.site/de/eventlist.html?tx_jvevents_events  but no values
-        if( is_array($_gp) && key_exists("tx_jvevents_events" ,$_gp )) {
-
-            $params = [ "controller" , "action" , "event" , "registrant" , "organizer" , "location"] ;
-            foreach( $params as $param ) {
-                if ( array_key_exists( $param , $_gp['tx_jvevents_events'] ) )
-                {
-                    if( $this->hasBadValue( $_gp['tx_jvevents_events'][$param]) ) {
-                        return (new Response())
-                            ->withHeader('Location', $request->getUri()->getScheme() . "://" .$request->getUri()->getHost() )
-                            ->withStatus("301");
-                    }
-
-                }
-            }
-
-
-            //  registrant Controller: redirect if Event ID missing or FIx if controller Name is written in Lowercase
-            if(  array_key_exists( "controller" , $_gp['tx_jvevents_events'] ) && strtolower( $_gp['tx_jvevents_events']['controller'] )  == "registrant" ) {
-                $action =  array_key_exists( "action" , $_gp['tx_jvevents_events'] ) ? $_gp['tx_jvevents_events']['action'] : "" ;
-                if ( in_array($action , [ 'list' , 'checkQrcode'])
-                    && ( isset($_gp['tx_jvevents_events']['event']) && (int)$_gp['tx_jvevents_events']['event'] < 0 )) {
-                    return (new Response())
-                        ->withHeader('Location', $request->getUri()->getScheme() . "://" .$request->getUri()->getHost() )
-                        ->withStatus("301");
-                }
-                if(   $_gp['tx_jvevents_events']['controller']   == "registrant") {
-                    $_gp['tx_jvevents_events']['controller'] = ucfirst( $_gp['tx_jvevents_events']['controller'] ) ;
-                    $loc =  $request->getUri()->getScheme() . "://" . $request->getUri()->getHost() . $request->getUri()->getPath() ."?" . http_build_query( $_gp ) ;
-                    return (new Response())
-                        ->withHeader('Location', $loc )
-                        ->withStatus("301");
-                }
-            }
-
-        }
-
-
-
-
-
-
-        if( is_array($_gp) && key_exists("tx_sfregister_create" ,$_gp ) && key_exists("action" ,$_gp['tx_sfregister_create']  )
-            && $_gp['tx_sfregister_create']['action'] == "save" && !$request->getParsedBody() ) {
-            return (new Response())
-                ->withHeader('Location', $request->getUri()->getScheme() . "://" .$request->getUri()->getHost() )
-                ->withStatus("301");
-        }
-
 
         if( is_array($_gp) && key_exists("tx_jvevents_ajax" ,$_gp ) && key_exists("action" ,$_gp['tx_jvevents_ajax']  ) ) {
 
@@ -131,8 +71,8 @@ class Ajax implements MiddlewareInterface
                 $this->getEventList( $_gp["tx_jvevents_ajax"] , $request ) ;
 
             } else {
+                // todo rebuld here insteead of using the Ajax Controller
 
-                $GLOBALS['TSFE']->set_no_cache();
                     /** @var AjaxUtility $ajaxUtility */
                 $ajaxUtility = GeneralUtility::makeInstance(AjaxUtility::class) ;
 
@@ -158,10 +98,6 @@ class Ajax implements MiddlewareInterface
                                 ->withBody($body)
                                 ->withStatus($output['status']);
                         }
-                        break;
-                    case 'eventlist' :
-                        // ToDo : remove
-                        $controller->eventListAction($_gp["tx_jvevents_ajax"]) ;
                         break;
                     case 'cleanhistory' :
                         $controller->cleanHistory($_gp["tx_jvevents_ajax"]) ;
@@ -192,29 +128,9 @@ class Ajax implements MiddlewareInterface
                         break;
                 }
 
-
-
-
-
-
-
             }
         }
         return $handler->handle($request);
-    }
-
-    /**
-     * check if value contain one of unwanted sign that fills log with tried  SQL injections
-     *
-     * @param string $value
-     * @return bool
-     */
-    public function hasBadValue( string $value ) {
-        $badValues= [ "'" , ";" , "("] ;
-        foreach( $badValues as $badValue) {
-            if( strpos( $value , $badValue ) > 0  ) { return true ;}
-        }
-        return false ;
     }
 
     /**
@@ -228,18 +144,6 @@ class Ajax implements MiddlewareInterface
 
         // 6.2.2020 with teaserText and files
         // 27.1.2021 LTS 10 : wegfall &eID=jv_events und uid, dafür Page ID der Seite mit der Liste : z.b. "id=110"
-        // https://wwwv11.allplan.com.ddev.site/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=4308&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[mode]=onlyValues
-        // wird zu :
-        // https://wwwv11.allplan.com.ddev.site/?id=110&L=1&tx_jvevents_ajax[event]=4308&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[mode]=onlyValues
-
-
-        // https://wwwv11.allplan.com.ddev.site/de/?uid=82&L=1&tx_jvevents_ajax[event]=4308&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[mode]=onlyValues
-
-        // https://wwwv11.allplan.com.ddev.site/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=94&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[rss]=1
-        // https://wwwv11.allplan.com.ddev.site/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=94&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[mode]=onlyValues
-
-        // https://www-dev.allplan.com/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=2049&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][sameCity]=&tx_jvevents_ajax[eventsFilter][skipEvent]=2049&tx_jvevents_ajax[eventsFilter][startDate]=1&tx_jvevents_ajax[rss]=1
-        // https://www-dev.allplan.com/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=2049&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][sameCity]=&tx_jvevents_ajax[eventsFilter][skipEvent]=2049&tx_jvevents_ajax[eventsFilter][startDate]=1&tx_jvevents_ajax[mode]=onlyValues
 
         // 2024
         // https://wwwv12.allplan.com.ddev.site/?id=13001&L=1&tx_jvevents_ajax[event]=4308&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[mode]=onlyJson&tx_jvevents_ajax[apiToken]=testTestTest&&tx_jvevents_ajax[user]=11
@@ -259,7 +163,7 @@ class Ajax implements MiddlewareInterface
         if (!$arguments) {
             $arguments = GeneralUtility::_GPmerged('tx_jvevents_ajax');
         }
-        $pid = GeneralUtility::_GP('id');
+        $pid = ( $_GET[$var] ?? 0 ) ;
         $ts = TyposcriptUtility::loadTypoScriptFromRequest($request, "tx_jvevents_events");
         if (is_array($this->settings) && is_array($ts)) {
             $this->settings = array_merge($ts['settings']);
@@ -270,7 +174,7 @@ class Ajax implements MiddlewareInterface
 
 
         // get all Access infos, Location infos , find similar events etc
-        $output = $this->eventsListMenuSub($arguments);
+        $output = $this->eventsListMenuSub($arguments , $request);
 
         if ($output['mode'] == "onlyValues") {
             unset($output['events']);
@@ -335,58 +239,93 @@ class Ajax implements MiddlewareInterface
      *
      * @return array
      */
-    public function eventsListMenuSub(array $arguments )
+    public function eventsListMenuSub(array $arguments , $request )
     {
+
+        /* ************************************************************************************************************ */
+        /*   Check if Authorized /has License
+        /* ************************************************************************************************************ */
+
+
+        $isAutorized = FALSE ;
+        $debug[] = date( "H:i:s") . " - " . __METHOD__ . " - " . __LINE__ ;
         $apiLicense = TokenUtility::checkLicense (isset($arguments['apiToken'])  ? (string)$arguments['apiToken'] : null ,
                                                                                   isset($arguments['user'] ) ? (int)$arguments['user'] : null ) ;
-
+        $debug[] = "apiLicense: " . $apiLicense ;
         if( ! $apiLicense ) {
             $isAutorized = TokenUtility::checkToken(($arguments['apiToken']) ?? null ) ;
-            $apiLicense = $isAutorized ? "DEMO" : "BLOCKED" ;
-
+            $apiLicense = $isAutorized ? "BASIC" : "DEMO" ;
+            $debug[] = "apiLicense: " . $apiLicense ;
         } else {
             $isAutorized = TRUE ;
         }
 
-        $licencseLimits = [ "DEMO" => 3 , "BASIC" => 10 , "FULL" => 250 ] ;
-        $arguments['limit'] = ($licencseLimits[$apiLicense] ?? 0 ) ;
+
+        if( ! $isAutorized ) {
+            // ToDO : BLOCK Request URL by referrer . For now we just set the License to DEMO if not authorized
+            $isReferrerBlocked = FALSE ;
+            if ( $isReferrerBlocked ) {
+                return [
+                    "license" => $apiLicense ,
+                    "isAutorized" => $isAutorized
+                ] ;
+            }
+        }
+        // ToDO make this configurable
+        $licencseLimits = [ "DEMO" => 2 , "BASIC" => 3 , "FULL" => 250 ] ;
+
+
+        $arguments['limit'] = ($licencseLimits[$apiLicense] ?? 1 ) ;
 
         //  $GLOBALS['TSFE']->fe_user->user = [ 'uid' => 476 , "username" => "jvel@test.de" , "1,2,3,4,5,6,7"] ;
         /* ************************************************************************************************************ */
         /*   Prepare the Output :
         /* ************************************************************************************************************ */
-        $feuser = intval(  $GLOBALS['TSFE']->fe_user->user['uid']) ;
+
 
         $output = array (
             "requestId" =>  intval( $GLOBALS['TSFE']->id ) ,
+            "requestFrom" =>  $_SERVER['REMOTE_ADDR'] ,
+            "requestedUser" =>  ($arguments['user'] ?? 0),
 
-            "event" => array()  ,
-            "events" => array()  ,
-            "eventsFilter" => array()  ,
-            "eventsByFilter" => array()  ,
+            "event" => [] ,
+            "events" => []  ,
+            "eventsFilter" => []  ,
+            "eventsByFilter" => []  ,
             "license" => $apiLicense ,
             "licenseLimit" => $arguments['limit'] ,
             "isAutorized" => $isAutorized ,
+            "feuser" => [] ,
             "mode" => $arguments['mode'] ,
-            "feuser" => array(
-                "uid" => $GLOBALS['TSFE']->fe_user->user['uid'] ,
-                "username" => $GLOBALS['TSFE']->fe_user->user['username'] ,
-                "usergroup" => $GLOBALS['TSFE']->fe_user->user['usergroup'] ,
-                "isOrganizer" => $this->isUserOrganizer(),
-
-            )  ,
-            "organizer" => array() ,
-            "location" => array() ,
+            "organizer" => [] ,
+            "location" => [] ,
 
         ) ;
-        if ( $output["feuser"]["isOrganizer"]) {
-            $feuserOrganizer = $this->organizerRepository->findByUserAllpages(intval($GLOBALS['TSFE']->fe_user->user['uid']), FALSE, TRUE);
-            if ( is_object($feuserOrganizer->getFirst())) {
-                $output["feuser"]["organizer"]['uid'] = $feuserOrganizer->getFirst()->getUid() ;
+
+        if( $apiLicense == "FULL" || 1==1) {
+            // Todo : Restrict this to only requests from same server
+            if( $request && $_SERVER['REMOTE_ADDR'] === $_SERVER['SERVER_ADDR']) {
+                $frontendUser = $request->getAttribute('frontend.user');
+                $output["feuser"] =[
+                    "uid" => $frontendUser->user['uid'],
+                    "username" => $frontendUser->user['username'],
+                    "usergroup" => $frontendUser->user['usergroup'],
+                    "isOrganizer" => $this->isUserOrganizer()
+                ] ;
+                if ( $output["feuser"]["isOrganizer"]) {
+                    $feuserOrganizer = $this->organizerRepository->findByUserAllpages(intval($GLOBALS['TSFE']->fe_user->user['uid']), FALSE, TRUE);
+                    if ( is_object($feuserOrganizer->getFirst())) {
+                        $output["feuser"]["organizer"]['uid'] = $feuserOrganizer->getFirst()->getUid() ;
+                    }
+                }
+                if( $output["feuser"]['uid'] != $output["requestedUser"] ) {
+                    unset( $output["feuser"]) ;
+                }
+
             }
-
+        } else {
+            $output["licenseRestrictions"][] = "restricted to max: " . $arguments['limit'] . " Events" ;
         }
-
 
         if(  $arguments['returnPid']  > 0 ) {
             $output['returnPid'] = $arguments['returnPid']  ;
@@ -408,9 +347,14 @@ class Ajax implements MiddlewareInterface
 
         $needToStore = FALSE ;
         /* ************************************************************************************************************ */
-        /*   Get infos about: EVENT
+        /*   Get infos about: Single EVENT but not if DEMO
         /* ************************************************************************************************************ */
-
+        if ($apiLicense == "DEMO") {
+            if( isset($event)) {
+                $output['licenseRestrictions'][] = "removed: argument event" ;
+                unset($arguments['event']);
+            }
+        }
         if( $arguments['event']  > 0 ) {
             $output['event']['requestId'] =  $arguments['event']  ;
 
@@ -425,7 +369,7 @@ class Ajax implements MiddlewareInterface
 
 
                 ### nmode to sub FUnction
-                $output['event'] = $this->mapEvent2Output( $site , $event , $singlePid ) ;
+                $output['event'] = $this->mapEvent2Output($site, $event, $singlePid , $apiLicense);
 
                 if( is_object( $event->getOrganizer() )) {
                     $organizer = $event->getOrganizer() ;
@@ -461,20 +405,43 @@ class Ajax implements MiddlewareInterface
             }
         }
 
+        /* ************************************************************************************************************ */
+        /*   Get infos about: EVENTS by Filter
+        /* ************************************************************************************************************ */
+
         if( $arguments['eventsFilter']  ) {
-            // unset arguments taht require a License
-            if( ! $isAutorized ) {
-                unset( $arguments['eventsFilter']['categories'] ) ;
-                unset( $arguments['eventsFilter']['organizer'] ) ;
-                unset( $arguments['eventsFilter']['location'] ) ;
-                unset( $arguments['eventsFilter']['sameCity'] ) ;
-            } else {
+
+            /* ************************************************************************************************************ */
+            // First unset arguments that require a License
+            /* ************************************************************************************************************ */
+
+            if ($apiLicense != "FULL") {
+
                 if ($apiLicense == "DEMO") {
-                    unset($arguments['eventsFilter']['organizer']);
+                    if (isset($arguments['eventsFilter']['organizer'])) {
+                        $output['licenseRestrictions'][] = "removed: argument organizer";
+                        unset($arguments['eventsFilter']['organizer']);
+                    }
+                    if( isset($arguments['eventsFilter']['categories'])) {
+                        $output['licenseRestrictions'][] = "removed: argument categories" ;
+                        unset( $arguments['eventsFilter']['categories'] ) ;
+                    }
+                }
+                if( isset($arguments['eventsFilter']['location'])) {
+                    $output['licenseRestrictions'][] = "removed: argument location" ;
                     unset($arguments['eventsFilter']['location']);
+                }
+                if( isset($arguments['eventsFilter']['sameCity'])) {
+                    $output['licenseRestrictions'][] = "removed: argument sameCity" ;
                     unset($arguments['eventsFilter']['sameCity']);
                 }
+                if( isset($arguments['eventsFilter']['startDate'])) {
+                    $output['licenseRestrictions'][] = "argument startDate set to -1" ;
+                    $arguments['eventsFilter']['startDate'] = 0 ;
+                }
+
             }
+
 
             $output['eventsFilter'] = $arguments['eventsFilter'] ;
 
@@ -526,6 +493,7 @@ class Ajax implements MiddlewareInterface
                             $tempEventArray['startDate'] = $tempEvent->getStartDate()->format("d.m.Y");
                             $tempEventArray['startDateTstamp'] = $tempEvent->getStartDate()->getTimestamp();
 
+                            // todo :check by License DEMO, BASIC, FULL
                             if ( $isAutorized ) {
                                 $tempEventArray['created'] = date("d.m.Y" , $tempEvent->getCrdate() );
                                 $tempEventArray['lastUpdated'] = date("d.m.Y" , $tempEvent->getLastUpdated());
@@ -549,13 +517,15 @@ class Ajax implements MiddlewareInterface
                                 } else {
                                     $tempEventArray['TeaserImageFrom'] =  "NotFound" ;
                                 }
-                                $tempEventArray['tags']=[] ;
-                                foreach ($tempEvent->getTags() as $tag) {
-                                    $tempEventArray['tags'][] = [ "uid" => $tag->getUid() , "name" => $tag->getName() ] ;
-                                }
-                                /** @var Category $category */
-                                foreach ( $tempEvent->getEventCategory() as $category) {
-                                    $tempEventArray['category'] = [ "uid" => $category->getUid() , "title" => $category->getTitle() ] ;
+                                if ($apiLicense == "FULL") {
+                                    $tempEventArray['tags']=[] ;
+                                    foreach ($tempEvent->getTags() as $tag) {
+                                        $tempEventArray['tags'][] = [ "uid" => $tag->getUid() , "name" => $tag->getName() ] ;
+                                    }
+                                    /** @var Category $category */
+                                    foreach ( $tempEvent->getEventCategory() as $category) {
+                                        $tempEventArray['category'] = [ "uid" => $category->getUid() , "title" => $category->getTitle() ] ;
+                                    }
                                 }
 
                             }
@@ -591,7 +561,7 @@ class Ajax implements MiddlewareInterface
                                 }
                             }
                             if ( $isAutorized && !is_array($output['event'] ) ) {
-                                $output['event'] = $this->mapEvent2Output( $site , $tempEvent , $singlePid ) ;
+                                $output['event'] = $this->mapEvent2Output( $site , $tempEvent , $singlePid , $apiLicense) ;
                             }
                             $output['eventsByFilter'][] = $tempEventArray;
                             unset( $tempEventArray );
@@ -605,55 +575,58 @@ class Ajax implements MiddlewareInterface
 
         }
         /* ************************************************************************************************************ */
-        /*   Get infos about: Location
+        /*   Get infos about: Location only if is Authorized
         /* ************************************************************************************************************ */
-        if( $arguments['location'] > 0 && !is_object($location ) ) {
-            $output['location']['requestId'] = $arguments['location'] ;
+        if ( $isAutorized) {
+            if( $arguments['location'] > 0 && !is_object($location ) ) {
+                $output['location']['requestId'] = $arguments['location'] ;
 
-            /** @var Event $event */
-            $location = $this->locationRepository->findByUidAllpages( $arguments['location'], FALSE, TRUE);
+                /** @var Event $event */
+                $location = $this->locationRepository->findByUidAllpages( $arguments['location'], FALSE, TRUE);
 
-        }
+            }
 
-        // Location is set either by Event OR by location uid from request
-        if( is_object($location )) {
-            $output['location']['locationId'] = $location->getUid() ;
-            $output['location']['locationName'] = $location->getName();
-            $output['location']['streetAndNr'] = $location->getStreetAndNr() ;
-            $output['location']['zip'] = $location->getZip() ;
-            $output['location']['city'] = $location->getCity() ;
-            $output['location']['link'] = $location->getLink() ;
-            $output['location']['description'] = $location->getDescription() ;
-            $output['location']['country'] = $location->getCountry() ;
-            $output['location']['lat'] = $location->getLat() ;
-            $output['location']['lng'] = $location->getLng() ;
+            // Location is set either by Event OR by location uid from request
+            if( is_object($location )) {
+                $output['location']['locationId'] = $location->getUid() ;
+                $output['location']['locationName'] = $location->getName();
+                $output['location']['streetAndNr'] = $location->getStreetAndNr() ;
+                $output['location']['zip'] = $location->getZip() ;
+                $output['location']['city'] = $location->getCity() ;
+                if ($apiLicense == "FULL") {
+                    $output['location']['link'] = $location->getLink() ;
+                    $output['location']['description'] = $location->getDescription() ;
+                    $output['location']['country'] = $location->getCountry() ;
+                    $output['location']['lat'] = $location->getLat() ;
+                    $output['location']['lng'] = $location->getLng() ;
 
-            if( is_object( $location->getOrganizer() )) {
-                $organizer = $location->getOrganizer() ;
-                $output['location']['organizerId'] = $organizer->getUid()  ;
-                $output['location']['organizerEmail'] = $organizer->getEmail()  ;
-                $output['location']['hasAccess'] = $this->hasUserAccess( $organizer ) ;
+                    if( is_object( $location->getOrganizer() )) {
+                        $organizer = $location->getOrganizer() ;
+                        $output['location']['organizerId'] = $organizer->getUid()  ;
+                        $output['location']['organizerEmail'] = $organizer->getEmail()  ;
+                        $output['location']['hasAccess'] = $this->hasUserAccess( $organizer ) ;
 
+                    }
+                }
             }
 
         }
         /* ************************************************************************************************************ */
         /*   Get infos about: Organizer
         /* ************************************************************************************************************ */
-        if(  isset( $arguments['organizer']) &&  $arguments['organizer'] > 0  && !is_object($organizer ) ) {
-            $output['organizer']['requestId'] =  $arguments['organizer'];
+        if ( $isAutorized) {
+            if(  isset( $arguments['organizer']) &&  $arguments['organizer'] > 0  && !is_object($organizer ) ) {
+                $output['organizer']['requestId'] =  $arguments['organizer'];
 
-            /** @var Organizer $organizer */
-            $organizer = $this->organizerRepository->findByUidAllpages(  $arguments['organizer'], FALSE, TRUE);
-        }
+                /** @var Organizer $organizer */
+                $organizer = $this->organizerRepository->findByUidAllpages(  $arguments['organizer'], FALSE, TRUE);
+            }
 
-        // Location is set either by Event OR by location uid from request
-        if( is_object($organizer )) {
-            $output['organizer']['organizerId'] = $organizer->getUid() ;
-            $output['organizer']['hasAccess'] = $this->hasUserAccess( $organizer ) ;
-
-
-
+            // Location is set either by Event OR by location uid from request
+            if( is_object($organizer )) {
+                $output['organizer']['organizerId'] = $organizer->getUid() ;
+                $output['organizer']['hasAccess'] = $this->hasUserAccess( $organizer ) ;
+            }
         }
         if( $needToStore) {
             $this->persistenceManager->persistAll();
@@ -662,7 +635,7 @@ class Ajax implements MiddlewareInterface
 
     }
 
-    public function mapEvent2Output( $site , $event , $singlePid ) {
+    public function mapEvent2Output( $site , $event , $singlePid , $apiLicense) {
         $return['eventId'] = $event->getUid() ;
         $return['viewed'] = $event->getViewed();
         $return['canceled'] = $event->getCanceled();
@@ -676,9 +649,7 @@ class Ajax implements MiddlewareInterface
             $return['endTime'] = date( "H:i" , $event->getEndTime()) ;
         }
 
-        $return['creationTime'] = date( "d.m.Y H:i" , $event->getCrdate() ) ;
-        $return['crdate'] =  $event->getCrdate()  ;
-        $return['noNotification'] = $event->getNotifyRegistrant() ;
+
 
         if ( $site ) {
             try {
@@ -720,13 +691,22 @@ class Ajax implements MiddlewareInterface
                 $return['teaserImageUrl'] = GeneralUtility::getIndpEnv("TYPO3_REQUEST_HOST") . trim($this->settings['EmConfiguration']['imgUrl']) ;
             }
         }
+        $return['price'] = round( $event->getPrice() , 2 ) ;
+        $return['currency'] = $event->getCurrency() ;
+
+        if ($apiLicense != "FULL") {
+            return $return ;
+        }
+        $return['creationTime'] = date( "d.m.Y H:i" , $event->getCrdate() ) ;
+        $return['crdate'] =  $event->getCrdate()  ;
+        $return['noNotification'] = $event->getNotifyRegistrant() ;
+
         $return['filesAfterReg'] = $this->getFilesArray( $event->getFilesAfterReg() )  ;
         $return['filesAfterEvent'] = $this->getFilesArray( $event->getFilesAfterEvent() )  ;
 
 
 
-        $return['price'] = round( $event->getPrice() , 2 ) ;
-        $return['currency'] = $event->getCurrency() ;
+
         $return['priceReduced'] = $event->getPriceReduced();
         $return['priceReducedText'] = $event->getPriceReducedText();
 
