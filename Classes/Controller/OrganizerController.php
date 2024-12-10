@@ -232,6 +232,16 @@ class OrganizerController extends BaseController
             $locations = $this->locationRepository->findByOrganizersAllpages( $organizerUids , false, FALSE ,  false , "latestEventDESC" , '-30 DAY') ;
             $this->view->assign('organizer', $organizer);
             $this->view->assign('locations', $locations);
+            $accessUserUids = GeneralUtility::trimExplode("," , ( $organizer->getAccessUsers() ?? "0")) ;
+
+            /** @var FrontendUserRepository $userRepository */
+            $userRepository = GeneralUtility::makeInstance(FrontendUserRepository::class) ;
+            foreach ( $accessUserUids as $key => $accessUserUid ) {
+                /** @var FrontendUser $user */
+                $this->settings['accessUsers'][] = $userRepository->findByUid($accessUserUid)  ;
+            }
+
+            $this->view->assign('settings', $this->settings);
         } else {
             $this->addFlashMessage($this->translate("error.general.entry_not_found"), "Sorry!" , \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING) ;
         }

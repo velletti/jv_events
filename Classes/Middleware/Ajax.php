@@ -302,7 +302,7 @@ class Ajax implements MiddlewareInterface
 
         ) ;
 
-        if( $apiLicense == "FULL" || 1==1) {
+        if( $apiLicense == "FULL") {
             // Todo : Restrict this to only requests from same server
             if( $request && $_SERVER['REMOTE_ADDR'] === $_SERVER['SERVER_ADDR']) {
                 $frontendUser = $request->getAttribute('frontend.user');
@@ -408,9 +408,8 @@ class Ajax implements MiddlewareInterface
         /* ************************************************************************************************************ */
         /*   Get infos about: EVENTS by Filter
         /* ************************************************************************************************************ */
-
         if( $arguments['eventsFilter']  ) {
-
+            $arguments['eventsFilter']['maxEvents'] = $arguments['limit'] ;
             /* ************************************************************************************************************ */
             // First unset arguments that require a License
             /* ************************************************************************************************************ */
@@ -442,10 +441,9 @@ class Ajax implements MiddlewareInterface
 
             }
 
-
             $output['eventsFilter'] = $arguments['eventsFilter'] ;
 
-            if ( $output['eventsFilter']['sameCity'] ) {
+            if ( isset($output['eventsFilter']['sameCity']) ) {
                 $output['eventsFilter']['citys'] = $output['event']['locationId']  ;
                 if( is_object( $location )) {
                     $dist = intval( $output['eventsFilter']['sameCity'] ) ;
@@ -465,8 +463,7 @@ class Ajax implements MiddlewareInterface
                     }
                 }
             }
-
-            // $this->settings['debug'] = 2 ;
+            // $this->settings['debugQuery'] = 2 ;
             /** @var QueryResultInterface $events */
             $events = $this->eventRepository->findByFilter( $output['eventsFilter'], $arguments['limit'],  $this->settings );
             if( count( $events ) > 0 ) {
@@ -482,7 +479,6 @@ class Ajax implements MiddlewareInterface
                     } else {
 
                         $tempEventsArray = $events->toArray() ;
-
                         foreach ( $tempEventsArray as $tempEvent ) {
 
                             $tempEventArray = [] ;

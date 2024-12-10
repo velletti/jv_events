@@ -150,7 +150,7 @@
                             <hr>
                             <div><f:link.page class="btn btn-outline-primary m-2 py-0" pageUid="{settings.pageIds.rankingModul}" additionalParams="{tx_jvranking_pi1: {organizer: '{organizer.uid}'}}">
                                 <span class="fas fa-chart-bar "></span>
-                            </f:link.page> <span class="small">Id: {organizer.uid} - Pos: {organizer.sorting} </span>
+                            </f:link.page> <span class="small">Id: {organizer.uid} - Pos: {organizer.sorting} - User: <f:for each="{settings.accessUsers}" as="accessUser">{accessUser.uid}: {accessUser.email}, </f:for></span>
                             </div>
                         </f:security.ifHasRole>
 
