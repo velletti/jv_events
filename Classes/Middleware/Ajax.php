@@ -324,7 +324,7 @@ class Ajax implements MiddlewareInterface
 
             }
         } else {
-            $output["licenseRestrictions"][] = "restricted to max: " . $arguments['limit'] . " Events" ;
+            $output["licenseRestrictions"]["maxEvents"] = "restricted to max: " . $arguments['limit'] . " Events" ;
         }
 
         if(  $arguments['returnPid']  > 0 ) {
@@ -351,7 +351,7 @@ class Ajax implements MiddlewareInterface
         /* ************************************************************************************************************ */
         if ($apiLicense == "DEMO") {
             if( isset($event)) {
-                $output['licenseRestrictions'][] = "removed: argument event" ;
+                $output['licenseRestrictions']['event'] = "removed: argument event" ;
                 unset($arguments['event']);
             }
         }
@@ -409,7 +409,7 @@ class Ajax implements MiddlewareInterface
         /*   Get infos about: EVENTS by Filter
         /* ************************************************************************************************************ */
         if( $arguments['eventsFilter']  ) {
-            $arguments['eventsFilter']['maxEvents'] = $arguments['limit'] ;
+            $arguments['eventsFilter']['maxEvents'] = min((int)$arguments['limit'] , (int)(  $arguments['eventsFilter']['maxEvents'] ) ? (int)$arguments['eventsFilter']['maxEvents'] : (int)$arguments['limit'] ) ;
             /* ************************************************************************************************************ */
             // First unset arguments that require a License
             /* ************************************************************************************************************ */
@@ -418,24 +418,24 @@ class Ajax implements MiddlewareInterface
 
                 if ($apiLicense == "DEMO") {
                     if (isset($arguments['eventsFilter']['organizer'])) {
-                        $output['licenseRestrictions'][] = "removed: argument organizer";
+                        $output['licenseRestrictions']['organizer'] = "removed: argument organizer";
                         unset($arguments['eventsFilter']['organizer']);
                     }
                     if( isset($arguments['eventsFilter']['categories'])) {
-                        $output['licenseRestrictions'][] = "removed: argument categories" ;
+                        $output['licenseRestrictions']['categories'] = "removed: argument categories" ;
                         unset( $arguments['eventsFilter']['categories'] ) ;
                     }
                 }
                 if( isset($arguments['eventsFilter']['location'])) {
-                    $output['licenseRestrictions'][] = "removed: argument location" ;
+                    $output['licenseRestrictions']['location'] = "removed: argument location" ;
                     unset($arguments['eventsFilter']['location']);
                 }
                 if( isset($arguments['eventsFilter']['sameCity'])) {
-                    $output['licenseRestrictions'][] = "removed: argument sameCity" ;
+                    $output['licenseRestrictions']['sameCity'] = "removed: argument sameCity" ;
                     unset($arguments['eventsFilter']['sameCity']);
                 }
                 if( isset($arguments['eventsFilter']['startDate'])) {
-                    $output['licenseRestrictions'][] = "argument startDate set to -1" ;
+                    $output['licenseRestrictions']['startDate'] = "argument startDate set to -1" ;
                     $arguments['eventsFilter']['startDate'] = 0 ;
                 }
 
