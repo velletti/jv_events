@@ -449,7 +449,7 @@ class ProcessDatamap {
         /*
         * May 2019: as we need this new feature BEFORE we need to know if we talk to NEW or  OLD Salesforce
         */
-        if ( $_SERVER['SERVER_NAME'] == "www.allplan.com.ddev.local") {
+        if ( $_SERVER['SERVER_NAME'] == "www.allplan.com.ddev.site") {
             $data['OwnerId']  =   $settings['SFREST']['id'] ;
             $this->flashMessage['NOTICE'][] = 'On www.allplan.com.ddev.local  OwernId is always set to: ' . $data['OwnerId'] ;
 

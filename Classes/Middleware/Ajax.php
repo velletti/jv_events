@@ -48,8 +48,9 @@ class Ajax implements MiddlewareInterface
     {
         $_gp = $request->getQueryParams();
         // examples:
-        // https://wwwv11.allplan.com.ddev.site/?id=110&L=1&tx_jvevents_ajax[event]=4308&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[mode]=onlyValues
+        // https://wwwv11.allplan.com.ddev.site/?id=13001&L=1&tx_jvevents_ajax[event]=4308&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[mode]=onlyValues
         // https://tangov10.ddev.site/?id=110&L=1&tx_jvevents_ajax[event]=4308&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[mode]=onlyValues
+        // https://wwwv11.allplan.com.ddev.site/?id=13001&L=1&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][startDate]=-1&tx_jvevents_ajax[mode]=onlyValues&tx_jvevents_ajax[eventsFilter][apiToken]=TEST
 
         // FIx Broken URL : https://tangov10.ddev.site/de/eventlist.html?tx_jvevents_events  but no values
         if( is_array($_gp) && key_exists("tx_jvevents_events" ,$_gp ) && is_string($_gp['tx_jvevents_events'] )  ) {
@@ -111,7 +112,13 @@ class Ajax implements MiddlewareInterface
 
             $function = strtolower( trim($_gp['tx_jvevents_ajax']['action'])) ;
             if( $function == "eventlist"  ) {
-                $this->getEventList( $_gp["tx_jvevents_ajax"] ) ;
+                $arguments =$_gp["tx_jvevents_ajax"] ;
+                $apiToken = $request->getHeaderLine('jve-apitoken');
+
+                if (strlen($apiToken) > 10)  {
+                    $arguments['apiToken'] = $apiToken;
+                }
+                $this->getEventList(  $arguments ) ;
 
             } else {
 
@@ -218,6 +225,7 @@ class Ajax implements MiddlewareInterface
         if (!$arguments) {
             $arguments = GeneralUtility::_GPmerged('tx_jvevents_ajax');
         }
+
         $pid = GeneralUtility::_GP('id');
         $ts = TyposcriptUtility::loadTypoScriptFromScratch($pid, "tx_jvevents_events");
         if (is_array($this->settings) && is_array($ts)) {
@@ -225,21 +233,6 @@ class Ajax implements MiddlewareInterface
         } elseif (is_array($ts)) {
             $this->settings = $ts['settings'];
         }
-
-        // 6.2.2020 with teaserText and files
-        // 27.1.2021 LTS 10 : wegfall &eID=jv_events und uid, dafür Page ID der Seite mit der Liste : z.b. "id=110"
-        // https://wwwv11.allplan.com.ddev.site/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=4308&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[mode]=onlyValues
-        // wird zu :
-        // https://wwwv11.allplan.com.ddev.site/?id=110&L=1&tx_jvevents_ajax[event]=4308&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[mode]=onlyValues
-
-
-        // https://wwwv11.allplan.com.ddev.site/de/?uid=82&L=1&tx_jvevents_ajax[event]=4308&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[mode]=onlyValues
-
-        // https://wwwv11.allplan.com.ddev.site/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=94&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[rss]=1
-        // https://wwwv11.allplan.com.ddev.site/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=94&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[mode]=onlyValues
-
-        // https://www-dev.allplan.com/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=2049&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][sameCity]=&tx_jvevents_ajax[eventsFilter][skipEvent]=2049&tx_jvevents_ajax[eventsFilter][startDate]=1&tx_jvevents_ajax[rss]=1
-        // https://www-dev.allplan.com/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=2049&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][sameCity]=&tx_jvevents_ajax[eventsFilter][skipEvent]=2049&tx_jvevents_ajax[eventsFilter][startDate]=1&tx_jvevents_ajax[mode]=onlyValues
 
         // get all Access infos, Location infos , find similar events etc
         $output = $this->eventsListMenuSub($arguments);
@@ -309,7 +302,18 @@ class Ajax implements MiddlewareInterface
      */
     public function eventsListMenuSub(array $arguments )
     {
-        $isAutorized = TokenUtility::checkToken(($arguments['apiToken']) ?? null ) ;
+        // Hard coded for allplan until V12 is not ready
+        $hashShouldBe = "---unset---" ;
+        $isAutorized = false ;
+        if ( isset( $arguments['apiToken'])) {
+            if( hash ( "sha256" ,  $arguments['apiToken'] ) ==  "ea7203bd7649a7b8b091a488300ec9fd043ca976f95d92f51f3206093077373a") {
+                $isAutorized = true ;
+            }
+        } else {
+            $isAutorized = TokenUtility::checkToken(($arguments['apiToken']) ?? null ) ;
+        }
+
+
 
         $arguments['limit'] = $isAutorized ? 250 : 10 ;
 
