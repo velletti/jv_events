@@ -68,6 +68,7 @@ class Ajax implements MiddlewareInterface
 
             $function = strtolower( trim($_gp['tx_jvevents_ajax']['action'])) ;
             if( $function == "eventlist"  ) {
+
                 $this->getEventList( $_gp["tx_jvevents_ajax"] , $request ) ;
 
             } else {
@@ -147,6 +148,7 @@ class Ajax implements MiddlewareInterface
 
         // 2024
         // https://wwwv12.allplan.com.ddev.site/?id=13001&L=1&tx_jvevents_ajax[event]=4308&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[mode]=onlyJson&tx_jvevents_ajax[apiToken]=testTestTest&&tx_jvevents_ajax[user]=11
+        // https://www.allplan.com/?id=13001&L=1&tx_jvevents_ajax[event]=4308&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[mode]=onlyJson&tx_jvevents_ajax[apiToken]=LN-2030-€nTeR-qRm8o-WLcM
         // https://tangov10.ddev.site/index.php?id=150&L=0&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=3&tx_jvevents_ajax[eventsFilter][startDate]=-1&tx_jvevents_ajax[mode]=onlyJson&tx_jvevents_ajax[user]=479&tx_jvevents_ajax[apiToken]=testTestTest
 
 
@@ -163,6 +165,12 @@ class Ajax implements MiddlewareInterface
         if (!$arguments) {
             $arguments = GeneralUtility::_GPmerged('tx_jvevents_ajax');
         }
+        $apiToken = $request->getHeaderLine('jve-apitoken');
+
+        if (strlen($apiToken) > 10)  {
+            $arguments['apiToken'] = $apiToken;
+        }
+
         $pid = ( $_GET[$var] ?? 0 ) ;
         $ts = TyposcriptUtility::loadTypoScriptFromRequest($request, "tx_jvevents_events");
         if (is_array($this->settings) && is_array($ts)) {

@@ -70,11 +70,11 @@ class TokenUtility
         return false ;
     }
 
-    public static function checkLicense( ?string $apiToken , ?int $user  ) :?string
+    public static function checkLicense( ?string $apiToken , ?int $user = 0 ) :?string
     {
 
-        if ( !$apiToken|| !$user  || strlen($apiToken ) < 10 || $user < 1 ) {
-            return null ;
+        if ( !$apiToken ||  strlen($apiToken ) < 10  ) {
+            "BLOCKED" ;
         }
 
         $apiToken = trim($apiToken) ;
@@ -82,16 +82,28 @@ class TokenUtility
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_jvevents_domain_model_token');
         $queryBuilder->getRestrictions()->removeByType( \TYPO3\CMS\Core\Database\Query\Restriction\PageIdListRestriction::class);
         $query = $queryBuilder
-            ->select('license')
+            ->select('license' , 'feuser' , 'referrer')
             ->from('tx_jvevents_domain_model_token')
             ->where(
                 $queryBuilder->expr()->eq('token', $queryBuilder->createNamedParameter($apiToken, \PDO::PARAM_STR))
             )->andWhere(
                   $queryBuilder->expr()->eq('feuser', $queryBuilder->createNamedParameter($user, \PDO::PARAM_INT))
            );
+
+
         $result = $query->executeQuery()->fetchAssociative();
         if($result === false) {
-            return null;
+            return "BLOCKED" ;
+        }
+        if ( !empty( $result['referrer'] )) {
+            $referrer = GeneralUtility::trimExplode( "," , $result['referrer'] , true  ) ;
+            $referrerDomain = parse_url( $_SERVER['HTTP_REFERER'] , PHP_URL_HOST ) ;
+            if ( !empty( $referrer ) && !in_array( $referrerDomain , $referrer ) ) {
+              return  "BLOCKED" ;
+            }
+        }
+        if ( $result['feuser'] > 0 && $result['feuser'] != $user ) {
+            return "BLOCKED" ;
         }
         return $result['license'];
     }
