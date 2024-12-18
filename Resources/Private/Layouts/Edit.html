@@ -10,7 +10,7 @@
 <f:flashMessages as="flashMessages">
 	<f:if condition="{flashMessages}">
 			<f:for each="{flashMessages}" as="flashMessage">
-				<f:switch expression="{flashMessage.severity}">
+				<f:switch expression="{flashMessage.severity.value}">
 					<f:case value="-1">
 						<f:variable name="alertClass">alert-info</f:variable>
 					</f:case>
@@ -35,7 +35,7 @@
 								{flashMessage.message}
 							</f:then>
 							<f:else>
-								<f:if condition="{flashMessage.severity}> 0">
+								<f:if condition="{flashMessage.severity.value}> 0">
 									<f:then>
 										<f:translate key="error.msg_error_check-input">Please check fields below</f:translate>
 									</f:then>

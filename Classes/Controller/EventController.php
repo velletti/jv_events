@@ -569,7 +569,7 @@ class EventController extends BaseController
             }
 
             // if we just do ONE Copy, do not set master ID
-            if ( $copy2Day == 0 ) {
+            if ( (int)$copy2Day == 0 ) {
                 $newEvent->setMasterId( 0 ) ;
             }
             $newDate->add( $diff) ;
@@ -653,7 +653,6 @@ class EventController extends BaseController
                 $affectedRows = $queryBuilder
                     ->insert('sys_file_reference')->values([
                     'uid_local' => $mediaRow['uid_local'] ,
-                    'table_local' => 'sys_file'  ,
                     'uid_foreign' => intval( $eventUid ) ,
                     'tablenames' => 'tx_jvevents_domain_model_event'  ,
                     'fieldname' => 'teaser_image'  ,
@@ -674,7 +673,7 @@ class EventController extends BaseController
             $this->addFlashMessage('The object was updated and Cache of following pages are cleared: ' . implode("," , $clearCachePids), '', ContextualFeedbackSeverity::OK);
         }
         $action = "show" ;
-        if ( $copy2Day == 0 &&  $amount == 1 ) {
+        if ( (int)$copy2Day == 0 &&  (int)$amount == 1 ) {
             $action = "edit" ;
         }
        return $this->redirect($action , null , null , ["event" => $eventUid]) ;
