@@ -16,7 +16,7 @@ return [
       'iconfile' => 'EXT:jv_events/Resources/Public/Icons/tx_jvevents_domain_model_token.svg',
    ],
    'types' => [
-      '1' => ['showitem' => 'name, token, feuser, license, --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access, hidden, starttime, endtime'],
+      '1' => ['showitem' => 'name, token, feuser, license, --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access, hidden, starttime, endtime,referrer'],
    ],
    'columns' => [
       'name' => [
@@ -35,6 +35,15 @@ return [
             'type' => 'input',
             'size' => 80,
             'eval' => 'trim,required',
+         ],
+      ],
+      'referrer' => [
+         'exclude' => true,
+         'label' => 'Allowed referrers list',
+         'config' => [
+            'type' => 'input',
+            'size' => 255,
+            'eval' => 'trim',
          ],
       ],
       'feuser' => [
@@ -57,6 +66,7 @@ return [
                ['DEMO', 'DEMO'],
                ['BASIC', 'BASIC'],
                ['FULL', 'FULL'],
+               ['ENTERPRISE', 'ENTERPRISE'],
             ],
             'default' => 'BLOCKED',
          ],
