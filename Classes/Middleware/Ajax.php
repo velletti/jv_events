@@ -522,6 +522,7 @@ class Ajax implements MiddlewareInterface
                                     $tempEventArray['TeaserImageFrom'] =  "NotFound" ;
                                 }
                                 if ($apiLicense == "FULL") {
+                                    $tempEventArray['description']= $tempEvent->getDescription();
                                     $tempEventArray['tags']=[] ;
                                     foreach ($tempEvent->getTags() as $tag) {
                                         $tempEventArray['tags'][] = [ "uid" => $tag->getUid() , "name" => $tag->getName() ] ;
