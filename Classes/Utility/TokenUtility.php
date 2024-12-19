@@ -74,7 +74,7 @@ class TokenUtility
     {
 
         if ( !$apiToken ||  strlen($apiToken ) < 10  ) {
-            "BLOCKED" ;
+            return "BLOCKED-no-token" ;
         }
 
         $apiToken = trim($apiToken) ;
@@ -93,17 +93,17 @@ class TokenUtility
 
         $result = $query->executeQuery()->fetchAssociative();
         if($result === false) {
-            return "BLOCKED" ;
+            return "BLOCKED-no-license" ;
         }
         if ( !empty( $result['referrer'] )) {
             $referrer = GeneralUtility::trimExplode( "," , $result['referrer'] , true  ) ;
             $referrerDomain = parse_url( $_SERVER['HTTP_REFERER'] , PHP_URL_HOST ) ;
-            if ( !empty( $referrer ) && !in_array( $referrerDomain , $referrer ) ) {
-              return  "BLOCKED" ;
+            if ( !empty( $referrer ) && trim($referrerDomain) != '' && !in_array( $referrerDomain , $referrer ) ) {
+              return  "BLOCKED-wrong-referrer-domain"  . $referrerDomain ;
             }
         }
         if ( $result['feuser'] > 0 && $result['feuser'] != $user ) {
-            return "BLOCKED" ;
+            return "BLOCKED-wrong-user" ;
         }
         return $result['license'];
     }
