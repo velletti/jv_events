@@ -280,7 +280,7 @@ class Ajax implements MiddlewareInterface
             }
         }
         // ToDO make this configurable
-        $licencseLimits = [ "DEMO" => 2 , "BASIC" => 3 , "FULL" => 250 ] ;
+        $licencseLimits = [ "DEMO" => 2 , "BASIC" => 3 , "FULL" => 250 , "ENTERPRISE" => 2000 ] ;
 
 
         $arguments['limit'] = ($licencseLimits[$apiLicense] ?? 1 ) ;
