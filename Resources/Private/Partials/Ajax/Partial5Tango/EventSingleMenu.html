@@ -267,6 +267,12 @@
 
                                                             Viewed: {output.event.banner.impressions} | Clicks: {output.event.banner.clicks}<br/>
 
+
+
+
+                                                        </f:if>
+                                                        <f:if condition="{output.event.banners}">
+                                                            <f:render section="banners" arguments="{banners: output.event.banners, currentEvent: output.event}" />
                                                         </f:if>
                                                     </f:then>
                                                     <f:else>
@@ -318,6 +324,59 @@
             <i class="fas fa-copy "></i> <span class="mx-1">{msgtext}</span>
         </button>
     </f:link.action>
+</f:section>
+
+<f:section name="banners">
+    <f:variable name="width">16</f:variable>
+    <div class="mt-3" style="overflow: hidden">
+        <div  class="row bg-white border-top clearfix small" style="height: {height}px; overflow: hidden">
+            <f:render section="weeks" arguments="{start: banners.now}"></f:render>
+        </div>
+        <f:variable name="hundertPercent">{banners.endTime - banners.now}</f:variable>
+        <f:for each="{banners.rows}" as="banner">
+            <f:variable name="width">16</f:variable>
+            <f:variable name="background">bg-warning</f:variable>
+            <f:if condition="{banner.starttime} > {banners.now}">
+                <f:then>
+                    <f:variable name="background">bg-secondary</f:variable>
+                </f:then>
+            </f:if>
+            <f:if condition="{banner.uid} == {currentEvent.banner.uid}">
+                <f:variable name="background">bg-success</f:variable>
+            </f:if>
+            <f:variable name="height">16</f:variable>
+            <f:variable name="marginright">{banners.endTime - banner.endtime}</f:variable>
+            <f:variable name="marginright">{marginright / hundertPercent}</f:variable>
+            <f:variable name="marginright">{marginright *100}</f:variable>
+            <f:variable name="marginright">{marginright}</f:variable>
+
+            <f:if condition="{marginright + width} > 100">
+                <f:variable name="width">{100 - marginright}</f:variable>
+            </f:if>
+            <f:if condition="{marginright} < 0">
+                <f:then>
+                    <f:variable name="width"><f:cObject typoscriptObjectPath="lib.math">{marginright} * -1</f:cObject></f:variable>
+                    <f:variable name="marginright">0</f:variable>
+                </f:then>
+            </f:if>
+
+            <div class="row bg-white border-top clearfix small" style="height: {height}px; overflow: hidden;">
+                <f:render section="weeks"></f:render>
+                <div class="border border-primary {background} " style="display:inline-block; position:absolute; right: {marginright}%; width:{width}%; Height: {height}px;">
+                </div>
+            </div>
+        </f:for>
+    </div>
+
+</f:section>
+
+<f:section name="weeks">
+    <f:if condition="{start}"><span class="ml-2"><f:format.date format="d.M">{start}</f:format.date></span><f:variable name="start"><f:cObject typoscriptObjectPath="lib.math">{start} + (7 * 3600 * 24)</f:cObject></f:variable></f:if>
+    <div class="border-left h-100" style="position: absolute; display:inline-block; width:1px; left:17%"><f:if condition="{start}"><f:format.date format="d.M">{start}</f:format.date><f:variable name="start"><f:cObject typoscriptObjectPath="lib.math">{start} + (7 * 3600 * 24)</f:cObject></f:variable></f:if></div>
+    <div class="border-left h-100" style="position: absolute; display:inline-block; width:1px; left:33%"><f:if condition="{start}"><f:format.date format="d.M">{start}</f:format.date><f:variable name="start"><f:cObject typoscriptObjectPath="lib.math">{start} + (7 * 3600 * 24)</f:cObject></f:variable></f:if></div>
+    <div class="border-left h-100" style="position: absolute; display:inline-block; width:1px; left:50%"><f:if condition="{start}"><f:format.date format="d.M">{start}</f:format.date><f:variable name="start"><f:cObject typoscriptObjectPath="lib.math">{start} + (7 * 3600 * 24)</f:cObject></f:variable></f:if></div>
+    <div class="border-left h-100" style="position: absolute; display:inline-block; width:1px; left:66%"><f:if condition="{start}"><f:format.date format="d.M">{start}</f:format.date><f:variable name="start"><f:cObject typoscriptObjectPath="lib.math">{start} + (7 * 3600 * 24)</f:cObject></f:variable></f:if></div>
+    <div class="border-left h-100" style="position: absolute; display:inline-block; width:1px; left:83%"><f:if condition="{start}"><f:format.date format="d.M">{start}</f:format.date><f:variable name="start"><f:cObject typoscriptObjectPath="lib.math">{start} + (7 * 3600 * 24)</f:cObject></f:variable></f:if></div>
 </f:section>
 
 

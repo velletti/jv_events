@@ -1251,7 +1251,8 @@ class AjaxController extends BaseController
                 $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_sfbanners_domain_model_banner') ;
                 $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
-                $row = $queryBuilder ->select('uid' , 'starttime', 'endtime', 'impressions','clicks'   ) ->from('tx_sfbanners_domain_model_banner')
+                $row = $queryBuilder ->select('uid' , 'starttime', 'endtime', 'impressions','clicks'   )
+                    ->from('tx_sfbanners_domain_model_banner')
                     ->where( $queryBuilder->expr()->eq('link', $queryBuilder->createNamedParameter($output['event']["eventId"] , \PDO::PARAM_INT)) )
                     ->andWhere( $queryBuilder->expr()->eq('deleted', $queryBuilder->createNamedParameter(0 , \PDO::PARAM_INT)) )
                     ->andWhere( $queryBuilder->expr()->eq('hidden', $queryBuilder->createNamedParameter(0 , \PDO::PARAM_INT)) )
@@ -1259,14 +1260,46 @@ class AjaxController extends BaseController
                     ->setMaxResults(1)
                     ->executeQuery()
                     ->fetchAssociative();
+
                 if ( $row) {
                     $output['event']['banner'] = $row ;
                     if( $row['endtime'] > time() ) {
                         $output['event']['banner']['active'] = true ;
                     }
                 }
-            } catch (Exception) {
-                // ignore
+
+                $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_sfbanners_domain_model_banner') ;
+                $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+                $now = time() ;
+                $endTime = $now + ( 3600 * 24 * 42) ;
+                $rows = $queryBuilder ->select('uid' , 'title', 'starttime', 'endtime', 'impressions','clicks', 'fe_user' ,'organizer'   )
+                    ->from('tx_sfbanners_domain_model_banner')
+                    ->where( $queryBuilder->expr()->eq('deleted', $queryBuilder->createNamedParameter(0 , \PDO::PARAM_INT)) )
+                    ->andWhere( $queryBuilder->expr()->eq('hidden', $queryBuilder->createNamedParameter(0 , \PDO::PARAM_INT)) )
+                    ->andWhere( $queryBuilder->expr()->gte('endtime', $queryBuilder->createNamedParameter( $now , \PDO::PARAM_INT)) )
+                    ->andWhere( $queryBuilder->expr()->lte('starttime', $queryBuilder->createNamedParameter( $endTime , \PDO::PARAM_INT)) )
+                    ->orderBy("endtime" , "ASC")
+                    ->setMaxResults(999)
+                    ->executeQuery()
+                    ->fetchAllAssociative();
+
+
+                if ( $rows) {
+                    $output['event']['banners']['rows'] = $rows ;
+                    $output['event']['banners']['now'] = time();
+                    $output['event']['banners']['endTime'] = $endTime ;
+                    $output['event']['banners']['count'] = count($rows) ;
+
+                    // $output['event']['banners']['query'] = $queryBuilder->getSQL() ;
+                    // $output['event']['banners']['params'] = $queryBuilder->getParameters() ;
+
+                }
+
+
+            } catch (Exception $e) {
+                $output['event']['banners']['error'] = "Error in Banner Query" ;
+                $output['event']['banners']['query'] = $e->getMessage();
             }
         }
         return $output ;
