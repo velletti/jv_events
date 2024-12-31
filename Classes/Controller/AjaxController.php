@@ -1096,7 +1096,7 @@ class AjaxController extends BaseController
      */
     public function eventUnlinkAction( array $arguments=null ) {
         /** @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication $frontendUser */
-        $this->frontendUser->user = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user');
+        $this->frontendUser = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user');
         $output = [];
         if(!$arguments) {
             $arguments = GeneralUtility::_GPmerged('tx_jvevents_ajax');
