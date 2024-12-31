@@ -232,18 +232,32 @@
                                                             </button>
                                                             <span class="">Banner Normal (8 days before event)</span>
                                                         </f:link.page>
+                                                        <form action="{f:uri.page(pageUid: settings.pageIds.bannerModul, additionalParams: {tx_jvbanners_connector: {action: 'create', controller: 'Connector', pluginName: 'Events', event: output.event.eventId, returnPid: output.returnPid}})}" method="get" class="form-inline">
 
-                                                        <f:link.page pageUid="{settings.pageIds.bannerModul}" noCache="true" class="btn btn-sm btn-outline-primary x-1 " title="Add Banner for Event NOW"
-                                                                     additionalParams="{tx_jvbanners_connector: {action: 'create', controller: 'Connector' , pluginName: 'Events',startindays: '1',  event: '{output.event.eventId}' , returnPid: '{output.returnPid}'}}">
-                                                            <span class="">NOW</span>
-                                                        </f:link.page>
-                                                        <span class="m-2">in</span>
-                                                        <f:for each="{0:2, 1:5, 2:7, 3:14, 4:21 , 5:30}" as="days">
-                                                            <f:link.page pageUid="{settings.pageIds.bannerModul}" noCache="true" class="btn btn-sm btn-outline-primary x-1" title="Add Banner for Event in {days} days"
-                                                                         additionalParams="{tx_jvbanners_connector: {action: 'create', controller: 'Connector' , pluginName: 'Events',startindays: '{days}',  event: '{output.event.eventId}' , returnPid: '{output.returnPid}'}}">
-                                                                <span class="">{days} days</span>
+
+                                                            <f:link.page pageUid="{settings.pageIds.bannerModul}" noCache="true" class="btn btn-sm btn-outline-primary x-1 " title="Add Banner for Event NOW"
+                                                                         additionalParams="{tx_jvbanners_connector: {action: 'create', controller: 'Connector' , pluginName: 'Events',startindays: '1',  event: '{output.event.eventId}' , returnPid: '{output.returnPid}'}}">
+                                                                <span class="">NOW</span>
                                                             </f:link.page>
-                                                        </f:for>
+                                                            <span class="m-2">in</span>
+                                                            <f:for each="{0:7, 1:14, 2:21 , 3:28, 4:35}" as="days">
+                                                                <f:link.page pageUid="{settings.pageIds.bannerModul}" noCache="true" class="btn btn-sm btn-outline-primary mx-1 " title="Add Banner for Event in {days} days"
+                                                                             additionalParams="{tx_jvbanners_connector: {action: 'create', controller: 'Connector' , pluginName: 'Events',startindays: '{days}',  event: '{output.event.eventId}' , returnPid: '{output.returnPid}'}}">
+                                                                    <span class=""> {days}d </span>
+                                                                </f:link.page>
+                                                            </f:for>
+
+                                                            <input type="hidden" name="no_cache" value="1">
+                                                            <input type="hidden" name="tx_jvbanners_connector[action]" value="create">
+                                                            <input type="hidden" name="tx_jvbanners_connector[controller]" value="Connector">
+                                                            <input type="hidden" name="tx_jvbanners_connector[pluginName]" value="Events">
+                                                            <input type="hidden" name="tx_jvbanners_connector[event]" value="{output.event.eventId}">
+                                                            <input type="hidden" name="tx_jvbanners_connector[returnPid]" value="{output.returnPid}">
+                                                             <span class="px-1">or</span>
+                                                            <input type="number" class="form-control" id="startindays" value="2" name="tx_jvbanners_connector[startindays]"
+                                                                       placeholder="Days" style="width: 50px;padding:0.2rem">
+                                                            <button type="submit" class="btn btn-outline-primary btn-sm">Days</button>
+                                                        </form>
 
 
 
