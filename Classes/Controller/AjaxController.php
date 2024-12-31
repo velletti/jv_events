@@ -314,7 +314,17 @@ class AjaxController extends BaseController
                 $output['event']['filesAfterReg'] = $this->getFilesArray( $event->getFilesAfterReg() )  ;
                 $output['event']['filesAfterEvent'] = $this->getFilesArray( $event->getFilesAfterEvent() )  ;
 
+                $output['event']['categoryId'] = false ;
+                if( is_object( $event->getEventCategory() ) ) {
+                    $output['event']['categoryId'] = "object" ;
+                    if ( is_array($event->getEventCategory()->toArray() ) ) {
+                        $output['event']['categoryId'] = "array" ;
+                        if ( count($event->getEventCategory()->toArray() ) > 0 ) {
 
+                            $output['event']['categoryId'] = $event->getEventCategory()->toArray()[0]->getUid() ;
+                        }
+                    }
+                }
 
                 $output['event']['price'] = round( $event->getPrice() , 2 ) ;
                 $output['event']['currency'] = $event->getCurrency() ;
@@ -652,14 +662,15 @@ class AjaxController extends BaseController
         // https://www.allplan.com.ddev.local/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=94&tx_jvevents_ajax[action]=eventMenu&tx_jvevents_ajax[controller]=Ajax
         // https://www.allplan.com.ddev.local/index.php?uid=82&eID=jv_events&tx_jvevents_ajax[event]=2934&tx_jvevents_ajax[action]=eventMenu&tx_jvevents_ajax[mode]=onlyValues
         $output = $this->eventsListMenuSub($arguments) ;
+        if( ExtensionManagementUtility::isLoaded("jv_banners")) {
+            $output = $this->getBannerById( $output ) ;
+        }
         if ( $output['mode'] == "onlyValues") {
             unset( $output['events'] ) ;
             ShowAsJsonArrayUtility::show(  $output ) ;
         }
 
-        if( ExtensionManagementUtility::isLoaded("jv_banners")) {
-            $output = $this->getBannerById( $output ) ;
-        }
+
 
         /* ************************************************************************************************************ */
         /*   render the HTML Output :
@@ -1273,14 +1284,23 @@ class AjaxController extends BaseController
 
                 $now = time() ;
                 $endTime = $now + ( 3600 * 24 * 42) ;
-                $rows = $queryBuilder ->select('uid' , 'title', 'starttime', 'endtime', 'impressions','clicks', 'fe_user' ,'organizer'   )
+                $queryBuilder ->select('uid' , 'title', 'starttime', 'endtime', 'impressions','clicks', 'fe_user' ,'organizer'   )
                     ->from('tx_sfbanners_domain_model_banner')
                     ->where( $queryBuilder->expr()->eq('deleted', $queryBuilder->createNamedParameter(0 , \PDO::PARAM_INT)) )
                     ->andWhere( $queryBuilder->expr()->eq('hidden', $queryBuilder->createNamedParameter(0 , \PDO::PARAM_INT)) )
                     ->andWhere( $queryBuilder->expr()->gte('endtime', $queryBuilder->createNamedParameter( $now , \PDO::PARAM_INT)) )
                     ->andWhere( $queryBuilder->expr()->lte('starttime', $queryBuilder->createNamedParameter( $endTime , \PDO::PARAM_INT)) )
                     ->orderBy("endtime" , "ASC")
-                    ->setMaxResults(999)
+                    ->setMaxResults(999) ;
+                if( $output['event']["categoryId"] == 1 ) {
+                    // banner tanzen
+                    $queryBuilder->andWhere( $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter( 56 , \PDO::PARAM_INT)) ) ;
+                } elseif ( $output['event']["categoryId"] == 2 ) {
+                    // banner lernen
+                    $queryBuilder->andWhere( $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter(135 , \PDO::PARAM_INT)) ) ;
+                }
+
+                $rows = $queryBuilder
                     ->executeQuery()
                     ->fetchAllAssociative();
 
