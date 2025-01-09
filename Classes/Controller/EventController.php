@@ -948,8 +948,11 @@ class EventController extends BaseController
                         $this->addFlashMessage('The Banner ' .  $row['uid'] . ' will be deleted also soon. (<4 h) ', '', ContextualFeedbackSeverity::OK);
                     }
                 }
-
-                $this->eventRepository->remove($event) ;
+                try {
+                    $this->eventRepository->remove($event) ;
+                } catch ( \Exception $e ) {
+                    $this->addFlashMessage($e->getMessage() , 'Error', ContextualFeedbackSeverity::WARNING);
+                }
 
                 if( $masterId && $deleteFutureEvents) {
                     $querysettings =$this->subeventRepository->getTYPO3QuerySettings() ;
@@ -973,7 +976,11 @@ class EventController extends BaseController
                                 if ( intval($this->frontendUser->user['uid'] ) ) {
                                     $otherEvent->setLastUpdatedBy(intval($this->frontendUser->user['uid'] ) );
                                 }
-                                $this->eventRepository->remove($otherEvent) ;
+                                try {
+                                    $this->eventRepository->remove($event) ;
+                                } catch ( \Exception $e ) {
+                                    $this->addFlashMessage($e->getMessage() , 'Error', ContextualFeedbackSeverity::WARNING);
+                                }
                             }
                         }
                         $otherDaysText .= " also deleted." ;

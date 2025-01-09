@@ -40,7 +40,8 @@ class SlugUtility {
         }
         $objectId = $recordData['uid'] ? $recordData['uid'] : 0 ;
         if (!self::isUnique( $proposal , $tableName , $fieldName , $uniquePid , $objectId, $recordData['sys_language_uid'])) {
-
+            return  $proposal . '-' . ( $objectId ?? substr(md5(time()), 0, 8)) ;
+            /*
             $counter = 0;
             while ( $counter++ < 100 ) {
                 $newValue = $proposal. '-' . $counter ;
@@ -48,7 +49,7 @@ class SlugUtility {
                     return  $newValue ;
                 }
             }
-            return  $proposal . '-' . substr(md5($proposal), 0, 10) ;
+            */
         }
         return $proposal ;
     }
