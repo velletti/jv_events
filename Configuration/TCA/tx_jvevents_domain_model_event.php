@@ -1424,9 +1424,13 @@ if ( $configuration['RegistrationPid'] > 0 ) {
             'generatorOptions' => [
                 'fields' => [['name'],['start_date']],
                 'fieldSeparator' => '-',
-
+                'postModifiers' => [
+                   JVelletti\JvEvents\Utility\SlugUtility::class . "->modifySlug"
+                ],
                 'replacements' => [
-                    '/' => '-'
+                    '/' => '-',
+                    '&' => '-',
+                    't000000z' => '',
                 ],
             ],
             'prependSlash' => false,
