@@ -1229,9 +1229,7 @@ class EventController extends BaseController
     }
 
     private function setRegistrationUntilDate( Event $event) {
-        if ( $this->settings['EmConfiguration'] ) {
-            $event->setRegistrationUntil(null) ;
-        } else {
+        if ( isset($this->settings['EmConfiguration']['RegistrationUntilDefaultDate']) && $this->settings['EmConfiguration']['RegistrationUntilDefaultDate'] == 1 ) {
             $newRegDate = new DateTime(  ) ;
             $newRegTimestamp= $event->getStartDate()->getTimestamp() ;
             $newRegDate->setTimestamp($newRegTimestamp) ;
@@ -1241,6 +1239,8 @@ class EventController extends BaseController
             }
             $newRegDate->setTime($addHours,0,0);
             $event->setRegistrationUntil($newRegDate) ;
+        } else {
+            $event->setRegistrationUntil(null) ;
         }
 
         return $event ;
