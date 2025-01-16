@@ -40,8 +40,7 @@ class SlugUtility {
         }
         $objectId = $recordData['uid'] ? $recordData['uid'] : 0 ;
         if (!self::isUnique( $proposal , $tableName , $fieldName , $uniquePid , $objectId, $recordData['sys_language_uid'])) {
-            return  $proposal . '-' . ( $objectId ?? substr(md5(time()), 0, 8)) ;
-            /*
+
             $counter = 0;
             while ( $counter++ < 100 ) {
                 $newValue = $proposal. '-' . $counter ;
@@ -49,11 +48,31 @@ class SlugUtility {
                     return  $newValue ;
                 }
             }
-            */
+            return  $proposal . '-' . ( $objectId ?? substr(md5(time()), 0, 8)) ;
         }
         return $proposal ;
     }
 
+    /** remove time string from start_date (t00000z ) from slug
+     * @param array $data
+     * @return string
+     */
+    public static function modifySlug($data) : string
+    {
+        /*
+        [
+           'slug', // ...  the slug to be used
+           'workspaceId', // ...  the workspace ID, "0" if in live workspace
+           'configuration', // ...  the configuration of the TCA field
+           'record', // ...  the full record to be used
+           'pid', // ...  the resolved parent page ID
+           'prefix', // ...  the prefix that was added
+           'tableName', // ...  the table of the slug field
+           'fieldName', // ...  the field name of the slug field
+        ];
+    */
+         return  str_replace( "t000000z" , "" ,  ($data['slug'] ?? '' ) ) ;
+    }
     /**
      * Checks if there are other records with the same slug that are located on the same PID or in db table if pid = 0
      *
@@ -71,7 +90,8 @@ class SlugUtility {
 
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $connectionPool->getQueryBuilderForTable($tableName);
-        $userQuery = $queryBuilder->count( '*' )->from($tableName )->where( $queryBuilder->expr()->neq('uid', $queryBuilder->createNamedParameter( $recordId , Connection::PARAM_INT )) ) ;
+        $userQuery = $queryBuilder->count( '*' )->from($tableName )
+           ->where( $queryBuilder->expr()->neq('uid', $queryBuilder->createNamedParameter( $recordId , Connection::PARAM_INT )) ) ;
 
         $pageId = intval($pageId) ;
         if( $pageId > 0) {
@@ -85,7 +105,7 @@ class SlugUtility {
          if( $slug ) {
              $userQuery = $queryBuilder->andWhere( $queryBuilder->expr()->eq($field, $queryBuilder->createNamedParameter( $slug , Connection::PARAM_STR )) ) ;
          }
-        if ( $userQuery->executeQuery()->fetchFirstColumn()  < 1 ) {
+        if ( $userQuery->executeQuery()->fetchFirstColumn()[0]  < 1 ) {
             return true ;
         }
         return false ;

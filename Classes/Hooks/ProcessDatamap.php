@@ -191,25 +191,27 @@ class ProcessDatamap {
                     if ($this->event->getWithRegistration()   ) {
 
                         /* ++++++++++++++++++    Part One : Test Registration Dates / Time +++++++++++++++++++++++++++++  */
+                        if (array_key_exists("RegistrationUntilDefaultDate", $configuration) && $configuration['RegistrationUntilDefaultDate'] == 0) {
 
-                        if (! $this->event->getRegistrationUntil() || is_integer( $this->event->getRegistrationUntil()) ) {
-                            $this->flashMessage['ERROR'][] = 'Registration Until date is not set! ' ;
-                            $this->event->setWithRegistration(0) ;
-                            $allowedError ++ ;
-                        } else {
-                            if( $this->event->getRegistrationUntil() instanceof \DateTime ) {
-                                if ($this->event->getRegistrationUntil()->getTimestamp()  < time()  ) {
-                                    $this->flashMessage['WARNING'][] = 'Registration Until date is in the Past! Registration is not possible' ;
+                            if (!$this->event->getRegistrationUntil() || is_integer($this->event->getRegistrationUntil())) {
+                                $this->flashMessage['ERROR'][] = 'Registration Until date is not set! ';
+                                $this->event->setWithRegistration(0);
+                                $allowedError++;
+                            } else {
+                                if ($this->event->getRegistrationUntil() instanceof \DateTime) {
+                                    if ($this->event->getRegistrationUntil()->getTimestamp() < time()) {
+                                        $this->flashMessage['WARNING'][] = 'Registration Until date is in the Past! Registration is not possible';
+                                    }
                                 }
+
                             }
 
-                        }
-
-                        if ($this->event->getRegistrationUntil()  >  ( $ST )) {
-                            if( $this->event->getRegistrationUntil() && $this->event->getStartDate() ) {
-                                $this->flashMessage['WARNING'][] = 'Registration Until date ' . $this->event->getRegistrationUntil()->format("d.m.Y H:i") .  ' is after Event Start Date! ' . $ST->format("d.m.Y H:i:s") ;
-                            } else {
-                                $this->flashMessage['WARNING'][] = 'Registration Until date is after Event Start Date! StartDate is not set now!' ;
+                            if ($this->event->getRegistrationUntil() > ($ST)) {
+                                if ($this->event->getRegistrationUntil() && $this->event->getStartDate()) {
+                                    $this->flashMessage['WARNING'][] = 'Registration Until date ' . $this->event->getRegistrationUntil()->format("d.m.Y H:i") . ' is after Event Start Date! ' . $ST->format("d.m.Y H:i:s");
+                                } else {
+                                    $this->flashMessage['WARNING'][] = 'Registration Until date is after Event Start Date! StartDate is not set now!';
+                                }
                             }
                         }
 
@@ -226,24 +228,29 @@ class ProcessDatamap {
                         if (trim((string) $this->event->getRegistrationUrl()) == '' || !$this->event->getRegistrationUrl() ) {
                             $this->flashMessage['INFO'][] = 'Registration URL is not set "' .  $this->event->getRegistrationUrl() . '". Registration is not Possible.' ;
                         } else {
-                            if (! $this->event->getRegistrationUntil() ) {
-                                $this->flashMessage['ERROR'][] = 'Registration Until date is not set!' ;
-                                $allowedError ++ ;
-                            } else {
-                                if( $this->event->getRegistrationUntil() instanceof \DateTime ) {
-                                    if ($this->event->getRegistrationUntil()->getTimestamp()  < time()  ) {
-                                        $this->flashMessage['ERROR'][] = 'Registration Until date is in the Past!' ;
+                            if (array_key_exists("RegistrationUntilDefaultDate", $configuration) && $configuration['RegistrationUntilDefaultDate'] == 0) {
+
+                                if (! $this->event->getRegistrationUntil() ) {
+                                    $this->flashMessage['ERROR'][] = 'Registration Until date is not set!' ;
+                                    $allowedError ++ ;
+                                } else {
+                                    if( $this->event->getRegistrationUntil() instanceof \DateTime ) {
+                                        if ($this->event->getRegistrationUntil()->getTimestamp()  < time()  ) {
+                                            $this->flashMessage['ERROR'][] = 'Registration Until date is in the Past!' ;
+                                        }
                                     }
                                 }
                             }
                         }
                         /* ++++++++++++++++++    Part One V2 : Test Registration Dates / Time +++++++++++++++++++++++++++++  */
+                        if (array_key_exists("RegistrationUntilDefaultDate", $configuration) && $configuration['RegistrationUntilDefaultDate'] == 0) {
 
-                        if ($this->event->getRegistrationUntil()  >  ( $ST )) {
-                            if( $this->event->getRegistrationUntil() && $this->event->getStartDate() ) {
-                                $this->flashMessage['WARNING'][] = 'Registration Until date ' . $this->event->getRegistrationUntil()->format("d.m.Y H:i") .  ' is after Event Start Date! ' . $ST->format("d.m.Y - H:i") ;
-                            } else {
-                                $this->flashMessage['WARNING'][] = 'Registration Until date is after Event Start Date!' ;
+                            if ($this->event->getRegistrationUntil()  >  ( $ST )) {
+                                if( $this->event->getRegistrationUntil() && $this->event->getStartDate() ) {
+                                    $this->flashMessage['WARNING'][] = 'Registration Until date ' . $this->event->getRegistrationUntil()->format("d.m.Y H:i") .  ' is after Event Start Date! ' . $ST->format("d.m.Y - H:i") ;
+                                } else {
+                                    $this->flashMessage['WARNING'][] = 'Registration Until date is after Event Start Date!' ;
+                                }
                             }
                         }
                         // echo "this->event->getAccessStarttime(): " . $this->event->getAccessStarttime() ;
