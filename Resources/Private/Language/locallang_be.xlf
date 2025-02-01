@@ -257,6 +257,9 @@
 		<trans-unit id="plugin.filter.Tags" approved="yes">
 			<source>Show Only Events with these Tags</source>
 		</trans-unit>
+        <trans-unit id="plugin.filterorganizer.Tags" approved="yes">
+            <source>Show Only Organizer with these Tags</source>
+        </trans-unit>
 		<trans-unit id="plugin.filter.TagsInFilter" approved="yes">
             <source>Show these Tags in Filterbox</source>
         </trans-unit>
