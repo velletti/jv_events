@@ -121,8 +121,11 @@ return array(
 		'name' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_tag.name',
-			'config' => array(
-				'type' => 'input',
+            'l10n_mode' => 'prefixLangTitle' ,
+            'config' => array(
+                'type' => 'input',
+                'behaviour' =>
+                    ['allowLanguageSynchronization' => true],
 				'size' => 30,
 				'eval' => 'trim'
 			),
