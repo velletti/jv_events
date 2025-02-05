@@ -110,16 +110,20 @@ return array(
 		'title' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_category.title',
+            'l10n_mode' => 'prefixLangTitle' ,
 			'config' => array(
 				'type' => 'input',
+                'behaviour' =>
+                    ['allowLanguageSynchronization' => true],
 				'size' => 30,
 				'eval' => 'trim',
-    'required' => true
+                'required' => true
 			),
 		),
         'description' => array(
             'exclude' => 0,
             'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_category.description',
+            'l10n_mode' => 'prefixLangTitle' ,
             'config' => array(
                 'type' => 'text',
                 'size' => 30,
