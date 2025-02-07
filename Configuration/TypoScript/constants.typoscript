@@ -58,15 +58,15 @@ plugin.tx_jvevents_events {
 			}
 			# Used for: CSV Export and If same registrant registers to update his Registration.
 			formFields {
-				5Tango = gender,streetAndNr,firstName,lastName,zip,city,phone,email,privacy,hotprice,more1,more2,more3,hidden,confirmed
+				5Tango = streetAndNr,firstName,lastName,zip,city,phone,email,privacy,hotprice,more1,more2,more3,hidden,confirmed
 			}
 			requiredFields {
 
 				# you should have at lease firstName,lastName,privacy,hotprice and email if you send out emails
 				# All posssible Fields :  gender,firstName,lastName,profession,contactId,customerId,company,streetAndNr,country,zip,city,phone,email,privacy,hotprice,additionalInfo
 				# Privacy is for legal issues, hotprice is to use the invisible "honeypot" field to avoid against bots
-				1Allplan = gender,firstName,lastName,phone,email,privacy,hotprice
-				2Allplan = gender,firstName,lastName,phone,email,privacy,hotprice
+				1Allplan = firstName,lastName,phone,email,privacy,hotprice
+				2Allplan = firstName,lastName,phone,email,privacy,hotprice
 				2Megra = gender,company,streetAndNr,firstName,lastName,country,zip,city,phone,email,privacy,hotprice
 				3MegraAT = gender,company,streetAndNr,firstName,lastName,country,zip,city,phone,email,privacy,hotprice,more1
 

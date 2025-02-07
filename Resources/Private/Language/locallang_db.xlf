@@ -224,6 +224,9 @@
             <trans-unit id="tx_jvevents_domain_model_event.store_in_hubspot" approved="yes">
                 <source>Send Registrations to SalesForce (via Hubspot)</source>
             </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_event.store_in_marketo" approved="yes">
+                <source>Send Registrations to SalesForce (via Marketo)</source>
+            </trans-unit>
             <trans-unit id="tx_jvevents_domain_model_event.sales_force_campaign_id" approved="yes">
                 <source>Salesforce Campaign ID (automatic created)</source>
             </trans-unit>

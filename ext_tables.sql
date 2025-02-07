@@ -51,6 +51,7 @@ CREATE TABLE tx_jvevents_domain_model_event (
     youtube_link varchar(255) DEFAULT '' NOT NULL,
 
     store_in_hubspot tinyint(1) unsigned DEFAULT '0' NOT NULL,
+    store_in_marketo tinyint(1) unsigned DEFAULT '0' NOT NULL,
 	sales_force_campaign_id varchar(60) DEFAULT '' NOT NULL,
 
 	store_in_citrix tinyint(1) unsigned DEFAULT '0' NOT NULL,

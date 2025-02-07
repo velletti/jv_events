@@ -394,6 +394,14 @@ class Event extends AbstractEntity
      */
     protected $storeInHubspot = false;
 
+
+    /**
+     * If you want to store registrants user data to Marketo , activate this checkbox requieres salesforce Campaign id
+     *
+     * @var bool|null
+     */
+    protected $storeInMarketo = false;
+
     /**
      * Autoamtic geneated Salesforce Campagne ID. If enableHubpot is set to 1 in extConf and store_in_hubspot is activated in Event, druing save event hook we create or update a campagign in salesforce
      *
@@ -2505,7 +2513,6 @@ class Event extends AbstractEntity
     {
         return $this->storeInHubspot;
     }
-
     /**
      * @param bool $storeInHubspot
      */
@@ -2513,6 +2520,21 @@ class Event extends AbstractEntity
     {
         $this->storeInHubspot = $storeInHubspot;
     }
+
+
+    /**
+     * @return bool
+     */
+    public function getStoreInMarketo()
+    {
+        return ($this->storeInMarketo ?? false ) ;
+    }
+      /**
+      * @param boo|null $storeInMarketo
+      */
+      public function setStoreInMarketo(?bool $storeInMarketo) {
+          $this->storeInMarketo = ($storeInMarketo ?? false );
+      }
 
     /**
      * @return string

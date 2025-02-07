@@ -13,6 +13,7 @@ use JVelletti\JvEvents\Domain\Model\Event;
 use JVelletti\JvEvents\Domain\Model\Registrant;
 use JVelletti\JvEvents\Domain\Model\Subevent;
 use JVelletti\JvEvents\Utility\RegisterHubspotUtility;
+use JVelletti\JvEvents\Utility\RegisterMarketoUtility;
 use Psr\Http\Message\ResponseInterface;
 use SJBR\SrFreecap\Utility\EncryptionUtility;
 use TYPO3\CMS\Core\Exception;
@@ -623,11 +624,18 @@ class RegistrantController extends BaseController
             $this->registrantRepository->add($registrant);
             $this->persistenceManager->persistAll();
 
+            if ( $this->settings['EmConfiguration']['enableMarketo'] > 0 ) {
+                /** @var RegisterMarketoUtility $marketo */
+                $marketo = GeneralUtility::makeInstance(RegisterMarketoUtility::class) ;
+                $marketoResponse = $marketo->createAction( $registrant , $event ,  $this->settings ) ;
+            }
+
             if ( $this->settings['EmConfiguration']['enableHubspot'] > 0 ) {
                 /** @var RegisterHubspotUtility $hubspot */
                 $hubspot = GeneralUtility::makeInstance(RegisterHubspotUtility::class) ;
                 $hubspot->createAction( $registrant , $event ,  $this->settings ) ;
             }
+
 
 
 			if( is_array($otherEvents)) {

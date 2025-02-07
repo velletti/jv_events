@@ -9,112 +9,115 @@ enableCitrix = 0
 # cat=General/enable/3; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.enableSalesForce; description=Under developement!
 enableSalesForce = 0
 
-# cat=General/enable/3; type=boolean; label=If enabled, allow manual sorting; description=Default sorting by creation Date!
+# cat=General/enable/4; type=boolean; label=If enabled, allow manual sorting; description=Default sorting by creation Date!
 enableOrganizerSorting = 0
 
-# cat=General/enable/3; type=boolean; label=Activate  the API for the new Salesforce Lightning version; description=This Option is just needing during the transition phase an DEV Systems
+# cat=General/enable/5; type=boolean; label=Activate  the API for the new Salesforce Lightning version; description=This Option is just needing during the transition phase an DEV Systems
 enableSalesForceLightning = 0
 
-# cat=General/enable/3; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.enableHubspot; description=Under developement!
+# cat=General/enable/6; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.enableHubspot; description=Under developement!
 enableHubspot = 0
 
-# cat=General/enable/4; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.hasLoginUser
+# cat=General/enable/7; type=boolean; label=Allplan (Send data to  Marketo); description=Under developement!
+enableMarketo = 0
+
+# cat=General/enable/8; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.hasLoginUser
 hasLoginUser = 0
 
-# cat=General/enable/4; type=string; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.adminUserGroups;description=List Of Admin Usergroup UIDs, separated with colon (,) f.e.: 1,3,16
+# cat=General/enable/9; type=string; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.adminUserGroups;description=List Of Admin Usergroup UIDs, separated with colon (,) f.e.: 1,3,16
 AdminUserGroups = 
 
-# cat=General/enable/5; type=integer; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.minFormSec;description=Minimum Seconds between rendering a Form and Submitting a Form to avoid bots
+# cat=General/enable/10; type=integer; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.minFormSec;description=Minimum Seconds between rendering a Form and Submitting a Form to avoid bots
 minFormSeconds = 10
 
-# cat=General/enable/6; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.hideEndEdate;description=If you do not use Requring events and do not have Events more than 1 Day, ativate ths
+# cat=General/enable/11; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.hideEndEdate;description=If you do not use Requring events and do not have Events more than 1 Day, ativate ths
 hideEndDate = 1
 
-# cat=General/enable/8; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.hideAllLanguages;description=If you have different, localized Events , activate this. Will Protect to Create unwanted Events with language -1
+# cat=General/enable/12; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.hideAllLanguages;description=If you have different, localized Events , activate this. Will Protect to Create unwanted Events with language -1
 hideAllLanguages = 0
 
-# cat=General/enable/8; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.doNotRespectSyslanguage;description=If you do not have different, localized Events , activate this. Will load Languages also with Language -1
+# cat=General/enable/13; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.doNotRespectSyslanguage;description=If you do not have different, localized Events , activate this. Will load Languages also with Language -1
 doNotRespectSyslanguage = 0
 
 # Default Values
 ###########################
-# cat=basic/default/11; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.defaultNotifyOrganizer
+# cat=basic/default/21; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.defaultNotifyOrganizer
 notifyOrganizer = 1
 
-# cat=basic/default/12; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.defaultNotifyRegistrant
+# cat=basic/default/22; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.defaultNotifyRegistrant
 notifyRegistrant = 1
 
-# cat=basic/default/13; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.defaultNeedToConfirm
+# cat=basic/default/23; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.defaultNeedToConfirm
 needToConfirm = 0
 
-# cat=basic/default/14; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.defaultAllDayEvent
+# cat=basic/default/24; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.defaultAllDayEvent
 allDayEvent = 1
 
 
-# cat=basic/default/15; type=int+; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.defaultRegistrationFormPid
+# cat=basic/default/25; type=int+; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.defaultRegistrationFormPid
 RegistrationFormPid = 1001
 
-# cat=basic/default/16; type=int+; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.defaultRegistrationPid
+# cat=basic/default/26; type=int+; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.defaultRegistrationPid
 RegistrationPid = 4853
 
-# cat=basic/default/17; type=int+; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.defaultRegistrationUntilDate
+# cat=basic/default/27; type=int+; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.defaultRegistrationUntilDate
 RegistrationUntilDefaultDate = 0
 
-# cat=basic/default/18; type=int+; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms_additional.detailPid
+# cat=basic/default/28; type=int+; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms_additional.detailPid
 DetailPid = 62
 
 # color and Font Setup of Email
 ###########################
-# cat=Email/color/21; type=color; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.emailBackGroundColor
+# cat=Email/color/31; type=color; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.emailBackGroundColor
 BackGroundColor = #FFF
 
-# cat=Email/color/22; type=color; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.emailFontColor
+# cat=Email/color/32; type=color; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.emailFontColor
 FontColor = #333
 
-# cat=Email/color/23; type=color; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.emailBackGroundColor2
+# cat=Email/color/33; type=color; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.emailBackGroundColor2
 BackGroundColor2 = #AA221a
 
-# cat=Email/color/24; type=color; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.emailFontColor2
+# cat=Email/color/34; type=color; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.emailFontColor2
 FontColor2 = #FFF
 
-# cat=Email/color/25; type=color; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.BackGroundColorBody
+# cat=Email/color/35; type=color; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.BackGroundColorBody
 BackGroundColorBody = #E1E1E1
 
-# cat=Email/color/26; type=string; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.emailFontFamily
+# cat=Email/color/36; type=string; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.emailFontFamily
 fontFamily = Arial,Verdana, Helvetica, sans-serif
 
-# cat=Email/dims/27; type=string; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.emailImgUrl
+# cat=Email/dims/37; type=string; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.emailImgUrl
 imgUrl = /typo3conf/ext/jv_events/Resources/Public/Images/emailLogo.jpg
 
-# cat=Email/dims/28; type=string; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.emailImgUrl2
+# cat=Email/dims/38; type=string; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.emailImgUrl2
 imgUrl2 = 
 
 # Backend modules
 ###########################
 
-# cat=advanced/enable/32; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.showIndividualMailTemplatesPerEvent
+# cat=advanced/enable/42; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.showIndividualMailTemplatesPerEvent
 showIndividualMailTemplatesPerEvent = 0
 
-# cat=advanced/dims/34; type=string; dateformat for slug generation default d-m-Y  must be valid Date Time Format of PHP
+# cat=advanced/dims/44; type=string; dateformat for slug generation default d-m-Y  must be valid Date Time Format of PHP
 slugGenerationDateFormat = d-m-Y
 
-# cat=advanced/dims/33; type=string; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.resetFieldlistAfterCopy
+# cat=advanced/dims/43; type=string; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.resetFieldlistAfterCopy
 resetFieldListAfterCopy = setUnconfirmedSeats:0;setRegisteredSeats:0;setSalesForceEventId:;setSalesForceSessionId:;
 
-# cat=advanced/enable/5; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.useGeolocation;description=Activate option to ask the use about his GEO coordinates. only usefull if you have a map included
+# cat=advanced/enable/45; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.useGeolocation;description=Activate option to ask the use about his GEO coordinates. only usefull if you have a map included
 useGeoLocation = 0
 
-# cat=advanced/default/6; type=text; label=Google API key;description=If you want to show a map, you need to register on Google.com and get an api KEY
+# cat=advanced/default/46; type=text; label=Google API key;description=If you want to show a map, you need to register on Google.com and get an api KEY
 googleApiKey = 
 
-# cat=advanced/default/7; type=text; label=Google API key DEV;description=an addition api KEY only for a TYPO3 Environment: DEVELOPMENT
+# cat=advanced/default/47; type=text; label=Google API key DEV;description=an addition api KEY only for a TYPO3 Environment: DEVELOPMENT
 googleApiKeyDEV = 
 
-# cat=advanced/default/8; type=text; label=Clear Cache PIDs;description=If you use Frontend editing, it will be usefull to add all pages with list View of events (comma separated)
+# cat=advanced/default/48; type=text; label=Clear Cache PIDs;description=If you use Frontend editing, it will be usefull to add all pages with list View of events (comma separated)
 clearCachePids = 
 
-# cat=advanced/default/9; type=text; label=Max Tags per Event;description=If you use Frontend editing, this will be the maximum amount of tags per event. will be checked during validation
+# cat=advanced/default/49; type=text; label=Max Tags per Event;description=If you use Frontend editing, this will be the maximum amount of tags per event. will be checked during validation
 MaxTagsPerEvent = 5
 
-# cat=advanced/default/10; type=text; label=Max Length for organizer name;description=If set, it is not possible to enter more chars as Organizer name
+# cat=advanced/default/50; type=text; label=Max Length for organizer name;description=If set, it is not possible to enter more chars as Organizer name
 MaxLengthOrgTitle = 200

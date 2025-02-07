@@ -1350,6 +1350,13 @@ class Registrant extends AbstractEntity
     {
         $this->hubspotResponse = $hubspotResponse;
     }
+    /**
+     * @param string $hubspotResponse
+     */
+    public function setMarketoResponse($marketoResponse)
+    {
+        $this->hubspotResponse = $marketoResponse;
+    }
 
     /**
      * @return \DateTime|int|null

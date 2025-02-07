@@ -88,7 +88,7 @@ $returnArray = array(
 		'notification' =>  array('showitem' =>  'notify_organizer;;1,notify_registrant;;1,need_to_confirm;;1,--linebreak--' ),
 		'notifyOrg' =>  array('showitem' =>  'subject_organizer,--linebreak--,text_organizer' ),
 		'notifyReg' =>  array('showitem' =>  'subject_registrant,--linebreak--,introtext_registrant,--linebreak--,introtext_registrant_confirmed,--linebreak--,text_registrant' ),
-		'register' =>  array('showitem' =>  'with_registration;;1,registration_until, --linebreak--,registration_url, --linebreak--,registration_form_pid,registration_pid,--linebreak--,registration_gender,--linebreak--,registration_show_status,--linebreak--,registration_access, ,store_in_hubspot,  sales_force_campaign_id, --linebreak--,available_seats, available_waiting_seats, registered_seats, unconfirmed_seats' ),
+		'register' =>  array('showitem' =>  'with_registration;;1,registration_until, --linebreak--,registration_url, --linebreak--,registration_form_pid,registration_pid,--linebreak--,registration_gender,--linebreak--,registration_show_status,--linebreak--,registration_access, ,store_in_hubspot, store_in_marketo,  sales_force_campaign_id, --linebreak--,available_seats, available_waiting_seats, registered_seats, unconfirmed_seats' ),
 	),
 	'columns' => array(
 	
@@ -844,9 +844,25 @@ $returnArray = array(
                 'default' => 0
             )
         ),
+      'store_in_marketo' => array(
+         'exclude' => 1,
+         'displayCond' => 'FIELD:with_registration:REQ:TRUE' ,
+         'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.store_in_marketo',
+         'onChange' => 'reload' ,
+         'config' => array(
+            'type' => 'check',
+            'default' => 0
+         )
+      ),
+
         'sales_force_campaign_id' => array(
             'exclude' => 1,
-            'displayCond' => 'FIELD:store_in_hubspot:REQ:TRUE' ,
+           'displayCond' => [
+              'OR' => [
+                 'FIELD:store_in_hubspot:REQ:true',
+                 'FIELD:store_in_marketo:REQ:true'
+              ],
+            ],
             'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.sales_force_campaign_id',
             'config' => array(
                 'type' => 'input',
@@ -1334,6 +1350,7 @@ $returnArray = array(
 	),
 );
 
+
 $configuration = EmConfigurationUtility::getEmConf();
 
 if ( ! $configuration['notifyOrganizer'] == 1 ) {
@@ -1386,10 +1403,11 @@ if ( ! $configuration['enableSalesForce'] == 1 ) {
 
 if ( ! $configuration['enableHubspot'] == 1 ) {
     unset($returnArray['columns']['store_in_hubspot'] ) ;
-    unset($returnArray['columns']['sales_force_campaign_id'] ) ;
 }
 
-
+if ( ! $configuration['enableMarketo'] == 1 ) {
+    unset($returnArray['columns']['store_in_marketo'] ) ;
+}
 
 
 if ( ! $configuration['hasLoginUser'] == 1 ) {
