@@ -406,6 +406,10 @@ class ProcessDatamap {
         // OR $date->add(new DateInterval('P30D'));
         $startD =  $this->sfConnect->convertDate2SFdate( $start ,  $this->event->getStartTime() ) ;
 
+        // 2024 EventDate__c
+        $EventDateTime__c  = $this->event->getStartTime() > 0 ? $this->event->getStartTime() :   (12*3600) ;
+        $EventDate__c = $this->sfConnect->convertDate2SFdate( $start ,  $EventDateTime__c ) ;
+
         $endD =  $this->sfConnect->convertDate2SFdate( $end ,  $this->event->getEndTime() ) ;
         // $this->flashMessage['NOTICE'][] = 'StartDate Converted for SalesForce to ! : ' . $startD ;
 
