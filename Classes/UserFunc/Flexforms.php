@@ -30,11 +30,14 @@ class Flexforms {
 		$layoutType = $PA['parameters']['layoutType'] ;
 
 		if ( $layoutType == '' ) {
-			return '<div class="alert alert-error">Typo Script of this Extension : settings.list.layouts.layout1 .. not set ! </div>' ;
+          $layoutType = 'list.' ;
 		}
-		$layouts = $settings[$layoutType]['layouts.'] ;
+		$layouts = ($settings[$layoutType]['layouts.'] ?? false ) ;
 		if ( !is_array($layouts)) {
-			return '<div class="alert alert-error">Typo Script of this Extension : settings.list.layouts.layout1 .. not an Array ! </div>' ;
+          $layouts = [ "1Allplan" => "1 - Allplan - List with Filters" ,
+                             "2Megra"   => "2 - Megra-  List with Filters and Link to first related File" ,
+                             "5Tango" => "5 - Tango - List with Filters " ,
+          ] ;
 		}
 		$formField = '<select name="' . $PA['itemFormElName'] . '"';
 		$formField .= ' onchange="' . htmlspecialchars(implode('', $PA['fieldChangeFunc'])) . '"';

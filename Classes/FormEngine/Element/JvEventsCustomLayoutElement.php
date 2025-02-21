@@ -33,32 +33,26 @@ class JvEventsCustomLayoutElement extends AbstractFormElement
         $settings = $allSettings['plugin.']['tx_jvevents_events.']['settings.'];
 
         $PA = $this->data['parameterArray']  ;
-        $layoutType = $this->data['parameterArray']['fieldConf']['config']['parameters']['layoutType'] ;
+        $layoutType = ( $this->data['parameterArray']['fieldConf']['config']['parameters']['layoutType'] ?? "list." ) ;
 
-
-        if ( $layoutType == '' ) {
-            $result['html'] =  '<div class="alert alert-error">Typo Script of this Extension : settings.list.layouts.layout1 .. not set ! </div>' ;
-        } else {
-            $layouts = $settings[$layoutType]['layouts.'] ;
-            if ( !is_array($layouts)) {
-                $result['html'] = '<div class="alert alert-error">Typo Script of this Extension : settings.list.layouts.layout1 .. not an Array ! </div>' ;
-            } else {
-                $result['html'] =  '<select name="' . $PA['itemFormElName'] . '"';
-            //    $result['html'] .= ' onchange="' . htmlspecialchars(implode('', $PA['fieldChangeFunc'])) . '"';
-                $result['html'] .= $PA['onFocus'];
-                $result['html']  .= ' >';
-                foreach ( $layouts as $key => $layout) {
-                    $selected = '' ;
-                    if ( $key == htmlspecialchars((string) $PA['itemFormElValue']) ) {
-                        $selected = ' selected="selected"' ;
-                    }
-                    $result['html'] .= '<option ' . $selected . ' value="' . $key .  '"> ' . $layout . '</option>';
-                }
-                $result['html']  .= '</select>';
-            }
+        $layouts = ($settings[$layoutType]['layouts.'] ?? false ) ;
+        if ( !is_array($layouts)) {
+            $layouts = [ "1Allplan" => "1 - Allplan - List with Filters" ,
+               "2Megra"   => "2 - Megra-  List with Filters and Link to first related File" ,
+               "5Tango" => "5 - Tango - List with Filters " ,
+            ] ;
         }
-
-
+        $result['html'] =  '<select name="' . $PA['itemFormElName'] . '"';
+        $result['html'] .= $PA['onFocus'];
+        $result['html']  .= ' >';
+        foreach ( $layouts as $key => $layout) {
+            $selected = '' ;
+            if ( $key == htmlspecialchars((string) $PA['itemFormElValue']) ) {
+                $selected = ' selected="selected"' ;
+            }
+            $result['html'] .= '<option ' . $selected . ' value="' . $key .  '"> ' . $layout . '</option>';
+        }
+        $result['html']  .= '</select>';
 
         return $result;
     }
