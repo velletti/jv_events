@@ -37,6 +37,16 @@
                             <type>input</type>
                         </config>
                     </settings.v12pluginName>
+                    <settings.flexform>
+                        <label>
+                            flexformName
+                        </label>
+                        <config>
+                            <type>none</type>
+                            <default>event</default>
+                        </config>
+                    </settings.flexform>
+
                 </el>
             </ROOT>
         </sDEF3>

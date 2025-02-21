@@ -29,13 +29,21 @@ class JvEventsCustomLayoutElement extends AbstractFormElement
     {
         $result = $this->initializeResultArray();
 
-        $allSettings = $this->getSettings() ;
-        $settings = $allSettings['plugin.']['tx_jvevents_events.']['settings.'];
+        $pid = (int)$this->data['databaseRow']['pid'] ;
+        $lng = (int)$this->data['databaseRow']['sys_language_uid'] ;
+        if( $lng < 1) {
+            $lng = 0 ;
+        }
+        $path = \JVelletti\JvTyposcript\Utility\TyposcriptUtility::getPath($pid , $lng , "tx_jvevents_events") ;
+        $typoScript = \JVelletti\JvTyposcript\Utility\TyposcriptUtility::loadTypoScriptviaCurl($path) ;
+
+        $settings =  $typoScript['settings'] ?? [] ;
 
         $PA = $this->data['parameterArray']  ;
         $layoutType = ( $this->data['parameterArray']['fieldConf']['config']['parameters']['layoutType'] ?? "list." ) ;
+        $layoutType = rtrim( $layoutType , "." ) ;
 
-        $layouts = ($settings[$layoutType]['layouts.'] ?? false ) ;
+        $layouts = ($settings[$layoutType]['layouts'] ?? false ) ;
         if ( !is_array($layouts)) {
             $layouts = [ "1Allplan" => "1 - Allplan - List with Filters" ,
                "2Megra"   => "2 - Megra-  List with Filters and Link to first related File" ,
