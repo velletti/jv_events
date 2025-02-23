@@ -214,7 +214,7 @@ class RegistrantValidator extends \JVelletti\JvEvents\Validation\Validator\BaseV
             $maxFormsPerIpPerEvent = ((int)$this->emConf['maxFormsPerIpPerEvent'] ?? 0 );
             if ( $maxFormsPerIpPerEvent > 0 ) {
                 $limiterId = sha1('event-' . $registrant->getEvent() . '-ip-');
-                $isValid = $this->rateLimit($limiterId, $maxFormsPerIpPerEvent, "1 hours" , "Request Rate Limited per Event");
+                $isValid = $this->rateLimit($limiterId, $maxFormsPerIpPerEvent, "1 days" , "Request Rate Limited per Event");
             }
 
         }

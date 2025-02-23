@@ -43,10 +43,10 @@ hideAllLanguages = 0
 minFormSeconds = 10
 
 # cat=General/enable/14; type=integer; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.maxFormsPerIpPerEvent;description=max amounts Submitting a Form per Event per IP
-maxFormsPerIpPerEvent = 5
+maxFormsPerIpPerEvent = 0
 
 # cat=General/enable/15; type=integer; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.maxFormsPerIpPerDay;description=max amounts Submitting a Form per Day per IP
-maxFormsPerIpPerDay = 20
+maxFormsPerIpPerDay = 0
 
 
 
