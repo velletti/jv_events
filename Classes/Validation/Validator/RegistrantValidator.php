@@ -9,6 +9,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class RegistrantValidator extends \JVelletti\JvEvents\Validation\Validator\BaseValidator {
 
+    use RateLimiterTrait;
+
 	/** @var array   */
 	public $emConf = NULL ;
 
@@ -207,7 +209,25 @@ class RegistrantValidator extends \JVelletti\JvEvents\Validation\Validator\BaseV
                 }
             }
 		}
+        if ( $isValid ) {
+            // noch mehr spam abwehr:max Anmeldungen pro IP und tag /event
+            $maxFormsPerIpPerEvent = ((int)$this->emConf['maxFormsPerIpPerEvent'] ?? 0 );
+            if ( $maxFormsPerIpPerEvent > 0 ) {
+                $limiterId = sha1('event-' . $registrant->getEvent() . '-ip-');
+                $isValid = $this->rateLimit($limiterId, $maxFormsPerIpPerEvent, "1 hours" , "Request Rate Limited per Event");
+            }
 
-	}
+        }
+        if ( $isValid ) {
+            // noch mehr spam abwehr:max Anmeldungen pro IP und tag /event
+            $maxFormsPerIpPerDay = ((int)$this->emConf['maxFormsPerIpPerDay'] ?? 0 );
+
+            if ( $maxFormsPerIpPerDay > 0 ) {
+                $limiterId = sha1('event-reg-day-ip');
+                $isValid = $this->rateLimit($limiterId, $maxFormsPerIpPerDay, "1 days" , "Request Rate Limited per Day");
+            }
+        }
+
+    }
 
 }

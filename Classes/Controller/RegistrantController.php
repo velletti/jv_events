@@ -442,6 +442,8 @@ class RegistrantController extends BaseController
     #[Validate(['param' => 'registrant', 'validator' => RegistrantValidator::class])]
     public function createAction(Event $event, Registrant $registrant): ResponseInterface {
 
+
+
         $latestEventDate = $event->getStartDate() ;
 
 		$this->getFlashMessageQueue()->getAllMessagesAndFlush();
@@ -510,8 +512,8 @@ class RegistrantController extends BaseController
         // $registrant->setLanguage( $this->settings['sys_language_uid'] ) ;
 
 
-		$this->settings['success'] = FALSE ;
-		$this->settings['successMsg'] = FALSE ;
+        $forward['success'] = FALSE ;
+        $forward['successMsg'] = FALSE ;
 
         $checkString =  $_SERVER["SERVER_NAME"] . "-" . $event->getUid() . "-" . $event->getCrdate() ;
         $this->settings['hash'] = GeneralUtility::hmac ( $checkString ) ;
@@ -534,7 +536,7 @@ class RegistrantController extends BaseController
 
 
 		// test if user is already registered ..
-		$this->settings['alreadyRegistered'] = FALSE ;
+        $forward['alreadyRegistered'] = FALSE ;
 		// $this->settings['debug']  = 2 ;
 
 		$this->settings['debug']  = 0 ;
@@ -554,7 +556,7 @@ class RegistrantController extends BaseController
                 if( isset($this->settings['register']['doNotallowSameEmail']) && $this->settings['register']['doNotallowSameEmail'] ) {
                     // this case should be blocked in validator .. !
                 } else {
-                    $this->settings['alreadyRegistered'] = TRUE ;
+                    $forward['alreadyRegistered'] = TRUE ;
 
                 }
 			}
@@ -599,8 +601,8 @@ class RegistrantController extends BaseController
 
             if ($event->getNeedToConfirm() == 1) {
                 $registrant->setHidden(1);
-                $this->settings['success'] = TRUE ;
-                $this->settings['successMsg'] = "register_need_to_confirm" ;
+                $forward['success'] = TRUE ;
+                $forward['successMsg'] = "register_need_to_confirm" ;
                 $event->setUnconfirmedSeats($event->getUnconfirmedSeats() + $totalPersonCount);
                 // TODo : send Email to partizipant with LINK
                 // in this Process  we need to remove him from UnconfirmedSeats and add him to   RegisteredSeats
@@ -661,8 +663,8 @@ class RegistrantController extends BaseController
 
 					if ($otherEvent->getNeedToConfirm() == 1) {
 						$newregistrant->setHidden(1);
-						$this->settings['success'] = TRUE ;
-						$this->settings['successMsg'] = "register_need_to_confirm" ;
+                        $forward['success'] = TRUE ;
+                        $forward['successMsg'] = "register_need_to_confirm" ;
 
 						// TODo : send Email to partizipant with LINK
                         // User needs to confirm  is not in use in the moment.. !!
@@ -706,6 +708,7 @@ class RegistrantController extends BaseController
 
 		if( $registrant->getHidden() == 0  ) {
 			$this->settings['success'] = TRUE ;
+            $forward['success'] = TRUE ;
 			$replyto = false ;
 			$registrantEmail = $this->getRegistrantEmail($registrant) ;
 
@@ -740,7 +743,7 @@ class RegistrantController extends BaseController
                     }
                 }
 				if (GeneralUtility::validEmail($registrant->getEmail())) {
-					$this->settings['successMsg'] = "register_email_with_infos" ;
+					$forward['successMsg'] = "register_email_with_infos" ;
 
 					$this->sendEmail($event, $registrant, "Registrant" ,
                         $registrantEmail , $otherEvents , $replyto , $oldReg );
@@ -750,16 +753,32 @@ class RegistrantController extends BaseController
 		} else {
 		    // ToDo: create Workflow that this user get a confirmation Email with link before he is REALLY registered actually not in use !!!
         }
-		
 
+        $this->persistenceManager->persistAll();
+
+		return $this->redirect("created", "Registrant", "JvEvents", [ "event" => $event->getUid(), "registrant" => $registrant->getUid() , "settings" => $forward ] ) ;
+
+    }
+
+    public function createdAction(array $settings = [] ): ResponseInterface
+    {
+
+        if( $this->request->hasArgument('registrant')) {
+            $registrantUid = (int) trim(strip_tags( (string) $this->request->getArgument('registrant') ));
+            $registrant = $this->registrantRepository->getOneById($registrantUid , true ) ;
+        }
+        if( $this->request->hasArgument('event')) {
+            $eventUid = (int) trim(strip_tags( (string) $this->request->getArgument('event') ));
+            $event = $this->eventRepository->findByUid($eventUid) ;
+        }
         $this->view->assign('event', $event);
-		if( $this->settings['alreadyRegistered'] ) {
-			$this->view->assign('registrant', $oldReg);
-		} else {
-			$this->view->assign('registrant', $registrant);
-		}
-
-        $this->view->assign('settings', $this->settings);
+        if( $settings['alreadyRegistered'] ) {
+            $this->view->assign('registrant', $oldReg);
+        } else {
+            $this->view->assign('registrant', $registrant);
+        }
+        $settings =  array_merge($this->settings, $settings) ;
+        $this->view->assign('settings', $settings);
         return $this->htmlResponse();
     }
 

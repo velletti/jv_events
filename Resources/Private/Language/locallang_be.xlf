@@ -89,6 +89,13 @@
 		<trans-unit id="extmng.minFormSec" approved="yes">
 			<source>Minimum time in seconds a use should use to fill the registraton form. If he needs less time, he traps into the Spam/BOT trap.</source>
 		</trans-unit>
+		<trans-unit id="extmng.maxFormsPerIpPerEvent" approved="yes">
+            <source>Max submit requests per IP a user may use the registraton form per event. If he tries is more often, he traps into the Spam/BOT trap.</source>
+        </trans-unit>
+        <trans-unit id="extmng.maxFormsPerIpPerDay" approved="yes">
+            <source>Max submit requests per IP a user may use the registraton form per event. If he tries is more often, he traps into the Spam/BOT trap.</source>
+        </trans-unit>
+
 		<trans-unit id="flexforms.DataSettings" approved="yes">
 			<source>Data Settings</source>
 		</trans-unit>

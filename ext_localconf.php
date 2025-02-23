@@ -106,11 +106,11 @@ if (!defined('TYPO3')) {
     'JvEvents' ,
     'Registrant',
     array(
-        \JVelletti\JvEvents\Controller\RegistrantController::class => 'list, show,new,create,delete,confirm,checkQrcode',
+        \JVelletti\JvEvents\Controller\RegistrantController::class => 'list, show,new,create,created,delete,confirm,checkQrcode',
     ),
     // non-cacheable actions
     array(
-        \JVelletti\JvEvents\Controller\RegistrantController::class => 'list,new,create,delete,confirm,checkQrcode',
+        \JVelletti\JvEvents\Controller\RegistrantController::class => 'list,new,create,created,delete,confirm,checkQrcode',
     ),
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
 );

@@ -25,10 +25,11 @@ enableMarketo = 0
 hasLoginUser = 0
 
 # cat=General/enable/9; type=string; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.adminUserGroups;description=List Of Admin Usergroup UIDs, separated with colon (,) f.e.: 1,3,16
-AdminUserGroups = 
+AdminUserGroups =
 
-# cat=General/enable/10; type=integer; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.minFormSec;description=Minimum Seconds between rendering a Form and Submitting a Form to avoid bots
-minFormSeconds = 10
+
+# cat=General/enable/10; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.doNotRespectSyslanguage;description=If you do not have different, localized Events , activate this. Will load Languages also with Language -1
+doNotRespectSyslanguage = 0
 
 # cat=General/enable/11; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.hideEndEdate;description=If you do not use Requring events and do not have Events more than 1 Day, ativate ths
 hideEndDate = 1
@@ -36,8 +37,18 @@ hideEndDate = 1
 # cat=General/enable/12; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.hideAllLanguages;description=If you have different, localized Events , activate this. Will Protect to Create unwanted Events with language -1
 hideAllLanguages = 0
 
-# cat=General/enable/13; type=boolean; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.doNotRespectSyslanguage;description=If you do not have different, localized Events , activate this. Will load Languages also with Language -1
-doNotRespectSyslanguage = 0
+
+
+# cat=General/enable/13; type=integer; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.minFormSec;description=Minimum Seconds between rendering a Form and Submitting a Form to avoid bots
+minFormSeconds = 10
+
+# cat=General/enable/14; type=integer; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.maxFormsPerIpPerEvent;description=max amounts Submitting a Form per Event per IP
+maxFormsPerIpPerEvent = 5
+
+# cat=General/enable/15; type=integer; label=LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:extmng.maxFormsPerIpPerDay;description=max amounts Submitting a Form per Day per IP
+maxFormsPerIpPerDay = 20
+
+
 
 # Default Values
 ###########################
