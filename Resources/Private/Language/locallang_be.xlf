@@ -93,7 +93,7 @@
             <source>Max submit requests per IP a user may use the registraton form per event. If he tries is more often, he traps into the Spam/BOT trap.</source>
         </trans-unit>
         <trans-unit id="extmng.maxFormsPerIpPerDay" approved="yes">
-            <source>Max submit requests per IP a user may use the registraton form per event. If he tries is more often, he traps into the Spam/BOT trap.</source>
+            <source>Max submit requests per IP a user may use the registraton form for ANY event per day in total (should be biggern than maxFormsPerIpPerEvent. If he tries is more often, he traps into the Spam/BOT trap.</source>
         </trans-unit>
 
 		<trans-unit id="flexforms.DataSettings" approved="yes">
