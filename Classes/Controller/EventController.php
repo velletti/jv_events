@@ -828,7 +828,25 @@ class EventController extends BaseController
                     /** @var Event $otherEvent */
                     if ( count($otherEvents) > 0 ) {
                         $otherDaysText = " " ;
+
+                        $newTags = [] ;
+                        if( $event->getTags() ) {
+                            /** @var Tag $tag */
+                            foreach ($event->getTags() as $tag ) {
+                                $newTags[$tag->getUid()] = $tag ;
+                            }
+                        }
+                        $newCategories = [] ;
+                        if( $event->getEventCategory() ) {
+                            /** @var Category $category */
+                            foreach ($event->getEventCategory() as $category ) {
+                                $newCategories[$category->getUid()] = $category ;
+                            }
+                        }
+
                         foreach ( $otherEvents as $otherEvent ) {
+                            $newTagsNeeeded = $newTags ;
+                            $newCategoriesNeeeded = $newCategories ;
                             $otherEvent->setLastUpdated(time());
                             if ( intval($this->frontendUser->user['uid'] ) ) {
                                 $otherEvent->setLastUpdatedBy(intval($this->frontendUser->user['uid'] ) );
@@ -865,6 +883,41 @@ class EventController extends BaseController
                             if( $oldEventRow['location'] != $event->getLocation()->getUid() ) {
                                 $otherEvent->setLocation( $event->getLocation() ) ;
                             }
+
+                            if( $otherEvent->getTags() ) {
+                                /** @var Tag $tag */
+                                foreach ($otherEvent->getTags() as $tag ) {
+                                    if( !isset($newTagsNeeeded[$tag->getUid()])) {
+                                        $otherEvent->removeTag($tag) ;
+                                    } else {
+                                        unset($newTagsNeeeded[$tag->getUid()]) ;
+                                    }
+                                }
+                                if ($newTagsNeeeded) {
+                                    /** @var Tag $tag */
+                                    foreach ($newTagsNeeeded as $tag ) {
+                                        $otherEvent->addTag($tag) ;
+                                    }
+                                }
+                            }
+                            if( $otherEvent->getEventCategory() ) {
+                                /** @var Category $category */
+                                foreach ($otherEvent->getEventCategory() as $category ) {
+                                    if( !isset($newCategoriesNeeeded[$category->getUid()])) {
+                                        $otherEvent->removeEventCategory($category) ;
+                                    } else {
+                                        unset($newCategoriesNeeeded[$category->getUid()]) ;
+                                    }
+                                }
+                                if ($newCategoriesNeeeded) {
+                                    /** @var Category $category */
+                                    foreach ($newCategoriesNeeeded as $category ) {
+                                        $otherEvent->addEventCategory($category) ;
+                                    }
+                                }
+                            }
+
+
 
                             // --------- now fix Slug Name
                                 $row['name'] = $otherEvent->getName();
