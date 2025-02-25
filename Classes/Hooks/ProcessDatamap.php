@@ -120,7 +120,12 @@ class ProcessDatamap {
                     if( is_array( $this->extConf) and array_key_exists( "slugGenerationDateFormat" , $this->extConf )) {
                         $slugGenerationDateFormat =  $this->extConf['slugGenerationDateFormat'] ;
                     }
-                    $row['start_date'] =  $this->event->getStartDate()->format($slugGenerationDateFormat) ;
+                    if ( $this->event->getStartDate() ) {
+                        $row['start_date'] =  $this->event->getStartDate()->format($slugGenerationDateFormat) ;
+                    } else {
+                        $row['start_date'] =  "dd-mm-yyyy" ;
+                        $this->flashMessage['WARNING'][] = 'Start Date is not SET !' ;
+                    }
                     $slug = SlugUtility::getSlug("tx_jvevents_domain_model_event", "slug", $row  )  ;
                     $this->event->setSlug( $slug ) ;
 
@@ -160,7 +165,7 @@ class ProcessDatamap {
                     }
 
                     $ST = $this->event->getStartDate() ;
-                    $ST = $ST->modify( "+" . intval($this->event->getStartTime() ) . " second" ) ;
+                    $ST = ($ST ? $ST->modify( "+" . intval($this->event->getStartTime() ) . " second" ) : 0 ) ;
 
                     if ( is_integer($this->event->getAccessStarttime())) {
                         /** @var \DateTime $accessStart */
