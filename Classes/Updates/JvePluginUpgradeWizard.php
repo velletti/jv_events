@@ -248,7 +248,7 @@ class JvePluginUpgradeWizard implements UpgradeWizardInterface
         }
         echo "\n" ;
         echo "\n" ;
-        if ( $skippedRows > 0 ) {
+        if ( $skippedRows > 0 && $doneRows > 0 ) {
             echo "\n" ;
             return false;
         }
