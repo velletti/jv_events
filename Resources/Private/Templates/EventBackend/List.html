@@ -60,11 +60,15 @@
 					<f:if condition="{downloadUri}">
 						<a href="{downloadUri}" target="_blank" class="mr-1 btn btn-default" style="text-decoration: none !important;">
 							<core:icon size="small" identifier="actions-download" />
-							Download Registrations (CSV)
+							Registrations (CSV)
 						</a>
 					</f:if>
-
-
+					<f:if condition="{salesForceCampaignUrl}">
+						<a href="{salesForceCampaignUrl}" target="_blank" class="mr-1 btn btn-default" style="text-decoration: none !important;">
+							<core:icon size="small" identifier="overlay-info" />
+							SF Campaign
+						</a>
+					</f:if>
 				</div>
 			</f:if>
 

@@ -28,6 +28,7 @@ namespace JVelletti\JvEvents\Controller;
 
 use JVelletti\JvEvents\Domain\Repository\RegistrantRepository;
 use JVelletti\JvEvents\Utility\EmConfigurationUtility;
+use JVelletti\JvEvents\Utility\SalesforceWrapperUtility;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Database\QueryGenerator;
@@ -194,6 +195,21 @@ class EventBackendController extends BaseController
                        'tx_jvevents_registrant' => ['action' => 'list' , 'controller' => 'Registrant' ,'event' =>  $selectedEvent->getUid()
                            , 'export' => '1' ,  'pid' => '0' ,  'hash' => $checkHash  ]]);
                     $view->assign('downloadUri', $url );
+
+
+                    if ($selectedEvent->getSalesForceCampaignId() ) {
+                        if( isset($_SERVER['NEM_SALESFORCE']['PROD'])) {
+                            /** @var SalesforceWrapperUtility */
+                            $sfConnect = GeneralUtility::makeInstance(SalesforceWrapperUtility::class);
+                            $sfSettings =  $sfConnect->contactSF();
+                              $debug[] = $sfSettings['SFREST']['instance_url'] ;
+                              $debug[] = $sfSettings['SFREST']['faultstring'] ;
+
+                            if (isset($sfSettings['SFREST']['instance_url']) && $sfSettings['SFREST']['instance_url'] != "") {
+                                   $view->assign('salesForceCampaignUrl', $sfSettings['SFREST']['instance_url']  . "/"  . $selectedEvent->getSalesForceCampaignId() );
+                            }
+                        }
+                    }
 
                     $registrants = $this->registrantRepository->findByFilter('', $eventID, 0 ,  [] , 999 );
 
