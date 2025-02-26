@@ -216,7 +216,7 @@ class JvePluginUpgradeWizard implements UpgradeWizardInterface
                 continue;
             }
             $this->debugOutput( 0,  "\nPid:" . $record['pid'] . " - Uid:" . $record['uid'] . " New: " . $targetListType . " from : " . $flexForm['switchableControllerActions'] ) ;
-            $doneRows ++  ;
+
             // Update record with migrated types (this is needed because FlexFormTools
             // looks up those values in the given record and assumes they're up-to-date)
             $record['CType'] = $targetListType;
@@ -241,8 +241,9 @@ class JvePluginUpgradeWizard implements UpgradeWizardInterface
            if (count($flexFormData['data']) > 0) {
                $newFlexform = $this->array2xml($flexFormData);
                $this->updateContentElement($record['uid'], $targetListType, $newFlexform);
+               $doneRows ++  ;
            } else {
-               $this->debugOutput( 0,  "\nPid:" . $record['pid'] . " - Uid:" . $record['uid'] . " Skipped: " . $targetListType . " Empty Flexform!! : " . $record['pi_flexform'] ) ;
+               $this->debugOutput( 0,  "\nPid:" . $record['pid'] . " - Uid:" . $record['uid'] . " ERROR: " . $targetListType . " Empty Flexform!! : " . $record['pi_flexform'] ) ;
            }
 
         }
