@@ -775,6 +775,9 @@ class Event extends AbstractEntity
     /**
      * Returns the eventType
      *
+     * 2 = default
+     * 0 = link to internal / external page
+     *
      * @return int $eventType
      */
     public function getEventType()

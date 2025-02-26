@@ -27,6 +27,7 @@ namespace JVelletti\JvEvents\Controller;
  ***************************************************************/
 
 use JVelletti\JvEvents\Utility\MigrationUtility;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use DateTime;
@@ -231,6 +232,18 @@ class EventController extends BaseController
     public function showAction(?Event $event=null): ResponseInterface
     {
         if( $event ) {
+            if ( $event->getEventType() == 0 ) {
+
+                $contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+                $instructions = [
+                   'parameter' => $event->getUrl() ,
+                   'forceAbsoluteUrl' => true,
+                ];
+                $url = $contentObject->typoLink_URL( $instructions ) ;
+                if ( $url ) {
+                    return (new RedirectResponse( $url ))->withStatus(301);
+                }
+            }
             $checkString = $_SERVER["SERVER_NAME"] . "-" . $event->getUid() . "-" . $event->getCrdate();
             $checkHash = GeneralUtility::hmac ( $checkString );
 
