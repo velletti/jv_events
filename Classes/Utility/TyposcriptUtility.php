@@ -45,6 +45,9 @@ class TyposcriptUtility{
 
         $tsFrontend = $request->getAttribute('frontend.typoscript') ;
         if ( $tsFrontend ) {
+            if ( !$tsFrontend->hasSetup()) {
+                  return [] ;
+            }
             $ts = $tsFrontend->getSetupArray();
             if( !isset($ts['plugin.']) ) {
                 return []  ;

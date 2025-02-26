@@ -123,7 +123,7 @@ class EventRepository extends BaseRepository
         }
 
 
-        $constraintsTagsCat = [] ;
+        $constraintsTagsCat[] = $query->greaterThan('eventCategory.uid', 0);
         if( isset($settings['filter']['categories'] ) && $settings['filter']['categories']  ) {
             $constraintsTagsCat = $this->getCatContraints($constraintsTagsCat,  $settings ,  $query );
         }
@@ -246,7 +246,7 @@ class EventRepository extends BaseRepository
 
         $result = $query->execute();
 
-        if ( $settings['debugQuery'] ) {
+        if ( $settings['debugQuery']  ) {
             $this->debugQuery($query) ;
         }
 
@@ -442,7 +442,6 @@ class EventRepository extends BaseRepository
 	private function getCatContraints($constraints, $settings ,  $query)
 	{
 		$catList = GeneralUtility::intExplode(',', $settings['filter']['categories'], true);
-
 		if( (is_countable($catList) ? count($catList) : 0) < 1 ) {
 			return $constraints ;
 		}
