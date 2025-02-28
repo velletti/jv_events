@@ -40,18 +40,30 @@ class TyposcriptUtility{
         }
         return self::loadTypoScriptFromRequest($request , $extKey = '' , $conditions = false , $getConstants = false ) ;
 	}
-
-    public static function loadTypoScriptFromRequest($request, $extKey = '' , $getConstants = false  ) {
+    public static function loadTypoScriptFromRequest(?ServerRequestInterface $request, $extKey = '' , $getConstants = false  ) {
 
         $tsFrontend = $request->getAttribute('frontend.typoscript') ;
         if ( $tsFrontend ) {
             if ( !$tsFrontend->hasSetup()) {
-                  return [] ;
+                  $params = $request->getQueryParams() ;
+                  if( is_array($params) && key_exists("id" , $params ) ) {
+                      $pid = $params['id'] ;
+                  } else {
+                      $pid = 0 ;
+                  }
+                  $lng = $request->getAttribute('language') ;
+                $path = \JVelletti\JvTyposcript\Utility\TyposcriptUtility::getPath($pid , $lng , "tx_jvevents_events") ;
+                $ts =  \JVelletti\JvTyposcript\Utility\TyposcriptUtility::loadTypoScriptviaCurl($path) ;
+                if(! is_array($ts) ) {
+                    return [] ;
+                }
+            } else {
+                $ts = $tsFrontend->getSetupArray();
+                if( !isset($ts['plugin.']) ) {
+                    return []  ;
+                }
             }
-            $ts = $tsFrontend->getSetupArray();
-            if( !isset($ts['plugin.']) ) {
-                return []  ;
-            }
+
         } else {
             return  [];
         }
