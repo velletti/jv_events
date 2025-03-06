@@ -111,7 +111,12 @@ class RegistermarketoUtility {
 
 
         $data['LanguageCode__c']  =   $settings['lang'] ?? "DEU";
-        $data['category']  =   'Event' ;
+
+        if ( $event->getPrice() > 0 ) {
+            $data['category']  =   'Training' ;
+        } else {
+            $data['category']  =   'Event' ;
+        }
 
 
         $debugmail .= "\n+++++++++++ store in Marketo as LEAD is active ++++++++++++++++++\n\n"  ;
