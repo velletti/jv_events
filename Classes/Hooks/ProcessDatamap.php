@@ -293,73 +293,22 @@ class ProcessDatamap {
                     if ($allowedError >  0 ) {
                         // $this->event->setWithRegistration(FALSE ) ;
                         $this->flashMessage['NOTICE'][] = $allowedError .' AllowedErrors found! We do not store to external Systems like Salesforce etc,!' ;
-
                     } else {
-                        // j.v. : Kopiert von altem Plugin: wenn Store in Citrix "An" Ist, das Event NICHT als "TW Webinar /Event " nach Salesforce Schreiben !
-                        if( $this->event->getStoreInHubspot() ) {
-                            if(  $this->event->getStoreInSalesForce() ) {
-                                $allowedError ++ ;
-                                $this->flashMessage['WARNING'][] = 'You can not set "Store in Salesforce" together with "Store in Hubspot"! (store in salesforce is disabled)!' ;
-
+                        if ( $configuration['enableMarketo'] ) {
+                            if ( ! $this->event->getStoreInMarketo() && $this->event->getWithRegistration() ) {
+                                $this->flashMessage['WARNING'][] = 'You should activate:  ' . LocalizationUtility::translate('LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.store_in_marketo', 'JvEvents', NULL);;
+                            } else {
                                 $this->event->setStoreInSalesForce(0) ;
-                            }
-                            $this->flashMessage['NOTICE'][] = '"Store in Hubspot" should run now!' ;
-
-                            $this->createUpdateEventForSF2019()  ;
-                        } else {
-                            if( $this->event->getStoreInSalesForce() ) {
-                                if( $this->event->getStoreInCitrix() ) {
-                                    $this->flashMessage['WARNING'][] = 'You can not set "Store in Salesforce" together with "Store in Citrix"! (store in salesforce is disabled)!' ;
-                                    $this->event->setStoreInSalesForce(0) ;
-                                    $allowedError ++ ;
-                                } else {
-
-
-                                    if( $configuration['enableSalesForceLightning'] == 1 ) {
-
-                                        if( $this->event->getStartDate()->format("Ymd") > date("Ymd") && ! $this->event->getHidden() ) {
-
-                                            $this->flashMessage['WARNING'][] = 'You can not set "Store in Salesforce" anymore! "Store in Hubspot" is now enabled' ;
-                                            $this->event->setStoreInSalesForce(0) ;
-                                            $this->event->setStoreInHubspot(1) ;
-                                            $this->createUpdateEventForSF2019()  ;
-
-
-                                            // Automatic Migration 2019 : Update registrants that they have to be moved to hubspot
-                                            /** @var RegistrantRepository $registrantRepository */
-                                            $registrantRepository =  GeneralUtility::makeInstance(RegistrantRepository::class);
-
-                                            /** @var QueryResultInterface $registrants */
-                                            $registrants = $registrantRepository->findByFilter('' , $this->event->getUid(), 0 , [] , 999 ) ;
-                                            $repairCount = 0 ;
-                                            if ( $registrants->count() > 0 ) {
-                                                /** @var Registrant $registrant */
-                                                $registrant = $registrants->getFirst() ;
-                                                $pid = $registrant->getPid() ;
-                                                while ( $repairCount < $registrants->count()  ){
-                                                    if ( !is_object($registrant)) {
-                                                        break ;
-                                                    }
-                                                    $repairCount++ ;
-                                                    $registrant->setHubspotResponse("100") ;
-                                                    $registrantRepository->update($registrant ) ;
-                                                    $registrant = $registrants->next() ;
-                                                }
-                                                if( $repairCount ) {
-                                                    $this->flashMessage['WARNING'][] = 'We Found ' .  $repairCount . " exisiting Registration(s). Please go to PageID : " . $pid . ", use Module: Event Mngt, filter by Event and send Registration to Hubspot!";
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
+                                $this->event->setStoreInHubspot(0) ;
+                                $this->createUpdateEventForSF2019()  ;
                             }
                         }
-
                     }
                 }
                 if ( $configuration['enableHubspot'] && ! $this->event->getStoreInHubspot() && $this->event->getWithRegistration() ) {
-                    $this->flashMessage['WARNING'][] = 'You should activate:  ' . LocalizationUtility::translate('LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.store_in_hubspot', 'JvEvents', NULL);;
+                //    $this->flashMessage['WARNING'][] = 'You should activate:  ' . LocalizationUtility::translate('LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.store_in_hubspot', 'JvEvents', NULL);;
                 }
+
 
 
 
