@@ -250,7 +250,7 @@ class RegistermarketoUtility {
             $data['campaign']  =   $event->getSalesForceCampaignId()  ;
         }
         $data['Typo3EventID_mkto']  =   $event->getUid()  ;
-        $data['InboundActionName_mkto'] = $event->getName() ;
+        $data['InboundActionName_mkto'] = substr( $event->getName() , 0 , 80 ) ;
         $data['IsWaitListed_mkto']  =   $registrant->getConfirmed() ? '' : 'yes' ;
 
 
