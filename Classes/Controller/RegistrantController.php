@@ -756,7 +756,7 @@ class RegistrantController extends BaseController
 
         $this->persistenceManager->persistAll();
 
-		return $this->redirect("created", "Registrant", "JvEvents", [ "event" => $event->getUid(), "registrant" => $registrant->getUid() , "settings" => $forward ] ) ;
+		return $this->redirect("created", "Registrant", "JvEvents", [ "event" => $event->getUid(), "registrant" => $registrant->getUid() , "settings" => $forward , "otherEvents" => $otherEvents  ] ) ;
 
     }
 
@@ -770,6 +770,32 @@ class RegistrantController extends BaseController
         if( $this->request->hasArgument('event')) {
             $eventUid = (int) trim(strip_tags( (string) $this->request->getArgument('event') ));
             $event = $this->eventRepository->findByUid($eventUid) ;
+
+            if( $event ) {
+                $latestEventDate = $event->getStartDate() ;
+
+                $querysettings =$this->subeventRepository->getTYPO3QuerySettings() ;
+                $querysettings->setStoragePageIds([$event->getPid()]) ;
+
+                $this->subeventRepository->setDefaultQuerySettings( $querysettings );
+                $subevents = $this->subeventRepository->findByEventAllpages($event->getUid() , true ) ;
+                if ( is_array( $subevents ) && count( $subevents)  > 0 ) {
+                    $subeventcount = count( $subevents)  +1 ;
+                    /** @var Subevent $subevent */
+                    foreach ($subevents as $subevent) {
+                        if( is_object($subevent)) {
+                            if( $subevent->getStartDate() > $latestEventDate ) {
+                                $latestEventDate = $subevent->getStartDate() ;
+                            }
+                        }
+                    }
+
+                }
+            }
+            $this->view->assign('subevents', $subevents);
+            $this->view->assign('subeventcount', $subeventcount);
+            $this->view->assign('latestEventDate', $latestEventDate);
+
         }
         $this->view->assign('event', $event);
         if( $settings['alreadyRegistered'] ) {
