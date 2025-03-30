@@ -96,7 +96,7 @@ class EventRepository extends BaseRepository
         if( isset($settings['list']['sorting']) && is_array($settings['list']['sorting'])) {
             $sortings= [] ;
             foreach ($settings['list']['sorting'] as $sortField => $sort) {
-                if ( in_array($sortField , ['crdate' , 'tstamp'] )) {
+                if ( in_array($sortField , ['crdate' , 'tstamp' , 'start_date'] )) {
                     if( $sort == "ASC") {
                         $sortings[$sortField] = QueryInterface::ORDER_ASCENDING ;
                     } else {

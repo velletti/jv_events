@@ -30,7 +30,7 @@
                 </f:if>
             </div>
             <div class="col-12 col-md-9  order-1 order-md-1 py-2">
-                <f:if condition="{location.organizer.name}">
+                <f:if condition="{location.organizer.name} && {location.organizer.name} != '-'">
                     <b>{location.organizer.name}</b><br><br>
                 </f:if>
                 <div class="address" itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
@@ -44,22 +44,19 @@
                 </div>
                 <f:if condition="{settings.HideEventListLink} ">
                     <f:else>
-                        <f:if condition="{location.latestEvent -> f:format.date(format: 'Y-m-d')} > {f:format.date(date: 'now' , format: 'Y-m-d')}">
-                          <f:then>
-                              <f:link.page class="badge badge-primary mb-2 py-2" pageUid="{settings.pageIds.eventList}" additionalParams="{tx_jvevents_events: {overruleFilter: {location: '{location.uid}', category: 'true' , startDate:  '{nextEventLocation}',maxDays: 90}}}">
-                                  <span class="fas fa-calendar-alt mx-1"></span> {f:translate(key: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.EventListView', default: 'Termine')} >>
-                              </f:link.page>
-                              <br>
-                          </f:then>
-                            
-                        </f:if>
+                      <f:link.page class="badge badge-primary mb-2 py-2" pageUid="{settings.pageIds.eventList}" additionalParams="{tx_jvevents_events: {overruleFilter: {location: '{location.uid}', category: 'true' , startDate:  '{nextEventLocation}',maxDays: 90}}}">
+                          <span class="fas fa-calendar-alt mx-1"></span> {f:translate(key: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.EventListView', default: 'Termine')} >>
+                      </f:link.page>
+                      <br>
                     </f:else>
                 </f:if>
                 <br>
 
                 <f:if condition="{location.email}">
                     <f:then>
+                        <f:if condition="{location.email} != '-'">
                         <span class="fa fa-envelope mh-sm"></span> <f:link.external uri="mailto:{location.email}">{location.email}</f:link.external><br>
+                        </f:if>
                     </f:then>
                     <f:else>
                         <f:if condition="{location.organizer.email}">
@@ -72,7 +69,9 @@
                 </f:if>
                 <f:if condition="{location.phone}">
                     <f:then>
-                        <span class="fa fa-phone mh-sm"></span> <f:link.external uri="{location.phone}" defaultScheme="tel">{location.phone}</f:link.external><br>
+                        <f:if condition="{location.phone} != '-'">
+                            <span class="fa fa-phone mh-sm"></span> <f:link.external uri="{location.phone}" defaultScheme="tel">{location.phone}</f:link.external><br>
+                        </f:if>
                     </f:then>
                     <f:else>
                         <f:if condition="{location.organizer.phone}">

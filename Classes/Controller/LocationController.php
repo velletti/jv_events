@@ -121,13 +121,21 @@ class LocationController extends BaseController
             $nextEventOrganizer = null;
             $nextEventLocation = null;
             $this->settings['filter']['maxEvent'] =  1  ;
+            $this->settings['filter']['startDate'] = 0 ;
 
             if ( $location->getOrganizer() ) {
                 $this->settings['filter']['organizer'] =  $location->getOrganizer()->getUid()  ;
                 $nextEventOrganizer = $this->eventRepository->findByFilter(false, 1,  $this->settings )->getFirst() ;
             }
             $this->settings['filter']['location'] =  $location->getUid()  ;
+           //  $this->settings['debugQuery'] = 1 ;
             $nextEventLocation = $this->eventRepository->findByFilter(false, 1,  $this->settings )->getFirst() ;
+            if ( !$nextEventLocation ) {
+                // nichts gefunden? dann nimm das letzte Event
+                $this->settings['list']['sorting'] =  ["start_date" => "DESC"] ;
+                unset($this->settings['filter']['startDate']) ;
+                $nextEventLocation = $this->eventRepository->findByFilter(false, 1,  $this->settings )->getFirst() ;
+            }
 
             $this->view->assign('location', $location);
             $this->view->assign('nextEventLocation', ($nextEventLocation ? $nextEventLocation->getStartdate()->format("d.m.Y") : date("d.m.Y") ));
