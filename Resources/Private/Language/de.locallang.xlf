@@ -1035,7 +1035,7 @@
             </trans-unit>
             <trans-unit id="aks_for_position_browser_and_cookie" approved="yes">
                 <source>If you do so, the browser will ask you to get access. If you confirm this, the browser can store the geo position as Cookie on your computer, if you press save icon. Our Server will use this only for filtering events for you but itself does not store this and also will not track you by the position. Really! We do NO User tracking!</source>
-                <target>Dazu wirst du, je nach Browser Optionen, noch gefragt, ob du dies erlauben möchstest. Diese Koordinaten werden dann auf Wunsch (Dazu auf as Icon Save klicken) in deinem Browser als Cookie gespeichert. Der Server wertet diese Eingaben nur für die Filterung der anzuzeigenden Termine aus. Es erfolgt kein User Tracking! Ehrlich!</target>
+                <target>Dazu wirst du, je nach Browser Optionen, noch gefragt, ob du dies erlauben möchstest. Diese Koordinaten werden dann auf Wunsch (Dazu auf das Icon Save klicken) in deinem Browser als Cookie gespeichert. Der Server wertet diese Eingaben nur für die Filterung der anzuzeigenden Termine aus. Es erfolgt kein User Tracking! Ehrlich!</target>
             </trans-unit>
               <trans-unit id="center_map_and_select_zoom" approved="yes">
                 <source>You can center the map and zoom in to select locations and use this as filter</source>
@@ -1051,7 +1051,7 @@
             </trans-unit>
              <trans-unit id="unset_cookies" approved="yes">
                <source>Remove stored map cookies</source>
-               <source>Gespeicherte Kartencookies löschen</source>
+               <target>Gespeicherte Kartencookies löschen</target>
             </trans-unit>
             <trans-unit id="donate" approved="yes">
                 <source>Donate</source>

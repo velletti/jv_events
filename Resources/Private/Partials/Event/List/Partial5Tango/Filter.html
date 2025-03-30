@@ -385,7 +385,9 @@
 <f:if condition="{settings.ShowFilter}==4">
 
     <div class="filter events  filterType4">
-        <f:link.page id="jv-events-filter-baseUrl" class="d-none hidden" pageUid="{settings.pageIds.eventList}">-</f:link.page>
+        <f:if condition="{settings.pageIds.eventList}">
+            <f:link.page id="jv-events-filter-baseUrl" class="d-none hidden" pageUid="{settings.pageIds.eventList}">-</f:link.page>
+        </f:if>
         <form class="clearfix" onsubmit="this.preventDefault();"  action="#">
 
             <div id="jv-events-filter-sub" class="fieldsets">
