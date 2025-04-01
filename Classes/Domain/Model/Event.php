@@ -1099,10 +1099,10 @@ class Event extends AbstractEntity
     /**
      * Returns the Access starttime
      *
-     * @return DateTime
+     * @return DateTime|null
      */
 
-    public function getAccessStarttime()
+    public function getAccessStarttime(): ?DateTime
     {
         return $this->starttime;
     }
@@ -1110,11 +1110,11 @@ class Event extends AbstractEntity
     /**
      * sets the Access endtime
      *
-     * @param DateTime $starttime
+     * @param DateTime|null $starttime
      * @return void
      */
 
-    public function setAccessStarttime($starttime): DateTime
+    public function setAccessStarttime(?DateTime $starttime)
     {
         $this->starttime = $starttime;
     }
