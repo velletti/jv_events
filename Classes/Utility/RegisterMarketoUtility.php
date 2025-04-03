@@ -112,7 +112,7 @@ class RegistermarketoUtility {
 
         $data['LanguageCode__c']  =   $settings['lang'] ?? "DEU";
         // if AUT, set it to DEU as Marketo does not know AUT or DEA 
-        $data['LanguageCode__c']  =   $settings['lang'] != "AUT" ?? "DEU";
+        $data['LanguageCode__c']  =   $settings['lang'] != "AUT" ? $settings['lang']  :  "DEU";
 
         if ( $event->getPrice() > 0 ) {
             $data['category']  =   'Training' ;
