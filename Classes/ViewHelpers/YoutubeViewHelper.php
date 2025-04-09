@@ -70,28 +70,35 @@ class YoutubeViewHelper extends AbstractTagBasedViewHelper
         $settings = $this->arguments['settings'] ?? [] ;
         $class = $this->arguments['class'] ?? '' ;
         $videoUrl = parse_url((string) $uri);
-
         if ( isset($_COOKIE['tx_events_youtube_consens'])) {
-
             if (array_key_exists("query", $videoUrl)) {
                 parse_str($videoUrl['query'], $params);
                 if (is_array($params)) {
-                    if (strpos((string) $uri, "watch") > 0 && isset($params["v"])) {
+                    $videoId =false ;
+                    // Old Links https://youtu.be/watch?v=mhSrnL1CwIE or https://youtu.be/embed?v=mhSrnL1CwIE
+                    if ( ( strpos((string) $uri, "watch") > 0 || strpos((string) $uri, "embed") ) && isset($params["v"])) {
+                        $videoId = $params["v"];
+                    }
+                    // New Links since 2025 https://youtu.be/mhSrnL1CwIE?feature=shared
+                    if (isset($params["feature"]) && $params["feature"] == "shared") {
+                        $videoId = trim($videoUrl["path"] ,"/") ;
+                    }
+                    if ($videoId) {
                         // single Video we try to embedd
                         // <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/F2zTd_YwTvo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
                         // height and width are overwritten by css
 
                         $frame = '<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/'
-                            . $params["v"] . '"'
+                            . $videoId . '"'
                             . ' title="YouTube video player" frameborder="0" '
                             . ' allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" '
                             . ' allowfullscreen></iframe>';
                         return '<div class="embed-container">' . $frame . "</div>";
 
                     }
-                    // todo .. fix playlist embeddng
-                    if (strpos((string) $uri, "XXX-playlist-XXX") > 0 && isset($params["list"])) {
+                    // todo .. fix playlist embeddng https://youtube.com/playlist?list=PL9ekGTYpEt6BWMeQxTgfWz4pBH6mtxKpV&feature=shared
+                    if (strpos((string) $uri, "playlist") > 0 && isset($params["list"])) {
                         // playlist Video we try to embedd
                         // <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/videoseries?list=PL1COG6YIRDMDIYGsK7ZkGfji99W_etnoG" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 

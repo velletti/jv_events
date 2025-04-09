@@ -315,11 +315,25 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
 
         if (array_key_exists("query", $videoUrl)) {
             parse_str($videoUrl['query'], $params);
+
+
             if (is_array($params)) {
-                if (strpos($propertyValue, "watch") > 0 && isset($params["v"])) {
+                if ( (strpos($propertyValue, "watch") > 0 || strpos($propertyValue, "embed") > 0) && isset($params["v"])) {
                     return $isValid;
                 }
             }
+            // https://www.youtube.com/playlist?list=PL9ekGTYpEt6BWMeQxTgfWz4pBH6mtxKpV
+            if (is_array($params)) {
+                if ( (strpos($propertyValue, "playlist") > 0 || strpos($propertyValue, "embed") > 0) && isset($params["list"])) {
+                    return $isValid;
+                }
+            }
+            // New Links since 2025 https://youtu.be/mhSrnL1CwIE?feature=shared
+            if (isset($params["feature"]) && $params["feature"] == "shared") {
+                return $isValid;
+            }
+
+
         }
         if ( !$errorMessage ) {
             $errorMessage =  "Link To YouTube not Valid" ;
