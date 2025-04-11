@@ -147,6 +147,15 @@ plugin.tx_jvevents_events {
 			senderEmail = {$plugin.tx_jvevents_events.settings.register.senderEmail}
 			termsOfUsePid = {$plugin.tx_jvevents_events.settings.register.termsOfUsePid}
 			privacyPid = {$plugin.tx_jvevents_events.settings.register.privacyPid}
+
+			tracking {
+			#	trackParam = _ga_marketo
+			#	trackValue = newsletter
+			#	trackParams {
+			#		1 = _ga_uid
+			#		2 = _ga_event_id
+			#	  }
+			# }
 		}
 		signature {
 			uid = 1

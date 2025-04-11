@@ -284,6 +284,34 @@ class BaseController extends ActionController
             }
         }
 
+
+        if( isset($this->settings['register']['tracking']) ) {
+
+            $ga = $this->settings['register']['tracking'] ;
+            if (isset($ga['trackParam']) && isset( $ga['trackValue'])) {
+                $gaMarketo = GeneralUtility::getIndpEnv('QUERY_STRING');
+                parse_str($gaMarketo, $queryParams);
+
+                if (isset( $queryParams[ $ga['trackParam']]) && $queryParams[ $ga['trackParam']] ===$ga['trackValue'] ) {
+                    if (isset($ga['trackParams'] ) && is_array($ga['trackParams'])) {
+                        foreach ($ga['trackParams'] as $param) {
+                            if (isset($queryParams[$param])) {
+                                // Set cookies with a 48-hour expiration time using TYPO3 API
+                                setcookie($param, $queryParams[$param], [
+                                    'expires' => time() + (48 * 60 * 60),
+                                    'path' => '/',
+                                    'secure' => true,
+                                    'httponly' => true,
+                                    'samesite' => 'Strict',
+                                ]);
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+
         $this->persistenceManager = GeneralUtility::makeInstance(PersistenceManager::class);
     }
 
