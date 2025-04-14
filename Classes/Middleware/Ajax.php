@@ -71,7 +71,11 @@ class Ajax implements MiddlewareInterface
 
                 $this->getEventList( $_gp["tx_jvevents_ajax"] , $request ) ;
 
-            } else {
+            } else if( $function == "reserveseat"  || $function == "returnseat"  ) {
+
+                $this->reserveSeat( $_gp["tx_jvevents_ajax"] , $request , ($function == "reserveseat" ) ) ;
+
+            } else  {
                 // todo rebuld here insteead of using the Ajax Controller
 
                     /** @var AjaxUtility $ajaxUtility */
@@ -134,6 +138,59 @@ class Ajax implements MiddlewareInterface
         return $handler->handle($request);
     }
 
+    public function reserveSeat(array $arguments=Null , $request = null , $reserve=true )
+    {
+        ShowAsJsonArrayUtility::show(array( 'error' => "not finally implemented at the moment"  )) ;
+        die;
+        // Store jv_events_token in Backend in any  folder .. token length  > 10 cahrs !!! and send it in the header (and not like in this test example in the URL)
+
+        // https://wwwv12.allplan.com.ddev.site/de/termine/alle-termine/events-detail/event/reserveSeat/<eventId>>/session/<toDo-SessionID-toAvoid-MisUse>
+
+        // https://wwwv12.allplan.com.ddev.site/de/termine/alle-termine/events-detail/event/reserveSeat/6455/session/0?tx_jvevents_ajax[apiToken]=TESTTESTTEST
+        // https://wwwv12.allplan.com.ddev.site/de/termine/alle-termine/events-detail/event/returnSeat/6455/session/0?tx_jvevents_ajax[apiToken]=TESTTESTTEST
+
+        if (!$arguments) {
+            ShowAsJsonArrayUtility::show(array( 'error' => "no arguments" )) ;
+        }
+        $apiToken = $request->getHeaderLine('jve-apitoken');
+
+        if (strlen($apiToken) > 10)  {
+            $arguments['apiToken'] = $apiToken;
+        }
+
+        $apiLicense = TokenUtility::checkLicense (isset($arguments['apiToken'])  ? (string)$arguments['apiToken'] : null , null ) ;
+         if( $apiLicense != "FULL" && $apiLicense != "ENTERPRISE" ) {
+               ShowAsJsonArrayUtility::show(array( 'error' => "not authorized" , 'license' => $apiLicense )) ;
+               die;
+         }
+
+
+        $this->eventRepository        = GeneralUtility::makeInstance(EventRepository::class);
+         /**    @var Event $event */
+         $event = $this->eventRepository->findByUidAllpages( intval($arguments['event']) , FALSE  , TRUE );
+         if ( !is_object($event )) {
+             ShowAsJsonArrayUtility::show(array( 'error' => "no event found" , 'event' => $arguments['event'] )) ;
+             die;
+         }
+
+         if( $event->isIsRegistrationPossible() && $reserve ) {
+             $seatsUnconfirmed = $event->getUnconfirmedSeats() + 1 ;
+             $event->setUnconfirmedSeats($seatsUnconfirmed) ;
+             $this->eventRepository->update($event) ;
+             $this->persistenceManager->persistAll();
+             ShowAsJsonArrayUtility::show(array( 'success' => "reserved one seat" , 'event' => $arguments['event'] , 'noOfReservation' => $seatsUnconfirmed)) ;
+         } else if ( !$reserve ) {
+               $seatsUnconfirmed = $event->getUnconfirmedSeats() - 1 ;
+               if( $seatsUnconfirmed < 0 ) {
+                  $seatsUnconfirmed = 0 ;
+               }
+               $event->setUnconfirmedSeats($seatsUnconfirmed) ;
+               $this->eventRepository->update($event) ;
+               $this->persistenceManager->persistAll();
+               ShowAsJsonArrayUtility::show(array( 'success' => "returned one seat" , 'event' => $arguments['event'] , 'noOfReservation' => $seatsUnconfirmed)) ;
+         }
+        ShowAsJsonArrayUtility::show(array( 'error' => "no free seats" , 'event' => $arguments['event'] )) ;
+    }
     /**
      * action list
      *
@@ -149,7 +206,11 @@ class Ajax implements MiddlewareInterface
         // 2024
         // https://wwwv12.allplan.com.ddev.site/?id=13001&L=1&tx_jvevents_ajax[event]=4308&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[mode]=onlyJson&tx_jvevents_ajax[apiToken]=testTestTest&&tx_jvevents_ajax[user]=11
         // https://www.allplan.com/?id=13001&L=1&tx_jvevents_ajax[event]=4308&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=14&tx_jvevents_ajax[eventsFilter][sameCity]=1&tx_jvevents_ajax[eventsFilter][skipEvent]=&tx_jvevents_ajax[eventsFilter][startDate]=30&tx_jvevents_ajax[mode]=onlyJson&tx_jvevents_ajax[apiToken]=LN-2030-€nTeR-qRm8o-WLcM
+        // https://www.allplan.com/?id=13001&L=1&tx_jvevents_ajax[event]=4308&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[mode]=onlyJson&tx_jvevents_ajax[apiToken]=LN-2030-€nTeR-qRm8o-WLcM
         // https://tangov10.ddev.site/index.php?id=150&L=0&tx_jvevents_ajax[action]=eventList&tx_jvevents_ajax[controller]=Ajax&tx_jvevents_ajax[eventsFilter][categories]=3&tx_jvevents_ajax[eventsFilter][startDate]=-1&tx_jvevents_ajax[mode]=onlyJson&tx_jvevents_ajax[user]=479&tx_jvevents_ajax[apiToken]=testTestTest
+
+        // Store jv_events_token in Backend in any  folder .. token length  > 10 cahrs !!! and send it in the header (and not like in this test example in the URL)
+        // https://wwwv12.allplan.com.ddev.site/de/termine/alle-termine/events-detail/event/ajax/onlyJson/6455?tx_jvevents_ajax[apiToken]=TESTTESTTEST
 
 
         $this->tagRepository        = GeneralUtility::makeInstance(TagRepository::class);
@@ -178,9 +239,6 @@ class Ajax implements MiddlewareInterface
         } elseif (is_array($ts)) {
             $this->settings = $ts['settings'];
         }
-
-
-
         // get all Access infos, Location infos , find similar events etc
         $output = $this->eventsListMenuSub($arguments , $request);
 
@@ -310,7 +368,12 @@ class Ajax implements MiddlewareInterface
 
         ) ;
 
-        if( $apiLicense == "FULL") {
+        if( $_ENV['IS_DDEV_PROJECT'] == "true"  ) {
+            $output['debug']['arguments'] = $arguments ;
+            $output['debug']['licenseCheck'] = $debug ;
+        }
+
+        if( $apiLicense == "FULL" || $apiLicense == "ENTERPRISE" ) {
             // Todo : Restrict this to only requests from same server
             if( $request && $_SERVER['REMOTE_ADDR'] === $_SERVER['SERVER_ADDR']) {
                 $frontendUser = $request->getAttribute('frontend.user');
@@ -699,7 +762,7 @@ class Ajax implements MiddlewareInterface
         $return['price'] = round( $event->getPrice() , 2 ) ;
         $return['currency'] = $event->getCurrency() ;
 
-        if ($apiLicense != "FULL") {
+        if ($apiLicense != "FULL" && $apiLicense != "ENTERPRISE") {
             return $return ;
         }
         $return['creationTime'] = date( "d.m.Y H:i" , $event->getCrdate() ) ;

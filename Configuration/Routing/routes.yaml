@@ -59,7 +59,41 @@ routeEnhancers:
         type: PersistedAliasMapper
         tableName: tx_jvevents_domain_model_organizer
         routeFieldName: slug
-  
+        
+  jveventAjaxPlugin:
+    type: Extbase
+    extension: JvEvents
+    plugin: Ajax
+
+    routes:
+      - routePath: '/event/ajax/{mode}/{event_id}'
+        _controller: 'Ajax::eventList'
+        _arguments:
+          event_id: event
+          action: eventList
+          mode: mode
+      - routePath: '/event/reserveSeat/{event_id}/session/{session_id}'
+        _controller: 'Ajax::reserveSeat'
+        _arguments:
+          event_id: event
+          session_id: session
+
+      - routePath: '/event/returnSeat/{event_id}/session/{session_id}'
+        _controller: 'Ajax::returnSeat'
+        _arguments:
+          event_id: event
+          session_id: session
+
+    aspects:
+      event_id:
+        type: PersistedAliasMapper
+        tableName: tx_jvevents_domain_model_event
+        routeFieldName: uid
+    defaults:
+      mode: 'onlyJson'
+      seat_id: '0'
+
+
   jveventRegistrantPlugin:
     type: Extbase
     extension: JvEvents
