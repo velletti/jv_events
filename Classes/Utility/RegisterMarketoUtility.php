@@ -279,13 +279,18 @@ class RegistermarketoUtility {
         $data['city'] = trim($registrant->getCity() ) ;
 
 
-        /** @var \SJBR\StaticInfoTables\Domain\Repository\CountryRepository $countries */
-        $countries =  GeneralUtility::makeInstance(CountryRepository::class);
-        /** @var \SJBR\StaticInfoTables\Domain\Model\Country $cn_short_en */
-        $cn_short_en = $countries->findOneByIsoCodeA2( trim($registrant->getCountry() ) ) ;
-        if( is_object($cn_short_en) ) {
-            $data['country']  = $cn_short_en->getShortNameEn() ;
-        }
+        // JVE: 14.4.2025 :
+        $data['CountryCode'] =trim($registrant->getCountry() ) ;
+        $data['CountryCode'] = str_replace( [  'GU' , 'PR' ] , [  'US' , 'US' ] , $data[ 'CountryCode'] ) ;
+
+
+   //     /** @var \SJBR\StaticInfoTables\Domain\Repository\CountryRepository $countries */
+        //     $countries =  GeneralUtility::makeInstance(CountryRepository::class);
+        //     /** @var \SJBR\StaticInfoTables\Domain\Model\Country $cn_short_en */
+        //   $cn_short_en = $countries->findOneByIsoCodeA2( trim($registrant->getCountry() ) ) ;
+        // if( is_object($cn_short_en) ) {
+        //   $data['country']  = $cn_short_en->getShortNameEn() ;
+        // }
         $data['phone'] = trim($registrant->getPhone() ) ;
 
         /* +++++++++++++++++++++ Step 2  clean up the array +++++++++++++++++++++ */
