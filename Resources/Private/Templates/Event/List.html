@@ -46,7 +46,11 @@
 		</f:else>
 	</f:if>
 
-	<div class="jv_events_{settings.LayoutList} {settings.list.additionalClass}">
+	<f:variable name="jv_events_click_on_drag"></f:variable>
+	<f:if condition="{settings.filter.maxDays} < 31">
+		<f:variable name="jv_events_click_on_drag">jv_events_click_on_drag</f:variable>
+	</f:if>
+	<div class="jv_events_{settings.LayoutList} {settings.list.additionalClass} {jv_events_click_on_drag}">
 		<f:if condition="{events}">
 			<f:then>
 				<f:if condition="{settings.ShowFilter}==7">

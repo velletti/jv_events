@@ -456,6 +456,36 @@ function jv_events_init() {
             jv_events_reloadList() ;
         });
 
+        let isDragging = false;
+        let startX = 0;
+        let endX = 0;
+
+        // Attach event listeners to the draggable element
+        jQuery('.jv_events_click_on_drag').on('mousedown touchstart', function (event) {
+            isDragging = true;
+            startX = event.type === 'touchstart' ? event.originalEvent.touches[0].pageX : event.pageX; // Record the starting X position
+        });
+
+        jQuery(document).on('mousemove touchmove', function (event) {
+            if (isDragging) {
+                endX = event.type === 'touchmove' ? event.originalEvent.touches[0].pageX : event.pageX; // Update the current X position
+            }
+        });
+
+        jQuery(document).on('mouseup touchend', function () {
+            if (isDragging) {
+                isDragging = false;
+                const deltaX = endX - startX; // Calculate the drag distance
+
+                if (deltaX > 50) {
+                    // Dragged to the right
+                    jQuery('.jv_events_list_browser_next').trigger('click');
+                } else if (deltaX < -50) {
+                    // Dragged to the left
+                    jQuery('.jv_events_list_browser_prev').trigger('click');
+                }
+            }
+        });
 
     }
 
