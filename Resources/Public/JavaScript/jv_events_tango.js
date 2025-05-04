@@ -479,10 +479,10 @@ function jv_events_init() {
 
                 if (deltaX > 50) {
                     // Dragged to the right
-                    jQuery('.jv_events_list_browser_next').trigger('click');
+                    jQuery('.jv_events_list_browser_prev').trigger('click');
                 } else if (deltaX < -50) {
                     // Dragged to the left
-                    jQuery('.jv_events_list_browser_prev').trigger('click');
+                    jQuery('.jv_events_list_browser_next').trigger('click');
                 }
             }
         });
