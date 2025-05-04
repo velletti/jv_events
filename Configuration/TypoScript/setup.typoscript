@@ -55,6 +55,7 @@ plugin.tx_jvevents_events {
 		}
 
 		list {
+			swipe = 0
 			layouts {
 				1Allplan = 1 - List with Filters
 				2Megra = 2 - List with Filters and Link to first related File

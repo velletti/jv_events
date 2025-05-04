@@ -453,6 +453,9 @@ function jv_events_init() {
 
         jQuery(".jv_events_list_browser_button").on("click" , function () {
             jQuery('#overruleFilterStartDate' ).val( jQuery(this).data('date')) ;
+            jQuery('.jv_events_click_on_drag_loading' ).css("height" , jQuery('.jv_events_click_on_drag' ).css("height") ) ;
+            jQuery('.jv_events_click_on_drag' ).fadeOut() ;
+            jQuery('.jv_events_click_on_drag_loading' ).css("display" , "block") ;
             jv_events_reloadList() ;
         });
 
