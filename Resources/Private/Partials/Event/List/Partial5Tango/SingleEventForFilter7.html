@@ -3,7 +3,7 @@
 <f:if condition="{aktDate} != {lastDate}">
     <f:if condition="{settings.layoutHideDay}">
         <f:else>
-            <div class="alert bg-gradient-dark text-white-50 jv-events-row jvevents-newDay mt-4"><i class="fas fa-calendar-alt"> </i> {event.startDate -> f:format.date(format:"D d. M. Y")} </div>
+            <div class="alert bg-gradient-dark text-white-50 jv-events-row jvevents-newDay mt-4 {jv_events_click_on_drag}"><i class="fas fa-calendar-alt"> </i> {event.startDate -> f:format.date(format:"D d. M. Y")} </div>
         </f:else>
     </f:if>
 </f:if>
@@ -60,7 +60,7 @@
                                 <span class="far fa-caret-square-down"></span>
                             </span>
                         </h4>
-                        <div class="collapse fade jv-events-teaser-div p-0 m-0" id="jv-events-teaser-div-{event.uid}">
+                        <div class="collapse fade jv-events-teaser-div p-0 m-0  {jv_events_click_on_drag}" id="jv-events-teaser-div-{event.uid}">
                             <p class="my-2 d-md-block d-sm-none d-xs-block max-3-lines mb-3 pb-2">
                                 <f:if condition="{event.price} > 0">
                                     <span class="d-sm-none d-xs-block">{event.price} {event.currency} (<f:translate key="jv_events_model_event.inclusiveVat" />)<br></span>
@@ -82,7 +82,7 @@
                     </div>
                 </div>
 
-                <div class="col-8 col-sm-3 text-black-50   order-3 order-sm-3 py-2">
+                <div class="col-8 col-sm-3 text-black-50   order-3 order-sm-3 py-2  {jv_events_click_on_drag}">
                     <f:if condition="{event.canceled}">
                         <f:then>
                             <b>{f:translate(key: 'tx_jvevents_domain_model_event.details.canceled', default: 'canceled')}</b>
