@@ -149,7 +149,7 @@ plugin.tx_jvevents_events {
 			termsOfUsePid = {$plugin.tx_jvevents_events.settings.register.termsOfUsePid}
 			privacyPid = {$plugin.tx_jvevents_events.settings.register.privacyPid}
 
-			tracking {
+			# tracking {
 			#	trackParam = _ga_marketo
 			#	trackValue = newsletter
 			#	trackParams {
