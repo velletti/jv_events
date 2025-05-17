@@ -41,7 +41,7 @@
 						<div class="col-md-4">
 							<strong><f:translate key="tx_jvevents_domain_model_event.details.canceled" default="Entfällt!!" /></strong>
 						</div>
-						<div class="col-md-8">{event.startDate -> f:format.date(format:"d.m.Y")}
+						<div class="col-md-8">{event.startDate -> f:format.date(format:"D d.m.Y")}
 
 						</div>
 					</div>
@@ -58,7 +58,7 @@
 									{event.startDate -> f:format.date(format:"d.m")} - {event.endDate -> f:format.date(format:"d.m.Y")}
 								</f:then>
 								<f:else>
-									{event.startDate -> f:format.date(format:"d.m.Y")}
+									{event.startDate -> f:format.date(format:"D d.m.Y")}
 								</f:else>
 
 							</f:if>
@@ -426,6 +426,7 @@
 						<f:then>({event.daysSinceLastMod} <f:translate key="days" default="Days" />)</f:then>
 						<f:else>({event.hoursSinceLastMod} <f:translate key="hours" default="Hours" />)</f:else>
 					</f:if>
+					<f:security.ifHasRole role="adminOrganizer"> | UserId: {event.lastUpdatedBy} </f:security.ifHasRole>
 				</div>
 			</f:if>
 
