@@ -2,13 +2,13 @@
 {
 	  "@context" : "http://schema.org",
 	  "@type" : "Event",
-	  "name" : "{event.name}",
+	  "name" : "{event.name -> f:format.htmlentities()}",
 <f:if condition="{event.teaser}">
     <f:then>
-        "description" : "{event.teaser}",
+        "description" : "{event.teaser  -> f:format.htmlentities()}",
     </f:then>
     <f:else>
-        "description" : "{event.description -> f:format.stripTags()}",
+        "description" : "{event.description -> f:format.stripTags()  -> f:format.htmlentities()}",
     </f:else>
 </f:if>
 <f:spaceless><f:if condition="{event.allDay}">
@@ -24,13 +24,13 @@
 	  "location" :
 	  {
 	    "@type" : "Place",
-	    "name" : "<f:format.raw>{event.location.name}</f:format.raw>",
+	    "name" : "<f:format.raw>{event.location.name -> f:format.htmlentities()}</f:format.raw>",
 	    "address" :
 	    {
       "@type" : "PostalAddress",
-			<f:if condition="{event.location.streetAndNr}">"streetAddress" : "{event.location.streetAndNr}",</f:if>
-			<f:if condition="{event.location.city}">"addressLocality" : "{event.location.city}",</f:if>
-			<f:if condition="{event.location.zip}">"postalCode" : "{event.location.zip}"</f:if>
+			<f:if condition="{event.location.streetAndNr}">"streetAddress" : "{event.location.streetAndNr -> f:format.htmlentities()}",</f:if>
+			<f:if condition="{event.location.city}">"addressLocality" : "{event.location.city  -> f:format.htmlentities()}",</f:if>
+			<f:if condition="{event.location.zip}">"postalCode" : "{event.location.zip -> f:format.htmlentities()}"</f:if>
 	    }
 	  }
 </f:if>
