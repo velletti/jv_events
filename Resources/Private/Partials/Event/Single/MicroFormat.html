@@ -1,37 +1,32 @@
 {namespace event=JVelletti\JvEvents\ViewHelpers}
 {
-	  "@context" : "http://schema.org",
-	  "@type" : "Event",
-	  "name" : "{event.name -> f:format.htmlentities()}",
+	  "@context": "http://schema.org",
+	  "@type": "Event",
+	  "name": "{event.name -> f:format.htmlspecialchars()}",
 <f:if condition="{event.teaser}">
-    <f:then>
-        "description" : "{event.teaser  -> f:format.htmlentities()}",
-    </f:then>
-    <f:else>
-        "description" : "{event.description -> f:format.stripTags()  -> f:format.htmlentities()}",
-    </f:else>
+    <f:then>"description": "<f:spaceless><event:cleanTeaser value="{event.teaser}"></event:cleanTeaser></f:spaceless>", </f:then>
 </f:if>
 <f:spaceless><f:if condition="{event.allDay}">
     <f:then>
-        "startDate" : "{event.startDate -> f:format.date(format:"Y-m-d")}T{event.startTime -> event:format.date( format:"H:i")}",
+        "startDate": "{event.startDate -> f:format.date(format:"Y-m-d")}T{event.startTime -> event:format.date( format:"H:i")}",
     </f:then>
     <f:else>
-        "startDate" : "{event.startDate -> f:format.date(format:"Y-m-d")}T00:00" ,
+        "startDate": "{event.startDate -> f:format.date(format:"Y-m-d")}T00:00" ,
     </f:else>
 </f:if></f:spaceless>
-	  "url" : "<event:link event="{event}" settings="{settings}" uriOnly="1" />",
+"url": "<event:link event="{event}" settings="{settings}" uriOnly="1" />",
 <f:if condition="{event.location} && {event.location.name}">
-	  "location" :
-	  {
-	    "@type" : "Place",
-	    "name" : "<f:format.raw>{event.location.name -> f:format.htmlentities()}</f:format.raw>",
-	    "address" :
-	    {
-      "@type" : "PostalAddress",
-			<f:if condition="{event.location.streetAndNr}">"streetAddress" : "{event.location.streetAndNr -> f:format.htmlentities()}",</f:if>
-			<f:if condition="{event.location.city}">"addressLocality" : "{event.location.city  -> f:format.htmlentities()}",</f:if>
-			<f:if condition="{event.location.zip}">"postalCode" : "{event.location.zip -> f:format.htmlentities()}"</f:if>
-	    }
-	  }
+  "location":
+  {
+	"@type": "Place",
+	"name": "<f:format.raw>{event.location.name -> f:format.htmlspecialchars()}</f:format.raw>",
+	"address":
+	{
+  "@type" : "PostalAddress",
+		<f:if condition="{event.location.streetAndNr}">"streetAddress": "{event.location.streetAndNr -> f:format.htmlspecialchars()}",</f:if>
+		<f:if condition="{event.location.city}">"addressLocality": "{event.location.city  -> f:format.htmlspecialchars()}",</f:if>
+		<f:if condition="{event.location.zip}">"postalCode": "{event.location.zip -> f:format.htmlspecialchars()}"</f:if>
+	}
+  }
 </f:if>
 }
