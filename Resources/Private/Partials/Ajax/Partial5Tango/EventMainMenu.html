@@ -13,6 +13,8 @@
 
                     </f:link.page>
                 </f:if>
+                <f:render section="selectDay" arguments="{_all}"/>
+
                 <f:if condition="{settings.pageIds.organizerAssist}">
                     <f:if condition="{output.feuser.uid}">
                         <f:link.action pageUid="{settings.pageIds.organizerAssist}" class="nav-link" title="Assistent" extensionName="JvEvents" action="assist" controller="Organizer" pluginName="Assist">
@@ -50,16 +52,7 @@
                     </f:if>
                     <f:if condition="{settings.pageIds.editOrganizer}">
                         <f:if condition="{output.organizer.hasAccess}">
-                            <f:if condition="{settings.pageIds.rankingModul}">
-                                <f:security.ifHasRole role="adminOrganizer">
-                                    <f:link.page class="nav-link" pageUid="{settings.pageIds.rankingModul}" title="showRanging Settings" additionalParams="{tx_jvranking_pi1: {organizer: '{output.organizer.organizerId}'}}">
-                                        <button class="btn btn-outline-primary btn-sm rounded-circle" href="#">
-                                            <i class="fas fa-chart-bar "></i>
-                                        </button>
-                                    </f:link.page>
 
-                                </f:security.ifHasRole>
-                            </f:if>
                             <f:link.action pageUid="{settings.pageIds.editOrganizer}" class="nav-link" title="Edit organizer" extensionName="JvEvents"  action="edit" controller="Organizer" pluginName="Organizer" arguments="{organizer: output.organizer.organizerId, event: '-'}">
                                 <button class="btn btn-outline-primary btn-sm rounded-circle" href="#">
                                     <i class="fas fa-user "></i>
@@ -113,7 +106,7 @@
                         <span class="d-inline-block"> Login</span>
                     </f:link.page>
                 </f:if>
-
+                <f:render section="selectDay" arguments="{_all}"/>
                 <f:if condition="{settings.pageIds.loginFormNotHidden}">
 
                     <!--  ################# the second nav  loaded via AJAX to #jvEventsAjaxMenu  -for NON users  ##################### //-->
@@ -155,6 +148,48 @@
         </f:if>
 
     </div>
+
+
+<f:section name="selectDay">
+    <f:if condition="{settings.pageIds.eventList}">
+        <span class="nav-link" title="select Day" data-toggle="collapse" data-target="#eventMenuFilterModal">
+            <button class="btn btn-outline-primary btn-sm rounded-circle" >
+                <i class="fas fa-calendar-alt "></i>
+            </button>
+            <span class="">
+                <f:link.page pageUid="{settings.pageIds.eventList}" id="eventMenuFilterLink"></f:link.page>
+            </span>
+        </span>
+        <span class="collapse text-primary" id="eventMenuFilterModal">
+            <div class="input-group date p-0 py-2 mb-1 mr-2" style="width:150px;">
+                <input data-date-type="date" data-todaybtn="linked" data-locale="de" data-todayhighlight="true" data-autoclose="true"
+                       class="form-control datetimepicker clearable col-9"
+                       onchange="eventMenuFilterModal();"
+                       id="overruleFilterStartDateNav"
+                       type="text" name="overruleFilter[startDate]"
+                       value="{f:format.date(format:'d.m.Y', date: 'today')}">
+                <div class="input-group-addon btn btn-primary">
+                    <span class="fa fa-calendar-alt fa-w-14" onclick="eventMenuFilterModal();"/>
+                </div>
+            </div>
+        </span>
+        <script><f:format.raw>
+            $(function(){ $('#overruleFilterStartDateNav').datepicker({format: 'dd.mm.yyyy'}); });
+            function eventMenuFilterModal() {
+                var startDate = $('#overruleFilterStartDateNav').val();
+                if (startDate) {
+                    var url = $('#eventMenuFilterLink').attr("href") ;
+
+                    if ( url ) {
+                        window.location.href = url + '?&tx_jvevents_events[overruleFilter][startDate]='+ startDate + '&tx_jvevents_events[overruleFilter][maxDays]=7&cHash=' + Math.random().toString(36).substring(7);
+                    }
+
+                }
+            };
+        </f:format.raw></script>
+
+    </f:if>
+</f:section>
 
 
 

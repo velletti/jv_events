@@ -50,6 +50,17 @@
                         <span class="d-none d-md-inline-block">delete</span>
                     </span>
 
+                    <f:if condition="{settings.pageIds.rankingModul}">
+                        <f:security.ifHasRole role="adminOrganizer">
+                            <f:link.page class="nav-link  d-inline-block px-1" pageUid="{settings.pageIds.rankingModul}" title="showRanging Settings" additionalParams="{tx_jvranking_pi1: {organizer: '{output.event.organizer.organizerId}'}}">
+                                <button class="btn btn-outline-primary btn-sm rounded-circle" href="#">
+                                    <i class="fas fa-chart-bar "></i>
+                                </button>
+                            </f:link.page>
+
+                        </f:security.ifHasRole>
+                    </f:if>
+
                     <f:if condition="{settings.single.hideMoreButton}">
                         <f:else>
                               <span class="nav-link d-inline-block px-1 " title="more" >
