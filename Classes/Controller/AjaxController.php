@@ -699,6 +699,18 @@ class AjaxController extends BaseController
         $renderer->setLayoutRootPaths([0 => $layoutPath]);
         $renderer->assign('output' , $output) ;
         $this->settings['Ajax']['Action'] = "Main" ;
+        $this->settings['EmConfiguration'] = EmConfigurationUtility::getEmConf();
+        $clearCachePids = GeneralUtility::trimExplode("," , $this->settings['EmConfiguration']['clearCachePids']) ;
+        $this->settings['Ajax']['noClearCachePid'] = true ;
+        if( is_array($clearCachePids) || count($clearCachePids) > 0 ) {
+            if ( in_array(  MigrationUtility::getPageId() , $clearCachePids) ) {
+                if ( !isset( $output['event']['eventId'] ) || $output['event']['eventId'] < 1 ) {
+                    $this->settings['Ajax']['noClearCachePid'] = false ;
+                }
+            }
+        }
+
+
         $renderer->assign('settings' , $this->settings ) ;
 
         $returnMain = str_replace( ["\n", "\r", "\t", "    ", "   ", "  "] , ["", "", "", " ", " ", " "] , trim( $renderer->render() )) ;

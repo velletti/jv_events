@@ -151,16 +151,21 @@
 
 
 <f:section name="selectDay">
-    <f:if condition="{settings.pageIds.eventList}">
+    <f:if condition="{settings.pageIds.eventList} && {settings.Ajax.noClearCachePid}">
         <span class="nav-link" title="select Day" data-toggle="collapse" data-target="#eventMenuFilterModal">
             <button class="btn btn-outline-primary btn-sm rounded-circle" >
                 <i class="fas fa-calendar-alt "></i>
             </button>
-            <span class="">
+            <span class="small">
                 <f:link.page pageUid="{settings.pageIds.eventList}" id="eventMenuFilterLink"></f:link.page>
             </span>
         </span>
-        <span class="collapse text-primary" id="eventMenuFilterModal">
+        <f:variable name="showModalFilterClass">show</f:variable>
+        <f:if condition="{output.feuser.isOrganizer}">
+            <f:variable name="showModalFilterClass"></f:variable>
+        </f:if>>
+
+        <span class="collapse {showModalFilterClass} text-primary" id="eventMenuFilterModal" style="margin-left:-12px;">
             <div class="input-group date p-0 py-2 mb-1 mr-2" style="width:150px;">
                 <input data-date-type="date" data-todaybtn="linked" data-locale="de" data-todayhighlight="true" data-autoclose="true"
                        class="form-control datetimepicker clearable col-9"
