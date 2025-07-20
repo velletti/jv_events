@@ -95,6 +95,29 @@
                 </f:if>
             </div>
         </div>
+        <f:security.ifHasRole role="adminOrganizer">
+            <div class="small">
+                <f:if condition="{location.lat} != 0 && {location.lng} != 0">
+                    <f:then>
+                        <span class="badge badge-success p-1 mr-2">Map: <f:link.external uri="https://www.openstreetmap.org/?mlat={location.lat}&mlon={location.lng}#map=15/{location.lat}/{location.lng}">{location.lat} | {location.lng}</f:link.external></span>
+                    </f:then>
+                    <f:else>
+                        <span class="badge badge-warning">lng/lat not set !</span>
+                    </f:else>
+                </f:if>
+                <f:if condition="{location.defaultLocation}">
+                    <f:then>
+                        <span class="badge badge-success p-1 mr-2">is Default Location</span>
+                        <f:if condition="{location.organizer.lat} != {location.lat} || {location.organizer.lng} != {location.lng}">
+                            <f:then>
+                                <span class="badge badge-warning p-1 mr-2">Map: <f:link.external uri="https://www.openstreetmap.org/?mlat={location.organizer.lat}&mlon={location.organizer.lng}#map=15/{location.organizer.lat}/{location.organizer.lng}">Different Position in organizer!</f:link.external></span>
+                            </f:then>
+                        </f:if>
+                    </f:then>
+                </f:if>
+            </div>
+        </f:security.ifHasRole>
+
         <f:if condition="{location.description}">
             <hr>
             <div class="col-12">

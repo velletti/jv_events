@@ -253,7 +253,7 @@ class LocationController extends BaseController
      * @return void
      */
     #[IgnoreValidation(['value' => 'location'])]
-    public function setDefaultAction(Location $location , Organizer $organizer ,  $oldDefault= 0) {
+    public function setDefaultAction(Location $location , Organizer $organizer , ?int $oldDefault= 0) {
 
         $locations = $this->locationRepository->findByOrganizersAllpages([$organizer->getUid()] , true , TRUE , true ) ;
         if ( $locations && count($locations) > 0) {

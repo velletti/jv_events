@@ -60,7 +60,7 @@
                         <f:if condition="{organizer.email}">
                             <span class="fa fa-envelope mh-sm"></span> <f:link.external uri="mailto:{organizer.email}">{organizer.email}</f:link.external><br>
                         </f:if>
-                        <f:if condition="{organizer.phone}">
+                        <f:if condition="{organizer.phone} && {organizer.phone} != '-'  && {organizer.phone} != '--no-phone--'">
                             <span class="fa fa-phone mh-sm"></span> <f:link.external uri="{organizer.phone}" defaultScheme="tel">{organizer.phone}</f:link.external><br>
                         </f:if>
                         <f:if condition="{organizer.link}">
@@ -71,6 +71,9 @@
                             <small>
                                 <span class="fa fa-folder mh-sm"></span> Registered since: <f:format.date format="d.m.Y">{organizer.crdate}</f:format.date><br>
                                 <span class="fa fa-edit mh-sm"></span> Last Update: <f:format.date format="d.m.Y">{organizer.tstamp}</f:format.date><br>
+                                <f:if condition="{organizer.latestEvent}">
+                                    <span class="fa fa-calendar-alt mh-sm"></span> Latest Event: <f:format.date format="d.m.Y">{organizer.latestEvent}</f:format.date><br>
+                                </f:if>
                             </small>
                         </div>
 
@@ -150,7 +153,31 @@
                             <hr>
                             <div><f:link.page class="btn btn-outline-primary m-2 py-0" pageUid="{settings.pageIds.rankingModul}" additionalParams="{tx_jvranking_pi1: {organizer: '{organizer.uid}'}}">
                                 <span class="fas fa-chart-bar "></span>
-                            </f:link.page> <span class="small">Id: {organizer.uid} - Pos: {organizer.sorting} - User: <f:for each="{settings.accessUsers}" as="accessUser">{accessUser.uid}: {accessUser.email}, </f:for></span>
+                            </f:link.page>
+                                <span class="small">Id: {organizer.uid} - Pos: {organizer.sorting} |
+                                    User: <f:for each="{settings.accessUsers}" as="accessUser" iteration="i">{accessUser.uid}: {accessUser.email}<f:if condition="{i.isLast}"><f:else>, </f:else></f:if> </f:for> |
+                                    <f:if condition="{organizer.lat} && {organizer.lng}">
+                                        <f:if condition="{organizer.lat} != 0 && {organizer.lng} != 0">
+                                            <f:then>
+                                                Default Location: <f:link.external uri="https://www.openstreetmap.org/?mlat={organizer.lat}&mlon={organizer.lng}#map=15/{organizer.lat}/{organizer.lng}">{organizer.lat} | {organizer.lng}</f:link.external>
+                                            </f:then>
+                                            <f:else>
+                                                No Default Location set!
+                                            </f:else>
+                                        </f:if>
+                                    </f:if> |
+                                    <f:if condition="{locations} && {settings.detailPid}">
+                                        <f:for each="{locations}" as="location" iteration="i">
+                                            <f:if condition="{location.defaultLocation}">
+                                                <f:then>
+                                                    Default Location: <f:link.action pageUid="{settings.detailPid}" action="show" controller="Location" arguments="{location: location.uid}">Uid: {location.uid} </f:link.action>
+                                                </f:then>
+                                            </f:if>
+                                        </f:for>
+                                    </f:if>
+
+                                </span>
+
                             </div>
                         </f:security.ifHasRole>
 
