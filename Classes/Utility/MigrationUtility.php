@@ -18,7 +18,7 @@ class MigrationUtility
 
         if ( $obj && method_exists( $obj ,"request")) {
             if ( $obj && method_exists( $obj->request ,"getAttribute")) {
-                $obj->request->getAttribute('routing');
+                $pageArguments = $obj->request->getAttribute('routing');
                 $pageId = (int)$pageArguments->getPageId();
             }
         } else {

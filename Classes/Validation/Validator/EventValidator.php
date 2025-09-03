@@ -76,8 +76,11 @@ class EventValidator extends BaseValidator {
             $isValid = $this->isStringDateValue( $event->getEndDateFE() , 'endDateFE' , $isValid ) ;
         } else {
             $isValid = $this->isStringTimeValue( $event->getStartTimeFE() , 'startTimeFE' , $isValid ) ;
+
             if ( trim( strlen($event->getEndTimeFE()) > 0 )) {
-                $isValid = $this->isStringTimeValue( $event->getEndTimeFE() , 'endTimeFE' , $isValid ) ;
+                if ( trim( $event->getEndTimeFE()) != '-' ) {
+                    $isValid = $this->isStringTimeValue( $event->getEndTimeFE() , 'endTimeFE' , $isValid ) ;
+                }
             }
             if ( trim( strlen($event->getEntryTimeFE()) > 0 )) {
                 $isValid = $this->isStringTimeValue($event->getEntryTimeFE(), 'entryTimeFE', $isValid);

@@ -29,9 +29,9 @@
         <div class="input-group  clockpicker" data-autoclose="true"  data-donetext="Ok">
             <f:form.textfield
                     property="{property}FE"
-                    title="Format: 12:00"
+                    title="Format: 12:00 or - open end with -"
                     value="{valueFE}"
-                    pattern="((0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9])|^$)"
+                    pattern="(-|((0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9])|^$))"
                     id="{property}FE"
                     class="form-control clearable"
                     data="{date-type: 'time'}"
@@ -50,7 +50,7 @@
                 <f:form.textfield
                         property="{property2}FE"
                         title="Format: 12:00"
-                        pattern="((0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9])|^$)"
+                        pattern="(-|((0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9])|^$))"
                         value="{valueFE2}"
                         id="{property2}FE"
                         class="form-control clearable"

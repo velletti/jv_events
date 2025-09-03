@@ -475,8 +475,12 @@ class EventController extends BaseController
                     $event->setRegistrationFormPid( 0);
                 }
                 if( $event->getAllDay()) {
-                    $event->setStartTime( 1 ) ;
-                    $event->setEndTime( (3600 * 23)  + (59*60) )  ;
+                    if( $event->getStartTime() < 1 ) {
+                        $event->setStartTime( 1 ) ;
+                    }
+                    if( $event->getEndTime() < 1 ) {
+                        $event->setEndTime( (3600 * 23)  + (59*60) )  ;
+                    }
                 } else {
                     $event->setEndDate( $event->getStartDate() ) ;
                 }
@@ -1177,12 +1181,23 @@ class EventController extends BaseController
         $stD->setTime(0,0,0,0 ) ;
         $event->setStartDate( $stD ) ;
         if ( $isAllDay ) {
-            echo $eventArray['endDateFE'] ;
+           // echo $eventArray['endDateFE'] ;
             $enD = DateTime::createFromFormat('d.m.Y', $eventArray['endDateFE']  );
             $enD->setTime(23,59,59,0 ) ;
             $event->setEndDate( $enD ) ;
-            $event->setStartTime( 1 ) ;
-            $event->setEndTime( (3600 * 23)  + (59*60))  ;
+            $startT =  ( intval( substr( (string) $eventArray['startTimeFE']  , 0,2 ) ) * 3600 )
+                + ( intval( substr( (string) $eventArray['startTimeFE']  , 3,2 ) ) * 60 ) ;
+            if( $startT < 1 ) {
+                $startT = 1 ;
+            }
+            $event->setStartTime( $startT ) ;
+
+            $endT =  ( intval( substr( (string) $eventArray['endTimeFE']  , 0,2 ) ) * 3600 )
+                + ( intval( substr( (string) $eventArray['endTimeFE']  , 3,2 ) ) * 60  ) ;
+            if( $endT < 1 ) {
+                $endT = (3600 * 23)  + (59*60) ;
+            }
+
 
         } else {
             $event->setEndDate( $stD ) ;
@@ -1199,8 +1214,9 @@ class EventController extends BaseController
                     + ( intval( substr( (string) $eventArray['endTimeFE']  , 3,2 ) ) * 60  ) ;
             }
         }
-
-
+        if ( (string) $eventArray['endTimeFE'] == "-") {
+            $endT = 0 ;
+        }
         $event->setEndTime( $endT ) ;
 
         $desc = str_replace( ["\n", "\r", "\t"], [" ", "", " "], (string) $eventArray['description'] ) ;

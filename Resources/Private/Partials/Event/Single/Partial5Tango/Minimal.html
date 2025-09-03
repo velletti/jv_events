@@ -7,20 +7,28 @@
 	</div>
 
 	<div class="row">
-		<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_event.date" />
+
 			<f:if condition="{event.allDay}">
 				<f:then>
-					/ <f:translate key="tx_jvevents_domain_model_event.time" />:</strong></div>
-		<div class="col-md-8">
-					{event.startDate -> f:format.date(format:"D d.m.Y")}
+					<div class="col-md-4">
+						<strong><f:translate key="tx_jvevents_domain_model_event.date" />
+							/ <f:translate key="tx_jvevents_domain_model_event.time" />:
+						</strong>
+					</div>
+					<div class="col-md-8">
+						{event.startDate -> f:format.date(format:"D d.m.Y")}
+					</div>
 				</f:then>
-				<f:else>:</strong></div>
-		<div class="col-md-8">
-					{event.startDate -> f:format.date(format:"d.m.Y")} um {event.startTime -> f:format.date( format:"H:i")}<f:if condition="{event.endTime}"> - {event.endTime -> f:format.date( format:"H:i")}</f:if>
+				<f:else>
+					<div class="col-md-4">
+						<strong><f:translate key="tx_jvevents_domain_model_event.date" />:</strong>
+					</div>
+					<div class="col-md-8">
+						{event.startDate -> f:format.date(format:"d.m.Y")} um {event.startTime -> f:format.date( format:'H:i')}<f:if condition="{event.endTime}"> - {event.endTime -> f:format.date( format:'H:i')}</f:if>
+					</div>
 				</f:else>
 
 			</f:if>
-		</div>
 	</div>
 	<f:if condition="{subevents}">
 		<f:then>
@@ -30,7 +38,7 @@
 					<f:for each="{subevents}" as="subevent" iteration="i">
 						{subevent.startDate -> f:format.date(format:"d.m.Y")}
 						<f:if condition="{event.allDay}">
-							<f:else> : {subevent.startTime -> event:format.date( format:"H:i")}<f:if condition="{subevent.endTime}"> - {subevent.endTime -> event:format.date( format:"H:i")}</f:if>
+							<f:else> : {subevent.startTime -> event:format.date( format:'H:i')}<f:if condition="{subevent.endTime}"> - {subevent.endTime -> event:format.date( format:'H:i')}</f:if>
 							</f:else>
 						</f:if><br />
 					</f:for>

@@ -30,7 +30,7 @@
 <f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowCheckbox"
 		  arguments="{object: '', property:'allDay' , value: event.allDay , label: '' , translationKey: 'tx_jvevents_domain_model_event.all_day' ,  mandatory: '' }" />
 
-<div id="jv-events-single-day" class="{f:if(condition: '{event.allDay} == 1',then: 'd-none')}">
+<div id="jv-events-single-day" class="{f:if(condition: '{event.allDay} == 1',then: 'x-d-none-x')}">
 	<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowTimes"
 			  arguments="{object: 'event', property:'startTime' ,  property2:'endTime', value: event.startTime , value2: event.endTime , label: 'Von - bis' , translationKey: '' ,  mandatory: '1' }" />
 	<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowTimes"
