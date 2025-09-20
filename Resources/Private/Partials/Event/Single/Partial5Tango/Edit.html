@@ -160,7 +160,7 @@
                                           </span>
                                     </f:link.action>
                                     <span >
-                                          {relatedEvent.startDate -> jve:format.date( format:"d.m.")} | {relatedEvent.startTime -> jve:format.date( format:"H:i")} : {relatedEvent.name}
+                                         [{relatedEvent.uid}] {relatedEvent.startDate -> jve:format.date( format:"d.m.")} | {relatedEvent.startTime -> jve:format.date( format:"H:i")} : {relatedEvent.name}
                                     </span>
                                     <span title="{f:translate(key: 'event_remove_relation' , default: 'Verbindung Trennen')}" class="btn btn-outline-primary btn-xs rounded-circle position-right jv_events_unlink_event" data-eventUid="{relatedEvent.uid}" data-index="jv_events_unlink_event-{index.index}" href="#">
                                           <span class="iconLink">
