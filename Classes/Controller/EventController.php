@@ -60,6 +60,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
+use function Webmozart\Assert\Tests\StaticAnalysis\true;
 
 /**
  * EventController
@@ -458,7 +459,8 @@ class EventController extends BaseController
                     // ammount must be not more than max 8 / min 1
                     $amount = min ( max ( $amount , 1) , 8 ) ;
                     if( $amount != 0 ) {
-                        $this->copyEvent($event , intval( $copy2Day ) , $amount ) ;
+                        $this->getFlashMessageQueue()->getAllMessagesAndFlush() ;
+                        return $this->copyEvent($event , intval( $copy2Day ) , $amount ) ;
                    }
                 }
                 /** @var QueryResultInterface $categories */
@@ -518,6 +520,13 @@ class EventController extends BaseController
      */
     private function copyEvent(Event $event, $copy2Day= 0, $amount= 0 ){
         $row = [];
+        $numberOfCopies = 0 ;
+
+        //show event detail PID
+        $pid = ($this->settings['EmConfiguration']["DetailPid"] ? (int)$this->settings['EmConfiguration']["DetailPid"] : null) ;
+        $pid = ($pid ? (int)$this->settings['pageIds']["showEventDetail"] : null) ;
+
+
         // Does the Copy Master Event already have a masterId? if not, use its uid as new  Master
         // with this master ID we are able to update Changes from one event to all events with the same master Id
         // if we just do ONE Copy, do not set master ID
@@ -526,6 +535,7 @@ class EventController extends BaseController
             $event->setMasterId( $event->getUid() ) ;
             $this->eventRepository->update($event) ;
         }
+
 
 
         $newDate = new DateTime(  ) ;
@@ -539,7 +549,7 @@ class EventController extends BaseController
         $addDays = intval( $copy2Day  ) ;
         $diff= date_interval_create_from_date_string( $addDays  . " days") ;
 
-        for ( $i=1 ;$i<= $amount ; $i++) {
+        for ( $i=1 ; $i<= $amount ; $i++) {
             /** @var Event $newEvent */
             $newEvent = GeneralUtility::makeInstance(Event::class) ;
 
@@ -585,15 +595,39 @@ class EventController extends BaseController
                 }
             }
 
-            // if we just do ONE Copy, do not set master ID
-            if ( (int)$copy2Day == 0 ) {
-                $newEvent->setMasterId( 0 ) ;
-            }
+
             $newDate->add( $diff) ;
             $newEndDate->add($diff) ;
             $newEvent->setStartDate($newDate ) ;
             $newEvent->setEndDate($newEndDate ) ;
 
+
+            // if we just do ONE Copy, do not set master ID
+            if ( (int)$copy2Day == 0 ) {
+                $newEvent->setMasterId( 0 ) ;
+            } else {
+                try {
+                    $eventsOnSameDay = $this->eventRepository->findByDateAndMasterId( $newEvent->getStartDate() , $newEvent->getMasterId() , $event->getUid() ) ;
+                    if ($eventsOnSameDay && $eventsOnSameDay->count() > 0 ) {
+                        $msg = 'At least one copy of event ID' .  $newEvent->getMasterId() . ' exists! ' ;
+                        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+                        $uri = $uriBuilder->reset()->setTargetPageUid($pid)
+                            ->setArguments(['tx_jvevents_event' =>
+                                ['controller' => 'Event', 'action' => 'show', 'event' => $eventsOnSameDay->getFirst()->getUid()]])
+                            ->build();
+                        if( $conflict = $eventsOnSameDay->getFirst() ) {
+                            $msg .= ' View: '
+                                . '<a class="btn btn-sm btn-warning bold" href="' . $uri . '" target="_blank"> ID: ' . $conflict->getUid() . "</a> " ;
+                        }
+                        $this->addFlashMessage( $msg , 'Skipped ' . $newEvent->getStartDate()->format("d.m.Y"), ContextualFeedbackSeverity::INFO);
+                        continue ;
+                    }
+                } catch ( \Exception $e ) {
+                    $this->addFlashMessage('Error in line ' .$e->getLine() . " - " . $e->getMessage() , 'Error on find existing copy', ContextualFeedbackSeverity::ERROR);
+                    continue ;
+                }
+
+            }
             $newEvent = $this->setRegistrationUntilDate( $newEvent );
 
             $newEvent->setSysLanguageUid(-1 ) ;
@@ -676,7 +710,7 @@ class EventController extends BaseController
 
                 ])->executeStatement();
             }
-
+            $numberOfCopies ++;
             if (  $i == $amount ) {
                 $this->updateLatestEvent($newEvent , $newEvent->getStartDate()) ;
             }
@@ -689,11 +723,15 @@ class EventController extends BaseController
             $this->cacheService->clearPageCache( $clearCachePids );
             $this->addFlashMessage('The object was updated and Cache of following pages are cleared: ' . implode("," , $clearCachePids), '', ContextualFeedbackSeverity::OK);
         }
-        $action = "show" ;
-        if ( (int)$copy2Day == 0 &&  (int)$amount == 1 ) {
-            $action = "edit" ;
+        if ( (int)$copy2Day == 0 &&  (int)$amount == 1 && $numberOfCopies >  0 ) {
+            return $this->redirect("edit" , null , null , ["event" => $eventUid]) ;
         }
-       return $this->redirect($action , null , null , ["event" => $eventUid]) ;
+        if ( $numberOfCopies < 1 ) {
+            //no last event updated, so stay on edit of old event
+            $eventUid = $event->getUid() ;
+        }
+
+        return $this->redirect("show" , null , null , ["event" => $eventUid] , $pid) ;
 
     }
     /**

@@ -157,7 +157,14 @@
                                          </f:translate>
                                          <input class="ml-3" onclick="$('#jv_events_delete_btn').toggle();$('#jv_events_delete_btn_all').toggle();" type="checkbox" name="jv_events_deleteFutureEvents" value="1">
 
-                                     </b>
+                                     </b><br>
+                                     <f:if condition="{output.event.sameMaster}">
+                                         <f:then>
+                                            <f:for each="{output.event.sameMaster}" as="sameMaster">
+                                                {sameMaster.startDate} - {sameMaster.name}<br>
+                                            </f:for>
+                                         </f:then>
+                                    </f:if>
                                  </f:if>
                                  <f:translate key="event_delete_are_you_sure">
                                      Are you sure?

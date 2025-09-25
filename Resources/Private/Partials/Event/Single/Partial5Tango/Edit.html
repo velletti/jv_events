@@ -58,7 +58,14 @@
                                 <f:link.action pageUid="{settings.detailPageId}" action="show" controller="Event" class="btn  btn-outline-primary left rounded-circle" arguments="{event: '{event.uid}'}">
                                     <i class="fas fa-eye " title="show"></i>
                                 </f:link.action>
-                                <span>Edit Event ({event.uid})</span>
+                                <span>Edit Event ({event.uid})
+                                    <f:if condition="{event.masterId}">
+                                        <span class="ml-2 small">[
+                                            <span class="d-none d-md-inline-block">MasterId:</span> {event.masterId}
+                                            ]
+                                        </span>
+                                    </f:if>
+                                </span>
                             </h4>
 
 

@@ -383,19 +383,33 @@ class AjaxController extends BaseController
                     $output['event']['moreDays'] = [] ;
                 }
                 if( $event->getMasterId() > 0 ) {
-                    $querysettings =$this->subeventRepository->getTYPO3QuerySettings() ;
-                    $querysettings->setStoragePageIds([$event->getPid()]) ;
+                    $querysettings = $this->subeventRepository->getTYPO3QuerySettings();
+                    $querysettings->setStoragePageIds([$event->getPid()]);
 
-                    $this->eventRepository->setDefaultQuerySettings( $querysettings );
-                    $filter = [] ;
-                    $filter['startDate'] = $event->getStartDate()->getTimestamp() ;
-                    $filter['maxDays'] = 999 ;
-                    $filter['skipEvent'] = $event->getUid() ;
-                    $filter['masterId']  = $event->getMasterId() ;
+                    $this->eventRepository->setDefaultQuerySettings($querysettings);
+                    $filter = [];
+                    $filter['startDate'] = $event->getStartDate()->getTimestamp();
+                    $filter['maxDays'] = 999;
+                    $filter['skipEvent'] = $event->getUid();
+                    $filter['masterId'] = $event->getMasterId();
 
-                    $sameMaster = $this->eventRepository->findByFilter($filter ) ;
-                    $output['event']['masterId'] =  $event->getMasterId() ;
-                    $output['event']['sameMasterId'] =  $sameMaster->count()  ;
+
+                    $output['event']['masterId'] = $event->getMasterId();
+                    $sameMaster = $this->eventRepository->findByFilter($filter);
+
+                    if ($sameMaster) {
+                        $output['event']['sameMasterId'] = $sameMaster->count();
+                        foreach ($sameMaster as $sameMasterEvent) {
+                            if (is_object($sameMasterEvent)) {
+                                $temp = [];
+                                $temp['uid'] = $sameMasterEvent->getUid();
+                                $temp['name'] = $sameMasterEvent->getName();
+                                $temp['startDate'] = $sameMasterEvent->getStartDate()->format("d.m.Y");
+                                $output['event']['sameMaster'][] = $temp;
+                                unset($temp);
+                            }
+                        }
+                    }
 
                 } else {
                     $output['event']['masterId'] = false ;

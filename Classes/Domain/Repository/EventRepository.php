@@ -258,6 +258,31 @@ class EventRepository extends BaseRepository
      * @param integer $uid
      * @return array|QueryInterface $query
      */
+    public function findByDateAndMasterId($newStartDate , $masterId , $uid )
+    {
+        $query = $this->createQuery();
+
+        $constraints = [];
+        $query->getQuerySettings()->setRespectStoragePage(false);
+
+        $query->getQuerySettings()->setRespectSysLanguage(FALSE);
+
+
+        $constraints[] = $query->equals("masterId",  $masterId );
+        $constraints[] = $query->equals("startDate",  $newStartDate );
+        $constraints[] = $query->logicalNot($query->equals("masterId",  $uId ));
+        $query->matching($query->logicalAnd(...$constraints));
+
+        $result = $query->execute();
+        if ( 1 == 2 ) {
+            $this->debugQuery($query) ;
+        }
+        return $result;
+    }
+    /**
+     * @param integer $uid
+     * @return array|QueryInterface $query
+     */
     public function findByLocation($uid )
     {
         $query = $this->createQuery();
