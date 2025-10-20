@@ -1281,9 +1281,8 @@ class EventController extends BaseController
 
         $event->setRegistrationGender( intval($event->getRegistrationGender())) ;
         $event->setWithRegistration(intval($event->getWithRegistration()));
-        if( intval($event->getWithRegistration()) == 1 ) {
 
-            $event = $this->setRegistrationUntilDate( $event );
+        if( intval($event->getWithRegistration()) == 1 ) {
             $event->setNotifyOrganizer($this->settings['EmConfiguration']['notifyOrganizer']);
             $event->setNotifyRegistrant($this->settings['EmConfiguration']['notifyRegistrant']);
             if ( $eventArray['registrationFormPid'] > $this->settings['EmConfiguration']['RegistrationFormPid'] ) {
@@ -1295,6 +1294,9 @@ class EventController extends BaseController
 
             // var_dump($eventArray['registrationFormPid'] );
             // die;
+        }
+        if (  $event->isIsRegistrationConfigured()) {
+            $event = $this->setRegistrationUntilDate( $event );
         }
 
         if ( $event->getPid() < 1 ) {
