@@ -160,6 +160,7 @@ class OrganizerController extends BaseController
 
         $filter = false ;
         $ordering = false ;
+        $limit = false ;
 
         if( array_key_exists( 'filterorganizer' , $this->settings)) {
             if ( array_key_exists( "tags", $this->settings['filterorganizer']))  {
@@ -177,6 +178,12 @@ class OrganizerController extends BaseController
                     $filter['tstamp'] = time() - ( intval( $this->settings['filterorganizer']['latestUpdate'] ) * 3600 * 24 ) ;
                 }
             }
+            if ( array_key_exists( "onlyLatestCreated", $this->settings['filterorganizer']) )  {
+                if(  $this->settings['filterorganizer']['onlyLatestCreated'] > 0 ) {
+                    $limit = intval( $this->settings['filterorganizer']['onlyLatestCreated'] ) ;
+                    $ordering = "crdate" ;
+                }
+            }
             if ( array_key_exists( "reverseSorting", $this->settings['filterorganizer']) ) {
                 if(  $this->settings['filterorganizer']['reverseSorting'] > 0 ) {
                     $ordering = true;
@@ -184,7 +191,7 @@ class OrganizerController extends BaseController
             }
 
         }
-        $organizers = $this->organizerRepository->findByFilterAllpages($filter ,false , false , false , $ordering );
+        $organizers = $this->organizerRepository->findByFilterAllpages($filter ,false , false , $limit , $ordering );
         $this->debugArray[] = "Before Generate Array:" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " Line: " . __LINE__ ;
 
 

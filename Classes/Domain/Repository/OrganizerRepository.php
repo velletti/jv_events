@@ -116,18 +116,23 @@ class OrganizerRepository extends BaseRepository
     {
         $query = $this->createQuery();
         if( $reverseSorting ) {
-            $fields = [ "organizer_category" , 'sorting' , 'tstamp'];
-            $number = random_int(0, 1);
-
-            // if one of last 3 options, always lowest values first
-            $sorting = ($number > 0 ) ? 1 : random_int(0, 1);
-            if ($sorting > 0) {
-                // if field sorting or tspamt is used, always  descending
-                $query->setOrderings([ $fields[$number] => QueryInterface::ORDER_DESCENDING]);
+            if ( $reverseSorting == "crdate" ) {
+                $query->setOrderings([ 'crdate' => QueryInterface::ORDER_DESCENDING]);
             } else {
+                $fields = [ "organizer_category" , 'sorting' , 'tstamp'];
+                $number = random_int(0, 1);
 
-                $query->setOrderings([ $fields[$number] => QueryInterface::ORDER_ASCENDING]);
+                // if one of last 3 options, always lowest values first
+                $sorting = ($number > 0 ) ? 1 : random_int(0, 1);
+                if ($sorting > 0) {
+                    // if field sorting or tspamt is used, always  descending
+                    $query->setOrderings([ $fields[$number] => QueryInterface::ORDER_DESCENDING]);
+                } else {
+
+                    $query->setOrderings([ $fields[$number] => QueryInterface::ORDER_ASCENDING]);
+                }
             }
+
 
         } else {
             $query->setOrderings($this->defaultOrderings);
