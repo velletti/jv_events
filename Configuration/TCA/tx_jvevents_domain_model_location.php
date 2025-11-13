@@ -47,11 +47,11 @@ $return = array(
 			'starttime' => 'starttime',
 			'endtime' => 'endtime',
 		),
-		'searchFields' => 'name,street_and_nr,additional_info,zip,city,country,lat,lng,link,email,phone,description,organizer,location_category,slug,',
+		'searchFields' => 'name,street_and_nr,additional_info,zip,city,country,lat,lng,link,email,phone,organizer_namedescription,organizer,location_category,slug,',
 		'iconfile' => 'EXT:jv_events/Resources/Public/Icons/tx_jvevents_domain_model_location.gif'
 	),
 	'types' => array(
-		'1' => array('showitem' => 'sys_language_uid,l10n_parent,l10n_diffsource,hidden,--palette--;;1,name,slug,street_and_nr,additional_info,zip,city,country,--palette--;;geo,teaser_image,link,email,phone,description,organizer,location_category,--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,starttime,endtime,latest_event,default_location'),
+		'1' => array('showitem' => 'sys_language_uid,l10n_parent,l10n_diffsource,hidden,--palette--;;1,name,slug,street_and_nr,additional_info,zip,city,country,--palette--;;geo,teaser_image,link,email,phone,description,organizer_name,organizer,location_category,--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,starttime,endtime,latest_event,default_location'),
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),
@@ -277,6 +277,15 @@ $return = array(
 				'eval' => 'trim'
 			),
 		),
+        'organizer_name' => array(
+            'exclude' => 1,
+            'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_organizer.name',
+            'config' => array(
+                'type' => 'input',
+                'size' => 50,
+                'eval' => 'trim'
+            ),
+        ),
 		'description' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_location.description',

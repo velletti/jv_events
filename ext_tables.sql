@@ -261,6 +261,7 @@ CREATE TABLE tx_jvevents_domain_model_location (
 	link varchar(255) DEFAULT '' NOT NULL,
 	email varchar(255) DEFAULT '' NOT NULL,
 	phone varchar(255) DEFAULT '' NOT NULL,
+    organizer_name varchar(255) DEFAULT '' NOT NULL,
 	description text NOT NULL,
 	organizer int(11) unsigned DEFAULT '0',
 	location_category int(11) unsigned DEFAULT '0' NOT NULL,

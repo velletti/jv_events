@@ -488,53 +488,75 @@
 			<div class="row">
 				<div class="col-12 col-md-8">
 
-					<f:if condition="{event.organizer.name} && {event.location.email} != '-' && {event.location.phone} != '-' && {event.location.email} != '' && {event.location.phone} != ''">
-						<div class="row">
-							<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_organizer.name" />:</strong></div>
-							<div class="col-md-8">
-								<f:if condition="{settings.detailPid} != {settings.pageId}">
-									<f:then>
-										<f:link.action pageUid="{settings.detailPid}" action="show" controller="Organizer" arguments="{organizer: '{event.organizer.uid}'}">{event.organizer.name}</f:link.action>
-									</f:then>
-									<f:else>
-										{event.organizer.name}
-									</f:else>
-								</f:if>
-							</div>
-						</div>
-					</f:if>
-					<f:if condition="{event.location.email} && {event.location.email} != '-'">
-						<f:then>
-							<div class="row">
-								<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_location.email" />:</strong></div>
-								<div class="col-md-8" title="Email From Location"><f:link.external class="email" uri="mailto:{event.location.email}">{event.location.email}</f:link.external></div>
-							</div>
-						</f:then>
+					<f:if condition="{event.location.organizerName} == '-'">
 						<f:else>
-							<f:if condition="{event.organizer.email} && {event.location.email} != '-'">
-								<div class="row">
-									<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_organizer.email" />:</strong></div>
-									<div class="col-md-8"><f:link.external class="email" uri="mailto:{event.organizer.email}" >{event.organizer.email}</f:link.external></div>
-								</div>
+							<f:if condition="{event.location.organizerName} == ''">
+								<f:then>
+									<div class="row">
+										<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_organizer.name" />:</strong></div>
+										<div class="col-md-8" data-origin="organizer">
+											<f:if condition="{settings.detailPid} != {settings.pageId}">
+												<f:then>
+													<f:link.action pageUid="{settings.detailPid}" action="show" controller="Organizer" arguments="{organizer: '{event.organizer.uid}'}">{event.organizer.name}</f:link.action>
+												</f:then>
+												<f:else>
+													{event.organizer.name}
+												</f:else>
+											</f:if>
+										</div>
+									</div>
+								</f:then>
+								<f:else>
+									<div class="row">
+										<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_organizer.name" />:</strong></div>
+										<div class="col-md-8" data-origin="location">
+											{event.location.organizerName}
+										</div>
+									</div>
+								</f:else>
+							</f:if>
+						</f:else>
+
+					</f:if>
+
+					<f:if condition="{event.location.email} == '-'">
+						<f:else>
+							<f:if condition="{event.location.email} == ''">
+								<f:then>
+									<div class="row">
+										<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_organizer.email" />:</strong></div>
+										<div class="col-md-8" data-origin=organizer><f:link.external class="email" uri="mailto:{event.organizer.email}" >{event.organizer.email}</f:link.external></div>
+									</div>
+								</f:then>
+								<f:else>
+									<div class="row">
+										<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_location.email" />:</strong></div>
+										<div class="col-md-8" data-origin="location"><f:link.external class="email" uri="mailto:{event.location.email}" >{event.location.email}</f:link.external></div>
+									</div>
+								</f:else>
+
 							</f:if>
 						</f:else>
 					</f:if>
 
-					<f:if condition="{event.location.phone} && {event.location.phone} != '-'">
-						<f:then>
-							<div class="row">
-								<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_location.phone" />:</strong></div>
-								<div class="col-md-8">{event.location.phone}</div>
-							</div>
-						</f:then>
+					<f:if condition="{event.location.phone} == '-'">
 						<f:else>
-							<f:if condition="{event.organizer.phone} && {event.location.phone} != '-'">
-								<div class="row">
-									<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_organizer.phone" />:</strong></div>
-									<div class="col-md-8">{event.organizer.phone}</div>
-								</div>
+							<f:if condition="{event.location.phone} == ''">
+								<f:then>
+									<div class="row">
+										<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_organizer.phone" />:</strong></div>
+										<div class="col-md-8" data-origin="organizer"><f:link.typolink parameter="tel:{event.organizer.phone}">{event.organizer.phone}</f:link.typolink></div>
+									</div>
+								</f:then>
+								<f:else>
+									<div class="row">
+										<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_location.phone" />:</strong></div>
+										<div class="col-md-8" data-origin="location"><f:link.typolink parameter="tel:{event.location.phone}">{event.location.phone}</f:link.typolink></div>
+									</div>
+								</f:else>
 							</f:if>
 						</f:else>
+
 					</f:if>
 
 					<f:if condition="{event.location.link}">
@@ -542,7 +564,7 @@
 							<f:if condition="{event.location.link} != '-' " >
 								<div class="row">
 									<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_location.link" />:</strong></div>
-									<div class="col-md-8"><f:link.external uri="{event.location.link}" target="_blank">{event.location.link}</f:link.external></div>
+									<div class="col-md-8" data-origin="location"><f:link.external uri="{event.location.link}" target="_blank">{event.location.link}</f:link.external></div>
 								</div>
 							</f:if>
 						</f:then>
@@ -550,7 +572,7 @@
 							<f:if condition="{event.organizer.link}">
 								<div class="row">
 									<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_organizer.link" />:</strong></div>
-									<div class="col-md-8"><f:link.external uri="{event.organizer.link}" target="_blank">{event.organizer.link}</f:link.external></div>
+									<div class="col-md-8" data-origin="organizer"><f:link.external uri="{event.organizer.link}" target="_blank">{event.organizer.link}</f:link.external></div>
 								</div>
 							</f:if>
 						</f:else>

@@ -135,6 +135,13 @@ class Location extends AbstractEntity
      * @var string
      */
     protected $phone = '';
+
+    /**
+     * phone Number for this location
+     *
+     * @var string
+     */
+    protected $organizerName = '';
     
     /**
      * Details to this location
@@ -416,6 +423,28 @@ class Location extends AbstractEntity
     {
         $this->phone = $phone;
     }
+
+    /**
+     * Returns the organizerName
+     *
+     * @return string $organizerName
+     */
+    public function getOrganizerName():string
+    {
+        return ($this->organizerName ??'');
+    }
+
+    /**
+     * Sets the organizerName
+     *
+     * @param string|null $organizerName
+     * @return void
+     */
+    public function setOrganizerName(?string $organizerName):void
+    {
+        $this->organizerName = ($organizerName ?? '');
+    }
+
     
     /**
      * Returns the description
