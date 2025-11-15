@@ -860,6 +860,10 @@
              <trans-unit id="event.notfound" approved="yes">
                 <source>An event with this ID could not be found</source>
             </trans-unit>
+             <trans-unit id="location.otherContactdata" approved="yes">
+                <source>Enter diffent Contact data</source>
+            </trans-unit>
+
 		</body>
 	</file>
 </xliff>

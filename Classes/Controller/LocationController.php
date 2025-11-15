@@ -398,7 +398,7 @@ class LocationController extends BaseController
         $row = [];
         $desc = str_replace( ["\n", "\r", "\t"], [" ", "", " "], (string) $location->getDescription() ) ;
         $desc = strip_tags($desc , "<p><br><a><i><strong><h2><h3>") ;
-
+        $location->setOrganizerName( trim( strip_tags((string)$location->getOrganizerName()  ) )) ;
         $location->setDescription( $desc ) ;
         $location->setLink( trim((string) $location->getLink())) ;
         $location->setEmail( trim((string) $location->getEmail())) ;

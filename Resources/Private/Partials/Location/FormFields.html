@@ -22,8 +22,9 @@
 
 <hr>
 <div class="alert alert-info">
-	Need a different contact info for this location? if not leave the next 3 fields empty
+	<f:translate key="create.location.contact_warning">Need a different contact info for this location? if not leave the next 3 fields empty</f:translate>
 </div>
+
 <f:render partial="SingleField/FormRowDefault"
 		  arguments="{object: 'location', property:'link' , label: '' , translationKey: 'tx_jvevents_domain_model_location.link' ,  maxLength: 50 , mandatory: '' }" />
 

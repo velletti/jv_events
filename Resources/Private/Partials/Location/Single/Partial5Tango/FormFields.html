@@ -54,16 +54,30 @@
 		  arguments="{object: 'location', location: location, property:'lng' ,  buttonSetPosition: '0' ,  property2:'lat', fa-icon: 'fas fa-sync-alt' , translationKey: '', label: 'jv_events_model_location.press-refresh.title' ,  maxLength: 30 , mandatory: '1' , hideOkButton: '1'}" />
 
 <hr>
-<div class="alert alert-info">
-	<f:translate key="create.location.contact_warning">Need a different contact info for this location? if not leave the next 3 fields empty</f:translate>
+<div class="row">
+	<div class="col">
+		<button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#otherContactInfo" aria-expanded="false" aria-controls="otherContactInfo">
+			<f:translate key="location.otherContactdata">Other Contact Info</f:translate>
+		</button>
+	</div>
 </div>
-<f:render partial="SingleField/Partial{layout}/FormRowDefault"
-		  arguments="{object: 'location', property:'link' , label: '' , translationKey: 'tx_jvevents_domain_model_location.link' ,  maxLength: 80 , mandatory: '' }" />
 
-<f:render partial="SingleField/Partial{layout}/FormRowDefault"
-		  arguments="{object: 'location', property:'email' , label: '' , translationKey: 'tx_jvevents_domain_model_location.email' ,  maxLength: 80 , mandatory: '' }" />
-<f:render partial="SingleField/Partial{layout}/FormRowDefault"
-		  arguments="{object: 'location', property:'phone' , label: '' , translationKey: 'tx_jvevents_domain_model_location.phone' ,  maxLength: 30 , mandatory: '' }" />
+<div class="collapse" id="otherContactInfo">
+	<div class="alert alert-info">
+		<f:translate key="create.location.contact_warning">Need a different contact info for this location? if not leave the next 3 fields empty</f:translate>
+
+	</div>
+	<f:render partial="SingleField/Partial{layout}/FormRowDefault"
+			  arguments="{object: 'location', property:'organizerName' , label: '' , translationKey: 'tx_jvevents_domain_model_location.organizer' ,  maxLength: 50 , mandatory: '' }" />
+
+	<f:render partial="SingleField/Partial{layout}/FormRowDefault"
+			  arguments="{object: 'location', property:'link' , label: '' , translationKey: 'tx_jvevents_domain_model_location.link' ,  maxLength: 80 , mandatory: '' }" />
+
+	<f:render partial="SingleField/Partial{layout}/FormRowDefault"
+			  arguments="{object: 'location', property:'email' , label: '' , translationKey: 'tx_jvevents_domain_model_location.email' ,  maxLength: 80 , mandatory: '' }" />
+	<f:render partial="SingleField/Partial{layout}/FormRowDefault"
+			  arguments="{object: 'location', property:'phone' , label: '' , translationKey: 'tx_jvevents_domain_model_location.phone' ,  maxLength: 30 , mandatory: '' }" />
+</div>
 <hr>
 <f:if condition="{categories}">
 	<f:render partial="SingleField/Partial{layout}/FormRowCategories"
