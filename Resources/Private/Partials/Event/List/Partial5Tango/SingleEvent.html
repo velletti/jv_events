@@ -89,10 +89,16 @@
                         <f:else>
                             <f:if condition="{settings.layoutHideDay}">
                                 <f:then>
+                                    <f:if condition="{settings.list.showStreetAddress}">
+                                        {event.location.streetAndNr}<br>
+                                    </f:if>
                                     {event.location.city}<br>
                                     {event.startDate -> f:format.date(format:"D d. M. Y")} - {event.endDate -> f:format.date(format:"D d. M. Y")}
                                 </f:then>
                                 <f:else>
+                                    <f:if condition="{settings.list.showStreetAddress}">
+                                        {event.location.streetAndNr}<br>
+                                    </f:if>
                                     {event.location.city}<br>
                                     {event.startTime -> f:format.date(format:"H:i")}-<f:if condition="{event.endTime}"><f:then>{event.endTime -> jve:format.date( format:"H:i")}</f:then><f:else><f:translate key="tx_jvevents_domain_model_event.openEnd">Open End</f:translate></f:else></f:if> h<br>
                                 </f:else>
