@@ -1340,7 +1340,60 @@ class AjaxController extends BaseController
                     // $output['event']['banners']['query'] = $queryBuilder->getSQL() ;
                     // $output['event']['banners']['params'] = $queryBuilder->getParameters() ;
 
+                } else {
+                    $output['event']['banners']['count'] = 0 ;
                 }
+                $organizerId = isset($output['organizer']['organizerId']) ? intval($output['organizer']['organizerId']) : 0 ;
+                if ($organizerId > 0 ) {
+                    $queryBuilder->andWhere( $queryBuilder->expr()->eq('organizer', $queryBuilder->createNamedParameter( $organizerId , \PDO::PARAM_INT)) ) ;
+                    $rows = $queryBuilder->executeQuery()->fetchAllAssociative() ;
+                    if ( $rows) {
+                        $output['organizer']['banners']['organizerCount'] = count( $rows) ;
+                    } else {
+                        $output['organizer']['banners']['organizerCount'] = 0 ;
+                     //   $output['organizer']['banners']['query'] = $queryBuilder->getSQL() ;
+                     //   $output['organizer']['banners']['params'] = $queryBuilder->getParameters() ;
+                    }
+                }
+                // no banner for current event set?
+                // user has Group May create banner ?
+                // count of existing banners for organizer < max from settings current 2  ?
+                if ( !isset( $output['event']['banner'] ) && intval( $this->frontendUser->user['uid'] ) > 0  ) {
+                    $userGroups = GeneralUtility::intExplode( "," , $this->frontendUser->user['usergroup'] ) ;
+                    $hasGroup = false ;
+                    $isAdmin = false ;
+                    $isVip = false ;
+                    foreach ( $userGroups as $groupId ) {
+                        if ( in_array( $groupId , GeneralUtility::intExplode( "," , $this->settings['organizer']['groups']['BannerRequest'] ) ) ) {
+                            $hasGroup = true ;
+                        }
+                        if ( in_array( $groupId , GeneralUtility::intExplode( "," , $this->settings['organizer']['groups']['adminOrganizer'] ) ) ) {
+                            $isAdmin = true ;
+                        }
+                        if ( in_array( $groupId , GeneralUtility::intExplode( "," , $this->settings['organizer']['groups']['vip'] ) ) ) {
+                            $isVip = true ;
+                        }
+                    }
+                    if ( $hasGroup && $isVip ) {
+                        $maxBanners = intval( $this->settings['organizer']['maxBanners'] ) ;
+                        $maxBannersPerOrganizer = intval( $this->settings['organizer']['maxBannersPerOrganizer'] ) ;
+                        if ( $maxBanners < 1 ) {
+                            $maxBanners = 8 ;
+                        }
+                        if ( $maxBannersPerOrganizer < 1 ) {
+                            $maxBannersPerOrganizer = 2 ;
+                        }
+                        if ( isset( $output['organizer']['banners']['organizerCount'] ) &&  $output['organizer']['banners']['organizerCount'] < $maxBannersPerOrganizer  ) {
+                            if ( $output['event']['banners']['count'] < $maxBanners ) {
+                                $output['organizer']['banners']['canCreateBanner'] = true ;
+                            }
+                        }
+                    }
+                } else {
+                    $output['organizer']['banners']['canCreateBanner'] = 0 ;
+                }
+
+
 
 
             } catch (Exception $e) {
