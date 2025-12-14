@@ -583,8 +583,8 @@ $returnArray = array(
 				'type' => 'datetime',
 				'size' => 13,
 				'checkbox' => 1,
-    'format' => 'date',
-    'required' => true,
+                'format' => 'date',
+                'required' => true,
 
 			),
 		),

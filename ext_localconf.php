@@ -127,6 +127,32 @@ if (!defined('TYPO3')) {
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
 );
 
+
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+    'JvEvents' ,
+    'Medias',
+    array(
+        \JVelletti\JvEvents\Controller\MediaController::class => 'list',
+    ),
+    // non-cacheable actions
+    array(
+        \JVelletti\JvEvents\Controller\MediaController::class => '',
+    ),
+    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
+);
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+    'JvEvents' ,
+    'Media',
+    array(
+        \JVelletti\JvEvents\Controller\MediaController::class => 'show,new,create,edit,update,delete' ,
+    ),
+    // non-cacheable actions
+    array(
+        \JVelletti\JvEvents\Controller\MediaController::class => 'new,create,edit,update,delete',
+    ),
+    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
+);
+
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
     'JvEvents' ,
     'Search',

@@ -1,0 +1,26 @@
+
+<f:layout name="Default" />
+
+
+<f:section name="main">
+    <f:if condition="{settings.LayoutList}">
+        <f:then>
+            <f:variable name="layoutList">{settings.LayoutList}</f:variable>
+        </f:then>
+        <f:else>
+            <f:variable name="layoutList">5Tango</f:variable>
+        </f:else>
+    </f:if>
+    <f:flashMessages />
+    <div class="jv_events_{layoutList} {settings.list.additionalClass}">
+        <f:if condition="{medias}">
+            <f:then>
+                <div id="jv_events_location_list">
+                    <f:for each="{medias}" as="media">
+                        <f:render partial="Media/List/Partial{layoutList}/SingleMedia" arguments="{media:media, settings: settings}" />
+                    </f:for>
+                </div>
+            </f:then>
+        </f:if>
+    </div>
+</f:section>

@@ -141,6 +141,7 @@ return array(
 					array('label' => 'Event Category', 'value' => '0'),
 					array('label' => 'Location Category', 'value' => '1'),
 					array('label' => 'Organizer Category', 'value' => '2'),
+					array('label' => 'Media Category', 'value' => '3'),
 
 				),
 				'size' => 1,

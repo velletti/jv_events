@@ -102,6 +102,10 @@
 		<trans-unit id="flexforms.EventDetailView" approved="yes">
 			<source>Event Details</source>
 		</trans-unit>
+		<trans-unit id="flexforms.showDetails" approved="yes">
+            <source>Show Details</source>
+        </trans-unit>
+
 		<trans-unit id="flexforms.EventListView" approved="yes">
             <source>Event List</source>
         </trans-unit>

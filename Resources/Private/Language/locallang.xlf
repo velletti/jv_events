@@ -468,7 +468,20 @@
              <trans-unit id="x_jvevents_domain_model_event.edit.repeating.effected" approved="yes">
                 <source>Effected Events</source>
             </trans-unit>
-            t
+             <trans-unit id="tx_jvevents_domain_model_media" approved="yes">
+                <source>Media</source>
+            </trans-unit>
+
+             <trans-unit id="tx_jvevents_domain_model_media.author" approved="yes">
+                <source>Author</source>
+            </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_media.link" approved="yes">
+                <source>Bestellen</source>
+            </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_media.release_date" approved="yes">
+                <source>Release date</source>
+            </trans-unit>
+
             <trans-unit id="tx_jvevents_domain_model_location" approved="yes">
                 <source>Location</source>
             </trans-unit>

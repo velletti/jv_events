@@ -17,6 +17,8 @@ class PluginUtility
             ["name" => 'Locations' , "title" => 'Location: List of Locations', "ff" => 'locations' ] ,
             ["name" => 'Location' , "title" =>  'Location: Single Location - show, create, edit', "ff" => 'location'  , 'icon' => 'jvevents-plugin'] ,
             ["name" => 'Registrant' , "title" =>  'Registrant: list, create etc', "ff" => 'registrant' , 'icon' => 'jvevents-plugin' ] ,
+            ["name" => 'Medias' , "title" =>  'Media: list', "ff" => 'media' , 'icon' => 'jvevents-plugin' ] ,
+            ["name" => 'Media' , "title" =>  'Media: single, create etc', "ff" => 'media' , 'icon' => 'jvevents-plugin' ] ,
             ["name" => 'Ajax' , "title" =>  'Others: Ajax requests', "ff" => 'events'  , 'icon' => 'jvevents-plugin'] ,
             ["name" => 'Curl' , "title" =>  'Others: Load events from other Platform', "ff" => 'curl'  , 'icon' => 'jvevents-plugin']
         ] ;

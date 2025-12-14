@@ -50,6 +50,7 @@ use JVelletti\JvEvents\Domain\Model\Registrant;
 use JVelletti\JvEvents\Domain\Model\Tag;
 use JVelletti\JvEvents\Domain\Repository\CategoryRepository;
 use JVelletti\JvEvents\Domain\Repository\EventRepository;
+use JVelletti\JvEvents\Domain\Repository\MediaRepository;
 use JVelletti\JvEvents\Domain\Repository\LocationRepository;
 use JVelletti\JvEvents\Domain\Repository\OrganizerRepository;
 use JVelletti\JvEvents\Domain\Repository\RegistrantRepository;
@@ -109,6 +110,14 @@ class BaseController extends ActionController
      * @var LocationRepository
      */
     protected $locationRepository = NULL;
+
+    /**
+     * locationRepository
+     *
+     * @var MediaRepository
+     */
+    protected $mediaRepository = NULL;
+
 
     /**
      * persistencemanager
@@ -211,6 +220,11 @@ class BaseController extends ActionController
     public function injectEventRepository(EventRepository $eventRepository)
     {
         $this->eventRepository = $eventRepository;
+    }
+
+    public function injectMediaRepository(MediaRepository $mediaRepository)
+    {
+        $this->mediaRepository = $mediaRepository;
     }
 
     public function injectSubeventRepository(SubeventRepository $subeventRepository)
