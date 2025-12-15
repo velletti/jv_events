@@ -47,23 +47,18 @@
 
                 <div class="col-8 col-md-3 text-black-50 bg-gradient-light py-3">
                     <span class="d-none d-md-inline-block"> <span class="fa fa-info-circle mh-sm"></span>
-                            <f:format.date format="Y">{media.releaseDate}</f:format.date>
-                    </span>
-                    <f:if condition="{settings.showDetails}">
-                        <f:else>
-                            <b>{media.organizer.name}</b><br>
-                        </f:else>
-                    </f:if>
-                    <br>
+                            <f:format.date format="M/Y">{media.releaseDate}</f:format.date>
+                    </span> - <b>{media.organizer.name}</b>
                     <f:if condition="{media.link}">
                         <f:then>
-                            <span class="fa fa-link mh-sm"></span> <f:link.external uri="{media.link}" target="_blank">{media.link}</f:link.external>
+                            <br>
+                            <span class="fa fa-link mh-sm"></span> <f:link.external uri="{media.link}" target="_blank" title="External Link {media.link}"> <f:translate key="orderNow" default="Hier bestellen >>"></f:translate></f:link.external>
                         </f:then>
                     </f:if>
                     <f:if condition="{settings.showDetails}">
                         <div class="position-absolute position-bottom position-right mr-0">
                             <button class="btn btn-sm btn-outline-secondary" type="button" data-toggle="collapse" data-target="#organizerDetails-{media.uid}" aria-expanded="false" aria-controls="organizerDetails-{media.uid}">
-                                <span class="fa fa-caret-down mh-sm"></span> <f:translate key="tx_jvevents_domain_model_media.showdetails" default="Show details"/>
+                                <span class="fa fa-caret-down mh-sm"></span> <f:translate key="tx_jvevents_domain_model_media.showdetails" default="Details anzeigen"/>
                             </button>
                         </div>
                     </f:if>

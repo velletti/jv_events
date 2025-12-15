@@ -18,6 +18,12 @@ class Media extends AbstractEntity
      */
     protected $name = '';
 
+    /**
+     * Name of the media
+     *
+     * @var string
+     */
+    protected $link = '';
 
     /**
      * Media category
@@ -242,5 +248,24 @@ class Media extends AbstractEntity
             $this->organizer = null ;
         }
     }
+    /**
+     * Returns the link
+     *
+     * @return string
+     */
+    public function getLink(): string
+    {
+        return ($this->link ?? '');
+    }
+    /**
+     * Sets the link
+     *
+     * @param string $link
+     */
+    public function setLink(?string $link): void
+    {
+        $this->link = ($link??'');
+    }
+
 
 }
