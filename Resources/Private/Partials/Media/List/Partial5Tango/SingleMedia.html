@@ -6,7 +6,7 @@
 
         <div class="card col-12 my-4 clearfix rounded-bottom">
             <div class="row">
-                <div class="col-4  col-md-3 px-0">
+                <div class="col-12  col-md-3 px-0">
                     <f:if condition="{settings.detailPid}">
                         <f:then>
                             <f:link.action pageUid="{settings.detailPid}" action="show" controller="Media" arguments="{media : media.uid}">
@@ -45,30 +45,45 @@
                     </div>
                 </div>
 
-                <div class="col-8 col-md-3 text-black-50 bg-gradient-light py-3">
-                    <span class="d-none d-md-inline-block"> <span class="fa fa-info-circle mh-sm"></span>
-                            <f:format.date format="M/Y">{media.releaseDate}</f:format.date>
-                    </span> - <b>{media.organizer.name}</b>
-                    <f:if condition="{media.link}">
+                <div class="col-12 col-md-3 text-black-50 bg-gradient-light py-3">
+                    <div class="mb-3">
+                        <span class="fa fa-info-circle mh-sm"></span>
+                        <f:format.date format="M/Y">{media.releaseDate}</f:format.date>
+                        - <b>{media.organizer.name}</b>
+                        <f:if condition="{media.link}">
+                            <f:then>
+                                <br>
+                                <span class="fa fa-link mh-sm"></span> <f:link.external uri="{media.link}" target="_blank" title="External Link {media.link}"> <f:translate key="orderNow" default="Hier bestellen >>"></f:translate></f:link.external>
+                                <br>
+                            </f:then>
+                        </f:if>
+                    </div>
+
+                    <f:if condition="{settings.detailPid}">
                         <f:then>
-                            <br>
-                            <span class="fa fa-link mh-sm"></span> <f:link.external uri="{media.link}" target="_blank" title="External Link {media.link}"> <f:translate key="orderNow" default="Hier bestellen >>"></f:translate></f:link.external>
+                            <div class="position-absolute position-bottom position-right mr-0">
+                                <f:link.action class="btn btn-sm btn-outline-secondary" pageUid="{settings.detailPid}" action="show" controller="Media" arguments="{media : media.uid}">
+                                    <span class="fa fa-caret-down mh-sm"></span> <f:translate key="tx_jvevents_domain_model_media.showdetails" default="Details anzeigen"/>
+                                </f:link.action>
+                            </div>
                         </f:then>
-                    </f:if>
-                    <f:if condition="{settings.showDetails}">
-                        <div class="position-absolute position-bottom position-right mr-0">
-                            <button class="btn btn-sm btn-outline-secondary" type="button" data-toggle="collapse" data-target="#organizerDetails-{media.uid}" aria-expanded="false" aria-controls="organizerDetails-{media.uid}">
-                                <span class="fa fa-caret-down mh-sm"></span> <f:translate key="tx_jvevents_domain_model_media.showdetails" default="Details anzeigen"/>
-                            </button>
-                        </div>
+                        <f:else>
+                            <div class="position-absolute position-bottom position-right mr-0">
+                                <button class="btn btn-sm btn-outline-secondary" type="button" data-toggle="collapse" data-target="#organizerDetails-{media.uid}" aria-expanded="false" aria-controls="organizerDetails-{media.uid}">
+                                    <span class="fa fa-caret-down mh-sm"></span> <f:translate key="tx_jvevents_domain_model_media.showdetails" default="Details anzeigen"/>
+                                </button>
+                            </div>
+                        </f:else>
                     </f:if>
                 </div>
                 <f:if condition="{settings.showDetails}">
                     <div class="collapse" id="organizerDetails-{media.uid}">
-                        <div class="col-12 py-2 bg-gradient-light ">
+                        <div class="col-12 offset-md-3 col-md-9  py-2 bg-gradient-light ">
                             <f:format.html>{media.description}</f:format.html>
                         </div>
+
                         <div class="col-4  col-md-3 px-0">
+                            <f:render section="authorimage" arguments="{_all}"></f:render>
                         </div>
                         <div class="col-8 col-md-9 py-2">
                             <strong><f:translate key="tx_jvevents_domain_model_media.autor" default="Autor"/>:</strong> {media.organizer.name}
