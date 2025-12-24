@@ -213,6 +213,7 @@ class AjaxController extends BaseController
                     "isOrganizer" => $this->isUserOrganizer()
                 ],
             "organizer" => [],
+            "media" => [],
             "location" => []
         ] ;
         if ( $output["feuser"]["isOrganizer"]) {
@@ -543,6 +544,34 @@ class AjaxController extends BaseController
 
             }
 
+        }
+        /* ************************************************************************************************************ */
+        /*   Get infos about: Media
+        /* ************************************************************************************************************ */
+        if( $arguments['media'] > 0 ) {
+            $output['media']['requestId'] = $arguments['media'] ;
+
+            /** @var Event $event */
+            $media = $this->mediaRepository->findByUidAllpages( (int)$arguments['media'], FALSE, TRUE);
+
+        } else {
+            if( $arguments['media'] = -1 ) {
+                $output['media']['requestId'] = $arguments['media'] ;
+            }
+        }
+
+        // Location is set either by Event OR by location uid from request
+        if( is_object($media )) {
+            $output['media']['mediaId'] = $media->getUid() ;
+            $output['media']['mediaName'] = $media->getName();
+            $output['media']['description'] = $media->getDescription() ;
+
+            if( is_object( $media->getOrganizer() )) {
+                $organizer = $media->getOrganizer() ;
+                $output['media']['organizerId'] = $organizer->getUid()  ;
+                $output['media']['organizerEmail'] = $organizer->getEmail()  ;
+                $output['media']['hasAccess'] = $this->hasUserAccess( $organizer ) ;
+            }
         }
         /* ************************************************************************************************************ */
         /*   Get infos about: Organizer

@@ -87,6 +87,7 @@ function jv_events_init_AjaxMenu() {
     var eventId = 0;
     var locationId = 0;
     var addOrgId = '';
+    var addMedia = '';
     var ajaxCurrentPageUid = parseInt($('meta[name=pageUid]').attr('content'));
     if ( ajaxCurrentPageUid < 1) {
         ajaxCurrentPageUid = 1 ;
@@ -100,6 +101,9 @@ function jv_events_init_AjaxMenu() {
         }
         if( $("#jv-events-dataids").data("orguid") ) {
             addOrgId = '&tx_jvevents_ajax[organizer]=' + parseInt( $("#jv-events-dataids").data("orguid"));
+        }
+        if( $("#jv-events-dataids").data("mediauid") ) {
+            addMedia = '&tx_jvevents_ajax[media]=' + parseInt( $("#jv-events-dataids").data("mediauid"));
         }
     }
     if ( $(".jv_events_unlink_event").length) {
@@ -139,7 +143,7 @@ function jv_events_init_AjaxMenu() {
     if ( $("#jvEventsAjaxMenu").length) {
         $.ajax( {
             url: '/index.php' ,
-            data: 'id=' + ajaxCurrentPageUid + '&tx_jvevents_ajax[returnPid]=' + ajaxCurrentPageUid + '&L=0&tx_jvevents_ajax[event]=' + eventId + addOrgId + '&tx_jvevents_ajax[location]=' +  locationId + '&tx_jvevents_ajax[action]=eventMenu&tx_jvevents_ajax[controller]=Ajax&' ,
+            data: 'id=' + ajaxCurrentPageUid + '&tx_jvevents_ajax[returnPid]=' + ajaxCurrentPageUid + '&L=0&tx_jvevents_ajax[event]=' + eventId + addOrgId + addMedia + '&tx_jvevents_ajax[location]=' +  locationId + '&tx_jvevents_ajax[action]=eventMenu&tx_jvevents_ajax[controller]=Ajax&' ,
 
             before: function() {
                 $('#jvEventsAjaxMenu').addClass('show').addClass('d-block') ;

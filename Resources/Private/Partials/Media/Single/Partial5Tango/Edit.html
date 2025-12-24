@@ -1,0 +1,65 @@
+{namespace jve=JVelletti\JvEvents\ViewHelpers}
+
+<f:if condition="{settings.LayoutSingle}">
+    <f:then>
+        <f:variable name="LayoutSingle">{settings.LayoutSingle}</f:variable>
+    </f:then>
+    <f:else>
+        <f:variable name="LayoutSingle">5Tango</f:variable>
+    </f:else>
+</f:if>
+<div class="card col-12  jv-events-partial{settings.LayoutSingle}" id="jv-event-edit-data">
+    <div class="card-header text-white bg-primary">
+        <span class="fas fa-edit border-primary rounded-circle"></span>
+        <span><f:translate key="tx_jvevents_domain_model_media.Edit">Edit Media</f:translate></span>
+    </div>
+    <div class="card-body row">
+        <div class="col-md-4 equalHeight">
+            <f:variable name="imageButton"><f:translate key="changeImage">Change Image</f:translate></f:variable>
+            <f:if condition="{media.teaserImage}">
+                <f:then>
+                    <f:image src="{media.teaserImage.uid}" class="d-block w-100 h-auto img-float rounded shadow-lg" alt="{media.teaserImage.alternative}" title="{media.teaserImage.title}" width="{settings.list.image.width}c" maxWidth="{settings.list.image.width}" maxHeight="{settings.list.image.height}" treatIdAsReference="true" />
+                </f:then>
+                <f:else>
+                    <f:variable name="imageButton"><f:translate key="addImage">Add Image</f:translate></f:variable>
+
+                </f:else>
+            </f:if>
+            <br/>
+
+            <f:link.page pageUid="{settings.pageIds.addMedia}" noCache="true" class="nav-link  px-1" title="Add Teaser Image "
+                         additionalParams="{tx_jvmediaconnector_connector: {action: 'list', controller: 'Media' ,  reference: {id: media.uid, table: 'tx_jvevents_domain_model_media' , fieldname: 'teaser_image' , maxRelations: '1' , returnPid: settings.pageId , returnArray: {tx_jvevents_media: {action: 'edit', media: media.uid }}}}}">
+                <button class="btn btn-outline-primary btn-xs rounded-circle" href="#">
+                    <i class="fas fa-image"></i>
+                </button>
+                <span class="d-none d-md-inline-block">{imageButton}</span>
+            </f:link.page>
+            <f:link.action pageUid="{settings.pageIds.editMedia}" class="nav-link px-1" title="{f:translate(key: 'tx_jvevents_domain_model_media.view' , default: 'View Media')}" action="show" controller="Media"  pluginName="Media" arguments="{media: media.uid}">
+                <button class="btn btn-outline-primary btn-xs rounded-circle" href="#">
+                    <i class="fas fa-eye "></i>
+                </button>
+                <span class="d-none d-md-inline-block">{f:translate(key: 'tx_jvevents_domain_model_media.view' , default: 'View Media')}</span>
+            </f:link.action>
+
+            <br/>
+
+            <f:render partial="FeEditHelp" arguments="{section: 'media', object: media , settings: settings , user: user}" />
+
+
+        </div>
+        <div class="col-md-8 equalHeight">
+            <f:render partial="HasFormErrors" arguments="{object:media, debug: 'true' }" />
+
+            <f:form class="form-horizontal"  action="update" name="media" object="{media}" id="media_edit">
+                <f:render partial="Media/Single/Partial{LayoutSingle}/FormFields" arguments="{_all}" />
+
+                <div class="text-right">
+                    <f:form.submit class="btn btn-primary"
+                                   onclick=" this.submit(); return false;"
+                                   value="{f:translate(key: 'form.save', default: 'Save')}" />
+                </div>
+            </f:form>
+
+        </div>
+    </div>
+</div>

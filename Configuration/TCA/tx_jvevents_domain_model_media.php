@@ -25,7 +25,7 @@ return [
         'iconfile' => 'EXT:jv_events/Resources/Public/Icons/tx_jvevents_domain_model_media.gif',
     ],
     'types' => [
-        '1' => ['showitem' => 'name, media_category, teaser_image, teaser_text, description, --div--;Access, sys_language_uid, organizer, release_date, link, hidden, starttime, endtime'],
+        '1' => ['showitem' => 'name, slug, media_category, teaser_image, teaser_text, description, --div--;Access, sys_language_uid, organizer, release_date, link, hidden, starttime, endtime'],
     ],
     'columns' => [
         'name' => [
@@ -194,6 +194,25 @@ return [
             ) ,
 
         ),
+        'slug'  => [
+            'exclude' => 1,
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:pages.slug',
+            'config' => [
+                'type' => 'slug',
+                'size' => 50,
+                'generatorOptions' => [
+                    'fields' => [['uid'],['name']],
+                    'fieldSeparator' => '-',
+                    'replacements' => [
+                        '/' => '-'
+                    ],
+                ],
+                'prependSlash' => false,
+                'fallbackCharacter' => '-',
+                'eval' => 'unique',
+                'default' => 'media'
+            ],
+        ],
         'hidden' => [
             'exclude' => true,
             'label' => 'Hidden',

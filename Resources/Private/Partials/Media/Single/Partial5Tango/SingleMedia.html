@@ -1,0 +1,105 @@
+{namespace jve=JVelletti\JvEvents\ViewHelpers}
+<f:spaceless>
+    <div id="jvEventsAjaxSingleMenu" class="d-none"></div>
+
+    <div id="jv-events-dataids" class="jv-events-singleMedia {hideListClass}" data-teaserimage="{media.teaserImage.uid}"
+         data-mediauid="{media.uid}"  data-orguid="{media.organizer.uid}"
+           >
+
+        <div class="card col-12 my-4 clearfix rounded-bottom shadow">
+            <div class="row">
+                <div class="col-12  col-md-3 px-0">
+                    <f:if condition="{settings.detailPid}">
+                        <f:then>
+                            <f:link.action pageUid="{settings.detailPid}" action="show" controller="Media" arguments="{media : media.uid}">
+                                <f:render section="image" arguments="{_all}"></f:render>
+                            </f:link.action>
+                        </f:then>
+                        <f:else>
+                            <f:render section="image" arguments="{_all}"></f:render>
+                        </f:else>
+                    </f:if>
+                </div>
+
+                <div class="col-12 col-md-6">
+                    <div class="card-block">
+                        <div id="map-marker-content-{media.uid}">
+                            <h4 class="card-title pb-0 mb-0">
+                                <f:if condition="{settings.detailPid}">
+                                    <f:then>
+                                        <f:link.action  pageUid="{settings.detailPid}" action="show" controller="Media" arguments="{media : media.uid}" >
+                                            {media.name}
+                                        </f:link.action>
+
+                                    </f:then>
+                                    <f:else>
+                                        {media.name}
+                                    </f:else>
+                                </f:if>
+                            </h4>
+                        </div>
+                        <p>
+                            {media.teaserText}
+                        </p>
+
+
+
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-3 text-black-50 bg-gradient-light py-3">
+                    <div class="mb-3">
+                        <span class="fa fa-info-circle mh-sm"></span>
+                        <f:format.date format="M/Y">{media.releaseDate}</f:format.date>
+                        - <b>{media.organizer.name}</b>
+                        <f:if condition="{media.link}">
+                            <f:then>
+                                <br>
+                                <span class="fa fa-link mh-sm"></span> <f:link.external uri="{media.link}" target="_blank" title="External Link {media.link}"> <f:translate key="orderNow" default="Hier bestellen >>"></f:translate></f:link.external>
+                                <br>
+                            </f:then>
+                        </f:if>
+                    </div>
+                </div>
+            </div>
+
+            <div id="mediaDetails-{media.uid}" class="row  ">
+                <div class="col-12 p-2 m-2 pt-4  ">
+                    <f:format.html>{media.description}</f:format.html>
+                </div>
+            </div>
+        </div>
+        <div class="card col-12 my-2 mt-4 clearfix rounded-bottom">
+            <div class="row shadow rounded p-2">
+                <div class="col-4  col-md-3 px-0">
+                    <f:render section="authorimage" arguments="{_all}"></f:render>
+                </div>
+                <div class="col-8 col-md-9 py-2">
+                    <strong><f:translate key="tx_jvevents_domain_model_media.autor" default="Autor"/>:</strong> {media.organizer.name}
+
+                    <f:if condition="{media.organizer.link}">
+                        <br>
+                        <f:link.external uri="{media.organizer.link}" target="_blank">{media.organizer.link}</f:link.external>
+                    </f:if>
+                    <hr>
+                    <f:format.html>{media.organizer.description}</f:format.html>
+                </div>
+            </div>
+        </div>
+    </div>
+</f:spaceless>
+
+<f:section name="image">
+    <f:if condition="{media.teaserImage.uid}">
+        <f:then>
+            <jve:image alt="{media.teaserImage.alternative}" class="d-block w-100 h-auto img-float rounded shadow-lg" maxHeight="{settings.list.image.height}" maxWidth="{settings.list.image.width}" src="{media.teaserImage.uid}" title="{media.teaserImage.title}" treatIdAsReference="true" width="{settings.list.image.width}c" />
+        </f:then>
+    </f:if>
+</f:section>
+<f:section name="authorimage">
+    <f:if condition="{media.organizer.teaserImage.uid}">
+        <f:then>
+            <jve:image alt="{media.organizer.teaserImage.alternative}" class="d-block w-100 h-auto img-float rounded shadow-lg" maxHeight="{settings.list.image.height}" maxWidth="{settings.list.image.width}" src="{media.organizer.teaserImage.uid}" title="{media.organizer.teaserImage.title}" treatIdAsReference="true" width="{settings.list.image.width}c" />
+        </f:then>
+    </f:if>
+</f:section>

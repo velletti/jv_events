@@ -12,10 +12,12 @@
         </f:else>
     </f:if>
     <f:flashMessages />
-    <div class="jv_events_{layoutList} {settings.list.additionalClass}">
+    <div class="jv_events_{layoutList} {settings.list.additionalClass}"  id="jv-events-dataids" data-mediauid="-1" data-orguid="{media.organizer.uid}">
+        <div id="jvEventsAjaxSingleMenu" class="d-none"></div>
+
         <f:if condition="{medias}">
             <f:then>
-                <div id="jv_events_location_list">
+                <div id="jv_events_location_list" >
                     <f:for each="{medias}" as="media">
                         <f:render partial="Media/List/Partial{layoutList}/SingleMedia" arguments="{media:media, settings: settings}" />
                     </f:for>

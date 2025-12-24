@@ -1,0 +1,53 @@
+{namespace jve=JVelletti\JvEvents\ViewHelpers}
+<f:if condition="{settings.LayoutSingle}">
+	<f:then>
+		<f:variable name="layout">{settings.LayoutSingle}</f:variable>
+	</f:then>
+	<f:else>
+		<f:variable name="layout">5Tango</f:variable>
+	</f:else>
+</f:if>
+
+<f:if condition="{isAdmin}">
+	<f:if condition="{organizers}">
+		<div class="form-group display-data row">
+			<div class="col-12 input-group">
+				<b>
+					<f:translate key="LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_location.organizer"> </f:translate>
+				</b>: {Media.organizer.name}
+			</div>
+			<div class="col-12 input-group">
+
+
+				<f:form.select id="organizer" class="form-control " property="organizer" value="{media.organizer.uid}"
+							    prependOptionValue="0"    prependOptionLabel="--none--" sortByOptionLabel="true"
+							   options="{organizers}" optionValueField="uid" optionLabelField="name"/>
+			</div>
+		</div>
+	</f:if>
+</f:if>
+
+<f:render partial="SingleField/Partial{layout}/FormRowDefault"
+		  arguments="{object: 'media', property:'name' , label: '' , translationKey: 'tx_jvevents_domain_model_media.name' , maxLength: 60 , mandatory: '1' }" />
+
+
+<f:render partial="SingleField/Partial{layout}/FormRowTextfield"
+		  arguments="{object: 'media', property:'teaserText' , label: '' , translationKey: 'tx_jvevents_domain_model_media.teaser_text' ,  maxLength: 255, rows: 3, mandatory: '0' }" />
+
+<f:render partial="SingleField/Partial{layout}/FormRowDate"
+		  arguments="{object: 'media', property:'releaseDate' , value: media.releaseDate , label: '' , translationKey: 'tx_jvevents_domain_model_event.release_date' ,  mandatory: '1' }" />
+
+<f:render partial="SingleField/Partial{layout}/FormRowDefault"
+		  arguments="{object: 'media', property:'link' , label: '' , translationKey: 'tx_jvevents_domain_model_media.order_link' ,  maxLength: 80 , mandatory: '' }" />
+
+
+<f:if condition="{categories}">
+	<f:render partial="SingleField/Partial{layout}/FormRowCategories"
+			  arguments="{object: 'media', property:'mediaCategory' , value: '{media.mediaCategory.0.uid}', label: '' , translationKey: 'tx_jvevents_domain_model_category.select' , categories: categories , mandatory: '0' }" />
+	<hr>
+</f:if>
+
+<f:render partial="SingleField/Partial{layout}/FormRowRte"
+		  arguments="{object: 'media', property:'description' , label: '' , translationKey: 'tx_jvevents_domain_model_media.description' , mandatory: false }" />
+
+

@@ -11,6 +11,16 @@ use TYPO3\CMS\Extbase\Domain\Model\FileReference;
  */
 class Media extends AbstractEntity
 {
+
+    /**
+     * lastmod Date as timestring
+     *
+     * @var int
+     */
+    protected $tstamp ;
+
+    protected ?int $_languageUid ;
+
     /**
      * Name of the media
      *
@@ -19,11 +29,19 @@ class Media extends AbstractEntity
     protected $name = '';
 
     /**
-     * Name of the media
+     * External Order Now link  of the media
      *
      * @var string
      */
     protected $link = '';
+
+
+    /**
+     * Name UTLR of the media
+     *
+     * @var string
+     */
+    protected $slug = '';
 
     /**
      * Media category
@@ -31,7 +49,7 @@ class Media extends AbstractEntity
      * @var ObjectStorage<Category>
 
      */
-    protected $mediaCategory = 0;
+    protected $mediaCategory = null;
 
 
     /**
@@ -69,6 +87,13 @@ class Media extends AbstractEntity
      * @var \DateTime
      */
     protected $releaseDate = null;
+
+    /**
+     * release Date of this media . replacement for releaseDate but FE = for frontend Editing
+     *
+     * @var string
+     */
+    protected $releaseDateFE = null;
 
     /**
      * Returns the name
@@ -265,6 +290,57 @@ class Media extends AbstractEntity
     public function setLink(?string $link): void
     {
         $this->link = ($link??'');
+    }
+    /**
+     * @return string
+     */
+    public function getReleaseDateFE()
+    {
+        return $this->releaseDateFE;
+    }
+
+    /**
+     * @param string $releaseDateFE
+     */
+    public function setReleaseDateFE($releaseDateFE): void
+    {
+        $this->releaseDateFE = $releaseDateFE;
+    }
+
+    public function getTstamp(): int
+    {
+        return ($this->tstamp ?? 0 );
+    }
+    public function setTstamp(?int $tstamp): void
+    {
+        $this->tstamp = ( $tstamp ?? time() );
+    }
+
+    public function getLanguageUid(): ?int
+    {
+        return $this->_languageUid;
+    }
+    public function setLanguageUid(?int $_languageUid): void
+    {
+        $this->_languageUid = $_languageUid;
+    }
+
+    public function getSlug(): string
+    {
+        return ($this->slug ?? '');
+    }
+    public function setSlug(?string $slug): void
+    {
+        $this->slug = ($slug ?? '');
+    }
+
+    /**
+     * __construct
+     */
+    public function __construct()
+    {
+        //Do not remove the next line: It would break the functionality
+        $this->initStorageObjects();
     }
 
 

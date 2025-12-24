@@ -132,6 +132,45 @@
 	</f:variable>
 
 
+	<f:section name="media">
+		<f:variable name="helpModalBody">
+			<f:format.raw>
+				<f:spaceless>
+					Siehe unsere
+					<br>
+					<f:link.page class="btn btn-outline-primary" pageUid="{settings.help.location.pid}"
+								 additionalParams="{'&tx_maritfaq_pi1[FaqID]': '{settings.help.media.faqId}'}">
+						Hilfe Seiten
+					</f:link.page>
+					<f:if condition="{settings.help.image.pid}">
+						<br><br>und die Tipps zum
+						<f:link.page class="btn btn-outline-primary" pageUid="{settings.help.image.pid}"
+									 additionalParams="{'&tx_maritfaq_pi1[FaqID]': '{settings.help.image.faqId}'}">
+							Hochladen von Bildern
+						</f:link.page>
+					</f:if>
+					<br><br>
+					Wenn dort keine passende Antwort zu finden ist, uns per E-Mail kontaktieren und die nachfolgenden  ID-Informationen mitsenden:<br>
+					User: {user} | LocationId: {object.uid}<br>
+				</f:spaceless>
+			</f:format.raw>
+		</f:variable>
+		<f:variable name="helpModalFooter">
+			<f:format.raw>
+				<f:spaceless>
+					&nbsp;
+				</f:spaceless>
+			</f:format.raw>
+		</f:variable>
+
+
+		<f:render partial="Helper/Bootstrap4/Modal" arguments="{'modalId':  'HelpModal', 'modalTitle': 'Help', 'modalBody': helpModalBody,'modalFooter': helpModalFooter,  'settings': settings}" />
+
+
+
+	</f:section>
+
+
 	<f:render partial="Helper/Bootstrap4/Modal" arguments="{'modalId':  'HelpModal', 'modalTitle': 'Help', 'modalBody': helpModalBody,'modalFooter': helpModalFooter,  'settings': settings}" />
 
 

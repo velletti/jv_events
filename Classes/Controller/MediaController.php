@@ -5,11 +5,11 @@ use JVelletti\JvEvents\Utility\MigrationUtility;
 use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use Psr\Http\Message\ResponseInterface;
-use JVelletti\JvEvents\Domain\Model\Location;
+use JVelletti\JvEvents\Domain\Model\Media;
 use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Annotation\Validate;
-use JVelletti\JvEvents\Validation\Validator\LocationValidator;
+use JVelletti\JvEvents\Validation\Validator\MediaValidator;
 use JVelletti\JvEvents\Domain\Model\Organizer;
 use JVelletti\JvEvents\Domain\Model\Event;
 use JVelletti\JvEvents\Domain\Model\Category;
@@ -17,6 +17,7 @@ use JVelletti\JvEvents\Utility\SlugUtility;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
+use DateTime;
 
 /***************************************************************
  *
@@ -46,7 +47,7 @@ use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Extbase\Annotation as Extbase;
 
 /**
- * LocationController
+ * MediaController
  */
 class MediaController extends BaseController
 {
@@ -62,15 +63,6 @@ class MediaController extends BaseController
         if( !$this->request->hasArgument('media')) {
             // ToDo redirect to error
         }
-/*
-        if ( $this->request->hasArgument('location')) {
-            if ( property_exists( $this->arguments , "location")) {
-                $propertyMappingConfiguration = $this->arguments['location']->getPropertyMappingConfiguration();
-                $propertyMappingConfiguration->allowProperties('organizerUid') ;
-            }
-
-        }
-*/
         parent::initializeAction() ;
 
     }
@@ -101,31 +93,10 @@ class MediaController extends BaseController
      *
      * @return void
      */
-    public function showAction(?Location $location): ResponseInterface
+    public function showAction(?Media $media): ResponseInterface
     {
-        if ( $location ) {
-            $nextEventOrganizer = null;
-            $nextEventLocation = null;
-            $this->settings['filter']['maxEvent'] =  1  ;
-            $this->settings['filter']['startDate'] = 0 ;
-
-            if ( $location->getOrganizer() ) {
-                $this->settings['filter']['organizer'] =  $location->getOrganizer()->getUid()  ;
-                $nextEventOrganizer = $this->eventRepository->findByFilter(false, 1,  $this->settings )->getFirst() ;
-            }
-            $this->settings['filter']['location'] =  $location->getUid()  ;
-           //  $this->settings['debugQuery'] = 1 ;
-            $nextEventLocation = $this->eventRepository->findByFilter(false, 1,  $this->settings )->getFirst() ;
-            if ( !$nextEventLocation ) {
-                // nichts gefunden? dann nimm das letzte Event
-                $this->settings['list']['sorting'] =  ["start_date" => "DESC"] ;
-                unset($this->settings['filter']['startDate']) ;
-                $nextEventLocation = $this->eventRepository->findByFilter(false, 1,  $this->settings )->getFirst() ;
-            }
-
-            $this->view->assign('location', $location);
-            $this->view->assign('nextEventLocation', ($nextEventLocation ? $nextEventLocation->getStartdate()->format("d.m.Y") : date("d.m.Y") ));
-            $this->view->assign('nextEventOrganizer', ( $nextEventOrganizer ? $nextEventOrganizer->getStartdate()->format("d.m.Y") : date("d.m.Y") ));
+        if ( $media ) {
+            $this->view->assign('media', $media);
         } else {
             $this->addFlashMessage($this->translate("error.general.entry_not_found"), "Sorry!" , ContextualFeedbackSeverity::WARNING) ;
         }
@@ -134,41 +105,34 @@ class MediaController extends BaseController
     
     /**
      * action new
-     * @param Location|Null $location
+     * @param Media|Null $media
      * @return void
      */
-    #[IgnoreValidation(['value' => 'location'])]
-    public function newAction(Location $location=Null): ResponseInterface
+    #[IgnoreValidation(['value' => 'media'])]
+    public function newAction(Media $media=Null): ResponseInterface
     {
         /** @var QueryResultInterface $categories */
-        $categories = $this->categoryRepository->findAllonAllPages( '1' );
+        $categories = $this->categoryRepository->findAllonAllPages( '3' );
 
 
-        if ( $location==null) {
-            /** @var Location $location */
-            $location = GeneralUtility::makeInstance(Location::class);
-            $location->setLng( ($this->settings['filterlocation']['lng'] ?? '-34.5877631' ));
-            $location->setLat( ($this->settings['filterlocation']['lat'] ?? '-58.4589249' ));
-
+        if ( $media==null) {
+            /** @var Media $media */
+            $media = GeneralUtility::makeInstance(Media::class);
         }
         $organizer= null ;
-        if ( $location->getUid() < 1 ) {
+        if ( $media->getUid() < 1 ) {
             $organizer = $this->getOrganizer() ;
             if( $organizer ) {
-                $location->setOrganizer($organizer);
+                $media->setOrganizer($organizer);
             }
 
-            // ToDo find good way to handle ID Default .. maybe a pid per User, per location or other typoscript setting
-            $location->setPid( 14 ) ;
-            $city = $this->settings["location"]["new"]["defaultCity"] ?? "München";
-            $location->setCity( $city ) ;
-            $location->setCountry( "DE" ) ;
-
+            // ToDo find good way to handle ID Default .. maybe a pid per User, per media or other typoscript setting
+            $media->setPid( 45 ) ;
         }
 
         if($this->isUserOrganizer() ) {
             $this->view->assign('user', intval($this->frontendUser->user['uid'] ) ) ;
-            $this->view->assign('location', $location);
+            $this->view->assign('media', $media);
             $this->view->assign('organizer', $organizer );
             $this->view->assign('categories', $categories);
         }
@@ -181,11 +145,11 @@ class MediaController extends BaseController
      *
      * @return void
      */
-    #[Validate(['param' => 'location', 'validator' => LocationValidator::class])]
-    public function createAction(Location $location)
+    #[Validate(['param' => 'media', 'validator' => MediaValidator::class])]
+    public function createAction(Media $media)
     {
-        if( $this->request->hasArgument('location')) {
-            $location = $this->cleanLocationArguments( $location) ;
+        if( $this->request->hasArgument('media')) {
+            $media = $this->cleanMediaArguments( $media) ;
         }
         $action = "edit" ;
         if($this->isUserOrganizer() ) {
@@ -193,19 +157,19 @@ class MediaController extends BaseController
 
 
             try {
-                // ToDo Storage PID for location via typoscript
-                $location->setPid(14) ;
+                // ToDo Storage PID for media via typoscript
+                $media->setPid(45) ;
                 $organizer = $this->getOrganizer() ;
                 if( $organizer ) {
                     $orgId = $organizer->getUid() ;
-                    $location->setOrganizer($organizer);
+                    $media->setOrganizer($organizer);
                 }
 
-                $this->locationRepository->add($location);
+                $this->mediaRepository->add($media);
                 $this->persistenceManager->persistAll() ;
 
 
-                $this->addFlashMessage('The Location was created.  It may take up some hours before it is visible', '', ContextualFeedbackSeverity::OK);
+                $this->addFlashMessage('The Media was created.  It may take up some hours before it is visible', '', ContextualFeedbackSeverity::OK);
             } catch ( \Exception $e ) {
                 $this->addFlashMessage($e->getMessage() , 'Error', ContextualFeedbackSeverity::WARNING);
 
@@ -214,11 +178,11 @@ class MediaController extends BaseController
         } else {
 
             $pid = $this->settings['pageIds']['loginForm'] ;
-            $this->addFlashMessage('The object was NOT created. You are not logged in as Organizer.' . $location->getUid() , '', ContextualFeedbackSeverity::WARNING);
+            $this->addFlashMessage('The object was NOT created. You are not logged in as Organizer.' . $media->getUid() , '', ContextualFeedbackSeverity::WARNING);
             return $this->redirect(null , null , NULL , NULL , $pid );
         }
 
-        $pid = $this->settings['pageIds']['editEvent'] ;
+        $pid = $this->settings['pageIds']['editMedia'] ;
 
 
         if( $pid < 1) {
@@ -226,43 +190,10 @@ class MediaController extends BaseController
             $controller = NULL ;
             $action = NULL ;
         } else {
-            $controller = "Event" ;
-            $action = "new" ;
+            $controller = "Media" ;
+            $action = "show" ;
         }
-        return $this->redirect($action , $controller , NULL , ['organizer' => $orgId, 'location' => $location->getUid()]  , $pid );
-
-    }
-
-    /**
-     * action new
-     * @param integer $oldDefault
-     * @return void
-     */
-    #[IgnoreValidation(['value' => 'location'])]
-    public function setDefaultAction(Location $location , Organizer $organizer , ?int $oldDefault= 0) {
-
-        $locations = $this->locationRepository->findByOrganizersAllpages([$organizer->getUid()] , true , TRUE , true ) ;
-        if ( $locations && count($locations) > 0) {
-            foreach ( $locations as $location) {
-                if( is_object($location)) {
-                    if ( $this->hasUserAccess($location->getOrganizer() )) {
-                        $location->setDefaultLocation( FALSE ) ;
-                        $this->locationRepository->update($location) ;
-                    }
-                }
-            }
-        }
-        if ( $this->hasUserAccess($location->getOrganizer() )) {
-            $location->setDefaultLocation( TRUE ) ;
-            $this->locationRepository->update($location) ;
-            $organizer->setLat( $location->getLat() ) ;
-            $organizer->setLng( $location->getLng() ) ;
-            $this->organizerRepository->update($organizer) ;
-        }
-        $this->addFlashMessage("Default Location: " . $location->getName() , null , ContextualFeedbackSeverity::OK);
-
-
-        return $this->redirect('assist' , 'Organizer', Null , NULL , $this->settings['pageIds']['organizerAssist'] );
+        return $this->redirect($action , $controller , null , [ 'media' => $media->getUid()]  , $pid );
 
     }
 
@@ -271,18 +202,18 @@ class MediaController extends BaseController
      *
      * @return void
      */
-    #[IgnoreValidation(['value' => 'location'])]
-    public function editAction(Location $location): ResponseInterface
+    #[IgnoreValidation(['value' => 'media'])]
+    public function editAction(Media $media): ResponseInterface
     {
         /** @var QueryResultInterface $categories */
-        $categories = $this->categoryRepository->findAllonAllPages( '1' );
+        $categories = $this->categoryRepository->findAllonAllPages( '3' );
 
 
         if( ! $hasAccess = $this->isAdminOrganizer()  ) {
-           if( $organizer = $location->getOrganizer() ) {
+           if( $organizer = $media->getOrganizer() ) {
                $hasAccess = $this->hasUserAccess( $organizer ) ;
            } else {
-               $location->setOrganizer(null) ;
+               $media->setOrganizer(null) ;
            }
 
         } else {
@@ -293,11 +224,11 @@ class MediaController extends BaseController
         if ( $hasAccess ) {
             $this->view->assign('user', intval( $this->frontendUser->user['uid'] ) );
 
-            $this->view->assign('location', $location);
+            $this->view->assign('media', $media);
             $this->view->assign('categories', $categories);
         } else {
             $this->addFlashMessage('You do not have access rights to change this data.' , 'Error', ContextualFeedbackSeverity::WARNING);
-            $this->addFlashMessage('ID: ' . $location->getUid(), '', AbstractMessageContextualFeedbackSeverity::WARNING);
+            $this->addFlashMessage('ID: ' . $media->getUid(), '', AbstractMessageContextualFeedbackSeverity::WARNING);
         }
         return $this->htmlResponse();
     }
@@ -307,25 +238,24 @@ class MediaController extends BaseController
      *
      * @return void
      */
-    #[Validate(['param' => 'location', 'validator' => LocationValidator::class])]
-    public function updateAction(Location $location)
+    #[Validate(['param' => 'media', 'validator' => MediaValidator::class])]
+    public function updateAction(Media $media)
     {
         if( ! $hasAccess = $this->isAdminOrganizer()  ) {
-            if( $organizer = $location->getOrganizer() ) {
+            if( $organizer = $media->getOrganizer() ) {
                 $hasAccess = $this->hasUserAccess( $organizer ) ;
             }
         }
 
         if ($hasAccess ) {
-            $location = $this->cleanLocationArguments( $location) ;
+            $media = $this->cleanMediaArguments( $media) ;
             $this->getFlashMessageQueue()->getAllMessagesAndFlush();
             $this->addFlashMessage('The object was updated. It may take some hours before it is visible', '', ContextualFeedbackSeverity::OK);
-            $this->locationRepository->update($location);
+            $this->mediaRepository->update($media);
         } else {
-            $this->addFlashMessage('You do not have access rights to change this data.' . $location->getUid() , '', ContextualFeedbackSeverity::WARNING);
+            $this->addFlashMessage('You do not have access rights to change this data.' . $media->getUid() , '', ContextualFeedbackSeverity::WARNING);
         }
-        $this->showNoDomainMxError($location->getEmail() ) ;
-        return $this->redirect('edit' , NULL, Null , ["location" => $location]);
+        return $this->redirect('edit' , NULL, Null , ["media" => $media]);
     }
     
     /**
@@ -333,116 +263,86 @@ class MediaController extends BaseController
      *
      * @return ResponseInterface
      */
-    public function deleteAction(Location $location): ResponseInterface
+    public function deleteAction(Media $media): ResponseInterface
     {
-        $eventCount = null;
-        $delete = false ;
-        $events = $this->eventRepository->findByLocation( $location->getUid() ) ;
-        if( $this->request->hasArgument('delete')) {
-            $delete = $this->request->getArgument('delete');
-            if( $this->request->hasArgument('eventCount')) {
-                $eventCount = $this->request->getArgument('eventCount');
-            }
-
-            if ( $delete &&  $events->count() == $eventCount) {
-
-                if ( $this->hasUserAccess($location->getOrganizer() )) {
-                    $this->getFlashMessageQueue()->getAllMessagesAndFlush();
-                    if ( $events->count() > 0 ) {
-                        $eventIds = "Ids: " ;
-                        /** @var Event $event */
-                        foreach ( $events as $event) {
-                            $eventIds .= $event->getUid() . ", " ;
-                            $this->eventRepository->remove($event) ;
-                        }
-                        $this->addFlashMessage('The following Events are deleted: ' . $eventIds, '', ContextualFeedbackSeverity::OK);
-                    }
-
-                    $this->locationRepository->remove($location);
-                    // $this->addFlashMessage('The Location was deleted.', '', ContextualFeedbackSeverity::OK);
-
-
-                } else {
-                    $this->addFlashMessage('You do not have access rights to change this data.' . $location->getUid() , '', ContextualFeedbackSeverity::WARNING);
-                }
-
-
-                return $this->redirect('assist' , 'Organizer', Null , NULL , $this->settings['pageIds']['organizerAssist'] );
-            }
-        }
-        $this->view->assign('location', $location);
-        $this->view->assign('eventCount', $events->count() );
+        $this->view->assign('media', $media);
         $this->view->assign('settings', $this->settings );
         return $this->htmlResponse() ;
     }
 
     /**
-     * @return Location
+     * @return Media
      */
-    public function cleanLocationArguments(Location $location) {
+    public function cleanMediaArguments(Media $media) {
 
         $row = [];
-        $desc = str_replace( ["\n", "\r", "\t"], [" ", "", " "], (string) $location->getDescription() ) ;
+        $desc = str_replace( ["\n", "\r", "\t"], [" ", "", " "], (string) $media->getDescription() ) ;
         $desc = strip_tags($desc , "<p><br><a><i><strong><h2><h3>") ;
-        $location->setOrganizerName( trim( strip_tags((string)$location->getOrganizerName()  ) )) ;
-        $location->setDescription( $desc ) ;
-        $location->setLink( trim((string) $location->getLink())) ;
-        $location->setEmail( trim((string) $location->getEmail())) ;
-        $location->setTstamp( time() ) ;
+        $media->setDescription( $desc ) ;
+        $media->setLink( trim((string) $media->getLink())) ;
+        $media->setTeaserText( trim((string) strip_tags($media->getTeaserText()))) ;
+        $media->setTstamp( time() ) ;
+
+
 
         // Type validation should be done in validator class so we can ignore issue with wrong format
-        $locationArray = $this->request->getArgument('location');
+        $mediaArray = $this->request->getArgument('media');
+
+        $stD = DateTime::createFromFormat('d.m.Y', $mediaArray['releaseDateFE']  );
+        $stD->setTime(0,0,0,0 ) ;
+        $media->setReleaseDate( $stD ) ;
+
         /*   +******  Update the Category  ************* */
-        $locationCatUid = intval( $locationArray['locationCategory'] ) ;
-        /** @var Category $locationCat */
-        $locationCat = $this->categoryRepository->findByUid($locationCatUid) ;
+        $mediaCatUid = intval( $mediaArray['mediaCategory'] ) ;
+        /** @var Category $mediaCat */
+        $mediaCat = $this->categoryRepository->findByUid($mediaCatUid) ;
 
 
-        if( $locationCat ) {
-            if( $location->getLocationCategory() ){
-                $location->getLocationCategory()->removeAll($location->getLocationCategory()) ;
+        if( $mediaCat ) {
+            if( $media->getMediaCategory() ){
+                $media->getMediaCategory()->removeAll($media->getMediaCategory()) ;
             }
-            $location->addLocationCategory($locationCat) ;
+            $media->addMediaCategory($mediaCat) ;
         }
 
 
 
         if ( $this->isAdminOrganizer()) {
-            if( is_array( $locationArray['organizer'] ) && isset($locationArray['organizer']["__identity"] ) ) {
-                $orgUid = $locationArray['organizer']["__identity"]  ;
+            if( is_array( $mediaArray['organizer'] ) && isset($mediaArray['organizer']["__identity"] ) ) {
+                $orgUid = $mediaArray['organizer']["__identity"]  ;
             } else {
-                $orgUid = $locationArray['organizer'];
+                $orgUid = $mediaArray['organizer'];
             }
             $organizer = $this->organizerRepository->findByUidAllpages(  intval( $orgUid ) , false, false  ) ;
 
             if (  $organizer  ) {
-                $location->setOrganizer($organizer);
+                $media->setOrganizer($organizer);
             } else {
-                $location->setOrganizer(null);
+                $media->setOrganizer(null);
             }
         }
 
 
 
-        if( $location->getPid() < 1) {
-            // ToDo find good way to handle ID Default .. maybe a pid per User, per location or other typoscript setting
-            $location->setPid( 14 ) ;
+        if( $media->getPid() < 1) {
+            // ToDo find good way to handle ID Default .. maybe a pid per User, per media or other typoscript setting
+            $media->setPid( 45 ) ;
         }
 
 
-        $location->setLanguageUid(-1) ;
+        $media->setLanguageUid(-1) ;
 
-            $row['name'] =  $location->getName() ;
-            $row['pid'] =  $location->getPid() ;
-            $row['parentpid'] =  1 ;
-            $row['uid'] =  $location->getUid() ;
-            $row['sys_language_uid'] =  $location->getLanguageUid() ;
-            $row['slug'] =  $location->getSlug() ;
-            $slug = SlugUtility::getSlug("tx_jvevents_domain_model_location", "slug", $row )  ;
-            $location->setSlug( $slug ) ;
+        $row['name'] =  $media->getName() ;
+        $row['pid'] =  $media->getPid() ;
+        $row['parentpid'] =  1 ;
+        $row['uid'] =  $media->getUid() ;
+        $row['sys_language_uid'] =  $media->getLanguageUid() ;
+        $row['slug'] =  $media->getSlug() ;
+        $slug = SlugUtility::getSlug("tx_jvevents_domain_model_media", "slug", $row )  ;
+        $media->setSlug( $slug ) ;
 
 
-        return $location ;
+        return $media ;
     }
 
 }

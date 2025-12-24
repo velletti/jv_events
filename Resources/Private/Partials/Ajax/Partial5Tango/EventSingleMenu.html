@@ -3,7 +3,7 @@
 {namespace jve=JVelletti\JvEvents\ViewHelpers}
 <f:variable name="uri"><jve:link uriOnly="true" eventId="{output.event.eventId}" withProtocol="true" settings="{settings}" configuration="{useCacheHash: 0 }"></jve:link></f:variable>
 
-    <div class="d-inline-flex float-right">
+    <div class="d-inline-flex float-right border shadow bg-white rounded px-2">
 
         <!--  ################# the third nav  loaded via AJAX to #jvEventsAjaxSingleMenu  - for Organizer   ##################### //-->
         <f:if condition="{output.event.hasAccess}">
@@ -361,6 +361,77 @@
 
                 </f:if>
             </f:if>
+        </f:if>
+        <f:if condition="{output.media.hasAccess}">
+            <f:if condition="{output.feuser.isOrganizer}">
+                <f:if condition="{settings.pageIds.editMedia}">
+                    <f:if condition="{output.media.hasAccess} && {output.mode} != 'editMedia'">
+                        <f:link.action pageUid="{settings.pageIds.editMedia}" class="nav-link" title="Edit Media"  extensionName="JvEvents" action="edit" controller="Media"  pluginName="Media" arguments="{media: output.media.mediaId}">
+                            <button class="btn btn-outline-primary btn-sm rounded-circle" href="#">
+                                <i class="fas fa-book-open "></i>
+                            </button>
+                            <span class="d-none d-lg-inline-block">Edit</span>
+                        </f:link.action>
+                    </f:if>
+                </f:if>
+                <f:if condition="{settings.pageIds.addMedia}">
+                    <f:link.page pageUid="{settings.pageIds.addMedia}" noCache="true" class="nav-link  px-1" title="Add / change Event Image " additionalParams="{tx_jvmediaconnector_connector: {action: 'list', controller: 'Media', pluginName: 'Events' ,  reference: {id: output.media.mediaId, table: 'tx_jvevents_domain_model_media' , fieldname: 'teaser_image' , maxRelations: '1' , returnPid: output.returnPid , returnArray: {tx_jvevents_media: {action: 'show', media: output.media.mediaId }}}}}">
+                        <button class="btn btn-outline-primary btn-sm rounded-circle" href="#">
+                            <i class="fas fa-image"></i>
+                        </button>
+                        <span class="d-none d-md-inline-block">Bild</span>
+                    </f:link.page>
+                </f:if>
+                <span class="nav-link d-inline-block px-1" title="delete Event" >
+                    <button data-toggle="modal" data-target="#mediaDeleteModal-{output.media.mediaId}" class="btn btn-outline-primary btn-sm rounded-circle" href="#">
+                        <i class="fas fa-trash "></i>
+                    </button>
+                    <span class="d-none d-md-inline-block">delete</span>
+                </span>
+            </f:if>
+
+            <f:variable name="deleteModalBody">
+                <f:format.raw>
+                    <f:spaceless>
+                        <f:translate key="media_delete_question">
+                            This will delete this Media entry without info.
+                        </f:translate><br>
+
+                        <f:translate key="event_delete_are_you_sure">
+                            Are you sure?
+                        </f:translate><br>
+                    </f:spaceless>
+                </f:format.raw>
+            </f:variable>
+            <f:variable name="deleteModalFooter">
+                <f:format.raw>
+                    <f:spaceless>
+                        <f:link.action id="jv_events_delete_btn" pageUid="{settings.pageIds.editMedia}"   class="nav-link" title="delete Media"  extensionName="JvEvents"  action="delete" controller="Media" pluginName="Media"  arguments="{media: output.media.mediaId}">
+                            <button class="btn btn-primary btn-sm " href="#">
+                                <i class="fas fa-trash "></i> <span class="mx-1">
+                                        <f:translate key="event_delete_really_button">
+                                            Delete really!
+                                        </f:translate></span>
+                            </button>
+                        </f:link.action>
+                    </f:spaceless>
+                </f:format.raw>
+            </f:variable>
+            <f:render partial="Helper/Bootstrap4/Modal" arguments="{'modalId':  'mediaDeleteModal-{output.media.mediaId}', 'modalTitle': 'Delete Media', 'modalBody': deleteModalBody,'modalFooter': deleteModalFooter,  'settings': settings}" />
+
+        </f:if>
+        <f:if condition="{output.media.requestId} == -1">
+            <f:if condition="{output.feuser.isOrganizer}">
+                <f:if condition="{settings.pageIds.editMedia}">
+                    <f:link.action pageUid="{settings.pageIds.editMedia}" class="nav-link" title="Create Media"  extensionName="JvEvents" action="new" controller="Media"  pluginName="Media">
+                        <button class="btn btn-outline-primary btn-sm rounded-circle" href="#">
+                            <i class="fas fa-book-open "></i>
+                        </button>
+                        <span class="d-none d-lg-inline-block">Create Entry</span>
+                    </f:link.action>
+                </f:if>
+            </f:if>
+
         </f:if>
     </div>
 

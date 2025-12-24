@@ -59,6 +59,22 @@ routeEnhancers:
         type: PersistedAliasMapper
         tableName: tx_jvevents_domain_model_organizer
         routeFieldName: slug
+
+  jveventMediaPlugin:
+    type: Extbase
+    extension: JvEvents
+    plugin: Media
+
+    routes:
+      - routePath: '/media/show/{media_slug}'
+        _controller: 'Media::show'
+        _arguments:
+          media_slug: media
+    aspects:
+      media_slug:
+        type: PersistedAliasMapper
+        tableName: tx_jvevents_domain_model_media
+        routeFieldName: slug
         
   jveventAjaxPlugin:
     type: Extbase
