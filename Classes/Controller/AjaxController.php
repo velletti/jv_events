@@ -555,7 +555,7 @@ class AjaxController extends BaseController
             $media = $this->mediaRepository->findByUidAllpages( (int)$arguments['media'], FALSE, TRUE);
 
         } else {
-            if( $arguments['media'] = -1 ) {
+            if( $arguments['media'] == -1 ) {
                 $output['media']['requestId'] = $arguments['media'] ;
             }
         }
