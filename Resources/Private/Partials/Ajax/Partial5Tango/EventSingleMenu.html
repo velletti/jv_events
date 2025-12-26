@@ -382,42 +382,18 @@
                         <span class="d-none d-md-inline-block">Bild</span>
                     </f:link.page>
                 </f:if>
-                <span class="nav-link d-inline-block px-1" title="delete Event" >
-                    <button data-toggle="modal" data-target="#mediaDeleteModal-{output.media.mediaId}" class="btn btn-outline-primary btn-sm rounded-circle" href="#">
-                        <i class="fas fa-trash "></i>
-                    </button>
-                    <span class="d-none d-md-inline-block">delete</span>
-                </span>
+                   <f:link.action pageUid="{settings.pageIds.editMedia}" class="nav-link px-1" title="delete Media"  extensionName="JvEvents"  action="delete" controller="Media" pluginName="Media"  arguments="{media: output.media.mediaId}">
+                       <button class="tn btn-outline-primary btn-sm rounded-circle" href="#">
+                            <i class="fas fa-trash "></i>
+                       </button>
+                       <span class="d-none d-md-inline-block">
+                           <f:translate key="event_delete_really_button">
+                                Delete!
+                           </f:translate>
+                       </span>
+                    </f:link.action>
             </f:if>
 
-            <f:variable name="deleteModalBody">
-                <f:format.raw>
-                    <f:spaceless>
-                        <f:translate key="media_delete_question">
-                            This will delete this Media entry without info.
-                        </f:translate><br>
-
-                        <f:translate key="event_delete_are_you_sure">
-                            Are you sure?
-                        </f:translate><br>
-                    </f:spaceless>
-                </f:format.raw>
-            </f:variable>
-            <f:variable name="deleteModalFooter">
-                <f:format.raw>
-                    <f:spaceless>
-                        <f:link.action id="jv_events_delete_btn" pageUid="{settings.pageIds.editMedia}"   class="nav-link" title="delete Media"  extensionName="JvEvents"  action="delete" controller="Media" pluginName="Media"  arguments="{media: output.media.mediaId}">
-                            <button class="btn btn-primary btn-sm " href="#">
-                                <i class="fas fa-trash "></i> <span class="mx-1">
-                                        <f:translate key="event_delete_really_button">
-                                            Delete really!
-                                        </f:translate></span>
-                            </button>
-                        </f:link.action>
-                    </f:spaceless>
-                </f:format.raw>
-            </f:variable>
-            <f:render partial="Helper/Bootstrap4/Modal" arguments="{'modalId':  'mediaDeleteModal-{output.media.mediaId}', 'modalTitle': 'Delete Media', 'modalBody': deleteModalBody,'modalFooter': deleteModalFooter,  'settings': settings}" />
 
         </f:if>
         <f:if condition="{output.media.requestId} == -1">

@@ -23,7 +23,11 @@
     background: #2b80cb;
     color: white;
 }
-
+.jv-events-btn-right {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}
 #transferGeoData .form-group {
    display: none ;
 }

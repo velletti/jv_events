@@ -1,20 +1,32 @@
-
-
 {namespace jve=JVelletti\JvEvents\ViewHelpers}
 <f:layout name="Edit" />
 
 
 <div class="card col-12   jv-events-partial{settings.LayoutSingle}" id="jv-event-edit-data">
-    <div class="card-header text-white bg-primary"> <span class="fa fa-trash border-primary rounded-circle"></span>
-        <span><f:translate key="tx_jvevents_domain_model_media.Delete">Delete Entry</f:translate></span>
-    </div>
-    <div class="card-body">
-        <f:translate key="tx_jvevents_domain_model_media.DeleteReally"> Wollen sie den Eintrag wirklich löschen? </f:translate>
-          <br>
-        <h3>{media.name}</h3>
-        {media.teaserText} <br>
-        <br>
-        <f:link.action class="btn btn-danger" action="delete" arguments="{media: media.uid, delete: 1}"><f:translate key="event_delete_really_button" >Wirklich Löschen!</f:translate></f:link.action>
+    <f:if condition="{delete}">
+        <f:then>
+            <div class="card-header text-white bg-primary"> <span class="fa fa-trash border-primary rounded-circle"></span>
+                <span><f:translate key="tx_jvevents_domain_model_media.Deleted">Entry Deleted</f:translate></span>
+            </div>
+            <div class="card-body">
+                <f:link.page class="btn btn-outline-primary" pageUid="{settings.pageIds.organizerAssist}">Continue</f:link.page>
+            </div>
+        </f:then>
+        <f:else>
+            <div class="card-header text-white bg-primary"> <span class="fa fa-trash border-primary rounded-circle"></span>
+                <span><f:translate key="tx_jvevents_domain_model_media.Delete">Delete Entry</f:translate></span>
+            </div>
+            <div class="card-body">
+                <f:translate key="tx_jvevents_domain_model_media.DeleteReally"> Wollen sie den Eintrag wirklich löschen? </f:translate>
+                <br>
+                <h3>{media.name}</h3>
+                {media.teaserText} <br>
+                <br>
+                <f:link.action class="btn btn-danger" action="delete" arguments="{media: media.uid, delete: 1}"><f:translate key="event_delete_really_button" >Wirklich Löschen!</f:translate></f:link.action>
 
-    </div>
+            </div>
+        </f:else>
+    </f:if>
+
+
 </div>

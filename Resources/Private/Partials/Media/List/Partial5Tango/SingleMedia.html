@@ -46,7 +46,7 @@
                 </div>
 
                 <div class="col-12 col-md-3 text-black-50 bg-gradient-light py-3">
-                    <div class="mb-3">
+                    <div class="pb-3">
                         <span class="fa fa-info-circle mh-sm"></span>
                         <f:format.date format="M/Y">{media.releaseDate}</f:format.date>
                         - <b>{media.organizer.name}</b>
@@ -58,13 +58,20 @@
                             </f:then>
                         </f:if>
                     </div>
+                    <div>
+                        &nbsp;
+                    </div>
 
                     <f:if condition="{settings.detailPid}">
                         <f:then>
-                            <div class="position-absolute position-bottom position-right mr-0">
-                                <f:link.action class="btn btn-sm btn-outline-secondary" pageUid="{settings.detailPid}" action="show" controller="Media" arguments="{media : media.uid}">
-                                    <span class="fa fa-caret-down mh-sm"></span> <f:translate key="tx_jvevents_domain_model_media.showdetails" default="Details anzeigen"/>
-                                </f:link.action>
+
+                            <div class="position-absolute position-bottom position-right mr-0 w-100">
+                                <div class="jv-events-btn-right">
+                                    <f:link.action class="btn btn-sm btn-outline-secondary  w-100 text-right"  style="display: flex; justify-content: flex-end; align-items: center" pageUid="{settings.detailPid}" action="show" controller="Media" arguments="{media : media.uid}">
+                                        <f:translate key="tx_jvevents_domain_model_media.showdetails" default="Details anzeigen"/> <span class="fa fa-chevron-right mh-sm my-2"></span>
+                                    </f:link.action>
+                                </div>
+
                             </div>
                         </f:then>
                         <f:else>

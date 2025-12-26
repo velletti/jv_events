@@ -28,17 +28,17 @@
 </f:if>
 
 <f:render partial="SingleField/Partial{layout}/FormRowDefault"
-		  arguments="{object: 'media', property:'name' , label: '' , translationKey: 'tx_jvevents_domain_model_media.name' , maxLength: 60 , mandatory: '1' }" />
+		  arguments="{object: 'media', property:'name' , label: '' , translationKey: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_media.name' , maxLength: 60 , mandatory: '1' }" />
 
 
 <f:render partial="SingleField/Partial{layout}/FormRowTextfield"
-		  arguments="{object: 'media', property:'teaserText' , label: '' , translationKey: 'tx_jvevents_domain_model_media.teaser_text' ,  maxLength: 255, rows: 3, mandatory: '0' }" />
+		  arguments="{object: 'media', property:'teaserText' , label: '' , translationKey: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_media.teaser_text' ,  maxLength: 255, rows: 3, mandatory: '0' }" />
 
 <f:render partial="SingleField/Partial{layout}/FormRowDate"
-		  arguments="{object: 'media', property:'releaseDate' , value: media.releaseDate , label: '' , translationKey: 'tx_jvevents_domain_model_event.release_date' ,  mandatory: '1' }" />
+		  arguments="{object: 'media', property:'releaseDate' , value: media.releaseDate , label: '' , translationKey: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_media.release_date' ,  mandatory: '1' }" />
 
 <f:render partial="SingleField/Partial{layout}/FormRowDefault"
-		  arguments="{object: 'media', property:'link' , label: '' , translationKey: 'tx_jvevents_domain_model_media.order_link' ,  maxLength: 80 , mandatory: '' }" />
+		  arguments="{object: 'media', property:'link' , label: '' , translationKey: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_media.order_link' ,  maxLength: 80 , mandatory: '' }" />
 
 
 <f:if condition="{categories}">
@@ -48,6 +48,6 @@
 </f:if>
 
 <f:render partial="SingleField/Partial{layout}/FormRowRte"
-		  arguments="{object: 'media', property:'description' , label: '' , translationKey: 'tx_jvevents_domain_model_media.description' , mandatory: false }" />
+		  arguments="{object: 'media', property:'description' , label: '' , translationKey: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_media.description' , mandatory: false }" />
 
 

@@ -5,6 +5,21 @@
             <generator>LFEditor</generator>
         </header>
         <body>
+            <trans-unit id="tx_jvevents_domain_model_media.name" approved="yes">
+                <source>Title</source>
+            </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_media.teaser_text" approved="yes">
+                <source>Teaser</source>
+            </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_media.release_date" approved="yes">
+                <source>Release Date</source>
+            </trans-unit>
+             <trans-unit id="tx_jvevents_domain_model_media.order_link" approved="yes">
+                <source>Order now link</source>
+            </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_media.description" approved="yes">
+                <source>Media description</source>
+            </trans-unit>
             <trans-unit id="tx_jvevents_domain_model_category" approved="yes">
                 <source>Category</source>
             </trans-unit>

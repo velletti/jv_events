@@ -265,6 +265,23 @@ class MediaController extends BaseController
      */
     public function deleteAction(Media $media): ResponseInterface
     {
+        $delete = false ;
+        if( $this->request->hasArgument('delete')) {
+            $delete = $this->request->getArgument('delete');
+
+            if ( $delete ) {
+
+                if ( $this->hasUserAccess($media->getOrganizer() )) {
+                    $this->getFlashMessageQueue()->getAllMessagesAndFlush();
+                    $this->mediaRepository->remove($media);
+                    $this->addFlashMessage('This Media entry was deleted and will disappear in th next 24h', '', ContextualFeedbackSeverity::OK);
+                } else {
+                    $this->addFlashMessage('You do not have access rights to change this data.' . $location->getUid() , '', ContextualFeedbackSeverity::WARNING);
+                }
+            }
+        }
+
+        $this->view->assign('delete', $delete);
         $this->view->assign('media', $media);
         $this->view->assign('settings', $this->settings );
         return $this->htmlResponse() ;
