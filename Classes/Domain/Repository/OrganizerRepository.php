@@ -152,6 +152,7 @@ class OrganizerRepository extends BaseRepository
                     case "latest_event":
                         $constraints[] = $query->greaterThanOrEqual($field ,  $value ) ;
                         break;
+
                     default:
                         if( is_array( $value ) ) {
                             $constraints[] = $query->in($field ,  $value ) ;
@@ -164,7 +165,6 @@ class OrganizerRepository extends BaseRepository
             }
         }
         // and the normal visibility contrains , including date Time
-
 
         if( $limit) {
             $query->setLimit(intval($limit));

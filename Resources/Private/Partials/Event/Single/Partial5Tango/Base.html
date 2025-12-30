@@ -110,12 +110,26 @@
 						<div class="row">
 							<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_location.name" />:</strong></div>
 							<div class="col-md-8">{event.location.name}</div>
+
 						</div>
 					</f:if>
 
 					<f:if condition="{event.location.city}">
 						<div class="row">
-							<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_location.street_and_nr" />:</strong></div>
+							<div class="col-md-4"><strong><f:translate key="tx_jvevents_domain_model_location.street_and_nr" />:</strong>
+
+								<f:if condition="{event.location.streetAndNr} && {event.location.city}">
+									<br>
+									<f:variable name="popupText">{f:translate(key:'tx_jvevents_domain_model_event.redirectMap')} \n\n(google maps)</f:variable>
+									<a class="badge badge-secondary px-2 py-1" href="https://www.google.com/maps/dir/?api=1&destination={event.location.name},+{event.location.streetAndNr},+{event.location.zip}+{event.location.city}"
+									   onclick="return confirm('{popupText}');"
+									   title="{f:translate(key:'tx_jvevents_domain_model_event.anfahrt')} (google maps)"
+									   target="_blank"
+									   rel="noopener noreferrer">
+											<i class="fa fa-car mr-2"> </i><strong>{f:translate(key:'tx_jvevents_domain_model_event.anfahrt')}</strong>
+									</a>
+								</f:if>
+							</div>
 							<div class="col-md-8">
 								<f:if condition="{event.location.streetAndNr}">
 									{event.location.streetAndNr}<br>
@@ -283,6 +297,17 @@
 
 	</ul>
 	<span class="position-right">
+		<f:if condition="{event.location.streetAndNr} && {event.location.city}">
+			<f:variable name="popupText">{f:translate(key:'tx_jvevents_domain_model_event.redirectMap')} \n\n(google maps)</f:variable>
+			<a class="btn btn-small btn-outline-primary mr-1" href="https://www.google.com/maps/dir/?api=1&destination={event.location.name},+{event.location.streetAndNr},+{event.location.zip}+{event.location.city}"
+			   onclick="return confirm('{popupText}');"
+			   title="{f:translate(key:'tx_jvevents_domain_model_event.anfahrt')} (google maps)"
+			   target="_blank"
+			   rel="noopener noreferrer">
+					<i class="fa fa-car"> </i><strong>
+			</a>
+		</f:if>
+
 		<f:link.page class="btn btn-small btn-outline-primary mr-1" additionalParams="{tx_jvevents_ajax: {action: 'downloadical', uid: event.uid}}">
 			<i class="fa fa-calendar-alt "></i>
 		</f:link.page>

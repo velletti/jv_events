@@ -168,6 +168,7 @@ class OrganizerController extends BaseController
                     $filter["tags.uid"]  = GeneralUtility::trimExplode( "," , $this->settings['filterorganizer']['tags'] , true )   ;
                 }
             }
+
             if ( array_key_exists( "hideInactives", $this->settings['filterorganizer']) )  {
                if(  $this->settings['filterorganizer']['hideInactives'] ) {
                    $filter['latest_event'] = time() ;
@@ -195,6 +196,30 @@ class OrganizerController extends BaseController
         $this->debugArray[] = "Before Generate Array:" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " Line: " . __LINE__ ;
 
 
+        if ( isset(  $this->settings['filterorganizer']["butNotTags"]))  {
+            if( (is_countable(GeneralUtility::trimExplode( "," , $this->settings['filterorganizer']['butNotTags'] , true)) ? count(GeneralUtility::trimExplode( "," , $this->settings['filterorganizer']['tags'] , true)  ) : 0) > 0 ) {
+                $butNotTags  = GeneralUtility::trimExplode( "," , $this->settings['filterorganizer']['butNotTags'] , true )   ;
+                $wantedOrganizers = [] ;
+
+                $orgs = $organizers->toArray() ;
+                foreach( $orgs as $organizer  ) {
+                    /** @var Organizer $organizer */
+                    $hasButNotTag = false ;
+                    $tags = $organizer->getTags() ;
+
+                    /** @var Tag $tag */
+                    foreach ( $tags  as $tag ) {
+                        if( in_array( $tag->getUid() , $butNotTags ) ) {
+                            $hasButNotTag = true ;
+                        }
+                    }
+                    if( ! $hasButNotTag ) {
+                        $wantedOrganizers[] = $organizer ;
+                    }
+                }
+                $organizers = $wantedOrganizers ;
+            }
+        }
         /*  slow version ...
             $orgs = $organizers->toArray() ;
             $this->debugArray[] = "Before Generate Filter:" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " Line: " . __LINE__ ;

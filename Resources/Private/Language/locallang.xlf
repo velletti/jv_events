@@ -416,6 +416,12 @@
            <trans-unit id="tx_jvevents_domain_model_event.details.canceled" approved="yes">
                 <source>Canceled!</source>
             </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_event.redirectMap" approved="yes">
+                <source>You are now redirected to an external map. Do you want to continue?</source>
+            </trans-unit>
+            <trans-unit id="tx_jvevents_domain_model_event.anfahrt" approved="yes">
+                <source>Route</source>
+            </trans-unit>
            <trans-unit id="event_copy_eventseries" approved="yes">
                 <source>Event series (regularly)!</source>
             </trans-unit>

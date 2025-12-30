@@ -177,6 +177,15 @@
 			<source>Starts Today or in the Future</source>
 			<target>Startet heute oder in der Zukunft</target>
 		</trans-unit>
+		<trans-unit id="plugin.filterorganizer.Tags" approved="yes">
+            <source>Show Only Organizer with these Tags</source>
+            <target>Nur Veranstalter mit diesen Schlagworten</target>
+        </trans-unit>
+        <trans-unit id="plugin.filterorganizer.butNotTags" approved="yes">
+            <source>But not Organizer with these Tags</source>
+            <target>Aber nicht mit diesen Schlagworten</target>
+        </trans-unit>
+
 		<trans-unit id="plugin.filter.startDate.Tomorrow" approved="yes">
 			<source>Starts Tomorrow or in the Future</source>
 			<target>Startet Morgen oder in der Zukunft</target>

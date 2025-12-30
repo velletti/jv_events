@@ -538,6 +538,14 @@
         <source>Map</source>
         <target>Karte</target>
       </trans-unit>
+       <trans-unit id="tx_jvevents_domain_model_event.redirectMap" approved="yes">
+          <source>You are now redirected to an external map. Do you want to continue?</source>
+          <target>Es wird nun auf eine externe Seite geladen. Weitermachen?</target>
+      </trans-unit>
+      <trans-unit id="tx_jvevents_domain_model_event.anfahrt" approved="yes">
+          <source>Route</source>
+          <target>Anfahrt</target>
+      </trans-unit>
       <trans-unit id="tx_jvevents_domain_model_event.filter.streetCityCountry" resname="tx_jvevents_domain_model_event.filter.streetCityCountry">
         <source>Street,City,DE</source>
         <target>Straße,Stadt,DE</target>
