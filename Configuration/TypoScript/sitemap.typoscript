@@ -1,0 +1,42 @@
+plugin.tx_seo {
+    config {
+        # Here you can override the xslFile for all sitemaps
+        # xslFile = EXT:seo/Resources/Public/CSS/Sitemap.xsl
+        xmlSitemap {
+            sitemaps {
+                events {
+                    provider = TYPO3\CMS\Seo\XmlSitemap\RecordsXmlSitemapDataProvider
+                    config {
+                        table = tx_jvevents_domain_model_event
+
+                        pidField = pid
+                        lastModifiedField = tstamp
+                        changeFrequency = daily
+                        priority = 0.8
+                        sortField = start_date
+                        url {
+                            # events Detail page. just adjust it to your needs with this line:
+                            # plugin.tx_seo.config.xmlSitemap.sitemaps.events.url.pageId = xxx
+                            # or adjust the default detailPid in your jv_events constants    
+                            pageId = {$plugin.tx_jvevents.settings.detailPidDefault}
+
+                            fieldToParameterMap {
+                                uid = tx_jvevents_event[event]
+                            }
+
+                            additionalGetParameters {
+                                tx_jvevents_event {
+                                    controller = Event
+                                    action = show
+                                }
+                            }
+                        }
+
+                        additionalWhere = hidden = 0 AND start_date > UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 1 DAY))
+                    }
+
+                }
+            }
+        }
+    }
+}
