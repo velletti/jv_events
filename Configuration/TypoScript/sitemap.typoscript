@@ -18,7 +18,7 @@ plugin.tx_seo {
                             # events Detail page. just adjust it to your needs with this line:
                             # plugin.tx_seo.config.xmlSitemap.sitemaps.events.url.pageId = xxx
                             # or adjust the default detailPid in your jv_events constants    
-                            pageId = {$plugin.tx_jvevents.settings.detailPidDefault}
+                            pageId = {$plugin.tx_jvevents_events.settings.detailPidDefault}
 
                             fieldToParameterMap {
                                 uid = tx_jvevents_event[event]
