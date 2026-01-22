@@ -177,7 +177,7 @@ function jv_events_refreshList(){
 		}
 		if( fTag && fTag.val() > 0 ) {
 			var fTags = jQuery(this).data("taguids") ;
-			if( fTags ) {
+			if( fTags && fTags.length > 0 ) {
 				fTags = fTags.split(",") ;
 				if( fTags.indexOf( fTag.val() ) < 0 ) {
 					jQuery(this).addClass('d-none') ;
@@ -197,7 +197,7 @@ function jv_events_refreshList(){
 
 		if( fCat && fCat.val() > 0 ) {
 			var fCats = jQuery(this).data("catuids") ;
-			if( fCats ) {
+			if( fCats && fCats.length > 0 ) {
 				fCats = fCats.split(",") ;
 				if( fCats.indexOf( fCat.val() ) < 0 ) {
 					jQuery(this).addClass('d-none') ;
