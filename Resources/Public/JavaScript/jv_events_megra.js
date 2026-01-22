@@ -116,7 +116,7 @@ function jv_events_initOneFilter(filterName) {
             jv_events_refreshList() ;
         });
         var filterVal = jv_events_GetURLParameter('tx_jvevents_events[eventsFilter][' + filterName + ']') ;
-        if ( filterVal ) {
+        if ( filterVal && filterVal.length > 0 ) {
             var filterSplit =  filterVal.split(",") ;
             if(filterSplit.length > 1 ) {
                 jQuery('#jv_events_filter_' + filterName + ' input[type=checkbox]').each(function(i) {

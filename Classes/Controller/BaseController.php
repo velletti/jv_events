@@ -419,7 +419,7 @@ class BaseController extends ActionController
 
                     if(! in_array( urlencode( $obj->getCity() ) , $citys )) {
                         // no online Events in CITY Filter
-                        if( intval( $obj->getLat())  != 0 || intval($obj->getLng() != 0 )) {
+                        if( intval( $obj->getLat())  != 0 || intval($obj->getLng() != 0 ) || $this->settings['filter']['ignoreLngLatZero']  ) {
                             $citys[urlencode( $obj->getCity() )] = ucfirst($obj->getCity()) ;
                         }
                     }
