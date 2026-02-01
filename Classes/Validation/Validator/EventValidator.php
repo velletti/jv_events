@@ -13,7 +13,7 @@ class EventValidator extends BaseValidator {
 		'introtextRegistrant'			=> 1000,
 		'introtextRegistrantConfirmed'			=> 1000,
 		'youtubeLink'			=> 120,
-		'registrationUrl'		=> 120,
+		'registrationUrl'		=> 300,
 	);
 
     /**

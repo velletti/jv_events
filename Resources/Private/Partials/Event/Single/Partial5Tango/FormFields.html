@@ -130,7 +130,7 @@
 </f:security.ifHasRole>
 
 <f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowDefault"
-		  arguments="{object: 'event', property:'registrationUrl' , errorProperty: 'registrationUrl' , label: '' , translationKey: 'tx_jvevents_domain_model_event.registration_url' ,  maxLength: 120 , mandatory: false }" />
+		  arguments="{object: 'event', property:'registrationUrl' , errorProperty: 'registrationUrl' , label: '' , translationKey: 'tx_jvevents_domain_model_event.registration_url' ,  maxLength: 300 , mandatory: false }" />
 
 <f:security.ifHasRole role="youTubeLinkAllowed">
 	<f:render partial="SingleField/Partial{settings.LayoutSingle}/FormRowDefault"
