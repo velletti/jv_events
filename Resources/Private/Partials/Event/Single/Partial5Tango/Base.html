@@ -256,12 +256,15 @@
 		<!-- =========================================================================================================================== -->
 	</f:comment>
 
-	<ul class="nav nav-tabs py-2 " role="tablist">
+	<ul class="nav nav-tabs py-0 " role="tablist">
 		<f:if condition="{event.description} || {event.teaser}">
 			<f:variable name="tabDescActive">active</f:variable>
 
-			<li class="nav-item" role="presentation">
-				<a class="active mx-3" href="#jv_events_details" data-toggle="tab"><f:translate key="tx_jvevents_domain_model_event.details.tab.details" /></a>
+			<li class="nav-item pt-0" role="presentation">
+				<a class="active mr-2 btn btn-small btn-outline-primary mr-1" href="#jv_events_details" data-toggle="tab">
+					<span class="fa fa-info-circle"></span>
+					<span class="pl-1 d-none d-sm-inline-block"><f:translate key="tx_jvevents_domain_model_event.details.tab.details" /></span>
+				</a>
 			</li>
 		</f:if>
 		<f:if condition="{event.canceled}">
@@ -274,8 +277,8 @@
 									<f:variable name="tabMapActive">active</f:variable>
 								</f:else>
 							</f:if>
-							<li class="nav-item">
-								<a class="{tabMapActive} mx-3" role="presentation" href="#jv_events_map" data-toggle="tab"><f:translate key="tx_jvevents_domain_model_event.details.tab.map" /></a>
+							<li class="nav-item pt-2">
+								<a class="{tabMapActive} mx-2" role="presentation" href="#jv_events_map" data-toggle="tab"><f:translate key="tx_jvevents_domain_model_event.details.tab.map" /></a>
 							</li>
 						</f:else>
 					</f:if>
@@ -289,8 +292,8 @@
 				</f:else>
 			</f:if>
 
-			<li class="nav-item " role="presentation">
-				<a class="{tabContactActive} mx-3" href="#jv_events_contact" data-toggle="tab"><f:translate key="tx_jvevents_domain_model_event.details.tab.contact" /></a>
+			<li class="nav-item  pt-2" role="presentation">
+				<a class="{tabContactActive} mx-2" href="#jv_events_contact" data-toggle="tab"><f:translate key="tx_jvevents_domain_model_event.details.tab.contact" /></a>
 			</li>
 		</f:if>
 
@@ -672,11 +675,9 @@
 			<div class="row">
 				<div class="col-9 col-sm-6  px-4 py-2">
 					<h3>Share</h3>
-					Über die Buttons kann man den Link zu dieser Veranstaltung mit anderen teilen. <br>
-					Einen FaceBook Button baue ich jedoch nicht ein. Sind mir zu viel Nebenwirkungen für den Datenschutz.<br>
+					Über die Buttons kann man den Link zu diesem Termin mit anderen teilen. <br>
 					In der mobilen Ansicht sind noch WhatsApp, Threema und Telegram Buttons vorhanden.<br>
-					Diese Buttons funktionieren bei mir aber nur, wenn ich <b>vorher</b> die App entsperrt habe.
-
+					Diese Buttons funktionieren nur, wenn man <b>vorher</b> die App entsperrt hat.
 					<br>
 					<br>Short-URL:<br>
 					<a href="{settings.servername}/index.php?tid={event.uid}">{settings.servername}/index.php?tid={event.uid}</a>
