@@ -58,6 +58,8 @@ plugin.tx_jvevents_events {
 				organizerDefault = 2
 				vip = 3
 				BannerRequest = 5
+				BannerAllowed = 18
+				BannerForbidden = 19
 				imageUploadAllowed = 7
 				registrationInternalAllowed = 6
 				youTubeLinkAllowed = 15

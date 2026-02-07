@@ -243,68 +243,11 @@
 
                                                 <f:security.ifHasRole role="adminOrganizer">
                                                     <f:then>
-                                                        <f:link.page pageUid="{settings.pageIds.bannerModul}" noCache="true" class="btn btn-outline-primary x-1 mb-1 w-100 text-left" title="Add Banner for Event Normmal ( 8 days before event)"
-                                                                     additionalParams="{tx_jvbanners_connector: {action: 'create', controller: 'Connector' , pluginName: 'Events',  event: '{output.event.eventId}' , returnPid: '{output.returnPid}'}}">
-                                                            <button class="btn btn-outline-primary btn-sm rounded-circle mx-2" href="#">
-                                                                <i class="fas fa-star"></i>
-                                                            </button>
-                                                            <span class="">Banner Normal (8 days before event)</span>
-                                                        </f:link.page>
-                                                        <form action="{f:uri.page(pageUid: settings.pageIds.bannerModul, additionalParams: {tx_jvbanners_connector: {action: 'create', controller: 'Connector', pluginName: 'Events', event: output.event.eventId, returnPid: output.returnPid}})}" method="get" class="form-inline">
+                                                        <f:render section="bannerButtons" arguments="{_all}"></f:render>
 
-
-                                                            <f:link.page pageUid="{settings.pageIds.bannerModul}" noCache="true" class="btn btn-sm btn-outline-primary x-1 " title="Add Banner for Event NOW"
-                                                                         additionalParams="{tx_jvbanners_connector: {action: 'create', controller: 'Connector' , pluginName: 'Events',startindays: '1',  event: '{output.event.eventId}' , returnPid: '{output.returnPid}'}}">
-                                                                <span class="">NOW</span>
-                                                            </f:link.page>
-                                                            <span class="m-2">in</span>
-                                                            <f:for each="{0:7, 1:14, 2:21 , 3:28, 4:35}" as="days">
-                                                                <f:link.page pageUid="{settings.pageIds.bannerModul}" noCache="true" class="btn btn-sm btn-outline-primary mx-1 " title="Add Banner for Event in {days} days"
-                                                                             additionalParams="{tx_jvbanners_connector: {action: 'create', controller: 'Connector' , pluginName: 'Events',startindays: '{days}',  event: '{output.event.eventId}' , returnPid: '{output.returnPid}'}}">
-                                                                    <span class=""> {days}d </span>
-                                                                </f:link.page>
-                                                            </f:for>
-
-                                                            <input type="hidden" name="no_cache" value="1">
-                                                            <input type="hidden" name="tx_jvbanners_connector[action]" value="create">
-                                                            <input type="hidden" name="tx_jvbanners_connector[controller]" value="Connector">
-                                                            <input type="hidden" name="tx_jvbanners_connector[pluginName]" value="Events">
-                                                            <input type="hidden" name="tx_jvbanners_connector[event]" value="{output.event.eventId}">
-                                                            <input type="hidden" name="tx_jvbanners_connector[returnPid]" value="{output.returnPid}">
-                                                             <span class="px-1">or</span>
-                                                            <input type="number" class="form-control" id="startindays" value="2" name="tx_jvbanners_connector[startindays]"
-                                                                       placeholder="Days" style="width: 50px;padding:0.2rem">
-                                                            <button type="submit" class="btn btn-outline-primary btn-sm">Days</button>
-                                                        </form>
-
-
-
-                                                        <f:if condition="{output.event.banner}">
-                                                            <hr>
-                                                            <f:if condition="{output.event.banner.active}">
-                                                                <f:then>
-                                                                    <span class="float-right">
-                                                                        <f:link.page pageUid="{settings.pageIds.bannerModul}" noCache="true" class="btn btn-outline-primary x-1 mb-1 text-left" title="Stop Banner"
-                                                                                     additionalParams="{tx_jvbanners_connector: {action: 'create', controller: 'Connector' , pluginName: 'Events',  event: '{output.event.eventId}', startindays: '-1', returnPid: '{output.returnPid}'}}">
-                                                                            <button class="btn btn-outline-primary btn-sm rounded-circle mx-2" href="#">
-                                                                                <i class="fas fa-trash"></i>
-                                                                            </button>
-                                                                            <span class="d-xs-none">Stop</span>
-                                                                        </f:link.page>
-                                                                    </span>
-                                                                </f:then>
-                                                            </f:if>
-                                                            Banner from <f:format.date format="d.M H:i">{output.event.banner.starttime}</f:format.date> - <f:format.date format="d.M H:i">{output.event.banner.endtime}</f:format.date><br>
-
-
-                                                            Viewed: {output.event.banner.impressions} | Clicks: {output.event.banner.clicks}<br/>
-
-
-
-
-                                                        </f:if>
                                                         <f:if condition="{output.event.banners}">
                                                             <f:render section="banners" arguments="{banners: output.event.banners, currentEvent: output.event}" />
+
                                                         </f:if>
                                                     </f:then>
                                                     <f:else>
@@ -313,12 +256,15 @@
                                                                 <hr>
                                                                 Banner from <f:format.date format="d.M H:i">{output.event.banner.starttime}</f:format.date> - <f:format.date format="d.M H:i">{output.event.banner.endtime}</f:format.date><br>
                                                                 Viewed: {output.event.banner.impressions} | Clicks: {output.event.banner.clicks}<br/>
+
+                                                                <f:render section="bannerStop" arguments="{_all}"></f:render>
                                                             </f:then>
                                                             <f:else>
                                                                 <f:if condition="{output.organizer.banners.canCreateBanner}">
                                                                     <f:then>
-                                                                        <div class="alert alert-info">
-                                                                            Test Banner Success.
+                                                                        <div class="banner-allowed pt-2">
+                                                                            <h3>Create Banner, Select Start </h3>
+                                                                            <f:render section="bannerButtons" arguments="{_all}"></f:render>
                                                                         </div>
                                                                     </f:then>
                                                                     <f:else>
@@ -327,13 +273,14 @@
                                                                             All Events: {output.event.banners.count} banners total.<br>
 
                                                                         </div>
+                                                                        <f:security.ifHasRole role="BannerAllowed">
+                                                                            <hr>Request a Startpage Banner:<hr>
+                                                                            <f:render partial="Helper/Bootstrap4/Share"  arguments="{object: 'event', reason: 'Please activate Banner!', event: output.event, emailTo: 'info@tangomuenchen.de', uri: uri, uids: 'User: {output.feuser.uid} - {output.feuser.username} | Event: {output.event.eventId} | LocationId: {output.location.locationId}', settings: settings}"></f:render>
+                                                                        </f:security.ifHasRole>
                                                                     </f:else>
                                                                 </f:if>
 
-                                                                <f:security.ifHasRole role="BannerAllowed">
-                                                                    <hr>Request a Startpage Banner:<hr>
-                                                                    <f:render partial="Helper/Bootstrap4/Share"  arguments="{object: 'event', reason: 'Please activate Banner!', event: output.event, emailTo: 'info@tangomuenchen.de', uri: uri, uids: 'User: {output.feuser.uid} - {output.feuser.username} | Event: {output.event.eventId} | LocationId: {output.location.locationId}', settings: settings}"></f:render>
-                                                                </f:security.ifHasRole>
+
                                                             </f:else>
                                                         </f:if>
 
@@ -474,5 +421,73 @@
     <div class="border-left h-100" style="position: absolute; display:inline-block; width:1px; left:66%"><f:if condition="{start}"><f:format.date format="d.M">{start}</f:format.date><f:variable name="start"><f:cObject typoscriptObjectPath="lib.math">{start} + (7 * 3600 * 24)</f:cObject></f:variable></f:if></div>
     <div class="border-left h-100" style="position: absolute; display:inline-block; width:1px; left:83%"><f:if condition="{start}"><f:format.date format="d.M">{start}</f:format.date><f:variable name="start"><f:cObject typoscriptObjectPath="lib.math">{start} + (7 * 3600 * 24)</f:cObject></f:variable></f:if></div>
 </f:section>
+
+<f:section name="bannerButtons">
+    <f:link.page pageUid="{settings.pageIds.bannerModul}" noCache="true" class="btn btn-outline-primary px-2 mb-2 text-left" title="Add Banner for Event Normmal ( 8 days before event)"
+                 additionalParams="{tx_jvbanners_connector: {action: 'create', controller: 'Connector' , pluginName: 'Events',  event: '{output.event.eventId}' , returnPid: '{output.returnPid}'}}">
+
+         <i class="fas fa-star"></i>
+
+        <span class="ml-2">Banner Normal (8 days before event)</span>
+    </f:link.page>
+    <span class="position-right">
+        <f:link.page pageUid="{settings.pageIds.bannerModul}" noCache="true" class="btn btn-primary px-2 mr-3 " title="Add Banner for Event NOW"
+                     additionalParams="{tx_jvbanners_connector: {action: 'create', controller: 'Connector' , pluginName: 'Events',startindays: '1',  event: '{output.event.eventId}' , returnPid: '{output.returnPid}'}}">
+         <i class="fa fa-calendar-alt"></i><span> NOW</span>
+    </f:link.page>
+    </span>
+
+
+
+    <form action="{f:uri.page(pageUid: settings.pageIds.bannerModul, additionalParams: {tx_jvbanners_connector: {action: 'create', controller: 'Connector', pluginName: 'Events', event: output.event.eventId, returnPid: output.returnPid}})}" method="get" class="form-inline">
+        <br><span class="mr-2">Or start in:</span><br>
+        <f:for each="{0:7, 1:14, 2:21 , 3:28, 4:35 , 5:42}" as="days" iteration="weeks">
+            <f:link.page pageUid="{settings.pageIds.bannerModul}" noCache="true" class="btn btn-sm btn-outline-primary mx-1 " title="Add Banner for Event in {days} days"
+                         additionalParams="{tx_jvbanners_connector: {action: 'create', controller: 'Connector' , pluginName: 'Events',startindays: '{days}',  event: '{output.event.eventId}' , returnPid: '{output.returnPid}'}}">
+                <span class=""> {weeks.cycle}</span>
+            </f:link.page>
+        </f:for> <span class="ml-2">Weeks</span>
+
+        <input type="hidden" name="no_cache" value="1">
+        <input type="hidden" name="tx_jvbanners_connector[action]" value="create">
+        <input type="hidden" name="tx_jvbanners_connector[controller]" value="Connector">
+        <input type="hidden" name="tx_jvbanners_connector[pluginName]" value="Events">
+        <input type="hidden" name="tx_jvbanners_connector[event]" value="{output.event.eventId}">
+        <input type="hidden" name="tx_jvbanners_connector[returnPid]" value="{output.returnPid}">
+        <div class="py-2">
+            <span class="px-1">or in: </span>
+            <input type="number" class="form-control" id="startindays" value="2" name="tx_jvbanners_connector[startindays]"
+                   placeholder="Days" style="width: 90px;padding:0.2rem">
+            <button type="submit" class="btn btn-outline-primary btn-sm">Days</button>
+        </div>
+
+    </form>
+
+
+    <f:if condition="{output.event.banner}">
+        <hr>
+        <f:render section="bannerStop" arguments="{_all}"></f:render>
+
+        Banner from <f:format.date format="d.M H:i">{output.event.banner.starttime}</f:format.date> - <f:format.date format="d.M H:i">{output.event.banner.endtime}</f:format.date><br>
+        Viewed: {output.event.banner.impressions} | Clicks: {output.event.banner.clicks}<br/>
+    </f:if>
+</f:section>
+
+<f:section name="bannerStop">
+    <f:if condition="{output.event.banner.active}">
+        <f:then>
+                <span class="float-right">
+                    <f:link.page pageUid="{settings.pageIds.bannerModul}" noCache="true" class="btn btn-outline-primary x-1 mb-1 text-left" title="Stop Banner"
+                                 additionalParams="{tx_jvbanners_connector: {action: 'create', controller: 'Connector' , pluginName: 'Events',  event: '{output.event.eventId}', startindays: '-1', returnPid: '{output.returnPid}'}}">
+                        <button class="btn btn-outline-primary btn-sm rounded-circle mx-2" href="#">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        <span class="d-xs-none">Stop</span>
+                    </f:link.page>
+                </span>
+        </f:then>
+    </f:if>
+</f:section>
+
 
 
