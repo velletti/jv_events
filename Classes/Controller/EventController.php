@@ -293,6 +293,14 @@ class EventController extends BaseController
             $this->addFlashMessage($this->translate("error.general.entry_not_found"), "Sorry!" , ContextualFeedbackSeverity::WARNING) ;
 
         }
+        if( $this->request->hasArgument('showBannerDate')) {
+            if( $this->request->getArgument('showBannerDate') <0 ) {
+                $this->addFlashMessage( "Banner Stopped ", "" , ContextualFeedbackSeverity::INFO) ;
+            } else {
+                $startTime = time() + ((int)$this->request->getArgument('showBannerDate') * 24 * 3600 ) ;
+                $this->addFlashMessage( "Banner Startdate: " . date("d.m.Y" , $startTime  ) , "" , ContextualFeedbackSeverity::OK) ;
+            }
+        }
         $this->view->assign('settings', $this->settings);
 		$this->view->assign('event', $event);
         return $this->htmlResponse();
@@ -805,7 +813,11 @@ class EventController extends BaseController
     #[Validate(['param' => 'event', 'validator' => EventValidator::class])]
     public function updateAction(Event $event)
     {
-
+        $pid = $this->settings['pageIds']['showEventDetail'] ;
+        // if PID from TS settings is set: if User is not logged in-> Page with loginForm , on success -> showEventDetail  Page
+        if ($pid < 1) {
+            $pid = MigrationUtility::getPageId($this);
+        }
         $filter = [];
         if( $this->request->hasArgument('event')) {
             $event = $this->cleanEventArguments( $event) ;
@@ -855,15 +867,23 @@ class EventController extends BaseController
                             $assetData = AssetUtility::loadSysFileReference($event->getOrganizer()->getUid() , "tx_jvevents_domain_model_organizer" , "teaser_image") ;
                         }
                         if( is_array($assetData )) {
+
                             $assetDataLink = AssetUtility::loadSysFileReference( $row['uid'] , "tx_sfbanners_domain_model_banner" , "assets") ;
 
                             if( $assetDataLink ) {
-                                AssetUtility::updateUidLocal($assetDataLink['uid'] , ['uid_local' => $assetData['uid_local'] ] ) ;
+
+                                $link = $this->uriBuilder->reset()
+                                    ->setTargetPageUid($pid )
+                                    ->uriFor(
+                                        'show',
+                                        array("event" => $event->getUid() ),
+                                        'Event',
+                                        'JvEvents') ;
+
+                                AssetUtility::updateUidLocal($assetDataLink['uid'] , ['uid_local' => $assetData['uid_local'] , "link" => $link , "title" => $event->getName() ] ) ;
                             }
 
                         }
-
-
                         $this->addFlashMessage('The Banner ' .  $row['uid'] . ' will be updated soon. (<4 h). Changed Images may take more time.', '', ContextualFeedbackSeverity::OK);
                     }
                 }
@@ -1013,11 +1033,7 @@ class EventController extends BaseController
             $this->addFlashMessage('You do not have access rights to change this data.' . $event->getUid() , '', ContextualFeedbackSeverity::WARNING);
         }
         $this->persistenceManager->persistAll() ;
-        $pid = $this->settings['pageIds']['showEventDetail'] ;
-        // if PID from TS settings is set: if User is not logged in-> Page with loginForm , on success -> showEventDetail  Page
-        if ($pid < 1) {
-            $pid = MigrationUtility::getPageId($this);
-        }
+
         return $this->redirect('show' , 'Event', 'JvEvents' , ["event" => $event] ,$pid  );
     }
     
