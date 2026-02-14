@@ -82,8 +82,12 @@ plugin.tx_jvevents_events {
 			image {
 				# Fallback Image for event list with complete path /fileadmin/user_upload/.. default /typo3conf/ext/jv_events/Resource/Public/Images/DefaultImage.jpg
 				defaultImage = /typo3conf/ext/jv_events/Resources/Public/Images/defaultImage.jpg
-				width = 240
-				height = 180
+				width = 360
+				height = 240
+				large {
+					width = 640
+					height = 480
+				}
 			}
 			showDistance = 1
 			showCrdate = 1

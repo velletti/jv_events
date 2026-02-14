@@ -216,6 +216,12 @@ class EventController extends BaseController
 
         $this->view->assign('eventsFilter', $eventsFilter);
        // $this->settings['checkInstallation'] = 2 ;
+
+        if( $this->settings['list']['showLargeImages'] ) {
+            $this->settings['list']['image']['width'] = ( $this->settings['list']['image']['large']['width'] ?? $this->settings['list']['image']['large']['width'] * 4 / 3 )  ;
+            $this->settings['list']['image']['height'] = ( $this->settings['list']['image']['large']['height'] ?? $this->settings['list']['image']['large']['height'] * 4 / 3 )  ;
+
+        }
         $this->view->assign('settings', $this->settings );
         $this->debugArray[] = "before Render:" . intval(1000 * ($this->microtime_float()  - $this->timeStart ) ) . " Line: " . __LINE__ ;
         $this->view->assign('debugArray', $this->debugArray );
