@@ -45,7 +45,7 @@ plugin.tx_jvevents_events {
 		}
 
 		organizer {
-			maxBannersPerOrganizer = 2
+			maxBannersPerOrganizer = 1
 			maxBanners = 8
 			newOrgGetGroups {
 				2 = Organizer Default
@@ -59,6 +59,7 @@ plugin.tx_jvevents_events {
 				vip = 3
 				BannerRequest = 5
 				BannerAllowed = 18
+				Banner2Allowed = 20
 				BannerForbidden = 19
 				imageUploadAllowed = 7
 				registrationInternalAllowed = 6

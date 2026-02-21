@@ -1334,19 +1334,13 @@ class AjaxController extends BaseController
                     }
                 }
 
-                $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_sfbanners_domain_model_banner') ;
-                $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
+                // get number of banners from today until nax 2 weeks
                 $now = time() ;
-                $endTime = $now + ( 3600 * 24 * 42) ;
-                $queryBuilder ->select('uid' , 'title', 'starttime', 'endtime', 'impressions','clicks', 'fe_user' ,'organizer'   )
-                    ->from('tx_sfbanners_domain_model_banner')
-                    ->where( $queryBuilder->expr()->eq('deleted', $queryBuilder->createNamedParameter(0 , \PDO::PARAM_INT)) )
-                    ->andWhere( $queryBuilder->expr()->eq('hidden', $queryBuilder->createNamedParameter(0 , \PDO::PARAM_INT)) )
-                    ->andWhere( $queryBuilder->expr()->gte('endtime', $queryBuilder->createNamedParameter( $now , \PDO::PARAM_INT)) )
-                    ->andWhere( $queryBuilder->expr()->lte('starttime', $queryBuilder->createNamedParameter( $endTime , \PDO::PARAM_INT)) )
-                    ->orderBy("endtime" , "ASC")
-                    ->setMaxResults(999) ;
+                $endTime = $now + ( 3600 * 24 * 14) ;
+                $queryBuilder = $this->getQueryBuilderBanner( $connectionPool, $endTime) ;
+
+                $queryBuilder->andWhere( $queryBuilder->expr()->gte('endtime', $queryBuilder->createNamedParameter( $now , \PDO::PARAM_INT)) );
                 if( $output['event']["categoryId"] == 1 ) {
                     // banner tanzen
                     $queryBuilder->andWhere( $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter( 56 , \PDO::PARAM_INT)) ) ;
@@ -1374,7 +1368,15 @@ class AjaxController extends BaseController
                 }
                 $organizerId = isset($output['organizer']['organizerId']) ? intval($output['organizer']['organizerId']) : 0 ;
                 if ($organizerId > 0 ) {
+
+                    // get banners of organiszer in past 3 weeks and future 6 weeks
+                    $startPast = $now - ( 3600 * 24 * 21) ;
+                    $endTime = $now + ( 3600 * 24 * 42) ;
+                    $queryBuilder = $this->getQueryBuilderBanner( $connectionPool, $endTime) ;
+
                     $queryBuilder->andWhere( $queryBuilder->expr()->eq('organizer', $queryBuilder->createNamedParameter( $organizerId , \PDO::PARAM_INT)) ) ;
+                    $queryBuilder->andWhere( $queryBuilder->expr()->gte('endtime', $queryBuilder->createNamedParameter( $startPast , \PDO::PARAM_INT)) );
+
                     $rows = $queryBuilder->executeQuery()->fetchAllAssociative() ;
                     if ( $rows) {
                         $output['organizer']['banners']['organizerCount'] = count( $rows) ;
@@ -1389,7 +1391,7 @@ class AjaxController extends BaseController
                 // count of existing banners for organizer < max from settings current 2  ?
                 $output['organizer']['banners']['canCreateBanner'] = 0 ;
 
-                if ( !isset( $output['event']['banner'] ) && intval( $this->frontendUser->user['uid'] ) > 0  ) {
+                if ( (!isset( $output['event']['banner'] ) || !$output['event']['banner']['active']) && intval( $this->frontendUser->user['uid'] ) > 0  ) {
                     $userGroups = GeneralUtility::intExplode( "," , $this->frontendUser->user['usergroup'] ) ;
                     $hasGroup = false ;
                     $isAdmin = false ;
@@ -1397,6 +1399,9 @@ class AjaxController extends BaseController
                     foreach ( $userGroups as $groupId ) {
                         if ( in_array( $groupId , GeneralUtility::intExplode( "," , ($this->settings['organizer']['groups']['BannerAllowed'] ?? '18' ) ) ) ) {
                             $hasGroup = true ;
+                        }
+                        if ( in_array( $groupId , GeneralUtility::intExplode( "," , ($this->settings['organizer']['groups']['Banner2Allowed'] ?? '20' ) ) ) ) {
+                            $hasGroupPlus1 = true ;
                         }
                         if ( in_array( $groupId , GeneralUtility::intExplode( "," , ($this->settings['organizer']['groups']['BannerForbidden'] ?? '19') ) ) ) {
                             $hasGroup = false ;
@@ -1408,7 +1413,8 @@ class AjaxController extends BaseController
                             $isVip = true ;
                         }
                     }
-                    if ( $hasGroup  ) {
+                    $maxBannersPerOrganizer = 0;
+                    if ( $hasGroup || $isAdmin ) {
                         $maxBanners = intval( $this->settings['organizer']['maxBanners'] ) ;
                         $maxBannersPerOrganizer = intval( $this->settings['organizer']['maxBannersPerOrganizer'] ) ;
                         if ( $maxBanners < 1 ) {
@@ -1417,17 +1423,22 @@ class AjaxController extends BaseController
                         if ( $maxBannersPerOrganizer < 1 ) {
                             $maxBannersPerOrganizer = 1 ;
                         }
+                        if ( $hasGroupPlus1  ) {
+                            $maxBannersPerOrganizer++ ;
+                        }
                         if( $isVip) {
-                            $maxBanners = $maxBanners * 2 ;
-                            $maxBannersPerOrganizer = $maxBannersPerOrganizer * 2 ;
+                            $maxBanners = $maxBanners + 2 ;
+                            $maxBannersPerOrganizer = $maxBannersPerOrganizer +1 ;
                         }
 
-                        if ( isset( $output['organizer']['banners']['organizerCount'] ) &&  $output['organizer']['banners']['organizerCount'] < $maxBannersPerOrganizer  ) {
-                            if ( $output['event']['banners']['count'] < $maxBanners ) {
+                        if ( isset( $output['organizer']['banners']['organizerCount'] ) &&  $output['organizer']['banners']['organizerCount'] <= $maxBannersPerOrganizer  ) {
+                            if ( $output['event']['banners']['count'] <= $maxBanners ) {
                                 $output['organizer']['banners']['canCreateBanner'] = true ;
                             }
                         }
+
                     }
+                    $output['organizer']['banners']['organizerMax'] = $maxBannersPerOrganizer ;
 
                 }
 
@@ -1453,6 +1464,19 @@ class AjaxController extends BaseController
         } elseif (is_array($ts) && is_array($ts['settings']) ) {
             $this->settings = $ts['settings'];
         }
+    }
+    private function getQueryBuilderBanner(ConnectionPool $connectionPool , int $endTime): QueryBuilder
+    {
+        $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_sfbanners_domain_model_banner') ;
+        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $queryBuilder->select('uid' , 'title', 'starttime', 'endtime', 'impressions','clicks', 'fe_user' ,'organizer'   )
+            ->from('tx_sfbanners_domain_model_banner')
+            ->where( $queryBuilder->expr()->eq('deleted', $queryBuilder->createNamedParameter(0 , \PDO::PARAM_INT)) )
+            ->andWhere( $queryBuilder->expr()->eq('hidden', $queryBuilder->createNamedParameter(0 , \PDO::PARAM_INT)) )
+            ->andWhere( $queryBuilder->expr()->lte('starttime', $queryBuilder->createNamedParameter( $endTime , \PDO::PARAM_INT)) )
+            ->orderBy("endtime" , "ASC")
+            ->setMaxResults(99) ;
+        return $queryBuilder ;
     }
 
 }

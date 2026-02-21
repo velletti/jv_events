@@ -251,7 +251,7 @@
                                                         </f:if>
                                                     </f:then>
                                                     <f:else>
-                                                        <f:if condition="{output.event.banner}">
+                                                        <f:if condition="{output.event.banner.active}">
                                                             <f:then>
                                                                 <hr>
                                                                 Banner from <f:format.date format="d.M H:i">{output.event.banner.starttime}</f:format.date> - <f:format.date format="d.M H:i">{output.event.banner.endtime}</f:format.date><br>
@@ -262,15 +262,17 @@
                                                             <f:else>
                                                                 <f:if condition="{output.organizer.banners.canCreateBanner}">
                                                                     <f:then>
-                                                                        <div class="banner-allowed pt-2">
-                                                                            <h3>Create Banner, Select Start </h3>
+                                                                        <div class="banner-allowed pt-4">
+                                                                            <div class="alert alert-info">Your Banner: {output.organizer.banners.organizerCount} of max: {output.organizer.banners.organizerMax}<br>
+                                                                            All active Banner: {output.event.banners.count}</div>
+                                                                            <h3>Create Banner -> Select Startday: </h3>
                                                                             <f:render section="bannerButtons" arguments="{_all}"></f:render>
                                                                         </div>
                                                                     </f:then>
                                                                     <f:else>
                                                                         <div class="alert alert-info">
-                                                                            Your Banner: {output.organizer.banners.organizerCount} active. <br>
-                                                                            All Events: {output.event.banners.count} banners total.<br>
+                                                                            Your Banner: {output.organizer.banners.organizerCount} of max: {output.organizer.banners.organizerMax}. <br>
+                                                                            All active Banner: {output.event.banners.count}<br>
 
                                                                         </div>
                                                                         <f:security.ifHasRole role="BannerAllowed">
@@ -468,7 +470,7 @@
         <hr>
         <f:render section="bannerStop" arguments="{_all}"></f:render>
 
-        Banner from <f:format.date format="d.M H:i">{output.event.banner.starttime}</f:format.date> - <f:format.date format="d.M H:i">{output.event.banner.endtime}</f:format.date><br>
+        <span title="uid-{output.event.banner.uid}">Banner from</span> <f:format.date format="d.M H:i">{output.event.banner.starttime}</f:format.date> - <f:format.date format="d.M H:i">{output.event.banner.endtime}</f:format.date><br>
         Viewed: {output.event.banner.impressions} | Clicks: {output.event.banner.clicks}<br/>
     </f:if>
 </f:section>
