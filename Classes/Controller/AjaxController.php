@@ -1431,8 +1431,8 @@ class AjaxController extends BaseController
                             $maxBannersPerOrganizer = $maxBannersPerOrganizer +1 ;
                         }
 
-                        if ( isset( $output['organizer']['banners']['organizerCount'] ) &&  $output['organizer']['banners']['organizerCount'] <= $maxBannersPerOrganizer  ) {
-                            if ( $output['event']['banners']['count'] <= $maxBanners ) {
+                        if ( isset( $output['organizer']['banners']['organizerCount'] ) &&  $output['organizer']['banners']['organizerCount'] < $maxBannersPerOrganizer  ) {
+                            if ( $output['event']['banners']['count'] < $maxBanners ) {
                                 $output['organizer']['banners']['canCreateBanner'] = true ;
                             }
                         }
