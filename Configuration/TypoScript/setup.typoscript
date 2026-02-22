@@ -47,6 +47,10 @@ plugin.tx_jvevents_events {
 		organizer {
 			maxBannersPerOrganizer = 1
 			maxBanners = 8
+
+			bannerCountDaysInPast = 21
+			bannerCountDaysInFuture = 35
+
 			newOrgGetGroups {
 				2 = Organizer Default
 				# 7 = image Upload is allowed

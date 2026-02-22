@@ -278,6 +278,7 @@
                                                                         <f:security.ifHasRole role="BannerAllowed">
                                                                             <hr>Request a Startpage Banner:<hr>
                                                                             <f:render partial="Helper/Bootstrap4/Share"  arguments="{object: 'event', reason: 'Please activate Banner!', event: output.event, emailTo: 'info@tangomuenchen.de', uri: uri, uids: 'User: {output.feuser.uid} - {output.feuser.username} | Event: {output.event.eventId} | LocationId: {output.location.locationId}', settings: settings}"></f:render>
+                                                                            <f:render section="bannerList" arguments="{_all}"></f:render>
                                                                         </f:security.ifHasRole>
                                                                     </f:else>
                                                                 </f:if>
@@ -488,6 +489,41 @@
                     </f:link.page>
                 </span>
         </f:then>
+    </f:if>
+</f:section>
+
+<f:section name="bannerList">
+    <f:if condition="{output.event.hasAccess}">
+        <f:if condition="{output.feuser.isOrganizer}">
+            <f:if condition="{output.organizer.banners.current}">
+                <f:then>
+                    <div  class="alert alert-info my-2 small">
+                        <h4>Your current Banner:</h4>
+                        <ul class="mx-0 px-1 mb-0">
+                            <f:for each="{output.organizer.banners.current}" as="banner">
+                                <li class="mb-2" data-uid="{banner.uid}" data-eventUid="{banner.link}">
+                                    <f:format.date format="d.m H:i">{banner.endtime}</f:format.date> | Viewed: {banner.impressions} <br>
+                                    <f:if condition="{settings.pageIds.showEventDetail} && {banner.endtime} > {output.nowts}">
+                                        <f:then>
+                                            <b>
+                                                <f:link.action class="bold" pageUid="{settings.pageIds.showEventDetail}" action="show" controller="Event" extensionName="JvEvents" pluginName="Event" arguments="{event: banner.link}">
+                                                    <span class="fa fa-eye"> </span>  <f:format.crop maxCharacters="60" append=" >>">{banner.title}</f:format.crop>
+                                                </f:link.action>
+                                            </b>
+                                        </f:then>
+                                        <f:else>
+                                            <span class="fa fa-eye-slash"> </span> &nbsp; <i>   <stroke><f:format.crop maxCharacters="60" append="">{banner.title}</f:format.crop></stroke></i>
+                                        </f:else>
+
+                                    </f:if>
+                                </li>
+                            </f:for>
+                        </ul>
+
+                    </div>
+                </f:then>
+            </f:if>
+        </f:if>
     </f:if>
 </f:section>
 

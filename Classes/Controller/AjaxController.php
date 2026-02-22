@@ -281,14 +281,16 @@ class AjaxController extends BaseController
                     }
                 }
 
-
+                $now =  new \DateTime() ;
+                $output['now'] = $now ;
+                $output['nowts'] = $now->getTimestamp();
                 if( $event->getNotifyRegistrant() == 0  ) {
                     $reminder2 = new \DateInterval("P1D") ;
                     $reminderDate2 =  new \DateTime($event->getStartDate()->format("c")) ;
 
                     $reminder1 = new \DateInterval("P7D") ;
                     $reminderDate1 =  new \DateTime($event->getStartDate()->format("c")) ;
-                    $now =  new \DateTime() ;
+
                     if ( $reminderDate1 > $now ) {
                         $output['event']['reminderDate1'] =  $reminderDate1->sub( $reminder1 )->format("d.m.Y") ;
                     }
@@ -1317,6 +1319,7 @@ class AjaxController extends BaseController
                 $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_sfbanners_domain_model_banner') ;
                 $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
+                /* get Current banner is exists  */
                 $row = $queryBuilder ->select('uid' , 'starttime', 'endtime', 'impressions','clicks'   )
                     ->from('tx_sfbanners_domain_model_banner')
                     ->where( $queryBuilder->expr()->eq('link', $queryBuilder->createNamedParameter($output['event']["eventId"] , \PDO::PARAM_INT)) )
@@ -1334,20 +1337,16 @@ class AjaxController extends BaseController
                     }
                 }
 
+                $daysInPast = $this->settings['organizer']['bannerCountDaysInPast'] > 0 ? intval($this->settings['organizer']['bannerCountDaysInPast']) : 21 ;
+                $daysInFuture = $this->settings['organizer']['bannerCountDaysInFuture'] > 0 ? intval($this->settings['organizer']['bannerCountDaysInFuture']) : 35 ;
 
-                // get number of banners from today until nax 2 weeks
+                // get number of banners from today until  $daysInFuture
                 $now = time() ;
-                $endTime = $now + ( 3600 * 24 * 14) ;
-                $queryBuilder = $this->getQueryBuilderBanner( $connectionPool, $endTime) ;
+                $endTime = $now + ( 3600 * 24 * $daysInFuture) ;
+                $queryBuilder = $this->getQueryBuilderBanner( $connectionPool, $endTime , $output['event']["categoryId"] ) ;
 
                 $queryBuilder->andWhere( $queryBuilder->expr()->gte('endtime', $queryBuilder->createNamedParameter( $now , \PDO::PARAM_INT)) );
-                if( $output['event']["categoryId"] == 1 ) {
-                    // banner tanzen
-                    $queryBuilder->andWhere( $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter( 56 , \PDO::PARAM_INT)) ) ;
-                } elseif ( $output['event']["categoryId"] == 2 ) {
-                    // banner lernen
-                    $queryBuilder->andWhere( $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter(135 , \PDO::PARAM_INT)) ) ;
-                }
+
 
                 $rows = $queryBuilder
                     ->executeQuery()
@@ -1370,9 +1369,9 @@ class AjaxController extends BaseController
                 if ($organizerId > 0 ) {
 
                     // get banners of organiszer in past 3 weeks and future 6 weeks
-                    $startPast = $now - ( 3600 * 24 * 21) ;
-                    $endTime = $now + ( 3600 * 24 * 42) ;
-                    $queryBuilder = $this->getQueryBuilderBanner( $connectionPool, $endTime) ;
+                       $startPast = $now - ( 3600 * 24 * $daysInPast) ;
+                    $endTime = $now + ( 3600 * 24 * $daysInFuture) ;
+                    $queryBuilder = $this->getQueryBuilderBanner( $connectionPool, $endTime , $output['event']["categoryId"] ) ;
 
                     $queryBuilder->andWhere( $queryBuilder->expr()->eq('organizer', $queryBuilder->createNamedParameter( $organizerId , \PDO::PARAM_INT)) ) ;
                     $queryBuilder->andWhere( $queryBuilder->expr()->gte('endtime', $queryBuilder->createNamedParameter( $startPast , \PDO::PARAM_INT)) );
@@ -1380,10 +1379,13 @@ class AjaxController extends BaseController
                     $rows = $queryBuilder->executeQuery()->fetchAllAssociative() ;
                     if ( $rows) {
                         $output['organizer']['banners']['organizerCount'] = count( $rows) ;
+                        $output['organizer']['banners']['current'] = $rows ;
                     } else {
                         $output['organizer']['banners']['organizerCount'] = 0 ;
-                     //   $output['organizer']['banners']['query'] = $queryBuilder->getSQL() ;
-                     //   $output['organizer']['banners']['params'] = $queryBuilder->getParameters() ;
+                    }
+                    if( str_ends_with($_SERVER['SERVER_NAME'],".ddev.site")) {
+                        $output['organizer']['banners']['query'] = $queryBuilder->getSQL() ;
+                        $output['organizer']['banners']['params'] = $queryBuilder->getParameters() ;
                     }
                 }
                 // no banner for current event set?
@@ -1465,17 +1467,25 @@ class AjaxController extends BaseController
             $this->settings = $ts['settings'];
         }
     }
-    private function getQueryBuilderBanner(ConnectionPool $connectionPool , int $endTime): QueryBuilder
+    private function getQueryBuilderBanner(ConnectionPool $connectionPool , int $endTime, int $categoryId): QueryBuilder
     {
         $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_sfbanners_domain_model_banner') ;
         $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-        $queryBuilder->select('uid' , 'title', 'starttime', 'endtime', 'impressions','clicks', 'fe_user' ,'organizer'   )
+        $queryBuilder->select('uid' ,'pid', 'link' , 'title', 'starttime', 'endtime', 'impressions','clicks', 'fe_user' ,'organizer'   )
             ->from('tx_sfbanners_domain_model_banner')
             ->where( $queryBuilder->expr()->eq('deleted', $queryBuilder->createNamedParameter(0 , \PDO::PARAM_INT)) )
             ->andWhere( $queryBuilder->expr()->eq('hidden', $queryBuilder->createNamedParameter(0 , \PDO::PARAM_INT)) )
             ->andWhere( $queryBuilder->expr()->lte('starttime', $queryBuilder->createNamedParameter( $endTime , \PDO::PARAM_INT)) )
             ->orderBy("endtime" , "ASC")
             ->setMaxResults(99) ;
+
+        if( $categoryId == 2 ) {
+            // banner lernen
+            $queryBuilder->andWhere( $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter(135 , \PDO::PARAM_INT)) ) ;
+        } else {
+            // banner tanzen urlaub sonstiges etc
+            $queryBuilder->andWhere( $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter( 56 , \PDO::PARAM_INT)) ) ;
+        }
         return $queryBuilder ;
     }
 
