@@ -265,7 +265,7 @@
                                                                         <div class="banner-allowed pt-4">
                                                                             <div class="alert alert-info">Your Banner: {output.organizer.banners.organizerCount} of max: {output.organizer.banners.organizerMax}<br>
                                                                             All active Banner: {output.event.banners.count}</div>
-                                                                            <h3>Create Banner -> Select Startday: </h3>
+                                                                            <h4>Create Banner-> Select Start:</h4>
                                                                             <f:render section="bannerButtons" arguments="{_all}"></f:render>
                                                                         </div>
                                                                     </f:then>
@@ -426,12 +426,22 @@
 </f:section>
 
 <f:section name="bannerButtons">
+    <div class="alert alert-danger">
+        <span class="position-right mr-2"><i class="fas fa-exclamation-triangle"></i></span><b>Attention:</b> Please organise the free Entrance
+        <f:security.ifHasRole role="18">
+            for <b>Jörg Velletti</b>
+        </f:security.ifHasRole>
+        <f:security.ifHasRole role="20">
+            and <b>1 additional person</b>
+        </f:security.ifHasRole>
+        (inviation is sent automatically after creating the Banner)
+    </div>
     <f:link.page pageUid="{settings.pageIds.bannerModul}" noCache="true" class="btn btn-outline-primary px-2 mb-2 text-left" title="Add Banner for Event Normmal ( 8 days before event)"
                  additionalParams="{tx_jvbanners_connector: {action: 'create', controller: 'Connector' , pluginName: 'Events',  event: '{output.event.eventId}' , returnPid: '{output.returnPid}'}}">
 
          <i class="fas fa-star"></i>
 
-        <span class="ml-2">Banner Normal (8 days before event)</span>
+        <span class="ml-2">Normal (8 days before event)</span>
     </f:link.page>
     <span class="position-right">
         <f:link.page pageUid="{settings.pageIds.bannerModul}" noCache="true" class="btn btn-primary px-2 mr-3 " title="Add Banner for Event NOW"
@@ -443,7 +453,8 @@
 
 
     <form action="{f:uri.page(pageUid: settings.pageIds.bannerModul, additionalParams: {tx_jvbanners_connector: {action: 'create', controller: 'Connector', pluginName: 'Events', event: output.event.eventId, returnPid: output.returnPid}})}" method="get" class="form-inline">
-        <br><span class="mr-2">Or start in:</span><br>
+        <br>
+        <div><span class="mr-2">In:</span>
         <f:for each="{0:7, 1:14, 2:21 , 3:28, 4:35 , 5:42}" as="days" iteration="weeks">
             <f:link.page pageUid="{settings.pageIds.bannerModul}" noCache="true" class="btn btn-sm btn-outline-primary mx-1 " title="Add Banner for Event in {days} days"
                          additionalParams="{tx_jvbanners_connector: {action: 'create', controller: 'Connector' , pluginName: 'Events',startindays: '{days}',  event: '{output.event.eventId}' , returnPid: '{output.returnPid}'}}">
@@ -451,17 +462,24 @@
             </f:link.page>
         </f:for> <span class="ml-2">Weeks</span>
 
+        </div>
         <input type="hidden" name="no_cache" value="1">
         <input type="hidden" name="tx_jvbanners_connector[action]" value="create">
         <input type="hidden" name="tx_jvbanners_connector[controller]" value="Connector">
         <input type="hidden" name="tx_jvbanners_connector[pluginName]" value="Events">
         <input type="hidden" name="tx_jvbanners_connector[event]" value="{output.event.eventId}">
         <input type="hidden" name="tx_jvbanners_connector[returnPid]" value="{output.returnPid}">
-        <div class="py-2">
-            <span class="px-1">or in: </span>
-            <input type="number" class="form-control" id="startindays" value="2" name="tx_jvbanners_connector[startindays]"
-                   placeholder="Days" style="width: 90px;padding:0.2rem">
-            <button type="submit" class="btn btn-outline-primary btn-sm">Days</button>
+        <div class="py-2 row">
+            <div class="col-4">
+                or in:
+            </div>
+            <div class="col-4">
+                <input type="number" class="form-control" id="startindays" value="2" name="tx_jvbanners_connector[startindays]"
+                       placeholder="Days" style="width: 60px;padding:0.2rem">
+            </div>
+            <div class="col-4">
+                <button type="submit" class="btn btn-outline-primary btn-sm">Days</button>
+            </div>
         </div>
 
     </form>
