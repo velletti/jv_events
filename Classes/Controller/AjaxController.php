@@ -1427,6 +1427,7 @@ class AjaxController extends BaseController
                         }
                         if ( $hasGroupPlus1  ) {
                             $maxBannersPerOrganizer++ ;
+                            $maxBanners ++ ;
                         }
                         if( $isVip) {
                             $maxBanners = $maxBanners + 2 ;
