@@ -426,16 +426,20 @@
 </f:section>
 
 <f:section name="bannerButtons">
-    <div class="alert alert-danger">
-        <span class="position-right mr-2"><i class="fas fa-exclamation-triangle"></i></span><b>Attention:</b> Please organise the free Entrance
-        <f:security.ifHasRole role="18">
-            for <b>Jörg Velletti</b>
-        </f:security.ifHasRole>
-        <f:security.ifHasRole role="20">
-            and <b>1 additional person</b>
-        </f:security.ifHasRole>
-        (inviation is sent automatically after creating the Banner)
-    </div>
+    <f:if condition="{output.event.categoryId} == 1">
+        <f:then>
+            <div class="alert alert-danger">
+                <span class="position-right mr-2"><i class="fas fa-exclamation-triangle"></i></span><b>Attention:</b> Please organise the free Entrance
+                <f:security.ifHasRole role="18">
+                    for <b>Jörg Velletti</b>
+                </f:security.ifHasRole>
+                <f:security.ifHasRole role="20">
+                    and <b>1 additional person</b>
+                </f:security.ifHasRole>
+                (inviation is sent automatically after creating the Banner)
+            </div>
+        </f:then>
+    </f:if>
     <f:link.page pageUid="{settings.pageIds.bannerModul}" noCache="true" class="btn btn-outline-primary px-2 mb-2 text-left" title="Add Banner for Event Normmal ( 8 days before event)"
                  additionalParams="{tx_jvbanners_connector: {action: 'create', controller: 'Connector' , pluginName: 'Events',  event: '{output.event.eventId}' , returnPid: '{output.returnPid}'}}">
 

@@ -1330,15 +1330,22 @@ class AjaxController extends BaseController
                     ->executeQuery()
                     ->fetchAssociative();
 
+                $daysInPast = $this->settings['organizer']['bannerCountDaysInPast'] > 0 ? intval($this->settings['organizer']['bannerCountDaysInPast']) : 21 ;
+                $daysInFuture = $this->settings['organizer']['bannerCountDaysInFuture'] > 0 ? intval($this->settings['organizer']['bannerCountDaysInFuture']) : 35 ;
+
                 if ( $row) {
-                    $output['event']['banner'] = $row ;
-                    if( $row['endtime'] > time() ) {
-                        $output['event']['banner']['active'] = true ;
+                    $totalBannerBockedTime = ($daysInPast + $daysInFuture) * (3600 * 24) ;
+                    if( $row['endtime'] > ( time() - $totalBannerBockedTime ) ) {
+                        // if endtime of banner is in the past but  $totalBannerBockedTime  not OVER then he can not set a second one
+
+                        $output['event']['banner'] = $row ;
+                        if( $row['endtime'] > time() ) {
+                            $output['event']['banner']['active'] = true ;
+                        }
+
                     }
                 }
 
-                $daysInPast = $this->settings['organizer']['bannerCountDaysInPast'] > 0 ? intval($this->settings['organizer']['bannerCountDaysInPast']) : 21 ;
-                $daysInFuture = $this->settings['organizer']['bannerCountDaysInFuture'] > 0 ? intval($this->settings['organizer']['bannerCountDaysInFuture']) : 35 ;
 
                 // get number of banners from today until  $daysInFuture
                 $now = time() ;
