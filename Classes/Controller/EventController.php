@@ -964,6 +964,9 @@ class EventController extends BaseController
                             if( $oldEventRow['location'] != $event->getLocation()->getUid() ) {
                                 $otherEvent->setLocation( $event->getLocation() ) ;
                             }
+                            if( $oldEventRow['registration_url'] != $event->getRegistrationUrl()) {
+                                $otherEvent->setRegistrationUrl($event->getRegistrationUrl());
+                            }
 
                             if( $otherEvent->getTags() ) {
                                 /** @var Tag $tag */
