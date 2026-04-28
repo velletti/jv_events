@@ -264,15 +264,30 @@
                                                                     <f:then>
                                                                         <div class="banner-allowed pt-4">
                                                                             <div class="alert alert-info">Your Banner: {output.organizer.banners.organizerCount} of max: {output.organizer.banners.organizerMax}<br>
-                                                                            All active Banner: {output.event.banners.count}</div>
+                                                                            All active Banner: {output.event.banners.count} / {output.organizer.banners.maxCurrent}</div>
                                                                             <h4>Create Banner-> Select Start:</h4>
                                                                             <f:render section="bannerButtons" arguments="{_all}"></f:render>
                                                                         </div>
                                                                     </f:then>
                                                                     <f:else>
-                                                                        <div class="alert alert-info">
-                                                                            Your Banner: {output.organizer.banners.organizerCount} of max: {output.organizer.banners.organizerMax}. <br>
-                                                                            All active Banner: {output.event.banners.count}<br>
+                                                                        <div class="alert alert-warning">
+                                                                            <f:if condition="{output.organizer.banners.organizerCount} >= {output.organizer.banners.organizerMax}">
+                                                                                <f:then>
+                                                                                    <b>
+                                                                                        Limit: {output.organizer.banners.organizerCount} of max: {output.organizer.banners.organizerMax} reached! <br>
+                                                                                    </b>
+                                                                                </f:then>
+                                                                                <f:else>
+                                                                                    Your Banner: {output.organizer.banners.organizerCount} of max: {output.organizer.banners.organizerMax}. <br>
+                                                                                </f:else>
+                                                                            </f:if>
+                                                                            <f:if condition="{output.event.banners.currentCount} >= {output.organizer.banners.maxCurrent}">
+                                                                                <f:then>
+                                                                                    <b>
+                                                                                        Too much Active banner: {output.event.banners.currentCount} of max: {output.organizer.banners.maxCurrent}  <br>
+                                                                                    </b>
+                                                                                </f:then>
+                                                                            </f:if>
 
                                                                         </div>
                                                                         <f:security.ifHasRole role="BannerAllowed">
@@ -440,29 +455,48 @@
             </div>
         </f:then>
     </f:if>
-    <f:link.page pageUid="{settings.pageIds.bannerModul}" noCache="true" class="btn btn-outline-primary px-2 mb-2 text-left" title="Add Banner for Event Normmal ( 8 days before event)"
-                 additionalParams="{tx_jvbanners_connector: {action: 'create', controller: 'Connector' , pluginName: 'Events',  event: '{output.event.eventId}' , returnPid: '{output.returnPid}'}}">
+    <f:if condition="{output.organizer.banners.blockDefault}">
+        <f:else>
+            <f:link.page pageUid="{settings.pageIds.bannerModul}" noCache="true" class="btn btn-outline-primary px-2 mb-2 text-left" title="Add Banner for Event Normmal ( 8 days before event)"
+                         additionalParams="{tx_jvbanners_connector: {action: 'create', controller: 'Connector' , pluginName: 'Events',  event: '{output.event.eventId}' , returnPid: '{output.returnPid}'}}">
 
-         <i class="fas fa-star"></i>
+                 <i class="fas fa-star"></i>
+                <span class="ml-2">Normal (8 days before event)</span>
+            </f:link.page>
+        </f:else>
+    </f:if>
 
-        <span class="ml-2">Normal (8 days before event)</span>
-    </f:link.page>
-    <span class="position-right">
-        <f:link.page pageUid="{settings.pageIds.bannerModul}" noCache="true" class="btn btn-primary px-2 mr-3 " title="Add Banner for Event NOW"
-                     additionalParams="{tx_jvbanners_connector: {action: 'create', controller: 'Connector' , pluginName: 'Events',startindays: '1',  event: '{output.event.eventId}' , returnPid: '{output.returnPid}'}}">
-         <i class="fa fa-calendar-alt"></i><span> NOW</span>
-    </f:link.page>
-    </span>
+    <f:if condition="{output.organizer.banners.blockNow}">
+        <f:then>
+            <div class="alert alert-warning">
+                 <i class="fas fa-exclamation-triangle mr-2"></i>
+                <b>{output.event.banners.count} active</b> Banner!- Self-Service only in future!
+            </div>
+            <f:variable name="futureWeeks" value="{2:14, 3:21 , 4:28, 5:35 , 6:42, 7:49}"></f:variable>
+            <f:variable name="minDays">8</f:variable>
+        </f:then>
+        <f:else>
+            <f:variable name="futureWeeks" value="{1:7, 2:14, 3:21 , 4:28, 5:35 , 6:42 }"></f:variable>
+            <f:variable name="minDays">2</f:variable>
+             <span class="position-right">
+                    <f:link.page pageUid="{settings.pageIds.bannerModul}" noCache="true" class="btn btn-primary px-2 mr-3 " title="Add Banner for Event NOW"
+                                 additionalParams="{tx_jvbanners_connector: {action: 'create', controller: 'Connector' , pluginName: 'Events',startindays: '1',  event: '{output.event.eventId}' , returnPid: '{output.returnPid}'}}">
+                     <i class="fa fa-calendar-alt"></i><span> NOW</span>
+                </f:link.page>
+            </span>
+        </f:else>
+    </f:if>
+
 
 
 
     <form action="{f:uri.page(pageUid: settings.pageIds.bannerModul, additionalParams: {tx_jvbanners_connector: {action: 'create', controller: 'Connector', pluginName: 'Events', event: output.event.eventId, returnPid: output.returnPid}})}" method="get" class="form-inline">
         <br>
-        <div><span class="mr-2">In:</span>
-        <f:for each="{0:7, 1:14, 2:21 , 3:28, 4:35 , 5:42}" as="days" iteration="weeks">
+        <div ><span class="mr-2">In:</span>
+        <f:for each="{futureWeeks}" as="days" iteration="weeks" key="cycle">
             <f:link.page pageUid="{settings.pageIds.bannerModul}" noCache="true" class="btn btn-sm btn-outline-primary mx-1 " title="Add Banner for Event in {days} days"
                          additionalParams="{tx_jvbanners_connector: {action: 'create', controller: 'Connector' , pluginName: 'Events',startindays: '{days}',  event: '{output.event.eventId}' , returnPid: '{output.returnPid}'}}">
-                <span class=""> {weeks.cycle}</span>
+                <span class=""> {cycle}</span>
             </f:link.page>
         </f:for> <span class="ml-2">Weeks</span>
 
@@ -478,7 +512,7 @@
                 or in:
             </div>
             <div class="col-4">
-                <input type="number" class="form-control" id="startindays" value="2" name="tx_jvbanners_connector[startindays]"
+                <input type="number" class="form-control" id="startindays" value="{minDays}" min="{minDays}" name="tx_jvbanners_connector[startindays]"
                        placeholder="Days" style="width: 60px;padding:0.2rem">
             </div>
             <div class="col-4">

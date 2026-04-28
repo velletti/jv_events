@@ -46,7 +46,8 @@ plugin.tx_jvevents_events {
 
 		organizer {
 			maxBannersPerOrganizer = 1
-			maxBanners = 10
+			maxBanners = 4
+			maxBannersTotal = 25
 
 			bannerCountDaysInPast = 21
 			bannerCountDaysInFuture = 35

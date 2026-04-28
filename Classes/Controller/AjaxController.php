@@ -1372,6 +1372,31 @@ class AjaxController extends BaseController
                 } else {
                     $output['event']['banners']['count'] = 0 ;
                 }
+
+                // now get Number of current banners for all organizers
+                // get number of banners from today until  $daysInFuture
+                $now = time() ;
+                $CurrentTime = $now + ( 3600 * 24 * 7) ;
+                $queryBuilder = $this->getQueryBuilderBanner( $connectionPool, $CurrentTime , $output['event']["categoryId"] ) ;
+
+                $queryBuilder->andWhere( $queryBuilder->expr()->gte('endtime', $queryBuilder->createNamedParameter( $now , \PDO::PARAM_INT)) );
+
+
+                $rows = $queryBuilder
+                    ->executeQuery()
+                    ->fetchAllAssociative();
+
+                if ( $rows) {
+                    $output['event']['banners']['currentTime'] = $CurrentTime ;
+                    $output['event']['banners']['currentCount'] = count($rows) ;
+
+                    // $output['event']['banners']['query'] = $queryBuilder->getSQL() ;
+                    // $output['event']['banners']['params'] = $queryBuilder->getParameters() ;
+
+                } else {
+                    $output['event']['banners']['currentCount'] = 0 ;
+                }
+
                 $organizerId = isset($output['organizer']['organizerId']) ? intval($output['organizer']['organizerId']) : 0 ;
                 if ($organizerId > 0 ) {
 
@@ -1398,7 +1423,6 @@ class AjaxController extends BaseController
                 // no banner for current event set?
                 // user has Group May create banner ?
                 // count of existing banners for organizer < max from settings current 2  ?
-                $output['organizer']['banners']['canCreateBanner'] = 0 ;
 
                 if ( (!isset( $output['event']['banner'] ) || !$output['event']['banner']['active']) && intval( $this->frontendUser->user['uid'] ) > 0  ) {
                     $userGroups = GeneralUtility::intExplode( "," , $this->frontendUser->user['usergroup'] ) ;
@@ -1423,37 +1447,60 @@ class AjaxController extends BaseController
                         }
                     }
                     $maxBannersPerOrganizer = 0;
+                    $maxBannersTotal = 0 ;
                     if ( $hasGroup || $isAdmin ) {
                         $maxBanners = intval( $this->settings['organizer']['maxBanners'] ) ;
+                        $maxBannersTotal = intval( $this->settings['organizer']['maxBannersTotal'] ) ;
                         $maxBannersPerOrganizer = intval( $this->settings['organizer']['maxBannersPerOrganizer'] ) ;
                         if ( $maxBanners < 1 ) {
                             $maxBanners = 4 ;
+                        }
+                        if ( $maxBannersTotal < 1 ) {
+                            $maxBannersTotal = $maxBanners * 3 ;
                         }
                         if ( $maxBannersPerOrganizer < 1 ) {
                             $maxBannersPerOrganizer = 1 ;
                         }
                         if ( $hasGroupPlus1  ) {
-                            $maxBannersPerOrganizer++ ;
+                            $maxBannersPerOrganizer ++ ;
                             $maxBanners ++ ;
+                            $maxBannersTotal ++ ;
                         }
                         if( $isVip) {
-                            $maxBanners = $maxBanners + 2 ;
-                            $maxBannersPerOrganizer = $maxBannersPerOrganizer +1 ;
+                            $maxBanners  ++ ;
+                            $maxBannersPerOrganizer  ++ ;
+                            $maxBannersTotal++ ;
                         }
+                        $output['organizer']['banners']['canCreateBanner'] = 0 ;
+                        $output['organizer']['banners']['blockNow'] = 1 ;
 
                         if ( isset( $output['organizer']['banners']['organizerCount'] ) &&  $output['organizer']['banners']['organizerCount'] < $maxBannersPerOrganizer  ) {
-                            if ( $output['event']['banners']['count'] < $maxBanners ) {
+                            if ( $output['event']['banners']['count'] < ( $maxBannersTotal) ) {
                                 $output['organizer']['banners']['canCreateBanner'] = true ;
+                                if ( $output['event']['banners']['currentCount'] < $maxBanners ) {
+                                    $output['organizer']['banners']['blockNow'] = 0 ;
+                                } else {
+                                    $output['organizer']['banners']['blockNow'] = 1 ;
+                                    $eventDate = date_create_from_format( "d.m.Y" , $output['event']['startDate'] ) ;
+                                    if ( $eventDate->getTimestamp() < ( time() + ( 3600 * 24 * 7) ) ) {
+                                        $output['organizer']['banners']['blockDefault'] = 1;
+                                    }
+                                }
                             }
                         }
 
                     }
-                    $output['organizer']['banners']['organizerMax'] = $maxBannersPerOrganizer ;
-
+                }
+                if($isAdmin) {
+                    $output['organizer']['banners']['canCreateBanner'] = 1 ;
+                    $output['organizer']['banners']['blockNow'] = 0 ;
+                    $output['organizer']['banners']['blockDefault'] = 0;
                 }
 
 
-
+                $output['organizer']['banners']['organizerMax'] = $maxBannersPerOrganizer ;
+                $output['organizer']['banners']['maxCurrent'] = $maxBanners ;
+                $output['organizer']['banners']['maxTotal'] = $maxBannersTotal ;
 
             } catch (Exception $e) {
                 $output['event']['banners']['error'] = "Error in Banner Query" ;
