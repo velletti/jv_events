@@ -79,24 +79,24 @@
                                  <div class="row">
 
                                      <div class="col-6">
-                                         <f:translate key="event_copy_one">Create one Copy</f:translate>
+                                         <f:translate key="LLL:EXT:jv-events/Resources/Private/Language/de.locallang.xlf:event_copy_one">Create one Copy</f:translate>
                                      </div>
                                      <div class="col-6">
                                          <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '0', amount: '1' , msgtext: 'beliebiges Datum'}" />
                                      </div>
                                      <hr />
-                                     <h3 class="mx-3 mt-4"><f:translate key="event_copy_eventseries" default="Regelmäßige Termine"/></h3>
+                                     <h3 class="mx-3 mt-4"><f:translate key="LLL:EXT:jv-events/Resources/Private/Language/de.locallang.xlf:event_copy_eventseries" default="Regelmäßige Termine"/></h3>
 
                                      <div class="col-12 pb-4">
-                                         <f:translate key="event_copy_intro">
+                                         <f:translate key="LLL:EXT:jv-events/Resources/Private/Language/de.locallang.xlf:event_copy_intro">
                                              Wenn du einen Termin kopierst, können Änderungen auch automatisch an dem/den anderen Termin(en) übernommen werden. Damit kann man somit regelmäßig stattfindende Termine einfach pflegen.
                                          </f:translate><br><br>
-                                         <f:translate key="event_copy_intro2">
+                                         <f:translate key="LLL:EXT:jv-events/Resources/Private/Language/de.locallang.xlf:event_copy_intro2">
                                              Inhaltlich unterschiedliche Termine (z.b. verschiedene Kursarten oder Uhrzeiten) sollten deshalb nicht durch die nachfolgenden Buttons erstellt werden.
                                          </f:translate>
                                      </div>
                                      <div class="col-12">
-                                         <b><f:translate key="event_copy_one_linked">Single Copy (linked)</f:translate></b>
+                                         <b><f:translate key="LLL:EXT:jv-events/Resources/Private/Language/de.locallang.xlf:event_copy_one_linked">Single Copy (linked)</f:translate></b>
                                          <br>
                                          <f:variable name="tStamp"><f:format.date format="U">{output.event.startDate}</f:format.date></f:variable>
 
@@ -108,7 +108,7 @@
                                          <f:render arguments="{eventId: output.event.eventId, copy2Day: '35', amount: '1' , msgtext: '+35: {f:format.date(format:\'d.m\', base:\'{tStamp}\', date: \'+35 days\')}'}" section="renderCopyLink" />
                                      </div>
                                      <div class="col-12">
-                                         <b><f:translate key="event_copy_multi">Copy multiple weekly</f:translate></b>
+                                         <b><f:translate key="LLL:EXT:jv-events/Resources/Private/Language/de.locallang.xlf:event_copy_multi">Copy multiple weekly</f:translate></b>
                                          <br>
                                          <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '7', amount: '2' , msgtext: '2*'}" />
                                          <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '7', amount: '3' , msgtext: '3*'}" />
@@ -119,7 +119,7 @@
                                      </div>
                                       <div class="col-12">
                                           <br>
-                                          <b><f:translate key="event_copy_multi2weeks">Copy multiple every 14 days</f:translate></b>
+                                          <b><f:translate key="LLL:EXT:jv-events/Resources/Private/Language/de.locallang.xlf:event_copy_multi2weeks">Copy multiple every 14 days</f:translate></b>
                                           <br>
                                          <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '14', amount: '2' , msgtext: '2*'}" />
                                          <f:render section="renderCopyLink" arguments="{eventId: output.event.eventId, copy2Day: '14', amount: '3' , msgtext: '3*'}" />
@@ -135,7 +135,7 @@
                     <f:variable name="copyModalFooter">
                         <f:format.raw>
                             <f:spaceless>
-                                <f:link.page pageUid="60" class="btn btn-secondary position-left mx-4 small" target="_blank"><f:translate key="general_see_help">Siehe Hilfe Seiten</f:translate></f:link.page>
+                                <f:link.page pageUid="60" class="btn btn-secondary position-left mx-4 small" target="_blank"><f:translate key="LLL:EXT:jv-events/Resources/Private/Language/de.locallang.xlf:general_see_help">Siehe Hilfe Seiten</f:translate></f:link.page>
                             </f:spaceless>
                         </f:format.raw>
                     </f:variable>
@@ -145,12 +145,12 @@
                     <f:variable name="deleteModalBody">
                          <f:format.raw>
                              <f:spaceless>
-                                 <f:translate key="event_delete_question">
+                                 <f:translate key="LLL:EXT:jv-events/Resources/Private/Language/de.locallang.xlf:event_delete_question">
                                      This will delete the event without info.
                                  </f:translate><br>
                                  <f:if condition="{output.event.masterId}">
                                      <b>
-                                         <f:translate key="event_delete_question_SameMaster" arguments="{0: output.event.sameMasterId}">
+                                         <f:translate key="LLL:EXT:jv-events/Resources/Private/Language/de.locallang.xlf:event_delete_question_SameMaster" arguments="{0: output.event.sameMasterId}">
                                              <br>
                                              Also delete the {output.event.sameMasterId} following copies of this event?
 
@@ -166,7 +166,7 @@
                                          </f:then>
                                     </f:if>
                                  </f:if>
-                                 <f:translate key="event_delete_are_you_sure">
+                                 <f:translate key="LLL:EXT:jv-events/Resources/Private/Language/de.locallang.xlf:event_delete_are_you_sure">
                                      Are you sure?
                                  </f:translate><br>
                             </f:spaceless>
@@ -178,14 +178,14 @@
                                 <f:link.action id="jv_events_delete_btn" pageUid="{settings.pageIds.editEvent}"   class="nav-link" title="delete Event"  extensionName="JvEvents"  action="delete" controller="Event" pluginName="Event"  arguments="{event: output.event.eventId , deleteFutureEvents: 0}">
                                     <button class="btn btn-primary btn-sm " href="#">
                                         <i class="fas fa-trash "></i> <span class="mx-1">
-                                        <f:translate key="event_delete_really_button">
+                                        <f:translate key="LLL:EXT:jv-events/Resources/Private/Language/de.locallang.xlf:event_delete_really_button">
                                             Delete really!
                                         </f:translate></span>
                                     </button>
                                 </f:link.action>
                                 <f:link.action id="jv_events_delete_btn_all" pageUid="{settings.pageIds.editEvent}" style="display:none;"  class="nav-link" title="delete Event"  extensionName="JvEvents" action="delete" controller="Event"  pluginName="Event" arguments="{event: output.event.eventId , deleteFutureEvents: 1}">
                                     <button class="btn btn-primary btn-sm " href="#">
-                                        <i class="fas fa-trash "></i> {output.event.sameMasterId}x <span class="mx-1"><f:translate key="event_delete_really_button">
+                                        <i class="fas fa-trash "></i> {output.event.sameMasterId}x <span class="mx-1"><f:translate key="LLL:EXT:jv-events/Resources/Private/Language/de.locallang.xlf:event_delete_really_button">
                                      Delete really!
                                  </f:translate></span>
                                     </button>
@@ -207,10 +207,30 @@
                                                 <button class="btn btn-outline-primary btn-sm rounded-circle mr-2" href="#">
                                                     <i class="fas fa-users"></i>
                                                 </button>
-                                                <span class="">{output.event.registration.registeredSeats}<f:if condition="{output.event.registration.unconfirmedSeats}"> <span title="{f:translate(key:'tx_jvevents_domain_model_event.available_waiting_seats' , default:'')}"> (+{output.event.registration.unconfirmedSeats})</span></f:if> <f:translate key="registrations" default="Anmeldungen"/></span>
+                                                <span class="">{output.event.registration.registeredSeats}<f:if condition="{output.event.registration.unconfirmedSeats}"> <span title="{f:translate(key:'LLL:EXT:jv-events/Resources/Private/Language/de.locallang.xlf:tx_jvevents_domain_model_event.available_waiting_seats' , default:'')}"> (+{output.event.registration.unconfirmedSeats})</span></f:if> <f:translate key="LLL:EXT:jv-events/Resources/Private/Language/de.locallang.xlf:registrations" default="Anmeldungen"/></span>
                                              </f:link.page>
                                         </div>
+
+                                        <div class="col-12 pt-2 hidden d-none">
+                                            <f:link.action pageUid="{settings.pageIds.editEvent}" action="soldout" controller="Ajax" extensionName="JvEvents" pluginName="Ajax"
+                                                           class="btn btn-outline-primary x-1  w-100 text-left" title="Sold Out, no further registration possible"
+                                                           arguments="{event: output.event.eventId, returnUrl: output.event.slug, soldout: output.event.soldOut}">
+                                                <button class="btn btn-outline-primary btn-sm rounded-circle mr-2" href="#">
+                                                    <i class="fas fa-door-closed"></i>
+                                                </button>
+                                                <f:if condition="{output.event.soldOut}">
+                                                    <f:then>
+                                                        Set Registration possible
+                                                    </f:then>
+                                                    <f:else>
+                                                        Set  Sold Out
+                                                    </f:else>
+                                                </f:if>
+                                            </f:link.action>
+
+                                        </div>
                                     </f:security.ifHasRole>
+
                                     <f:if condition="{settings.pageIds.addMedia}">
                                         <div class="col-12 pt-2">
                                             <f:link.page pageUid="{settings.pageIds.addMedia}" class="btn btn-outline-primary x-1  w-100 text-left" title="Add Teaser Image to Event" additionalParams="{tx_jvmediaconnector_connector: {action: 'list', controller: 'Media', pluginName: 'Events' ,  reference: {id: output.event.eventId, table: 'tx_jvevents_domain_model_event' , fieldname: 'teaser_image' , maxRelations: '1' , returnPid: output.returnPid , returnArray: {tx_jvevents_event: {action: 'show', event: output.event.eventId }}}}}">
@@ -229,6 +249,10 @@
 
                                         </div>
                                     </f:if>
+
+
+
+
                                     <div class="col-12 pt-2">
                                         <span class="btn btn-outline-primary x-1 w-100 text-left"  >
                                              <button class="btn btn-outline-primary btn-sm rounded-circle mr-2" href="#">
@@ -352,7 +376,7 @@
                                 <i class="fas fa-trash "></i>
                            </button>
                            <span class="d-none d-md-inline-block">
-                               <f:translate key="event_delete_really_button">
+                               <f:translate key="LLL:EXT:jv-events/Resources/Private/Language/de.locallang.xlf:event_delete_really_button">
                                     Delete!
                                </f:translate>
                            </span>

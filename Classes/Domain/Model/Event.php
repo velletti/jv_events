@@ -2134,6 +2134,16 @@ class Event extends AbstractEntity
         return false ;
     }
 
+
+    /**
+     * @return boolean
+     */
+    public function isSoldOut()
+    {
+
+        return $this->isIsNoFreeSeats() ;
+    }
+
     /**
      * @return boolean
      */

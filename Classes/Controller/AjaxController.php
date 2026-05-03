@@ -337,6 +337,7 @@ class AjaxController extends BaseController
                 $output['event']['registration']['possible'] = $event->isIsRegistrationPossible() ;
                 $output['event']['registration']['formPid'] = $event->getRegistrationFormPid() ;
                 $output['event']['registration']['noFreeSeats'] = $event->isIsNoFreeSeats() ;
+                $output['event']['soldOut']         = $event->isSoldOut() ;
                 $output['event']['registration']['freeSeats'] = $event->getAvailableSeats() ;
                 $output['event']['registration']['freeSeatsWaitinglist'] = $event->getAvailableWaitingSeats();
                 $output['event']['registration']['registeredSeats'] = $event->getRegisteredSeats();

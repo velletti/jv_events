@@ -63,7 +63,6 @@ class Ajax implements MiddlewareInterface
     ): ResponseInterface
     {
         $_gp = $request->getQueryParams();
-
         if( is_array($_gp) && key_exists("tx_jvevents_ajax" ,$_gp ) && key_exists("action" ,$_gp['tx_jvevents_ajax']  ) ) {
 
             $function = strtolower( trim($_gp['tx_jvevents_ajax']['action'])) ;
@@ -74,9 +73,10 @@ class Ajax implements MiddlewareInterface
             } else if( $function == "reserveseat"  || $function == "returnseat"  ) {
 
                 $this->reserveSeat( $_gp["tx_jvevents_ajax"] , $request , ($function == "reserveseat" ) ) ;
+            } else if( $function == "soldout"    ) {
+                return $this->setSoldOut( $_gp["tx_jvevents_ajax"] , $request ) ;
 
             } else  {
-                // todo rebuld here insteead of using the Ajax Controller
 
                     /** @var AjaxUtility $ajaxUtility */
                 $ajaxUtility = GeneralUtility::makeInstance(AjaxUtility::class) ;
@@ -191,6 +191,47 @@ class Ajax implements MiddlewareInterface
          }
         ShowAsJsonArrayUtility::show(array( 'error' => "no free seats" , 'event' => $arguments['event'] )) ;
     }
+
+    private function initRepositorys()
+    {
+        $this->tagRepository        = GeneralUtility::makeInstance(TagRepository::class);
+        $this->categoryRepository        = GeneralUtility::makeInstance(CategoryRepository::class);
+        $this->registrantRepository        = GeneralUtility::makeInstance(RegistrantRepository::class);
+        $this->locationRepository        = GeneralUtility::makeInstance(LocationRepository::class);
+        $this->organizerRepository        = GeneralUtility::makeInstance(OrganizerRepository::class);
+        $this->eventRepository        = GeneralUtility::makeInstance(EventRepository::class);
+        $this->subeventRepository        = GeneralUtility::makeInstance(SubeventRepository::class);
+        $this->staticCountryRepository        = GeneralUtility::makeInstance(StaticCountryRepository::class);
+        $this->tokenRepository        = GeneralUtility::makeInstance(TokenRepository::class);
+    }
+
+    public function setSoldOut(array $arguments=Null , $request = null)
+    {
+        $this->initRepositorys();
+        /** @var Event $event */
+        $event = $this->eventRepository->findByUidAllpages(intval($arguments['event']), FALSE, TRUE);
+
+        if (is_object($event)) {
+            if( $event->isSoldOut() ) {
+                $event->setWithRegistration(1);
+                $event->setRegisteredSeats(0);
+                $event->setUnconfirmedSeats(0);
+            } else {
+                $event->setWithRegistration($event->isSoldOut() ? 0 : 1);
+                $event->setRegisteredSeats($event->getAvailableSeats());
+                $event->setUnconfirmedSeats($event->getAvailableWaitingSeats());
+            }
+
+            $this->eventRepository->update($event);
+            $this->persistenceManager->persistAll();
+        }
+        return (new Response())
+            ->withHeader('Cache-Control', 'no-cache, no-store, must-revalidate')
+            ->withStatus("303")
+            ->withHeader('Location', (string)$arguments['returnUrl'] . '?rnd=' . time() );
+    }
+
+
     /**
      * action list
      *
@@ -212,16 +253,8 @@ class Ajax implements MiddlewareInterface
         // Store jv_events_token in Backend in any  folder .. token length  > 10 cahrs !!! and send it in the header (and not like in this test example in the URL)
         // https://wwwv12.allplan.com.ddev.site/de/termine/alle-termine/events-detail/event/ajax/onlyJson/6455?tx_jvevents_ajax[apiToken]=TESTTESTTEST
 
+        $this->initRepositorys() ;
 
-        $this->tagRepository        = GeneralUtility::makeInstance(TagRepository::class);
-        $this->categoryRepository        = GeneralUtility::makeInstance(CategoryRepository::class);
-        $this->registrantRepository        = GeneralUtility::makeInstance(RegistrantRepository::class);
-        $this->locationRepository        = GeneralUtility::makeInstance(LocationRepository::class);
-        $this->organizerRepository        = GeneralUtility::makeInstance(OrganizerRepository::class);
-        $this->eventRepository        = GeneralUtility::makeInstance(EventRepository::class);
-        $this->subeventRepository        = GeneralUtility::makeInstance(SubeventRepository::class);
-        $this->staticCountryRepository        = GeneralUtility::makeInstance(StaticCountryRepository::class);
-        $this->tokenRepository        = GeneralUtility::makeInstance(TokenRepository::class);
 
         if (!$arguments) {
             $arguments = GeneralUtility::_GPmerged('tx_jvevents_ajax');
