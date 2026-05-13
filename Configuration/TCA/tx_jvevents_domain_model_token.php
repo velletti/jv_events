@@ -5,7 +5,6 @@ return [
       'label' => 'name',
       'tstamp' => 'tstamp',
       'crdate' => 'crdate',
-      'cruser_id' => 'cruser_id',
       'delete' => 'deleted',
       'enablecolumns' => [
          'disabled' => 'hidden',
@@ -25,7 +24,8 @@ return [
          'config' => [
             'type' => 'input',
             'size' => 80,
-            'eval' => 'trim,required',
+            'eval' => 'trim',
+            'required' => true,
          ],
       ],
       'token' => [
@@ -34,7 +34,8 @@ return [
          'config' => [
             'type' => 'input',
             'size' => 80,
-            'eval' => 'trim,required',
+            'eval' => 'trim',
+            'required' => true,
          ],
       ],
       'referrer' => [
@@ -50,9 +51,8 @@ return [
          'exclude' => true,
          'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_token.feuser',
          'config' => [
-            'type' => 'input',
+            'type' => 'number',
             'size' => 11,
-            'eval' => 'int',
          ],
       ],
       'license' => [
@@ -62,11 +62,11 @@ return [
             'type' => 'select',
             'renderType' => 'selectSingle',
             'items' => [
-               ['BLOCKED', 'BLOCKED'],
-               ['DEMO', 'DEMO'],
-               ['BASIC', 'BASIC'],
-               ['FULL', 'FULL'],
-               ['ENTERPRISE', 'ENTERPRISE'],
+               ['label' => 'BLOCKED', 'value' => 'BLOCKED'],
+               ['label' => 'DEMO', 'value' => 'DEMO'],
+               ['label' => 'BASIC', 'value' => 'BASIC'],
+               ['label' => 'FULL', 'value' => 'FULL'],
+               ['label' => 'ENTERPRISE', 'value' => 'ENTERPRISE'],
             ],
             'default' => 'BLOCKED',
          ],
@@ -77,7 +77,7 @@ return [
          'config' => [
             'type' => 'check',
             'items' => [
-               ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.enable'],
+               ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.enable'],
             ],
          ],
       ],
@@ -85,18 +85,14 @@ return [
          'exclude' => true,
          'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
          'config' => [
-            'type' => 'input',
-            'renderType' => 'inputDateTime',
-            'eval' => 'datetime',
+            'type' => 'datetime',
          ],
       ],
       'endtime' => [
          'exclude' => true,
          'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
          'config' => [
-            'type' => 'input',
-            'renderType' => 'inputDateTime',
-            'eval' => 'datetime',
+            'type' => 'datetime',
          ],
       ],
    ],

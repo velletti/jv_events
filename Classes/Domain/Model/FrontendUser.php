@@ -139,7 +139,7 @@ class FrontendUser extends AbstractEntity
     /**
      * Called again with initialize object, as fetching an entity from the DB does not use the constructor
      */
-    public function initializeObject()
+    public function initializeObject(): void
     {
         $this->usergroup ??= new ObjectStorage();
         # $this->image = $this->image ?? new ObjectStorage();
@@ -150,7 +150,7 @@ class FrontendUser extends AbstractEntity
      *
      * @param string $username
      */
-    public function setUsername($username)
+    public function setUsername($username): void
     {
         $this->username = $username;
     }
@@ -170,7 +170,7 @@ class FrontendUser extends AbstractEntity
      *
      * @param string $password
      */
-    public function setPassword($password)
+    public function setPassword($password): void
     {
         $this->password = $password;
     }
@@ -191,7 +191,7 @@ class FrontendUser extends AbstractEntity
      *
      * @param ObjectStorage<FrontendUserGroup> $usergroup
      */
-    public function setUsergroup(ObjectStorage $usergroup)
+    public function setUsergroup(ObjectStorage $usergroup): void
     {
         $this->usergroup = $usergroup;
     }
@@ -199,7 +199,7 @@ class FrontendUser extends AbstractEntity
     /**
      * Adds a usergroup to the frontend user
      */
-    public function addUsergroup(FrontendUserGroup $usergroup)
+    public function addUsergroup(FrontendUserGroup $usergroup): void
     {
         $this->usergroup->attach($usergroup);
     }
@@ -207,7 +207,7 @@ class FrontendUser extends AbstractEntity
     /**
      * Removes a usergroup from the frontend user
      */
-    public function removeUsergroup(FrontendUserGroup $usergroup)
+    public function removeUsergroup(FrontendUserGroup $usergroup): void
     {
         $this->usergroup->detach($usergroup);
     }
@@ -228,7 +228,7 @@ class FrontendUser extends AbstractEntity
      *
      * @param string $name
      */
-    public function setName($name)
+    public function setName($name): void
     {
         $this->name = $name;
     }
@@ -248,7 +248,7 @@ class FrontendUser extends AbstractEntity
      *
      * @param string $firstName
      */
-    public function setFirstName($firstName)
+    public function setFirstName($firstName): void
     {
         $this->firstName = $firstName;
     }
@@ -268,7 +268,7 @@ class FrontendUser extends AbstractEntity
      *
      * @param string $middleName
      */
-    public function setMiddleName($middleName)
+    public function setMiddleName($middleName): void
     {
         $this->middleName = $middleName;
     }
@@ -288,7 +288,7 @@ class FrontendUser extends AbstractEntity
      *
      * @param string $lastName
      */
-    public function setLastName($lastName)
+    public function setLastName($lastName): void
     {
         $this->lastName = $lastName;
     }
@@ -308,7 +308,7 @@ class FrontendUser extends AbstractEntity
      *
      * @param string $address
      */
-    public function setAddress($address)
+    public function setAddress($address): void
     {
         $this->address = $address;
     }
@@ -328,7 +328,7 @@ class FrontendUser extends AbstractEntity
      *
      * @param string $telephone
      */
-    public function setTelephone($telephone)
+    public function setTelephone($telephone): void
     {
         $this->telephone = $telephone;
     }
@@ -348,7 +348,7 @@ class FrontendUser extends AbstractEntity
      *
      * @param string $fax
      */
-    public function setFax($fax)
+    public function setFax($fax): void
     {
         $this->fax = $fax;
     }
@@ -368,7 +368,7 @@ class FrontendUser extends AbstractEntity
      *
      * @param string $email
      */
-    public function setEmail($email)
+    public function setEmail($email): void
     {
         $this->email = $email;
     }
@@ -388,7 +388,7 @@ class FrontendUser extends AbstractEntity
      *
      * @param string $title
      */
-    public function setTitle($title)
+    public function setTitle($title): void
     {
         $this->title = $title;
     }
@@ -408,7 +408,7 @@ class FrontendUser extends AbstractEntity
      *
      * @param string $zip
      */
-    public function setZip($zip)
+    public function setZip($zip): void
     {
         $this->zip = $zip;
     }
@@ -428,7 +428,7 @@ class FrontendUser extends AbstractEntity
      *
      * @param string $city
      */
-    public function setCity($city)
+    public function setCity($city): void
     {
         $this->city = $city;
     }
@@ -448,7 +448,7 @@ class FrontendUser extends AbstractEntity
      *
      * @param string $country
      */
-    public function setCountry($country)
+    public function setCountry($country): void
     {
         $this->country = $country;
     }
@@ -468,7 +468,7 @@ class FrontendUser extends AbstractEntity
      *
      * @param string $www
      */
-    public function setWww($www)
+    public function setWww($www): void
     {
         $this->www = $www;
     }
@@ -488,7 +488,7 @@ class FrontendUser extends AbstractEntity
      *
      * @param string $company
      */
-    public function setCompany($company)
+    public function setCompany($company): void
     {
         $this->company = $company;
     }
@@ -528,7 +528,7 @@ class FrontendUser extends AbstractEntity
     * Sets the lastlogin value
     *
     */
-    public function setLastlogin(\DateTime $lastlogin)
+    public function setLastlogin(\DateTime $lastlogin): void
     {
         $this->lastlogin = $lastlogin;
     }

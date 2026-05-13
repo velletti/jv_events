@@ -102,7 +102,7 @@ class CleanTeaserViewHelper extends AbstractViewHelper
     /**
      * Initialize arguments
      */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('value', 'string', 'the string where we remove newlines and html tags', false);
 

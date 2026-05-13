@@ -24,7 +24,7 @@ class ObjectUtility
 		 * @var ConfigurationManagerInterface $configurationManager
 		 */
         $configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
-		return $configurationManager->getContentObject();
+		return $this->request->getAttribute('currentContentObject');
 
 	}
 

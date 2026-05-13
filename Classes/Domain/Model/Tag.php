@@ -122,7 +122,7 @@ class Tag extends AbstractEntity
      *
      * @return void
      */
-    public function setName(string $name)
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
@@ -132,7 +132,7 @@ class Tag extends AbstractEntity
      *
      * @return void
      */
-    public function addTagCategory(Category $tagCategory)
+    public function addTagCategory(Category $tagCategory): void
     {
         $this->tagCategory->attach($tagCategory);
     }
@@ -143,7 +143,7 @@ class Tag extends AbstractEntity
      * @param Category $tagCategoryToRemove The Category to be removed
      * @return void
      */
-    public function removeTagCategory(Category $tagCategoryToRemove)
+    public function removeTagCategory(Category $tagCategoryToRemove): void
     {
         $this->tagCategory->detach($tagCategoryToRemove);
     }
@@ -177,7 +177,7 @@ class Tag extends AbstractEntity
     /**
      * @param int $sorting
      */
-    public function setSorting($sorting)
+    public function setSorting($sorting): void
     {
         $this->sorting = $sorting;
     }
@@ -215,7 +215,7 @@ class Tag extends AbstractEntity
      * @param ObjectStorage<Category> $tagCategory
      * @return void
      */
-    public function setTagCategory(ObjectStorage $tagCategory)
+    public function setTagCategory(ObjectStorage $tagCategory): void
     {
         $this->tagCategory = $tagCategory;
     }
@@ -228,7 +228,7 @@ class Tag extends AbstractEntity
         return $this->nocopy;
     }
 
-    public function setNocopy(int $nocopy)
+    public function setNocopy(int $nocopy): void
     {
         $this->nocopy = $nocopy;
     }

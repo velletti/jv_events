@@ -135,7 +135,7 @@ class CleanEventsTask extends AbstractTask
     }
 
 
-    private function outputLine($msg)
+    private function outputLine($msg): void
     {
         $this->logger->error($msg);
     }
@@ -155,7 +155,7 @@ class CleanEventsTask extends AbstractTask
         $queryCount = $connectionPool->getQueryBuilderForTable('tx_jvevents_domain_model_registrant');
         $countResult = $queryCount->count( '*' )->from('tx_jvevents_domain_model_registrant' )
             ->where( $queryBuilder->expr()->lte('endtime',  $timeInPast ) )
-            ->andWhere($queryBuilder->expr()->gt('endtime', 0 ))->andWhere($queryBuilder->expr()->eq('deleted', 0 ))->executeQuery()->fetchColumn(0) ;
+            ->andWhere($queryBuilder->expr()->gt('endtime', 0 ))->andWhere($queryBuilder->expr()->eq('deleted', 0 ))->executeQuery()->fetchOne(0) ;
 
 
 
@@ -197,7 +197,7 @@ class CleanEventsTask extends AbstractTask
         $queryCount = $connectionPool->getQueryBuilderForTable('tx_jvevents_domain_model_event');
         $countResult = $queryCount->count( '*' )->from('tx_jvevents_domain_model_event' )
             ->where( $queryBuilder->expr()->lte('start_date',  $timeInPast ) )
-            ->andWhere($queryBuilder->expr()->lte('end_date', $timeInPast ))->andWhere($queryBuilder->expr()->eq('deleted', 0 ))->executeQuery()->fetchColumn(0) ;
+            ->andWhere($queryBuilder->expr()->lte('end_date', $timeInPast ))->andWhere($queryBuilder->expr()->eq('deleted', 0 ))->executeQuery()->fetchOne(0) ;
 
 
 
@@ -263,7 +263,7 @@ class CleanEventsTask extends AbstractTask
                     if(is_array($users)) {
                         foreach ( $users as $userUid ) {
                             $feuser = $queryFeUser->select('uid' , 'lastlogin' , "username", 'usergroup' , 'is_online')->from('fe_users')->where($queryFeUser->expr()->eq('uid' , $queryFeUser->createNamedParameter($userUid , Connection::PARAM_INT )
-                            ))->executeQuery()->fetch() ;
+                            ))->executeQuery()->fetchAssociative() ;
                             if( $feuser) {
                                 $debug[] = "lastLogin: " . date('d.m.Y H:i' , $feuser['lastlogin'] ) . ": uid= '" . $userUid . "' - ". $feuser['username'] . " : groups: " . $feuser['usergroup'];
                                 $usersData[] =  $feuser ;
@@ -343,7 +343,7 @@ class CleanEventsTask extends AbstractTask
         $countTotalResult = 0 ;
         $debug2 = [] ;
 
-        while ($row = $result->fetch()) {
+        while ($row = $result->fetchAssociative()) {
             // $debug[] = $row ;
             if(is_array($row )) {
                 $lastLogin = 0 ;
@@ -352,7 +352,7 @@ class CleanEventsTask extends AbstractTask
                 if(is_array($users)) {
                     foreach ( $users as $userUid ) {
                         $feuser = $queryFeUser->select('uid' , 'lastlogin' , "username", 'usergroup' , 'is_online')->from('fe_users')->where($queryFeUser->expr()->eq('uid' , $queryFeUser->createNamedParameter($userUid , Connection::PARAM_INT )
-                    ))->executeQuery()->fetch() ;
+                    ))->executeQuery()->fetchAssociative() ;
                         if( $feuser) {
                             $debug[] = "lastLogin: " . date('d.m.Y H:i' , $feuser['lastlogin'] ) . ": uid= '" . $userUid . "' - ". $feuser['username'] . " : groups: " . $feuser['usergroup'];
                             $usersData[] =  $feuser ;
@@ -404,7 +404,7 @@ class CleanEventsTask extends AbstractTask
                     }
                     $countResult = $queryCount->count( '*' )->from('tx_jvevents_domain_model_event' )
                         ->where($queryBuilder->expr()->eq('canceled',   1 ))
-                        ->andWhere($queryBuilder->expr()->eq('organizer' , $row['uid'] ) )->andWhere($queryBuilder->expr()->gt('start_date' , time() ))->executeQuery()->fetchColumn(0) ;
+                        ->andWhere($queryBuilder->expr()->eq('organizer' , $row['uid'] ) )->andWhere($queryBuilder->expr()->gt('start_date' , time() ))->executeQuery()->fetchOne(0) ;
 
                     if( $countResult > 0 ) {
                         $queryEvents->update('tx_jvevents_domain_model_event')
@@ -440,7 +440,7 @@ class CleanEventsTask extends AbstractTask
     /**
      * @param int $delRegistratationsAfter
      */
-    public function setDelRegistratationsAfter($delRegistratationsAfter)
+    public function setDelRegistratationsAfter($delRegistratationsAfter): void
     {
         $this->delRegistratationsAfter = $delRegistratationsAfter;
     }
@@ -456,7 +456,7 @@ class CleanEventsTask extends AbstractTask
     /**
      * @param string $debugmail
      */
-    public function setDebugmail($debugmail)
+    public function setDebugmail($debugmail): void
     {
         $this->debugmail = $debugmail;
     }
@@ -472,7 +472,7 @@ class CleanEventsTask extends AbstractTask
     /**
      * @param int $delEventsAfter
      */
-    public function setDelEventsAfter(int $delEventsAfter)
+    public function setDelEventsAfter(int $delEventsAfter): void
     {
         $this->delEventsAfter = $delEventsAfter;
     }
@@ -488,7 +488,7 @@ class CleanEventsTask extends AbstractTask
     /**
      * @param int $resortingOrganizer
      */
-    public function setResortingOrganizer(int $resortingOrganizer)
+    public function setResortingOrganizer(int $resortingOrganizer): void
     {
         $this->resortingOrganizer = $resortingOrganizer;
     }
@@ -504,7 +504,7 @@ class CleanEventsTask extends AbstractTask
     /**
      * @param int $disableOrganizer
      */
-    public function setDisableOrganizer(int $disableOrganizer)
+    public function setDisableOrganizer(int $disableOrganizer): void
     {
         $this->disableOrganizer = $disableOrganizer;
     }
@@ -520,14 +520,14 @@ class CleanEventsTask extends AbstractTask
     /**
      * @param int $disableOrganizerSortingValue
      */
-    public function setDisableOrganizerSortingValue(int $disableOrganizerSortingValue)
+    public function setDisableOrganizerSortingValue(int $disableOrganizerSortingValue): void
     {
         $this->disableOrganizerSortingValue = $disableOrganizerSortingValue;
     }
 
 
 
-    function debugQuery($query) {
+    function debugQuery($query): void {
         // new way to debug typo3 db queries
         $querystr = $query->getSQL() ;
         echo $querystr ;

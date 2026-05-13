@@ -94,7 +94,7 @@ class AjaxController extends BaseController
     public $tsFEController ;
 
     /** @var array  */
-    public $arguments = '' ;
+    public \TYPO3\CMS\Extbase\Mvc\Controller\Arguments $arguments  ;
 
     /** @var array */
     public $frontendUser ;
@@ -110,15 +110,7 @@ class AjaxController extends BaseController
         parent::initializeAction() ;
     }
 
-    /**
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     */
-    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
-    {
-        $this->configurationManager = $configurationManager;
-    }
-
-    public function initializeRepositorys()
+    public function initializeRepositorys(): void
     {
 
         $this->tagRepository        = GeneralUtility::makeInstance(TagRepository::class);
@@ -131,13 +123,14 @@ class AjaxController extends BaseController
         $this->staticCountryRepository        = GeneralUtility::makeInstance(StaticCountryRepository::class);
     }
 
-    public function dispatcher()
+    public function dispatcher(): void
     {
         /**
          * Gets the Ajax Call Parameters   | OLD school without middleWare ..
          * Maybe obsolete and may not work in V12 anymore . ?? 
          */
-        $_gp = GeneralUtility::_GPmerged('tx_jvevents_ajax');
+        $_gp = $this->request->getQueryParams()['tx_jvevents_ajax'];
+        \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($_gp, $this->request->getParsedBody()['tx_jvevents_ajax']);
 
 
         $ajax = [];
@@ -608,7 +601,8 @@ class AjaxController extends BaseController
     public function eventListAction(array $arguments=Null): \Psr\Http\Message\ResponseInterface
     {
         if(!$arguments) {
-            $arguments = GeneralUtility::_GPmerged('tx_jvevents_ajax');
+            $arguments = $this->request->getQueryParams()['tx_jvevents_ajax'];
+            \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($arguments, $this->request->getParsedBody()['tx_jvevents_ajax']);
         }
         /** @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication $frontendUser */
         $this->frontendUser = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user');
@@ -650,9 +644,9 @@ class AjaxController extends BaseController
             /** @var StandaloneView $renderer */
             $renderer = $this->standaloneView  ;
             if( $arguments['rss'] ) {
-                $renderer->setTemplate("EventListRss");
+                $renderer->getRenderingContext()->setControllerAction("EventListRss");
             } else {
-                $renderer->setTemplate("EventList");
+                $renderer->getRenderingContext()->setControllerAction("EventList");
             }
         } else {
             /** @var StandaloneView $renderer */
@@ -665,7 +659,7 @@ class AjaxController extends BaseController
 
         $layoutPath = GeneralUtility::getFileAbsFileName("EXT:jv_events/Resources/Private/Layouts/");
 
-        $renderer->setLayoutRootPaths([0 => $layoutPath]);
+        $renderer->getRenderingContext()->getTemplatePaths()->setLayoutRootPaths([0 => $layoutPath]);
 
         $renderer->assign('output' , $output) ;
         $renderer->assign('settings' , $this->settings ) ;
@@ -696,14 +690,15 @@ class AjaxController extends BaseController
      *
      * @return void
      */
-    public function eventMenuAction(array $arguments=Null)
+    public function eventMenuAction(array $arguments=Null): void
     {
         /** @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication $frontendUser */
         $this->frontendUser = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user');
 
-        $pid =  GeneralUtility::_GP('id');
+        $pid =  $this->request->getParsedBody()['id'] ?? $this->request->getQueryParams()['id'] ?? null;
         if(!$arguments) {
-            $arguments = GeneralUtility::_GPmerged('tx_jvevents_ajax');
+            $arguments = $this->request->getQueryParams()['tx_jvevents_ajax'];
+            \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($arguments, $this->request->getParsedBody()['tx_jvevents_ajax']);
         }
         // https://www.allplan.com.ddev.local/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=94&tx_jvevents_ajax[action]=eventMenu&tx_jvevents_ajax[controller]=Ajax
         // https://www.allplan.com.ddev.local/index.php?uid=82&eID=jv_events&tx_jvevents_ajax[event]=2934&tx_jvevents_ajax[action]=eventMenu&tx_jvevents_ajax[mode]=onlyValues
@@ -726,7 +721,7 @@ class AjaxController extends BaseController
         if( $this->standaloneView ) {
 
             $renderer = $this->standaloneView  ;
-            $renderer->setTemplate("EventMenu") ;
+            $renderer->getRenderingContext()->setControllerAction("EventMenu") ;
         } else {
             $renderer = $this->getEmailRenderer('', '/Ajax/EventMenu' );
         }
@@ -742,7 +737,7 @@ class AjaxController extends BaseController
         $this->settings['hash'] =  $checkHash ;
         $this->settings['cookie'] =  $_COOKIE ;
 
-        $renderer->setLayoutRootPaths([0 => $layoutPath]);
+        $renderer->getRenderingContext()->getTemplatePaths()->setLayoutRootPaths([0 => $layoutPath]);
         $renderer->assign('output' , $output) ;
         $this->settings['Ajax']['Action'] = "Main" ;
         $this->settings['EmConfiguration'] = EmConfigurationUtility::getEmConf();
@@ -773,10 +768,11 @@ class AjaxController extends BaseController
         die;
     }
 
-    public function cleanHistory(array $arguments=Null) {
+    public function cleanHistory(array $arguments=Null): void {
         $return = '' ;
         if(!$arguments) {
-            $arguments = GeneralUtility::_GPmerged('tx_jvevents_ajax');
+            $arguments = $this->request->getQueryParams()['tx_jvevents_ajax'];
+            \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($arguments, $this->request->getParsedBody()['tx_jvevents_ajax']);
         }
         if(!$arguments) {
             ShowAsJsonArrayUtility::show( ['status' => false, 'html' => $return] ) ;
@@ -868,7 +864,7 @@ class AjaxController extends BaseController
     }
 
 
-    public function locationListAction(array $arguments=Null) {
+    public function locationListAction(array $arguments=Null): void {
         $orgArray = [];
         $locations = null;
         /** @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication $frontendUser */
@@ -877,7 +873,8 @@ class AjaxController extends BaseController
         /*   render the HTML Output :
         /* ************************************************************************************************************ */
         if(!$arguments) {
-            $arguments = GeneralUtility::_GPmerged('tx_jvevents_ajax');
+            $arguments = $this->request->getQueryParams()['tx_jvevents_ajax'];
+            \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($arguments, $this->request->getParsedBody()['tx_jvevents_ajax']);
         }
 
         $output = $this->locationListSub($arguments) ;
@@ -900,14 +897,14 @@ class AjaxController extends BaseController
         if( $this->standaloneView ) {
             /** @var StandaloneView $renderer */
             $renderer = $this->standaloneView  ;
-            $renderer->setTemplate("locationList") ;
+            $renderer->getRenderingContext()->setControllerAction("locationList") ;
         } else {
             /** @var StandaloneView $renderer */
             $renderer = $this->getEmailRenderer( '', '/Ajax/locationList' );
         }
 
         $layoutPath = GeneralUtility::getFileAbsFileName("EXT:jv_events/Resources/Private/Layouts/");
-        $renderer->setLayoutRootPaths([0 => $layoutPath]);
+        $renderer->getRenderingContext()->getTemplatePaths()->setLayoutRootPaths([0 => $layoutPath]);
 
         $renderer->assign('output' , $output) ;
         $renderer->assign('settings' , $this->settings ) ;
@@ -991,9 +988,9 @@ class AjaxController extends BaseController
 
 
         if( !$organizer  ) {
-            $this->addFlashMessage("Organizer not found by ID : " . $organizerUid , "" , AbstractMessage::WARNING) ;
+            $this->addFlashMessage("Organizer not found by ID : " . $organizerUid , "" , \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING) ;
             try {
-                $this->redirect('assist' , "Organizer", Null , NULL , $this->settings['pageIds']['organizerAssist'] );
+                return $this->redirect('assist' , "Organizer", Null , NULL , $this->settings['pageIds']['organizerAssist'] );
             } catch(StopActionException) {
                 foreach (  $this->response->getHeaders() as $header ) {
                     header( $header) ;
@@ -1003,9 +1000,9 @@ class AjaxController extends BaseController
             }
         }
         if( !$user ) {
-            $this->addFlashMessage("User not found by ID : " . $userUid , "" , AbstractMessage::WARNING) ;
+            $this->addFlashMessage("User not found by ID : " . $userUid , "" , \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING) ;
             try {
-                $this->redirect('assist' , "Organizer", Null , NULL , $this->settings['pageIds']['organizerAssist'] );
+                return $this->redirect('assist' , "Organizer", Null , NULL , $this->settings['pageIds']['organizerAssist'] );
             } catch(StopActionException) {
                 foreach (  $this->response->getHeaders() as $header ) {
                     header( $header) ;
@@ -1029,9 +1026,9 @@ class AjaxController extends BaseController
                 echo "<br>Gives: " . $tokenId ;
                 die;
             }
-            $this->addFlashMessage("Hmac does not fit to: " . $tokenStr , "ERROR" , AbstractMessage::ERROR) ;
+            $this->addFlashMessage("Hmac does not fit to: " . $tokenStr , "ERROR" , \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR) ;
             try {
-                $this->redirect('assist' , "Organizer", Null , NULL , $this->settings['pageIds']['organizerAssist'] );
+                return $this->redirect('assist' , "Organizer", Null , NULL , $this->settings['pageIds']['organizerAssist'] );
             } catch(StopActionException) {
                 foreach (  $this->response->getHeaders() as $header ) {
                     header( $header) ;
@@ -1079,10 +1076,10 @@ class AjaxController extends BaseController
         $organizer->setHidden(0) ;
         $this->organizerRepository->update( $organizer) ;
         $this->persistenceManager->persistAll() ;
-        $this->addFlashMessage("User : " . $userUid . " (" . $user->getEmail() . ") enabled | " . $msg . "  " , "Success" , AbstractMessage::OK) ;
-        $this->addFlashMessage("Organizer : " . $organizerUid . " (" . $organizer->getName() . ")  enabled " , AbstractMessage::OK) ;
+        $this->addFlashMessage("User : " . $userUid . " (" . $user->getEmail() . ") enabled | " . $msg . "  " , "Success" , \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK) ;
+        $this->addFlashMessage("Organizer : " . $organizerUid . " (" . $organizer->getName() . ")  enabled " , \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK) ;
         try {
-            $this->redirect('assist' , "Organizer", Null , NULL , $this->settings['pageIds']['organizerAssist'] );
+            return $this->redirect('assist' , "Organizer", Null , NULL , $this->settings['pageIds']['organizerAssist'] );
         } catch(StopActionException) {
             foreach (  $this->response->getHeaders() as $header ) {
                 header( $header) ;
@@ -1097,12 +1094,13 @@ class AjaxController extends BaseController
      * @throws IllegalObjectTypeException
      * @throws UnknownObjectException
      */
-    public function eventChangeLocIdAction( array $arguments=null ) {
+    public function eventChangeLocIdAction( array $arguments=null ): void {
         /** @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication $frontendUser */
         $this->frontendUser = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user');
         $output = [];
         if(!$arguments) {
-            $arguments = GeneralUtility::_GPmerged('tx_jvevents_ajax');
+            $arguments = $this->request->getQueryParams()['tx_jvevents_ajax'];
+            \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($arguments, $this->request->getParsedBody()['tx_jvevents_ajax']);
         }
         // https:/tango.ddev.local/index.php?uid=82&eID=jv_events&tx_jvevents_ajax[event]=2264&tx_jvevents_ajax[action]=eventUnlink&
         $output['success'] = false ;
@@ -1163,12 +1161,13 @@ class AjaxController extends BaseController
      * @throws IllegalObjectTypeException
      * @throws UnknownObjectException
      */
-    public function eventUnlinkAction( array $arguments=null ) {
+    public function eventUnlinkAction( array $arguments=null ): void {
         /** @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication $frontendUser */
         $this->frontendUser = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user');
         $output = [];
         if(!$arguments) {
-            $arguments = GeneralUtility::_GPmerged('tx_jvevents_ajax');
+            $arguments = $this->request->getQueryParams()['tx_jvevents_ajax'];
+            \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($arguments, $this->request->getParsedBody()['tx_jvevents_ajax']);
         }
         // https:/tango.ddev.local/index.php?uid=82&eID=jv_events&tx_jvevents_ajax[event]=2264&tx_jvevents_ajax[action]=eventUnlink&
         $output['success'] = false ;
@@ -1323,9 +1322,9 @@ class AjaxController extends BaseController
                 /* get Current banner is exists  */
                 $row = $queryBuilder ->select('uid' , 'starttime', 'endtime', 'impressions','clicks'   )
                     ->from('tx_sfbanners_domain_model_banner')
-                    ->where( $queryBuilder->expr()->eq('link', $queryBuilder->createNamedParameter($output['event']["eventId"] , \PDO::PARAM_INT)) )
-                    ->andWhere( $queryBuilder->expr()->eq('deleted', $queryBuilder->createNamedParameter(0 , \PDO::PARAM_INT)) )
-                    ->andWhere( $queryBuilder->expr()->eq('hidden', $queryBuilder->createNamedParameter(0 , \PDO::PARAM_INT)) )
+                    ->where( $queryBuilder->expr()->eq('link', $queryBuilder->createNamedParameter($output['event']["eventId"] , \TYPO3\CMS\Core\Database\Connection::PARAM_INT)) )
+                    ->andWhere( $queryBuilder->expr()->eq('deleted', $queryBuilder->createNamedParameter(0 , \TYPO3\CMS\Core\Database\Connection::PARAM_INT)) )
+                    ->andWhere( $queryBuilder->expr()->eq('hidden', $queryBuilder->createNamedParameter(0 , \TYPO3\CMS\Core\Database\Connection::PARAM_INT)) )
                     ->orderBy("endtime" , "DESC")
                     ->setMaxResults(1)
                     ->executeQuery()
@@ -1353,7 +1352,7 @@ class AjaxController extends BaseController
                 $endTime = $now + ( 3600 * 24 * $daysInFuture) ;
                 $queryBuilder = $this->getQueryBuilderBanner( $connectionPool, $endTime , $output['event']["categoryId"] ) ;
 
-                $queryBuilder->andWhere( $queryBuilder->expr()->gte('endtime', $queryBuilder->createNamedParameter( $now , \PDO::PARAM_INT)) );
+                $queryBuilder->andWhere( $queryBuilder->expr()->gte('endtime', $queryBuilder->createNamedParameter( $now , \TYPO3\CMS\Core\Database\Connection::PARAM_INT)) );
 
 
                 $rows = $queryBuilder
@@ -1380,7 +1379,7 @@ class AjaxController extends BaseController
                 $CurrentTime = $now + ( 3600 * 24 * 7) ;
                 $queryBuilder = $this->getQueryBuilderBanner( $connectionPool, $CurrentTime , $output['event']["categoryId"] ) ;
 
-                $queryBuilder->andWhere( $queryBuilder->expr()->gte('endtime', $queryBuilder->createNamedParameter( $now , \PDO::PARAM_INT)) );
+                $queryBuilder->andWhere( $queryBuilder->expr()->gte('endtime', $queryBuilder->createNamedParameter( $now , \TYPO3\CMS\Core\Database\Connection::PARAM_INT)) );
 
 
                 $rows = $queryBuilder
@@ -1406,8 +1405,8 @@ class AjaxController extends BaseController
                     $endTime = $now + ( 3600 * 24 * $daysInFuture) ;
                     $queryBuilder = $this->getQueryBuilderBanner( $connectionPool, $endTime , $output['event']["categoryId"] ) ;
 
-                    $queryBuilder->andWhere( $queryBuilder->expr()->eq('organizer', $queryBuilder->createNamedParameter( $organizerId , \PDO::PARAM_INT)) ) ;
-                    $queryBuilder->andWhere( $queryBuilder->expr()->gte('endtime', $queryBuilder->createNamedParameter( $startPast , \PDO::PARAM_INT)) );
+                    $queryBuilder->andWhere( $queryBuilder->expr()->eq('organizer', $queryBuilder->createNamedParameter( $organizerId , \TYPO3\CMS\Core\Database\Connection::PARAM_INT)) ) ;
+                    $queryBuilder->andWhere( $queryBuilder->expr()->gte('endtime', $queryBuilder->createNamedParameter( $startPast , \TYPO3\CMS\Core\Database\Connection::PARAM_INT)) );
 
                     $rows = $queryBuilder->executeQuery()->fetchAllAssociative() ;
                     if ( $rows) {
@@ -1529,18 +1528,18 @@ class AjaxController extends BaseController
         $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         $queryBuilder->select('uid' ,'pid', 'link' , 'title', 'starttime', 'endtime', 'impressions','clicks', 'fe_user' ,'organizer'   )
             ->from('tx_sfbanners_domain_model_banner')
-            ->where( $queryBuilder->expr()->eq('deleted', $queryBuilder->createNamedParameter(0 , \PDO::PARAM_INT)) )
-            ->andWhere( $queryBuilder->expr()->eq('hidden', $queryBuilder->createNamedParameter(0 , \PDO::PARAM_INT)) )
-            ->andWhere( $queryBuilder->expr()->lte('starttime', $queryBuilder->createNamedParameter( $endTime , \PDO::PARAM_INT)) )
+            ->where( $queryBuilder->expr()->eq('deleted', $queryBuilder->createNamedParameter(0 , \TYPO3\CMS\Core\Database\Connection::PARAM_INT)) )
+            ->andWhere( $queryBuilder->expr()->eq('hidden', $queryBuilder->createNamedParameter(0 , \TYPO3\CMS\Core\Database\Connection::PARAM_INT)) )
+            ->andWhere( $queryBuilder->expr()->lte('starttime', $queryBuilder->createNamedParameter( $endTime , \TYPO3\CMS\Core\Database\Connection::PARAM_INT)) )
             ->orderBy("endtime" , "ASC")
             ->setMaxResults(99) ;
 
         if( $categoryId == 2 ) {
             // banner lernen
-            $queryBuilder->andWhere( $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter(135 , \PDO::PARAM_INT)) ) ;
+            $queryBuilder->andWhere( $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter(135 , \TYPO3\CMS\Core\Database\Connection::PARAM_INT)) ) ;
         } else {
             // banner tanzen urlaub sonstiges etc
-            $queryBuilder->andWhere( $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter( 56 , \PDO::PARAM_INT)) ) ;
+            $queryBuilder->andWhere( $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter( 56 , \TYPO3\CMS\Core\Database\Connection::PARAM_INT)) ) ;
         }
         return $queryBuilder ;
     }

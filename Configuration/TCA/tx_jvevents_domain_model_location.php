@@ -34,7 +34,6 @@ $return = array(
         'label_alt_force' => 1,
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
-		'cruser_id' => 'cruser_id',
 		'sortby' => 'sorting',
 		'versioningWS' => false,
 
@@ -239,23 +238,12 @@ $return = array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_location.link',
 			'config' => array(
-				'type' => 'input',
-				'eval' => 'trim',
+				'type' => 'link',
 				'size' => '30',
-				'max' => '255',
 				'softref' => 'typolink,url',
-                'renderType' => 'inputLink' ,
+                'allowedTypes' => ['page', 'url', 'record', 'telephone'] ,
 
-                'fieldControl' => array(
-                    'linkPopup' => array(
-                        'options' => array(
-                            'blindLinkOptions' => 'mail,file,spec,folder' ,
-                            'title' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_location.link' ,
-                            'windowOpenParameters' => 'height=300,width=500,status=0,menubar=0,scrollbars=1' ,
-                        ),
-
-                    ),
-                ) ,
+                'appearance' => ['browserTitle' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_location.link'] ,
             ) ,
 
 		),
@@ -373,48 +361,48 @@ $return = array(
         'teaser_image' => array(
             'exclude' => 0,
             'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_location.teaserImage',
-            'config' => ExtensionManagementUtility::getFileFieldTCAConfig(
-                'teaser_image',
-                array(
-                    'appearance' => array(
-                        'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:images.addFileReference'
-                    ),
-                    'foreign_types' => array(
-                        '0' => array(
-                            'showitem' => '
-							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
-							--palette--;;filePalette'
-                        ),
-                        File::FILETYPE_TEXT => array(
-                            'showitem' => '
-							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
-							--palette--;;filePalette'
-                        ),
-                        File::FILETYPE_IMAGE => array(
-                            'showitem' => '
-							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
-							--palette--;;filePalette'
-                        ),
-                        File::FILETYPE_AUDIO => array(
-                            'showitem' => '
-							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
-							--palette--;;filePalette'
-                        ),
-                        File::FILETYPE_VIDEO => array(
-                            'showitem' => '
-							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
-							--palette--;;filePalette'
-                        ),
-                        File::FILETYPE_APPLICATION => array(
-                            'showitem' => '
-							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
-							--palette--;;filePalette'
-                        )
-                    ),
-                    'maxitems' => 1
+            'config' => [
+                // TODO: Important! Verify that the fieldname value in foreign table either matches the column name
+                // or is set properly in the following TCA, see https://docs.typo3.org/permalink/t3tca:confval-inline-foreign-match-fields
+                'type' => 'file',
+                'allowed' => "jpg,jpeg,gif,png",
+                'appearance' => array(
+                    'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:images.addFileReference'
                 ),
-                "jpg,jpeg,gif,png"
-            ),
+                'foreign_types' => array(
+                    '0' => array(
+                        'showitem' => '
+							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+							--palette--;;filePalette'
+                    ),
+                    \TYPO3\CMS\Core\Resource\FileType::TEXT->value => array(
+                        'showitem' => '
+							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+							--palette--;;filePalette'
+                    ),
+                    \TYPO3\CMS\Core\Resource\FileType::IMAGE->value => array(
+                        'showitem' => '
+							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+							--palette--;;filePalette'
+                    ),
+                    \TYPO3\CMS\Core\Resource\FileType::AUDIO->value => array(
+                        'showitem' => '
+							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+							--palette--;;filePalette'
+                    ),
+                    \TYPO3\CMS\Core\Resource\FileType::VIDEO->value => array(
+                        'showitem' => '
+							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+							--palette--;;filePalette'
+                    ),
+                    \TYPO3\CMS\Core\Resource\FileType::APPLICATION->value => array(
+                        'showitem' => '
+							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+							--palette--;;filePalette'
+                    )
+                ),
+                'maxitems' => 1,
+            ],
         ),
 
 	),

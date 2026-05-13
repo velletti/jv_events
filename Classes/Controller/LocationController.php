@@ -57,7 +57,7 @@ class LocationController extends BaseController
      *
      * @return void
      */
-    public function initializeAction()
+    public function initializeAction(): void
     {
         if( !$this->request->hasArgument('location')) {
             // ToDo redirect to error

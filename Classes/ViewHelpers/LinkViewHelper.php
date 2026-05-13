@@ -66,9 +66,8 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
 
     
   
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
-        $this->registerUniversalTagAttributes();
         $this->registerTagAttribute('section', 'string', 'Anchor for links', false);
 
         $this->registerArgument('event', Event::class, 'Event', false);
@@ -136,8 +135,8 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         if ($uriOnly) {
             $configuration['forceAbsoluteUrl'] = 1 ;
         }
-        if ( intval( $GLOBALS['TSFE']->config['config']['sys_language_uid'] ) > 0 ) {
-            $configuration['additionalParams'] .= "&L=" . intval( $GLOBALS['TSFE']->config['config']['sys_language_uid'] ) ;
+        if ( intval( $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.typoscript')->getConfigArray()['sys_language_uid'] ) > 0 ) {
+            $configuration['additionalParams'] .= "&L=" . intval( $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.typoscript')->getConfigArray()['sys_language_uid'] ) ;
         }
         $url = $this->cObj->typoLink_URL($configuration);
         if ($this->hasArgument('section')) {

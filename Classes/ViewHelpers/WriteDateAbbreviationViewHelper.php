@@ -21,14 +21,14 @@ class WriteDateAbbreviationViewHelper extends AbstractViewHelper{
     /** * Constructor *
      * @api
      */
-    public function initializeArguments() {
+    public function initializeArguments(): void {
         $this->registerArgument('month', 'string', 'Month value (1 - 12) as String for translation ', false);
         parent::initializeArguments() ;
     }
 
 	public function render() {
         $month = $this->arguments['month'] ;
-		$abbreviation = LocalizationUtility::translate('tx_jvevents_event.dateFormat.month.abbreviation.' . $month, 'jv_events');
+		$abbreviation = LocalizationUtility::translate('tx_jvevents_event.dateFormat.month.abbreviation.' . $month, 'JvEvents');
 		return $abbreviation;
 
 	}

@@ -120,7 +120,7 @@ class CleanEventsTaskAdditionalFieldProvider extends AbstractAdditionalFieldProv
             $this->addMessage(
                 //$this->getLanguageService()->sL('LLL:EXT:allplan_ke_search_extended/Resources/Private/Language/locallang_tasks.xlf:indexerTaskErrorStoragePid', true),
                 'Error Checking storagePid' ,
-                AbstractMessage::ERROR
+                \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR
 
             );
             $validStoragePid = false;
@@ -136,7 +136,7 @@ class CleanEventsTaskAdditionalFieldProvider extends AbstractAdditionalFieldProv
      * @return void
      * @throws \InvalidArgumentException
      */
-    public function saveAdditionalFields(array $submittedData, AbstractTask $task)
+    public function saveAdditionalFields(array $submittedData, AbstractTask $task): void
     {
         if (!$task instanceof AbstractTask ) {
             throw new \InvalidArgumentException(
@@ -167,7 +167,7 @@ class CleanEventsTaskAdditionalFieldProvider extends AbstractAdditionalFieldProv
         if (ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()) {
             $lng = $GLOBALS['BE_USER']->uc['lang'] ;
         } else {
-            $lng = $GLOBALS['TSFE']->config['config']['language'] ;
+            $lng = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.typoscript')->getConfigArray()['language'] ;
         }
         if ( $lng == '' ) { $lng = "en" ;}
         $lang->init($lng) ;

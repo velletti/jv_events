@@ -87,7 +87,7 @@ class EventBackendController extends BaseController
     }
 
 
-	public function initializeAction() {
+	public function initializeAction(): void {
        // This works only, if moduleTemplateFactory is used for view => see action function(s)
        $this->pageRenderer->addCssFile('EXT:jv_events/Resources/Public/Css/backendModule.css', 'stylesheet', 'all', '', false);
        // $this->pageRenderer->loadJavaScriptModule('@peterBenke/pbNotifications/Notifications.js');
@@ -130,7 +130,7 @@ class EventBackendController extends BaseController
         $eventID = null;
         $events = [];
         $itemsPerPage = 20 ;
-        $pageId = GeneralUtility::_GP('id');
+        $pageId = $this->request->getParsedBody()['id'] ?? $this->request->getQueryParams()['id'] ?? null;
 
         $pageRow = BackendUtility::getRecord(
            'pages',

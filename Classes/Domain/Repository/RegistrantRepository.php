@@ -62,7 +62,14 @@ class RegistrantRepository extends BaseRepository
 		$query = $this->createQuery();
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		$query->getQuerySettings()->setRespectSysLanguage(FALSE);
-        $query->getQuerySettings()->setLanguageOverlayMode(FALSE) ;
+        
+        // until V12 just
+        //    $query->getQuerySettings()->setLanguageOverlayMode(FALSE) ;
+
+        // rector changes it for V13 to: 
+        $languageAspect = $query->getQuerySettings()->getLanguageAspect();
+        $languageAspect = new \TYPO3\CMS\Core\Context\LanguageAspect($languageAspect->getId(), $languageAspect->getContentId(), \TYPO3\CMS\Core\Context\LanguageAspect::OVERLAYS_OFF);
+        $query->getQuerySettings()->setLanguageAspect($languageAspect);
 
 		// $query->getQuerySettings()->setIgnoreEnableFields(TRUE) ;
 
@@ -176,7 +183,9 @@ class RegistrantRepository extends BaseRepository
 
         $query->getQuerySettings()->setRespectSysLanguage(FALSE);
         $query->getQuerySettings()->setIgnoreEnableFields(TRUE) ;
-        $query->getQuerySettings()->setLanguageOverlayMode(FALSE) ;
+        $languageAspect = $query->getQuerySettings()->getLanguageAspect();
+        $languageAspect = new \TYPO3\CMS\Core\Context\LanguageAspect($languageAspect->getId(), $languageAspect->getContentId(), \TYPO3\CMS\Core\Context\LanguageAspect::OVERLAYS_OFF);
+        $query->getQuerySettings()->setLanguageAspect($languageAspect);
 
         $query->setOrderings($orderings) ;
 

@@ -59,7 +59,7 @@ class FrontendUserGroup extends AbstractEntity
      *
      * @param string|null $title
      */
-    public function setTitle(?string $title = null)
+    public function setTitle(?string $title = null): void
     {
         if ($title === null && $this->uid > 0) {
             /** @var ConnectionPool $connectionPool */
@@ -68,11 +68,9 @@ class FrontendUserGroup extends AbstractEntity
             $qb =  $connectionPool->getConnectionForTable('fe_groups')->createQueryBuilder();
             $title = $qb->select('title')
                 ->from('fe_groups')
-                ->where(
-                    $qb->expr()->eq('uid', $qb->createNamedParameter($this->uid, \PDO::PARAM_INT))
-                )
-                ->execute()
-                ->fetchColumn();
+                ->where($qb->expr()->eq('uid', $qb->createNamedParameter($this->uid, \TYPO3\CMS\Core\Database\Connection::PARAM_INT)))
+                ->executeQuery()
+                ->fetchOne();
             if ($title === false) {
                 switch ($this->uid) {
                    case 2:
@@ -115,7 +113,7 @@ class FrontendUserGroup extends AbstractEntity
      *
      * @param string $description
      */
-    public function setDescription($description)
+    public function setDescription($description): void
     {
         $this->description = $description;
     }
@@ -136,7 +134,7 @@ class FrontendUserGroup extends AbstractEntity
      *
      * @param ObjectStorage<FrontendUserGroup> $subgroup An object storage containing the subgroups to add
      */
-    public function setSubgroup(ObjectStorage $subgroup)
+    public function setSubgroup(ObjectStorage $subgroup): void
     {
         $this->subgroup = $subgroup;
     }
@@ -144,7 +142,7 @@ class FrontendUserGroup extends AbstractEntity
     /**
      * Adds a subgroup to the frontend user
      */
-    public function addSubgroup(FrontendUserGroup $subgroup)
+    public function addSubgroup(FrontendUserGroup $subgroup): void
     {
         $this->subgroup->attach($subgroup);
     }
@@ -152,7 +150,7 @@ class FrontendUserGroup extends AbstractEntity
     /**
      * Removes a subgroup from the frontend user group
      */
-    public function removeSubgroup(FrontendUserGroup $subgroup)
+    public function removeSubgroup(FrontendUserGroup $subgroup): void
     {
         $this->subgroup->detach($subgroup);
     }

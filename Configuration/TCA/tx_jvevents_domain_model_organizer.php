@@ -31,7 +31,6 @@ $returnArray = array(
 		'label' => 'name',
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
-		'cruser_id' => 'cruser_id',
 		'sortby' => 'sorting',
         'default_sortby' => 'crdate DESC',
 		'versioningWS' => false,
@@ -254,23 +253,12 @@ $returnArray = array(
             'exclude' => 0,
             'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_organizer.link',
             'config' => array(
-                'type' => 'input',
-                'eval' => 'trim',
+                'type' => 'link',
                 'size' => '30',
-                'max' => '255',
                 'softref' => 'typolink,url',
-                'renderType' => 'inputLink' ,
+                'allowedTypes' => ['page', 'url', 'record', 'telephone'] ,
 
-                'fieldControl' => array(
-                    'linkPopup' => array(
-                        'options' => array(
-                            'blindLinkOptions' => 'mail,file,spec,folder' ,
-                            'title' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_organizer.link' ,
-                            'windowOpenParameters' => 'height=300,width=500,status=0,menubar=0,scrollbars=1' ,
-                        ),
-
-                    ),
-                ) ,
+                'appearance' => ['browserTitle' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_organizer.link'] ,
             ) ,
 
         ),
@@ -278,23 +266,12 @@ $returnArray = array(
             'exclude' => 1,
             'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_domain_model_organizer.charity_link',
             'config' => array(
-                'type' => 'input',
-                'eval' => 'trim',
+                'type' => 'link',
                 'size' => '30',
-                'max' => '255',
                 'softref' => 'typolink,url',
-                'renderType' => 'inputLink' ,
+                'allowedTypes' => ['page', 'url', 'record', 'telephone'] ,
 
-                'fieldControl' => array(
-                    'linkPopup' => array(
-                        'options' => array(
-                            'blindLinkOptions' => 'mail,file,spec,folder' ,
-                            'title' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_domain_model_organizer.charity_link' ,
-                            'windowOpenParameters' => 'height=300,width=500,status=0,menubar=0,scrollbars=1' ,
-                        ),
-
-                    ),
-                ) ,
+                'appearance' => ['browserTitle' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_domain_model_organizer.charity_link'] ,
             ) ,
 
         ),
@@ -303,23 +280,12 @@ $returnArray = array(
             'exclude' => 1,
             'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_domain_model_organizer.youtube_link',
             'config' => array(
-                'type' => 'input',
-                'eval' => 'trim',
+                'type' => 'link',
                 'size' => '30',
-                'max' => '255',
                 'softref' => 'typolink,url',
-                'renderType' => 'inputLink' ,
+                'allowedTypes' => ['page', 'url', 'record', 'telephone'] ,
 
-                'fieldControl' => array(
-                    'linkPopup' => array(
-                        'options' => array(
-                            'blindLinkOptions' => 'mail,file,spec,folder' ,
-                            'title' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_domain_model_organizer.youtube_link' ,
-                            'windowOpenParameters' => 'height=300,width=500,status=0,menubar=0,scrollbars=1' ,
-                        ),
-
-                    ),
-                ) ,
+                'appearance' => ['browserTitle' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang.xlf:tx_jvevents_domain_model_organizer.youtube_link'] ,
             ) ,
 
         ),
@@ -380,48 +346,48 @@ $returnArray = array(
 		'images' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_organizer.images',
-			'config' => ExtensionManagementUtility::getFileFieldTCAConfig(
-				'images',
-				array(
-					'appearance' => array(
+			'config' => [
+                // TODO: Important! Verify that the fieldname value in foreign table either matches the column name
+                // or is set properly in the following TCA, see https://docs.typo3.org/permalink/t3tca:confval-inline-foreign-match-fields
+                'type' => 'file',
+                'allowed' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],
+                'appearance' => array(
 						'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.addFileReference'
 					),
-					'foreign_types' => array(
+                'foreign_types' => array(
 						'0' => array(
 							'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
 						),
-						File::FILETYPE_TEXT => array(
+						\TYPO3\CMS\Core\Resource\FileType::TEXT->value => array(
 							'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
 						),
-						File::FILETYPE_IMAGE => array(
+						\TYPO3\CMS\Core\Resource\FileType::IMAGE->value => array(
 							'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
 						),
-						File::FILETYPE_AUDIO => array(
+						\TYPO3\CMS\Core\Resource\FileType::AUDIO->value => array(
 							'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
 						),
-						File::FILETYPE_VIDEO => array(
+						\TYPO3\CMS\Core\Resource\FileType::VIDEO->value => array(
 							'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
 						),
-						File::FILETYPE_APPLICATION => array(
+						\TYPO3\CMS\Core\Resource\FileType::APPLICATION->value => array(
 							'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
 						)
 					),
-					'maxitems' => 1
-				),
-				$GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
-			),
+                'maxitems' => 1,
+            ],
 		),
 		'description' => array(
 			'exclude' => 0,
@@ -530,48 +496,48 @@ $returnArray = array(
         'teaser_image' => array(
             'exclude' => 0,
             'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_organizer.teaserImage',
-            'config' => ExtensionManagementUtility::getFileFieldTCAConfig(
-                'teaser_image',
-                array(
-                    'appearance' => array(
-                        'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.addFileReference'
-                    ),
-                    'foreign_types' => array(
-                        '0' => array(
-                            'showitem' => '
-							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
-							--palette--;;filePalette'
-                        ),
-                        File::FILETYPE_TEXT => array(
-                            'showitem' => '
-							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
-							--palette--;;filePalette'
-                        ),
-                        File::FILETYPE_IMAGE => array(
-                            'showitem' => '
-							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
-							--palette--;;filePalette'
-                        ),
-                        File::FILETYPE_AUDIO => array(
-                            'showitem' => '
-							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
-							--palette--;;filePalette'
-                        ),
-                        File::FILETYPE_VIDEO => array(
-                            'showitem' => '
-							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
-							--palette--;;filePalette'
-                        ),
-                        File::FILETYPE_APPLICATION => array(
-                            'showitem' => '
-							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
-							--palette--;;filePalette'
-                        )
-                    ),
-                    'maxitems' => 1
+            'config' => [
+                // TODO: Important! Verify that the fieldname value in foreign table either matches the column name
+                // or is set properly in the following TCA, see https://docs.typo3.org/permalink/t3tca:confval-inline-foreign-match-fields
+                'type' => 'file',
+                'allowed' => "jpg,jpeg,gif,png",
+                'appearance' => array(
+                    'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.addFileReference'
                 ),
-                "jpg,jpeg,gif,png"
-            ),
+                'foreign_types' => array(
+                    '0' => array(
+                        'showitem' => '
+							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+							--palette--;;filePalette'
+                    ),
+                    \TYPO3\CMS\Core\Resource\FileType::TEXT->value => array(
+                        'showitem' => '
+							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+							--palette--;;filePalette'
+                    ),
+                    \TYPO3\CMS\Core\Resource\FileType::IMAGE->value => array(
+                        'showitem' => '
+							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+							--palette--;;filePalette'
+                    ),
+                    \TYPO3\CMS\Core\Resource\FileType::AUDIO->value => array(
+                        'showitem' => '
+							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+							--palette--;;filePalette'
+                    ),
+                    \TYPO3\CMS\Core\Resource\FileType::VIDEO->value => array(
+                        'showitem' => '
+							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+							--palette--;;filePalette'
+                    ),
+                    \TYPO3\CMS\Core\Resource\FileType::APPLICATION->value => array(
+                        'showitem' => '
+							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+							--palette--;;filePalette'
+                    )
+                ),
+                'maxitems' => 1,
+            ],
         ),
         'tags' => array(
             'exclude' => 0,

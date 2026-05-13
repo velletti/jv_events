@@ -345,7 +345,7 @@ class StaticCountry extends AbstractEntity {
 	 * @param string $cnShortLocal
 	 * @return void
 	 */
-	public function setCnShortLocal($cnShortLocal) {
+	public function setCnShortLocal($cnShortLocal): void {
 		$this->cnShortLocal = $cnShortLocal;
 	}
 

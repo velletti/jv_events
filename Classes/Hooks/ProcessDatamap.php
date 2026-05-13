@@ -67,7 +67,7 @@ class ProcessDatamap {
 	/** @var Event $this ->event */
  protected $event;
 
-	public function processDatamap_afterDatabaseOperations($status, $table, $id, $fieldArray, $pObj) {
+	public function processDatamap_afterDatabaseOperations($status, $table, $id, $fieldArray, $pObj): void {
 		$this->pObj = $pObj;
 		$this->table = $table;
 		$this->status = $status;
@@ -81,7 +81,7 @@ class ProcessDatamap {
  //
  //   }
 
-	public function main() {
+	public function main(): void {
 
 		$search = [];
   $replace = [];
@@ -336,7 +336,7 @@ class ProcessDatamap {
     *   New since May 2019 needs enableHubspot in extension Configuration (emConf) reads also enableSalesForceLightning
     */
 
-    private function createUpdateEventForSF2019() {
+    private function createUpdateEventForSF2019(): void {
         $owner = null;
         $cntry = null;
         $locCity = null;
@@ -553,7 +553,7 @@ class ProcessDatamap {
 
     }
 
-    private function renameCampaignMemberStati( $url , $access_token , $sfCampaignId ) {
+    private function renameCampaignMemberStati( $url , $access_token , $sfCampaignId ): void {
         $data = [];
         $data['what'] = ", Label,HasResponded,IsDefault ";
         $data['from'] = "CampaignMemberStatus" ;
@@ -592,7 +592,7 @@ class ProcessDatamap {
      * @param $access_token
      * @param $sfCampaignId
      */
-    private function createCampaignMemberStati( $url , $access_token , $sfCampaignId ) {
+    private function createCampaignMemberStati( $url , $access_token , $sfCampaignId ): void {
 
         $dataMaster = ['Wait listed', 'Confirmed', 'No Show', 'Cancelled', 'Blocked from Email', 'Blocked by Sales'] ;
 
@@ -626,24 +626,24 @@ class ProcessDatamap {
 
 
 
-	private function showFlashMessage(){
+	private function showFlashMessage(): void{
 		if(is_array($this->flashMessage)){
 			foreach($this->flashMessage as $type => $messageArray){
 				switch ($type) {
 					case 'NOTICE':
-						$typeInt = AbstractMessage::NOTICE;
+						$typeInt = \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::NOTICE;
 						break;
 					case 'INFO':
-                        $typeInt = AbstractMessage::INFO;
+                        $typeInt = \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::INFO;
 						break;
 					case 'OK':
-                        $typeInt = AbstractMessage::OK;
+                        $typeInt = \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK;
 						break;
 					case 'WARNING':
-                        $typeInt = AbstractMessage::WARNING;
+                        $typeInt = \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING;
 						break;
 					case 'ERROR':
-                        $typeInt = AbstractMessage::ERROR;
+                        $typeInt = \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR;
 						break;
 				}
 				// echo "admin: " . $this->pObj->admin . " Type : " . $typeInt ;

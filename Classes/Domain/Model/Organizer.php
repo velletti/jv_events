@@ -290,7 +290,7 @@ class Organizer extends AbstractEntity
      *
      * @return void
      */
-    public function setUid( ?int $uid)
+    public function setUid( ?int $uid): void
     {
         $this->uid = $uid ;
     }
@@ -311,7 +311,7 @@ class Organizer extends AbstractEntity
      *
      * @return void
      */
-    public function setName(string $name)
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
@@ -346,7 +346,7 @@ class Organizer extends AbstractEntity
      *
      * @return void
      */
-    public function setEmail(string $email)
+    public function setEmail(string $email): void
     {
         $this->email = $email;
     }
@@ -362,7 +362,7 @@ class Organizer extends AbstractEntity
     /**
      * @param string $emailCc
      */
-    public function setEmailCc($emailCc)
+    public function setEmailCc($emailCc): void
     {
         $this->emailCc = $emailCc;
     }
@@ -384,7 +384,7 @@ class Organizer extends AbstractEntity
      *
      * @return void
      */
-    public function setPhone(?string $phone)
+    public function setPhone(?string $phone): void
     {
         $this->phone = $phone;
     }
@@ -405,7 +405,7 @@ class Organizer extends AbstractEntity
      * @param string $salesForceUserId
      * @return void
      */
-    public function setSalesForceUserId($salesForceUserId)
+    public function setSalesForceUserId($salesForceUserId): void
     {
         $this->salesForceUserId = $salesForceUserId;
     }
@@ -425,7 +425,7 @@ class Organizer extends AbstractEntity
      *
      * @return void
      */
-    public function setImages(FileReference $images)
+    public function setImages(FileReference $images): void
     {
         $this->images = $images;
     }
@@ -446,7 +446,7 @@ class Organizer extends AbstractEntity
      * @param string $description
      * @return void
      */
-    public function setDescription($description)
+    public function setDescription($description): void
     {
         $this->description = $description;
     }
@@ -462,7 +462,7 @@ class Organizer extends AbstractEntity
     /**
      * @param string $registrationInfo
      */
-    public function setRegistrationInfo($registrationInfo)
+    public function setRegistrationInfo($registrationInfo): void
     {
         $this->registrationInfo = $registrationInfo;
     }
@@ -475,7 +475,7 @@ class Organizer extends AbstractEntity
      *
      * @return void
      */
-    public function addOrganizerCategory(Category $organizerCategory)
+    public function addOrganizerCategory(Category $organizerCategory): void
     {
         $this->organizerCategory->attach($organizerCategory);
     }
@@ -486,7 +486,7 @@ class Organizer extends AbstractEntity
      * @param Category $organizerCategoryToRemove The Category to be removed
      * @return void
      */
-    public function removeOrganizerCategory(Category $organizerCategoryToRemove)
+    public function removeOrganizerCategory(Category $organizerCategoryToRemove): void
     {
         $this->organizerCategory->detach($organizerCategoryToRemove);
     }
@@ -507,7 +507,7 @@ class Organizer extends AbstractEntity
      * @param ObjectStorage<Category> $organizerCategory
      * @return void
      */
-    public function setOrganizerCategory(ObjectStorage $organizerCategory)
+    public function setOrganizerCategory(ObjectStorage $organizerCategory): void
     {
         $this->organizerCategory = $organizerCategory;
     }
@@ -523,7 +523,7 @@ class Organizer extends AbstractEntity
     /**
      * @param string $accessGroups
      */
-    public function setAccessGroups($accessGroups)
+    public function setAccessGroups($accessGroups): void
     {
         $this->accessGroups = $accessGroups;
     }
@@ -539,7 +539,7 @@ class Organizer extends AbstractEntity
     /**
      * @param string $accessUsers
      */
-    public function setAccessUsers($accessUsers)
+    public function setAccessUsers($accessUsers): void
     {
         $this->accessUsers = $accessUsers;
     }
@@ -555,7 +555,7 @@ class Organizer extends AbstractEntity
     /**
      * @param FileReference $teaserImage
      */
-    public function setTeaserImage($teaserImage)
+    public function setTeaserImage($teaserImage): void
     {
         $this->teaserImage = $teaserImage;
     }
@@ -571,7 +571,7 @@ class Organizer extends AbstractEntity
     /**
      * @param string $link
      */
-    public function setLink($link)
+    public function setLink($link): void
     {
         $this->link = $link;
     }
@@ -587,7 +587,7 @@ class Organizer extends AbstractEntity
     /**
      * @param int $hidden
      */
-    public function setHidden($hidden)
+    public function setHidden($hidden): void
     {
         $this->hidden = $hidden;
     }
@@ -603,7 +603,7 @@ class Organizer extends AbstractEntity
     /**
      * @param int $crdate
      */
-    public function setCrdate($crdate)
+    public function setCrdate($crdate): void
     {
         $this->crdate = $crdate;
     }
@@ -619,7 +619,7 @@ class Organizer extends AbstractEntity
     /**
      * @param int $tstamp
      */
-    public function setTstamp($tstamp)
+    public function setTstamp($tstamp): void
     {
         $this->tstamp = $tstamp;
     }
@@ -635,7 +635,7 @@ class Organizer extends AbstractEntity
     /**
      * @param int $languageUid
      */
-    public function setLanguageUid($languageUid)
+    public function setLanguageUid($languageUid): void
     {
         $this->_languageUid = $languageUid;
     }
@@ -646,7 +646,7 @@ class Organizer extends AbstractEntity
      *
      * @return void
      */
-    public function addTag(Tag $tag)
+    public function addTag(Tag $tag): void
     {
         $this->tags->attach($tag);
     }
@@ -657,7 +657,7 @@ class Organizer extends AbstractEntity
      * @param Tag $tagToRemove The Tag to be removed
      * @return void
      */
-    public function removeTag(Tag $tagToRemove)
+    public function removeTag(Tag $tagToRemove): void
     {
         $this->tags->detach($tagToRemove);
     }
@@ -678,7 +678,7 @@ class Organizer extends AbstractEntity
      * @param ObjectStorage<Tag> $tags
      * @return void
      */
-    public function setTags(ObjectStorage $tags)
+    public function setTags(ObjectStorage $tags): void
     {
         $this->tags = $tags;
     }
@@ -693,7 +693,7 @@ class Organizer extends AbstractEntity
     /**
      * @param string $tagsFE
      */
-    public function setTagsFE($tagsFE)
+    public function setTagsFE($tagsFE): void
     {
         $this->tagsFE = $tagsFE;
     }
@@ -709,7 +709,7 @@ class Organizer extends AbstractEntity
     /**
      * @param string $salesForceUserId2
      */
-    public function setSalesForceUserId2($salesForceUserId2)
+    public function setSalesForceUserId2($salesForceUserId2): void
     {
         $this->salesForceUserId2 = $salesForceUserId2;
     }
@@ -725,7 +725,7 @@ class Organizer extends AbstractEntity
     /**
      * @param string $salesForceUserOrg
      */
-    public function setSalesForceUserOrg($salesForceUserOrg)
+    public function setSalesForceUserOrg($salesForceUserOrg): void
     {
         $this->salesForceUserOrg = $salesForceUserOrg;
     }
@@ -742,7 +742,7 @@ class Organizer extends AbstractEntity
     /**
      * @param int $sorting
      */
-    public function setSorting($sorting)
+    public function setSorting($sorting): void
     {
         $this->sorting = $sorting;
     }
@@ -750,7 +750,7 @@ class Organizer extends AbstractEntity
     /**
      * @param int $sysLanguageUid
      */
-    public function setSysLanguageUid($sysLanguageUid)
+    public function setSysLanguageUid($sysLanguageUid): void
     {
         $this->sysLanguageUid = $sysLanguageUid;
         $this->_languageUid = $sysLanguageUid;
@@ -775,7 +775,7 @@ class Organizer extends AbstractEntity
     /**
      * @param string $lng
      */
-    public function setLng($lng)
+    public function setLng($lng): void
     {
         $this->lng = $lng;
     }
@@ -791,7 +791,7 @@ class Organizer extends AbstractEntity
     /**
      * @param string $lat
      */
-    public function setLat($lat)
+    public function setLat($lat): void
     {
         $this->lat = $lat;
     }
@@ -807,7 +807,7 @@ class Organizer extends AbstractEntity
     /**
      * @param \DateTime $latestEvent
      */
-    public function setLatestEvent($latestEvent)
+    public function setLatestEvent($latestEvent): void
     {
         if( $latestEvent > $this->latestEvent ) {
             $this->latestEvent = $latestEvent;
@@ -821,7 +821,7 @@ class Organizer extends AbstractEntity
         return $this->slug;
     }
 
-    public function setSlug(string $slug)
+    public function setSlug(string $slug): void
     {
         $this->slug = $slug;
     }
@@ -834,7 +834,7 @@ class Organizer extends AbstractEntity
         return $this->charityLink;
     }
 
-    public function setCharityLink(string $charityLink)
+    public function setCharityLink(string $charityLink): void
     {
         $this->charityLink = $charityLink;
     }
@@ -847,7 +847,7 @@ class Organizer extends AbstractEntity
         return $this->youtubeLink;
     }
 
-    public function setYoutubeLink(string $youtubeLink)
+    public function setYoutubeLink(string $youtubeLink): void
     {
         $this->youtubeLink = $youtubeLink;
     }

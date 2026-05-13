@@ -50,9 +50,8 @@ class YoutubeViewHelper extends AbstractTagBasedViewHelper
     protected $escapeOutput = false;
 
   
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
-        $this->registerUniversalTagAttributes();
         $this->registerArgument('uri', 'string', 'Youtube Url', true);
         $this->registerArgument('settings', 'array', 'settings Array', false , [] );
 
@@ -68,7 +67,7 @@ class YoutubeViewHelper extends AbstractTagBasedViewHelper
         $uri = $this->arguments['uri'] ;
         // maybe we need settings
         $settings = $this->arguments['settings'] ?? [] ;
-        $class = $this->arguments['class'] ?? '' ;
+        $class = $this->additionalArguments['class'] ?? '' ;
         $videoUrl = parse_url((string) $uri);
         if ( isset($_COOKIE['tx_events_youtube_consens'])) {
             if (array_key_exists("query", $videoUrl)) {

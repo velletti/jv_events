@@ -45,7 +45,7 @@ class DownloadRegistrations extends AbstractNode
             $lang = max(  is_array( $this->data['databaseRow']['sys_language_uid'][0] ) ?
              $this->data['databaseRow']['sys_language_uid'][0] : $this->data['databaseRow']['sys_language_uid'] , 0 ) ;
             $checkString =  $serverFromSite . "-" . $this->data['databaseRow']['uid'] . "-" . $this->data['databaseRow']['crdate'] ;
-            $checkHash = GeneralUtility::hmac ( $checkString ) ;
+            $checkHash = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Crypto\HashService::class)->hmac($checkString, 'changeMe') ;
             // pid = 0 to load registrations from all pages for that event
             $url = (string)$site->getRouter()->generateUri( $singlePid ,['_language' => $lang ,
                 'tx_jvevents_registrant' => ['action' => 'list' , 'controller' => 'Registrant' ,'event' =>  $this->data['databaseRow']['uid']

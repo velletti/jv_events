@@ -144,6 +144,6 @@ class Flexforms {
         }
 
 
-        return  $queryBuilder->executeQuery()->fetch() ;
+        return  $queryBuilder->executeQuery()->fetchAssociative() ;
     }
 }

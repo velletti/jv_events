@@ -20,9 +20,9 @@ class BannerRepository {
             $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
             $row = $queryBuilder ->select('uid' , 'title' , 'html' , 'description' , 'starttime', 'endtime', 'impressions','clicks'   ) ->from('tx_sfbanners_domain_model_banner')
-                ->where( $queryBuilder->expr()->eq('link', $queryBuilder->createNamedParameter( $eventId , PDO::PARAM_INT)) )
-                ->andWhere( $queryBuilder->expr()->eq('deleted', $queryBuilder->createNamedParameter(0 , PDO::PARAM_INT)) )
-                ->andWhere( $queryBuilder->expr()->eq('hidden', $queryBuilder->createNamedParameter(0 , PDO::PARAM_INT)) )
+                ->where( $queryBuilder->expr()->eq('link', $queryBuilder->createNamedParameter( $eventId , \TYPO3\CMS\Core\Database\Connection::PARAM_INT)) )
+                ->andWhere( $queryBuilder->expr()->eq('deleted', $queryBuilder->createNamedParameter(0 , \TYPO3\CMS\Core\Database\Connection::PARAM_INT)) )
+                ->andWhere( $queryBuilder->expr()->eq('hidden', $queryBuilder->createNamedParameter(0 , \TYPO3\CMS\Core\Database\Connection::PARAM_INT)) )
                 ->orderBy("endtime" , "DESC")->setMaxResults(1)->executeQuery()
                 ->fetchAssociative();
 
@@ -38,7 +38,7 @@ class BannerRepository {
         return(isset($row) && is_array($row))  ? $row :  [] ;
     }
 
-    public function updateBanner( array $row) {
+    public function updateBanner( array $row): void {
         /** @var ConnectionPool $connectionPool */
         $connectionPool = GeneralUtility::makeInstance( ConnectionPool::class);
 
@@ -47,7 +47,7 @@ class BannerRepository {
             $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
            $queryBuilder->update('tx_sfbanners_domain_model_banner')
-                ->where( $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter( $row['uid'] , PDO::PARAM_INT)) ) ;
+                ->where( $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter( $row['uid'] , \TYPO3\CMS\Core\Database\Connection::PARAM_INT)) ) ;
 
            foreach ( $row as $field => $value ) {
                if( $field != "uid") {

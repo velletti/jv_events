@@ -205,7 +205,7 @@ class RegistermarketoUtility {
         $this->logToFile( $debugmail , $event->getPid() , $error )  ;
         return $response  ;
     }
-    private function logToFile( $text , $pid = 0 , $error = 0 ) {
+    private function logToFile( $text , $pid = 0 , $error = 0 ): void {
 
         $insertFields = array(
             "action"  => 1 ,

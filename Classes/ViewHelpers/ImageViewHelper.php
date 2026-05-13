@@ -32,7 +32,7 @@ class ImageViewHelper extends AbstractTagBasedViewHelper
      */
     protected ImageService $imageService;
 
-    public function injectImageService(ImageService $imageService)
+    public function injectImageService(ImageService $imageService): void
     {
         $this->imageService = $imageService;
     }
@@ -40,7 +40,7 @@ class ImageViewHelper extends AbstractTagBasedViewHelper
     /**
      * Initialize arguments.
      */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerTagAttribute('alt', 'string', 'Specifies an alternate text for an image', false , "img");
         $this->registerTagAttribute('class', 'string', 'Css Class(es)', false);
@@ -121,7 +121,7 @@ class ImageViewHelper extends AbstractTagBasedViewHelper
             if (empty($this->arguments['alt'])) {
                 $this->tag->addAttribute('alt', $alt);
             }
-            if (empty($this->arguments['title']) && $title) {
+            if (empty($this->additionalArguments['title']) && $title) {
                 $this->tag->addAttribute('title', $title);
             }
         } catch (ResourceDoesNotExistException $e) {

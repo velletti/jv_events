@@ -42,7 +42,7 @@ class GeocoderUtility {
         if (ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()) {
             $lng = $GLOBALS['BE_USER']->uc['lang'] ;
         } else {
-            $lng = $GLOBALS['TSFE']->config['config']['language'] ;
+            $lng = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.typoscript')->getConfigArray()['language'] ;
         }
         if ( $lng == '' ) { $lng = "en" ;}
         /** @var LanguageService $lang */
@@ -57,7 +57,7 @@ class GeocoderUtility {
 	/**
 	 * Some initializing
 	 */
-    public function init(){
+    public function init(): void{
 
         $this->getLanguageService()->includeLLFile('EXT:jv_events/Resources/Private/Language/locallang_be.xlf');
 

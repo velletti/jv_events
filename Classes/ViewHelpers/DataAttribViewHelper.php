@@ -49,7 +49,7 @@ class DataAttribViewHelper extends AbstractViewHelper   {
      */
     protected $escapeChildren = false;
 
-	public function initializeArguments() {
+	public function initializeArguments(): void {
 		$this->registerArgument('event', Event::class, 'Single Event', false);
         parent::initializeArguments() ;
 	}

@@ -67,7 +67,7 @@ class OrganizerController extends BaseController
      *
      * @return void
      */
-    public function initializeAction()
+    public function initializeAction(): void
     {
         $this->timeStart = $this->microtime_float() ;
         $this->debugArray[] = "Start:" . intval(1000 * $this->timeStart ) . " Line: " . __LINE__ ;
@@ -323,7 +323,7 @@ class OrganizerController extends BaseController
     /**
      * action create
      *
-     * @return void
+     * @return \Psr\Http\Message\ResponseInterface
      */
     #[Validate(['param' => 'organizer', 'validator' => OrganizerValidator::class])]
     public function createAction(Organizer $organizer)
@@ -419,7 +419,7 @@ class OrganizerController extends BaseController
 
             $this->showNoDomainMxError($organizer->getEmail() ) ;
 
-            $this->redirect('assist' , NULL, Null , NULL , $this->settings['pageIds']['organizerAssist']);
+            return $this->redirect('assist' , NULL, Null , NULL , $this->settings['pageIds']['organizerAssist']);
         } else {
             $this->getFlashMessageQueue()->getAllMessagesAndFlush();
 

@@ -48,7 +48,7 @@ class OpenStreetmapGeocoderViewHelper extends AbstractViewHelper   {
      */
     protected $escapeChildren = false;
 
-    public function initializeArguments() {
+    public function initializeArguments(): void {
         $this->registerArgument('location', Location::class, 'Single location', false , NULL);
         $this->registerArgument('formfields', 'array', 'Field Array', false , NULL );
         $this->registerArgument('updateFunction', 'string', 'Name of javaScript function that should run after Update Map', false , '' );

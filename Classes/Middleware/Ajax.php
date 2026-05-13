@@ -49,6 +49,18 @@ class Ajax implements MiddlewareInterface
      * @var TokenRepository
      */
     protected $tokenRepository;
+    public function __construct()
+    {
+        $this->tagRepository = GeneralUtility::makeInstance(\JVelletti\JvEvents\Domain\Repository\TagRepository::class);
+        $this->categoryRepository = GeneralUtility::makeInstance(\JVelletti\JvEvents\Domain\Repository\CategoryRepository::class);
+        $this->registrantRepository = GeneralUtility::makeInstance(\JVelletti\JvEvents\Domain\Repository\RegistrantRepository::class);
+        $this->locationRepository = GeneralUtility::makeInstance(\JVelletti\JvEvents\Domain\Repository\LocationRepository::class);
+        $this->organizerRepository = GeneralUtility::makeInstance(\JVelletti\JvEvents\Domain\Repository\OrganizerRepository::class);
+        $this->eventRepository = GeneralUtility::makeInstance(\JVelletti\JvEvents\Domain\Repository\EventRepository::class);
+        $this->subeventRepository = GeneralUtility::makeInstance(\JVelletti\JvEvents\Domain\Repository\SubeventRepository::class);
+        $this->staticCountryRepository = GeneralUtility::makeInstance(\JVelletti\JvEvents\Domain\Repository\StaticCountryRepository::class);
+        $this->persistenceManager = GeneralUtility::makeInstance( \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class);
+    }
 
 
     /**
@@ -138,7 +150,7 @@ class Ajax implements MiddlewareInterface
         return $handler->handle($request);
     }
 
-    public function reserveSeat(array $arguments=Null , $request = null , $reserve=true )
+    public function reserveSeat(array $arguments=Null , $request = null , $reserve=true ): void
     {
         ShowAsJsonArrayUtility::show(array( 'error' => "not finally implemented at the moment"  )) ;
         die;
@@ -192,7 +204,7 @@ class Ajax implements MiddlewareInterface
         ShowAsJsonArrayUtility::show(array( 'error' => "no free seats" , 'event' => $arguments['event'] )) ;
     }
 
-    private function initRepositorys()
+    private function initRepositorys(): void
     {
         $this->tagRepository        = GeneralUtility::makeInstance(TagRepository::class);
         $this->categoryRepository        = GeneralUtility::makeInstance(CategoryRepository::class);
@@ -238,7 +250,7 @@ class Ajax implements MiddlewareInterface
      * @param array|null $arguments
      * @return void
      */
-    public function getEventList(array $arguments=Null , $request = null)
+    public function getEventList(array $arguments=Null , $request = null): void
     {
 
         // 6.2.2020 with teaserText and files
@@ -257,7 +269,8 @@ class Ajax implements MiddlewareInterface
 
 
         if (!$arguments) {
-            $arguments = GeneralUtility::_GPmerged('tx_jvevents_ajax');
+            $arguments = $GLOBALS['TYPO3_REQUEST']->getQueryParams()['tx_jvevents_ajax'];
+            \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($arguments, $GLOBALS['TYPO3_REQUEST']->getParsedBody()['tx_jvevents_ajax']);
         }
         $apiToken = $request->getHeaderLine('jve-apitoken');
 
@@ -293,9 +306,9 @@ class Ajax implements MiddlewareInterface
             /** @var StandaloneView $renderer */
             $renderer = $this->standaloneView  ;
             if( $arguments['rss'] ) {
-                $renderer->setTemplate("EventListRss");
+                $renderer->getRenderingContext()->setControllerAction("EventListRss");
             } else {
-                $renderer->setTemplate("EventList");
+                $renderer->getRenderingContext()->setControllerAction("EventList");
             }
         } else {
             /** @var StandaloneView $renderer */
@@ -383,7 +396,7 @@ class Ajax implements MiddlewareInterface
 
 
         $output = array (
-            "requestId" =>  intval( $GLOBALS['TSFE']->id ) ,
+            "requestId" =>  intval( $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.page.information')->getId() ) ,
             "requestFrom" =>  $_SERVER['REMOTE_ADDR'] ,
             "requestedUser" =>  ($arguments['user'] ?? 0),
 
@@ -417,7 +430,7 @@ class Ajax implements MiddlewareInterface
                     "isOrganizer" => $this->isUserOrganizer()
                 ] ;
                 if ( $output["feuser"]["isOrganizer"]) {
-                    $feuserOrganizer = $this->organizerRepository->findByUserAllpages(intval($GLOBALS['TSFE']->fe_user->user['uid']), FALSE, TRUE);
+                    $feuserOrganizer = $this->organizerRepository->findByUserAllpages(intval($GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user')->user['uid']), FALSE, TRUE);
                     if ( is_object($feuserOrganizer->getFirst())) {
                         $output["feuser"]["organizer"]['uid'] = $feuserOrganizer->getFirst()->getUid() ;
                     }
@@ -917,13 +930,13 @@ class Ajax implements MiddlewareInterface
         if(! is_object( $organizer ) ) {
             return false ;
         }
-        $feuserUid = intval( $GLOBALS['TSFE']->fe_user->user['uid'] ) ;
+        $feuserUid = intval( $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user')->user['uid'] ) ;
         $users = GeneralUtility::trimExplode("," , $organizer->getAccessUsers() , TRUE ) ;
         if( in_array( $feuserUid  , $users )) {
             return true  ;
         } else {
             $groups = GeneralUtility::trimExplode("," , $organizer->getAccessGroups() , TRUE ) ;
-            $feuserGroups = GeneralUtility::trimExplode("," ,  $GLOBALS['TSFE']->fe_user->user['usergroup']  , TRUE ) ;
+            $feuserGroups = GeneralUtility::trimExplode("," ,  $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user')->user['usergroup']  , TRUE ) ;
             foreach( $groups as $group ) {
                 if( in_array( $group  , $feuserGroups )) {
                     return true  ;
@@ -1011,85 +1024,11 @@ class Ajax implements MiddlewareInterface
     public $timeStart ;
 
     /**
-     * @param TagRepository $tagRepository
-     */
-    public function injectTagRepository(TagRepository $tagRepository)
-    {
-        $this->tagRepository = $tagRepository;
-    }
-
-    /**
-     * @param CategoryRepository $categoryRepository
-     */
-    public function injectCategoryRepository(CategoryRepository $categoryRepository)
-    {
-        $this->categoryRepository = $categoryRepository;
-    }
-
-    /**
-     * @param RegistrantRepository $registrantRepository
-     */
-    public function injectRegistrantRepository(RegistrantRepository $registrantRepository)
-    {
-        $this->registrantRepository = $registrantRepository;
-    }
-
-    /**
-     * @param LocationRepository $locationRepository
-     */
-    public function injectLocationRepository(LocationRepository $locationRepository)
-    {
-        $this->locationRepository = $locationRepository;
-    }
-
-    /**
-     * @param OrganizerRepository $organizerRepository
-     */
-    public function injectOrganizerRepository(OrganizerRepository $organizerRepository)
-    {
-        $this->organizerRepository = $organizerRepository;
-    }
-
-    /**
-     * @param EventRepository $eventRepository
-     */
-    public function injectEventRepository(EventRepository $eventRepository)
-    {
-        $this->eventRepository = $eventRepository;
-    }
-
-    /**
-     * @param SubeventRepository $subeventRepository
-     */
-    public function injectSubeventRepository(SubeventRepository $subeventRepository)
-    {
-        $this->subeventRepository = $subeventRepository;
-    }
-
-    /**
-     * @param StaticCountryRepository $staticCountryRepository
-     */
-    public function injectStaticCountryRepository(StaticCountryRepository $staticCountryRepository)
-    {
-        $this->staticCountryRepository = $staticCountryRepository;
-    }
-
-
-
-    /**
-     * @param PersistenceManager $persistenceManager
-     */
-    public function injectPersistenceManager(PersistenceManager $persistenceManager)
-    {
-        $this->persistenceManager = $persistenceManager;
-    }
-
-    /**
      * @return bool
      */
     public function isUserOrganizer() {
         $groups = GeneralUtility::trimExplode("," , $this->settings['feEdit']['organizerGroudIds'] , TRUE ) ;
-        $feuserGroups = GeneralUtility::trimExplode("," ,  $GLOBALS['TSFE']->fe_user->user['usergroup']  , TRUE ) ;
+        $feuserGroups = GeneralUtility::trimExplode("," ,  $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user')->user['usergroup']  , TRUE ) ;
         foreach( $groups as $group ) {
             if( in_array( $group  , $feuserGroups )) {
                 return true  ;

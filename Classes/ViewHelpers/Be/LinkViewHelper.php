@@ -19,8 +19,7 @@ class LinkViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedV
      * @return void
      * @api
      */
-    public function initializeArguments() {
-        $this->registerUniversalTagAttributes();
+    public function initializeArguments(): void {
         $this->registerTagAttribute('name', 'string', 'Specifies the name of an anchor');
         $this->registerTagAttribute('uid', 'integer', 'Uid of the data record' , true );
         $this->registerTagAttribute('pageId', 'integer', 'page Uid where to go ' , true );
@@ -55,7 +54,7 @@ class LinkViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedV
         $eventId   = ($this->arguments['eventId'] ?? '' ) ;
         $recursive   = ($this->arguments['recursive'] ?? '' ) ;
         $onlyActual  = ($this->arguments['onlyActual'] ?? '' ) ;
-        $class   = ($this->arguments['class'] ?? '' ) ;
+        $class   = ($this->additionalArguments['class'] ?? '' ) ;
 
 
         $returnUrl = '' ;

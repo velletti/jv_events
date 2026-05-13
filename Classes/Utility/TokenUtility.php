@@ -22,7 +22,7 @@ class TokenUtility
                 ->select('uid', 'email', 'crdate', 'password')
                 ->from('fe_users')
                 ->where(
-                    $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
+                    $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \TYPO3\CMS\Core\Database\Connection::PARAM_INT))
                 );
 
             $result = $query->executeQuery()->fetchAssociative();
@@ -35,9 +35,9 @@ class TokenUtility
 
             $encryptionKey = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] ?? 'fallback' . __DIR__ ;
             if( $encoded ) {
-                return base64_encode( $uid . "-" . GeneralUtility::hmac($jsonValues, $encryptionKey));
+                return base64_encode( $uid . "-" . \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Crypto\HashService::class)->hmac($jsonValues, $encryptionKey));
             }
-            return GeneralUtility::hmac($jsonValues, $encryptionKey) ;
+            return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Crypto\HashService::class)->hmac($jsonValues, $encryptionKey) ;
 
 		}
 		return null;
@@ -85,9 +85,9 @@ class TokenUtility
             ->select('license' , 'feuser' , 'referrer')
             ->from('tx_jvevents_domain_model_token')
             ->where(
-                $queryBuilder->expr()->eq('token', $queryBuilder->createNamedParameter($apiToken, \PDO::PARAM_STR))
+                $queryBuilder->expr()->eq('token', $queryBuilder->createNamedParameter($apiToken, \TYPO3\CMS\Core\Database\Connection::PARAM_STR))
             )->andWhere(
-                  $queryBuilder->expr()->eq('feuser', $queryBuilder->createNamedParameter($user, \PDO::PARAM_INT))
+                  $queryBuilder->expr()->eq('feuser', $queryBuilder->createNamedParameter($user, \TYPO3\CMS\Core\Database\Connection::PARAM_INT))
            );
 
 

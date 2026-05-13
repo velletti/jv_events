@@ -14,7 +14,7 @@ class UriViewHelper extends AbstractTagBasedViewHelper
     /**
      * Initialize arguments
      */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('name', 'string', 'identifier important if more widgets on same page', false, 'widget');
@@ -30,7 +30,7 @@ class UriViewHelper extends AbstractTagBasedViewHelper
     {
         $finalArguments = [] ;
         $arguments = ($this->arguments['arguments'] ?? [] ) ;
-        $class = ($this->arguments['class'] ?? 'page-link' ) ;
+        $class = ($this->additionalArguments['class'] ?? 'page-link' ) ;
         foreach ( ["id" , "recursive" , "onlyActual" , "event" , "currentPage" ] as $special ) {
             if( isset($arguments[$special] )) {
                 $finalArguments[$special]= $arguments[$special] ;

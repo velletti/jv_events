@@ -53,7 +53,7 @@ class SelectStaticCountriesViewHelper extends AbstractFormFieldViewHelper {
   */
  protected $countryRepository;
 
-    public function injectCountryRepository(StaticCountryRepository $countryRepository)
+    public function injectCountryRepository(StaticCountryRepository $countryRepository): void
     {
         $this->countryRepository = $countryRepository;
     }
@@ -71,7 +71,6 @@ class SelectStaticCountriesViewHelper extends AbstractFormFieldViewHelper {
     public function initializeArguments(): void
     {
         parent::initializeArguments();
-        $this->registerUniversalTagAttributes();
         $this->registerTagAttribute('size', 'string', 'Size of select field, a numeric value to show the amount of items to be visible at the same time - equivalent to HTML <select> site attribute');
         $this->registerTagAttribute('disabled', 'string', 'Specifies that the input element should be disabled when the page loads');
         $this->registerArgument('options', 'array', 'Associative array with internal IDs as key, and the values are displayed in the select box. Can be combined with or replaced by child f:form.select.* nodes.');
@@ -359,7 +358,7 @@ class SelectStaticCountriesViewHelper extends AbstractFormFieldViewHelper {
 	 * available countries before rendering
 	 *
 	 * @return void	 */
-	public function initialize() {
+	public function initialize(): void {
 		parent::initialize();
         if (ExtensionManagementUtility::isLoaded('static_info_tables')) {
             if ($this->hasArgument('allowedCountries') && (is_countable($this->arguments['allowedCountries']) ? count($this->arguments['allowedCountries']) : 0)) {

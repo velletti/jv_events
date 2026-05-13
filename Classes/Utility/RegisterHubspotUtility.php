@@ -257,7 +257,7 @@ class RegisterHubspotUtility {
         $this->logToFile( $debugmail , $event->getPid() , $error )  ;
         return $response  ;
     }
-    private function logToFile( $text , $pid = 0 , $error = 0 ) {
+    private function logToFile( $text , $pid = 0 , $error = 0 ): void {
 
         $insertFields = array(
             "action"  => 1 ,
@@ -314,7 +314,7 @@ class RegisterHubspotUtility {
         /** @var \SJBR\StaticInfoTables\Domain\Repository\CountryRepository $countries */
         $countries =  GeneralUtility::makeInstance(CountryRepository::class);
         /** @var \SJBR\StaticInfoTables\Domain\Model\Country $cn_short_en */
-        $cn_short_en = $countries->findOneByIsoCodeA2( trim($registrant->getCountry() ) ) ;
+        $cn_short_en = $countries->findOneBy(['isoCodeA2' => trim($registrant->getCountry() )]) ;
         if( is_object($cn_short_en) ) {
             $jsonArray['country']  = $cn_short_en->getShortNameEn() ;
         }

@@ -134,7 +134,7 @@ class Media extends AbstractEntity
      *
      * @return void
      */
-    public function addMediaCategory(Category $mediaCategory)
+    public function addMediaCategory(Category $mediaCategory): void
     {
         $this->mediaCategory->attach($mediaCategory);
     }
@@ -145,7 +145,7 @@ class Media extends AbstractEntity
      * @param Category $mediaCategoryToRemove The Category to be removed
      * @return void
      */
-    public function removeMediaCategory(Category $mediaCategoryToRemove)
+    public function removeMediaCategory(Category $mediaCategoryToRemove): void
     {
         $this->mediaCategory->detach($mediaCategoryToRemove);
     }
@@ -166,7 +166,7 @@ class Media extends AbstractEntity
      * @param ObjectStorage<Category> $mediaCategory
      * @return void
      */
-    public function setMediaCategory(ObjectStorage $mediaCategory)
+    public function setMediaCategory(ObjectStorage $mediaCategory): void
     {
         $this->mediaCategory = $mediaCategory;
     }
@@ -265,7 +265,7 @@ class Media extends AbstractEntity
      *
      * @return void
      */
-    public function setOrganizer(?Organizer $organizer)
+    public function setOrganizer(?Organizer $organizer): void
     {
         if( is_object( $organizer )) {
             $this->organizer = $organizer;

@@ -56,12 +56,12 @@ class RegistrantController extends BaseController
 {
 	
 	
-	/**
+    /**
 	 * action init
 	 *
 	 * @return void
 	 */
-	public function initializeAction()
+	public function initializeAction(): void
 	{
 		if( !$this->request->hasArgument('event')) {
 			// ToDo redirect to error
@@ -151,7 +151,7 @@ class RegistrantController extends BaseController
 
                 $this->addFlashMessage('Number of registrations was corrected from '
                     . $event->getRegisteredSeats() . " (+" . $event->getUnconfirmedSeats() . ") to : " . $registered . " (+" .  $waiting . ") registrations."
-                    , '', AbstractMessage::WARNING);
+                    , '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING);
                 $event->setRegisteredSeats($registered) ;
                 $event->setUnconfirmedSeats($waiting)  ;
                 $this->eventRepository->update($event) ;
@@ -811,7 +811,7 @@ class RegistrantController extends BaseController
     /**
      * action confirmAction
      *
-     * @return void
+     * @return \Psr\Http\Message\ResponseInterface
      */
     public function confirmAction(Registrant $registrant)
     {
@@ -857,26 +857,26 @@ class RegistrantController extends BaseController
 
                                     $this->sendEmail($event, $registrant, "Registrant" ,
                                         $registrantEmail , false , $replyto );
-                                    $this->addFlashMessage('Confirmation Mail is sent registration ', '', AbstractMessage::OK);
+                                    $this->addFlashMessage('Confirmation Mail is sent registration ', '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK);
                                 }
                             }
                         } else {
-                            $this->addFlashMessage('registration was already confirmed!', '', AbstractMessage::OK);
+                            $this->addFlashMessage('registration was already confirmed!', '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK);
                         }
 
                     } else {
-                        $this->addFlashMessage('No Access ! leasee login ?? ', '', AbstractMessage::ERROR);
+                        $this->addFlashMessage('No Access ! leasee login ?? ', '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR);
                     }
                 } else {
-                    $this->addFlashMessage('No Access ! leasee login ?? ', '', AbstractMessage::ERROR);
+                    $this->addFlashMessage('No Access ! leasee login ?? ', '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR);
                 }
             } else {
-                $this->addFlashMessage('Could not find event (id: "' . $registrant->getEvent() . '") related to this registration ', '', AbstractMessage::ERROR);
+                $this->addFlashMessage('Could not find event (id: "' . $registrant->getEvent() . '") related to this registration ', '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR);
 
             }
         }
         $this->persistenceManager->persistAll() ;
-        $this->redirect("list" , null , null, ["event" => $eventUid, "hash" => $hash] ) ;
+        return $this->redirect("list" , null , null, ["event" => $eventUid, "hash" => $hash] );
 
     }
 
@@ -884,7 +884,7 @@ class RegistrantController extends BaseController
      * @throws IllegalObjectTypeException
      * @throws UnknownObjectException
      */
-    public function updateOldReg(Registrant $oldReg , Registrant $registrant){
+    public function updateOldReg(Registrant $oldReg , Registrant $registrant): void{
         try {
             if( array_key_exists( 'allformFields' ,$this->settings['register'] ) && is_array ( $this->settings['register']['allformFields'] )) {
                 foreach ( $this->settings['register']['allformFields'] as $fieldname => $value ) {
@@ -925,7 +925,7 @@ class RegistrantController extends BaseController
     /**
      * action deleteAction
      *
-     * @return void
+     * @return \Psr\Http\Message\ResponseInterface
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
      * @throws IllegalObjectTypeException
@@ -964,22 +964,22 @@ class RegistrantController extends BaseController
                         }
 
 
-                        $this->addFlashMessage('registration sucessful canceled', '', AbstractMessage::OK);
+                        $this->addFlashMessage('registration sucessful canceled', '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::OK);
                     } else {
-                        $this->addFlashMessage('You do not have access to this event registrations', '', AbstractMessage::ERROR);
+                        $this->addFlashMessage('You do not have access to this event registrations', '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR);
                     }
                 } else {
-                    $this->addFlashMessage('You do not have access as organizer. maybe not logged in ?', '', AbstractMessage::ERROR);
+                    $this->addFlashMessage('You do not have access as organizer. maybe not logged in ?', '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR);
                 }
             } else {
-                $this->addFlashMessage('Could not find event (id: "' . $registrant->getEvent() . '") related to this registration ', '', AbstractMessage::ERROR);
+                $this->addFlashMessage('Could not find event (id: "' . $registrant->getEvent() . '") related to this registration ', '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR);
 
             }
         } else {
-            $this->addFlashMessage('Could not find this registration ', '', AbstractMessage::ERROR);
+            $this->addFlashMessage('Could not find this registration ', '', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR);
         }
         $this->persistenceManager->persistAll() ;
-        $this->redirect("list" , null , null, ["event" => $eventUid, "hash" => $hash] ) ;
+        return $this->redirect("list" , null , null, ["event" => $eventUid, "hash" => $hash] );
 
 
     }

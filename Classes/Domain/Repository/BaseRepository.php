@@ -43,7 +43,7 @@ class BaseRepository extends Repository
     /**
      * @param QueryInterface $query
      */
-    public function showSql($query , $file , $line ) {
+    public function showSql($query , $file , $line ): void {
         $queryParser = GeneralUtility::makeInstance(Typo3DbQueryParser::class);
 
         $sqlquery = $queryParser->convertQueryToDoctrineQueryBuilder($query)->getSQL() ;
@@ -66,7 +66,7 @@ class BaseRepository extends Repository
         echo "<br><hr><br></div></body></html>" ;
     }
 
-    function debugQuery($query) {
+    function debugQuery($query): void {
         $search = [];
         $replace = [];
         // new way to debug typo3 db queries

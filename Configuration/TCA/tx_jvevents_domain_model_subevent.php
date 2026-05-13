@@ -39,7 +39,6 @@ $returnArray = array(
         ],
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
-		'cruser_id' => 'cruser_id',
   //      'sortby' => 'sorting',
 		'default_sortby' => 'start_date DESC',
 		'versioningWS' => false,

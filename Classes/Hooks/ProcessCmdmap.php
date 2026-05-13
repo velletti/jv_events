@@ -59,7 +59,7 @@ class ProcessCmdmap {
     /**
   * Prevent deleting/moving of a news record if the editor doesn't have access to all categories of the news record
   */
- public function processCmdmap_postProcess(string $command, string $table, int $id, mixed $value, mixed $Obj, mixed $pasteUpdate, mixed $pasteDatamap) {
+ public function processCmdmap_postProcess(string $command, string $table, int $id, mixed $value, mixed $Obj, mixed $pasteUpdate, mixed $pasteDatamap): void {
         $row = [];
         if( is_object( $Obj )) {
             if ($table == 'tx_jvevents_domain_model_event') {

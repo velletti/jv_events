@@ -64,7 +64,7 @@ class Geocoder extends AbstractWizardController {
 	protected function getAddressDataFromDb(){
 
 		// Parameters
-		$parameters = GeneralUtility::_GP('P');
+		$parameters = $GLOBALS['TYPO3_REQUEST']->getParsedBody()['P'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['P'] ?? null;
 
 		// print_r($parameters);
 

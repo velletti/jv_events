@@ -178,7 +178,7 @@ class BaseController extends ActionController
      * @return void
      */
     public function injectCacheService(CacheService $cacheService) {
-        $this->cacheService = $cacheService ;
+        $this->cacheService = $cacheService;
     }
 
 
@@ -250,7 +250,7 @@ class BaseController extends ActionController
      *
      * @return void
      */
-    public function initializeAction()
+    public function initializeAction(): void
     {
         $this->settings['register']['allowedCountrys'] 	=  GeneralUtility::trimExplode("," , $this->settings['register']['allowedCountrys'] , true );
         /** @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication $frontendUser */
@@ -707,7 +707,7 @@ class BaseController extends ActionController
         /** @var StandaloneView $renderer */
         $renderer = GeneralUtility::makeInstance(StandaloneView::class);
         // set the request directly on the renderer
-        $renderer->setRequest($this->request);
+        $renderer->getRenderingContext()->setAttribute(\Psr\Http\Message\ServerRequestInterface::class, $this->request);
 
         // override the template path with individual settings in TypoScript
         $extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
@@ -740,9 +740,9 @@ class BaseController extends ActionController
         $templateFile = $templatePath . $templateName . '.html';
 
         // set the e-mail template
-        $renderer->setLayoutRootPaths( $layoutPaths);
-        $renderer->setTemplatePathAndFilename($templateFile);
-        $renderer->setPartialRootPaths($partialPaths);
+        $renderer->getRenderingContext()->getTemplatePaths()->setLayoutRootPaths($layoutPaths);
+        $renderer->getRenderingContext()->getTemplatePaths()->setTemplatePathAndFilename($templateFile);
+        $renderer->getRenderingContext()->getTemplatePaths()->setPartialRootPaths($partialPaths);
         $renderer->setFormat($format) ;
         // and return the new Fluid instance
         return $renderer;
@@ -765,7 +765,7 @@ class BaseController extends ActionController
     {
         $subevents = null;
         if (!GeneralUtility::validEmail($this->settings['register']['senderEmail'])) {
-            throw new \Exception('plugin.jv_events.settings.register.senderEmail is not a valid Email Address. Is needed as Sender E-mail');
+            throw new \Exception('plugin.jv_events.settings.register.senderEmail is not a valid Email Address. Is needed as Sender E-mail', 7008387161);
         }
         if( !$replyTo ) {
             $replyTo = $this->settings['register']['senderEmail'] ;
@@ -796,7 +796,7 @@ class BaseController extends ActionController
 
         foreach ($recipient as $key => $value ) {
             if (!GeneralUtility::validEmail($key )) {
-                throw new \Exception(var_export( $recipient , true ) . "( " . $key . ") " . ' is not a valid -recipient- Email Address. ');
+                throw new \Exception(var_export( $recipient , true ) . "( " . $key . ") " . ' is not a valid -recipient- Email Address. ', 2287601541);
             }
         }
 
@@ -921,7 +921,7 @@ class BaseController extends ActionController
      * @param string $htmlMsg the message it self.
      * @return bool
      */
-    public function sendDebugEmail($recipient,$sender ,$subject , $plainMsg , $htmlMsg = '') {
+    public function sendDebugEmail($recipient,$sender ,$subject , $plainMsg , $htmlMsg = ''): void {
         /** @var $message \TYPO3\CMS\Core\Mail\MailMessage */
         $message = GeneralUtility::makeInstance(MailMessage::class);
 
@@ -1073,7 +1073,7 @@ class BaseController extends ActionController
             if( ! checkdnsrr($domain[1], 'MX') ) {
                 $msg = sprintf( $this->translate('error.email.noMxRecord') , "@" . $domain[1] ) . " ";
 
-                $this->addFlashMessage( $msg , 'No MX entry for Maildomain!', AbstractMessage::WARNING);
+                $this->addFlashMessage( $msg , 'No MX entry for Maildomain!', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING);
             }
         }
 

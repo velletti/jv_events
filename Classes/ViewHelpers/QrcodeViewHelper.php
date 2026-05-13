@@ -38,7 +38,7 @@ class QrcodeViewHelper extends AbstractViewHelper {
 
     /** * Constructor *
      * @api */
-    public function initializeArguments() {
+    public function initializeArguments(): void {
         $this->registerArgument('string', 'string', 'The string that should be decoded', false , "-" );
     }
 

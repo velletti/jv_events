@@ -42,9 +42,8 @@ class PagePropertiesUserfunction{
                 ->select('uid')
                 ->from('tx_jvevents_domain_model_event')->where($queryBuilder->expr()->eq(
                 'l10n_parent',
-                $queryBuilder->createNamedParameter($parameters['eventUid'], \PDO::PARAM_INT)
-            ))->executeQuery()
-                ->fetch();
+                $queryBuilder->createNamedParameter($parameters['eventUid'], \TYPO3\CMS\Core\Database\Connection::PARAM_INT)
+            ))->executeQuery()->fetchAssociative();
 
             // Old style
             // --------------------------------------------
@@ -102,9 +101,8 @@ class PagePropertiesUserfunction{
                 ->select('uid')
                 ->from('tx_jvevents_domain_model_event')->where($queryBuilder->expr()->eq(
                 'l10n_parent',
-                $queryBuilder->createNamedParameter($parameters['eventUid'], \PDO::PARAM_INT)
-            ))->executeQuery()
-                ->fetch();
+                $queryBuilder->createNamedParameter($parameters['eventUid'], \TYPO3\CMS\Core\Database\Connection::PARAM_INT)
+            ))->executeQuery()->fetchAssociative();
 
             // Old style
             // --------------------------------------------
@@ -142,16 +140,16 @@ class PagePropertiesUserfunction{
     private function getParameters() {
 
         // Get the parameters
-        $sysLanguageUid = intval(GeneralUtility::_GP('L'));
-        $pageUid = GeneralUtility::_GP('id');
+        $sysLanguageUid = intval($GLOBALS['TYPO3_REQUEST']->getParsedBody()['L'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['L'] ?? null);
+        $pageUid = $GLOBALS['TYPO3_REQUEST']->getParsedBody()['id'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['id'] ?? null;
 
-        $tx_news_pi1 = GeneralUtility::_GP('tx_news_pi1');
+        $tx_news_pi1 = $GLOBALS['TYPO3_REQUEST']->getParsedBody()['tx_news_pi1'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['tx_news_pi1'] ?? null;
         $newsUid = 0;
         if(isset($tx_news_pi1['news'])){
             $newsUid = intval($tx_news_pi1['news']);
         }
 
-        $tx_jvevents_events = GeneralUtility::_GP('tx_jvevents_events');
+        $tx_jvevents_events = $GLOBALS['TYPO3_REQUEST']->getParsedBody()['tx_jvevents_events'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['tx_jvevents_events'] ?? null;
         $eventUid = 0;
         if(isset($tx_jvevents_events['event'])){
             $eventUid = intval($tx_jvevents_events['event']);
@@ -181,8 +179,8 @@ class PagePropertiesUserfunction{
             ->select('name', 'start_date')
             ->from('tx_jvevents_domain_model_event')->where($queryBuilder->expr()->eq(
             'uid',
-            $queryBuilder->createNamedParameter($eventUid, \PDO::PARAM_INT)
-        ))->executeQuery()->fetch();
+            $queryBuilder->createNamedParameter($eventUid, \TYPO3\CMS\Core\Database\Connection::PARAM_INT)
+        ))->executeQuery()->fetchAssociative();
 
         $title =  date('d.m.Y', $result['start_date']) . ' - ' .$result['name']  ;
 
@@ -197,7 +195,7 @@ class PagePropertiesUserfunction{
                 'tx_jvevents_domain_model_category',
                 'c',
                 $queryBuilder->expr()->eq('mm.uid_foreign', $queryBuilder->quoteIdentifier('c.uid'))
-            )->where($queryBuilder->expr()->eq('mm.uid_local', $queryBuilder->createNamedParameter($eventUid, \PDO::PARAM_INT)))->executeQuery()->fetchAll();
+            )->where($queryBuilder->expr()->eq('mm.uid_local', $queryBuilder->createNamedParameter($eventUid, \TYPO3\CMS\Core\Database\Connection::PARAM_INT)))->executeQuery()->fetchAllAssociative();
 
         // echo $queryBuilder->getSQL();
 
@@ -231,9 +229,8 @@ class PagePropertiesUserfunction{
             ->select('name', 'teaser', 'organizer', 'start_date')
             ->from('tx_jvevents_domain_model_event')->where($queryBuilder->expr()->eq(
             'uid',
-            $queryBuilder->createNamedParameter($eventUid, \PDO::PARAM_INT)
-        ))->executeQuery()
-            ->fetch();
+            $queryBuilder->createNamedParameter($eventUid, \TYPO3\CMS\Core\Database\Connection::PARAM_INT)
+        ))->executeQuery()->fetchAssociative();
         $meta = false;
 
         if (is_array($result)) {
@@ -254,17 +251,15 @@ class PagePropertiesUserfunction{
                 ->select('uid_local')
                 ->from('sys_file_reference')
                 ->where(
-                    $queryBuilderRef->expr()->eq('tablenames', $queryBuilderRef->createNamedParameter('tx_jvevents_domain_model_event', \PDO::PARAM_STR))
-                )->andWhere($queryBuilderRef->expr()->eq('fieldname', $queryBuilderRef->createNamedParameter('teaser_image', \PDO::PARAM_STR))
-                )->andWhere($queryBuilderRef->expr()->eq('uid_foreign', $queryBuilderRef->createNamedParameter($eventUid, \PDO::PARAM_INT)))->executeQuery()
-                ->fetch();
+                    $queryBuilderRef->expr()->eq('tablenames', $queryBuilderRef->createNamedParameter('tx_jvevents_domain_model_event', \TYPO3\CMS\Core\Database\Connection::PARAM_STR))
+                )->andWhere($queryBuilderRef->expr()->eq('fieldname', $queryBuilderRef->createNamedParameter('teaser_image', \TYPO3\CMS\Core\Database\Connection::PARAM_STR))
+                )->andWhere($queryBuilderRef->expr()->eq('uid_foreign', $queryBuilderRef->createNamedParameter($eventUid, \TYPO3\CMS\Core\Database\Connection::PARAM_INT)))->executeQuery()->fetchAssociative();
 
             if (intval($sysReference['uid_local']) > 0) {
                 $queryBuilderFile = $this->getQueryBuilder('sys_file');
                 $sysFile = $queryBuilderFile
                     ->select('identifier')
-                    ->from('sys_file')->where($queryBuilder->expr()->eq('uid', $queryBuilderFile->createNamedParameter($sysReference['uid_local'], \PDO::PARAM_INT)))->executeQuery()
-                    ->fetch();
+                    ->from('sys_file')->where($queryBuilder->expr()->eq('uid', $queryBuilderFile->createNamedParameter($sysReference['uid_local'], \TYPO3\CMS\Core\Database\Connection::PARAM_INT)))->executeQuery()->fetchAssociative();
 
                 if (is_array($sysFile)) {
                     // todo : make this correct with FileStorage ..

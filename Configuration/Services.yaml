@@ -1,11 +1,24 @@
+
 services:
   _defaults:
     autowire: true
     autoconfigure: true
     public: false
 
-  JVelletti\JvEvents\:
-    resource: '../Classes/*'
+
+  JVelletti\JvEvents\Command\:
+    resource: '../Classes/Command/*'
+
+  JVelletti\JvEvents\Scheduler\:
+    resource: '../Classes/Scheduler/*'
+
+  JVelletti\JvEvents\Event\:
+    resource: '../Classes/Event/*'
+
+  JVelletti\JvEvents\Middleware\:
+    resource: '../Classes/Middleware/*'
+
+
 
   JVelletti\JvEvents\Command\UpdateSlugCommand:
     tags:

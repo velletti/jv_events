@@ -316,7 +316,7 @@ class EventController extends BaseController
      * action new
      * @param Event|null $event
      *
-     * @return void
+     * @return \Psr\Http\Message\ResponseInterface
      */
     #[IgnoreValidation(['value' => 'event'])]
     public function newAction(Event $event=null)
@@ -345,7 +345,7 @@ class EventController extends BaseController
             } else {
                 $pid = $this->settings['pageIds']['loginForm'] ;
                 $this->addFlashMessage('You are not logged in as Organizer.'  , '', ContextualFeedbackSeverity::WARNING);
-                $this->redirect(null , null , NULL , NULL , $pid );
+                return $this->redirect(null , null , NULL , NULL , $pid );
             }
 
             if( $this->request->hasArgument('location')) {
@@ -418,7 +418,7 @@ class EventController extends BaseController
 
             $pid = $this->settings['pageIds']['loginForm'] ;
             $this->addFlashMessage('The object was NOT created. You are not logged in as Organizer.' . $event->getUid() , '', ContextualFeedbackSeverity::WARNING);
-            $this->redirect(null , null , NULL , ['event' => $event] , $pid );
+            return $this->redirect(null , null , NULL , ['event' => $event] , $pid );
         }
         // if PID from TS settings is set: if User is not logged in-> Page with loginForm , on success -> showEventDetail  Page
         if ($pid < 1) {
@@ -429,6 +429,7 @@ class EventController extends BaseController
             /** @var UriBuilder $uriBuilder */
 
             $uriBuilder = GeneralUtility::makeInstance( UriBuilder::class ) ;
+            $uriBuilder->setRequest($this->request ?? $GLOBALS['TYPO3_REQUEST']) ;
             $uri = "https://" . GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY') .
                     $uriBuilder->reset()->setTargetPageUid($pid)
                     ->setArguments([ 'tx_jvevents_event' =>
@@ -441,7 +442,7 @@ class EventController extends BaseController
                 ->withStatus("200");
 
         } catch  ( \Exception ) {
-            $this->redirect(null, null , NULL, null , $pid);
+            return $this->redirect(null, null , NULL, null , $pid);
         }
 
     }
@@ -625,7 +626,9 @@ class EventController extends BaseController
                     if ($eventsOnSameDay && $eventsOnSameDay->count() > 0 ) {
                         $msg = 'At least one copy of event ID' .  $newEvent->getMasterId() . ' exists! ' ;
                         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+                        $uriBuilder->setRequest($this->request ?? $GLOBALS['TYPO3_REQUEST']) ;
                         $uri = $uriBuilder->reset()->setTargetPageUid($pid)
+
                             ->setArguments(['tx_jvevents_event' =>
                                 ['controller' => 'Event', 'action' => 'show', 'event' => $eventsOnSameDay->getFirst()->getUid()]])
                             ->build();
@@ -699,7 +702,7 @@ class EventController extends BaseController
 
             /** @var QueryBuilder $queryBuilderEvent */
             $queryBuilderEvent = $dbConnectionForSlug->createQueryBuilder();
-            $queryBuilderEvent->update('tx_jvevents_domain_model_event')->set('slug' , $slug )->where($queryBuilderEvent->expr()->eq('uid' , $queryBuilderEvent->createNamedParameter( $eventUid , \PDO::PARAM_INT )))->executeStatement() ;
+            $queryBuilderEvent->update('tx_jvevents_domain_model_event')->set('slug' , $slug )->where($queryBuilderEvent->expr()->eq('uid' , $queryBuilderEvent->createNamedParameter( $eventUid , \TYPO3\CMS\Core\Database\Connection::PARAM_INT )))->executeStatement() ;
 
 
             /** @var Connection $dbConnectionForSysRef */
@@ -836,7 +839,7 @@ class EventController extends BaseController
                 $connection = GeneralUtility::makeInstance(ConnectionPool::class);
                 $queryBuilder = $connection->getQueryBuilderForTable('tx_jvevents_domain_model_event');
                 $oldEventRows = $queryBuilder->select('*' )
-                    ->from('tx_jvevents_domain_model_event')->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($event->getUid(), \PDO::PARAM_INT)))->executeQuery()
+                    ->from('tx_jvevents_domain_model_event')->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($event->getUid(), \TYPO3\CMS\Core\Database\Connection::PARAM_INT)))->executeQuery()
                     ->fetchAllAssociative();
 
                 if ( count($oldEventRows ) > 0 ) {
@@ -1348,7 +1351,7 @@ class EventController extends BaseController
      * @throws IllegalObjectTypeException
      * @throws UnknownObjectException
      */
-    public function updateLatestEvent( Event $event , DateTime $date = NULL ) {
+    public function updateLatestEvent( Event $event , DateTime $date = NULL ): void {
         if( $date == NULL ) {
             $date = new DateTime('now' ) ;
             // Idea : : get latest Date from any other event of this organizer ?
