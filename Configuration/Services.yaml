@@ -6,6 +6,7 @@ services:
     public: false
 
 
+
   JVelletti\JvEvents\Command\:
     resource: '../Classes/Command/*'
 
