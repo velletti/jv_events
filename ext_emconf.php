@@ -17,15 +17,15 @@ $EM_CONF['jv_events'] = array(
 	'author' => 'Jörg Velletti',
 	'author_email' => 'typo3@velletti.de',
 	'state' => 'stable',
-	'version' => '12.4.37',
+	'version' => '13.4.1',
 	'constraints' => array(
 		'depends' => array(
-			'typo3' => '12.4.0-12.4.99',
+			'typo3' => '13.4.0-13.4.99',
 		),
 		'conflicts' => array(
 		),
 		'suggests' => array(
-            'static_info_tables' => '6.4.0-6.99.99',
+            'static_info_tables' => '6.4.0-9.99.99',
 		),
 	),
 );
