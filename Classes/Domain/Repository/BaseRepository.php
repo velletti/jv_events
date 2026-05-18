@@ -138,6 +138,7 @@ class BaseRepository extends Repository
                     $theList .= ',' . $row['uid'];
                 }
                 if ($depth > 1) {
+                    // @extensionScannerIgnoreLine
                     $theSubList = $this->getTreeList($row['uid'], $depth - 1, $begin - 1, $permClause);
                     if (!empty($theList) && !empty($theSubList) && ($theSubList[0] !== ',')) {
                         $theList .= ',';

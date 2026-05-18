@@ -171,6 +171,7 @@ class UsergroupCommand extends Command {
         if( $io->getVerbosity() > 16 ) {
             // @extensionScannerIgnoreLine
             if( $i >= $maxRows ) {
+                // @extensionScannerIgnoreLine
                 $progress->finish();
             }
 

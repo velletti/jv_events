@@ -907,6 +907,7 @@ class Ajax implements MiddlewareInterface
                         $single['mimeType'] =  $tempFile->getOriginalResource()->getMimeType() ;
                         $single['width'] =  $tempFile->getOriginalResource()->getProperties()['width'];
                         $single['height'] =  $tempFile->getOriginalResource()->getProperties()['height'];
+                        // @extensionScannerIgnoreLine
                         $single['size'] =  $tempFile->getOriginalResource()->getSize() ;
                     }
                     $return[] = $single ;

@@ -124,6 +124,7 @@ class EventBackendController extends BaseController
 
 
         $view->setTitle('Event Management');
+        // @extensionScannerIgnoreLine
         $view->setModuleName("web_JvEventsEventmngt");
         $view->setModuleId("jvevents_eventmngt");
 
@@ -157,6 +158,7 @@ class EventBackendController extends BaseController
 
         }
         if ( $recursive ) {
+            // @extensionScannerIgnoreLine
             $this->settings['storagePids'] = $this->registrantRepository->getTreeList($pageId, 9999, 0, 1) ;
         }
 
@@ -188,8 +190,8 @@ class EventBackendController extends BaseController
                     $serverFromSite =  $site->getBase()->getHost() ;
 
                     $lang = max(  $selectedEvent->getSysLanguageUid()  , 0 ) ;
-                    $checkString =  $serverFromSite . "-" .  $selectedEvent->getUid()  . "-" . $selectedEvent->getCrdate() ;
-                    $checkHash = GeneralUtility::hmac ( $checkString ) ;
+                    $checkString =  $serverFromSite . "-" .  $selectedEvent->getUid()  ;
+                    $checkHash = $this->hashService->hmac ( $checkString , "-" . $selectedEvent->getCrdate() ) ;
                     // pid = 0 to load registrations from all pages for that event
                     $url = (string)$site->getRouter()->generateUri( $selectedEvent->getRegistrationFormPid() ,['_language' => $lang ,
                        'tx_jvevents_registrant' => ['action' => 'list' , 'controller' => 'Registrant' ,'event' =>  $selectedEvent->getUid()

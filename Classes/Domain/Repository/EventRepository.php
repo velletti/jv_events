@@ -442,6 +442,7 @@ class EventRepository extends BaseRepository
     private function getPidContraints($constraints, $settings ,  $query, $rGetTreeList=null )
     {
         if( $rGetTreeList == null ) {
+            // @extensionScannerIgnoreLine
             $rGetTreeList = $this->getTreeList( $settings['storagePid'],  $settings['recursive'], 0, 1); //Will be a string
         }
 

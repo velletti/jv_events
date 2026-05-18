@@ -37,6 +37,7 @@ use JVelletti\JvEvents\Domain\Model\Location;
 use JVelletti\JvEvents\Domain\Model\Organizer;
 use JVelletti\JvEvents\Domain\Model\Category;
 use TYPO3\CMS\Fluid\View\StandaloneView;
+use ViewFactoryData
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Core\Utility\MailUtility;
 use TYPO3\CMS\Core\Mail\MailMessage;
@@ -69,7 +70,7 @@ use \TYPO3\CMS\Core\Utility\GeneralUtility;
 use \TYPO3\CMS\Core\Messaging\AbstractMessage ;
 use TYPO3\CMS\Extbase\Service\CacheService;
 use Velletti\Mailsignature\Service\SignatureService;
-
+use TYPO3\CMS\Core\Crypto\HashService;
 /**
  * EventController
  */
@@ -174,76 +175,24 @@ class BaseController extends ActionController
     /** @var array */
     public $frontendUser ;
 
-    /**
-     * @return void
-     */
-    public function injectCacheService(CacheService $cacheService) {
-        $this->cacheService = $cacheService;
-    }
+    public HashService $hashService ;
 
-
-    /**
-     * Inject the TokenRepository
-     *
-     * @param TokenRepository $tokenRepository
-     */
-    public function injectTokenRepository(TokenRepository $tokenRepository): void
+    public function __construct()
     {
-        $this->tokenRepository = $tokenRepository;
+        $this->persistenceManager = GeneralUtility::makeInstance(PersistenceManager::class);
+        $this->staticCountryRepository = GeneralUtility::makeInstance(StaticCountryRepository::class);
+        $this->subeventRepository = GeneralUtility::makeInstance(SubeventRepository::class);
+        $this->mediaRepository = GeneralUtility::makeInstance(MediaRepository::class);
+            $this->locationRepository = GeneralUtility::makeInstance(LocationRepository::class);
+            $this->organizerRepository = GeneralUtility::makeInstance(OrganizerRepository::class);
+            $this->categoryRepository = GeneralUtility::makeInstance(CategoryRepository::class);
+            $this->tagRepository = GeneralUtility::makeInstance(TagRepository::class);
+        $this->eventRepository = GeneralUtility::makeInstance(EventRepository::class);
+        $this->registrantRepository = GeneralUtility::makeInstance(RegistrantRepository::class);
+        $this->cacheService = GeneralUtility::makeInstance(CacheService::class);
+        $this->tokenRepository = GeneralUtility::makeInstance(TokenRepository::class);
+        $this->hashService = GeneralUtility::makeInstance(HashService::class);
     }
-
-    public function injectTagRepository(TagRepository $tagRepository)
-    {
-        $this->tagRepository = $tagRepository;
-    }
-
-    public function injectCategoryRepository(CategoryRepository $categoryRepository)
-    {
-        $this->categoryRepository = $categoryRepository;
-    }
-
-    public function injectRegistrantRepository(RegistrantRepository $registrantRepository)
-    {
-        $this->registrantRepository = $registrantRepository;
-    }
-
-    public function injectLocationRepository(LocationRepository $locationRepository)
-    {
-        $this->locationRepository = $locationRepository;
-    }
-
-    public function injectOrganizerRepository(OrganizerRepository $organizerRepository)
-    {
-        $this->organizerRepository = $organizerRepository;
-    }
-
-    public function injectEventRepository(EventRepository $eventRepository)
-    {
-        $this->eventRepository = $eventRepository;
-    }
-
-    public function injectMediaRepository(MediaRepository $mediaRepository)
-    {
-        $this->mediaRepository = $mediaRepository;
-    }
-
-    public function injectSubeventRepository(SubeventRepository $subeventRepository)
-    {
-        $this->subeventRepository = $subeventRepository;
-    }
-
-    public function injectStaticCountryRepository(StaticCountryRepository $staticCountryRepository)
-    {
-        $this->staticCountryRepository = $staticCountryRepository;
-    }
-
-
-
-    public function injectPersistenceManager(PersistenceManager $persistenceManager)
-    {
-        $this->persistenceManager = $persistenceManager;
-    }
-
 
     /**
      * action list
@@ -704,8 +653,12 @@ class BaseController extends ActionController
      */
     public function getEmailRenderer($templatePath = '' , $templateName = 'default' , $format='html') {
         // create another instance of Fluid
+
+        $viewData = GeneralUtility::makeInstance( TYPO3\CMS\Core\View\ViewFactoryData::class) ;
         /** @var StandaloneView $renderer */
-        $renderer = GeneralUtility::makeInstance(StandaloneView::class);
+        $renderer = GeneralUtility::makeInstance(\TYPO3\CMS\Core\View\ViewFactoryInterface::class)->create($viewData);
+
+
         // set the request directly on the renderer
         $renderer->getRenderingContext()->setAttribute(\Psr\Http\Message\ServerRequestInterface::class, $this->request);
 

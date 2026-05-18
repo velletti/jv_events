@@ -96,8 +96,8 @@ class RegistrantController extends BaseController
         }
         $registrants = [] ;
 
-        $checkString =  $_SERVER["SERVER_NAME"] . "-" . $event->getUid() . "-" . $event->getCrdate() ;
-        $checkHash = GeneralUtility::hmac ( $checkString ) ;
+        $checkString =  $_SERVER["SERVER_NAME"] . "-" . $event->getUid() ;
+        $checkHash = $this->hashService->hmac ( $checkString ,  "-" . $event->getCrdate()) ;
 
 
         if( $checkHash ==  $hash ) {
@@ -261,6 +261,7 @@ class RegistrantController extends BaseController
         $return .= $this->getCsvLine(  $d ,  $t ,  $this->cleanString(" " . $registrant->getZip(), $t , $d) , $fields , "zip" , $all ) ;
         $return .= $this->getCsvLine(  $d ,  $t ,  $this->cleanString($registrant->getCity() , $t , $d), $fields , "city" , $all ) ;
         $return .= $this->getCsvLine(  $d ,  $t ,  $this->cleanString($registrant->getCountry(), $t , $d), $fields , "country" , $all ) ;
+        // @extensionScannerIgnoreLine
         $return .= $this->getCsvLine(  $d ,  $t ,  $this->cleanString($registrant->getLanguage(), $t , $d) , $fields , "language" , $all ) ;
         $return .= $this->getCsvLine(  $d ,  $t ,  $this->cleanString($phone, $t , $d) , $fields , "phone" , $all ) ;
         $return .= $this->getCsvLine(  $d ,  $t ,  $this->cleanString($registrant->getProfession() , $t , $d) , $fields , "profession" , $all ) ;
@@ -330,8 +331,8 @@ class RegistrantController extends BaseController
                     }
                 }
             }
-            $checkString = $_SERVER["SERVER_NAME"] . "-" . $event->getUid() . "-" . $event->getCrdate();
-            $checkHash = GeneralUtility::hmac ( $checkString );
+            $checkString = $_SERVER["SERVER_NAME"] . "-" . $event->getUid() ;
+            $checkHash = $this->hashService->hmac ( $checkString , "-" . $event->getCrdate());
             $this->settings['fe_user']['user'] = $this->frontendUser->user;
             $this->settings['fe_user']['organizer']['showTools'] = FALSE;
             $userUid = 0 ;
@@ -515,8 +516,8 @@ class RegistrantController extends BaseController
         $forward['success'] = FALSE ;
         $forward['successMsg'] = FALSE ;
 
-        $checkString =  $_SERVER["SERVER_NAME"] . "-" . $event->getUid() . "-" . $event->getCrdate() ;
-        $this->settings['hash'] = GeneralUtility::hmac ( $checkString ) ;
+        $checkString =  $_SERVER["SERVER_NAME"] . "-" . $event->getUid()  ;
+        $this->settings['hash'] = $this->hashService->hmac ( $checkString , "-" . $event->getCrdate()) ;
 
 		$registrant->setEvent($event->getUid() );
 		if( $latestEventDate instanceof \DateTime ) {

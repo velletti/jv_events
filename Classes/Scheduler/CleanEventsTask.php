@@ -137,6 +137,7 @@ class CleanEventsTask extends AbstractTask
 
     private function outputLine($msg): void
     {
+        // @extensionScannerIgnoreLine
         $this->logger->error($msg);
     }
 

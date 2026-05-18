@@ -131,6 +131,7 @@ class CleanupMissingFilesCommand extends Command {
                 if ($file->rowCount() == 0) {
                     $wrong++ ;
                     $io->writeln(" ") ;
+                    // @extensionScannerIgnoreLine
                     $io->error("No sysfile found for uid:" . $row["uid"] . " - File ID:" . $row["uid_local"] );
                     if (!$dryrun) {
                         $qbr2 = $this->getQueryBuilder($table) ;
@@ -146,6 +147,7 @@ class CleanupMissingFilesCommand extends Command {
                     if ( !$fileName || !file_exists($fileName) ) {
                         $wrong++ ;
                         $io->writeln(" ") ;
+                        // @extensionScannerIgnoreLine
                         $io->error("File not found for uid:" . $row["uid"] . " - File ID:" . $row["uid_local"] . " - File:" . $fileName );
                         if (!$dryrun) {
                             $qbr3 = $this->getQueryBuilder($table) ;
@@ -169,6 +171,7 @@ class CleanupMissingFilesCommand extends Command {
             $i++ ;
         }
         $io->writeln(" ") ;
+        // @extensionScannerIgnoreLine
         $progress->finish();
         $io->section("Result:");
         $io->writeln("Finished ( Found '" . $wrong . "' Errors and worked on '"   . $repaired . "' of '" . $i . "' records) ");

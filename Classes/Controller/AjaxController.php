@@ -38,6 +38,9 @@ use JVelletti\JvEvents\Domain\Repository\OrganizerRepository;
 use JVelletti\JvEvents\Domain\Repository\EventRepository;
 use JVelletti\JvEvents\Domain\Repository\SubeventRepository;
 use JVelletti\JvEvents\Domain\Repository\StaticCountryRepository;
+use JVelletti\JvEvents\Domain\Repository\FrontendUserRepository;
+use JVelletti\JvEvents\Domain\Repository\FrontendUserGroupRepository;
+
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
@@ -48,10 +51,8 @@ use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use JVelletti\JvEvents\Domain\Model\Organizer;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
-use JVelletti\JvEvents\Domain\Repository\FrontendUserRepository;
 use JVelletti\JvEvents\Domain\Model\FrontendUser;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
-use TYPO3\CMS\Extbase\Domain\Repository\FrontendUserGroupRepository;
 use TYPO3\CMS\Core\FormProtection\FrontendFormProtection;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
@@ -72,6 +73,8 @@ use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 
 use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Core\View\ViewFactoryInterface;
+use TYPO3\CMS\Core\View\ViewFactoryData;
 
 
 /**/
@@ -732,8 +735,8 @@ class AjaxController extends BaseController
         if( ! $this->settings['LayoutSingle'] ) {
             $this->settings['LayoutSingle'] = '5Tango' ;
         }
-        $checkString = $_SERVER["SERVER_NAME"] . "-" . $output['event']['eventId'] . "-" . $output['event']['crdate'];
-        $checkHash = GeneralUtility::hmac ( $checkString );
+        $checkString = $_SERVER["SERVER_NAME"] . "-" . $output['event']['eventId'] ;
+        $checkHash =$this->hashService->hmac ( $checkString ,  "-" . $output['event']['crdate']);
         $this->settings['hash'] =  $checkHash ;
         $this->settings['cookie'] =  $_COOKIE ;
 
@@ -794,8 +797,8 @@ class AjaxController extends BaseController
         }
 
         if(  isset($arguments['hash']) ) {
-            $checkString = $_SERVER["SERVER_NAME"] . "-" . $organizer->getUid() . "-" . $organizer->getCrdate();
-            if ( $arguments['hash'] !== GeneralUtility::hmac ( $checkString ) ) {
+            $checkString = $_SERVER["SERVER_NAME"] . "-" . $organizer->getUid() ;
+            if ( $arguments['hash'] !==$this->hashService->hmac ( $checkString , "-" . $organizer->getCrdate()) ) {
                 ShowAsJsonArrayUtility::show( ['status' => false, 'html' => 'invalid hash for Org: ' . $organizer->getUid()] ) ;
                 die;
             }
@@ -1011,8 +1014,8 @@ class AjaxController extends BaseController
                 die;
             }
         }
-        $tokenStr = "activateOrg" . "-" . $organizerUid . "-" . $user->getCrdate() ."-". $userUid .  "-". $rnd ;
-        $tokenId = GeneralUtility::hmac( $tokenStr );
+        $tokenStr = "activateOrg" . "-" . $organizerUid   ;
+        $tokenId =$this->hashService->hmac( $tokenStr ,  "-" . $user->getCrdate() ."-". $userUid .  "-". $rnd );
 
 
         if( $hmac != $tokenId ) {
@@ -1055,7 +1058,7 @@ class AjaxController extends BaseController
         $msg = '' ;
         foreach ($groupsMissing as $key => $item) {
             if ( $item  ) {
-                /** @var \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserGroupRepository $userGroupRepository */
+                /** @var FrontendUserGroupRepository $userGroupRepository */
                 $userGroupRepository = GeneralUtility::makeInstance(FrontendUserGroupRepository::class) ;
                 $newGroup = $userGroupRepository->findByUid($key) ;
                 if( $newGroup ) {
@@ -1290,6 +1293,7 @@ class AjaxController extends BaseController
                         $single['mimeType'] =  $tempFile->getOriginalResource()->getMimeType() ;
                         $single['width'] =  $tempFile->getOriginalResource()->getProperties()['width'];
                         $single['height'] =  $tempFile->getOriginalResource()->getProperties()['height'];
+                        // @extensionScannerIgnoreLine
                         $single['size'] =  $tempFile->getOriginalResource()->getSize() ;
                     }
                     $return[] = $single ;

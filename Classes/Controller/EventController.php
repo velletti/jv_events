@@ -250,8 +250,8 @@ class EventController extends BaseController
                     return (new RedirectResponse( $url ))->withStatus(301);
                 }
             }
-            $checkString = $_SERVER["SERVER_NAME"] . "-" . $event->getUid() . "-" . $event->getCrdate();
-            $checkHash = GeneralUtility::hmac ( $checkString );
+            $checkString = $_SERVER["SERVER_NAME"] ;
+            $checkHash = $this->hashService->hmac ( $checkString , "-" . $event->getUid() . "-" . $event->getCrdate());
 
 
             //$querysettings = new Typo3QuerySettings;
