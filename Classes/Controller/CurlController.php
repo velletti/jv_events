@@ -55,7 +55,7 @@ class CurlController extends BaseController
 {
 
 
-    public function initializeAction()
+    public function initializeAction(): void
     {
         $this->timeStart = $this->microtime_float();
 

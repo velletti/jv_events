@@ -37,7 +37,7 @@ use JVelletti\JvEvents\Domain\Model\Location;
 use JVelletti\JvEvents\Domain\Model\Organizer;
 use JVelletti\JvEvents\Domain\Model\Category;
 use TYPO3\CMS\Fluid\View\StandaloneView;
-use ViewFactoryData
+
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Core\Utility\MailUtility;
 use TYPO3\CMS\Core\Mail\MailMessage;
@@ -71,6 +71,8 @@ use \TYPO3\CMS\Core\Messaging\AbstractMessage ;
 use TYPO3\CMS\Extbase\Service\CacheService;
 use Velletti\Mailsignature\Service\SignatureService;
 use TYPO3\CMS\Core\Crypto\HashService;
+use \TYPO3\CMS\Core\View\ViewFactoryData;
+use \TYPO3\CMS\Core\View\ViewFactoryInterface;
 /**
  * EventController
  */
@@ -228,7 +230,7 @@ class BaseController extends ActionController
             $fields .= "," . $this->settings['Register']['add_mandatory_fields'] ;
         }
 
-        $required  = GeneralUtility::trimExplode( "," , $fields , true ) ;
+        $required  = GeneralUtility::trimExplode( "," , ($fields ?? '' ) , true ) ;
         if ( (is_countable($required) ? count($required) : 0) > 0 ) {
             foreach( $required as $key => $field ) {
                 $this->settings['register']['required'][$field] = TRUE ;
@@ -654,9 +656,9 @@ class BaseController extends ActionController
     public function getEmailRenderer($templatePath = '' , $templateName = 'default' , $format='html') {
         // create another instance of Fluid
 
-        $viewData = GeneralUtility::makeInstance( TYPO3\CMS\Core\View\ViewFactoryData::class) ;
+        $viewData = GeneralUtility::makeInstance( ViewFactoryData::class) ;
         /** @var StandaloneView $renderer */
-        $renderer = GeneralUtility::makeInstance(\TYPO3\CMS\Core\View\ViewFactoryInterface::class)->create($viewData);
+        $renderer = GeneralUtility::makeInstance(ViewFactoryInterface::class)->create($viewData);
 
 
         // set the request directly on the renderer

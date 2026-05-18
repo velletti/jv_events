@@ -571,7 +571,7 @@ class GeocoderUtility {
                               
                 
                         } else {
-                            showErrorMessage("' . $this->getLanguageService()->getLL('geocoding.error.geocodingNotSuccessful.part1') . ' " + status + " ' . $this->getLanguageService()->getLL('geocoding.error.geocodingNotSuccessful.part2') . '");
+                            showErrorMessage("' . $this->getLanguageService()->sL('geocoding.error.geocodingNotSuccessful.part1') . ' " + status + " ' . $this->getLanguageService()->sL('geocoding.error.geocodingNotSuccessful.part2') . '");
                         }
                 
                     });
@@ -602,7 +602,7 @@ class GeocoderUtility {
 			 */
 			function showErrorMessage(message){
 				' . $jQueryName . '("#geosearcherrormessage").show();
-				' . $jQueryName . '("#geosearcherrormessage div").text("' . $this->getLanguageService()->getLL('geocoding.error') . ': " + message);
+				' . $jQueryName . '("#geosearcherrormessage div").text("' . $this->getLanguageService()->sL('geocoding.error') . ': " + message);
 			}
 			function updateMarker(address) {
 			    if( ! address.includes(",")) {
@@ -861,7 +861,7 @@ class GeocoderUtility {
 				// initGeoCoderMap();
 
 			}else{
-				showErrorMessage("' . $this->getLanguageService()->getLL('geocoding.error.referenceToParentWindow') . '");
+				showErrorMessage("' . $this->getLanguageService()->sL('geocoding.error.referenceToParentWindow') . '");
 			}
 		    /**
 		    * updates the fields in search Form 
@@ -884,7 +884,7 @@ class GeocoderUtility {
 					parent.window.opener.' . $jQueryName . '("input[name=\'data[tx_jvevents_domain_model_location][' . $uid . '][lng]\']").val(roundDataToNumber(' . $jQueryName . '("#geosearchlng").val(),11));
 					window.close();
 				} else {
-					showErrorMessage("' . $this->getLanguageService()->getLL('geocoding.error.referenceToParentWindow') . '");
+					showErrorMessage("' . $this->getLanguageService()->sL('geocoding.error.referenceToParentWindow') . '");
 				}
 			}
 			function windowOrModalclose() {
@@ -921,10 +921,10 @@ class GeocoderUtility {
                 <form id="geosearch" name="geosearch" class="form-inline">
                 
                   <div class="form-group ">
-                    <label for="geosearchbox">' . $this->getLanguageService()->getLL('geocoding.form.geosearch.label.searchFor') . ':</label>
+                    <label for="geosearchbox">' . $this->getLanguageService()->sL('geocoding.form.geosearch.label.searchFor') . ':</label>
                     <div class="input-group">
                         <input type="text" class="form-control" id="geosearchbox" value="">
-                        <input class="input-group-addon btn btn-default" type="button" name="submit" value="' . $this->getLanguageService()->getLL('geocoding.form.geosearch.label.find') . '" onclick="findAddress({\'address\': ' . $jQueryName . '(\'#geosearchbox\').val()})" />
+                        <input class="input-group-addon btn btn-default" type="button" name="submit" value="' . $this->getLanguageService()->sL('geocoding.form.geosearch.label.find') . '" onclick="findAddress({\'address\': ' . $jQueryName . '(\'#geosearchbox\').val()})" />
                       </div>			
                   </div>			
                   
@@ -935,17 +935,17 @@ class GeocoderUtility {
                 <form id="transferGeoData" name="transferGeoData" class="form-inline">
                 
                   <div class="form-group">
-                    <label for="geosearchlat">' . $this->getLanguageService()->getLL('geocoding.form.transferGeoData.label.latitude') . ':</label>
+                    <label for="geosearchlat">' . $this->getLanguageService()->sL('geocoding.form.transferGeoData.label.latitude') . ':</label>
                     <input type="text" class="form-control" id="geosearchlat" readonly>
                   </div>			
                 
                   <div class="form-group">
-                    <label for="geosearchlng">' . $this->getLanguageService()->getLL('geocoding.form.transferGeoData.label.longitude') . ':</label>
+                    <label for="geosearchlng">' . $this->getLanguageService()->sL('geocoding.form.transferGeoData.label.longitude') . ':</label>
                     <input type="text" class="form-control" id="geosearchlng" readonly>
                   </div>
                   
-                  <input class="btn btn-primary" type="button" name="submit" value="' . $this->getLanguageService()->getLL('geocoding.form.transferGeoData.label.submit') . '" onclick="insertValuesInParent();" />
-                  <input class="btn btn-danger" type="button" name="cancel" value="' . $this->getLanguageService()->getLL('geocoding.form.transferGeoData.label.cancel') . '" onclick="windowOrModalclose();" />
+                  <input class="btn btn-primary" type="button" name="submit" value="' . $this->getLanguageService()->sL('geocoding.form.transferGeoData.label.submit') . '" onclick="insertValuesInParent();" />
+                  <input class="btn btn-danger" type="button" name="cancel" value="' . $this->getLanguageService()->sL('geocoding.form.transferGeoData.label.cancel') . '" onclick="windowOrModalclose();" />
     
                 </form>
                 

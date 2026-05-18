@@ -45,7 +45,7 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\FormProtection\FrontendFormProtection;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
-use JVelletti\JvBanners\Utility\AssetUtility;
+
 use JVelletti\JvEvents\Domain\Model\Event;
 use JVelletti\JvEvents\Domain\Model\Location;
 use JVelletti\JvEvents\Domain\Model\Organizer;
@@ -68,41 +68,45 @@ class EventController extends BaseController
 {
 
 
-	public function initializeAction() {
+	public function initializeAction() :void
+    {
         $this->timeStart = $this->microtime_float() ;
 	    $this->debugArray[] = "Start:" . intval(1000 * $this->timeStart ) . " Line: " . __LINE__ ;
-		if ($this->request->hasArgument('action')) {
 
-			if ( in_array( $this->request->getArgument('action') , ["show", "edit", "update", "create", "delete", "cancel"] )) {
-				// user is calling  one of the actions, that requires and event ID.
-
-			    if ( !$this->request->hasArgument('event') && !$this->request->getArgument('action') == "show") {
-			        return new ForwardResponse('show');
-				}
-                if ( $this->request->hasArgument('event') && $this->request->getArgument('action') == "show"  && !ctype_digit( (string) $this->request->getArgument('event') ) ) {
-                    return (new ForwardResponse('show'))->withArguments(['action' => 'show', 'event' => null]);
-                }
-
-			}
-
-		} else {
-		    // no action is set ? prevent
-            return new ForwardResponse('list');
-        }
         if ( $this->request->hasArgument('event')) {
             if ( property_exists( $this->arguments , "event")) {
                 $propertyMappingConfiguration = $this->arguments['event']->getPropertyMappingConfiguration();
                 $propertyMappingConfiguration->allowProperties('changeFutureEvents') ;
 
             }
-
-
         }
 
         parent::initializeAction() ;
         $this->debugArray[] = "Init Done:" . intval(1000 * ($this->microtime_float()  - $this->timeStart ) ) . " Line: " . __LINE__ ;
 	}
 
+    public function checkArguments() {
+        if ($this->request->hasArgument('action')) {
+
+			if ( in_array( $this->request->getArgument('action') , ["show", "edit", "update", "create", "delete", "cancel"] )) {
+				// user is calling  one of the actions, that requires and event ID.
+
+			    if ( !$this->request->hasArgument('event') && !$this->request->getArgument('action') == "show") {
+			        /** @var ResponseInterface $return */
+                    return $this->redirect('show');
+				}
+                if ( $this->request->hasArgument('event') && $this->request->getArgument('action') == "show"  && !ctype_digit( (string) $this->request->getArgument('event') ) ) {
+                    return $this->redirect('show')->withArguments(['action' => 'show', 'event' => null]);
+                }
+
+            }
+
+        } else {
+            // no action is set ? prevent
+            return $this->redirect('list');
+        }
+        return null;
+    }
     /**
      * action list
      *
@@ -111,6 +115,9 @@ class EventController extends BaseController
      */
     public function listAction(): ResponseInterface
     {
+        if ( $return = $this->checkArguments() ) {
+            return $return ;
+        }
         $this->debugArray[] = "After Init :" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " Line: " . __LINE__ ;
         $this->settings['filter']['distance']['doNotOverrule'] = "false" ;
         $this->settings['flexform']['filter']['maxDays']  =  ($this->settings['filter']['maxDays'] > 0 ) ? $this->settings['filter']['maxDays'] : 30 ;
@@ -457,9 +464,12 @@ class EventController extends BaseController
      * @return void
      */
     #[IgnoreValidation(['value' => 'event'])]
-    public function editAction(Event $event , ?int $copy2Day=0 , ?int $amount=0 ): ResponseInterface
+    public function editAction(?Event $event , ?int $copy2Day=0 , ?int $amount=0 ): ResponseInterface
     {
 
+        if ( $return = $this->checkArguments() ) {
+            return $return ;
+        }
         $filter = [];
         if($this->isUserOrganizer() ) {
             if( $this->hasUserAccess( $event->getOrganizer() )) {
@@ -862,37 +872,42 @@ class EventController extends BaseController
                         $row['html'] = $html;
                         $bannerRepository->updateBanner( $row );
 
-                        // update image
-                        $assetData = AssetUtility::loadSysFileReference($event->getUid() , "tx_jvevents_domain_model_event" , "teaser_image") ;
-                        $imageFrom = "Event" ;
-                        if( !is_array($assetData )) {
-                            $imageFrom = "Location" ;
 
-                            $assetData = AssetUtility::loadSysFileReference($event->getLocation()->getUid() , "tx_jvevents_domain_model_location" , "teaser_image") ;
-                        }
-                        if( !is_array($assetData )) {
-                            $imageFrom = "Organizer" ;
-                            $assetData = AssetUtility::loadSysFileReference($event->getOrganizer()->getUid() , "tx_jvevents_domain_model_organizer" , "teaser_image") ;
-                        }
-                        if( is_array($assetData )) {
+                        if (class_exists(\JVelletti\JvBanners\Utility\AssetUtility )) {
+                            $assetUtility = GeneralUtility::makeInstance(\JVelletti\JvBanners\Utility\AssetUtility::class);
 
-                            $assetDataLink = AssetUtility::loadSysFileReference( $row['uid'] , "tx_sfbanners_domain_model_banner" , "assets") ;
+                            // update image
+                            $assetData = $assetUtility::loadSysFileReference($event->getUid() , "tx_jvevents_domain_model_event" , "teaser_image") ;
+                            $imageFrom = "Event" ;
+                            if( !is_array($assetData )) {
+                                $imageFrom = "Location" ;
 
-                            if( $assetDataLink ) {
-
-                                $link = $this->uriBuilder->reset()
-                                    ->setTargetPageUid($pid )
-                                    ->uriFor(
-                                        'show',
-                                        array("event" => $event->getUid() ),
-                                        'Event',
-                                        'JvEvents') ;
-
-                                AssetUtility::updateUidLocal($assetDataLink['uid'] , ['uid_local' => $assetData['uid_local'] , "link" => $link , "title" => $event->getName() ] ) ;
+                                $assetData = $assetUtility::loadSysFileReference($event->getLocation()->getUid() , "tx_jvevents_domain_model_location" , "teaser_image") ;
                             }
+                            if( !is_array($assetData )) {
+                                $imageFrom = "Organizer" ;
+                                $assetData = $assetUtility::loadSysFileReference($event->getOrganizer()->getUid() , "tx_jvevents_domain_model_organizer" , "teaser_image") ;
+                            }
+                            if( is_array($assetData )) {
 
+                                $assetDataLink = $assetUtility::loadSysFileReference( $row['uid'] , "tx_sfbanners_domain_model_banner" , "assets") ;
+
+                                if( $assetDataLink ) {
+
+                                    $link = $this->uriBuilder->reset()
+                                        ->setTargetPageUid($pid )
+                                        ->uriFor(
+                                            'show',
+                                            array("event" => $event->getUid() ),
+                                            'Event',
+                                            'JvEvents') ;
+
+                                    $assetUtility::updateUidLocal($assetDataLink['uid'] , ['uid_local' => $assetData['uid_local'] , "link" => $link , "title" => $event->getName() ] ) ;
+                                }
+
+                            }
+                            $this->addFlashMessage('The Banner ' .  $row['uid'] . ' will be updated soon. (<4 h). Changed Images may take more time.', '', ContextualFeedbackSeverity::OK);
                         }
-                        $this->addFlashMessage('The Banner ' .  $row['uid'] . ' will be updated soon. (<4 h). Changed Images may take more time.', '', ContextualFeedbackSeverity::OK);
                     }
                 }
 

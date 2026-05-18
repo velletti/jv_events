@@ -54,7 +54,7 @@ return [
         'sys_language_uid' => array(
             'exclude' => 1,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
-            'config' => $lngConfig ,
+            'config' => ['type' => 'language'] ,
         ),
         'l10n_parent' => array(
             'displayCond' => 'FIELD:sys_language_uid:>:0',

@@ -108,8 +108,8 @@ class AjaxController extends BaseController
      */
     public $standaloneView;
 
-    public function initializeAction() {
-
+    public function initializeAction(): void
+    {
         parent::initializeAction() ;
     }
 

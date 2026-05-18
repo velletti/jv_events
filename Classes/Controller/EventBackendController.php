@@ -75,12 +75,11 @@ class EventBackendController extends BaseController
     protected BackendUserAuthentication $backendUser;
 
     public function __construct(
-       RegistrantRepository $registrantRepository,
        ModuleTemplateFactory $moduleTemplateFactory,
        PageRenderer $pageRenderer,
        BackendUserAuthentication $backendUser
     ) {
-        $this->registrantRepository = $registrantRepository;
+        $this->registrantRepository = GeneralUtility::makeInstance(RegistrantRepository::class);
         $this->moduleTemplateFactory = $moduleTemplateFactory;
         $this->pageRenderer = $pageRenderer;
         $this->backendUser = $backendUser;

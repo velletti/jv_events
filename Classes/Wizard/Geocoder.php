@@ -3,6 +3,8 @@ namespace JVelletti\JvEvents\Wizard;
 
 use TYPO3\CMS\Backend\Controller\Wizard\AbstractWizardController;
 use JVelletti\JvEvents\Utility\GeocoderUtility;
+use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use Psr\Http\Message\ServerRequestInterface;
@@ -94,8 +96,8 @@ class Geocoder extends AbstractWizardController {
 
 
 		$this->content = '';
-		$this->content .= $this->doc->startPage($this->getLanguageService()->getLL('geocoding.page.title'));
-		$this->content .= $this->doc->header($this->getLanguageService()->getLL('geocoding.page.headline'));
+		$this->content .= $this->doc->startPage($this->getLanguageService()->sL('geocoding.page.title'));
+		$this->content .= $this->doc->header($this->getLanguageService()->sL('geocoding.page.headline'));
         $addressData = $this->getAddressDataFromDb();
         $this->content .= $this->geoCoder->main(false , $addressData['uid'] , "TYPO3.jQuery" );
 		$this->content .= $this->doc->endPage();
@@ -103,5 +105,13 @@ class Geocoder extends AbstractWizardController {
 		return $response;
 
 	}
+
+    /**
+     * @return LanguageService
+     */
+    protected function getLanguageService(): LanguageService
+    {
+        return GeneralUtility::makeInstance(LanguageServiceFactory::class)->create("default") ;
+    }
 
 }
