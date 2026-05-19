@@ -27,6 +27,7 @@ namespace JVelletti\JvEvents\Controller;
  ***************************************************************/
 
 use JVelletti\JvEvents\Domain\Repository\RegistrantRepository;
+use JVelletti\JvEvents\Domain\Repository\EventRepository;
 use JVelletti\JvEvents\Utility\EmConfigurationUtility;
 use JVelletti\JvEvents\Utility\SalesforceWrapperUtility;
 use Psr\Http\Message\ResponseInterface;
@@ -58,12 +59,6 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
 class EventBackendController extends BaseController
 {
 
-    /**
-     * registrantRepository
-     *
-     * @var RegistrantRepository
-     */
-    protected $registrantRepository = NULL;
 
     /**
      * @var RegisterHubspotUtility
@@ -79,10 +74,11 @@ class EventBackendController extends BaseController
        PageRenderer $pageRenderer,
        BackendUserAuthentication $backendUser
     ) {
-        $this->registrantRepository = GeneralUtility::makeInstance(RegistrantRepository::class);
+
         $this->moduleTemplateFactory = $moduleTemplateFactory;
         $this->pageRenderer = $pageRenderer;
         $this->backendUser = $backendUser;
+        parent::__construct();
     }
 
 

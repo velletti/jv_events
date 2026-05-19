@@ -37,10 +37,6 @@ use JVelletti\JvEvents\Domain\Model\Category;
  */
 class DataAttribViewHelper extends AbstractViewHelper   {
 
-    /**
-     * @var bool
-     */
-    protected $escapeOutput = false;
 
     /**
      * Needed as child node's output can return a DateTime object which can't be escaped
@@ -62,6 +58,7 @@ class DataAttribViewHelper extends AbstractViewHelper   {
 	 * @return string
 	 */
 	public function render() {
+        $this->escapeOutput = false ;
         $event = $this->arguments['event'] ;
         if( !is_object ( $event )) {
             return " " ;

@@ -68,7 +68,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
   
     public function initializeArguments(): void
     {
-        $this->registerTagAttribute('section', 'string', 'Anchor for links', false);
+        $this->registerArgument('section', 'string', 'Anchor for links', false);
 
         $this->registerArgument('event', Event::class, 'Event', false);
         $this->registerArgument('eventId', 'int', 'Event as id', false);

@@ -17,7 +17,6 @@ namespace JVelletti\JvEvents\ViewHelpers;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Formats an object implementing \DateTimeInterface.
@@ -90,8 +89,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  */
 class CleanTeaserViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     /**
      * Needed as child node's output can return a DateTime object which can't be escaped
      *
@@ -117,9 +114,9 @@ class CleanTeaserViewHelper extends AbstractViewHelper
      * @return string
      * @throws Exception
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public function render()
     {
-        $string = ($arguments['value'] ?? '') ;
+        $string = ($this->arguments['value'] ?? '') ;
         return htmlspecialchars( str_replace("\n" , " " , $string));
     }
 

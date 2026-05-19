@@ -42,12 +42,6 @@ class YoutubeViewHelper extends AbstractTagBasedViewHelper
      */
     protected $tagName = 'a';
 
-    /**
-     * Disable escaping of tag based ViewHelpers so that the rendered tag is not htmlspecialchar'd
-     *
-     * @var bool
-     */
-    protected $escapeOutput = false;
 
   
     public function initializeArguments(): void
@@ -63,7 +57,8 @@ class YoutubeViewHelper extends AbstractTagBasedViewHelper
      * @return string link
      */
     public function render() {
-        $this->init();
+        $this->escapeOutput = false ;
+        $this->cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         $uri = $this->arguments['uri'] ;
         // maybe we need settings
         $settings = $this->arguments['settings'] ?? [] ;
@@ -133,13 +128,5 @@ class YoutubeViewHelper extends AbstractTagBasedViewHelper
     }
 
 
-    /**
-     * Initialize properties
-     *
-     * @return void
-     */
-    protected function init()
-    {
-        $this->cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-    }
+
 }

@@ -28,14 +28,6 @@ use Endroid\QrCode\RoundBlockSizeMode;
 
 class QrcodeViewHelper extends AbstractViewHelper {
 
-    /**
-     * As this ViewHelper renders HTML, the output must not be escaped.
-     *
-     * @var bool
-     */
-    protected $escapeOutput = false;
-
-
     /** * Constructor *
      * @api */
     public function initializeArguments(): void {
@@ -48,6 +40,7 @@ class QrcodeViewHelper extends AbstractViewHelper {
 	 * @return string
 	 */
 	public function render() {
+        $this->escapeOutput = false ;
         // Create a new instance of PngWriter
         $writer = new PngWriter();
 

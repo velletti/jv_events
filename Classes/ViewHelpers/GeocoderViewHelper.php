@@ -39,11 +39,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class GeocoderViewHelper extends AbstractViewHelper   {
 
     /**
-     * @var bool
-     */
-    protected $escapeOutput = false;
-
-    /**
      * Needed as child node's output can return a DateTime object which can't be escaped
      *
      * @var bool
@@ -65,7 +60,7 @@ class GeocoderViewHelper extends AbstractViewHelper   {
      * @return string
      */
     public function render() {
-
+        $this->escapeOutput = false ;
         $location = $this->arguments['location'] ;
         $updateFunction = $this->arguments['updateFunction'] ;
         $formfieldIds = $this->arguments['formfields'] ;
