@@ -170,6 +170,8 @@ class CleanEventsTaskAdditionalFieldProvider extends AbstractAdditionalFieldProv
             $lng = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.typoscript')->getConfigArray()['language'] ;
         }
         if ( $lng == '' ) { $lng = "en" ;}
+        
+        // @extensionScannerIgnoreLine
         $lang->init($lng) ;
         $GLOBALS['LANG'] = $lang ;
         return $lang ;

@@ -105,6 +105,7 @@
 			</thead>
 
 			<tbody>
+			<f:format.raw>
 				<jve:be.paginate objects="{registrants}" as="paginatedRegistrants" itemsPerPage="{itemsPerPage}">
 
 					<f:alias map="{pagination:paginatedRegistrants.pagination, paginator:paginatedRegistrants.paginator, name:paginatedRegistrants.name}">
@@ -294,6 +295,7 @@
 					</f:for>
 
 			</jve:be.paginate>
+			</f:format.raw>
 			</tbody>
 		</table>
 		</div>

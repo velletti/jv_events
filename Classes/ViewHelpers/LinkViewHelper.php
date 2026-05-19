@@ -87,7 +87,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
      */
     public function render() {
         $configuration = $this->arguments['configuration'] ;
-        $this->init();
+        $this->cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         $event = $this->arguments['event'] ;
         $eventId = $this->arguments['eventId'] ;
         $settings = $this->arguments['settings'] ;
@@ -210,15 +210,4 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         return $configuration;
     }
 
-    
-
-    /**
-     * Initialize properties
-     *
-     * @return void
-     */
-    protected function init()
-    {
-        $this->cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-    }
 }

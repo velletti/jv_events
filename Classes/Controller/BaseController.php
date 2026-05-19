@@ -203,7 +203,7 @@ class BaseController extends ActionController
      */
     public function initializeAction(): void
     {
-        $this->settings['register']['allowedCountrys'] 	=  GeneralUtility::trimExplode("," , $this->settings['register']['allowedCountrys'] , true );
+        $this->settings['register']['allowedCountrys'] 	=  GeneralUtility::trimExplode("," , ($this->settings['register']['allowedCountrys'] ?? '' ), true );
         /** @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication $frontendUser */
         $this->frontendUser = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user');
 

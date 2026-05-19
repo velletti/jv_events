@@ -39,17 +39,17 @@ $returnArray = array(
 		'iconfile' => 'EXT:jv_events/Resources/Public/Icons/tx_jvevents_domain_model_event.gif'
 	),
 	'types' => array(
-		'0' => array('showitem' => 'event_type,url,event_button_text,--palette--;;dates,--palette--;LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.entry_time_help;entryTime,
+		'0' => array('showitem' => 'event_type,url,--palette--;;dates,--palette--;LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.entry_time_help;entryTime,
 		   --palette--;;infos,
-		--div--;Advanced, --palette--;;language, --palette--;;advanced, --palette--;;frequent, 
-		   price,currency,--linebreak--,--palette--;LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.priceReducedHeader;priceReduced,
+		--div--;Advanced, --palette--;;language, --palette--;;advanced, --palette--;;frequent, --palette--;;price,
+		   --linebreak--,--palette--;LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.priceReducedHeader;priceReduced,
 		--div--;Relations, --palette--;;relations,
 		--div--;Files, teaser_image, files, files_after_reg, files_after_event,
 		--div--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.tabs.access, --palette--;;access,'),
-		'2' => array('showitem' => 'event_type,event_button_text,--palette--;;dates,--palette--;LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.entry_time_help;entryTime,
+		'2' => array('showitem' => 'event_type,--palette--;;dates,--palette--;LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.entry_time_help;entryTime,
 		   --palette--;;infos,description,
-		--div--;Advanced, --palette--;;language, --palette--;;advanced, --palette--;;frequent,
-		  price,currency,--linebreak--,--palette--;LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.priceReducedHeader;priceReduced,
+		--div--;Advanced, --palette--;;language, --palette--;;advanced, --palette--;;frequent,--palette--;;price,
+		  --linebreak--,--palette--;LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_event.priceReducedHeader;priceReduced,
 		--div--;Relations, --palette--;;relations,
 		--div--;Files, teaser_image,images, files,files_after_reg, files_after_event,
 		--div--;Registration, --palette--;;register,
@@ -61,12 +61,13 @@ $returnArray = array(
 		'1' => array('showitem' => ''),
 		'dates' => array('showitem' => 'all_day,--linebreak--,start_date,end_date,--linebreak--,start_time,end_time,--linebreak--,subevent'),
 		'entryTime' => array('showitem' => 'entry_time'),
-		'infos' => array('showitem' => 'name, --linebreak--, teaser ,'),
-		'priceReduced' => array('showitem' => 'price_reduced,--linebreak--, price_reduced_text,'),
+		'infos' => array('showitem' => 'name, --linebreak--,slug, --linebreak--, teaser ,'),
+		'price' => array('showitem' => 'price,currency,'),
+		'priceReduced' => array('showitem' => 'price_reduced,price_reduced_text,'),
 		'relations' => array('showitem' => 'organizer, --linebreak--, location, --linebreak--,youtube_link, --linebreak--, event_category, --linebreak--,tags '),
 		'frequent' => array('showitem' => 'is_recurring, --linebreak--, frequency, freq_exception, --linebreak--, is_exception_for,  '),
 		'language' => array('showitem' => 'sys_language_uid, ,l10n_parent,--linebreak--,l10n_diffsource,' ),
-		'advanced' => array('showitem' => 'top_event, --linebreak--,slug,' ),
+		'advanced' => array('showitem' => 'top_event,event_button_text,' ),
 		'old' => array('showitem' => 'store_in_citrix, citrix_uid, --linebreak--,store_in_sales_force, --linebreak--,marketing_process_id, sales_force_record_type, sales_force_event_id, sales_force_session_id' ),
 
 		'access' =>  array('showitem' =>  'hidden,--palette--;;1,canceled,--linebreak--,access,--linebreak--,starttime,endtime' ),
@@ -227,7 +228,15 @@ $returnArray = array(
 				'type' => 'input',
 				'size' => 30,
 				'eval' => 'trim',
-    'required' => true,
+                'required' => true,
+                'fieldControl' => [
+                    'showEvent' => [
+                        'renderType' => 'showEventInFrontend'
+                    ] ,
+                    'downloadIcal' => [
+                        'renderType' => 'getIcalLink'
+                    ]
+                ],
 
 			),
 		),
@@ -290,7 +299,7 @@ $returnArray = array(
 			'config' => [
 				'type' => 'link' ,
                 'size' => 30,
-    'required' => true
+                'required' => true
 			]
 		],
 
@@ -576,15 +585,8 @@ $returnArray = array(
 				'type' => 'datetime',
 				'size' => 4,
 				'checkbox' => 1,
-            'fieldControl' => [
-                'showEvent' => [
-                    'renderType' => 'showEventInFrontend'
-                ] ,
-                'dowloadIcal' => [
-                    'renderType' => 'getIcalLink'
-                ]
-            ],
-            'format' => 'time'
+
+                'format' => 'time'
 			)
 		),
         'entry_time' => array(
@@ -935,11 +937,11 @@ $returnArray = array(
 			'config' => array(
 				'type' => 'number',
 				'size' => 4 ,
-              'fieldControl' => [
-                   'dowloadCSV' => [
-                      'renderType' => 'downloadRegistrations'
-                   ]
-            ],
+                  'fieldControl' => [
+                       'downloadCSV' => [
+                          'renderType' => 'downloadRegistrations'
+                       ]
+                ],
 			)
 		),
 		'unconfirmed_seats' => array(

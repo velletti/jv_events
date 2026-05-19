@@ -57,7 +57,7 @@ class AjaxUtility {
         if( key_exists('rss' , $_gp)) {
             $controller->rss = $_gp['rss'] ;
         }
-        $viewData = GeneralUtility::makeInstance( TYPO3\CMS\Core\View\ViewFactoryData::class) ;
+        $viewData = GeneralUtility::makeInstance( \TYPO3\CMS\Core\View\ViewFactoryData::class) ;
         $controller->standaloneView = GeneralUtility::makeInstance(\TYPO3\CMS\Core\View\ViewFactoryInterface::class)->create($viewData);
         $controller->standaloneView->getRenderingContext()->setControllerName('Ajax');
         $controller->standaloneView->getRenderingContext()->setControllerAction($function);

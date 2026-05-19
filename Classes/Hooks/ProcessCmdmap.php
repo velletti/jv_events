@@ -43,7 +43,7 @@ class ProcessCmdmap {
 	protected $table;
 	protected $command;
 	protected $value;
-	protected $id;
+	protected $uid;
 	protected $deleted;
 	protected $fieldArray;
 
@@ -59,12 +59,12 @@ class ProcessCmdmap {
     /**
   * Prevent deleting/moving of a news record if the editor doesn't have access to all categories of the news record
   */
- public function processCmdmap_postProcess(string $command, string $table, int $id, mixed $value, mixed $Obj, mixed $pasteUpdate, mixed $pasteDatamap): void {
+ public function processCmdmap_postProcess(string $command, string $table, int $uid, mixed $value, mixed $Obj, mixed $pasteUpdate, mixed $pasteDatamap): void {
         $row = [];
         if( is_object( $Obj )) {
             if ($table == 'tx_jvevents_domain_model_event') {
                 $this->command = $command;
-                $this->id = (MathUtility::canBeInterpretedAsInteger($id)?$id:$Obj->substNEWwithIDs[$id]);
+                $this->uid = (MathUtility::canBeInterpretedAsInteger($id)?$id:$Obj->substNEWwithIDs[$uid]);
                 $extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class) ->get('jv_events');
 
                 if( $command == 'copy' ) {
@@ -81,7 +81,7 @@ class ProcessCmdmap {
 
 
                     $mapping = $Obj ->copyMappingArray['tx_jvevents_domain_model_event'] ;
-                    $newId = $mapping[$this->id] ;
+                    $newId = $mapping[$this->uid] ;
 
 
                     if( intval( $newId ) > 0 ) {
