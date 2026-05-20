@@ -39,8 +39,7 @@ class CleanEventsTaskAdditionalFieldProvider extends AbstractAdditionalFieldProv
      */
     public function getAdditionalFields(array &$taskInfo, $task, SchedulerModuleController $schedulerModule): array
     {
-
-        if ($schedulerModule->getCurrentAction()  === 'edit') {
+        if ($schedulerModule->getCurrentAction()  === 'edit' || \TYPO3\CMS\Scheduler\SchedulerManagementAction::EDIT === $schedulerModule->getCurrentAction() ) {
             $taskInfo['IndexerDelRegistratationsAfter'] = $task->getDelRegistratationsAfter();
             $taskInfo['IndexerDelEventsAfter']          = $task->getDelEventsAfter();
             $taskInfo['IndexerResortingOrganizer']      = $task->getResortingOrganizer();

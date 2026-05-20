@@ -3,9 +3,7 @@ namespace JVelletti\JvEvents\Scheduler;
 use JVelletti\JvEvents\Domain\Model\Organizer;
 use JVelletti\JvEvents\Domain\Repository\EventRepository;
 use JVelletti\JvEvents\Domain\Repository\OrganizerRepository;
-use JVE\JvRanking\Domain\Repository\AnswerRepository;
-use JVE\JvRanking\Domain\Repository\QuestionRepository;
-use JVE\JvRanking\Utility\RankingUtility;
+
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -15,6 +13,7 @@ use TYPO3\CMS\Core\Locking\Exception\LockAcquireWouldBlockException;
 use TYPO3\CMS\Core\Locking\Exception\LockCreateException;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException;
@@ -85,7 +84,14 @@ class CleanEventsTask extends AbstractTask
         $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
 
         $this->fetchConfiguration() ;
-        $debug[]  = "config: delRegistratationsAfter=" . $this->delRegistratationsAfter  ;
+        $debug[]  = "Config: ";
+        $debug[]  = "- delEventsAfter=" . $this->delEventsAfter  ;
+        $debug[]  = "- delRegistratationsAfter=" . $this->delRegistratationsAfter  ;
+        $debug[]  = "- resortingOrganizer=" . $this->resortingOrganizer  ;
+        $debug[]  = "- doDisableOrganizer=" . $this->doDisableOrganizer  ;
+        $debug[]  = "- debug Email=" . $this->getDebugmail()  ;
+        $debug[]  = "\n"  ;
+
         /** @var LockFactory $lockFactory */
         $lockFactory = GeneralUtility::makeInstance(LockFactory::class);
         $locker = $lockFactory->createLocker('jvevents_cleanevents', LockingStrategyInterface::LOCK_CAPABILITY_EXCLUSIVE | LockingStrategyInterface::LOCK_CAPABILITY_NOBLOCK);
@@ -116,17 +122,18 @@ class CleanEventsTask extends AbstractTask
         if ( $this->disableOrganizer > 0 ) {
             $debug = $this->doDisableOrganizer( $debug ) ;
         }
-
-        if( GeneralUtility::validEmail( trim( $this->getDebugmail()) ) ) {
+        $fromName =   $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName'] ?? $baseUrl ;
+        $fromEmail =  trim( $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress']) ?? 'undefined' ;
+        if( GeneralUtility::validEmail( trim( $this->getDebugmail()) ) &&  GeneralUtility::validEmail( $fromEmail) ) {
             /** @var SignatureService $mailService */
             $mailService = GeneralUtility::makeInstance(SignatureService::class);
             $params = array() ;
             $params['email_fromName'] = "Debug from " .$baseUrl ;
-            $params['email_from'] = "info@tangomuenchen.de";
+            $params['email_from'] = $fromEmail ;
             $params['user']['email'] = trim( $this->getDebugmail());
             $params['sendCCmail'] = false  ;
 
-            $params['message'] = "[tango][cleanup] Debug Output of Scheduler from " . $baseUrl . " \n\n" . var_export( $debug , true ) ;
+            $params['message'] = "[JvEvents][cleanup] Debug Output of Scheduler from " . $baseUrl . " \n\n" . var_export( $debug , true ) ;
             $mailService->sentHTMLmailService($params) ;
         }
 
@@ -143,7 +150,7 @@ class CleanEventsTask extends AbstractTask
 
     private function doCleanupRegistrations($debug ) {
         $timeInPast  =  time() - intval( $this->delRegistratationsAfter )* 60 * 60 *24 ;
-
+        $debug[] = " *********  now removing registrations where endtime is older than " . $timeInPast . " - " . date("d.m.Y H:i", $timeInPast) ;
 
         /** @var ConnectionPool $connectionPool */
         $connectionPool = GeneralUtility::makeInstance( ConnectionPool::class);
@@ -170,14 +177,17 @@ class CleanEventsTask extends AbstractTask
 
        //  $this->debugQuery($queryBuilder) ;
 
-        $queryBuilder->executeStatement() ;
-
-        if ( !$connection->errorInfo() ) {
-            $debug[] = "removed  '" . $countResult . "'' registrations where events older than " . $timeInPast . " - " . date( "d.m.Y H:i" , $timeInPast ) ;
+        try {
+            $affectedRows = $queryBuilder->executeStatement();
+            $debug[] = "removed  '" . $countResult . "' registrations where events older than " . $timeInPast . " - " . date("d.m.Y H:i", $timeInPast);
             return $debug;
-        } else {
-            $debug[] = array('faultstring' => 'Line: ' . __LINE__ . ' Error on update ', 'mode' => 'update', " error " => $connection->errorInfo() );
-            return $debug ;
+        } catch (\Doctrine\DBAL\Exception $e) {
+            $debug[] = [
+                'faultstring' => 'Line: ' . __LINE__ . ' Error on update',
+                'mode' => 'update',
+                'error' => $e->getMessage(),
+            ];
+            return $debug;
         }
 
     }
@@ -185,9 +195,9 @@ class CleanEventsTask extends AbstractTask
 
     private function doCleanupEvents($debug ) {
         $timeInPast  =  time() - intval( $this->delEventsAfter )* 60 * 60 *24 ;
+        $debug[] = " *********  now removing events where endtime is older than " . $timeInPast . " - " . date("d.m.Y H:i", $timeInPast) ;
 
-
-        /** @var ConnectionPool $connectionPool */
+            /** @var ConnectionPool $connectionPool */
         $connectionPool = GeneralUtility::makeInstance( ConnectionPool::class);
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_jvevents_domain_model_event') ;
@@ -212,36 +222,44 @@ class CleanEventsTask extends AbstractTask
 
         //  $this->debugQuery($queryBuilder) ;
 
-        $queryBuilder->executeStatement() ;
-
-        if ( !$connection->errorInfo() ) {
+        try {
+            $affectedRows = $queryBuilder->executeStatement();
             $debug[] = "removed  '" . $countResult . "'' Events that are older than " . $timeInPast . " - " . date( "d.m.Y H:i" , $timeInPast ) ;
             return $debug;
-        } else {
-            $debug[] = array('faultstring' => 'Line: ' . __LINE__ . ' Error on update ', 'mode' => 'update', " error " => $connection->errorInfo() );
-            return $debug ;
+        } catch (\Doctrine\DBAL\Exception $e) {
+            $debug[] = [
+                'faultstring' => 'Line: ' . __LINE__ . ' Error on update',
+                'mode' => 'update',
+                'error' => $e->getMessage(),
+            ];
+            return $debug;
         }
+        $queryBuilder->executeStatement() ;
+
 
     }
 
     private function doResortingOrganizer($debug ) {
-        $debug[] = "\n ***************************************************" ;
-        $debug[] = "\n now calculating the New sorting value" ;
+        $debug[] = "\n" ;
+        $debug[] = "***************************************************" ;
+        $debug[] = "now calculating the New sorting values " ;
+        if ( ! class_exists('\JVE\JvRanking\Domain\Repository\QuestionRepository')) {
+            $debug[] = "QuestionRepository not found - skipped jv_ranking recalculation  ! " ;
+            return $debug;
+        }
 
-
-
-
-
-        /** @var QuestionRepository $questionRepository */
-        $questionRepository =  GeneralUtility::makeInstance(QuestionRepository::class) ;
+        /** @var \JVE\JvRanking\Domain\Repository\QuestionRepository $questionRepository */
+        $questionRepository =  GeneralUtility::makeInstance(\JVE\JvRanking\Domain\Repository\QuestionRepository::class) ;
 
         /** @var PersistenceManager $persistanceManager */
         $persistanceManager =  GeneralUtility::makeInstance(PersistenceManager::class) ;
 
         /** @var EventRepository $eventRepository */
         $eventRepository =  GeneralUtility::makeInstance(EventRepository::class) ;
-        /** @var AnswerRepository $answerRepository */
-        $answerRepository =  GeneralUtility::makeInstance(AnswerRepository::class) ;
+
+
+        /** @var \JVE\JvRanking\Domain\Repository\AnswerRepository $answerRepository */
+        $answerRepository =  GeneralUtility::makeInstance(\JVE\JvRanking\Domain\Repository\AnswerRepository::class) ;
         /** @var OrganizerRepository $organizerRepository */
         $organizerRepository =  GeneralUtility::makeInstance(OrganizerRepository::class) ;
         $organizers = $organizerRepository->findByFilterAllpages(FALSE , true ) ;
@@ -282,7 +300,7 @@ class CleanEventsTask extends AbstractTask
                         }
                     }
 
-                    $result = RankingUtility::calculate($questionRepository, $organizer , $eventRepository , $answerRepository , $isVip , $lastLogin ) ;
+                    $result = \JVE\JvRanking\Utility\RankingUtility::calculate($questionRepository, $organizer , $eventRepository , $answerRepository , $isVip , $lastLogin ) ;
                     if ($organizer->getUid() == 2157 && 1==2  ) {
                         echo $result['newsorting'] ;
                         echo"<hr>" ;
@@ -311,7 +329,7 @@ class CleanEventsTask extends AbstractTask
 
     private function doDisableOrganizer($debug ) {
         $timeInPast  =  time() - intval( $this->disableOrganizer ) * 60 * 60 *24 ;
-        $debug[] = " *********  now uses with really last login " ;
+        $debug[] = " *********  now user with really last login after " . $timeInPast . " - " . date("d.m.Y H:i", $timeInPast) . " will be disabled (if sorting is bigger than " . $this->disableOrganizerSortingValue . " )" ;
 
         /** @var ConnectionPool $connectionPool */
         $connectionPool = GeneralUtility::makeInstance( ConnectionPool::class);
@@ -433,33 +451,33 @@ class CleanEventsTask extends AbstractTask
     /**
      * @return int
      */
-    public function getDelRegistratationsAfter()
+    public function getDelRegistratationsAfter():int
     {
-        return $this->delRegistratationsAfter;
+        return (int)$this->delRegistratationsAfter;
     }
 
     /**
-     * @param int $delRegistratationsAfter
+     * @param string|null $delRegistratationsAfter
      */
-    public function setDelRegistratationsAfter($delRegistratationsAfter): void
+    public function setDelRegistratationsAfter(?string $delRegistratationsAfter): void
     {
-        $this->delRegistratationsAfter = $delRegistratationsAfter;
+        $this->delRegistratationsAfter = (int)$delRegistratationsAfter;
     }
 
     /**
      * @return string
      */
-    public function getDebugmail()
+    public function getDebugmail():string
     {
         return $this->debugmail;
     }
 
     /**
-     * @param string $debugmail
+     * @param string|null $debugmail
      */
-    public function setDebugmail($debugmail): void
+    public function setDebugmail(?string $debugmail): void
     {
-        $this->debugmail = $debugmail;
+        $this->debugmail = trim( $debugmail) ?? '';
     }
 
     /**
@@ -467,15 +485,15 @@ class CleanEventsTask extends AbstractTask
      */
     public function getDelEventsAfter(): int
     {
-        return $this->delEventsAfter;
+        return (int)$this->delEventsAfter;
     }
 
     /**
-     * @param int $delEventsAfter
+     * @param string|null $delEventsAfter
      */
-    public function setDelEventsAfter(int $delEventsAfter): void
+    public function setDelEventsAfter(?string $delEventsAfter): void
     {
-        $this->delEventsAfter = $delEventsAfter;
+        $this->delEventsAfter = (int)$delEventsAfter;
     }
 
     /**
@@ -483,15 +501,15 @@ class CleanEventsTask extends AbstractTask
      */
     public function getResortingOrganizer(): int
     {
-        return $this->resortingOrganizer;
+        return (int)$this->resortingOrganizer;
     }
 
     /**
-     * @param int $resortingOrganizer
+     * @param string|null $resortingOrganizer
      */
-    public function setResortingOrganizer(int $resortingOrganizer): void
+    public function setResortingOrganizer(?string $resortingOrganizer): void
     {
-        $this->resortingOrganizer = $resortingOrganizer;
+        $this->resortingOrganizer = (int)$resortingOrganizer;
     }
 
     /**
@@ -499,15 +517,15 @@ class CleanEventsTask extends AbstractTask
      */
     public function getDisableOrganizer(): int
     {
-        return $this->disableOrganizer;
+        return (int)$this->disableOrganizer;
     }
 
     /**
-     * @param int $disableOrganizer
+     * @param string|null $disableOrganizer
      */
-    public function setDisableOrganizer(int $disableOrganizer): void
+    public function setDisableOrganizer(?string $disableOrganizer): void
     {
-        $this->disableOrganizer = $disableOrganizer;
+        $this->disableOrganizer = (int)$disableOrganizer;
     }
 
     /**
@@ -515,15 +533,15 @@ class CleanEventsTask extends AbstractTask
      */
     public function getDisableOrganizerSortingValue(): int
     {
-        return $this->disableOrganizerSortingValue;
+        return (int)$this->disableOrganizerSortingValue;
     }
 
     /**
-     * @param int $disableOrganizerSortingValue
+     * @param string|null $disableOrganizerSortingValue
      */
-    public function setDisableOrganizerSortingValue(int $disableOrganizerSortingValue): void
+    public function setDisableOrganizerSortingValue(?string $disableOrganizerSortingValue): void
     {
-        $this->disableOrganizerSortingValue = $disableOrganizerSortingValue;
+        $this->disableOrganizerSortingValue = (int)$disableOrganizerSortingValue;
     }
 
 
