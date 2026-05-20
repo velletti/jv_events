@@ -10,6 +10,7 @@ return [
     ],
     'imports' => [
         'showEventInFrontend.js' => 'EXT:jv_events/Resources/Public/JavaScript/Backend/ShowEventInFrontend.js',
+        '@jvelletti/filter-registrations' => 'EXT:jv_events/Resources/Public/JavaScript/Backend/filterRegistrations.js',
         'jvEventsLeafLetBase.js' => 'EXT:jv_events/Resources/Public/JavaScript/Backend/leaflet-1-7-1.js',
         'jvEventsLeafLetBackend.js' => 'EXT:jv_events/Resources/Public/JavaScript/Backend/ShowEventInFrontend.js',
        'jv-events-leaflet-src' => 'EXT:jv_events/Resources/Public/JavaScript/esm/leaflet-src.esm.js',

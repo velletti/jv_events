@@ -268,6 +268,7 @@ class EventBackendController extends BaseController
         $view->assign('currentPage', $currentPage);
         $view->assign('recursive', $recursive);
         $view->assign('pageId', $pageId );
+        $this->pageRenderer->loadJavaScriptModule('@jvelletti/filter-registrations');
         return $view->renderResponse('/EventBackend/List.html');
     }
 
