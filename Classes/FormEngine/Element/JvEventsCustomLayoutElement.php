@@ -17,14 +17,6 @@ class JvEventsCustomLayoutElement extends AbstractFormElement
      */
     protected array $data = [];
 
-    /**
-     * Container objects give $nodeFactory down to other containers.
-     */
-    public function __construct(NodeFactory $nodeFactory, array $data  = [])
-    {
-        parent::__construct($nodeFactory, $data);
-    }
-
     public function render(): array
     {
         $result = $this->initializeResultArray();

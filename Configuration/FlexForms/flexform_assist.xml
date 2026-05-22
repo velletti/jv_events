@@ -2,14 +2,11 @@
     <sheets>
         <sDEF>
             <ROOT>
-                <sheetTitle>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.Function
-                </sheetTitle>
+                <sheetTitle>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.Function</sheetTitle>
                 <type>array</type>
                 <el>
                     <settings.LayoutList>
-                        <label>
-                            LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms_additional.layout
-                        </label>
+                        <label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms_additional.layout</label>
                         <config>
                             <type>user</type>
                             <renderType>jvEventsCustomLayoutElement</renderType>
@@ -20,18 +17,8 @@
                             </parameters>
                         </config>
                     </settings.LayoutList>
-                    <settings.v12pluginName>
-                        <label>
-                            Obsolete: v12pluginName
-                        </label>
-                        <config>
-                            <type>input</type>
-                        </config>
-                    </settings.v12pluginName>
                     <settings.flexform>
-                        <label>
-                            flexformName
-                        </label>
+                        <label>flexformName</label>
                         <config>
                             <type>none</type>
                             <default>assist</default>
@@ -42,24 +29,18 @@
         </sDEF>
         <sDEForg>
             <ROOT>
-                <sheetTitle>
-                    LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_organizer
-                </sheetTitle>
+                <sheetTitle>LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_organizer</sheetTitle>
                 <type>array</type>
                 <el>
                     <settings.filterorganizer.hideInactives>
-                        <label>
-                            LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.Organizer.HideInactive
-                        </label>
+                        <label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.Organizer.HideInactive</label>
                         <config>
                             <type>check</type>
                             <default>0</default>
                         </config>
                     </settings.filterorganizer.hideInactives>
                     <settings.filterorganizer.latestUpdate>
-                        <label>
-                            LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.Organizer.latestUpdate
-                        </label>
+                        <label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.Organizer.latestUpdate</label>
                         <config>
                             <type>number</type>
                             <default>0</default>
@@ -87,18 +68,14 @@
                         </config>
                     </settings.filterorganizer.tags>
                     <settings.filterorganizer.respectTagVisibility>
-                        <label>
-                            LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.Organizer.respectTagVisibility
-                        </label>
+                        <label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.Organizer.respectTagVisibility</label>
                         <config>
                             <type>check</type>
                             <default>1</default>
                         </config>
                     </settings.filterorganizer.respectTagVisibility>
                     <settings.filterorganizer.reverseSorting>
-                        <label>
-                            LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.Organizer.reverseSorting
-                        </label>
+                        <label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.Organizer.reverseSorting</label>
                         <config>
                             <type>check</type>
                             <default>0</default>
@@ -109,15 +86,12 @@
         </sDEForg>
         <sDEF5>
             <ROOT>
-                <sheetTitle>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.DataSettings
-                </sheetTitle>
+                <sheetTitle>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.DataSettings</sheetTitle>
                 <type>array</type>
                 <el>
                     <!-- PID Single Page -->
                     <settings.detailPid>
-                        <label>
-                            LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms_additional.detailPid
-                        </label>
+                        <label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms_additional.detailPid</label>
                         <config>
                             <type>group</type>
                             <internal_type>db</internal_type>
@@ -135,9 +109,7 @@
                     </settings.detailPid>
                     <!-- PID Single Page -->
                     <settings.pageIds.eventList>
-                        <label>
-                            LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms_additional.eventListPid
-                        </label>
+                        <label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms_additional.eventListPid</label>
                         <config>
                             <type>group</type>
                             <internal_type>db</internal_type>

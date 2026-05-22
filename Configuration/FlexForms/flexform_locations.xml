@@ -2,17 +2,11 @@
     <sheets>
         <sDEF>
             <ROOT>
-                <TCEforms>
-                    <sheetTitle>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.Function
-                    </sheetTitle>
-                </TCEforms>
+                    <sheetTitle>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.Function</sheetTitle>
                 <type>array</type>
                 <el>
                     <settings.LayoutList>
-                        <TCEforms>
-                            <label>
-                                LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms_additional.layout
-                            </label>
+                            <label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms_additional.layout</label>
                             <config>
                                 <type>user</type>
                                 <renderType>jvEventsCustomLayoutElement</renderType>
@@ -22,25 +16,14 @@
                                     <layoutType>list.</layoutType>
                                 </parameters>
                             </config>
-                        </TCEforms>
                     </settings.LayoutList>
                     <settings.HideEventListLink>
-                        <label>
-                            LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.HideEventListLink
-                        </label>
+                        <label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.HideEventListLink</label>
                         <config>
                             <type>check</type>
                             <default>0</default>
                         </config>
                     </settings.HideEventListLink>
-                    <settings.v12pluginName>
-                        <label>
-                            Obsolete: v12pluginName
-                        </label>
-                        <config>
-                            <type>input</type>
-                        </config>
-                    </settings.v12pluginName>
                 </el>
             </ROOT>
         </sDEF>

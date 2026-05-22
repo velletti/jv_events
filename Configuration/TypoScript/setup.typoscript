@@ -87,7 +87,7 @@ plugin.tx_jvevents_events {
 
 			image {
 				# Fallback Image for event list with complete path /fileadmin/user_upload/.. default /typo3conf/ext/jv_events/Resource/Public/Images/DefaultImage.jpg
-				defaultImage = /typo3conf/ext/jv_events/Resources/Public/Images/defaultImage.jpg
+				defaultImage = EXT:jv_events/Resources/Public/Images/defaultImage.jpg
 				width = 360
 				height = 240
 				large {

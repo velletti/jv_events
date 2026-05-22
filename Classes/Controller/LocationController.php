@@ -273,7 +273,7 @@ class LocationController extends BaseController
             $organizer->setLng( $location->getLng() ) ;
             $this->organizerRepository->update($organizer) ;
         }
-        $this->addFlashMessage("Default Location: " . $location->getName() , null , ContextualFeedbackSeverity::OK);
+        $this->addFlashMessage("Default Location: " . $location->getName() , 'OK' , ContextualFeedbackSeverity::OK);
 
 
         return $this->redirect('assist' , 'Organizer', Null , NULL , $this->settings['pageIds']['organizerAssist'] );

@@ -333,7 +333,8 @@ class EventBackendController extends BaseController
                         $this->sendEmail($event[0] , $registrant ,"Registrant" , [$registrant->getEmail() => $name] , FALSE )  ;
 
                         $this->registrantRepository->update($registrant) ;
-                        $this->addFlashMessage($this->settings['register']['senderEmail'] . " -> Email send to " . $registrant->getEmail() . " - layout: " . $this->settings['LayoutRegister'] , '', ContextualFeedbackSeverity::INFO);
+                        $this->addFlashMessage($this->settings['register']['senderEmail'] . " -> Email send to "
+                            . $registrant->getEmail() . " - layout: " . $this->settings['LayoutRegister'] , '', ContextualFeedbackSeverity::INFO);
                     }
                 }
             }
