@@ -17,14 +17,9 @@ class ObjectUtility
 	 * @return ContentObjectRenderer
      * @author Peter Benke <pbenke@allplan.com>
 	 */
-	public static function getContentObjectRenderer(): ContentObjectRenderer
+	public static function getContentObjectRenderer(): ?ContentObjectRenderer
 	{
-
-		/**
-		 * @var ConfigurationManagerInterface $configurationManager
-		 */
-        $configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
-		return $configurationManager->getContentObject();
+        return GeneralUtility::makeInstance(ContentObjectRenderer::class);
 
 	}
 

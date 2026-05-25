@@ -58,7 +58,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class L10nFalImgViewHelper extends AbstractViewHelper {
 
 
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('event', Event::class, 'Event', true);
         $this->registerArgument('tableFieldName', 'string', ' the tableFieldName', true  );
@@ -107,20 +107,14 @@ class L10nFalImgViewHelper extends AbstractViewHelper {
         $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_file_reference') ;
         $records = $queryBuilder->select('*' ) ->from('sys_file_reference')
             ->where( $queryBuilder->expr()->eq('tablenames', $queryBuilder->createNamedParameter("tx_jvevents_domain_model_event" , Connection::PARAM_STR)) )
-            ->andWhere( $queryBuilder->expr()->eq('fieldname', $queryBuilder->createNamedParameter($tableFieldName , Connection::PARAM_STR)) )
-            ->andWhere( $queryBuilder->expr()->eq('uid_foreign', $queryBuilder->createNamedParameter((int)$event->_getProperty('_localizedUid') , Connection::PARAM_INT )) )
-            ->execute()
-            ->fetchAll();
+            ->andWhere( $queryBuilder->expr()->eq('fieldname', $queryBuilder->createNamedParameter($tableFieldName , Connection::PARAM_STR)) )->andWhere($queryBuilder->expr()->eq('uid_foreign', $queryBuilder->createNamedParameter((int)$event->_getProperty('_localizedUid') , Connection::PARAM_INT )))->executeQuery()->fetchAllAssociative();
 
 
 		$outArray = [] ;
 		foreach ($records as &$r) {
 			$sysPage->versionOL('sys_file_reference', $r);
             $queryBuilder2 = $connectionPool->getQueryBuilderForTable('sys_file_reference') ;
-            $fileReferenceData = $queryBuilder2->select('*' ) ->from('sys_file_reference')
-                ->where( $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($r['uid'] , Connection::PARAM_INT)) )
-                ->execute()
-                ->fetch();
+            $fileReferenceData = $queryBuilder2->select('*' ) ->from('sys_file_reference')->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($r['uid'] , Connection::PARAM_INT)))->executeQuery()->fetchAssociative();
 
 			/** @var FileReference $obj */
 			$obj =  GeneralUtility::makeInstance(FileReference::class, $fileReferenceData);

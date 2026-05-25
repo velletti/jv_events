@@ -1,5 +1,6 @@
 {namespace jve=JVelletti\JvEvents\ViewHelpers}
 <f:layout name="Backend" />
+
 <f:section name="main">
 
 	<f:render section="Content" arguments="{_all}"/>
@@ -24,18 +25,20 @@
 				maybe also older registrations may exist.
 			</div>
 		</f:if>
+
 			<f:form id="jveventFilterForm" action="list" controller="EventBackend" method="post">
-				<input type="hidden" name="uid" value="{plugin.uid}" /><f:form.hidden name="pluginUid" value="{plugin.uid}" />
+				<input type="hidden" name="uid" value="{plugin.uid}" />
+				<f:form.hidden name="pluginUid" value="{plugin.uid}" />
 				<f:form.select class="form-select" name="event" value="{event}"
-							   additionalAttributes="{onchange: 'document.getElementById(\'jveventFilterForm\').submit();'}" id="jvevents"
+							   id="jvevents"
 							   options="{eventsOptions}" optionValueField="uid" optionLabelField="name" sortByOptionLabel="TRUE"
-							   prependOptionLabel="-" prependOptionValue="0"></f:form.select>
+							   prependOptionLabel="-" prependOptionValue="0" />
 				<div class="form-check m-2">
-					<f:form.checkbox class="form-check-input" name="recursive" id="recursive" property="recursive"  value="1" checked="{recursive} == 1" additionalAttributes="{onchange: 'document.getElementById(\'jveventFilterForm\').submit();'}" />
+					<f:form.checkbox class="form-check-input" name="recursive" id="recursive" property="recursive" value="1" checked="{recursive} == 1" />
 					<label class="form-check-label">Search also subpages of Page ID: {pageId}</label>
 				</div>
 				<div class="form-check m-2">
-					<f:form.checkbox class="form-check-input" name="onlyActual" id="onlyActual" property="onlyActual"  value="-90" checked="{onlyActual} == -90" additionalAttributes="{onchange: 'document.getElementById(\'jveventFilterForm\').submit();'}" />
+					<f:form.checkbox class="form-check-input" name="onlyActual" id="onlyActual" property="onlyActual" value="-90" checked="{onlyActual} == -90" />
 					<label class="form-check-label">not older than 90 Days</label>
 				</div>
 			</f:form>
@@ -105,6 +108,7 @@
 			</thead>
 
 			<tbody>
+			<f:format.raw>
 				<jve:be.paginate objects="{registrants}" as="paginatedRegistrants" itemsPerPage="{itemsPerPage}">
 
 					<f:alias map="{pagination:paginatedRegistrants.pagination, paginator:paginatedRegistrants.paginator, name:paginatedRegistrants.name}">
@@ -294,6 +298,7 @@
 					</f:for>
 
 			</jve:be.paginate>
+			</f:format.raw>
 			</tbody>
 		</table>
 		</div>

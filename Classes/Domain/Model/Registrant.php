@@ -38,7 +38,7 @@ class Registrant extends AbstractEntity
 	 *
 	 * @var int
 	 */
-	protected $uid  ;
+	protected ?int $uid = null  ;
 
 	/**
 	 * crdate
@@ -415,7 +415,7 @@ class Registrant extends AbstractEntity
 	/**
 	 * @param string $hotprice
 	 */
-	public function setHotprice($hotprice) {
+	public function setHotprice($hotprice): void {
 		$this->hotprice = $hotprice;
 	}
 
@@ -428,7 +428,7 @@ class Registrant extends AbstractEntity
 
 	/**
 	 */
-	public function setFingerprint() {
+	public function setFingerprint(): void {
 
 		$fingerPrint = strtolower( $this->getEmail() . $this->getFirstName() . $this->getLastName() . $this->getEvent() );
 		$fingerPrint = md5( $fingerPrint) ;
@@ -445,7 +445,7 @@ class Registrant extends AbstractEntity
 	/**
 	 * @param string $startReg
 	 */
-	public function setStartReg($startReg) {
+	public function setStartReg($startReg): void {
 		$this->startReg = $startReg;
 	}
 
@@ -459,7 +459,7 @@ class Registrant extends AbstractEntity
 	/**
 	 * @param int $crdate
 	 */
-	public function setCrdate($crdate) {
+	public function setCrdate($crdate): void {
 		$this->crdate = $crdate;
 	}
 
@@ -473,7 +473,7 @@ class Registrant extends AbstractEntity
 	/**
 	 * @param int $created
 	 */
-	public function setCreated($created) {
+	public function setCreated($created): void {
 		$this->created = $created;
 	}
 
@@ -493,7 +493,7 @@ class Registrant extends AbstractEntity
 	/**
 	 * @param int $event
 	 */
-	public function setEvent($event) {
+	public function setEvent($event): void {
 		$this->event = $event;
 	}
 
@@ -507,7 +507,7 @@ class Registrant extends AbstractEntity
 	/**
 	 * @param string $layoutRegister
 	 */
-	public function setLayoutRegister($layoutRegister) {
+	public function setLayoutRegister($layoutRegister): void {
 		$this->layoutRegister = $layoutRegister;
 	}
 
@@ -532,7 +532,7 @@ class Registrant extends AbstractEntity
      * @param string $firstName
      * @return void
      */
-    public function setFirstName($firstName)
+    public function setFirstName($firstName): void
     {
         $this->firstName = $firstName;
     }
@@ -553,7 +553,7 @@ class Registrant extends AbstractEntity
      * @param string $lastName
      * @return void
      */
-    public function setLastName($lastName)
+    public function setLastName($lastName): void
     {
         $this->lastName = $lastName;
     }
@@ -574,7 +574,7 @@ class Registrant extends AbstractEntity
      * @param string $email
      * @return void
      */
-    public function setEmail($email)
+    public function setEmail($email): void
     {
         $this->email = $email;
     }
@@ -595,7 +595,7 @@ class Registrant extends AbstractEntity
      * @param string $gender
      * @return void
      */
-    public function setGender($gender)
+    public function setGender($gender): void
     {
         $this->gender = $gender;
     }
@@ -616,7 +616,7 @@ class Registrant extends AbstractEntity
      * @param string $company
      * @return void
      */
-    public function setCompany($company)
+    public function setCompany($company): void
     {
         $this->company = $company;
     }
@@ -637,7 +637,7 @@ class Registrant extends AbstractEntity
      * @param string $department
      * @return void
      */
-    public function setDepartment($department)
+    public function setDepartment($department): void
     {
         $this->department = $department;
     }
@@ -658,7 +658,7 @@ class Registrant extends AbstractEntity
      * @param string $streetAndNr
      * @return void
      */
-    public function setStreetAndNr($streetAndNr)
+    public function setStreetAndNr($streetAndNr): void
     {
         $this->streetAndNr = $streetAndNr;
     }
@@ -679,7 +679,7 @@ class Registrant extends AbstractEntity
      * @param string $zip
      * @return void
      */
-    public function setZip($zip)
+    public function setZip($zip): void
     {
         $this->zip = $zip;
     }
@@ -700,7 +700,7 @@ class Registrant extends AbstractEntity
      * @param string $city
      * @return void
      */
-    public function setCity($city)
+    public function setCity($city): void
     {
         $this->city = $city;
     }
@@ -721,7 +721,7 @@ class Registrant extends AbstractEntity
      * @param string $country
      * @return void
      */
-    public function setCountry($country)
+    public function setCountry($country): void
     {
         $this->country = $country;
     }
@@ -742,7 +742,7 @@ class Registrant extends AbstractEntity
      * @param string $language
      * @return void
      */
-    public function setLanguage($language)
+    public function setLanguage($language): void
     {
         $this->language = $language;
     }
@@ -763,7 +763,7 @@ class Registrant extends AbstractEntity
      * @param string $phone
      * @return void
      */
-    public function setPhone($phone)
+    public function setPhone($phone): void
     {
         $this->phone = $phone;
     }
@@ -784,7 +784,7 @@ class Registrant extends AbstractEntity
      * @param string $additionalInfo
      * @return void
      */
-    public function setAdditionalInfo($additionalInfo)
+    public function setAdditionalInfo($additionalInfo): void
     {
         $this->additionalInfo = $additionalInfo;
     }
@@ -805,7 +805,7 @@ class Registrant extends AbstractEntity
      * @param bool $privacy
      * @return void
      */
-    public function setPrivacy($privacy)
+    public function setPrivacy($privacy): void
     {
         $this->privacy = $privacy;
     }
@@ -836,7 +836,7 @@ class Registrant extends AbstractEntity
      * @param bool $newsletter
      * @return void
      */
-    public function setNewsletter($newsletter)
+    public function setNewsletter($newsletter): void
     {
         $this->newsletter = $newsletter;
     }
@@ -867,7 +867,7 @@ class Registrant extends AbstractEntity
      * @param string $customerId
      * @return void
      */
-    public function setCustomerId($customerId)
+    public function setCustomerId($customerId): void
     {
         $this->customerId = $customerId;
     }
@@ -888,7 +888,7 @@ class Registrant extends AbstractEntity
      * @param string $profession
      * @return void
      */
-    public function setProfession($profession)
+    public function setProfession($profession): void
     {
         $this->profession = $profession;
     }
@@ -909,7 +909,7 @@ class Registrant extends AbstractEntity
      * @param bool $recall
      * @return void
      */
-    public function setRecall($recall)
+    public function setRecall($recall): void
     {
         $this->recall = $recall;
     }
@@ -940,7 +940,7 @@ class Registrant extends AbstractEntity
      * @param string $contactId
      * @return void
      */
-    public function setContactId($contactId)
+    public function setContactId($contactId): void
     {
         $this->contactId = $contactId;
     }
@@ -961,7 +961,7 @@ class Registrant extends AbstractEntity
      * @param string $username
      * @return void
      */
-    public function setUsername($username)
+    public function setUsername($username): void
     {
         $this->username = $username;
     }
@@ -982,7 +982,7 @@ class Registrant extends AbstractEntity
      * @param string $more1
      * @return void
      */
-    public function setMore1($more1)
+    public function setMore1($more1): void
     {
         $this->more1 = $more1;
     }
@@ -1003,7 +1003,7 @@ class Registrant extends AbstractEntity
      * @param string $more2
      * @return void
      */
-    public function setMore2($more2)
+    public function setMore2($more2): void
     {
         $this->more2 = $more2;
     }
@@ -1024,7 +1024,7 @@ class Registrant extends AbstractEntity
      * @param string $more3
      * @return void
      */
-    public function setMore3($more3)
+    public function setMore3($more3): void
     {
         $this->more3 = $more3;
     }
@@ -1045,7 +1045,7 @@ class Registrant extends AbstractEntity
      * @param string $more4
      * @return void
      */
-    public function setMore4($more4)
+    public function setMore4($more4): void
     {
         $this->more4 = $more4;
     }
@@ -1066,7 +1066,7 @@ class Registrant extends AbstractEntity
      * @param string $more5bool
      * @return void
      */
-    public function setMore5bool($more5bool)
+    public function setMore5bool($more5bool): void
     {
         $this->more5bool = $more5bool;
     }
@@ -1097,7 +1097,7 @@ class Registrant extends AbstractEntity
      * @param string $more6int
      * @return void
      */
-    public function setMore6int($more6int)
+    public function setMore6int($more6int): void
     {
         $this->more6int = $more6int;
     }
@@ -1117,7 +1117,7 @@ class Registrant extends AbstractEntity
      *
      * @return void
      */
-    public function setMore7date(\DateTime $more7date)
+    public function setMore7date(\DateTime $more7date): void
     {
         $this->more7date = $more7date;
     }
@@ -1137,7 +1137,7 @@ class Registrant extends AbstractEntity
      *
      * @return void
      */
-    public function setMore8file(FileReference $more8file)
+    public function setMore8file(FileReference $more8file): void
     {
         $this->more8file = $more8file;
     }
@@ -1158,7 +1158,7 @@ class Registrant extends AbstractEntity
      * @param string $password
      * @return void
      */
-    public function setPassword($password)
+    public function setPassword($password): void
     {
         $this->password = $password;
     }
@@ -1173,7 +1173,7 @@ class Registrant extends AbstractEntity
 	/**
 	 * @param int $hidden
 	 */
-	public function setHidden($hidden) {
+	public function setHidden($hidden): void {
 		$this->hidden = $hidden;
 	}
 
@@ -1187,7 +1187,7 @@ class Registrant extends AbstractEntity
 	/**
 	 * @param int $confirmed
 	 */
-	public function setConfirmed($confirmed) {
+	public function setConfirmed($confirmed): void {
 		$this->confirmed = $confirmed;
 	}
 
@@ -1202,7 +1202,7 @@ class Registrant extends AbstractEntity
 	/**
 	 * @param string $otherEvents
 	 */
-	public function setOtherEvents($otherEvents)
+	public function setOtherEvents($otherEvents): void
 	{
 		$this->otherEvents = $otherEvents;
 	}
@@ -1218,7 +1218,7 @@ class Registrant extends AbstractEntity
 	/**
 	 * @param string $company2
 	 */
-	public function setCompany2($company2)
+	public function setCompany2($company2): void
 	{
 		$this->company2 = $company2;
 	}
@@ -1234,7 +1234,7 @@ class Registrant extends AbstractEntity
 	/**
 	 * @param string $department2
 	 */
-	public function setDepartment2($department2)
+	public function setDepartment2($department2): void
 	{
 		$this->department2 = $department2;
 	}
@@ -1250,7 +1250,7 @@ class Registrant extends AbstractEntity
 	/**
 	 * @param string $streetAndNr2
 	 */
-	public function setStreetAndNr2($streetAndNr2)
+	public function setStreetAndNr2($streetAndNr2): void
 	{
 		$this->streetAndNr2 = $streetAndNr2;
 	}
@@ -1266,7 +1266,7 @@ class Registrant extends AbstractEntity
 	/**
 	 * @param string $zip2
 	 */
-	public function setZip2($zip2)
+	public function setZip2($zip2): void
 	{
 		$this->zip2 = $zip2;
 	}
@@ -1282,7 +1282,7 @@ class Registrant extends AbstractEntity
 	/**
 	 * @param string $city2
 	 */
-	public function setCity2($city2)
+	public function setCity2($city2): void
 	{
 		$this->city2 = $city2;
 	}
@@ -1298,7 +1298,7 @@ class Registrant extends AbstractEntity
 	/**
 	 * @param string $country2
 	 */
-	public function setCountry2($country2)
+	public function setCountry2($country2): void
 	{
 		$this->country2 = $country2;
 	}
@@ -1314,7 +1314,7 @@ class Registrant extends AbstractEntity
 	/**
 	 * @param string $title
 	 */
-	public function setTitle($title)
+	public function setTitle($title): void
 	{
 		$this->title = $title;
 	}
@@ -1330,7 +1330,7 @@ class Registrant extends AbstractEntity
     /**
      * @param string $citrixResponse
      */
-    public function setCitrixResponse($citrixResponse)
+    public function setCitrixResponse($citrixResponse): void
     {
         $this->citrixResponse = $citrixResponse;
     }
@@ -1346,14 +1346,14 @@ class Registrant extends AbstractEntity
     /**
      * @param string $hubspotResponse
      */
-    public function setHubspotResponse($hubspotResponse)
+    public function setHubspotResponse($hubspotResponse): void
     {
         $this->hubspotResponse = $hubspotResponse;
     }
     /**
      * @param string $hubspotResponse
      */
-    public function setMarketoResponse($marketoResponse)
+    public function setMarketoResponse($marketoResponse): void
     {
         $this->hubspotResponse = $marketoResponse;
     }
@@ -1369,7 +1369,7 @@ class Registrant extends AbstractEntity
     /**
      * @param \DateTime|int|null $starttime
      */
-    public function setStarttime( $starttime)
+    public function setStarttime( $starttime): void
     {
         if( $starttime instanceof \DateTime) {
             $this->starttime = $starttime ;
@@ -1391,7 +1391,7 @@ class Registrant extends AbstractEntity
     /**
      * @param \DateTime|int|null $endtime
      */
-    public function setEndtime( $endtime)
+    public function setEndtime( $endtime): void
     {
         if( $endtime instanceof \DateTime) {
             $this->endtime = $endtime ;

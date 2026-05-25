@@ -45,7 +45,7 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\FormProtection\FrontendFormProtection;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
-use JVelletti\JvBanners\Utility\AssetUtility;
+
 use JVelletti\JvEvents\Domain\Model\Event;
 use JVelletti\JvEvents\Domain\Model\Location;
 use JVelletti\JvEvents\Domain\Model\Organizer;
@@ -60,7 +60,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
-use function Webmozart\Assert\Tests\StaticAnalysis\true;
 
 /**
  * EventController
@@ -69,41 +68,45 @@ class EventController extends BaseController
 {
 
 
-	public function initializeAction() {
+	public function initializeAction() :void
+    {
         $this->timeStart = $this->microtime_float() ;
 	    $this->debugArray[] = "Start:" . intval(1000 * $this->timeStart ) . " Line: " . __LINE__ ;
-		if ($this->request->hasArgument('action')) {
 
-			if ( in_array( $this->request->getArgument('action') , ["show", "edit", "update", "create", "delete", "cancel"] )) {
-				// user is calling  one of the actions, that requires and event ID.
-
-			    if ( !$this->request->hasArgument('event') && !$this->request->getArgument('action') == "show") {
-			        return new ForwardResponse('show');
-				}
-                if ( $this->request->hasArgument('event') && $this->request->getArgument('action') == "show"  && !ctype_digit( (string) $this->request->getArgument('event') ) ) {
-                    return (new ForwardResponse('show'))->withArguments(['action' => 'show', 'event' => null]);
-                }
-
-			}
-
-		} else {
-		    // no action is set ? prevent
-            return new ForwardResponse('list');
-        }
         if ( $this->request->hasArgument('event')) {
             if ( property_exists( $this->arguments , "event")) {
                 $propertyMappingConfiguration = $this->arguments['event']->getPropertyMappingConfiguration();
                 $propertyMappingConfiguration->allowProperties('changeFutureEvents') ;
 
             }
-
-
         }
 
         parent::initializeAction() ;
         $this->debugArray[] = "Init Done:" . intval(1000 * ($this->microtime_float()  - $this->timeStart ) ) . " Line: " . __LINE__ ;
 	}
 
+    public function checkArguments() {
+        if ($this->request->hasArgument('action')) {
+
+			if ( in_array( $this->request->getArgument('action') , ["show", "edit", "update", "create", "delete", "cancel"] )) {
+				// user is calling  one of the actions, that requires and event ID.
+
+			    if ( !$this->request->hasArgument('event') && !$this->request->getArgument('action') == "show") {
+			        /** @var ResponseInterface $return */
+                    return $this->redirect('show');
+				}
+                if ( $this->request->hasArgument('event') && $this->request->getArgument('action') == "show"  && !ctype_digit( (string) $this->request->getArgument('event') ) ) {
+                    return $this->redirect('show')->withArguments(['action' => 'show', 'event' => null]);
+                }
+
+            }
+
+        } else {
+            // no action is set ? prevent
+            return $this->redirect('list');
+        }
+        return null;
+    }
     /**
      * action list
      *
@@ -112,6 +115,9 @@ class EventController extends BaseController
      */
     public function listAction(): ResponseInterface
     {
+        if ( $return = $this->checkArguments() ) {
+            return $return ;
+        }
         $this->debugArray[] = "After Init :" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " Line: " . __LINE__ ;
         $this->settings['filter']['distance']['doNotOverrule'] = "false" ;
         $this->settings['flexform']['filter']['maxDays']  =  ($this->settings['filter']['maxDays'] > 0 ) ? $this->settings['filter']['maxDays'] : 30 ;
@@ -216,6 +222,12 @@ class EventController extends BaseController
 
         $this->view->assign('eventsFilter', $eventsFilter);
        // $this->settings['checkInstallation'] = 2 ;
+
+        if( $this->settings['list']['showLargeImages'] ) {
+            $this->settings['list']['image']['width'] = ( $this->settings['list']['image']['large']['width'] ?? $this->settings['list']['image']['large']['width'] * 4 / 3 )  ;
+            $this->settings['list']['image']['height'] = ( $this->settings['list']['image']['large']['height'] ?? $this->settings['list']['image']['large']['height'] * 4 / 3 )  ;
+
+        }
         $this->view->assign('settings', $this->settings );
         $this->debugArray[] = "before Render:" . intval(1000 * ($this->microtime_float()  - $this->timeStart ) ) . " Line: " . __LINE__ ;
         $this->view->assign('debugArray', $this->debugArray );
@@ -245,8 +257,8 @@ class EventController extends BaseController
                     return (new RedirectResponse( $url ))->withStatus(301);
                 }
             }
-            $checkString = $_SERVER["SERVER_NAME"] . "-" . $event->getUid() . "-" . $event->getCrdate();
-            $checkHash = GeneralUtility::hmac ( $checkString );
+            $checkString = $_SERVER["SERVER_NAME"] ;
+            $checkHash = $this->hashService->hmac ( $checkString , "-" . $event->getUid() . "-" . $event->getCrdate());
 
 
             //$querysettings = new Typo3QuerySettings;
@@ -293,6 +305,14 @@ class EventController extends BaseController
             $this->addFlashMessage($this->translate("error.general.entry_not_found"), "Sorry!" , ContextualFeedbackSeverity::WARNING) ;
 
         }
+        if( $this->request->hasArgument('showBannerDate')) {
+            if( $this->request->getArgument('showBannerDate') <0 ) {
+                $this->addFlashMessage( "Banner Stopped ", "" , ContextualFeedbackSeverity::INFO) ;
+            } else {
+                $startTime = time() + ((int)$this->request->getArgument('showBannerDate') * 24 * 3600 ) ;
+                $this->addFlashMessage( "Banner Startdate: " . date("d.m.Y" , $startTime  ) , "" , ContextualFeedbackSeverity::OK) ;
+            }
+        }
         $this->view->assign('settings', $this->settings);
 		$this->view->assign('event', $event);
         return $this->htmlResponse();
@@ -302,7 +322,7 @@ class EventController extends BaseController
      * action new
      * @param Event|null $event
      *
-     * @return void
+     * @return \Psr\Http\Message\ResponseInterface
      */
     #[IgnoreValidation(['value' => 'event'])]
     public function newAction(Event $event=null)
@@ -331,7 +351,7 @@ class EventController extends BaseController
             } else {
                 $pid = $this->settings['pageIds']['loginForm'] ;
                 $this->addFlashMessage('You are not logged in as Organizer.'  , '', ContextualFeedbackSeverity::WARNING);
-                $this->redirect(null , null , NULL , NULL , $pid );
+                return $this->redirect(null , null , NULL , NULL , $pid );
             }
 
             if( $this->request->hasArgument('location')) {
@@ -404,7 +424,7 @@ class EventController extends BaseController
 
             $pid = $this->settings['pageIds']['loginForm'] ;
             $this->addFlashMessage('The object was NOT created. You are not logged in as Organizer.' . $event->getUid() , '', ContextualFeedbackSeverity::WARNING);
-            $this->redirect(null , null , NULL , ['event' => $event] , $pid );
+            return $this->redirect(null , null , NULL , ['event' => $event] , $pid );
         }
         // if PID from TS settings is set: if User is not logged in-> Page with loginForm , on success -> showEventDetail  Page
         if ($pid < 1) {
@@ -415,6 +435,7 @@ class EventController extends BaseController
             /** @var UriBuilder $uriBuilder */
 
             $uriBuilder = GeneralUtility::makeInstance( UriBuilder::class ) ;
+            $uriBuilder->setRequest($this->request ?? $GLOBALS['TYPO3_REQUEST']) ;
             $uri = "https://" . GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY') .
                     $uriBuilder->reset()->setTargetPageUid($pid)
                     ->setArguments([ 'tx_jvevents_event' =>
@@ -427,7 +448,7 @@ class EventController extends BaseController
                 ->withStatus("200");
 
         } catch  ( \Exception ) {
-            $this->redirect(null, null , NULL, null , $pid);
+            return $this->redirect(null, null , NULL, null , $pid);
         }
 
     }
@@ -443,9 +464,12 @@ class EventController extends BaseController
      * @return void
      */
     #[IgnoreValidation(['value' => 'event'])]
-    public function editAction(Event $event , ?int $copy2Day=0 , ?int $amount=0 ): ResponseInterface
+    public function editAction(?Event $event , ?int $copy2Day=0 , ?int $amount=0 ): ResponseInterface
     {
 
+        if ( $return = $this->checkArguments() ) {
+            return $return ;
+        }
         $filter = [];
         if($this->isUserOrganizer() ) {
             if( $this->hasUserAccess( $event->getOrganizer() )) {
@@ -611,7 +635,9 @@ class EventController extends BaseController
                     if ($eventsOnSameDay && $eventsOnSameDay->count() > 0 ) {
                         $msg = 'At least one copy of event ID' .  $newEvent->getMasterId() . ' exists! ' ;
                         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+                        $uriBuilder->setRequest($this->request ?? $GLOBALS['TYPO3_REQUEST']) ;
                         $uri = $uriBuilder->reset()->setTargetPageUid($pid)
+
                             ->setArguments(['tx_jvevents_event' =>
                                 ['controller' => 'Event', 'action' => 'show', 'event' => $eventsOnSameDay->getFirst()->getUid()]])
                             ->build();
@@ -685,7 +711,7 @@ class EventController extends BaseController
 
             /** @var QueryBuilder $queryBuilderEvent */
             $queryBuilderEvent = $dbConnectionForSlug->createQueryBuilder();
-            $queryBuilderEvent->update('tx_jvevents_domain_model_event')->set('slug' , $slug )->where($queryBuilderEvent->expr()->eq('uid' , $queryBuilderEvent->createNamedParameter( $eventUid , \PDO::PARAM_INT )))->executeStatement() ;
+            $queryBuilderEvent->update('tx_jvevents_domain_model_event')->set('slug' , $slug )->where($queryBuilderEvent->expr()->eq('uid' , $queryBuilderEvent->createNamedParameter( $eventUid , \TYPO3\CMS\Core\Database\Connection::PARAM_INT )))->executeStatement() ;
 
 
             /** @var Connection $dbConnectionForSysRef */
@@ -805,7 +831,11 @@ class EventController extends BaseController
     #[Validate(['param' => 'event', 'validator' => EventValidator::class])]
     public function updateAction(Event $event)
     {
-
+        $pid = $this->settings['pageIds']['showEventDetail'] ;
+        // if PID from TS settings is set: if User is not logged in-> Page with loginForm , on success -> showEventDetail  Page
+        if ($pid < 1) {
+            $pid = MigrationUtility::getPageId($this);
+        }
         $filter = [];
         if( $this->request->hasArgument('event')) {
             $event = $this->cleanEventArguments( $event) ;
@@ -818,7 +848,7 @@ class EventController extends BaseController
                 $connection = GeneralUtility::makeInstance(ConnectionPool::class);
                 $queryBuilder = $connection->getQueryBuilderForTable('tx_jvevents_domain_model_event');
                 $oldEventRows = $queryBuilder->select('*' )
-                    ->from('tx_jvevents_domain_model_event')->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($event->getUid(), \PDO::PARAM_INT)))->executeQuery()
+                    ->from('tx_jvevents_domain_model_event')->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($event->getUid(), \TYPO3\CMS\Core\Database\Connection::PARAM_INT)))->executeQuery()
                     ->fetchAllAssociative();
 
                 if ( count($oldEventRows ) > 0 ) {
@@ -842,29 +872,42 @@ class EventController extends BaseController
                         $row['html'] = $html;
                         $bannerRepository->updateBanner( $row );
 
-                        // update image
-                        $assetData = AssetUtility::loadSysFileReference($event->getUid() , "tx_jvevents_domain_model_event" , "teaser_image") ;
-                        $imageFrom = "Event" ;
-                        if( !is_array($assetData )) {
-                            $imageFrom = "Location" ;
 
-                            $assetData = AssetUtility::loadSysFileReference($event->getLocation()->getUid() , "tx_jvevents_domain_model_location" , "teaser_image") ;
-                        }
-                        if( !is_array($assetData )) {
-                            $imageFrom = "Organizer" ;
-                            $assetData = AssetUtility::loadSysFileReference($event->getOrganizer()->getUid() , "tx_jvevents_domain_model_organizer" , "teaser_image") ;
-                        }
-                        if( is_array($assetData )) {
-                            $assetDataLink = AssetUtility::loadSysFileReference( $row['uid'] , "tx_sfbanners_domain_model_banner" , "assets") ;
+                        if (class_exists(\JVelletti\JvBanners\Utility\AssetUtility )) {
+                            $assetUtility = GeneralUtility::makeInstance(\JVelletti\JvBanners\Utility\AssetUtility::class);
 
-                            if( $assetDataLink ) {
-                                AssetUtility::updateUidLocal($assetDataLink['uid'] , ['uid_local' => $assetData['uid_local'] ] ) ;
+                            // update image
+                            $assetData = $assetUtility::loadSysFileReference($event->getUid() , "tx_jvevents_domain_model_event" , "teaser_image") ;
+                            $imageFrom = "Event" ;
+                            if( !is_array($assetData )) {
+                                $imageFrom = "Location" ;
+
+                                $assetData = $assetUtility::loadSysFileReference($event->getLocation()->getUid() , "tx_jvevents_domain_model_location" , "teaser_image") ;
                             }
+                            if( !is_array($assetData )) {
+                                $imageFrom = "Organizer" ;
+                                $assetData = $assetUtility::loadSysFileReference($event->getOrganizer()->getUid() , "tx_jvevents_domain_model_organizer" , "teaser_image") ;
+                            }
+                            if( is_array($assetData )) {
 
+                                $assetDataLink = $assetUtility::loadSysFileReference( $row['uid'] , "tx_sfbanners_domain_model_banner" , "assets") ;
+
+                                if( $assetDataLink ) {
+
+                                    $link = $this->uriBuilder->reset()
+                                        ->setTargetPageUid($pid )
+                                        ->uriFor(
+                                            'show',
+                                            array("event" => $event->getUid() ),
+                                            'Event',
+                                            'JvEvents') ;
+
+                                    $assetUtility::updateUidLocal($assetDataLink['uid'] , ['uid_local' => $assetData['uid_local'] , "link" => $link , "title" => $event->getName() ] ) ;
+                                }
+
+                            }
+                            $this->addFlashMessage('The Banner ' .  $row['uid'] . ' will be updated soon. (<4 h). Changed Images may take more time.', '', ContextualFeedbackSeverity::OK);
                         }
-
-
-                        $this->addFlashMessage('The Banner ' .  $row['uid'] . ' will be updated soon. (<4 h). Changed Images may take more time.', '', ContextualFeedbackSeverity::OK);
                     }
                 }
 
@@ -937,6 +980,9 @@ class EventController extends BaseController
                             }
                             if( $oldEventRow['location'] != $event->getLocation()->getUid() ) {
                                 $otherEvent->setLocation( $event->getLocation() ) ;
+                            }
+                            if( $oldEventRow['registration_url'] != $event->getRegistrationUrl()) {
+                                $otherEvent->setRegistrationUrl($event->getRegistrationUrl());
                             }
 
                             if( $otherEvent->getTags() ) {
@@ -1013,11 +1059,7 @@ class EventController extends BaseController
             $this->addFlashMessage('You do not have access rights to change this data.' . $event->getUid() , '', ContextualFeedbackSeverity::WARNING);
         }
         $this->persistenceManager->persistAll() ;
-        $pid = $this->settings['pageIds']['showEventDetail'] ;
-        // if PID from TS settings is set: if User is not logged in-> Page with loginForm , on success -> showEventDetail  Page
-        if ($pid < 1) {
-            $pid = MigrationUtility::getPageId($this);
-        }
+
         return $this->redirect('show' , 'Event', 'JvEvents' , ["event" => $event] ,$pid  );
     }
     
@@ -1323,7 +1365,7 @@ class EventController extends BaseController
      * @throws IllegalObjectTypeException
      * @throws UnknownObjectException
      */
-    public function updateLatestEvent( Event $event , DateTime $date = NULL ) {
+    public function updateLatestEvent( Event $event , DateTime $date = NULL ): void {
         if( $date == NULL ) {
             $date = new DateTime('now' ) ;
             // Idea : : get latest Date from any other event of this organizer ?

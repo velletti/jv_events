@@ -109,10 +109,19 @@ class RegistermarketoUtility {
             $data['message']  = substr( $data['message']  , 0 , 800 ) ;
         }
 
+        if ( isset($settings['lang']) ) {
+            $data['LanguageCode__c']  =   $settings['lang'] ;
+            if ( $settings['lang'] == "AUT" ) {
+                $data['LanguageCode__c']  =   "DEU" ;
+            }
 
-        $data['LanguageCode__c']  =   $settings['lang'] ?? "DEU";
-        // if AUT, set it to DEU as Marketo does not know AUT or DEA 
-        $data['LanguageCode__c']  =   $settings['lang'] != "AUT" ? $settings['lang']  :  "DEU";
+            if ( !in_array( $data['LanguageCode__c'] , [ "DEU" , "ENU" , "FRA" , "ITA" , "ESP" , "DES" , "CSY"] ) ) {
+                $data['LanguageCode__c']  =   "ENU" ;
+            }
+        } else {
+            $data['LanguageCode__c']  =   "DEU" ;
+        }
+
 
         if ( $event->getPrice() > 0 ) {
             $data['category']  =   'Training' ;
@@ -196,7 +205,7 @@ class RegistermarketoUtility {
         $this->logToFile( $debugmail , $event->getPid() , $error )  ;
         return $response  ;
     }
-    private function logToFile( $text , $pid = 0 , $error = 0 ) {
+    private function logToFile( $text , $pid = 0 , $error = 0 ): void {
 
         $insertFields = array(
             "action"  => 1 ,

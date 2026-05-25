@@ -16,6 +16,7 @@
 	<f:render partial="FormOtherErrors" section="Main" arguments="{for: 'event' ,field: 'uid'}" />
 
 	<f:form.hidden class="hidden" name="event" value="{event.uid}" />
+	<f:form.hidden class="hidden" id="GCLID__c" name="GCLID__c" value="" />
 	<f:form.textfield class="hidden" property="layoutRegister" value="{settings.LayoutRegister}" />
 	<f:form.textfield class="hidden" property="addMandatoryFields" value="{registrant.addMandatoryFields}" />
 	<f:form.textfield class="hidden" property="event" value="{event.uid}" />

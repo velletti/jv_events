@@ -110,6 +110,7 @@ class LeafletBackendModule {
       zoom: this.zoomLevel,
     });
     L.tileLayer(this.tilesUrl, {
+      referrerPolicy: 'strict-origin-when-cross-origin',
       attribution: this.tilesCopy,
     }).addTo(this.map);
 

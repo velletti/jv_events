@@ -9,20 +9,7 @@ defined('TYPO3') or die();
 /** @var Typo3Version $version */
 $version = GeneralUtility::makeInstance(Typo3Version::class);
 
-if ($version->getMajorVersion()  < 11) {
-    // to Check if we need this
-    $lngConfig = [	'type' => 'select',
-        'renderType' => 'selectSingle',
-        'foreign_table' => 'sys_language',
-        'foreign_table_where' => 'ORDER BY sys_language.title',
-        'items' => [
-            ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', -1],
-            ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.default_value', 0]
-        ]
-    ] ;
-} else {
     $lngConfig =  ['type' => 'language'] ;
-}
 
 return array(
 	'ctrl' => array(
@@ -56,7 +43,7 @@ return array(
 		'sys_language_uid' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
-			'config' => $lngConfig,
+			'config' => ['type' => 'language'],
 		),
 		'l10n_parent' => array(
 			'displayCond' => 'FIELD:sys_language_uid:>:0',
@@ -485,55 +472,55 @@ return array(
 		'more8file' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_registrant.more8file',
-			'config' => ExtensionManagementUtility::getFileFieldTCAConfig(
-				'more8file',
-				array(
-					'appearance' => array(
+			'config' => [
+                // TODO: Important! Verify that the fieldname value in foreign table either matches the column name
+                // or is set properly in the following TCA, see https://docs.typo3.org/permalink/t3tca:confval-inline-foreign-match-fields
+                'type' => 'file',
+                'appearance' => array(
 						'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.addFileReference'
 					),
-					'maxitems' => 1,
-     'overrideChildTca' => ['types' => array(
-						'0' => array(
-							'showitem' => '
+                'maxitems' => 1,
+                'overrideChildTca' => ['types' => array(
+           						'0' => array(
+           							'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
-						),
-						File::FILETYPE_TEXT => array(
-							'showitem' => '
+           						),
+           						\TYPO3\CMS\Core\Resource\FileType::TEXT->value => array(
+           							'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
-						),
-						File::FILETYPE_IMAGE => array(
-							'showitem' => '
+           						),
+           						\TYPO3\CMS\Core\Resource\FileType::IMAGE->value => array(
+           							'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
-						),
-						File::FILETYPE_AUDIO => array(
-							'showitem' => '
+           						),
+           						\TYPO3\CMS\Core\Resource\FileType::AUDIO->value => array(
+           							'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
-						),
-						File::FILETYPE_VIDEO => array(
-							'showitem' => '
+           						),
+           						\TYPO3\CMS\Core\Resource\FileType::VIDEO->value => array(
+           							'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
-						),
-						File::FILETYPE_APPLICATION => array(
-							'showitem' => '
+           						),
+           						\TYPO3\CMS\Core\Resource\FileType::APPLICATION->value => array(
+           							'showitem' => '
 							--palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
 							--palette--;;filePalette'
-						)
-					)]
-				)
-			),
+           						)
+           					)],
+            ],
 		),
 		'password' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:jv_events/Resources/Private/Language/locallang_db.xlf:tx_jvevents_domain_model_registrant.password',
 			'config' => array(
-				'type' => 'input',
+				'type' => 'password',
 				'size' => 30,
-				'eval' => 'nospace,password'
+				'hashed' => false
 			)
 		),
 		

@@ -30,7 +30,7 @@ class InlineLabelService
      *
      * @param array $params
      */
-    public function getInlineLabel(array &$params)
+    public function getInlineLabel(array &$params): void
     {
         if ( isset($params['options']['tx_jvevents_domain_model_subevent']) && is_array($params['options']['tx_jvevents_domain_model_subevent']) ) {
             foreach ( $params['options']['tx_jvevents_domain_model_subevent'] as $field => $format ) {

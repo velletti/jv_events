@@ -41,8 +41,6 @@ foreach ( $pluginArray as $plugin ) {
     );
 }
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
-    'tt_content.pi_flexform.jvevents_events', 'EXT:jv_events/Resources/Private/Language/locallang_csh_flexforms.xlf');
 
 
 
@@ -50,3 +48,4 @@ foreach ( $pluginArray as $plugin ) {
 
 
 
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin('JvEvents', $plugin['name'], $plugin['title'], 'jvevents-plugin', 'Events');

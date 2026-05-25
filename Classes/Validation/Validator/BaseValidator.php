@@ -47,7 +47,7 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
     /**
      * @param EventRepository $eventRepository
      */
-    public function injectEventRepository(EventRepository $eventRepository)
+    public function injectEventRepository(EventRepository $eventRepository): void
     {
         $this->eventRepository = $eventRepository;
     }
@@ -55,7 +55,7 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
     /**
      * @param RegistrantRepository $registrantRepository
      */
-    public function injectRegistrantRepository(RegistrantRepository $registrantRepository)
+    public function injectRegistrantRepository(RegistrantRepository $registrantRepository): void
     {
         $this->registrantRepository = $registrantRepository;
     }
@@ -66,7 +66,7 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
 		$allSettings = $this->getSettings() ;
 		$this->settings = $allSettings['plugin.']['tx_jvevents_events.']['settings.'];
 		$this->settings = GeneralUtility::removeDotsFromTS($this->settings ) ;
-		$this->settings['pageId']						=  $GLOBALS['TSFE']->id ;
+		$this->settings['pageId']						=  $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.page.information')->getId() ;
 		$this->settings['servername']					=  GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST');
         /** @var AspectInterface $languageAspect */
         $languageAspect = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Context\Context::class)->getAspect('language') ;
@@ -129,13 +129,13 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
 						'isAdmin' => FALSE
 		) ;
 
-		if ( is_array($GLOBALS['TSFE']->fe_user->user)  ) {
+		if ( is_array($GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user')->user)  ) {
 
-			$return['uid'] = $GLOBALS['TSFE']->fe_user->user['uid'] ;
-			$return['username'] = $GLOBALS['TSFE']->fe_user->user['username'] ;
+			$return['uid'] = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user')->user['uid'] ;
+			$return['username'] = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user')->user['username'] ;
 			$AdminUserGroups = GeneralUtility::trimExplode( "," , $this->emConf['AdminUserGroups'] ) ;
 			foreach ( $AdminUserGroups as $AdminUserGroup) {
-				if (GeneralUtility::inList($GLOBALS['TSFE']->fe_user->user['usergroup'], $AdminUserGroup)) {
+				if (GeneralUtility::inList($GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user')->user['usergroup'], $AdminUserGroup)) {
 					$return['isAdmin'] = TRUE;
 				}
 			}
@@ -157,7 +157,7 @@ class BaseValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
 
 
         if ( !$errorMessage ) {
-            $errorMessage =  \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate( "validator.urladdress.notvalid" , "jv_evetns") ;
+            $errorMessage =  \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate( "validator.urladdress.notvalid" , 'JvEvents') ;
         }
         if ( !$errorMessage ) {
             $errorMessage = "URL is not valid or not reachable. Must start with http:// or https://" ;

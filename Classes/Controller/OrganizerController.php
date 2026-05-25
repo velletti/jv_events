@@ -67,7 +67,7 @@ class OrganizerController extends BaseController
      *
      * @return void
      */
-    public function initializeAction()
+    public function initializeAction(): void
     {
         $this->timeStart = $this->microtime_float() ;
         $this->debugArray[] = "Start:" . intval(1000 * $this->timeStart ) . " Line: " . __LINE__ ;
@@ -129,8 +129,8 @@ class OrganizerController extends BaseController
             $this->view->assign('nextEventOrganizer', ($nextEvent ? $nextEvent->getStartDate()->format("d.m.Y") : '' ) );
             $this->view->assign('nextEventCount', $nextEventCount );
 
-            $checkString = $_SERVER["SERVER_NAME"] . "-" . $organizer[0]->getUid() . "-" . $organizer[0]->getCrdate();
-            $checkHash = GeneralUtility::hmac ( $checkString );
+            $checkString = $_SERVER["SERVER_NAME"] . "-" . $organizer[0]->getUid() ;
+            $checkHash = $this->hashService->hmac ( $checkString , "-" . $organizer[0]->getCrdate());
             $this->view->assign('hash', $checkHash );
 
             $oldDefaultLocation = $this->locationRepository->findByOrganizersAllpages( [0 => $organizer[0]->getUid()] , FALSE, FALSE , TRUE )->getFirst() ;
@@ -323,7 +323,7 @@ class OrganizerController extends BaseController
     /**
      * action create
      *
-     * @return void
+     * @return \Psr\Http\Message\ResponseInterface
      */
     #[Validate(['param' => 'organizer', 'validator' => OrganizerValidator::class])]
     public function createAction(Organizer $organizer)
@@ -367,8 +367,8 @@ class OrganizerController extends BaseController
             $organizerUid = intval( $organizer->getUid()) ;
             $userUid = intval($this->frontendUser->user['uid']) ;
             $rnd = time() ;
-            $tokenStr = "activateOrg" . "-" . $organizerUid . "-" . $this->frontendUser->user['crdate'] ."-". $userUid .  "-". $rnd ;
-            $hmac = GeneralUtility::hmac( $tokenStr );
+            $tokenStr = "activateOrg" . "-" . $organizerUid  ;
+            $hmac = $this->hashService->hmac( $tokenStr , "-" . $this->frontendUser->user['crdate'] ."-". $userUid .  "-". $rnd);
 
             $url  = GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST') ;
             /*
@@ -419,7 +419,7 @@ class OrganizerController extends BaseController
 
             $this->showNoDomainMxError($organizer->getEmail() ) ;
 
-            $this->redirect('assist' , NULL, Null , NULL , $this->settings['pageIds']['organizerAssist']);
+            return $this->redirect('assist' , NULL, Null , NULL , $this->settings['pageIds']['organizerAssist']);
         } else {
             $this->getFlashMessageQueue()->getAllMessagesAndFlush();
 
@@ -491,8 +491,8 @@ class OrganizerController extends BaseController
                 die;
             }
         }
-        $tokenStr = "activateOrg" . "-" . $organizerUid . "-" . $user->getCrdate() ."-". $userUid .  "-". $rnd ;
-        $tokenId = GeneralUtility::hmac( $tokenStr );
+        $tokenStr = "activateOrg" . "-" . $organizerUid ;
+        $tokenId = $this->hashService->hmac( $tokenStr ,  "-" . $user->getCrdate() ."-". $userUid .  "-". $rnd );
 
 
         if( $hmac != $tokenId ) {

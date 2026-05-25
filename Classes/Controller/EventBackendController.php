@@ -27,6 +27,7 @@ namespace JVelletti\JvEvents\Controller;
  ***************************************************************/
 
 use JVelletti\JvEvents\Domain\Repository\RegistrantRepository;
+use JVelletti\JvEvents\Domain\Repository\EventRepository;
 use JVelletti\JvEvents\Utility\EmConfigurationUtility;
 use JVelletti\JvEvents\Utility\SalesforceWrapperUtility;
 use Psr\Http\Message\ResponseInterface;
@@ -58,12 +59,6 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
 class EventBackendController extends BaseController
 {
 
-    /**
-     * registrantRepository
-     *
-     * @var RegistrantRepository
-     */
-    protected $registrantRepository = NULL;
 
     /**
      * @var RegisterHubspotUtility
@@ -75,19 +70,19 @@ class EventBackendController extends BaseController
     protected BackendUserAuthentication $backendUser;
 
     public function __construct(
-       RegistrantRepository $registrantRepository,
        ModuleTemplateFactory $moduleTemplateFactory,
        PageRenderer $pageRenderer,
        BackendUserAuthentication $backendUser
     ) {
-        $this->registrantRepository = $registrantRepository;
+
         $this->moduleTemplateFactory = $moduleTemplateFactory;
         $this->pageRenderer = $pageRenderer;
         $this->backendUser = $backendUser;
+        parent::__construct();
     }
 
 
-	public function initializeAction() {
+	public function initializeAction(): void {
        // This works only, if moduleTemplateFactory is used for view => see action function(s)
        $this->pageRenderer->addCssFile('EXT:jv_events/Resources/Public/Css/backendModule.css', 'stylesheet', 'all', '', false);
        // $this->pageRenderer->loadJavaScriptModule('@peterBenke/pbNotifications/Notifications.js');
@@ -124,13 +119,14 @@ class EventBackendController extends BaseController
 
 
         $view->setTitle('Event Management');
+        // @extensionScannerIgnoreLine
         $view->setModuleName("web_JvEventsEventmngt");
         $view->setModuleId("jvevents_eventmngt");
 
         $eventID = null;
         $events = [];
         $itemsPerPage = 20 ;
-        $pageId = GeneralUtility::_GP('id');
+        $pageId = $this->request->getParsedBody()['id'] ?? $this->request->getQueryParams()['id'] ?? null;
 
         $pageRow = BackendUtility::getRecord(
            'pages',
@@ -157,6 +153,7 @@ class EventBackendController extends BaseController
 
         }
         if ( $recursive ) {
+            // @extensionScannerIgnoreLine
             $this->settings['storagePids'] = $this->registrantRepository->getTreeList($pageId, 9999, 0, 1) ;
         }
 
@@ -188,8 +185,8 @@ class EventBackendController extends BaseController
                     $serverFromSite =  $site->getBase()->getHost() ;
 
                     $lang = max(  $selectedEvent->getSysLanguageUid()  , 0 ) ;
-                    $checkString =  $serverFromSite . "-" .  $selectedEvent->getUid()  . "-" . $selectedEvent->getCrdate() ;
-                    $checkHash = GeneralUtility::hmac ( $checkString ) ;
+                    $checkString =  $serverFromSite . "-" .  $selectedEvent->getUid()  ;
+                    $checkHash = $this->hashService->hmac ( $checkString , "-" . $selectedEvent->getCrdate() ) ;
                     // pid = 0 to load registrations from all pages for that event
                     $url = (string)$site->getRouter()->generateUri( $selectedEvent->getRegistrationFormPid() ,['_language' => $lang ,
                        'tx_jvevents_registrant' => ['action' => 'list' , 'controller' => 'Registrant' ,'event' =>  $selectedEvent->getUid()
@@ -271,6 +268,7 @@ class EventBackendController extends BaseController
         $view->assign('currentPage', $currentPage);
         $view->assign('recursive', $recursive);
         $view->assign('pageId', $pageId );
+        $this->pageRenderer->loadJavaScriptModule('@jvelletti/filter-registrations');
         return $view->renderResponse('/EventBackend/List.html');
     }
 
@@ -335,7 +333,8 @@ class EventBackendController extends BaseController
                         $this->sendEmail($event[0] , $registrant ,"Registrant" , [$registrant->getEmail() => $name] , FALSE )  ;
 
                         $this->registrantRepository->update($registrant) ;
-                        $this->addFlashMessage($this->settings['register']['senderEmail'] . " -> Email send to " . $registrant->getEmail() . " - layout: " . $this->settings['LayoutRegister'] , '', ContextualFeedbackSeverity::INFO);
+                        $this->addFlashMessage($this->settings['register']['senderEmail'] . " -> Email send to "
+                            . $registrant->getEmail() . " - layout: " . $this->settings['LayoutRegister'] , '', ContextualFeedbackSeverity::INFO);
                     }
                 }
             }

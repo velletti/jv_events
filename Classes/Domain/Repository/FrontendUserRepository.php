@@ -38,7 +38,7 @@ use JVelletti\JvEvents\Domain\Model\FrontendUser;
 # class UserRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 class FrontendUserRepository extends BaseRepository {
 
-    public function initializeObject() {
+    public function initializeObject(): void {
 
         $querysettings =  $this->createQuery()->getQuerySettings() ;
         $querysettings->setIgnoreEnableFields(TRUE) ;
@@ -73,7 +73,7 @@ class FrontendUserRepository extends BaseRepository {
   * @return FrontendUser the current user if found, otherwise NULL
   */
  public function findActualUser() {
-		$uid = (int)$GLOBALS['TSFE']->fe_user->user['uid'];
+		$uid = (int)($GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user')->user['uid'] ?? 0 ) ;
 		return $this->findByUid($uid);
 	}
 

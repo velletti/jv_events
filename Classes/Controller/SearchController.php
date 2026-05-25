@@ -57,7 +57,7 @@ class SearchController extends BaseController
     public $timeStart ;
 
 
-	public function initializeAction() {
+	public function initializeAction(): void {
         $this->timeStart = $this->microtime_float() ;
 
 	    $this->debugArray[] = "Start:" . intval(1000 * $this->timeStart ) . " Line: " . __LINE__ ;

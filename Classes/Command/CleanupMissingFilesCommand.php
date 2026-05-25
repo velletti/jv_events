@@ -91,7 +91,7 @@ class CleanupMissingFilesCommand extends Command {
         $qb->select("a.uid" , "a.feuser" , "a.sysfile" , "ref.uid_local" , "ref.uid_foreign")->from($table , "a") ;
         $qb->leftJoin("a" , "sys_file_reference" , "ref" , $qb->expr()->eq("ref.uid" , $qb->quoteIdentifier("a.sysfile"))) ;
         if ($user) {
-            $qb->where($qb->expr()->eq("feuser" , $qb->createNamedParameter($user , PDO::PARAM_INT))) ;
+            $qb->where($qb->expr()->eq("feuser" , $qb->createNamedParameter($user , \TYPO3\CMS\Core\Database\Connection::PARAM_INT))) ;
         }
         $rows = $qb->executeQuery() ;
 
@@ -116,7 +116,7 @@ class CleanupMissingFilesCommand extends Command {
                 }
                 if (!$dryrun) {
                     $qbr = $this->getQueryBuilder($table) ;
-                    $qbr->update($table)->where($qbr->expr()->eq("uid" , $qbr->createNamedParameter($row["uid"] , PDO::PARAM_INT)))->set("hidden" , 1)
+                    $qbr->update($table)->where($qbr->expr()->eq("uid" , $qbr->createNamedParameter($row["uid"] , \TYPO3\CMS\Core\Database\Connection::PARAM_INT)))->set("hidden" , 1)
                         ->executeStatement() ;
                     $repaired++ ;
                 }
@@ -126,15 +126,16 @@ class CleanupMissingFilesCommand extends Command {
                     ->from("sys_file")
                     ->leftJoin("sys_file" , "sys_file_storage" , "storage" , $qbr->expr()->eq("storage.uid" , $qbr->quoteIdentifier("sys_file.storage")))
                     ->where($qbr->expr()
-                        ->eq("sys_file.uid" , $qbr->createNamedParameter($row["uid_local"] , PDO::PARAM_INT))) ;
+                        ->eq("sys_file.uid" , $qbr->createNamedParameter($row["uid_local"] , \TYPO3\CMS\Core\Database\Connection::PARAM_INT))) ;
                 $file = $qbr->executeQuery() ;
                 if ($file->rowCount() == 0) {
                     $wrong++ ;
                     $io->writeln(" ") ;
+                    // @extensionScannerIgnoreLine
                     $io->error("No sysfile found for uid:" . $row["uid"] . " - File ID:" . $row["uid_local"] );
                     if (!$dryrun) {
                         $qbr2 = $this->getQueryBuilder($table) ;
-                        $qbr2->update($table)->where($qbr2->expr()->eq("uid" , $qbr2->createNamedParameter($row["uid"] , PDO::PARAM_INT)))->set("hidden" , 1)
+                        $qbr2->update($table)->where($qbr2->expr()->eq("uid" , $qbr2->createNamedParameter($row["uid"] , \TYPO3\CMS\Core\Database\Connection::PARAM_INT)))->set("hidden" , 1)
                             ->executeStatement() ;
                         $repaired++ ;
                     }
@@ -146,13 +147,14 @@ class CleanupMissingFilesCommand extends Command {
                     if ( !$fileName || !file_exists($fileName) ) {
                         $wrong++ ;
                         $io->writeln(" ") ;
+                        // @extensionScannerIgnoreLine
                         $io->error("File not found for uid:" . $row["uid"] . " - File ID:" . $row["uid_local"] . " - File:" . $fileName );
                         if (!$dryrun) {
                             $qbr3 = $this->getQueryBuilder($table) ;
-                            $qbr3->update($table)->where($qbr3->expr()->eq("uid" , $qbr3->createNamedParameter($row["uid"] , PDO::PARAM_INT)))->set("hidden" , 1)
+                            $qbr3->update($table)->where($qbr3->expr()->eq("uid" , $qbr3->createNamedParameter($row["uid"] , \TYPO3\CMS\Core\Database\Connection::PARAM_INT)))->set("hidden" , 1)
                                 ->executeStatement() ;
                             $qbr4 = $this->getQueryBuilder("sys_file") ;
-                            $qbr4->update("sys_file")->where($qbr4->expr()->eq("uid" , $qbr4->createNamedParameter($row["uid_local"] , PDO::PARAM_INT)))->set("missing" , 1)
+                            $qbr4->update("sys_file")->where($qbr4->expr()->eq("uid" , $qbr4->createNamedParameter($row["uid_local"] , \TYPO3\CMS\Core\Database\Connection::PARAM_INT)))->set("missing" , 1)
                                 ->executeStatement() ;
                             $repaired++ ;
 
@@ -169,6 +171,7 @@ class CleanupMissingFilesCommand extends Command {
             $i++ ;
         }
         $io->writeln(" ") ;
+        // @extensionScannerIgnoreLine
         $progress->finish();
         $io->section("Result:");
         $io->writeln("Finished ( Found '" . $wrong . "' Errors and worked on '"   . $repaired . "' of '" . $i . "' records) ");

@@ -13,7 +13,7 @@ class EventValidator extends BaseValidator {
 		'introtextRegistrant'			=> 1000,
 		'introtextRegistrantConfirmed'			=> 1000,
 		'youtubeLink'			=> 120,
-		'registrationUrl'		=> 120,
+		'registrationUrl'		=> 300,
 	);
 
     /**
@@ -30,13 +30,13 @@ class EventValidator extends BaseValidator {
     );
 
 	/**
-	 * Check if $value is valid
-	 *
-	 * @param \JVelletti\JvEvents\Domain\Model\Event $event
-     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("event")
-	 * @return void
-	 */
-	public function isValid(mixed $event):void
+     * Check if $value is valid
+     *
+     * @param \JVelletti\JvEvents\Domain\Model\Event $event
+     * @return void
+     */
+    #[\TYPO3\CMS\Extbase\Annotation\IgnoreValidation(['argumentName' => 'event'])]
+    public function isValid(mixed $event):void
     {
         $isValid = true ;
 
@@ -57,7 +57,7 @@ class EventValidator extends BaseValidator {
         $isValid = $this->isNumeric( $event->getEventCategory() , 'eventCategory' , $isValid , "No Category selected") ;
 
 
-        $eventArray = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST("tx_jvevents_event") ;
+        $eventArray = $GLOBALS['TYPO3_REQUEST']->getParsedBody()["tx_jvevents_event"] ?? null ;
         $eventCatUid = intval($eventArray['event']['eventCategory']) ;
         $isValid = $this->isNumeric( $eventCatUid , 'eventCategory' , $isValid , "No Category selected") ;
 

@@ -37,6 +37,7 @@ use JVelletti\JvEvents\Domain\Model\Location;
 use JVelletti\JvEvents\Domain\Model\Organizer;
 use JVelletti\JvEvents\Domain\Model\Category;
 use TYPO3\CMS\Fluid\View\StandaloneView;
+
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Core\Utility\MailUtility;
 use TYPO3\CMS\Core\Mail\MailMessage;
@@ -69,7 +70,9 @@ use \TYPO3\CMS\Core\Utility\GeneralUtility;
 use \TYPO3\CMS\Core\Messaging\AbstractMessage ;
 use TYPO3\CMS\Extbase\Service\CacheService;
 use Velletti\Mailsignature\Service\SignatureService;
-
+use TYPO3\CMS\Core\Crypto\HashService;
+use \TYPO3\CMS\Core\View\ViewFactoryData;
+use \TYPO3\CMS\Core\View\ViewFactoryInterface;
 /**
  * EventController
  */
@@ -174,85 +177,33 @@ class BaseController extends ActionController
     /** @var array */
     public $frontendUser ;
 
-    /**
-     * @return void
-     */
-    public function injectCacheService(CacheService $cacheService) {
-        $this->cacheService = $cacheService ;
-    }
+    public HashService $hashService ;
 
-
-    /**
-     * Inject the TokenRepository
-     *
-     * @param TokenRepository $tokenRepository
-     */
-    public function injectTokenRepository(TokenRepository $tokenRepository): void
+    public function __construct()
     {
-        $this->tokenRepository = $tokenRepository;
+        $this->persistenceManager = GeneralUtility::makeInstance(PersistenceManager::class);
+        $this->staticCountryRepository = GeneralUtility::makeInstance(StaticCountryRepository::class);
+        $this->subeventRepository = GeneralUtility::makeInstance(SubeventRepository::class);
+        $this->mediaRepository = GeneralUtility::makeInstance(MediaRepository::class);
+            $this->locationRepository = GeneralUtility::makeInstance(LocationRepository::class);
+            $this->organizerRepository = GeneralUtility::makeInstance(OrganizerRepository::class);
+            $this->categoryRepository = GeneralUtility::makeInstance(CategoryRepository::class);
+            $this->tagRepository = GeneralUtility::makeInstance(TagRepository::class);
+        $this->eventRepository = GeneralUtility::makeInstance(EventRepository::class);
+        $this->registrantRepository = GeneralUtility::makeInstance(RegistrantRepository::class);
+        $this->cacheService = GeneralUtility::makeInstance(CacheService::class);
+        $this->tokenRepository = GeneralUtility::makeInstance(TokenRepository::class);
+        $this->hashService = GeneralUtility::makeInstance(HashService::class);
     }
-
-    public function injectTagRepository(TagRepository $tagRepository)
-    {
-        $this->tagRepository = $tagRepository;
-    }
-
-    public function injectCategoryRepository(CategoryRepository $categoryRepository)
-    {
-        $this->categoryRepository = $categoryRepository;
-    }
-
-    public function injectRegistrantRepository(RegistrantRepository $registrantRepository)
-    {
-        $this->registrantRepository = $registrantRepository;
-    }
-
-    public function injectLocationRepository(LocationRepository $locationRepository)
-    {
-        $this->locationRepository = $locationRepository;
-    }
-
-    public function injectOrganizerRepository(OrganizerRepository $organizerRepository)
-    {
-        $this->organizerRepository = $organizerRepository;
-    }
-
-    public function injectEventRepository(EventRepository $eventRepository)
-    {
-        $this->eventRepository = $eventRepository;
-    }
-
-    public function injectMediaRepository(MediaRepository $mediaRepository)
-    {
-        $this->mediaRepository = $mediaRepository;
-    }
-
-    public function injectSubeventRepository(SubeventRepository $subeventRepository)
-    {
-        $this->subeventRepository = $subeventRepository;
-    }
-
-    public function injectStaticCountryRepository(StaticCountryRepository $staticCountryRepository)
-    {
-        $this->staticCountryRepository = $staticCountryRepository;
-    }
-
-
-
-    public function injectPersistenceManager(PersistenceManager $persistenceManager)
-    {
-        $this->persistenceManager = $persistenceManager;
-    }
-
 
     /**
      * action list
      *
      * @return void
      */
-    public function initializeAction()
+    public function initializeAction(): void
     {
-        $this->settings['register']['allowedCountrys'] 	=  GeneralUtility::trimExplode("," , $this->settings['register']['allowedCountrys'] , true );
+        $this->settings['register']['allowedCountrys'] 	=  GeneralUtility::trimExplode("," , ($this->settings['register']['allowedCountrys'] ?? '' ), true );
         /** @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication $frontendUser */
         $this->frontendUser = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user');
 
@@ -279,7 +230,7 @@ class BaseController extends ActionController
             $fields .= "," . $this->settings['Register']['add_mandatory_fields'] ;
         }
 
-        $required  = GeneralUtility::trimExplode( "," , $fields , true ) ;
+        $required  = GeneralUtility::trimExplode( "," , ($fields ?? '' ) , true ) ;
         if ( (is_countable($required) ? count($required) : 0) > 0 ) {
             foreach( $required as $key => $field ) {
                 $this->settings['register']['required'][$field] = TRUE ;
@@ -704,10 +655,14 @@ class BaseController extends ActionController
      */
     public function getEmailRenderer($templatePath = '' , $templateName = 'default' , $format='html') {
         // create another instance of Fluid
+
+        $viewData = GeneralUtility::makeInstance( ViewFactoryData::class) ;
         /** @var StandaloneView $renderer */
-        $renderer = GeneralUtility::makeInstance(StandaloneView::class);
+        $renderer = GeneralUtility::makeInstance(ViewFactoryInterface::class)->create($viewData);
+
+
         // set the request directly on the renderer
-        $renderer->setRequest($this->request);
+        $renderer->getRenderingContext()->setAttribute(\Psr\Http\Message\ServerRequestInterface::class, $this->request);
 
         // override the template path with individual settings in TypoScript
         $extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
@@ -740,9 +695,9 @@ class BaseController extends ActionController
         $templateFile = $templatePath . $templateName . '.html';
 
         // set the e-mail template
-        $renderer->setLayoutRootPaths( $layoutPaths);
-        $renderer->setTemplatePathAndFilename($templateFile);
-        $renderer->setPartialRootPaths($partialPaths);
+        $renderer->getRenderingContext()->getTemplatePaths()->setLayoutRootPaths($layoutPaths);
+        $renderer->getRenderingContext()->getTemplatePaths()->setTemplatePathAndFilename($templateFile);
+        $renderer->getRenderingContext()->getTemplatePaths()->setPartialRootPaths($partialPaths);
         $renderer->setFormat($format) ;
         // and return the new Fluid instance
         return $renderer;
@@ -765,7 +720,7 @@ class BaseController extends ActionController
     {
         $subevents = null;
         if (!GeneralUtility::validEmail($this->settings['register']['senderEmail'])) {
-            throw new \Exception('plugin.jv_events.settings.register.senderEmail is not a valid Email Address. Is needed as Sender E-mail');
+            throw new \Exception('plugin.jv_events.settings.register.senderEmail is not a valid Email Address. Is needed as Sender E-mail', 7008387161);
         }
         if( !$replyTo ) {
             $replyTo = $this->settings['register']['senderEmail'] ;
@@ -796,7 +751,7 @@ class BaseController extends ActionController
 
         foreach ($recipient as $key => $value ) {
             if (!GeneralUtility::validEmail($key )) {
-                throw new \Exception(var_export( $recipient , true ) . "( " . $key . ") " . ' is not a valid -recipient- Email Address. ');
+                throw new \Exception(var_export( $recipient , true ) . "( " . $key . ") " . ' is not a valid -recipient- Email Address. ', 2287601541);
             }
         }
 
@@ -921,7 +876,7 @@ class BaseController extends ActionController
      * @param string $htmlMsg the message it self.
      * @return bool
      */
-    public function sendDebugEmail($recipient,$sender ,$subject , $plainMsg , $htmlMsg = '') {
+    public function sendDebugEmail($recipient,$sender ,$subject , $plainMsg , $htmlMsg = ''): void {
         /** @var $message \TYPO3\CMS\Core\Mail\MailMessage */
         $message = GeneralUtility::makeInstance(MailMessage::class);
 
@@ -1073,7 +1028,7 @@ class BaseController extends ActionController
             if( ! checkdnsrr($domain[1], 'MX') ) {
                 $msg = sprintf( $this->translate('error.email.noMxRecord') , "@" . $domain[1] ) . " ";
 
-                $this->addFlashMessage( $msg , 'No MX entry for Maildomain!', AbstractMessage::WARNING);
+                $this->addFlashMessage( $msg , 'No MX entry for Maildomain!', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING);
             }
         }
 

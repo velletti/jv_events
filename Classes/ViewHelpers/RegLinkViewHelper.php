@@ -66,10 +66,9 @@ class RegLinkViewHelper extends AbstractTagBasedViewHelper
 
     
   
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
-        $this->registerUniversalTagAttributes();
-        $this->registerTagAttribute('section', 'string', 'Anchor for links', false);
+        $this->registerArgument('section', 'string', 'Anchor for links', false);
         $this->registerArgument('event', Event::class, 'Event', false);
         $this->registerArgument('settings', 'array', 'settings Array', false , [] );
         $this->registerArgument('configuration', 'array', 'configuration Array', false , [] );
@@ -85,7 +84,7 @@ class RegLinkViewHelper extends AbstractTagBasedViewHelper
      */
     public function render() {
         $configuration = $this->arguments['configuration'] ;
-        $this->init();
+        $this->cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         $event = $this->arguments['event'] ;
         $settings = $this->arguments['settings'] ;
         $uriOnly = $this->arguments['uriOnly'] ;
@@ -99,9 +98,9 @@ class RegLinkViewHelper extends AbstractTagBasedViewHelper
         } else {
            if( $event->getRegistrationUrl() <> '' ) {
                $regUrl = GeneralUtility::trimExplode( " " , $event->getRegistrationUrl() ) ;
-               $configuration['parameter'] = $regUrl[0] ;
+               $configuration['parameter'] = $regUrl[0] ?? '' ;
 
-               if ( $regUrl[1] =="_blank")  {
+               if ( empty($regUrl[1]) && $regUrl[1] =="_blank")  {
                    $this->tag->addAttribute('target', '_blank');
                }
            }
@@ -112,8 +111,9 @@ class RegLinkViewHelper extends AbstractTagBasedViewHelper
             $configuration['forceAbsoluteUrl'] = 1 ;
         }
 
-        if ( intval( $GLOBALS['TSFE']->config['config']['sys_language_uid'] ) > 0 ) {
-            $configuration['additionalParams'] .= "&L=" . intval( $GLOBALS['TSFE']->config['config']['sys_language_uid'] ) ;
+        if ( intval( $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.typoscript')->getConfigArray()['sys_language_uid'] ) > 0 ) {
+            $configuration['additionalParams'] = ($configuration['additionalParams'] ?? '');
+            $configuration['additionalParams'] .= "&L=" . intval( $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.typoscript')->getConfigArray()['sys_language_uid'] ) ;
         }
         $url = $this->cObj->typoLink_URL($configuration);
 
@@ -126,6 +126,10 @@ class RegLinkViewHelper extends AbstractTagBasedViewHelper
         }
 
         $this->tag->addAttribute('href', $url);
+
+        foreach ($this->additionalArguments as $name => $value) {
+            $this->tag->addAttribute($name, $value);
+        }
 
         if (empty($content)) {
             $content = $this->renderChildren();
@@ -193,14 +197,4 @@ class RegLinkViewHelper extends AbstractTagBasedViewHelper
     }
 
 
-
-    /**
-     * Initialize properties
-     *
-     * @return void
-     */
-    protected function init()
-    {
-        $this->cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-    }
 }

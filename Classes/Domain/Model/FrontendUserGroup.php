@@ -15,6 +15,9 @@
 
 namespace JVelletti\JvEvents\Domain\Model;
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
@@ -54,10 +57,44 @@ class FrontendUserGroup extends AbstractEntity
     /**
      * Sets the title value
      *
-     * @param string $title
+     * @param string|null $title
      */
-    public function setTitle($title)
+    public function setTitle(?string $title = null): void
     {
+        if ($title === null && $this->uid > 0) {
+            /** @var ConnectionPool $connectionPool */
+            $connectionPool = GeneralUtility::makeInstance( ConnectionPool::class);
+            /** @var QueryBuilder $queryBuilder */
+            $qb =  $connectionPool->getConnectionForTable('fe_groups')->createQueryBuilder();
+            $title = $qb->select('title')
+                ->from('fe_groups')
+                ->where($qb->expr()->eq('uid', $qb->createNamedParameter($this->uid, \TYPO3\CMS\Core\Database\Connection::PARAM_INT)))
+                ->executeQuery()
+                ->fetchOne();
+            if ($title === false) {
+                switch ($this->uid) {
+                   case 2:
+                      $title = 'Organizer Default';
+                      break;
+                   case 5:
+                      $title = 'Banner Request allowed';
+                      break;
+                   case 6:
+                      $title = 'Registration internal allowed';
+                      break;
+                   case 7:
+                      $title = 'Image Upload is allowed';
+                      break;
+                   case 7:
+                      $title = 'youTubeLinkAllowed';
+                      break;
+
+                   default:
+                          $title = $this->uid . ' - lost groupname';
+               }
+            }
+
+        }
         $this->title = $title;
     }
 
@@ -76,7 +113,7 @@ class FrontendUserGroup extends AbstractEntity
      *
      * @param string $description
      */
-    public function setDescription($description)
+    public function setDescription($description): void
     {
         $this->description = $description;
     }
@@ -97,7 +134,7 @@ class FrontendUserGroup extends AbstractEntity
      *
      * @param ObjectStorage<FrontendUserGroup> $subgroup An object storage containing the subgroups to add
      */
-    public function setSubgroup(ObjectStorage $subgroup)
+    public function setSubgroup(ObjectStorage $subgroup): void
     {
         $this->subgroup = $subgroup;
     }
@@ -105,7 +142,7 @@ class FrontendUserGroup extends AbstractEntity
     /**
      * Adds a subgroup to the frontend user
      */
-    public function addSubgroup(FrontendUserGroup $subgroup)
+    public function addSubgroup(FrontendUserGroup $subgroup): void
     {
         $this->subgroup->attach($subgroup);
     }
@@ -113,7 +150,7 @@ class FrontendUserGroup extends AbstractEntity
     /**
      * Removes a subgroup from the frontend user group
      */
-    public function removeSubgroup(FrontendUserGroup $subgroup)
+    public function removeSubgroup(FrontendUserGroup $subgroup): void
     {
         $this->subgroup->detach($subgroup);
     }

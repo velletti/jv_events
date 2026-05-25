@@ -78,7 +78,7 @@ class IfHasRolesViewHelper extends AbstractConditionViewHelper
      * Renders <f:then> child if the current logged in FE user belongs to the specified role (aka usergroup)
      * otherwise renders <f:else> child.
      */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
 
@@ -92,7 +92,7 @@ class IfHasRolesViewHelper extends AbstractConditionViewHelper
      * @param array $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for flexibility in overriding this method.
      * @return bool
      */
-    protected static function evaluateCondition($arguments = null)
+    public static function verdict(array $arguments, \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface $renderingContext): bool
     {
         $roles = GeneralUtility::trimExplode( "," , $arguments['roles'] );
         $allRoles = $arguments['mode'] == "all";

@@ -8,20 +8,6 @@ defined('TYPO3') or die();
 /** @var Typo3Version $version */
 $version = GeneralUtility::makeInstance(Typo3Version::class);
 
-if ($version->getMajorVersion()  < 11) {
-    // to Check if we need this
-    $lngConfig = [	'type' => 'select',
-        'renderType' => 'selectSingle',
-        'foreign_table' => 'sys_language',
-        'foreign_table_where' => 'ORDER BY sys_language.title',
-        'items' => [
-            ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', -1],
-            ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.default_value', 0]
-        ]
-    ] ;
-} else {
-    $lngConfig =  ['type' => 'language'] ;
-}
 
 $returnArray = array(
 	'ctrl' => array(
@@ -39,7 +25,6 @@ $returnArray = array(
         ],
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
-		'cruser_id' => 'cruser_id',
   //      'sortby' => 'sorting',
 		'default_sortby' => 'start_date DESC',
 		'versioningWS' => false,
@@ -66,7 +51,7 @@ $returnArray = array(
 		'sys_language_uid' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
-			'config' => $lngConfig,
+			'config' => ['type' => 'language'],
 		),
 		'l10n_parent' => array(
 			'displayCond' => 'FIELD:sys_language_uid:>:0',

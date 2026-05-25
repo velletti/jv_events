@@ -39,32 +39,11 @@ class RequiredViewHelper extends AbstractConditionViewHelper implements ViewHelp
 	 */
 	protected $frameworkConfiguration = [];
 
-	/**
-  * Injection of configuration manager
-  *
-  * @throws InvalidConfigurationTypeException
-  * @return void
-  */
- public function injectConfigurationManager(
-		ConfigurationManagerInterface $configurationManager
-	) {
-		$this->configurationManager = $configurationManager;
-		$this->settings = $this->configurationManager->getConfiguration(
-			ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS
-		);
-		$layout = $this->settings['LayoutRegister'] ;
-        if ( $layout == '' ) { $layout = "1Allplan" ; }
-
-		$fields = $this->settings['register']['requiredFields'][$layout] ;
-        if( strlen( (string) $this->settings['Register']['add_mandatory_fields'] ) > 1 ) {
-            $fields .= "," . $this->settings['Register']['add_mandatory_fields'] ;
-        }
-		$this->settings['register']['requiredFields'] = $fields ;
-		$this->frameworkConfiguration = $this->configurationManager->getConfiguration(
-			ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK
-		);
-	}
-	public function initializeArguments() {
+	public function __construct(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager)
+ {
+     $this->configurationManager = $configurationManager;
+ }
+	public function initializeArguments(): void {
 		$this->registerArgument('fieldName', 'string', 'field name that should be in requiredFields', false);
         parent::initializeArguments();
 	}
@@ -75,7 +54,7 @@ class RequiredViewHelper extends AbstractConditionViewHelper implements ViewHelp
      * @param array|null $arguments
      * @return bool
      */
-    protected static function evaluateCondition($arguments = null, $settings = [] )
+    public static function verdict(array $arguments, $settings = [] ): bool
     {
         $fieldSettings = GeneralUtility::trimExplode( "," , $settings['register']['requiredFields'] ) ;
         if ( is_array($fieldSettings) && in_array( $arguments['fieldName'], $fieldSettings)) {

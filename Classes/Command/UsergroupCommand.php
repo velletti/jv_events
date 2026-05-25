@@ -171,6 +171,7 @@ class UsergroupCommand extends Command {
         if( $io->getVerbosity() > 16 ) {
             // @extensionScannerIgnoreLine
             if( $i >= $maxRows ) {
+                // @extensionScannerIgnoreLine
                 $progress->finish();
             }
 
@@ -201,10 +202,10 @@ class UsergroupCommand extends Command {
      * @param $slugField
      * @param $slug
      */
-    private function setUsergroup($table , $uid ,  $usergroup)
+    private function setUsergroup($table , $uid ,  $usergroup): void
     {
         $qb = $this->getQueryBuilder($table) ;
-        $qb->update($table)->set( 'usergroup' , $usergroup)->where($qb->expr()->eq("uid" , $qb->createNamedParameter($uid , PDO::PARAM_INT)))->executeStatement() ;
+        $qb->update($table)->set( 'usergroup' , $usergroup)->where($qb->expr()->eq("uid" , $qb->createNamedParameter($uid , \TYPO3\CMS\Core\Database\Connection::PARAM_INT)))->executeStatement() ;
 
     }
 

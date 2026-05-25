@@ -37,22 +37,18 @@ use JVelletti\JvEvents\Domain\Model\Location;
 class OpenStreetmapGeocoderViewHelper extends AbstractViewHelper   {
 
     /**
-     * @var bool
-     */
-    protected $escapeOutput = false;
-
-    /**
      * Needed as child node's output can return a DateTime object which can't be escaped
      *
      * @var bool
      */
     protected $escapeChildren = false;
 
-    public function initializeArguments() {
+    public function initializeArguments(): void {
+        parent::initializeArguments() ;
         $this->registerArgument('location', Location::class, 'Single location', false , NULL);
         $this->registerArgument('formfields', 'array', 'Field Array', false , NULL );
         $this->registerArgument('updateFunction', 'string', 'Name of javaScript function that should run after Update Map', false , '' );
-        parent::initializeArguments() ;
+       
     }
 
 
@@ -64,7 +60,7 @@ class OpenStreetmapGeocoderViewHelper extends AbstractViewHelper   {
      * @return string
      */
     public function render() {
-
+        $this->escapeOutput = false ;
         $return =  '<script type="text/javascript" src="/typo3conf/ext/jv_events/Resources/Public/JavaScript/leaflet-1-7-1.js"></script>' . PHP_EOL  ;
         $return .= '<script type="text/javascript" src="/typo3conf/ext/jv_events/Resources/Public/JavaScript/tango/LeafletFeGeoCoder.js"></script>' . PHP_EOL ;
         $return .= '<link rel="stylesheet" media="all" type="text/css" href="/typo3conf/ext/jv_events/Resources/Public/Css/leaflet-1-7-1.css" />' . PHP_EOL ;

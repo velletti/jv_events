@@ -58,7 +58,7 @@ class MediaController extends BaseController
      *
      * @return void
      */
-    public function initializeAction()
+    public function initializeAction(): void
     {
         if( !$this->request->hasArgument('media')) {
             // ToDo redirect to error

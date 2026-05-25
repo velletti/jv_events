@@ -28,7 +28,7 @@ class GetTtContentViewHelper extends AbstractViewHelper
 	 * Initialize arguments
 	 * @author Peter Benke <pbenke@allplan.com>
 	 */
-	public function initializeArguments()
+	public function initializeArguments(): void
 	{
 		parent::initializeArguments();
 		$this->registerArgument('uid', 'string', 'Uid of the tt_content record', true);

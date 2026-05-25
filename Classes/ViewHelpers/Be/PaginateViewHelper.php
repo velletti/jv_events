@@ -2,8 +2,6 @@
 
 namespace JVelletti\JvEvents\ViewHelpers\Be;
 
-
-use Closure;
 use TYPO3\CMS\Core\Pagination\ArrayPaginator;
 use TYPO3\CMS\Core\Pagination\PaginationInterface;
 use TYPO3\CMS\Core\Pagination\PaginatorInterface;
@@ -11,21 +9,11 @@ use TYPO3\CMS\Core\Pagination\SimplePagination;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
-use TYPO3\CMS\Extbase\Service\ExtensionService;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
-class PaginateViewHelper extends AbstractViewHelper {
-
-    /**
-     * @var bool
-     */
-    protected $escapeOutput = false;
-
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+class PaginateViewHelper extends AbstractViewHelper
+{
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('objects', 'mixed', 'array or queryresult', true);
@@ -34,86 +22,71 @@ class PaginateViewHelper extends AbstractViewHelper {
         $this->registerArgument('name', 'string', 'unique identification - will take "as" as fallback', false, '');
     }
 
-    /**
-     * @param array $arguments
-     * @param Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     * @return string
-     */
-    public static function renderStatic(
-        array $arguments,
-        Closure $renderChildrenClosure,
-        RenderingContextInterface $renderingContext
-    ) {
+    public function render(): string
+    {
+        $arguments = $this->arguments;
+        $this->escapeOutput = false ;
+        $this->escapeChildren = false ;
+
         if ($arguments['objects'] === null) {
-            return $renderChildrenClosure();
+            return $this->renderChildren();
         }
-        $templateVariableContainer = $renderingContext->getVariableProvider();
-        $templateVariableContainer->add($arguments['as'], [
-            'pagination' => self::getPagination($arguments, $renderingContext),
-            'paginator' => self::getPaginator($arguments, $renderingContext),
-            'name' => self::getName($arguments)
+
+        $variableProvider = $this->renderingContext->getVariableProvider();
+
+        $variableProvider->add($arguments['as'], [
+            'pagination' => $this->getPagination(),
+            'paginator' => $this->getPaginator(),
+            'name' => $this->getName()
         ]);
-        $output = $renderChildrenClosure();
-        $templateVariableContainer->remove($arguments['as']);
+
+        $output = $this->renderChildren();
+
+        $variableProvider->remove($arguments['as']);
+
         return $output;
     }
 
-    /**
-     * @param array $arguments
-     * @param RenderingContextInterface $renderingContext
-     * @return PaginationInterface
-     * @throws NotPaginatableException
-     */
-    protected static function getPagination(
-        array $arguments,
-        RenderingContextInterface $renderingContext
-    ): PaginationInterface {
-        $paginator = self::getPaginator($arguments, $renderingContext);
+    protected function getPagination(): PaginationInterface
+    {
+        $paginator = $this->getPaginator();
         return GeneralUtility::makeInstance(SimplePagination::class, $paginator);
     }
 
-    /**
-     * @param array $arguments
-     * @param RenderingContextInterface $renderingContext
-     * @return PaginatorInterface
-     */
-    protected static function getPaginator(
-        array $arguments,
-        RenderingContextInterface $renderingContext
-    ): PaginatorInterface {
-        if (is_array($arguments['objects'])) {
+    protected function getPaginator(): PaginatorInterface
+    {
+        $objects = $this->arguments['objects'];
+
+        if (is_array($objects)) {
             $paginatorClass = ArrayPaginator::class;
-        } elseif (is_a($arguments['objects'], QueryResultInterface::class)) {
+        } elseif ($objects instanceof QueryResultInterface) {
             $paginatorClass = QueryResultPaginator::class;
         } else {
+            throw new \InvalidArgumentException(
+                'Objects must be array or QueryResultInterface',
+                1680000000
+            );
         }
+
         return GeneralUtility::makeInstance(
             $paginatorClass,
-            $arguments['objects'],
-            self::getPageNumber($arguments, $renderingContext),
-            $arguments['itemsPerPage']
+            $objects,
+            $this->getPageNumber(),
+            $this->arguments['itemsPerPage']
         );
     }
 
-    /**
-     * @param array $arguments
-     * @param RenderingContextInterface $renderingContext
-     * @return int
-     */
-    protected static function getPageNumber(array $arguments, RenderingContextInterface $renderingContext): int
+    protected function getPageNumber(): int
     {
-        $templateVariableContainer = $renderingContext->getVariableProvider();
-       return (  $templateVariableContainer->get('currentPage') ? $templateVariableContainer->get('currentPage') :   1    ) ;
+        $variableProvider = $this->renderingContext->getVariableProvider();
+
+        return $variableProvider->exists('currentPage')
+            ? (int)$variableProvider->get('currentPage')
+            : 1;
     }
 
-    /**
-     * @param array $arguments
-     * @return string
-     */
-    protected static function getName(array $arguments): string
+    protected function getName(): string
     {
-        return $arguments['name'] ?: $arguments['as'];
+        return $this->arguments['name'] ?: $this->arguments['as'];
     }
-
 }

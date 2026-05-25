@@ -2,6 +2,7 @@ von jörg
 
 ---- 
  ... test 11.7.2025
+ ... test 31.03.2027
 ----
 
 ab hier darf norber schreiben:
@@ -10,5 +11,8 @@ ab hier darf norber schreiben:
 
 
 --- und nur bis hier ---
+
+test 20.5. 
+
 
 end der datei

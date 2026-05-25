@@ -125,7 +125,7 @@ class Subevent extends AbstractEntity {
      *
      * @return void
      */
-    public function setStartDate(\DateTime $startDate)
+    public function setStartDate(\DateTime $startDate): void
     {
         $this->startDate = $startDate;
     }
@@ -146,7 +146,7 @@ class Subevent extends AbstractEntity {
      * @param bool $allDay
      * @return void
      */
-    public function setAllDay($allDay)
+    public function setAllDay($allDay): void
     {
         $this->allDay = $allDay;
     }
@@ -177,7 +177,7 @@ class Subevent extends AbstractEntity {
      * @param int $startTime
      * @return void
      */
-    public function setStartTime($startTime)
+    public function setStartTime($startTime): void
     {
         $this->startTime = $startTime;
     }
@@ -197,7 +197,7 @@ class Subevent extends AbstractEntity {
      *
      * @return void
      */
-    public function setEndDate(\DateTime $endDate)
+    public function setEndDate(\DateTime $endDate): void
     {
         $this->endDate = $endDate;
     }
@@ -218,7 +218,7 @@ class Subevent extends AbstractEntity {
      * @param int $endTime
      * @return void
      */
-    public function setEndTime($endTime)
+    public function setEndTime($endTime): void
     {
         $this->endTime = $endTime;
     }
@@ -234,7 +234,7 @@ class Subevent extends AbstractEntity {
     /**
      * @param int $crdate
      */
-    public function setCrdate($crdate)
+    public function setCrdate($crdate): void
     {
         $this->crdate = $crdate;
     }
@@ -253,7 +253,7 @@ class Subevent extends AbstractEntity {
     /**
      * @param int $event
      */
-    public function setEvent($event)
+    public function setEvent($event): void
     {
         $this->event = $event;
     }

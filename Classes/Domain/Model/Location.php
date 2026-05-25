@@ -194,7 +194,7 @@ class Location extends AbstractEntity
      * @param string $name
      * @return void
      */
-    public function setName($name)
+    public function setName($name): void
     {
         $this->name = $name;
     }
@@ -215,7 +215,7 @@ class Location extends AbstractEntity
      * @param string $streetAndNr
      * @return void
      */
-    public function setStreetAndNr($streetAndNr)
+    public function setStreetAndNr($streetAndNr): void
     {
         $this->streetAndNr = $streetAndNr;
     }
@@ -249,7 +249,7 @@ class Location extends AbstractEntity
      * @param string $zip
      * @return void
      */
-    public function setZip($zip)
+    public function setZip($zip): void
     {
         $this->zip = $zip;
     }
@@ -293,7 +293,7 @@ class Location extends AbstractEntity
      * @param string $city
      * @return void
      */
-    public function setCity($city)
+    public function setCity($city): void
     {
         $this->city = $city;
     }
@@ -314,7 +314,7 @@ class Location extends AbstractEntity
      * @param string $country
      * @return void
      */
-    public function setCountry($country)
+    public function setCountry($country): void
     {
         $this->country = $country;
     }
@@ -335,7 +335,7 @@ class Location extends AbstractEntity
      * @param string $lng
      * @return void
      */
-    public function setLng($lng)
+    public function setLng($lng): void
     {
         $this->lng = $lng;
     }
@@ -356,7 +356,7 @@ class Location extends AbstractEntity
      * @param string $lat
      * @return void
      */
-    public function setLat($lat)
+    public function setLat($lat): void
     {
         $this->lat = $lat;
     }
@@ -377,7 +377,7 @@ class Location extends AbstractEntity
      * @param string $link
      * @return void
      */
-    public function setLink($link)
+    public function setLink($link): void
     {
         $this->link = $link;
     }
@@ -398,7 +398,7 @@ class Location extends AbstractEntity
      * @param string $email
      * @return void
      */
-    public function setEmail($email)
+    public function setEmail($email): void
     {
         $this->email = $email;
     }
@@ -419,7 +419,7 @@ class Location extends AbstractEntity
      * @param string $phone
      * @return void
      */
-    public function setPhone($phone)
+    public function setPhone($phone): void
     {
         $this->phone = $phone;
     }
@@ -462,7 +462,7 @@ class Location extends AbstractEntity
      * @param string $description
      * @return void
      */
-    public function setDescription($description)
+    public function setDescription($description): void
     {
         $this->description = $description;
     }
@@ -485,7 +485,7 @@ class Location extends AbstractEntity
      *
      * @return void
      */
-    public function setOrganizer(?Organizer $organizer)
+    public function setOrganizer(?Organizer $organizer): void
     {
         if( is_object( $organizer )) {
             $this->organizer = $organizer;
@@ -521,7 +521,7 @@ class Location extends AbstractEntity
      *
      * @return void
      */
-    public function addLocationCategory(Category $locationCategory)
+    public function addLocationCategory(Category $locationCategory): void
     {
         $this->locationCategory->attach($locationCategory);
     }
@@ -532,7 +532,7 @@ class Location extends AbstractEntity
      * @param Category $locationCategoryToRemove The Category to be removed
      * @return void
      */
-    public function removeLocationCategory(Category $locationCategoryToRemove)
+    public function removeLocationCategory(Category $locationCategoryToRemove): void
     {
         $this->locationCategory->detach($locationCategoryToRemove);
     }
@@ -553,7 +553,7 @@ class Location extends AbstractEntity
      * @param ObjectStorage<Category> $locationCategory
      * @return void
      */
-    public function setLocationCategory(ObjectStorage $locationCategory)
+    public function setLocationCategory(ObjectStorage $locationCategory): void
     {
         $this->locationCategory = $locationCategory;
     }
@@ -569,7 +569,7 @@ class Location extends AbstractEntity
     /**
      * @param FileReference $teaserImage
      */
-    public function setTeaserImage($teaserImage)
+    public function setTeaserImage($teaserImage): void
     {
         $this->teaserImage = $teaserImage;
     }
@@ -577,7 +577,7 @@ class Location extends AbstractEntity
     /**
      * @param int $uid
      */
-    public function setUid($uid)
+    public function setUid($uid): void
     {
         $this->uid = $uid;
     }
@@ -593,7 +593,7 @@ class Location extends AbstractEntity
     /**
      * @param int $languageUid
      */
-    public function setLanguageUid($languageUid)
+    public function setLanguageUid($languageUid): void
     {
         $this->_languageUid = $languageUid;
     }
@@ -609,7 +609,7 @@ class Location extends AbstractEntity
     /**
      * @param \DateTime $latestEvent
      */
-    public function setLatestEvent($latestEvent)
+    public function setLatestEvent($latestEvent): void
     {
         if( $latestEvent > $this->latestEvent ) {
             $this->latestEvent = $latestEvent;
@@ -627,7 +627,7 @@ class Location extends AbstractEntity
     /**
      * @param bool $defaultLocation
      */
-    public function setDefaultLocation($defaultLocation)
+    public function setDefaultLocation($defaultLocation): void
     {
         $this->defaultLocation = $defaultLocation;
     }
@@ -640,7 +640,7 @@ class Location extends AbstractEntity
         return $this->slug;
     }
 
-    public function setSlug(string $slug)
+    public function setSlug(string $slug): void
     {
         $this->slug = $slug;
     }
@@ -653,7 +653,7 @@ class Location extends AbstractEntity
         return $this->tstamp;
     }
 
-    public function setTstamp(int $tstamp)
+    public function setTstamp(int $tstamp): void
     {
         $this->tstamp = $tstamp;
     }

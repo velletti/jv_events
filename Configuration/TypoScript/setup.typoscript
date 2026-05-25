@@ -45,8 +45,13 @@ plugin.tx_jvevents_events {
 		}
 
 		organizer {
-			maxBannersPerOrganizer = 2
-			maxBanners = 8
+			maxBannersPerOrganizer = 1
+			maxBanners = 4
+			maxBannersTotal = 25
+
+			bannerCountDaysInPast = 21
+			bannerCountDaysInFuture = 35
+
 			newOrgGetGroups {
 				2 = Organizer Default
 				# 7 = image Upload is allowed
@@ -58,6 +63,9 @@ plugin.tx_jvevents_events {
 				organizerDefault = 2
 				vip = 3
 				BannerRequest = 5
+				BannerAllowed = 18
+				Banner2Allowed = 20
+				BannerForbidden = 19
 				imageUploadAllowed = 7
 				registrationInternalAllowed = 6
 				youTubeLinkAllowed = 15
@@ -79,9 +87,13 @@ plugin.tx_jvevents_events {
 
 			image {
 				# Fallback Image for event list with complete path /fileadmin/user_upload/.. default /typo3conf/ext/jv_events/Resource/Public/Images/DefaultImage.jpg
-				defaultImage = /typo3conf/ext/jv_events/Resources/Public/Images/defaultImage.jpg
-				width = 240
-				height = 180
+				defaultImage = EXT:jv_events/Resources/Public/Images/defaultImage.jpg
+				width = 360
+				height = 240
+				large {
+					width = 640
+					height = 480
+				}
 			}
 			showDistance = 1
 			showCrdate = 1

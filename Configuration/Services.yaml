@@ -1,11 +1,16 @@
+
 services:
   _defaults:
     autowire: true
     autoconfigure: true
     public: false
 
-  JVelletti\JvEvents\:
-    resource: '../Classes/*'
+  JVelletti\JvEvents\Controller\:
+    resource: '../Classes/Controller/*'
+    public: true
+    autowire: true
+    autoconfigure: true
+
 
   JVelletti\JvEvents\Command\UpdateSlugCommand:
     tags:

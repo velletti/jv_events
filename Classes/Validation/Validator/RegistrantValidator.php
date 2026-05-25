@@ -29,7 +29,7 @@ class RegistrantValidator extends \JVelletti\JvEvents\Validation\Validator\BaseV
 		 */
 
 		// ##### First  test for Token , reg Form Fill Speed and Fingerprint against last registration
-		$form= GeneralUtility::_POST('tx_jvevents_registrant') ;
+		$form= $GLOBALS['TYPO3_REQUEST']->getParsedBody()['tx_jvevents_registrant'] ?? null ;
 
 		$formToken = $form['formToken'] ;
 		$generatedTokenBase = ( "P" . $this->settings['pageId'] . "-L" .$this->settings['sys_language_uid'] . "-E" . $form['event'] );

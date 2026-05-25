@@ -45,7 +45,7 @@ class TagController extends BaseController
      *
      * @return void
      */
-    public function initializeAction()
+    public function initializeAction(): void
     {
         if( !$this->request->hasArgument('tag')) {
             // ToDo redirect to error

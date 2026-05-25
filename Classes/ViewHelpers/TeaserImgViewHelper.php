@@ -61,10 +61,8 @@ class TeaserImgViewHelper extends AbstractTagBasedViewHelper
 
 
 
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
-        $this->registerUniversalTagAttributes();
-
         $this->registerArgument('event', Event::class, 'Event', false);
         $this->registerArgument('settings', 'array', 'settings Array', false , [] );
         $this->registerArgument('configuration', 'array', 'configuration Array', false , [] );

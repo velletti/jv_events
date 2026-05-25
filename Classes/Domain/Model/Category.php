@@ -91,7 +91,7 @@ class Category extends AbstractEntity
      * @param string $title
      * @return void
      */
-    public function setTitle($title)
+    public function setTitle($title): void
     {
         $this->title = $title;
     }
@@ -107,7 +107,7 @@ class Category extends AbstractEntity
     /**
      * @param string $description
      */
-    public function setDescription($description)
+    public function setDescription($description): void
     {
         $this->description = $description;
     }
@@ -131,7 +131,7 @@ class Category extends AbstractEntity
      * @param int $type
      * @return void
      */
-    public function setType($type)
+    public function setType($type): void
     {
         $this->type = $type;
     }
@@ -147,7 +147,7 @@ class Category extends AbstractEntity
     /**
      * @param int $blockRegistration
      */
-    public function setBlockRegistration($blockRegistration)
+    public function setBlockRegistration($blockRegistration): void
     {
         $this->blockRegistration = $blockRegistration;
     }
@@ -163,7 +163,7 @@ class Category extends AbstractEntity
     /**
      * @param int $sorting
      */
-    public function setSorting($sorting)
+    public function setSorting($sorting): void
     {
         $this->sorting = $sorting;
     }

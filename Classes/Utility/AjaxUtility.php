@@ -10,6 +10,7 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Core\View\ViewFactoryInterface;
 
 /**
  * Class AjaxUtility
@@ -56,15 +57,16 @@ class AjaxUtility {
         if( key_exists('rss' , $_gp)) {
             $controller->rss = $_gp['rss'] ;
         }
-        $controller->standaloneView = GeneralUtility::makeInstance(StandaloneView::class);
+        $viewData = GeneralUtility::makeInstance( \TYPO3\CMS\Core\View\ViewFactoryData::class) ;
+        $controller->standaloneView = GeneralUtility::makeInstance(\TYPO3\CMS\Core\View\ViewFactoryInterface::class)->create($viewData);
         $controller->standaloneView->getRenderingContext()->setControllerName('Ajax');
         $controller->standaloneView->getRenderingContext()->setControllerAction($function);
         // V12 https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/12.0/Breaking-98377-FluidStandaloneViewDoesNotCreateAnExtbaseRequestAnymore.html
-        $controller->standaloneView->setRequest($request);
+        $controller->standaloneView->getRenderingContext()->setAttribute(\Psr\Http\Message\ServerRequestInterface::class, $request);
 
-        $controller->standaloneView->setTemplateRootPaths(array( 0 => ExtensionManagementUtility::extPath('jv_events') . 'Resources/Private/Templates') );
-        $controller->standaloneView->setLayoutRootPaths(array( 0 => ExtensionManagementUtility::extPath('jv_events') . 'Resources/Private/Layouts'  ));
-        $controller->standaloneView->setPartialRootPaths(array( 0 => ExtensionManagementUtility::extPath('jv_events') . 'Resources/Private/Partials' ));
+        $controller->standaloneView->getRenderingContext()->getTemplatePaths()->setTemplateRootPaths(array( 0 => ExtensionManagementUtility::extPath('jv_events') . 'Resources/Private/Templates'));
+        $controller->standaloneView->getRenderingContext()->getTemplatePaths()->setLayoutRootPaths(array( 0 => ExtensionManagementUtility::extPath('jv_events') . 'Resources/Private/Layouts'  ));
+        $controller->standaloneView->getRenderingContext()->getTemplatePaths()->setPartialRootPaths(array( 0 => ExtensionManagementUtility::extPath('jv_events') . 'Resources/Private/Partials' ));
 
         return $controller ;
     }

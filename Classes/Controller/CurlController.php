@@ -55,7 +55,7 @@ class CurlController extends BaseController
 {
 
 
-    public function initializeAction()
+    public function initializeAction(): void
     {
         $this->timeStart = $this->microtime_float();
 
@@ -105,7 +105,9 @@ class CurlController extends BaseController
         $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
 
         $cache=  $cacheManager->getCache( 'jv_events');
-        $cacheIdentifier = 'jv-events-curl_uid-' . (int)$GLOBALS['TSFE']->cObj->data['uid'];
+
+        // no use of tsfe
+        $cacheIdentifier = 'jv-events-curl_uid-' . (int) ( $$this->request && $this->request->getAttribute('routing') ? $this->request->getAttribute('routing')->getPageId() : 0);
 
         if (!$cache->has($cacheIdentifier)) {
             $urls = GeneralUtility::trimExplode("\n", $this->settings["externalUrl"]);

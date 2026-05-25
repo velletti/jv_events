@@ -21,7 +21,7 @@ class ShowAsJsonArrayUtility
     /**
      * @param array $output
      */
-    static function show($output) {
+    static function show($output): void {
         $jsonOutput = json_encode($output);
         header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
         header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
@@ -31,7 +31,7 @@ class ShowAsJsonArrayUtility
         header('Content-Type: application/json; charset=utf-8');
         header('Content-Transfer-Encoding: 8bit');
 
-        $callbackId = GeneralUtility::_GP("callback");
+        $callbackId = $GLOBALS['TYPO3_REQUEST']->getParsedBody()["callback"] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()["callback"] ?? null;
         if ( $callbackId == '' ) {
             echo $jsonOutput;
         } else {

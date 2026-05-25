@@ -123,7 +123,7 @@ class UpdateSlugCommand extends Command {
      * @param string$slugField
      * @param int $maxRows
      */
-    public function updateCommand(SymfonyStyle $io , ?string $table , ?string $slugField , int $maxRows  ){
+    public function updateCommand(SymfonyStyle $io , ?string $table , ?string $slugField , int $maxRows  ): void{
         $progress = false ;
         if( !$table ) { return ; }
 		$rows = $this->getQueryBuilder($table)->select("*")->from($table)->executeQuery() ;
@@ -231,10 +231,10 @@ class UpdateSlugCommand extends Command {
      * @param $slugField
      * @param $slug
      */
-    private function setSlug($table , $uid , $slugField , $slug)
+    private function setSlug($table , $uid , $slugField , $slug): void
     {
         $qb = $this->getQueryBuilder($table) ;
-        $qb->update($table)->set($slugField , $slug)->where($qb->expr()->eq("uid" , $qb->createNamedParameter($uid , PDO::PARAM_INT)))->executeStatement() ;
+        $qb->update($table)->set($slugField , $slug)->where($qb->expr()->eq("uid" , $qb->createNamedParameter($uid , \TYPO3\CMS\Core\Database\Connection::PARAM_INT)))->executeStatement() ;
 
     }
 

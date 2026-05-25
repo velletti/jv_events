@@ -6,6 +6,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
@@ -40,10 +41,17 @@ use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
  */
 class BaseRepository extends Repository
 {
+
+    public function __construct()
+
+    {
+        $this->persistenceManager = GeneralUtility::makeInstance(PersistenceManagerInterface::class);
+        parent::__construct() ;
+    }
     /**
      * @param QueryInterface $query
      */
-    public function showSql($query , $file , $line ) {
+    public function showSql($query , $file , $line ): void {
         $queryParser = GeneralUtility::makeInstance(Typo3DbQueryParser::class);
 
         $sqlquery = $queryParser->convertQueryToDoctrineQueryBuilder($query)->getSQL() ;
@@ -66,7 +74,7 @@ class BaseRepository extends Repository
         echo "<br><hr><br></div></body></html>" ;
     }
 
-    function debugQuery($query) {
+    function debugQuery($query): void {
         $search = [];
         $replace = [];
         // new way to debug typo3 db queries
@@ -138,6 +146,7 @@ class BaseRepository extends Repository
                     $theList .= ',' . $row['uid'];
                 }
                 if ($depth > 1) {
+                    // @extensionScannerIgnoreLine
                     $theSubList = $this->getTreeList($row['uid'], $depth - 1, $begin - 1, $permClause);
                     if (!empty($theList) && !empty($theSubList) && ($theSubList[0] !== ',')) {
                         $theList .= ',';

@@ -35,7 +35,10 @@ class ShowEventInFrontend extends AbstractNode
 
         $configuration = EmConfigurationUtility::getEmConf();
         $singlePid = ( array_key_exists( 'DetailPid' , $configuration) && $configuration['DetailPid'] > 0 ) ? intval($configuration['DetailPid']) : 111 ;
-
+        $resultArray = [] ;
+        $resultArray['title'] = "Show" ;
+        $resultArray['iconIdentifier'] = "actions-document-view" ;
+        $resultArray['linkAttributes']['class'] = "showEventInFrontend windowOpenUri " ;
         try {
             $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($singlePid);
             $lang = max(  is_array( $this->data['databaseRow']['sys_language_uid'][0] ) ?
@@ -44,16 +47,13 @@ class ShowEventInFrontend extends AbstractNode
             $url = (string)$site->getRouter()->generateUri( $singlePid ,['_language' => $lang ,
                 'tx_jvevents_event' => ['action' => 'show' , 'controller' => 'Event' ,'event' =>  $this->data['databaseRow']['uid']]]);
 
-            $resultArray['title'] = "Show" ;
-            $resultArray['iconIdentifier'] = "actions-document-view" ;
-            $resultArray['linkAttributes']['class'] = "showEventInFrontend windowOpenUri " ;
+            
             $resultArray['linkAttributes']['data-uri'] = $url ;
 
-            $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS('showEventInFrontend.js'
-            )->instance($paramArray['itemFormElName']);
+            $resultArray['javaScriptModules'][] =  JavaScriptModuleInstruction::create('showEventInFrontend.js');
             
-        } catch (\Exception) {
-            $resultArray = [] ;
+        } catch (\Exception $e) {
+            $resultArray['title'] = "Error: No site configuration for page id " . $singlePid . " " . $e->getMessage() ;
         }
 
 

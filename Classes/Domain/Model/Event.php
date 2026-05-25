@@ -727,7 +727,7 @@ class Event extends AbstractEntity
      * @param string $name
      * @return void
      */
-    public function setName($name)
+    public function setName($name): void
     {
         $this->name = $name;
     }
@@ -747,7 +747,7 @@ class Event extends AbstractEntity
      *
      * @return void
      */
-    public function setOrganizer(Organizer $organizer)
+    public function setOrganizer(Organizer $organizer): void
     {
         $this->organizer = $organizer;
     }
@@ -767,7 +767,7 @@ class Event extends AbstractEntity
      *
      * @return void
      */
-    public function setLocation(Location $location)
+    public function setLocation(Location $location): void
     {
         $this->location = $location;
     }
@@ -791,7 +791,7 @@ class Event extends AbstractEntity
      * @param int $eventType
      * @return void
      */
-    public function setEventType($eventType)
+    public function setEventType($eventType): void
     {
         $this->eventType = $eventType;
     }
@@ -825,7 +825,7 @@ class Event extends AbstractEntity
      * @param string $teaser
      * @return void
      */
-    public function setTeaser($teaser)
+    public function setTeaser($teaser): void
     {
         $this->teaser = $teaser;
     }
@@ -846,7 +846,7 @@ class Event extends AbstractEntity
      * @param string $description
      * @return void
      */
-    public function setDescription($description)
+    public function setDescription($description): void
     {
         $this->description = $description;
     }
@@ -866,7 +866,7 @@ class Event extends AbstractEntity
      *
      * @return void
      */
-    public function setImages(FileReference $images)
+    public function setImages(FileReference $images): void
     {
         $this->images = $images;
     }
@@ -886,7 +886,7 @@ class Event extends AbstractEntity
   *
   * @return void
   */
- public function setTeaserImage(FileReference $teaserImage)
+ public function setTeaserImage(FileReference $teaserImage): void
 	{
 		$this->teaserImage = $teaserImage;
 	}
@@ -908,7 +908,7 @@ class Event extends AbstractEntity
      *
      * @return void
      */
-    public function setFiles(FileReference $files)
+    public function setFiles(FileReference $files): void
     {
         $this->files = $files;
     }
@@ -932,7 +932,7 @@ class Event extends AbstractEntity
      *
      * @return void
      */
-    public function setFilesAfterReg(FileReference $files)
+    public function setFilesAfterReg(FileReference $files): void
     {
         $this->filesAfterReg = $files;
     }
@@ -954,7 +954,7 @@ class Event extends AbstractEntity
      *
      * @return void
      */
-    public function setFilesAfter(FileReference $files)
+    public function setFilesAfter(FileReference $files): void
     {
         $this->filesAfterEvent = $files;
     }
@@ -976,7 +976,7 @@ class Event extends AbstractEntity
      *
      * @return void
      */
-    public function setStartDate(DateTime $startDate)
+    public function setStartDate(DateTime $startDate): void
     {
         $this->startDate = $startDate;
     }
@@ -997,7 +997,7 @@ class Event extends AbstractEntity
      * @param bool $allDay
      * @return void
      */
-    public function setAllDay($allDay)
+    public function setAllDay($allDay): void
     {
         $this->allDay = $allDay;
     }
@@ -1028,7 +1028,7 @@ class Event extends AbstractEntity
      * @param int $startTime
      * @return void
      */
-    public function setStartTime($startTime)
+    public function setStartTime($startTime): void
     {
         $this->startTime = $startTime;
     }
@@ -1071,7 +1071,7 @@ class Event extends AbstractEntity
      *
      * @return void
      */
-    public function setEndDate(?DateTime $endDate)
+    public function setEndDate(?DateTime $endDate): void
     {
         $this->endDate = $endDate;
     }
@@ -1114,7 +1114,7 @@ class Event extends AbstractEntity
      * @return void
      */
 
-    public function setAccessStarttime(?DateTime $starttime)
+    public function setAccessStarttime(?DateTime $starttime): void
     {
         $this->starttime = $starttime;
     }
@@ -1125,7 +1125,7 @@ class Event extends AbstractEntity
      * @param DateTime $endtime
      * @return void
      */
-    public function setAccessEndtime($endtime)
+    public function setAccessEndtime($endtime): void
     {
         $this->endtime = $endtime;
     }
@@ -1135,7 +1135,7 @@ class Event extends AbstractEntity
      * @param int $endTime
      * @return void
      */
-    public function setEndTime($endTime)
+    public function setEndTime($endTime): void
     {
         $this->endTime = $endTime;
     }
@@ -1156,7 +1156,7 @@ class Event extends AbstractEntity
      * @param bool $withRegistration
      * @return void
      */
-    public function setWithRegistration($withRegistration)
+    public function setWithRegistration($withRegistration): void
     {
         $this->withRegistration = $withRegistration;
     }
@@ -1229,7 +1229,7 @@ class Event extends AbstractEntity
      * @param string $citrixUid
      * @return void
      */
-    public function setCitrixUid($citrixUid)
+    public function setCitrixUid($citrixUid): void
     {
         $this->citrixUid = $citrixUid;
     }
@@ -1250,7 +1250,7 @@ class Event extends AbstractEntity
      * @param bool $storeInSalesForce
      * @return void
      */
-    public function setStoreInSalesForce($storeInSalesForce)
+    public function setStoreInSalesForce($storeInSalesForce): void
     {
         $this->storeInSalesForce = $storeInSalesForce;
     }
@@ -1281,7 +1281,7 @@ class Event extends AbstractEntity
      * @param string $salesForceRecordType
      * @return void
      */
-    public function setSalesForceRecordType($salesForceRecordType)
+    public function setSalesForceRecordType($salesForceRecordType): void
     {
         $this->salesForceRecordType = $salesForceRecordType;
     }
@@ -1302,7 +1302,7 @@ class Event extends AbstractEntity
      * @param string $salesForceEventId
      * @return void
      */
-    public function setSalesForceEventId($salesForceEventId)
+    public function setSalesForceEventId($salesForceEventId): void
     {
         $this->salesForceEventId = $salesForceEventId;
     }
@@ -1323,7 +1323,7 @@ class Event extends AbstractEntity
      * @param string $salesForceSessionId
      * @return void
      */
-    public function setSalesForceSessionId( $salesForceSessionId)
+    public function setSalesForceSessionId( $salesForceSessionId): void
     {
         $this->salesForceSessionId = $salesForceSessionId;
     }
@@ -1344,7 +1344,7 @@ class Event extends AbstractEntity
      * @param int $availableSeats
      * @return void
      */
-    public function setAvailableSeats($availableSeats)
+    public function setAvailableSeats($availableSeats): void
     {
         $this->availableSeats = $availableSeats;
     }
@@ -1359,7 +1359,7 @@ class Event extends AbstractEntity
 	/**
 	 * @param int $availableWaitingSeats
 	 */
-	public function setAvailableWaitingSeats($availableWaitingSeats) {
+	public function setAvailableWaitingSeats($availableWaitingSeats): void {
 		$this->availableWaitingSeats = $availableWaitingSeats;
 	}
 
@@ -1381,7 +1381,7 @@ class Event extends AbstractEntity
      * @param int $registeredSeats
      * @return void
      */
-    public function setRegisteredSeats($registeredSeats)
+    public function setRegisteredSeats($registeredSeats): void
     {
         $this->registeredSeats = $registeredSeats;
     }
@@ -1402,7 +1402,7 @@ class Event extends AbstractEntity
      * @param int $unconfirmedSeats
      * @return void
      */
-    public function setUnconfirmedSeats( $unconfirmedSeats)
+    public function setUnconfirmedSeats( $unconfirmedSeats): void
     {
         $this->unconfirmedSeats = $unconfirmedSeats;
     }
@@ -1423,7 +1423,7 @@ class Event extends AbstractEntity
      * @param bool $notifyOrganizer
      * @return void
      */
-    public function setNotifyOrganizer($notifyOrganizer)
+    public function setNotifyOrganizer($notifyOrganizer): void
     {
         $this->notifyOrganizer = $notifyOrganizer;
     }
@@ -1454,7 +1454,7 @@ class Event extends AbstractEntity
      * @param bool $notifyRegistrant
      * @return void
      */
-    public function setNotifyRegistrant($notifyRegistrant)
+    public function setNotifyRegistrant($notifyRegistrant): void
     {
         $this->notifyRegistrant = $notifyRegistrant;
     }
@@ -1485,7 +1485,7 @@ class Event extends AbstractEntity
      * @param string $subjectOrganizer
      * @return void
      */
-    public function setSubjectOrganizer($subjectOrganizer)
+    public function setSubjectOrganizer($subjectOrganizer): void
     {
         $this->subjectOrganizer = $subjectOrganizer;
     }
@@ -1506,7 +1506,7 @@ class Event extends AbstractEntity
      * @param string $textOrganizer
      * @return void
      */
-    public function setTextOrganizer($textOrganizer)
+    public function setTextOrganizer($textOrganizer): void
     {
         $this->textOrganizer = $textOrganizer;
     }
@@ -1527,7 +1527,7 @@ class Event extends AbstractEntity
      * @param string $subjectRegistrant
      * @return void
      */
-    public function setSubjectRegistrant($subjectRegistrant)
+    public function setSubjectRegistrant($subjectRegistrant): void
     {
         $this->subjectRegistrant = $subjectRegistrant;
     }
@@ -1543,7 +1543,7 @@ class Event extends AbstractEntity
     /**
      * @param string $introtextRegistrant
      */
-    public function setIntrotextRegistrant($introtextRegistrant)
+    public function setIntrotextRegistrant($introtextRegistrant): void
     {
         $this->introtextRegistrant = $introtextRegistrant;
     }
@@ -1559,7 +1559,7 @@ class Event extends AbstractEntity
     /**
      * @param string $introtextRegistrantConfirmed
      */
-    public function setIntrotextRegistrantConfirmed($introtextRegistrantConfirmed)
+    public function setIntrotextRegistrantConfirmed($introtextRegistrantConfirmed): void
     {
         $this->introtextRegistrantConfirmed = $introtextRegistrantConfirmed;
     }
@@ -1584,7 +1584,7 @@ class Event extends AbstractEntity
      * @param bool $storeInCitrix
      * @return void
      */
-    public function setStoreInCitrix($storeInCitrix)
+    public function setStoreInCitrix($storeInCitrix): void
     {
         $this->storeInCitrix = $storeInCitrix;
     }
@@ -1605,7 +1605,7 @@ class Event extends AbstractEntity
      * @param string $textRegistrant
      * @return void
      */
-    public function setTextRegistrant($textRegistrant)
+    public function setTextRegistrant($textRegistrant): void
     {
         $this->textRegistrant = $textRegistrant;
     }
@@ -1664,7 +1664,7 @@ class Event extends AbstractEntity
      * @param string $access
      * @return void
      */
-    public function setAccess($access)
+    public function setAccess($access): void
     {
         $this->access = $access;
     }
@@ -1685,7 +1685,7 @@ class Event extends AbstractEntity
      * @param string $registrationAccess
      * @return void
      */
-    public function setRegistrationAccess($registrationAccess)
+    public function setRegistrationAccess($registrationAccess): void
     {
         $this->registrationAccess = $registrationAccess;
     }
@@ -1706,7 +1706,7 @@ class Event extends AbstractEntity
      * @param bool $needToConfirm
      * @return void
      */
-    public function setNeedToConfirm($needToConfirm)
+    public function setNeedToConfirm($needToConfirm): void
     {
         $this->needToConfirm = $needToConfirm;
     }
@@ -1737,7 +1737,7 @@ class Event extends AbstractEntity
      * @param string $marketingProcessId
      * @return void
      */
-    public function setMarketingProcessId($marketingProcessId)
+    public function setMarketingProcessId($marketingProcessId): void
     {
         $this->marketingProcessId = $marketingProcessId;
     }
@@ -1758,7 +1758,7 @@ class Event extends AbstractEntity
      * @param bool $isRecurring
      * @return void
      */
-    public function setIsRecurring($isRecurring)
+    public function setIsRecurring($isRecurring): void
     {
         $this->isRecurring = $isRecurring;
     }
@@ -1789,7 +1789,7 @@ class Event extends AbstractEntity
      * @param int $frequency
      * @return void
      */
-    public function setFrequency($frequency)
+    public function setFrequency($frequency): void
     {
         $this->frequency = $frequency;
     }
@@ -1810,7 +1810,7 @@ class Event extends AbstractEntity
      * @param int $freqException
      * @return void
      */
-    public function setFreqException($freqException)
+    public function setFreqException($freqException): void
     {
         $this->freqException = $freqException;
     }
@@ -1831,7 +1831,7 @@ class Event extends AbstractEntity
      * @param int $isExceptionFor
      * @return void
      */
-    public function setIsExceptionFor($isExceptionFor)
+    public function setIsExceptionFor($isExceptionFor): void
     {
         $this->isExceptionFor = $isExceptionFor;
     }
@@ -1841,7 +1841,7 @@ class Event extends AbstractEntity
      *
      * @return void
      */
-    public function addEventCategory(Category $eventCategory)
+    public function addEventCategory(Category $eventCategory): void
     {
         $this->eventCategory->attach($eventCategory);
     }
@@ -1852,7 +1852,7 @@ class Event extends AbstractEntity
      * @param Category $eventCategoryToRemove The Category to be removed
      * @return void
      */
-    public function removeEventCategory(Category $eventCategoryToRemove)
+    public function removeEventCategory(Category $eventCategoryToRemove): void
     {
         $this->eventCategory->detach($eventCategoryToRemove);
     }
@@ -1873,7 +1873,7 @@ class Event extends AbstractEntity
      * @param ObjectStorage<Category> $eventCategory
      * @return void
      */
-    public function setEventCategory(ObjectStorage $eventCategory)
+    public function setEventCategory(ObjectStorage $eventCategory): void
     {
         $this->eventCategory = $eventCategory;
     }
@@ -1883,7 +1883,7 @@ class Event extends AbstractEntity
      *
      * @return void
      */
-    public function addTag(Tag $tag)
+    public function addTag(Tag $tag): void
     {
         $this->tags->attach($tag);
     }
@@ -1896,7 +1896,7 @@ class Event extends AbstractEntity
      * @param FileReference $teaserImage
      * @return void
      */
-    public function removeTeaserImage()
+    public function removeTeaserImage(): void
     {
         $this->teaserImage = null;
     }
@@ -1908,7 +1908,7 @@ class Event extends AbstractEntity
      * @param Tag $tagToRemove The Tag to be removed
      * @return void
      */
-    public function removeTag(Tag $tagToRemove)
+    public function removeTag(Tag $tagToRemove): void
     {
         $this->tags->detach($tagToRemove);
     }
@@ -1929,7 +1929,7 @@ class Event extends AbstractEntity
      * @param ObjectStorage<Tag> $tags
      * @return void
      */
-    public function setTags(ObjectStorage $tags)
+    public function setTags(ObjectStorage $tags): void
     {
         $this->tags = $tags;
     }
@@ -1950,7 +1950,7 @@ class Event extends AbstractEntity
 	 * @param string $internalUrl internal url
 	 * @return void
 	 */
-	public function setInternalurl($internalUrl)
+	public function setInternalurl($internalUrl): void
 	{
 		$this->internalurl = $internalUrl;
 	}
@@ -1971,7 +1971,7 @@ class Event extends AbstractEntity
 	 * @param string $externalUrl external url
 	 * @return void
 	 */
-	public function setExternalurl($externalUrl)
+	public function setExternalurl($externalUrl): void
 	{
 		$this->externalurl = $externalUrl;
 	}
@@ -1986,7 +1986,7 @@ class Event extends AbstractEntity
 	/**
 	 * @param string $registrationUrl
 	 */
-	public function setRegistrationUrl($registrationUrl) {
+	public function setRegistrationUrl($registrationUrl): void {
 		$this->registrationUrl = $registrationUrl;
 	}
 
@@ -2000,7 +2000,7 @@ class Event extends AbstractEntity
 	/**
 	 * @param int $registrationPid
 	 */
-	public function setRegistrationPid($registrationPid) {
+	public function setRegistrationPid($registrationPid): void {
 		$this->registrationPid = $registrationPid;
 	}
 
@@ -2014,7 +2014,7 @@ class Event extends AbstractEntity
 	/**
 	 * @param int $registrationFormPid
 	 */
-	public function setRegistrationFormPid($registrationFormPid) {
+	public function setRegistrationFormPid($registrationFormPid): void {
 		$this->registrationFormPid = $registrationFormPid;
 	}
 
@@ -2134,6 +2134,16 @@ class Event extends AbstractEntity
         return false ;
     }
 
+
+    /**
+     * @return boolean
+     */
+    public function isSoldOut()
+    {
+
+        return $this->isIsNoFreeSeats() ;
+    }
+
     /**
      * @return boolean
      */
@@ -2180,7 +2190,7 @@ class Event extends AbstractEntity
     /**
      * @param int $crdate
      */
-    public function setCrdate($crdate)
+    public function setCrdate($crdate): void
     {
         $this->crdate = $crdate;
     }
@@ -2205,7 +2215,7 @@ class Event extends AbstractEntity
     /**
      * @param int $localizedUid
      */
-    public function setLocalizedUid($localizedUid)
+    public function setLocalizedUid($localizedUid): void
     {
         $this->_localizedUid = $localizedUid;
     }
@@ -2218,7 +2228,7 @@ class Event extends AbstractEntity
         return $this->url;
     }
 
-    public function setUrl(string $url)
+    public function setUrl(string $url): void
     {
         $this->url = $url;
     }
@@ -2228,7 +2238,7 @@ class Event extends AbstractEntity
      *
      * @return void
      */
-    public function addSubevent(Subevent $subevent)
+    public function addSubevent(Subevent $subevent): void
     {
         $this->subevent->attach($subevent);
     }
@@ -2239,7 +2249,7 @@ class Event extends AbstractEntity
      * @param Subevent $subevent ToRemove : The subevent  to be removed
      * @return void
      */
-    public function removeSubevent(Subevent $subevent )
+    public function removeSubevent(Subevent $subevent ): void
     {
         $this->subevent->detach($subevent);
     }
@@ -2260,7 +2270,7 @@ class Event extends AbstractEntity
      * @param ObjectStorage<Subevent> $subevent
      * @return void
      */
-    public function setSubevent(ObjectStorage $subevent)
+    public function setSubevent(ObjectStorage $subevent): void
     {
         $this->subevent = $subevent;
     }
@@ -2284,7 +2294,7 @@ class Event extends AbstractEntity
     /**
      * @param int $price
      */
-    public function setPrice($price)
+    public function setPrice($price): void
     {
         $this->price = $price;
     }
@@ -2306,7 +2316,7 @@ class Event extends AbstractEntity
     /**
      * @param string $endDateFE
      */
-    public function setEndDateFE($endDateFE)
+    public function setEndDateFE($endDateFE): void
     {
         $this->endDateFE = $endDateFE;
     }
@@ -2314,7 +2324,7 @@ class Event extends AbstractEntity
     /**
      * @param string $startDateFE
      */
-    public function setStartDateFE($startDateFE)
+    public function setStartDateFE($startDateFE): void
     {
         $this->startDateFE = $startDateFE;
     }
@@ -2331,7 +2341,7 @@ class Event extends AbstractEntity
     /**
      * @param string $startTimeFE
      */
-    public function setStartTimeFE($startTimeFE)
+    public function setStartTimeFE($startTimeFE): void
     {
         $this->startTimeFE = $startTimeFE;
     }
@@ -2347,7 +2357,7 @@ class Event extends AbstractEntity
     /**
      * @param string $endTimeFE
      */
-    public function setEndTimeFE($endTimeFE)
+    public function setEndTimeFE($endTimeFE): void
     {
         $this->endTimeFE = $endTimeFE;
     }
@@ -2363,7 +2373,7 @@ class Event extends AbstractEntity
     /**
      * @param int $entryTime
      */
-    public function setEntryTime($entryTime)
+    public function setEntryTime($entryTime): void
     {
         $this->entryTime = $entryTime;
     }
@@ -2379,7 +2389,7 @@ class Event extends AbstractEntity
     /**
      * @param string $entryTimeFE
      */
-    public function setEntryTimeFE($entryTimeFE)
+    public function setEntryTimeFE($entryTimeFE): void
     {
         $this->entryTimeFE = $entryTimeFE;
     }
@@ -2399,7 +2409,7 @@ class Event extends AbstractEntity
     /**
      * @param int $sysLanguageUid
      */
-    public function setSysLanguageUid($sysLanguageUid)
+    public function setSysLanguageUid($sysLanguageUid): void
     {
         $this->sysLanguageUid = $sysLanguageUid;
         $this->_languageUid = $sysLanguageUid;
@@ -2416,7 +2426,7 @@ class Event extends AbstractEntity
     /**
      * @param string $tagsFE
      */
-    public function setTagsFE($tagsFE)
+    public function setTagsFE($tagsFE): void
     {
         $this->tagsFE = $tagsFE;
     }
@@ -2432,7 +2442,7 @@ class Event extends AbstractEntity
     /**
      * @param int $topEvent
      */
-    public function setTopEvent($topEvent)
+    public function setTopEvent($topEvent): void
     {
         $this->topEvent = $topEvent;
     }
@@ -2448,7 +2458,7 @@ class Event extends AbstractEntity
     /**
      * @param int $canceled
      */
-    public function setCanceled($canceled)
+    public function setCanceled($canceled): void
     {
         $this->canceled = $canceled;
     }
@@ -2464,7 +2474,7 @@ class Event extends AbstractEntity
     /**
      * @param int $viewed
      */
-    public function setViewed($viewed)
+    public function setViewed($viewed): void
     {
         $this->viewed = $viewed;
     }
@@ -2472,7 +2482,7 @@ class Event extends AbstractEntity
 
     /**
      */
-    public function increaseViewed()
+    public function increaseViewed(): void
     {
         $this->viewed ++;
     }
@@ -2488,7 +2498,7 @@ class Event extends AbstractEntity
     /**
      * @param float $priceReduced
      */
-    public function setPriceReduced($priceReduced)
+    public function setPriceReduced($priceReduced): void
     {
         $this->priceReduced = $priceReduced;
     }
@@ -2504,7 +2514,7 @@ class Event extends AbstractEntity
     /**
      * @param string $priceReducedText
      */
-    public function setPriceReducedText($priceReducedText)
+    public function setPriceReducedText($priceReducedText): void
     {
         $this->priceReducedText = $priceReducedText;
     }
@@ -2519,7 +2529,7 @@ class Event extends AbstractEntity
     /**
      * @param bool $storeInHubspot
      */
-    public function setStoreInHubspot($storeInHubspot)
+    public function setStoreInHubspot($storeInHubspot): void
     {
         $this->storeInHubspot = $storeInHubspot;
     }
@@ -2535,7 +2545,7 @@ class Event extends AbstractEntity
       /**
       * @param boo|null $storeInMarketo
       */
-      public function setStoreInMarketo(?bool $storeInMarketo) {
+      public function setStoreInMarketo(?bool $storeInMarketo): void {
           $this->storeInMarketo = ($storeInMarketo ?? false );
       }
 
@@ -2550,7 +2560,7 @@ class Event extends AbstractEntity
     /**
      * @param string $salesForceCampaignId
      */
-    public function setSalesForceCampaignId($salesForceCampaignId)
+    public function setSalesForceCampaignId($salesForceCampaignId): void
     {
         $this->salesForceCampaignId = $salesForceCampaignId;
     }
@@ -2566,7 +2576,7 @@ class Event extends AbstractEntity
     /**
      * @param string $currency
      */
-    public function setCurrency($currency)
+    public function setCurrency($currency): void
     {
         $this->currency = $currency;
     }
@@ -2582,7 +2592,7 @@ class Event extends AbstractEntity
     /**
      * @param int $hidden
      */
-    public function setHidden($hidden)
+    public function setHidden($hidden): void
     {
         $this->hidden = $hidden;
     }
@@ -2647,7 +2657,7 @@ class Event extends AbstractEntity
     /**
      * @param int $masterId
      */
-    public function setMasterId($masterId)
+    public function setMasterId($masterId): void
     {
         $this->masterId = $masterId;
     }
@@ -2663,7 +2673,7 @@ class Event extends AbstractEntity
     /**
      * @param int $changeFutureEvents
      */
-    public function setChangeFutureEvents($changeFutureEvents)
+    public function setChangeFutureEvents($changeFutureEvents): void
     {
         $this->changeFutureEvents = $changeFutureEvents;
     }
@@ -2679,7 +2689,7 @@ class Event extends AbstractEntity
     /**
      * @param string $slug
      */
-    public function setSlug($slug)
+    public function setSlug($slug): void
     {
         $this->slug = $slug;
     }
@@ -2692,7 +2702,7 @@ class Event extends AbstractEntity
         return $this->registrationGender;
     }
 
-    public function setRegistrationGender(int $registrationGender)
+    public function setRegistrationGender(int $registrationGender): void
     {
         $this->registrationGender = $registrationGender;
     }
@@ -2705,7 +2715,7 @@ class Event extends AbstractEntity
         return $this->registrationShowStatus;
     }
 
-    public function setRegistrationShowStatus(mixed $registrationShowStatus)
+    public function setRegistrationShowStatus(mixed $registrationShowStatus): void
     {
         if( is_null($registrationShowStatus)) {
             $registrationShowStatus = 0 ;

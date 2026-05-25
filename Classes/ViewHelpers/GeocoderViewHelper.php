@@ -39,18 +39,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class GeocoderViewHelper extends AbstractViewHelper   {
 
     /**
-     * @var bool
-     */
-    protected $escapeOutput = false;
-
-    /**
      * Needed as child node's output can return a DateTime object which can't be escaped
      *
      * @var bool
      */
     protected $escapeChildren = false;
 
-    public function initializeArguments() {
+    public function initializeArguments(): void {
         $this->registerArgument('location', Location::class, 'Single location', false , NULL);
         $this->registerArgument('formfields', 'array', 'Field Array', false , NULL );
         $this->registerArgument('updateFunction', 'string', 'Name of javaScript function that should run after Update Map', false , '' );
@@ -65,7 +60,7 @@ class GeocoderViewHelper extends AbstractViewHelper   {
      * @return string
      */
     public function render() {
-
+        $this->escapeOutput = false ;
         $location = $this->arguments['location'] ;
         $updateFunction = $this->arguments['updateFunction'] ;
         $formfieldIds = $this->arguments['formfields'] ;

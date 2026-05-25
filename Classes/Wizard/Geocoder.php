@@ -3,6 +3,8 @@ namespace JVelletti\JvEvents\Wizard;
 
 use TYPO3\CMS\Backend\Controller\Wizard\AbstractWizardController;
 use JVelletti\JvEvents\Utility\GeocoderUtility;
+use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use Psr\Http\Message\ServerRequestInterface;
@@ -40,19 +42,19 @@ class Geocoder extends AbstractWizardController {
 	 */
 	public function __construct() {
 		$this->getLanguageService()->includeLLFile('EXT:jv_events/Resources/Private/Language/locallang_be.xlf');
-		$this->init();
+		$this->initialize();
 	}
 
 	/**
 	 * Some initializing
 	 */
-	protected function init(){
+	protected function initialize(){
 
         $this->geoCoder = GeneralUtility::makeInstance(GeocoderUtility::class) ;
 
-		$this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
+		$this->docTemplate = GeneralUtility::makeInstance(DocumentTemplate::class);
 
-		$this->doc->JScode = $this->geoCoder ->javascriptCode ;
+		$this->docTemplate->JScode = $this->geoCoder ->javascriptCode ;
 		GeneralUtility::makeInstance(PageRenderer::class)->addCssFile('EXT:jv_events/Resources/Public/Css/geocoder.css', 'stylesheet', 'screen', '');
 
 	}
@@ -64,7 +66,7 @@ class Geocoder extends AbstractWizardController {
 	protected function getAddressDataFromDb(){
 
 		// Parameters
-		$parameters = GeneralUtility::_GP('P');
+		$parameters = $GLOBALS['TYPO3_REQUEST']->getParsedBody()['P'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['P'] ?? null;
 
 		// print_r($parameters);
 
@@ -93,15 +95,23 @@ class Geocoder extends AbstractWizardController {
  public function mainAction(ServerRequestInterface $request, ResponseInterface $response){
 
 
-		$this->content = '';
-		$this->content .= $this->doc->startPage($this->getLanguageService()->getLL('geocoding.page.title'));
-		$this->content .= $this->doc->header($this->getLanguageService()->getLL('geocoding.page.headline'));
+		$this->contentString = '';
+		$this->contentString .= $this->docTemplate->startPage($this->getLanguageService()->sL('geocoding.page.title'));
+		$this->contentString .= $this->docTemplate->header($this->getLanguageService()->sL('geocoding.page.headline'));
         $addressData = $this->getAddressDataFromDb();
-        $this->content .= $this->geoCoder->main(false , $addressData['uid'] , "TYPO3.jQuery" );
-		$this->content .= $this->doc->endPage();
-		$response->getBody()->write($this->content);
+        $this->contentString .= $this->geoCoder->main(false , $addressData['uid'] , "TYPO3.jQuery" );
+		$this->contentString .= $this->docTemplate->endPage();
+		$response->getBody()->write($this->contentString);
 		return $response;
 
 	}
+
+    /**
+     * @return LanguageService
+     */
+    protected function getLanguageService(): LanguageService
+    {
+        return GeneralUtility::makeInstance(LanguageServiceFactory::class)->create("default") ;
+    }
 
 }
