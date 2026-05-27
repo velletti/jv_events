@@ -2,17 +2,23 @@
 
 
 <div class="d-none hidden">
-        <f:variable name="propertyName">{object}.{property}</f:variable>
-        <f:render partial="FormErrorSingle" arguments="{property: errorProperty, field: propertyName}"/>
-        <f:variable name="propertyName2">{object}.{property2}</f:variable>
-        <f:render partial="FormErrorSingle" arguments="{property: errorProperty, field: propertyName2}"/>
-
-        <f:form.textfield class="form-control" readonly="readonly" property="{property}" id="{property}" maxlength="{maxLength}"/>
-        <f:form.textfield class="form-control" readonly="readonly" property="{property2}" id="{property2}" maxlength="{maxLength}"/>
-        <f:form.textfield class="form-control" readonly="readonly" property="{zoom}" id="{zoom}" value="{settings.filter.initMapZoom}" maxlength="{maxLength}"/>
+        <f:form.textfield  id="lat" name="lat"/>
+        <f:form.textfield  id="minlat" name="minlat"/>
+        <f:form.textfield  id="maxlat" name="maxlat"/>
+        <f:form.textfield  id="lng" name="lng"/>
+        <f:form.textfield  id="minlng" name="minlng"/>
+        <f:form.textfield  id="maxlng" name="maxlng"/>
+        <f:form.textfield class="form-control" id="zoom" value="{settings.filter.initMapZoom}" name="zoom"/>
 </div>
 
 <div id="map" style="height:350px; width:95%" data-publicpath="{core:normalizedUrl(pathOrUrl: 'EXT:jv_events/Resources/Public/')}"></div>
-<jve:geocoder formfields="{input: {address: '{settings.filter.initMapAddress}' , zoom: '{settings.filter.initMapZoom}'}, return: {lat: '#lat', lng: '#lng', zoom: '#zoom'}}" updateFunction="{updateFunction}">
 
-</jve:geocoder>
+
+
+<f:asset.script identifier="googleMapsApi" async="async" defer="defer" src="https://maps.googleapis.com/maps/api/js?key={settings.googleApiKey}&loading=async&libraries=marker&callback=initGeoCoderMap"></f:asset.script>
+<f:asset.script identifier="googleMapsCode" >
+        var initAddress = '<f:format.raw>{settings.filter.initMapAddress}</f:format.raw>';
+        var initZoom = <f:format.raw>{settings.filter.initMapZoom}</f:format.raw>;
+</f:asset.script>
+<f:asset.script identifier="googleMapsFunctions" async="async" defer="defer" src="{core:normalizedUrl(pathOrUrl: 'EXT:jv_events/Resources/Public/JavaScript')}/googleMapsGeoCoderAllplan.js"></f:asset.script>
+

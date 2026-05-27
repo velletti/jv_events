@@ -97,7 +97,7 @@ function jv_events_GetURLnonEventParms( noIdandLang ) {
             var sParameterName = sURLVariables[i].split('=');
             if (sParameterName[0].substring(0,18) != 'tx_jvevents_events') {
                 if(noIdandLang) {
-                    if( sParameterName[0] != "id" && sParameterName[0] != "L") {
+                    if( sParameterName[0] != "id" && sParameterName[0] != "L" && sParameterName[0] != "cHash" ) {
                         ret = ret + "&" + sParameterName[0] + "=" +  decodeURIComponent(sParameterName[1]);
                     }
                 } else {
@@ -118,6 +118,7 @@ function jv_events_init() {
 
     $(".js-warning-disabled").hide() ;
     $("#jv_events_geo").data("init" , "start") ;
+   //console.log( "Init Filters is started for current URI " + window.location.search.substring(1)) ;
 
     jv_events_initOneFilter('categories') ;
     jv_events_initOneFilter('locations') ;
@@ -174,6 +175,7 @@ function jv_events_init() {
     // the included map javascript will do the refesh, when map is loaded.
     // if we refresh the eventslist before map is ready  will not work
     if(  jQuery("#jv_events_geo").length ) {
+       //console.log("geo data init set to done") ;
         jQuery("#jv_events_geo").data("init" , "done") ;
     }
 
@@ -190,7 +192,7 @@ function jv_events_initPosition(position) {
 function jv_events_initOneFilter(filterName) {
 
     if ( jQuery('SELECT#jv_events_filter_' + filterName ).length ) {
-        // console.log( "Select " + filterName + " found") ;
+        //console.log( "Select " + filterName + " found") ;
 
         var filterVal = jv_events_GetURLParameter('tx_jvevents_events[eventsFilter][' + filterName + ']') ;
         if ( filterVal ) {
@@ -209,10 +211,10 @@ function jv_events_initOneFilter(filterName) {
                     iZoom = eventInCity.data("zoom") ;
                 }
                 if( eventInCity && eventInCity.data("address") ) {
-                 //   console.log(" update Marker with Zoom Factor " + iZoom )
+                 //console.log(" update Marker with Zoom Factor " + iZoom )
                     updateMarkerDefault( eventInCity.data("address") , iZoom ) ;
                 } else {
-                  //  console.log(" update Marker without address"  )
+                  //console.log(" update Marker without address"  )
                     updateMarker(jQuery(this).val()) ;
                 }
 
@@ -224,20 +226,20 @@ function jv_events_initOneFilter(filterName) {
         });
     }
     if ( jQuery('#jv_events_filter_' + filterName + " input[type=checkbox]").length ) {
-     //   console.log( "INPUT  " + filterName + " found") ;
+       //console.log( "INPUT  " + filterName + " found") ;
         var filterVal = jv_events_GetURLParameter('tx_jvevents_events[eventsFilter][' + filterName + ']') ;
-        //   console.log( "filterVal = " + filterVal + " ") ;
+       //console.log( "filterVal = " + filterVal + " ") ;
         if ( filterVal ) {
             var filterSplit =  filterVal.split(",") ;
             if(filterSplit.length > 1 ) {
-                //         console.log( "filterSplit.length  > 1 " ) ;
+               //console.log( "filterSplit.length  > 1 " ) ;
                 jQuery('#jv_events_filter_' + filterName + ' input[type=checkbox]').each(function(i) {
                     if(  filterSplit.indexOf( jQuery(this).val() ) > -1 ) {
                         jQuery(this).prop("checked", true);
                     }
                 });
             } else {
-                //        console.log( "filterSplit.length  <= 1 " ) ;
+                //console.log( "filterSplit.length  <= 1 " ) ;
                 jQuery('#jv_events_filter_' + filterName + ' input[type=checkbox]').each(function(i) {
                     if ("'" + jQuery(this).val() + "'" == "'" + filterVal +"'") {
                         jQuery(this).prop("checked", true);
@@ -258,7 +260,7 @@ function jv_events_initOneFilter(filterName) {
 
 function jv_events_refreshList(){
     if( jQuery("#jv_events_geo").length  && jQuery("#jv_events_geo").data("init" ).length ) {
-  //      console.log(" In Refresh: init status: " + jQuery("#jv_events_geo").data("init" ) ) ;
+       //console.log(" In Refresh: init status: " + jQuery("#jv_events_geo").data("init" ) ) ;
         if (jQuery("#jv_events_geo").data("init" ) != "done") {
             return ;
         }
@@ -276,51 +278,55 @@ function jv_events_refreshList(){
     var maxDist = false ;
     if( iZoom && jQuery( iZoom ).val() > 0 ) {
 
-
-
-
-        if( jQuery('#lat').length > 0  && jQuery('#lat').val() > 5 ) {
-            userLat = jQuery('#lat').val();
-        }
-
-        if( jQuery('#lng').length > 0  && jQuery('#lng').val() > 5 ) {
-            userLng = jQuery('#lng').val();
-        }
-        if( userLat  && userLng ) {
-            switch (jQuery( iZoom ).val())
-            {
-                case "15":
-                case "14":
-                    maxDist = 10;
-                    break;
-                case "13":
-                case "12":
-                case "11":
-                    maxDist = 20;
-                    break;
-                case "10":
-                    maxDist = 30;
-                    break;
-                case "9":
-                    maxDist = 60;
-                    break;
-                case "8":
-                    maxDist = 100;
-                    break;
-                case "7":
-                    maxDist = 200;
-                    break;
-                case "6":
-                    maxDist = 300;
-                    break;
-                case "5":
-                    maxDist = 500;
-                    break;
-                default:
-                    maxDist = 9999;
+        if( jQuery('#minlat').length > 0  && jQuery('#minlat').val() > 5 ) {
+            maxDist = -1 ;
+            var minLat = jQuery('#minlat').val();
+            var maxLat = jQuery('#maxlat').val();
+            var minLng = jQuery('#minlng').val();
+            var maxLng = jQuery('#maxlng').val();
+        } else {
+            if( jQuery('#lat').length > 0  && jQuery('#lat').val() > 5 ) {
+                userLat = jQuery('#lat').val();
             }
-            // console.log( "Lat:" + userLat + " Lng: " + userLng + " maxDist:" +  maxDist ) ;
 
+            if( jQuery('#lng').length > 0  && jQuery('#lng').val() > 5 ) {
+                userLng = jQuery('#lng').val();
+            }
+            if( userLat  && userLng ) {
+                switch (jQuery( iZoom ).val())
+                {
+                    case "15":
+                    case "14":
+                        maxDist = 10;
+                        break;
+                    case "13":
+                    case "12":
+                    case "11":
+                        maxDist = 20;
+                        break;
+                    case "10":
+                        maxDist = 30;
+                        break;
+                    case "9":
+                        maxDist = 60;
+                        break;
+                    case "8":
+                        maxDist = 100;
+                        break;
+                    case "7":
+                        maxDist = 200;
+                        break;
+                    case "6":
+                        maxDist = 300;
+                        break;
+                    case "5":
+                        maxDist = 500;
+                        break;
+                    default:
+                        maxDist = 9999;
+                }
+                //console.log( "Lat:" + userLat + " Lng: " + userLng + " maxDist:" +  maxDist ) ;
+            }
         }
     }
 
@@ -388,7 +394,7 @@ function jv_events_refreshList(){
 
         jQuery( cTags ).each( function() {
             if ( jQuery(this).prop("checked") ) {
-             //   console.log("found one tag checked: " + jQuery(this).val() )
+             //console.log("found one tag checked: " + jQuery(this).val() )
                 cTagChecked = true ;
                 return false ;
             }
@@ -398,8 +404,8 @@ function jv_events_refreshList(){
     var cCatChecked = false ;
 
     jQuery( cCats ).each( function() {
-        if ( jQuery(this).prop("checked") ) {
-            //     console.log("found one category checked: " + jQuery(this).val() )
+        //console.log("test if category is checked: " + jQuery(this).val() ) ;
+        if ( jQuery(this).prop("checked") || this.checked || jQuery(this).is(":checked") ) {
             if(  jQuery("#toggle-accordion-cat").length ) {
                 jQuery("#toggle-accordion-cat").prop("checked" , true ) ;
             }
@@ -418,9 +424,10 @@ function jv_events_refreshList(){
     let resultcountEvents = 0 ;
     var dist = 0 ;
     jQuery('.tx-jv-events DIV.jv-events-singleEvent').each(function (i) {
-        // console.log( " ************* event **************** UID: " + jQuery(this).data("eventuid")  ) ;
+        //console.log( " ************* event **************** UID: " + jQuery(this).data("eventuid")  ) ;
 
-        jQuery(this).removeClass('hide').removeClass('hidden-by-fMonth').removeClass('hidden-by-fTag').removeClass('hidden-by-fCity').removeClass('hidden-by-fCat').removeClass('hidden-by-maxDist') ;
+        jQuery(this).removeClass('hide').removeClass('hidden-by-fMonth').removeClass('hidden-by-fTag').removeClass('hidden-by-cTag').removeClass('hidden-by-fCity')
+            .removeClass('hidden-by-cCat').removeClass('hidden-by-maxDist') ;
         if( fMonth && fMonth.val() && fMonth.val().length > 0 ) {
             if( jQuery(this).data("monthuid")  != fMonth.val() ) {
                 jQuery(this).addClass('hide').addClass('hidden-by-fMonth') ;
@@ -471,7 +478,7 @@ function jv_events_refreshList(){
         if( fOrg && !jQuery(this).hasClass('hide') ) {
 
             if ( ($("#jv_events_filter_tags").hasClass( "filterType6") || $("#jv_events_filter_tags").hasClass( "filterType7")) && fOrg.val() ) {
-               //  console.log( "filterType6: forg: " + ( fOrg.val()) + " <> " + decodeURI(jQuery(this).data("orgname")) ) ;
+               //console.log( "filterType6: forg: " + ( fOrg.val()) + " <> " + decodeURI(jQuery(this).data("orgname")) ) ;
                 if( (jQuery(this).data("orgname")) && decodeURI (jQuery(this).data("orgname")) !== (fOrg.val()) ) {
                     jQuery(this).addClass('hide').addClass('hidden-by-fOrg') ;
                 }
@@ -489,7 +496,7 @@ function jv_events_refreshList(){
 
         if( cTagChecked === true && !jQuery(this).hasClass('hide')) {
             var sTags = jQuery(this).data("taguids") ;
-            // console.log( " sTags (Tag Ids of Event) : " + sTags ) ;
+            //console.log( " sTags (Tag Ids of Event) : " + sTags ) ;
 
             if( sTags ) {
                 sTags = "," + sTags + "," ;
@@ -556,18 +563,18 @@ function jv_events_refreshList(){
                     var combineTags =  jQuery('#jv_events_filter_tags').data('combinetags') ;
                     //console.log( "Combine Tags: " +  combineTags  ) ;
                     jQuery( cTags ).each( function() {
-                        // console.log( "Filter Tag: " + jQuery(this).val() + " checked ? : " + jQuery(this).prop("checked") ) ;
+                        //console.log( "Filter Tag: " + jQuery(this).val() + " checked ? : " + jQuery(this).prop("checked") ) ;
 
                         if ( jQuery(this).prop("checked") ) {
-                            // console.log( "position of " + jQuery(this).val() + " in string " + sTags + " = " + sTags.indexOf( "," + jQuery(this).val()   ) ) ;
+                            //console.log( "position of " + jQuery(this).val() + " in string " + sTags + " = " + sTags.indexOf( "," + jQuery(this).val()   ) ) ;
                             if( sTags.indexOf( "," + jQuery(this).val() + ","  ) > -1 ) {
                                 needTohide = false ;
-                                // console.log(" if All Tags must fit (combineTags = " + combineTags + "): we can not exit , we need to stay in loop and check all " ) ;
+                                //console.log(" if All Tags must fit (combineTags = " + combineTags + "): we can not exit , we need to stay in loop and check all " ) ;
                                 if ( combineTags != "1") {
                                     return false ;
                                 }
                             } else {
-                                // console.log(" if All Tags must fit (combineTags = " + combineTags + "): we will exit and hide event " ) ;
+                                //console.log(" if All Tags must fit (combineTags = " + combineTags + "): we will exit and hide event " ) ;
                                 //
                                 if ( combineTags == "1") {
                                     needTohide = true ;
@@ -594,21 +601,21 @@ function jv_events_refreshList(){
 
             if( sCats ) {
                 sCats = "," + sCats + "," ;
-                // console.log( " sCats of Event : " + sCats ) ;
+                //console.log( " sCats of Event : " + sCats ) ;
                 let needTohide = true ;
                 jQuery( cCats ).each( function() {
-                     // console.log("FormField: " + jQuery(this).val() + " " +  jQuery(this).prop("checked") ) ;
+                     //console.log("FormField: " + jQuery(this).val() + " " +  jQuery(this).prop("checked") ) ;
                     if ( jQuery(this).prop("checked") ) {
-                          // console.log( "position of cat ID " + jQuery(this).val()  + " = " + sCats.indexOf( "," + jQuery(this).val() + "," ) ) ;
+                          //console.log( "position of cat ID " + jQuery(this).val()  + " = " + sCats.indexOf( "," + jQuery(this).val() + "," ) ) ;
                         if( sCats.indexOf( "," + jQuery(this).val() + ","  ) > -1 ) {
-                            // console.log( "No need to hide") ;
+                            //console.log( "No need to hide") ;
                             needTohide = false ;
                             return false ;
                         }
                     }
 
                 }) ;
-                // console.log( "needTohide " + needTohide ) ;
+                //console.log( "needTohide " + needTohide ) ;
                 if( needTohide === true ) {
                     jQuery(this).addClass('hide').addClass('hidden-by-cCat') ;
                 }
@@ -616,11 +623,19 @@ function jv_events_refreshList(){
                 jQuery(this).addClass('hide').addClass('hidden-by-cCat') ;
             }
         }
-        if ( maxDist  && !jQuery(this).hasClass('hide') ) {
-            dist = PythagorasEquirectangular( userLat , userLng , jQuery(this).data("latitude") , jQuery(this).data("longitude") ) ;
-            if ( dist > maxDist  ) {
-                // console.log( jQuery(this).data("eventuid") + ": MaxDist " + maxDist + " > dist: " + dist ) ;
-                jQuery(this).addClass('hide').addClass('hidden-by-maxDist')  ;
+        if ( !jQuery(this).hasClass('hide') && parseInt( jQuery(this).data("longitude") ) != 0  ) {
+            if ( maxDist > 0 ) {
+                dist = PythagorasEquirectangular( userLat , userLng , jQuery(this).data("latitude") , jQuery(this).data("longitude") ) ;
+                if ( dist > maxDist  ) {
+                    //console.log( jQuery(this).data("eventuid") + ": MaxDist " + maxDist + " > dist: " + dist ) ;
+                    jQuery(this).addClass('hide').addClass('hidden-by-maxDist')  ;
+                }
+            }
+            if ( maxDist  == -1 ) {
+                if ( jQuery(this).data("latitude") < minLat || jQuery(this).data("latitude") > maxLat || jQuery(this).data("longitude") < minLng || jQuery(this).data("longitude") > maxLng ) {
+                    //console.log("Event " + jQuery(this).data("eventuid")  + " " + jQuery(this).data("address") + ": is outside of Box: lat " + minLat + " > " + jQuery(this).data("latitude") + " <  " + maxLat + " || Lng " + minLng + " > " + jQuery(this).data("longitude") + " < " + maxLng ) ;
+                    jQuery(this).addClass('hide').addClass('hidden-by-maxDist')  ;
+                }
             }
         }
 
@@ -658,7 +673,7 @@ function jv_events_refreshList(){
         }
     }
 
-
+    //console.log(" urlFilter after orga: " + urlFilter + " Now check for categories and tags: cCatChecked: " + cCatChecked + " cTagChecked: " + cTagChecked ) ;
     if( cCatChecked ) {
 
         var catUrlFilter = '' ;
@@ -667,6 +682,7 @@ function jv_events_refreshList(){
                 catUrlFilter = catUrlFilter + jQuery(this).val() +","  ;
             }
         }) ;
+        //console.log(" catUrlFilter: " + catUrlFilter ) ;
         urlFilter = urlFilter + "&tx_jvevents_events[eventsFilter][categories]=" +  catUrlFilter ;
     }
     if( cTagChecked ) {
@@ -697,13 +713,14 @@ function jv_events_refreshList(){
     }
     if( jQuery("#jv_events_geo").length  && jQuery("#jv_events_geo").data("init" ).length ) {
         if(jQuery("#jv_events_geo").data("init" ) != "done") {
-            // console.log( "init != done , so no push URL Flter") ;
+            //console.log( "init != done , so no push URL Flter") ;
         } else {
-            // console.log( "init was : " +  jQuery("#jv_events_geo").data("init" )  ) ;
+            urlFilter = "&tx_jvevents_events[controller]=Event&tx_jvevents_events[action]=list" + urlFilter ;
+            //console.log( "init was : " +  jQuery("#jv_events_geo").data("init" ) + " urlFilter = " + urlFilter ) ;
             jv_events_pushUrl( urlFilter ) ;
         }
     } else {
-        // console.log( "init did not run or data init not found."  ) ;
+        //console.log( "init did not run or data init not found."  ) ;
     }
 
 

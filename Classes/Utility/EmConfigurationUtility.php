@@ -57,9 +57,9 @@ class EmConfigurationUtility
 	public static function getGoogleApiKey() {
 		$configuration = self::getEmConf();
         if( Environment::getContext()->isDevelopment() ) {
-            return trim( $configuration['googleApiKeyDEV'] );
+            return trim( $configuration['googleApiKeyDEV'] ?? '');
         }
-		return trim($configuration['googleApiKey'] );
+		return trim($configuration['googleApiKey'] ?? '');
 	}
 
 }

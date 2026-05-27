@@ -40,6 +40,9 @@ use JVelletti\JvEvents\Validation\Validator\EventValidator;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use JVelletti\JvEvents\Domain\Model\Category;
 use JVelletti\JvEvents\Domain\Model\Tag;
+
+use \JVelletti\JvEvents\Utility\EmConfigurationUtility;
+
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\FormProtection\FrontendFormProtection;
@@ -228,6 +231,8 @@ class EventController extends BaseController
             $this->settings['list']['image']['height'] = ( $this->settings['list']['image']['large']['height'] ?? $this->settings['list']['image']['large']['height'] * 4 / 3 )  ;
 
         }
+
+        $this->settings['googleApiKey'] = EmConfigurationUtility::getGoogleApiKey();
         $this->view->assign('settings', $this->settings );
         $this->debugArray[] = "before Render:" . intval(1000 * ($this->microtime_float()  - $this->timeStart ) ) . " Line: " . __LINE__ ;
         $this->view->assign('debugArray', $this->debugArray );
