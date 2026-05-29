@@ -6,9 +6,29 @@
 	<div class="list-item clearfix" data-comment="list-partial1allplan-singleEventFilter7">
 
 		<div class="date clearfix">
-			<span class="day">{f:format.date(date:event.startDate, format:'d')}</span>
-			<span class="month-year"><f:render section="month" arguments="{startDate: '{event.startDate}'}"/></span>
-			<span class="year">{event.startDate -> f:format.date(format:"Y")}</span>
+
+			<f:if condition="{event.endDate} && {event.endDate} != {event.startDate}}">
+				<f:then>
+					<span class="day">{f:format.date(date:event.startDate, format:'d')}</span>
+
+					<f:if condition="{event.startDate -> f:format.date(format:'m')} != {event.endDate -> f:format.date(format:'m')}">
+						<span class="month-year"><f:render section="month" arguments="{date: '{event.startDate}'}"/></span>
+					</f:if>
+					<f:if condition="{event.startDate -> f:format.date(format:'Y')} != {event.endDate -> f:format.date(format:'Y')}">
+						<span class="month-year">{event.startDate -> f:format.date(format:'Y')}</span>
+					</f:if>
+					-
+						<span class="day">{f:format.date(date:event.endDate, format:'d')}</span>
+						<span class="month-year"><f:render section="month" arguments="{date: '{event.endDate}'}"/></span>
+						<span class="year">{event.endDate -> f:format.date(format:"Y")}</span>
+				</f:then>
+				<f:else>
+					<span class="day">{f:format.date(date:event.startDate, format:'d')}</span>
+					<span class="month-year"><f:render section="month" arguments="{date: '{event.startDate}'}"/></span>
+					<span class="year">{event.startDate -> f:format.date(format:'Y')}</span>
+				</f:else>
+
+			</f:if>
 			<span class="location">{event.location.city}</span>
 			<f:if condition="{event.EventCategory}">
 				<span class="category">
@@ -142,5 +162,5 @@
 </f:section>
 
 <f:section name="month">
-	<f:translate key="month.{f:format.date(date:startDate, format:'m')}">{f:format.date(date:startDate, format:'m')}</f:translate>
+	<f:translate key="month.{f:format.date(date:date, format:'m')}">{f:format.date(date:date, format:'m')}</f:translate>
 </f:section>

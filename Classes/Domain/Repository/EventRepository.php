@@ -420,7 +420,14 @@ class EventRepository extends BaseRepository
 		    $dates = $this->getDateArray( $settings , $DateTimeZone ) ;
 
             // Now set  the Date values of the Event when it starts or ends
-            $constraints[] = $query->greaterThanOrEqual('start_date', $dates['startDate'] );
+            $subconstraintsNoEnddate[] = $query->greaterThanOrEqual('start_date', $dates['startDate'] );
+            $subconstraintsNoEnddate[] = $query->lessThanOrEqual('end_date', 1 );
+            $subconstraints[] = $query->logicalAnd(...$subconstraintsNoEnddate) ;
+
+            // End Date kann 0 sein oder ggf auch gesettz, dann größer als Start Date ..
+            $subconstraints[] = $query->greaterThanOrEqual('end_date', $dates['startDate']  );
+
+            $constraints[] = $query->logicalOr(...$subconstraints) ;
 
             if( intval( $settings['filter']['maxDays'] ) > 0 ) {
                 $constraints[] = $query->lessThanOrEqual('start_date', $dates['endDate'] );
