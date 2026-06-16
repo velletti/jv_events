@@ -514,7 +514,7 @@ class ProcessDatamap
                     $Typo3_v6mail->send();
                     $this->flashMessage['NOTICE'][] = 'send Info Email to : ' . var_export($Typo3_v6mail->getTo(), true);
                 } else {
-                    if (substr($sfResponse, 0, 6) == "Error") {
+                    if (substr((string)$sfResponse, 0, 6) == "Error") {
                         $this->flashMessage['ERROR'][] = "Could not create Campaign in Salesforce: ! : " . var_export($sfResponse, true);
                     }
                 }
