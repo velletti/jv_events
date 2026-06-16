@@ -485,10 +485,10 @@ class ProcessDatamap
                     // every campaign needs a set of campaignmemberStati
                     // see : https://doc.allplan.com/display/SFDOC/Event+Campaign+Definition
                     // first remove automatically created stati then add our set of stati ..
-                    $this->renameCampaignMemberStati($settings['SFREST']['instance_url'], $settings['SFREST']['access_token'], $sfResponseUid);
+                    $this->renameCampaignMemberStati($settings['SFREST']['instance_url'], $settings['SFREST']['access_token'], $sfResponse->id);
 
                     $url = $settings['SFREST']['instance_url'] . "/services/data/v48.0/sobjects/CampaignMemberStatus/";
-                    $this->createCampaignMemberStati($url, $settings['SFREST']['access_token'], $sfResponseUid);
+                    $this->createCampaignMemberStati($url, $settings['SFREST']['access_token'], $sfResponse->id);
 
                     /** @var MailMessage $Typo3_v6mail */
                     $Typo3_v6mail = GeneralUtility::makeInstance(MailMessage::class);
