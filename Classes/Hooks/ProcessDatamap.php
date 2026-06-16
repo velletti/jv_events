@@ -476,13 +476,10 @@ class ProcessDatamap
             }
 
             if (is_object($sfResponse)) {
-                // @extensionScannerIgnoreLine
-                if ($sfResponse->success && $sfResponseUid) {
-                    // @extensionScannerIgnoreLine
-                    $sfResponseUid = $sfResponseUid;
-                    $this->flashMessage['OK'][] = "Campaign created in Salesforce: ! : " . $settings['SFREST']['instance_url'] . "/" . $sfResponseUid;
-                    // @extensionScannerIgnoreLine
-                    $this->event->setSalesForceCampaignId($sfResponseUid);
+                if ($sfResponse->success && $sfResponse->id) {
+                    $this->flashMessage['OK'][] = "Campaign created in Salesforce: ! : " . $settings['SFREST']['instance_url'] . "/" . $sfResponse->id   ;
+
+                    $this->event->setSalesForceCampaignId($sfResponse->id);
 
 
                     // every campaign needs a set of campaignmemberStati
@@ -504,23 +501,25 @@ class ProcessDatamap
                     /** @var Typo3Version $tt */
                     $tt = GeneralUtility::makeInstance(Typo3Version::class);
 
-                    if ($tt->getMajorVersion() < 10) {
-                        $Typo3_v6mail->html(nl2br($settings['SFREST']['instance_url'] . "/" . $sfResponseUid . "\n\n\n" . var_export($data, true)));
-                    } else {
-                        $Typo3_v6mail->html(nl2br($settings['SFREST']['instance_url'] . "/" . $sfResponseUid . "\n\n\n" . var_export($data, true)), 'utf-8');
-                    }
+                    $Typo3_v6mail->html(nl2br( $settings['SFREST']['instance_url'] . "/" . $sfResponse->id . "\n\n\n" . var_export($data , true  )  ) , 'utf-8'  );
 
                     $Typo3_v6mail->setSubject("[JV Events] Campaign created  - " . $data['Name']);
                     $Typo3_v6mail->send();
                     $this->flashMessage['NOTICE'][] = 'send Info Email to : ' . var_export($Typo3_v6mail->getTo(), true);
                 } else {
+                    if ( !is_string($sfResponse)) {
+                        $sfResponse = var_export($sfResponse, true);
+                    }
                     if (substr((string)$sfResponse, 0, 6) == "Error") {
-                        $this->flashMessage['ERROR'][] = "Could not create Campaign in Salesforce: ! : " . var_export($sfResponse, true);
+                        $this->flashMessage['ERROR'][] = "Could not create Campaign in Salesforce: ! : " . $sfResponse ;
                     }
                 }
             } else {
+                if ( !is_string($sfResponse)) {
+                    $sfResponse = var_export($sfResponse, true);
+                }
                 if (substr((string)$sfResponse, 0, 6) == "Error") {
-                    $this->flashMessage['ERROR'][] = "Could not create Campaign in Salesforce: ! : " . var_export($sfResponse, true);
+                    $this->flashMessage['ERROR'][] = "Could not create Campaign in Salesforce: ! : " . $sfResponse ;
                 }
             }
         }
