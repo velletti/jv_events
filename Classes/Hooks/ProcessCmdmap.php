@@ -64,7 +64,7 @@ class ProcessCmdmap {
         if( is_object( $Obj )) {
             if ($table == 'tx_jvevents_domain_model_event') {
                 $this->command = $command;
-                $this->uid = (MathUtility::canBeInterpretedAsInteger($id)?$id:$Obj->substNEWwithIDs[$uid]);
+                $this->uid = (MathUtility::canBeInterpretedAsInteger($uid)?$uid:$Obj->substNEWwithIDs[$uid]);
                 $extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class) ->get('jv_events');
 
                 if( $command == 'copy' ) {
@@ -79,10 +79,8 @@ class ProcessCmdmap {
                     /** @var  EventRepository $eventRepository */
                     $this->eventRepository =  GeneralUtility::makeInstance(EventRepository::class);
 
-
                     $mapping = $Obj ->copyMappingArray['tx_jvevents_domain_model_event'] ;
                     $newId = $mapping[$this->uid] ;
-
 
                     if( intval( $newId ) > 0 ) {
                         /** @var  Event $event */
