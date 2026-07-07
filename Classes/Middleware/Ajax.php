@@ -37,6 +37,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Frontend\Cache\CacheInstruction;
 
 /**
  * Class Ajax
@@ -80,20 +81,19 @@ class Ajax implements MiddlewareInterface
 
             $function = strtolower( trim($_gp['tx_jvevents_ajax']['action'])) ;
             if( $function == "eventlist"  ) {
-                if( $request->getAttribute('frontend.cache.instruction') ) {
-                    $request->getAttribute('frontend.cache.instruction')->disableCache("EXT:jv_events: AjaxMiddleware - eventlist needs no cache");
+
+                /** @var CacheInstruction $cacheInstruction */
+                $cacheInstruction = $request->getAttribute('frontend.cache.instruction', new CacheInstruction());
+                if ( $cacheInstruction->isCachingAllowed() ) {
+                    $cacheInstruction->disableCache('EXT:Jv_events: "Ajax requests" disables cache.');
+                    $request = $request->withAttribute('frontend.cache.instruction', $cacheInstruction);
                 }
+
                 $this->getEventList( $_gp["tx_jvevents_ajax"] , $request ) ;
 
             } else if( $function == "reserveseat"  || $function == "returnseat"  ) {
-                if( $request->getAttribute('frontend.cache.instruction') ) {
-                    $request->getAttribute('frontend.cache.instruction')->disableCache("EXT:jv_events: AjaxMiddleware - eventlist needs no cache");
-                }
                 $this->reserveSeat( $_gp["tx_jvevents_ajax"] , $request , ($function == "reserveseat" ) ) ;
             } else if( $function == "soldout"    ) {
-                if( $request->getAttribute('frontend.cache.instruction') ) {
-                    $request->getAttribute('frontend.cache.instruction')->disableCache("EXT:jv_events: AjaxMiddleware - eventlist needs no cache");
-                }
                 return $this->setSoldOut( $_gp["tx_jvevents_ajax"] , $request ) ;
 
             } else  {
