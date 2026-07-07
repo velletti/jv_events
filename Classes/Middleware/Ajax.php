@@ -274,8 +274,6 @@ class Ajax implements MiddlewareInterface
         // Store jv_events_token in Backend in any  folder .. token length  > 10 cahrs !!! and send it in the header (and not like in this test example in the URL)
         // https://wwwv12.allplan.com.ddev.site/de/termine/alle-termine/events-detail/event/ajax/onlyJson/6455?tx_jvevents_ajax[apiToken]=TESTTESTTEST
 
-        $this->initRepositorys() ;
-
 
         if (!$arguments) {
             $arguments = $GLOBALS['TYPO3_REQUEST']->getQueryParams()['tx_jvevents_ajax'];
@@ -289,6 +287,7 @@ class Ajax implements MiddlewareInterface
 
         $pid = ( $_GET[$var] ?? 0 ) ;
         $ts = TyposcriptUtility::loadTypoScriptFromRequest($request, "tx_jvevents_events");
+        $this->initRepositorys() ;
         if (is_array($this->settings) && is_array($ts)) {
             $this->settings = array_merge($ts['settings']);
         } elseif (is_array($ts)) {
