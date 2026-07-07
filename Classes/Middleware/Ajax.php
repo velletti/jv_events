@@ -304,54 +304,6 @@ class Ajax implements MiddlewareInterface
             ShowAsJsonArrayUtility::show($output);
         }
 
-
-
-        /* ************************************************************************************************************ */
-        /*   render the HTML Output :
-        /* ************************************************************************************************************ */
-
-        if( $this->standaloneView ) {
-            /** @var StandaloneView $renderer */
-            $renderer = $this->standaloneView  ;
-            if( $arguments['rss'] ) {
-                $renderer->getRenderingContext()->setControllerAction("EventListRss");
-            } else {
-                $renderer->getRenderingContext()->setControllerAction("EventList");
-            }
-        } else {
-            /** @var StandaloneView $renderer */
-            if( $arguments['rss'] ) {
-                $renderer = $this->getEmailRenderer('', '/Ajax/EventListRss' );
-            } else {
-                $renderer = $this->getEmailRenderer( '', '/Ajax/EventList' );
-            }
-        }
-
-        $layoutPath = GeneralUtility::getFileAbsFileName("EXT:jv_events/Resources/Private/Layouts/");
-
-        $renderer->setLayoutRootPaths(array(0 => $layoutPath));
-
-        $renderer->assign('output' , $output) ;
-        $renderer->assign('settings' , $this->settings ) ;
-        $return = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" .  trim( $renderer->render() ) ;
-
-        if( $arguments['rss'] ) {
-            header_remove();
-            header("content-type: application/rss+xml;charset=utf-8") ;
-
-            //   header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-            header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-            //    header('Cache-Control: no-cache, must-revalidate');
-            //    header('Pragma: no-cache');
-            //    header('Content-Length: ' . strlen($return));
-            //  header('Content-Transfer-Encoding: 8bit');
-            echo $return ;
-            die;
-        } else {
-            header("Content-Type:application/json;charset=utf-8") ;
-            ShowAsJsonArrayUtility::show( array( 'values' => $output , 'html' => $return ) ) ;
-            die;
-        }
     }
 
     /**
