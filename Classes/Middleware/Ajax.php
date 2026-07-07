@@ -77,15 +77,23 @@ class Ajax implements MiddlewareInterface
         $_gp = $request->getQueryParams();
         if( is_array($_gp) && key_exists("tx_jvevents_ajax" ,$_gp ) && key_exists("action" ,$_gp['tx_jvevents_ajax']  ) ) {
 
+
             $function = strtolower( trim($_gp['tx_jvevents_ajax']['action'])) ;
             if( $function == "eventlist"  ) {
-
+                if( $request->getAttribute('frontend.cache.instruction') ) {
+                    $request->getAttribute('frontend.cache.instruction')->disableCache("EXT:jv_events: AjaxMiddleware - eventlist needs no cache");
+                }
                 $this->getEventList( $_gp["tx_jvevents_ajax"] , $request ) ;
 
             } else if( $function == "reserveseat"  || $function == "returnseat"  ) {
-
+                if( $request->getAttribute('frontend.cache.instruction') ) {
+                    $request->getAttribute('frontend.cache.instruction')->disableCache("EXT:jv_events: AjaxMiddleware - eventlist needs no cache");
+                }
                 $this->reserveSeat( $_gp["tx_jvevents_ajax"] , $request , ($function == "reserveseat" ) ) ;
             } else if( $function == "soldout"    ) {
+                if( $request->getAttribute('frontend.cache.instruction') ) {
+                    $request->getAttribute('frontend.cache.instruction')->disableCache("EXT:jv_events: AjaxMiddleware - eventlist needs no cache");
+                }
                 return $this->setSoldOut( $_gp["tx_jvevents_ajax"] , $request ) ;
 
             } else  {
@@ -215,6 +223,7 @@ class Ajax implements MiddlewareInterface
         $this->subeventRepository        = GeneralUtility::makeInstance(SubeventRepository::class);
         $this->staticCountryRepository        = GeneralUtility::makeInstance(StaticCountryRepository::class);
         $this->tokenRepository        = GeneralUtility::makeInstance(TokenRepository::class);
+        $this->persistenceManager = GeneralUtility::makeInstance( \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class);
     }
 
     public function setSoldOut(array $arguments=Null , $request = null)
