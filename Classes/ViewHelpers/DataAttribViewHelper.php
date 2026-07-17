@@ -44,6 +44,8 @@ class DataAttribViewHelper extends AbstractViewHelper   {
      * @var bool
      */
     protected $escapeChildren = false;
+    protected $escapeOutput = false;
+
 
 	public function initializeArguments(): void {
 		$this->registerArgument('event', Event::class, 'Single Event', false);
@@ -58,7 +60,6 @@ class DataAttribViewHelper extends AbstractViewHelper   {
 	 * @return string
 	 */
 	public function render() {
-        $this->escapeOutput = false ;
         $event = $this->arguments['event'] ;
         if( !is_object ( $event )) {
             return " " ;
