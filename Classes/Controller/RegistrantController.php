@@ -80,9 +80,16 @@ class RegistrantController extends BaseController
      * @return void
      */
     #[IgnoreValidation(['value' => 'event'])]
-    public function listAction(Event $event, ?string $hash = ''  ): ResponseInterface
+    public function listAction(?Event $event, ?string $hash = ''  ): ResponseInterface
     {
-        // toDo add restrictions to listing ... only for admins or the organizer himself ..
+        if ( !$event instanceof Event) {
+            $this->addFlashMessage("Error - got no event ID or Event is disabled: " ) ;
+            $this->view->assign('error', "no Event");
+            $this->view->assign('event', null);
+            $this->view->assign('registrants', null);
+            return $this->htmlResponse();
+        }
+
 
         $doExport = 0 ;
         if( $this->request->hasArgument('export')) {
