@@ -115,15 +115,15 @@ class OrganizerRepository extends BaseRepository
     public function findByFilterAllpages($filter=FALSE , bool $toArray=FALSE , bool $ignoreEnableFields = FALSE , $limit=FALSE , $reverseSorting=false )
     {
         $query = $this->createQuery();
-        if( $reverseSorting ) {
-            if ( $reverseSorting == "crdate" ) {
+        if( (string)$reverseSorting === "crdate" || (int)$reverseSorting == 1 ) {
+            if ( (string)$reverseSorting === "crdate" ) {
                 $query->setOrderings([ 'crdate' => QueryInterface::ORDER_DESCENDING]);
             } else {
-                $fields = [ "organizer_category" , 'sorting' , 'tstamp'];
-                $number = random_int(0, 1);
+                $fields = [ "organizer_category" , 'name' , 'phone' , 'sorting' , 'tstamp' , 'crdate' ];
+                $number = random_int(0, 5);
 
-                // if one of last 3 options, always lowest values first
-                $sorting = ($number > 0 ) ? 1 : random_int(0, 1);
+                // if one of last 2 options, always lowest values first
+                $sorting = ($number > 3 ) ? 1 : random_int(0, 1);
                 if ($sorting > 0) {
                     // if field sorting or tspamt is used, always  descending
                     $query->setOrderings([ $fields[$number] => QueryInterface::ORDER_DESCENDING]);
@@ -137,6 +137,15 @@ class OrganizerRepository extends BaseRepository
         } else {
             $query->setOrderings($this->defaultOrderings);
         }
+        /*
+        echo "Reverse Sorting Setting: " . $reverseSorting . "<br>\n" ;
+        echo "Fields: " . var_export($fields , true ) . "<br>\n" ;
+        echo "Number: " . $number . "<br>\n" ;
+        echo "sorting: " . $sorting . "<br>\n" ;
+        echo "Final Sorting: " . json_encode($query->getOrderings()) . "<br>\n" ;
+        die;
+        */
+
 
 
         $querySettings = $query->getQuerySettings() ;
