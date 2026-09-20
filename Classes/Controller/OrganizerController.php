@@ -6,6 +6,7 @@ use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 use JVelletti\JvEvents\Domain\Model\Organizer;
 use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Annotation\Validate;
 use JVelletti\JvEvents\Validation\Validator\OrganizerValidator;
@@ -190,9 +191,34 @@ class OrganizerController extends BaseController
                     $ordering = true;
                 }
             }
+            $queryOrdering = false ;
+            $queryOrderingText = 'Default Ordering' ;
 
+            if( (string)$ordering === "crdate" || (int)$ordering == 1 ) {
+                if ( (string)$ordering === "crdate" ) {
+                    $queryOrdering = [ 'crdate' => QueryInterface::ORDER_DESCENDING];
+                    $queryOrderingText = "Ordering By Creation Date Descending" ;
+                } else {
+                    $fields = [ "organizer_category" , 'name' , 'phone' , 'sorting' , 'tstamp' , 'crdate' ];
+                    $number = random_int(0, 5);
+
+                    // if one of last 2 options, always lowest values first
+                    $sorting = ($number > 3 ) ? 1 : random_int(0, 1);
+                    if ($sorting > 0) {
+                        // if field sorting or tspamt is used, always  descending
+                        $queryOrdering = [ $fields[$number] => QueryInterface::ORDER_DESCENDING];
+                        $queryOrderingText = "Ordering By " . $fields[$number] . " Descending" ;
+                    } else {
+                        $queryOrdering = [ $fields[$number] => QueryInterface::ORDER_ASCENDING];
+                        $queryOrderingText = "Ordering By " . $fields[$number] . " Descending" ;
+                    }
+                }
+            }
         }
-        $organizers = $this->organizerRepository->findByFilterAllpages($filter ,false , false , $limit , $ordering );
+        $this->settings['queryOrderingText'] = $queryOrderingText ;
+
+
+        $organizers = $this->organizerRepository->findByFilterAllpages($filter ,false , false , $limit , $ordering , $queryOrdering );
         $this->debugArray[] = "Before Generate Array:" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " Line: " . __LINE__ ;
 
 
@@ -237,6 +263,7 @@ class OrganizerController extends BaseController
         $orgFilter = $this->generateOrgFilterFast( $filter ) ;
         $this->view->assign('organizers', $organizers);
         $this->view->assign('orgFilter', $orgFilter);
+        $this->view->assign('settings', $this->settings);
         $this->debugArray[] = "Finished:". intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " Line: " . __LINE__ ;
 
        // echo "<pre>" ;
