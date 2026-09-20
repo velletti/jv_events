@@ -112,28 +112,11 @@ class OrganizerRepository extends BaseRepository
      * @return array|QueryResultInterface
      * @throws InvalidQueryException
      */
-    public function findByFilterAllpages($filter=FALSE , bool $toArray=FALSE , bool $ignoreEnableFields = FALSE , $limit=FALSE , $reverseSorting=false )
+    public function findByFilterAllpages($filter=FALSE , bool $toArray=FALSE , bool $ignoreEnableFields = FALSE , $limit=FALSE , $reverseSorting=false ,?array $querySorting =null )
     {
         $query = $this->createQuery();
-        if( (string)$reverseSorting === "crdate" || (int)$reverseSorting == 1 ) {
-            if ( (string)$reverseSorting === "crdate" ) {
-                $query->setOrderings([ 'crdate' => QueryInterface::ORDER_DESCENDING]);
-            } else {
-                $fields = [ "organizer_category" , 'name' , 'phone' , 'sorting' , 'tstamp' , 'crdate' ];
-                $number = random_int(0, 5);
-
-                // if one of last 2 options, always lowest values first
-                $sorting = ($number > 3 ) ? 1 : random_int(0, 1);
-                if ($sorting > 0) {
-                    // if field sorting or tspamt is used, always  descending
-                    $query->setOrderings([ $fields[$number] => QueryInterface::ORDER_DESCENDING]);
-                } else {
-
-                    $query->setOrderings([ $fields[$number] => QueryInterface::ORDER_ASCENDING]);
-                }
-            }
-
-
+        if ( $querySorting ) {
+            $query->setOrderings($querySorting);
         } else {
             $query->setOrderings($this->defaultOrderings);
         }
