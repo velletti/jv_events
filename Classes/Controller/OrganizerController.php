@@ -162,6 +162,7 @@ class OrganizerController extends BaseController
         $filter = false ;
         $ordering = false ;
         $limit = false ;
+        $queryOrdering = null ;
 
         if( array_key_exists( 'filterorganizer' , $this->settings)) {
             if ( array_key_exists( "tags", $this->settings['filterorganizer']))  {
@@ -191,7 +192,7 @@ class OrganizerController extends BaseController
                     $ordering = true;
                 }
             }
-            $queryOrdering = false ;
+
             $queryOrderingText = 'Default Ordering' ;
 
             if( (string)$ordering === "crdate" || (int)$ordering == 1 ) {
@@ -199,18 +200,18 @@ class OrganizerController extends BaseController
                     $queryOrdering = [ 'crdate' => QueryInterface::ORDER_DESCENDING];
                     $queryOrderingText = "Ordering By Creation Date Descending" ;
                 } else {
-                    $fields = [ "organizer_category" , 'name' , 'phone' , 'sorting' , 'tstamp' , 'crdate' ];
-                    $number = random_int(0, 5);
+                    $fields = [ 'name' , 'phone' , 'tstamp' , 'crdate' , 'sorting' ];
+                    $number = random_int(0, 4);
 
                     // if one of last 2 options, always lowest values first
-                    $sorting = ($number > 3 ) ? 1 : random_int(0, 1);
-                    if ($sorting > 0) {
+                    $sorting = ($number > 2 ) ? 1 : random_int(0, 1);
+                    if ($sorting == 0) {
                         // if field sorting or tspamt is used, always  descending
                         $queryOrdering = [ $fields[$number] => QueryInterface::ORDER_DESCENDING];
                         $queryOrderingText = "Ordering By " . $fields[$number] . " Descending" ;
                     } else {
                         $queryOrdering = [ $fields[$number] => QueryInterface::ORDER_ASCENDING];
-                        $queryOrderingText = "Ordering By " . $fields[$number] . " Descending" ;
+                        $queryOrderingText = "Ordering By " . $fields[$number] . " Ascending" ;
                     }
                 }
             }
