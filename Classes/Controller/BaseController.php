@@ -919,7 +919,7 @@ class BaseController extends ActionController
      */
     public function isUserOrganizer() {
         $groups = GeneralUtility::trimExplode("," , $this->settings['feEdit']['organizerGroudIds'] , TRUE ) ;
-        $feuserGroups = GeneralUtility::trimExplode("," ,  $this->frontendUser->user['usergroup']  , TRUE ) ;
+        $feuserGroups = GeneralUtility::trimExplode("," ,  ($this->frontendUser->user['usergroup'] ?? '') , TRUE ) ;
         foreach( $groups as $group ) {
             if( in_array( $group  , $feuserGroups )) {
                 return true  ;
@@ -933,7 +933,7 @@ class BaseController extends ActionController
      */
     public function isAdminOrganizer() {
         $groups = GeneralUtility::trimExplode("," , $this->settings['feEdit']['adminOrganizerGroudIds'] , TRUE ) ;
-        $feuserGroups = GeneralUtility::trimExplode("," ,  $this->frontendUser->user['usergroup']  , TRUE ) ;
+        $feuserGroups = GeneralUtility::trimExplode("," , ($this->frontendUser->user['usergroup'] ?? '')   , TRUE ) ;
         foreach( $groups as $group ) {
             if( in_array( $group  , $feuserGroups )) {
                 return true  ;
@@ -947,7 +947,7 @@ class BaseController extends ActionController
      * @return bool
      */
     public function hasUserGroup($groupId) {
-        $feuserGroups = GeneralUtility::trimExplode("," ,  $this->frontendUser->user['usergroup']  , TRUE ) ;
+        $feuserGroups = GeneralUtility::trimExplode("," ,  ($this->frontendUser->user['usergroup'] ?? '')   , TRUE ) ;
         return in_array( $groupId  , $feuserGroups ) ;
     }
 
@@ -965,7 +965,7 @@ class BaseController extends ActionController
             return true  ;
         } else {
             $groups = GeneralUtility::trimExplode("," , $organizer->getAccessGroups() , TRUE ) ;
-            $feuserGroups = GeneralUtility::trimExplode("," ,  $this->frontendUser->user['usergroup']  , TRUE ) ;
+            $feuserGroups = GeneralUtility::trimExplode("," ,  ($this->frontendUser->user['usergroup'] ?? '')   , TRUE ) ;
             foreach( $groups as $group ) {
                 if( in_array( $group  , $feuserGroups )) {
                     return true  ;

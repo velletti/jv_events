@@ -102,6 +102,8 @@ class AjaxController extends BaseController
     /** @var array */
     public $frontendUser ;
 
+    public $injectedRequest;
+
 
     /**
      * @var StandaloneView
@@ -132,8 +134,8 @@ class AjaxController extends BaseController
          * Gets the Ajax Call Parameters   | OLD school without middleWare ..
          * Maybe obsolete and may not work in V12 anymore . ?? 
          */
-        $_gp = $this->request->getQueryParams()['tx_jvevents_ajax'];
-        \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($_gp, $this->request->getParsedBody()['tx_jvevents_ajax']);
+        $_gp = $this->injectedRequest->getQueryParams()['tx_jvevents_ajax'];
+        \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($_gp, $this->injectedRequest->getParsedBody()['tx_jvevents_ajax']);
 
 
         $ajax = [];
@@ -604,8 +606,8 @@ class AjaxController extends BaseController
     public function eventListAction(?array $arguments): \Psr\Http\Message\ResponseInterface
     {
         if(!$arguments) {
-            $arguments = $this->request->getQueryParams()['tx_jvevents_ajax'];
-            \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($arguments, $this->request->getParsedBody()['tx_jvevents_ajax']);
+            $arguments = $this->injectedRequest->getQueryParams()['tx_jvevents_ajax'];
+            \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($arguments, $this->injectedRequest->getParsedBody()['tx_jvevents_ajax']);
         }
         /** @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication $frontendUser */
         $this->frontendUser = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user');
@@ -695,13 +697,13 @@ class AjaxController extends BaseController
      */
     public function eventMenuAction(?array $arguments): void
     {
+        $this->injectedRequest = $this->injectedRequest ??  $GLOBALS['TYPO3_REQUEST'] ;
         /** @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication $frontendUser */
         $this->frontendUser = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user');
-
-        $pid =  $this->request->getParsedBody()['id'] ?? $this->request->getQueryParams()['id'] ?? null;
+        $pid =  $this->injectedRequest->getParsedBody()['id'] ?? $this->injectedRequest->getQueryParams()['id'] ?? null;
         if(!$arguments) {
-            $arguments = $this->request->getQueryParams()['tx_jvevents_ajax'];
-            \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($arguments, $this->request->getParsedBody()['tx_jvevents_ajax']);
+            $arguments = $this->injectedRequest->getQueryParams()['tx_jvevents_ajax'];
+            \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($arguments, $this->injectedRequest->getParsedBody()['tx_jvevents_ajax']);
         }
         // https://www.allplan.com.ddev.local/index.php?uid=82&eID=jv_events&L=1&tx_jvevents_ajax[event]=94&tx_jvevents_ajax[action]=eventMenu&tx_jvevents_ajax[controller]=Ajax
         // https://www.allplan.com.ddev.local/index.php?uid=82&eID=jv_events&tx_jvevents_ajax[event]=2934&tx_jvevents_ajax[action]=eventMenu&tx_jvevents_ajax[mode]=onlyValues
@@ -774,8 +776,8 @@ class AjaxController extends BaseController
     public function cleanHistory(?array $arguments): void {
         $return = '' ;
         if(!$arguments) {
-            $arguments = $this->request->getQueryParams()['tx_jvevents_ajax'];
-            \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($arguments, $this->request->getParsedBody()['tx_jvevents_ajax']);
+            $arguments = $this->injectedRequest->getQueryParams()['tx_jvevents_ajax'];
+            \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($arguments, $this->injectedRequest->getParsedBody()['tx_jvevents_ajax']);
         }
         if(!$arguments) {
             ShowAsJsonArrayUtility::show( ['status' => false, 'html' => $return] ) ;
@@ -876,8 +878,8 @@ class AjaxController extends BaseController
         /*   render the HTML Output :
         /* ************************************************************************************************************ */
         if(!$arguments) {
-            $arguments = $this->request->getQueryParams()['tx_jvevents_ajax'];
-            \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($arguments, $this->request->getParsedBody()['tx_jvevents_ajax']);
+            $arguments = $this->injectedRequest->getQueryParams()['tx_jvevents_ajax'];
+            \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($arguments, $this->injectedRequest->getParsedBody()['tx_jvevents_ajax']);
         }
 
         $output = $this->locationListSub($arguments) ;
@@ -1102,8 +1104,8 @@ class AjaxController extends BaseController
         $this->frontendUser = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user');
         $output = [];
         if(!$arguments) {
-            $arguments = $this->request->getQueryParams()['tx_jvevents_ajax'];
-            \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($arguments, $this->request->getParsedBody()['tx_jvevents_ajax']);
+            $arguments = $this->injectedRequest->getQueryParams()['tx_jvevents_ajax'];
+            \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($arguments, $this->injectedRequest->getParsedBody()['tx_jvevents_ajax']);
         }
         // https:/tango.ddev.local/index.php?uid=82&eID=jv_events&tx_jvevents_ajax[event]=2264&tx_jvevents_ajax[action]=eventUnlink&
         $output['success'] = false ;
@@ -1169,8 +1171,8 @@ class AjaxController extends BaseController
         $this->frontendUser = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user');
         $output = [];
         if(!$arguments) {
-            $arguments = $this->request->getQueryParams()['tx_jvevents_ajax'];
-            \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($arguments, $this->request->getParsedBody()['tx_jvevents_ajax']);
+            $arguments = $this->injectedRequest->getQueryParams()['tx_jvevents_ajax'];
+            \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($arguments, $this->injectedRequest->getParsedBody()['tx_jvevents_ajax']);
         }
         // https:/tango.ddev.local/index.php?uid=82&eID=jv_events&tx_jvevents_ajax[event]=2264&tx_jvevents_ajax[action]=eventUnlink&
         $output['success'] = false ;

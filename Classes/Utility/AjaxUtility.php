@@ -30,6 +30,8 @@ class AjaxUtility {
         $controller = GeneralUtility::makeInstance(AjaxController::class ) ;
 
         $controller->initializeAction() ;
+        $controller->injectedRequest = $request ;
+        $controller->frontendUser = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user');
 
         /* First: move request parameter to Controller variables */
         if( key_exists('mode' , $_gp)) {
