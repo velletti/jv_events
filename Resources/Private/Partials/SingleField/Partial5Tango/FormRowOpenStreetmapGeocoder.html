@@ -119,11 +119,17 @@
      data-geocodeurlshort="https://nominatim.openstreetmap.org/search?format=json&q={location.cityEncoded}&addressdetails=1&limit=1&polygon_svg=1"
      data-publicpath="{core:normalizedUrl(pathOrUrl: 'EXT:jv_events/Resources/Public/')}"
 ></div>
-<v:asset.prefetch domains="nominatim.openstreetmap.org" />
-<f:asset.script identifier="leafletLocation1" src="EXT:jv_events/Resources/Public/JavaScript/leaflet-1-7-1.js" async="false" priority="true"></f:asset.script>
-<f:asset.script identifier="leafletGeocoder" src="EXT:jv_events/Resources/Public/JavaScript/tango/LeafletFeGeoCoder.js" async="false" priority="true"></f:asset.script>
-<f:asset.css identifier="leafletLocation1" href="EXT:jv_events/Resources/Public/Css/leaflet-1-7-1.css"></f:asset.css>
-<f:asset.css identifier="leafletLocation2" href="EXT:jv_events/Resources/Public/Css/tango/leafletFrontend.css"></f:asset.css>
+<f:asset.script identifier="prefetch-nominatim">
+    <link rel="dns-prefetch" href="https://nominatim.openstreetmap.org">
+    <link rel="preconnect" href="https://nominatim.openstreetmap.org">
+</f:asset.script>
+
+<f:asset.script identifier="leafletLocation1" src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" async="false" priority="true" />
+<f:asset.script identifier="leafletGeocoder" src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js" async="false" priority="true" />
+
+<f:asset.css identifier="leafletLocation1" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+<f:asset.css identifier="leafletLocation2" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+
 
 
 

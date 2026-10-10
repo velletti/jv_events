@@ -247,7 +247,7 @@ class EventController extends BaseController
      * @return void
      */
     #[IgnoreValidation(['value' => 'event'])]
-    public function showAction(?Event $event=null): ResponseInterface
+    public function showAction(?Event $event): ResponseInterface
     {
         if( $event ) {
             if ( $event->getEventType() == 0 ) {
@@ -330,7 +330,7 @@ class EventController extends BaseController
      * @return \Psr\Http\Message\ResponseInterface
      */
     #[IgnoreValidation(['value' => 'event'])]
-    public function newAction(Event $event=null)
+    public function newAction(Event $event)
     {
         /** @var QueryResultInterface $categories */
         $categories = $this->categoryRepository->findAllonAllPages( '0' );
@@ -392,7 +392,7 @@ class EventController extends BaseController
      * action create
      */
     #[Validate(['param' => 'event', 'validator' => EventValidator::class])]
-    public function createAction(Event $event)
+    public function createAction(?Event $event)
     {
         $pid = 0 ;
         if( $this->request->hasArgument('event')) {
@@ -1370,7 +1370,7 @@ class EventController extends BaseController
      * @throws IllegalObjectTypeException
      * @throws UnknownObjectException
      */
-    public function updateLatestEvent( Event $event , DateTime $date = NULL ): void {
+    public function updateLatestEvent( Event $event , ?DateTime $date ): void {
         if( $date == NULL ) {
             $date = new DateTime('now' ) ;
             // Idea : : get latest Date from any other event of this organizer ?

@@ -313,7 +313,7 @@ class RegistrantController extends BaseController
      */
     #[IgnoreValidation(['value' => 'event'])]
     #[IgnoreValidation(['value' => 'registrant'])]
-    public function newAction(Event $event=null, Registrant $registrant=null): ResponseInterface
+    public function newAction(?Event $event, ?Registrant $registrant): ResponseInterface
     {
         $this->getFlashMessageQueue()->getAllMessagesAndFlush();
         if (is_object($event)) {
@@ -914,7 +914,7 @@ class RegistrantController extends BaseController
      * @param string $hash
      * @return void
      */
-    public function checkQrcodeAction(Event $event=null , $hash=''): ResponseInterface
+    public function checkQrcodeAction(?Event $event , $hash=''): ResponseInterface
     {
         $registrant = false ;
 

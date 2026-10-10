@@ -716,8 +716,11 @@ class BaseController extends ActionController
      * @param Registrant $oldReg  Copy of a registrant. may dbe different if user is alread registered with same email.
      * @return boolean
      */
-    public function sendEmail(Event $event = NULL, Registrant $registrant = NULL , $partialName ='', $recipient=[] , $otherEvents=false , $replyTo=false , Registrant $oldReg = NULL )
+    public function sendEmail(?Event $event , ?Registrant $registrant  , $partialName , $recipient , $otherEvents , $replyTo , ?Registrant $oldReg  )
     {
+        if(!is_array($recipient)) {
+            $recipient=[] ;
+        }
         $subevents = null;
         if (!GeneralUtility::validEmail($this->settings['register']['senderEmail'])) {
             throw new \Exception('plugin.jv_events.settings.register.senderEmail is not a valid Email Address. Is needed as Sender E-mail', 7008387161);

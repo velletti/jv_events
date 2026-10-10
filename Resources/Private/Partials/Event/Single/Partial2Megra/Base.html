@@ -162,11 +162,15 @@
 				 data-geocodeoptions="false"
 				 data-publicpath="{core:normalizedUrl(pathOrUrl: 'EXT:jv_events/Resources/Public/')}"
 			></div>
-			<v:asset.prefetch domains="nominatim.openstreetmap.org" />
-			<v:asset.script path="EXT:jv_events/Resources/Public/JavaScript/leaflet-1-7-1.js" name="leaflet1" async="false" content="header"/>
-			<v:asset.script path="EXT:jv_events/Resources/Public/JavaScript/megra/LeafletFeGeoCoder.js" name="leaflet2" async="false"  content="footer"/>
-			<v:asset.style path="EXT:jv_events/Resources/Public/Css/leaflet-1-7-1.css" name="leaflet3"   content="header"/>
-			<v:asset.style path="EXT:jv_events/Resources/Public/Css/megra/leafletFrontend.css" name="leaflet4"   content="footer"/>
+			<f:asset.script identifier="prefetch-nominatim">
+				<link rel="dns-prefetch" href="https://nominatim.openstreetmap.org">
+				<link rel="preconnect" href="https://nominatim.openstreetmap.org">
+			</f:asset.script>
+			<f:asset.script identifier="leaflet1" src="EXT:jv_events/Resources/Public/JavaScript/leaflet-1-7-1.js" priority="true" />
+			<f:asset.script identifier="leaflet2" src="EXT:jv_events/Resources/Public/JavaScript/megra/LeafletFeGeoCoder.js" />
+
+			<f:asset.css identifier="leaflet3" href="EXT:jv_events/Resources/Public/Css/leaflet-1-7-1.css" priority="true" />
+			<f:asset.css identifier="leaflet4" href="EXT:jv_events/Resources/Public/Css/megra/leafletFrontend.css" />
 
 		</div>
 	</f:if>

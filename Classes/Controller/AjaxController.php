@@ -183,7 +183,7 @@ class AjaxController extends BaseController
      *
      * @return array
      */
-    public function eventsListMenuSub(array $arguments )
+    public function eventsListMenuSub(?array $arguments )
     {
 
        $location = null;
@@ -601,7 +601,7 @@ class AjaxController extends BaseController
      * @param array|null $arguments
      * @return void
      */
-    public function eventListAction(array $arguments=Null): \Psr\Http\Message\ResponseInterface
+    public function eventListAction(?array $arguments): \Psr\Http\Message\ResponseInterface
     {
         if(!$arguments) {
             $arguments = $this->request->getQueryParams()['tx_jvevents_ajax'];
@@ -693,7 +693,7 @@ class AjaxController extends BaseController
      *
      * @return void
      */
-    public function eventMenuAction(array $arguments=Null): void
+    public function eventMenuAction(?array $arguments): void
     {
         /** @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication $frontendUser */
         $this->frontendUser = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user');
@@ -771,7 +771,7 @@ class AjaxController extends BaseController
         die;
     }
 
-    public function cleanHistory(array $arguments=Null): void {
+    public function cleanHistory(?array $arguments): void {
         $return = '' ;
         if(!$arguments) {
             $arguments = $this->request->getQueryParams()['tx_jvevents_ajax'];
@@ -867,7 +867,7 @@ class AjaxController extends BaseController
     }
 
 
-    public function locationListAction(array $arguments=Null): void {
+    public function locationListAction(?array $arguments): void {
         $orgArray = [];
         $locations = null;
         /** @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication $frontendUser */
@@ -1097,7 +1097,7 @@ class AjaxController extends BaseController
      * @throws IllegalObjectTypeException
      * @throws UnknownObjectException
      */
-    public function eventChangeLocIdAction( array $arguments=null ): void {
+    public function eventChangeLocIdAction( ?array $arguments ): void {
         /** @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication $frontendUser */
         $this->frontendUser = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user');
         $output = [];
@@ -1164,7 +1164,7 @@ class AjaxController extends BaseController
      * @throws IllegalObjectTypeException
      * @throws UnknownObjectException
      */
-    public function eventUnlinkAction( array $arguments=null ): void {
+    public function eventUnlinkAction( ?array $arguments ): void {
         /** @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication $frontendUser */
         $this->frontendUser = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user');
         $output = [];

@@ -152,7 +152,7 @@ class LocationController extends BaseController
      * @return void
      */
     #[IgnoreValidation(['value' => 'location'])]
-    public function newAction(Location $location=Null): ResponseInterface
+    public function newAction(?Location $location): ResponseInterface
     {
         /** @var QueryResultInterface $categories */
         $categories = $this->categoryRepository->findAllonAllPages( '1' );
@@ -253,7 +253,7 @@ class LocationController extends BaseController
      * @return void
      */
     #[IgnoreValidation(['value' => 'location'])]
-    public function setDefaultAction(Location $location , Organizer $organizer , ?int $oldDefault= 0) {
+    public function setDefaultAction(?Location $location , Organizer $organizer , ?int $oldDefault= 0) {
 
         $locations = $this->locationRepository->findByOrganizersAllpages([$organizer->getUid()] , true , TRUE , true ) ;
         if ( $locations && count($locations) > 0) {
@@ -286,7 +286,7 @@ class LocationController extends BaseController
      * @return void
      */
     #[IgnoreValidation(['value' => 'location'])]
-    public function editAction(Location $location): ResponseInterface
+    public function editAction(?Location $location): ResponseInterface
     {
         /** @var QueryResultInterface $categories */
         $categories = $this->categoryRepository->findAllonAllPages( '1' );

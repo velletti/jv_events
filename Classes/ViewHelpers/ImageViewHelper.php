@@ -4,6 +4,7 @@ namespace JVelletti\JvEvents\ViewHelpers;
 
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Service\ImageService;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
@@ -11,11 +12,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 class ImageViewHelper extends AbstractTagBasedViewHelper
 {
     protected ImageService $imageService;
-
-    public function injectImageService(ImageService $imageService): void
-    {
-        $this->imageService = $imageService;
-    }
 
     public function initializeArguments(): void
     {
@@ -40,6 +36,8 @@ class ImageViewHelper extends AbstractTagBasedViewHelper
 
     public function render(): string
     {
+        $this->imageService = GeneralUtility::makeInstance(ImageService::class);
+
         $this->tag->setTagName('img');
         if (
             ($this->arguments['src'] === null && $this->arguments['image'] === null) ||

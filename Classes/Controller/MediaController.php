@@ -109,7 +109,7 @@ class MediaController extends BaseController
      * @return void
      */
     #[IgnoreValidation(['value' => 'media'])]
-    public function newAction(Media $media=Null): ResponseInterface
+    public function newAction(?Media $media): ResponseInterface
     {
         /** @var QueryResultInterface $categories */
         $categories = $this->categoryRepository->findAllonAllPages( '3' );
@@ -146,7 +146,7 @@ class MediaController extends BaseController
      * @return void
      */
     #[Validate(['param' => 'media', 'validator' => MediaValidator::class])]
-    public function createAction(Media $media)
+    public function createAction(?Media $media)
     {
         if( $this->request->hasArgument('media')) {
             $media = $this->cleanMediaArguments( $media) ;

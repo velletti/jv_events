@@ -287,7 +287,7 @@ class OrganizerController extends BaseController
      * @return void
      */
     #[IgnoreValidation(['value' => 'organizer'])]
-    public function newAction(Organizer $organizer = null ): ResponseInterface
+    public function newAction(?Organizer $organizer  ): ResponseInterface
     {
         /** @var QueryResultInterface $categories */
         $tags = $this->tagRepository->findAllonAllPages( '2' );
