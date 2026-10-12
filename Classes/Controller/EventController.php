@@ -247,7 +247,7 @@ class EventController extends BaseController
      * @return void
      */
     #[IgnoreValidation(['value' => 'event'])]
-    public function showAction(?Event $event): ResponseInterface
+    public function showAction(?Event $event=null): ResponseInterface
     {
         if( $event ) {
             if ( $event->getEventType() == 0 ) {
@@ -392,7 +392,7 @@ class EventController extends BaseController
      * action create
      */
     #[Validate(['param' => 'event', 'validator' => EventValidator::class])]
-    public function createAction(?Event $event)
+    public function createAction(?Event $event=null)
     {
         $pid = 0 ;
         if( $this->request->hasArgument('event')) {
@@ -1370,7 +1370,7 @@ class EventController extends BaseController
      * @throws IllegalObjectTypeException
      * @throws UnknownObjectException
      */
-    public function updateLatestEvent( Event $event , ?DateTime $date ): void {
+    public function updateLatestEvent( Event $event , ?DateTime $date=null ): void {
         if( $date == NULL ) {
             $date = new DateTime('now' ) ;
             // Idea : : get latest Date from any other event of this organizer ?

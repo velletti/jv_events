@@ -115,7 +115,7 @@ class LocationController extends BaseController
      *
      * @return void
      */
-    public function showAction(?Location $location): ResponseInterface
+    public function showAction(?Location $location=null): ResponseInterface
     {
         if ( $location ) {
             $nextEventOrganizer = null;
@@ -152,7 +152,7 @@ class LocationController extends BaseController
      * @return void
      */
     #[IgnoreValidation(['value' => 'location'])]
-    public function newAction(?Location $location): ResponseInterface
+    public function newAction(?Location $location=null): ResponseInterface
     {
         /** @var QueryResultInterface $categories */
         $categories = $this->categoryRepository->findAllonAllPages( '1' );
@@ -286,7 +286,7 @@ class LocationController extends BaseController
      * @return void
      */
     #[IgnoreValidation(['value' => 'location'])]
-    public function editAction(?Location $location): ResponseInterface
+    public function editAction(?Location $location=null): ResponseInterface
     {
         /** @var QueryResultInterface $categories */
         $categories = $this->categoryRepository->findAllonAllPages( '1' );

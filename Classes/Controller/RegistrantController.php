@@ -3,6 +3,7 @@ namespace JVelletti\JvEvents\Controller;
 
 use JVelletti\JvEvents\Utility\MigrationUtility;
 use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
+use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Annotation\Validate;
 use JVelletti\JvEvents\Validation\Validator\RegistrantValidator;
@@ -306,14 +307,18 @@ class RegistrantController extends BaseController
         $string =   str_replace("\r" , "   " , $string ) ;
         return  str_replace($delim , $replace , $string ) ;
     }
+
     /**
      * action new
      *
-     * @return void
+     * @param Event|null $event
+     * @param Registrant|null $registrant
+     * @return ResponseInterface
+     * @throws InvalidQueryException
      */
     #[IgnoreValidation(['value' => 'event'])]
     #[IgnoreValidation(['value' => 'registrant'])]
-    public function newAction(?Event $event, ?Registrant $registrant): ResponseInterface
+    public function newAction(?Event $event=null, ?Registrant $registrant=null): ResponseInterface
     {
         $this->getFlashMessageQueue()->getAllMessagesAndFlush();
         if (is_object($event)) {
@@ -448,7 +453,7 @@ class RegistrantController extends BaseController
      */
     #[IgnoreValidation(['value' => 'event'])]
     #[Validate(['param' => 'registrant', 'validator' => RegistrantValidator::class])]
-    public function createAction(Event $event, Registrant $registrant): ResponseInterface {
+    public function createAction(?Event $event, ?Registrant $registrant): ResponseInterface {
 
 
 
@@ -914,7 +919,7 @@ class RegistrantController extends BaseController
      * @param string $hash
      * @return void
      */
-    public function checkQrcodeAction(?Event $event , $hash=''): ResponseInterface
+    public function checkQrcodeAction(?Event $event=null , $hash=''): ResponseInterface
     {
         $registrant = false ;
 
@@ -1067,18 +1072,7 @@ class RegistrantController extends BaseController
         return $registrantEmail ;
     }
 
-    /**
-     * @return ResponseInterface
-     */
-    public function processRequest(RequestInterface $request ):ResponseInterface
-    {
-        try {
-            return parent::processRequest($request);
-        }
-        catch(TargetNotFoundException) {
 
-        }
-    }
 
 
 }
