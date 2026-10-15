@@ -492,10 +492,8 @@
 							 data-geocodeoptions="false"
 							 data-publicpath="{core:normalizedUrl(pathOrUrl: 'EXT:jv_events/Resources/Public/')}"
 						></div>
-						<f:asset.script identifier="prefetch-nominatim">
-							<link rel="dns-prefetch" href="https://nominatim.openstreetmap.org">
-							<link rel="preconnect" href="https://nominatim.openstreetmap.org">
-						</f:asset.script>
+						<vhs:page.header.link rel="dns-prefetch" href="https://nominatim.openstreetmap.org" />
+						<vhs:page.header.link rel="preconnect" href="https://nominatim.openstreetmap.org" />
 						<f:asset.script identifier="leaflet1" src="EXT:jv_events/Resources/Public/JavaScript/leaflet-1-7-1.js" priority="true" />
 						<f:asset.script identifier="leafletGeocoder" src="EXT:jv_events/Resources/Public/JavaScript/tango/LeafletFeGeoCoder.js" priority="true" />
 

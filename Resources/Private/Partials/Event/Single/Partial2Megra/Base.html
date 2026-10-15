@@ -1,4 +1,5 @@
 {namespace event=JVelletti\JvEvents\ViewHelpers}
+{namespace v=FluidTYPO3\Vhs\ViewHelpers}
 
 <ul class="nav nav-tabs" role="tablist">
 	<li class="nav-tab active  px-3 py-1" role="presentation" ><a id="jv_events_event_nav" data-toggle="tab" href="#jv_events_event">Info</a></li>
@@ -162,10 +163,9 @@
 				 data-geocodeoptions="false"
 				 data-publicpath="{core:normalizedUrl(pathOrUrl: 'EXT:jv_events/Resources/Public/')}"
 			></div>
-			<f:asset.script identifier="prefetch-nominatim">
-				<link rel="dns-prefetch" href="https://nominatim.openstreetmap.org">
-				<link rel="preconnect" href="https://nominatim.openstreetmap.org">
-			</f:asset.script>
+			<v:page.header.link rel="dns-prefetch" href="https://nominatim.openstreetmap.org" />
+			<v:page.header.link rel="preconnect" href="https://nominatim.openstreetmap.org" />
+
 			<f:asset.script identifier="leaflet1" src="EXT:jv_events/Resources/Public/JavaScript/leaflet-1-7-1.js" priority="true" />
 			<f:asset.script identifier="leaflet2" src="EXT:jv_events/Resources/Public/JavaScript/megra/LeafletFeGeoCoder.js" />
 

@@ -1,6 +1,6 @@
-
-
+{namespace v=FluidTYPO3\Vhs\ViewHelpers}
 {namespace jve=JVelletti\JvEvents\ViewHelpers}
+
 <f:layout name="Edit" />
 
 
@@ -158,16 +158,14 @@
                              data-geocodeoptions="false"
                              data-publicpath="{core:normalizedUrl(pathOrUrl: 'EXT:jv_events/Resources/Public/')}"
                         ></div>
-                        <f:asset.script identifier="prefetch-nominatim">
-                            <link rel="dns-prefetch" href="https://nominatim.openstreetmap.org">
-                            <link rel="preconnect" href="https://nominatim.openstreetmap.org">
-                        </f:asset.script>
+                        <v:page.header.link rel="dns-prefetch" href="https://nominatim.openstreetmap.org" />
+                        <v:page.header.link rel="preconnect" href="https://nominatim.openstreetmap.org" />
 
-                        <f:asset.script identifier="leafletLocation1" src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" async="false" priority="true" />
-                        <f:asset.script identifier="leafletGeocoder" src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js" async="false" priority="true" />
+                        <f:asset.script identifier="leafletLocation1" src="EXT:jv_events/Resources/Public/JavaScript/leaflet-1-7-1.js" async="false" priority="true" />
+                        <f:asset.script identifier="leafletGeocoder" src="EXT:jv_events/Resources/Public/JavaScript/tango/LeafletFeGeoCoder.js" async="false" priority="true" />
 
-                        <f:asset.css identifier="leafletLocation3" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-                        <f:asset.css identifier="leafletLocation4" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+                        <f:asset.css identifier="leafletLocation3" href="EXT:jv_events/Resources/Public/Css/leaflet-1-7-1.css" />
+                        <f:asset.css identifier="leafletLocation4" href="EXT:jv_events/Resources/Public/Css/tango/leafletFrontend.css" />
 
                     </div>
                 </f:if>

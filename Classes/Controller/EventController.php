@@ -330,7 +330,7 @@ class EventController extends BaseController
      * @return \Psr\Http\Message\ResponseInterface
      */
     #[IgnoreValidation(['value' => 'event'])]
-    public function newAction(Event $event)
+    public function newAction(?Event $event=null): ResponseInterface
     {
         /** @var QueryResultInterface $categories */
         $categories = $this->categoryRepository->findAllonAllPages( '0' );
