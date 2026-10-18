@@ -5,6 +5,39 @@ routeEnhancers:
       'deleteFile.json': 1386871774
       'cropImage.json': 44900073
 
+  # Plugin für Termin-LISTEN (configurePlugin 'Events', Controller 'list')
+  jveventEventsPlugin:
+    type: Extbase
+    extension: JvEvents
+    plugin: Events
+
+    defaults:
+      action: 'list'
+      controller: 'Event'
+      category: '1'
+      maxDays: '7'
+      startDate: ''
+
+    routes:
+      - routePath: '/overrule/{organizer_slug}/{category}/{startDate}/{maxDays}-days'
+        _controller: 'Event::list'
+        _arguments:
+          organizer_slug: 'overruleFilter/organizer'
+          category: 'overruleFilter/category'
+          startDate: 'overruleFilter/startDate'
+          maxDays: 'overruleFilter/maxDays'
+        requirements:
+          category: 'true|false|[0-9]+'
+          startDate: '[0-9]{2}\.[0-9]{2}\.[0-9]{4}|today'
+          maxDays: '\d+'
+
+    aspects:
+      organizer_slug:
+        type: PersistedAliasMapper
+        tableName: tx_jvevents_domain_model_organizer
+        routeFieldName: slug
+
+
   jveventEventPlugin:
     type: Extbase
     extension: JvEvents

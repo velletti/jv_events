@@ -245,8 +245,9 @@ class EventRepository extends BaseRepository
 
 
         $result = $query->execute();
-
         if ( $settings['debugQuery']  ) {
+            var_dump( $settings['filter'] );
+            echo "<hr>";
             $this->debugQuery($query) ;
         }
 

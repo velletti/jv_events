@@ -15,7 +15,7 @@
 <f:flashMessages />
 
   <f:render partial="Organizer/Single/Partial{layoutList}/Header" arguments="{organizer:organizer, locations: locations, settings: settings}" />
-  <f:render partial="Organizer/List/Partial{layoutList}/SingleOrganizer" arguments="{organizer:organizer, locations: locations, settings: settings, showDetails: '1' }" />
+  <f:render partial="Organizer/List/Partial{layoutList}/SingleOrganizer" arguments="{organizer:organizer, locations: locations, settings: settings, showDetails: '1' , nextEventOrganizer: nextEventOrganizer}" />
 
   <f:if condition="{locations}">
     <f:then>

@@ -118,8 +118,8 @@ class OrganizerController extends BaseController
 
             $filter['organizer'] =  $organizer[0]->getUid()  ;
             $filter['canceledEvents'] = "2" ;
+            $filter['maxEvents'] = 50 ;
             $filter['startDate'] = 1 ;
-
             $nextEvents = $this->eventRepository->findByFilter( $filter, 50,  $this->settings ) ;
             $nextEvent = $nextEvents->getFirst() ;
             $nextEventCount = $nextEvents->count() ;
@@ -256,9 +256,14 @@ class OrganizerController extends BaseController
         $organizerUids = [];
         if( $organizer ) {
             $this->settings['filter']['organizer'] =  $organizer->getUid()  ;
-            $this->settings['filter']['maxEvent'] =  1  ;
-            $nextEventOrganizer = $this->eventRepository->findByFilter(false, 1,  $this->settings )->getFirst() ;
-            $this->view->assign('nextEventOrganizer', ( $nextEventOrganizer ? $nextEventOrganizer->getStartdate()->format("d.m.Y") : date("d.m.Y") ));
+            $this->settings['filter']['maxEvents'] =  1  ;
+            $this->settings['filter']['canceledEvents'] =  2  ;
+            $this->settings['filter']['startDate'] =  1  ;
+            // $this->settings['debugQuery'] =  1  ;
+            $nextEventOrganizer = $this->eventRepository->findByFilter(false, 1,  $this->settings ) ;
+            $this->view->assign('nextEvent',  $nextEventOrganizer->toArray()[0] );
+            $this->view->assign('nextEventOrganizer', ( $nextEventOrganizer->getFirst() ? $nextEventOrganizer->getFirst()->getStartdate()->format("d.m.Y") : date("d.m.Y") ));
+
 
             $organizerUids[0] = $organizer->getUid() ;
             $locations = $this->locationRepository->findByOrganizersAllpages( $organizerUids , false, FALSE ,  false , "latestEventDESC" , '-30 DAY') ;
