@@ -283,6 +283,11 @@
 		<trans-unit id="plugin.filter.maxDays" approved="yes">
 			<source>Show max Days Only if StartDate has Restrictions , enter 0 for no limitations) </source>
 		</trans-unit>
+		<trans-unit id="plugin.filter.ignoreMultiDayEvents" approved="yes">
+            <source>Ignore Event after StartDate default: NO </source>
+        </trans-unit>
+
+
 		<trans-unit id="plugin.filter.maxEvents" approved="yes">
 			<source>Show max Events (enter 0 for no limitations) </source>
 		</trans-unit>

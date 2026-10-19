@@ -96,6 +96,14 @@
                             <type>number</type>
                         </config>
                     </settings.filter.maxDays>
+                    <settings.filter.ignoreMultiDayEvents>
+                        <label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.ignoreMultiDayEvents
+                        </label>
+                        <config>
+                            <type>check</type>
+                            <renderType>checkboxToggle</renderType>
+                        </config>
+                    </settings.filter.ignoreMultiDayEvents>
                     <settings.filter.maxEvents>
                         <label>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:plugin.filter.maxEvents
                         </label>

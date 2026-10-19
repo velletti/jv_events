@@ -123,6 +123,7 @@ class EventController extends BaseController
         }
         $this->debugArray[] = "After Init :" . intval( 1000 * ( $this->microtime_float() - 	$this->timeStart )) . " Line: " . __LINE__ ;
         $this->settings['filter']['distance']['doNotOverrule'] = "false" ;
+        $this->settings['filter']['ignoreMultiDayEvents'] =  (array_key_exists("ignoreMultiDayEvents" , $this->settings['filter'] ) ? (bool)$this->settings['filter']['ignoreMultiDayEvents'] : false );
         $this->settings['flexform']['filter']['maxDays']  =  ($this->settings['filter']['maxDays'] > 0 ) ? $this->settings['filter']['maxDays'] : 30 ;
         $this->settings['flexform']['filter']['maxEvents']  =  ($this->settings['filter']['maxEvents'] > 0 ) ? $this->settings['filter']['maxEvents'] : 100 ;
 
