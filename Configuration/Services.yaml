@@ -27,3 +27,9 @@ services:
       - name: 'console.command'
         command: 'jvevents:missingfiles'
         schedulable: false
+
+  JVelletti\JvEvents\Command\EventTagCommand:
+    tags:
+      - name: 'console.command'
+        command: 'jvevents:eventtag'
+        schedulable: false
