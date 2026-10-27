@@ -612,9 +612,12 @@
 					<f:if condition="{settings.security.filter.maxDays}">
 						<f:variable name="maxDays">{settings.security.filter.maxDays}</f:variable>
 					</f:if>
-					<f:link.page class="badge badge-primary m-2 py-2" pageUid="{settings.pageIds.eventList}" additionalParams="{tx_jvevents_events: {overruleFilter: {organizer: '{event.organizer.uid}', category : 'true' , maxDays: maxDays}}}">
+					HELLO !!! <br>
+					<f:link.action class="badge badge-primary m-2 py-2" pageUid="{settings.pageIds.eventList}"
+								   action="list" controller="Event"  pluginName="Events"
+								   additionalParams="{tx_jvevents_events: {overruleFilter: {organizer: '{event.organizer.uid}', category : 'true' , maxDays: maxDays}}}">
 						<span class="fas fa-calendar-alt "></span> {f:translate(key: 'LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.EventListView', default: 'Veranstaltungsliste')} >>
-					</f:link.page>
+					</f:link.action>
 
 					<f:if condition="{event.organizer.organizerCategory}">
 

@@ -124,9 +124,10 @@
                                     <f:if condition="{f:format.date(date: '{location.latestEvent}', format: 'Y-m-d')}  <  {f:format.date(base: 'now', date: '-90 DAYS' , format: 'Y-m-d')}">
                                         <f:then>
                                             <div class="alert alert-warning ">
-                                                <f:link.page class="w-100 btn btn-outline-primary mb-2 py-2" pageUid="{settings.pageIds.eventList}" additionalParams="{tx_jvevents_locations: {overruleFilter: {location: '{location.uid}', category: 'true' , startDate:  '{location.latestEvent}',maxDays: 1}}}">
+                                                <f:link.action  action="list" controller="Event"   pluginName="Events" class="w-100 btn btn-outline-primary mb-2 py-2" pageUid="{settings.pageIds.eventList}"
+                                                             additionalParams="{tx_jvevents_locations: {overruleFilter: {location: '{location.uid}', category: 'true' , startDate:  '{location.latestEvent}',maxDays: 1}}}">
                                                     <span class="fas fa-calendar-alt mx-1"></span> Unused location, latest event: <f:format.date format="d.m.Y">{location.latestEvent}</f:format.date> >>
-                                                </f:link.page>
+                                                </f:link.action>
                                             </div>
                                         </f:then>
                                     </f:if>
