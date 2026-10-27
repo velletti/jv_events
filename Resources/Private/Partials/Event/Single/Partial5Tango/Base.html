@@ -612,7 +612,6 @@
 					<f:if condition="{settings.security.filter.maxDays}">
 						<f:variable name="maxDays">{settings.security.filter.maxDays}</f:variable>
 					</f:if>
-					HELLO !!! <br>
 					<f:link.action class="badge badge-primary m-2 py-2" pageUid="{settings.pageIds.eventList}"
 								   action="list" controller="Event"  pluginName="Events"
 								   additionalParams="{tx_jvevents_events: {overruleFilter: {organizer: '{event.organizer.uid}', category : 'true' , maxDays: maxDays}}}">
