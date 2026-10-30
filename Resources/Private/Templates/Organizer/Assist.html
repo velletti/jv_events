@@ -89,13 +89,23 @@
 
 <f:section name="oneOrganizer">
 
-    <f:if condition="{nextEvent}">
+
+    <f:if condition="{nextEvent} || {organizer.0.isUpdatedInLastYear}}">
         <f:then>
             <f:variable name="userClass">alert-info</f:variable>
             <f:variable name="userIconClass"> fa-check-square</f:variable>
-            <f:variable name="userStatus" >Aktiv {organizer.0.latestEvent -> f:format.date(format: 'Y-m-d')}</f:variable>
+            <f:if condition="{nextEvent}">
+                <f:then>
+                    <f:variable name="userStatus" >Aktiv {organizer.0.latestEvent -> f:format.date(format: 'Y-m-d')}</f:variable>
+                </f:then>
+                <f:else>
+                    <f:variable name="userStatus" >Aktiv {organizer.0.tstamp -> f:format.date(format: 'Y-m-d')}</f:variable>
+
+                </f:else>
+            </f:if>
         </f:then>
         <f:else>
+
             <f:variable name="userClass">alert-warning</f:variable>
             <f:variable name="userIconClass"> fa-square</f:variable>
             <f:variable name="userStatus">Passiv: </f:variable>

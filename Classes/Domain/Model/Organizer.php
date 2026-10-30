@@ -616,6 +616,11 @@ class Organizer extends AbstractEntity
         return $this->tstamp;
     }
 
+    public function isIsUpdatedInLastYear()
+    {
+        return ( $this->tstamp > (strtotime("-1 year")) ) ;
+    }
+
     /**
      * @param int $tstamp
      */
