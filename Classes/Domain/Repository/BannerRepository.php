@@ -2,6 +2,7 @@
 namespace JVelletti\JvEvents\Domain\Repository;
 
 use Doctrine\DBAL\Driver\Exception;
+use Doctrine\DBAL\ParameterType;
 use PDO;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -48,13 +49,12 @@ class BannerRepository {
 
            $queryBuilder->update('tx_sfbanners_domain_model_banner')
                 ->where( $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter( $row['uid'] , \TYPO3\CMS\Core\Database\Connection::PARAM_INT)) ) ;
-
            foreach ( $row as $field => $value ) {
                if( $field != "uid") {
                    if ( is_int( $value )) {
-                       $queryBuilder->set($field , $value ,false ) ;
+                       $queryBuilder->set($field , $value ?? 0,true , ParameterType::INTEGER) ;
                    } else {
-                       $queryBuilder->set($field , $value ) ;
+                       $queryBuilder->set($field , $value ?? '' ) ;
                    }
                }
            }

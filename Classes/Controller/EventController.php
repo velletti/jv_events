@@ -879,7 +879,7 @@ class EventController extends BaseController
                         $bannerRepository->updateBanner( $row );
 
 
-                        if (class_exists(\JVelletti\JvBanners\Utility\AssetUtility )) {
+                        if (class_exists('JVelletti\JvBanners\Utility\AssetUtility' , true )) {
                             $assetUtility = GeneralUtility::makeInstance(\JVelletti\JvBanners\Utility\AssetUtility::class);
 
                             // update image
