@@ -568,6 +568,9 @@ function jv_events_reloadList() {
                 if (param.match ( /chash|cHash/)) {
                     break ;
                 }
+                if (param.match ( /Controller|Action/)) {
+                    break ;
+                }
                 if ( !param.match ( /startDate|maxDays/))
                 {
                     newQuery += "&" + param ;
@@ -577,6 +580,7 @@ function jv_events_reloadList() {
             var newQuery = window.location.href + "?" ;
         }
 
+        newQuery += "&tx_jvevents_events[controller]=Event&tx_jvevents_events[action]=list&tx_jvevents_events[Plugin]=Events" ;
         newQuery += "&tx_jvevents_events[overruleFilter][startDate]=" + jQuery("#overruleFilterStartDate").val() ;
         if( jQuery("#overruleFilterMaxDays").length && jQuery("#overruleFilterMaxDays").val() > 0 ) {
             let securityMaxdays = parseInt( jQuery("#overruleFilterMaxDays").data("maxdays")) ;
