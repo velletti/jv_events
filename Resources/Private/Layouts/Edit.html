@@ -2,11 +2,6 @@
 	<f:asset.css identifier="jveventscss" href="{settings.ccsFile}"></f:asset.css>
 </f:if>
 
-<f:asset.script identifier="ckeditorfe1" priority="true">
-	var CKEDITOR_BASEPATH =	'{f:uri.resource(path: "EXT:jv_events/Resources/Public/JavaScript/ckeditor/")}';
-</f:asset.script>
-<f:asset.script identifier="ckeditorfe2" src="EXT:jv_events/Resources/Public/JavaScript/ckeditor/ckeditor.js" priority="true" ></f:asset.script>
-
 <f:flashMessages as="flashMessages">
 	<f:if condition="{flashMessages}">
 			<f:for each="{flashMessages}" as="flashMessage">

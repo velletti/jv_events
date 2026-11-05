@@ -11,7 +11,7 @@ CKEDITOR.editorConfig = function( config ) {
     // The toolbar groups arrangement, optimized for two toolbar rows.
     config.toolbarGroups = [
         { name: 'styles', groups: [ 'styles' ] },
-        { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
+        { name: 'clipboard', groups: [ 'clipboard', 'undo' , 'selectall'] },
         { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
         { name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
         { name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
@@ -25,7 +25,8 @@ CKEDITOR.editorConfig = function( config ) {
         { name: 'about', groups: [ 'about' ] }
     ];
 
-    config.removeButtons = 'Source,Save,NewPage,Preview,Print,Templates,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Italic,Underline,Subscript,Superscript,Indent,Outdent,CreateDiv,Blockquote,BidiLtr,BidiRtl,Language,Image,Flash,Table,PageBreak,Iframe,Font,FontSize,TextColor,BGColor,About,PasteFromWord,Scayt,NumberedList,JustifyRight,JustifyBlock,Anchor,Smiley,Styles';
+    // config.removeButtons = 'Source,Save,NewPage,Preview,Print,Templates,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Italic,Underline,Subscript,Superscript,Indent,Outdent,CreateDiv,Blockquote,BidiLtr,BidiRtl,Language,Image,Flash,Table,PageBreak,Iframe,Font,FontSize,TextColor,BGColor,About,PasteFromWord,Scayt,NumberedList,JustifyRight,JustifyBlock,Anchor,Smiley,Styles';
+    config.removeButtons = 'Source,Save,NewPage,Italic,Underline,Subscript,Superscript,Indent,Outdent,CreateDiv,Blockquote,BidiLtr,BidiRtl,Language,Image,Flash,Table,PageBreak,Iframe,Font,FontSize,TextColor,BGColor,About,PasteFromWord,Scayt,NumberedList,JustifyRight,JustifyBlock,Anchor,Smiley,Styles';
 
 
     // Set the most common block elements.
